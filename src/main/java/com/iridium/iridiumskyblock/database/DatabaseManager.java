@@ -9,12 +9,13 @@ import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
@@ -22,8 +23,11 @@ public class DatabaseManager {
     private final IridiumSkyblock iridiumSkyblock;
     private final ConnectionSource connectionSource;
 
-    private final Dao<User, UUID> users;
-    private final Dao<Island, Integer> islands;
+    private final Dao<User, UUID> userDao;
+    private final Dao<Island, Integer> islandDao;
+
+    @Getter
+    private final List<User> userList;
 
     public DatabaseManager(IridiumSkyblock iridiumSkyblock) throws SQLException {
         this.sqlConfig = iridiumSkyblock.getSql();
@@ -40,11 +44,13 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, User.class);
         TableUtils.createTableIfNotExists(connectionSource, Island.class);
 
-        this.users = DaoManager.createDao(connectionSource, User.class);
-        this.islands = DaoManager.createDao(connectionSource, Island.class);
+        this.userDao = DaoManager.createDao(connectionSource, User.class);
+        this.islandDao = DaoManager.createDao(connectionSource, Island.class);
 
-        users.setAutoCommit(getDatabaseConnection(), false);
-        islands.setAutoCommit(getDatabaseConnection(), false);
+        userDao.setAutoCommit(getDatabaseConnection(), false);
+        islandDao.setAutoCommit(getDatabaseConnection(), false);
+
+        this.userList = getUsers();
     }
 
     private @NotNull
@@ -68,22 +74,23 @@ public class DatabaseManager {
         return connectionSource.getReadWriteConnection(null);
     }
 
-    public CompletableFuture<@Nullable User> getUserByUUID(@NotNull UUID uuid) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return users.queryBuilder().where().eq("uuid", uuid).queryForFirst();
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+    public List<User> getUsers() {
+        try {
+            return userDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
 
-            return null;
-        });
+    public Optional<User> getUserByUUID(@NotNull UUID uuid) {
+        return userList.stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
     }
 
     public CompletableFuture<@Nullable Island> getIslandById(int id) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return islands.queryBuilder().where().eq("id", id).queryForFirst();
+                return islandDao.queryBuilder().where().eq("id", id).queryForFirst();
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
@@ -92,12 +99,12 @@ public class DatabaseManager {
         });
     }
 
-    public void saveUsers(@NotNull User... userList) {
+    public void saveUsers() {
         try {
             for (User user : userList) {
-                users.createOrUpdate(user);
+                userDao.createOrUpdate(user);
             }
-            users.commit(getDatabaseConnection());
+            userDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -106,9 +113,9 @@ public class DatabaseManager {
     public void saveIslands(@NotNull Island... islandList) {
         try {
             for (Island island : islandList) {
-                islands.createOrUpdate(island);
+                islandDao.createOrUpdate(island);
             }
-            islands.commit(getDatabaseConnection());
+            islandDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
