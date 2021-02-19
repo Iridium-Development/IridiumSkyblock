@@ -6,12 +6,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public abstract class Command {
-    @NotNull
-    public final List<String> aliases;
-    @NotNull
-    public final String description;
-    @NotNull
-    public final String permission;
+    public final @NotNull List<String> aliases;
+    public final @NotNull String description;
+    public final @NotNull String permission;
     public final boolean player;
     public final boolean enabled = true;
 

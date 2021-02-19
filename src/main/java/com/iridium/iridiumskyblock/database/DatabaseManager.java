@@ -28,6 +28,8 @@ public class DatabaseManager {
 
     @Getter
     private final List<User> userList;
+    @Getter
+    private final List<Island> islandList;
 
     public DatabaseManager(IridiumSkyblock iridiumSkyblock) throws SQLException {
         this.sqlConfig = iridiumSkyblock.getSql();
@@ -51,10 +53,14 @@ public class DatabaseManager {
         islandDao.setAutoCommit(getDatabaseConnection(), false);
 
         this.userList = getUsers();
+        this.islandList = getIslands();
     }
 
-    private @NotNull
-    String getDatabaseURL() {
+    /**
+     * @return The Database Url String
+     */
+
+    private @NotNull String getDatabaseURL() {
         switch (sqlConfig.driver) {
             case MYSQL:
             case MARIADB:
@@ -74,7 +80,11 @@ public class DatabaseManager {
         return connectionSource.getReadWriteConnection(null);
     }
 
-    public List<User> getUsers() {
+    /**
+     * @return a List of all users
+     */
+
+    private @NotNull List<User> getUsers() {
         try {
             return userDao.queryForAll();
         } catch (SQLException exception) {
@@ -83,22 +93,40 @@ public class DatabaseManager {
         return Collections.emptyList();
     }
 
+    /**
+     * @return a List of all islands
+     */
+
+    private @NotNull List<Island> getIslands() {
+        try {
+            return islandDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * @param uuid The uuid of the player
+     * @return the User class of the player
+     */
+
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return userList.stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
     }
 
-    public CompletableFuture<@Nullable Island> getIslandById(int id) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                return islandDao.queryBuilder().where().eq("id", id).queryForFirst();
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
+    /**
+     * @param id The id  of the island
+     * @return The island
+     */
 
-            return null;
-        });
+    public Optional<Island> getIslandById(int id) {
+        return islandList.stream().filter(island -> island.getId() == id).findFirst();
     }
 
+    /**
+     * Saves all users
+     */
     public void saveUsers() {
         try {
             for (User user : userList) {
@@ -110,7 +138,10 @@ public class DatabaseManager {
         }
     }
 
-    public void saveIslands(@NotNull Island... islandList) {
+    /**
+     * Saves all islands
+     */
+    public void saveIslands() {
         try {
             for (Island island : islandList) {
                 islandDao.createOrUpdate(island);

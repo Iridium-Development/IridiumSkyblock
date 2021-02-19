@@ -17,16 +17,13 @@ import java.util.UUID;
 public final class User {
 
     @DatabaseField(columnName = "uuid", canBeNull = false, id = true)
-    @NotNull
-    private UUID uuid;
+    private @NotNull UUID uuid;
 
     @DatabaseField(columnName = "name", canBeNull = false)
-    @NotNull
-    private String name;
+    private @NotNull String name;
 
     @DatabaseField(columnName = "island_id", foreign = true, foreignAutoRefresh = true)
-    @Nullable
-    private Island island;
+    private @Nullable Island island;
 
     public User(final @NotNull UUID uuid, final @NotNull String name) {
         this.uuid = uuid;
