@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -40,6 +41,20 @@ public class IridiumSkyblockAPI {
             iridiumSkyblock.getDatabaseManager().getUserList().add(user);
             return user;
         }
+    }
+
+    /**
+     * Gets an Island from a location
+     *
+     * @param location The location you are looking at
+     * @return The island at the location
+     */
+    public Optional<Island> getIslandViaLocation(@NotNull Location location) {
+        return iridiumSkyblock.getDatabaseManager().getIslandList().stream().filter(island -> {
+            Location pos1 = island.getPos1(location.getWorld());
+            Location pos2 = island.getPos2(location.getWorld());
+            return pos1.getX() <= location.getX() && pos2.getX() >= location.getX() && pos1.getX() <= location.getZ() && pos2.getZ() >= location.getZ();
+        }).findFirst();
     }
 
     /**
