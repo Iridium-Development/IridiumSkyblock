@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +13,11 @@ import java.lang.reflect.Type;
 public class Persist {
     private final ObjectMapper objectMapper;
     private final PersistType persistType;
+    private final JavaPlugin javaPlugin;
 
-    public Persist(PersistType persistType) {
+    public Persist(PersistType persistType, JavaPlugin javaPlugin) {
         this.persistType = persistType;
+        this.javaPlugin = javaPlugin;
         switch (persistType) {
             case YAML:
                 objectMapper = new ObjectMapper(new YAMLFactory());
@@ -45,7 +48,7 @@ public class Persist {
     // ------------------------------------------------------------ //
 
     public File getFile(String name) {
-        return new File(IridiumSkyblock.getInstance().getDataFolder(), name + persistType.getExtension());
+        return new File(javaPlugin.getDataFolder(), name + persistType.getExtension());
     }
 
     public File getFile(Class<?> clazz) {
@@ -66,8 +69,8 @@ public class Persist {
         try {
             objectMapper.writeValue(file, instance);
         } catch (IOException e) {
-            IridiumSkyblock.getInstance().getLogger().severe("Failed to save " + file.toString() + ": " + e.getMessage());
-            Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
+            javaPlugin.getLogger().severe("Failed to save " + file.toString() + ": " + e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(javaPlugin);
         }
     }
 
@@ -75,8 +78,8 @@ public class Persist {
         try {
             return objectMapper.writeValueAsString(instance);
         } catch (IOException e) {
-            IridiumSkyblock.getInstance().getLogger().severe("Failed to save " + instance.toString() + ": " + e.getMessage());
-            Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
+            javaPlugin.getLogger().severe("Failed to save " + instance.toString() + ": " + e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(javaPlugin);
         }
         return "";
     }
@@ -92,8 +95,8 @@ public class Persist {
             try {
                 return objectMapper.readValue(file, clazz);
             } catch (IOException e) {
-                IridiumSkyblock.getInstance().getLogger().severe("Failed to parse " + file.toString() + ": " + e.getMessage());
-                Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
+                javaPlugin.getLogger().severe("Failed to parse " + file.toString() + ": " + e.getMessage());
+                Bukkit.getPluginManager().disablePlugin(javaPlugin);
             }
         }
         try {
@@ -108,7 +111,7 @@ public class Persist {
         try {
             return objectMapper.readValue(content, clazz);
         } catch (IOException e) {
-            Bukkit.getPluginManager().disablePlugin(IridiumSkyblock.getInstance());
+            Bukkit.getPluginManager().disablePlugin(javaPlugin);
         }
 
         return null;
