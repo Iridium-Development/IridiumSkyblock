@@ -25,20 +25,17 @@ public final class Island {
     private int id;
 
     @DatabaseField(columnName = "name", canBeNull = false)
-    @NotNull
-    private String name;
+    private @NotNull String name;
 
     //Stores the islands home relative to the island center
     @DatabaseField(columnName = "home")
-    @NotNull
-    private String home;
+    private @NotNull String home;
 
     @ForeignCollectionField(eager = true)
     @Setter(AccessLevel.PRIVATE)
     private ForeignCollection<User> members;
 
-    @NotNull
-    public Location getHome() {
+    public @NotNull Location getHome() {
         String[] params = home.split(",");
         World world = IridiumSkyblockAPI.getInstance().getWorld();
         return new Location(world, Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Float.parseFloat(params[3]), Float.parseFloat(params[4])).add(getCenter(world));
