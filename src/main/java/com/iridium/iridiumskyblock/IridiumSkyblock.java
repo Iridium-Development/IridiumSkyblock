@@ -21,7 +21,6 @@ import java.sql.SQLException;
 @Relocation(from = "org|yaml", to = "com|iridium|iridiumskyblock")
 @Getter
 public class IridiumSkyblock extends DependencyPlugin {
-    private static IridiumSkyblock instance;
     private Persist persist;
 
     private CommandManager commandManager;
@@ -38,13 +37,12 @@ public class IridiumSkyblock extends DependencyPlugin {
 
     @Override
     public void enable() {
-        instance = this;
-        this.persist = new Persist(Persist.PersistType.YAML);
-        this.commandManager = new CommandManager("iridiumskyblock");
+        this.persist = new Persist(Persist.PersistType.YAML, this);
+        this.commandManager = new CommandManager("iridiumskyblock", this);
         loadConfigs();
         saveConfigs();
         try {
-            this.databaseManager = new DatabaseManager();
+            this.databaseManager = new DatabaseManager(this);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -76,9 +74,5 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.persist.save(configuration);
         this.persist.save(messages);
         this.persist.save(sql);
-    }
-
-    public static IridiumSkyblock getInstance() {
-        return instance;
     }
 }

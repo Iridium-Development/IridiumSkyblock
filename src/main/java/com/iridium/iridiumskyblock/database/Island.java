@@ -87,16 +87,16 @@ public final class Island {
                 throw new IllegalStateException("Could not find island location with ID: " + id);
         }
 
-        return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);
+        return location.multiply(IridiumSkyblockAPI.getInstance().getConfiguration().distance);
     }
 
     public Location getPos1(World world) {
-        int size = IridiumSkyblock.getInstance().getConfiguration().distance - 1;
+        int size = IridiumSkyblockAPI.getInstance().getConfiguration().distance - 1;
         return getCenter(world).subtract(new Location(world, size, 0, size));
     }
 
     public Location getPos2(World world) {
-        int size = IridiumSkyblock.getInstance().getConfiguration().distance - 1;
+        int size = IridiumSkyblockAPI.getInstance().getConfiguration().distance - 1;
         return getCenter(world).add(new Location(world, size, 0, size));
     }
 

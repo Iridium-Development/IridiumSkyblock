@@ -18,19 +18,22 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
-    private final SQL SQL_CONFIG = IridiumSkyblock.getInstance().getSql();
+    private final SQL sqlConfig;
+    private final IridiumSkyblock iridiumSkyblock;
     private final ConnectionSource connectionSource;
 
     private final Dao<User, UUID> users;
     private final Dao<Island, Integer> islands;
 
-    public DatabaseManager() throws SQLException {
+    public DatabaseManager(IridiumSkyblock iridiumSkyblock) throws SQLException {
+        this.sqlConfig = iridiumSkyblock.getSql();
+        this.iridiumSkyblock = iridiumSkyblock;
         String databaseURL = getDatabaseURL();
 
         connectionSource = new JdbcConnectionSource(
                 databaseURL,
-                SQL_CONFIG.username,
-                SQL_CONFIG.password,
+                sqlConfig.username,
+                sqlConfig.password,
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
@@ -44,18 +47,19 @@ public class DatabaseManager {
         islands.setAutoCommit(getDatabaseConnection(), false);
     }
 
-    private @NotNull String getDatabaseURL() {
-        switch (SQL_CONFIG.driver) {
+    private @NotNull
+    String getDatabaseURL() {
+        switch (sqlConfig.driver) {
             case MYSQL:
             case MARIADB:
             case POSTGRESQL:
-                return "jdbc:" + SQL_CONFIG.driver + "://" + SQL_CONFIG.host + ":" + SQL_CONFIG.port + "/" + SQL_CONFIG.database;
+                return "jdbc:" + sqlConfig.driver + "://" + sqlConfig.host + ":" + sqlConfig.port + "/" + sqlConfig.database;
             case SQLSERVER:
-                return "jdbc:sqlserver://" + SQL_CONFIG.host + ":" + SQL_CONFIG.port + ";databaseName=" + SQL_CONFIG.database;
+                return "jdbc:sqlserver://" + sqlConfig.host + ":" + sqlConfig.port + ";databaseName=" + sqlConfig.database;
             case H2:
-                return "jdbc:h2:file:" + SQL_CONFIG.database;
+                return "jdbc:h2:file:" + sqlConfig.database;
             case SQLITE:
-                return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), SQL_CONFIG.database + ".db");
+                return "jdbc:sqlite:" + new File(iridiumSkyblock.getDataFolder(), sqlConfig.database + ".db");
         }
         throw new RuntimeException("How did we get here?");
     }
