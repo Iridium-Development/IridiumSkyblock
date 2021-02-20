@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.DatabaseManager;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import java.sql.SQLException;
 
@@ -47,6 +48,7 @@ public class IridiumSkyblock extends DependencyPlugin {
             exception.printStackTrace();
         }
         new IridiumSkyblockAPI(this);
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
@@ -57,11 +59,17 @@ public class IridiumSkyblock extends DependencyPlugin {
 
     @Override
     public void disable() {
+        saveData();
         getLogger().info("-------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Disabled!");
         getLogger().info("");
         getLogger().info("-------------------------------");
+    }
+
+    public void saveData() {
+        getDatabaseManager().saveIslands();
+        getDatabaseManager().saveUsers();
     }
 
     public void loadConfigs() {
