@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
+
     private final SQL sqlConfig;
     private final IridiumSkyblock iridiumSkyblock;
     private final ConnectionSource connectionSource;
@@ -31,6 +32,11 @@ public class DatabaseManager {
     @Getter
     private final List<Island> islandList;
 
+    /**
+     * The default constructor.
+     * @param iridiumSkyblock The instance of IridiumSkyblock used by the plugin
+     * @throws SQLException If the connection or any operations failed
+     */
     public DatabaseManager(IridiumSkyblock iridiumSkyblock) throws SQLException {
         this.sqlConfig = iridiumSkyblock.getSql();
         this.iridiumSkyblock = iridiumSkyblock;
@@ -57,9 +63,10 @@ public class DatabaseManager {
     }
 
     /**
-     * @return The Database Url String
+     * Database connection String used for establishing a connection.
+     *
+     * @return The database URL String
      */
-
     private @NotNull String getDatabaseURL() {
         switch (sqlConfig.driver) {
             case MYSQL:
@@ -76,14 +83,22 @@ public class DatabaseManager {
         throw new RuntimeException("How did we get here?");
     }
 
+    /**
+     * Returns a connection from the connection source.
+     *
+     * @return The connection to the database for operations
+     * @throws SQLException If there is an error with the exception
+     */
     private DatabaseConnection getDatabaseConnection() throws SQLException {
         return connectionSource.getReadWriteConnection(null);
     }
 
     /**
+     * Returns a list of all users in the database.
+     * Might be empty if an error occurs.
+     *
      * @return a List of all users
      */
-
     private @NotNull List<User> getUsers() {
         try {
             return userDao.queryForAll();
@@ -94,9 +109,11 @@ public class DatabaseManager {
     }
 
     /**
+     * Returns a list of all islands in the database.
+     * Might be empty if an error occurs.
+     *
      * @return a List of all islands
      */
-
     private @NotNull List<Island> getIslands() {
         try {
             return islandDao.queryForAll();
@@ -107,25 +124,28 @@ public class DatabaseManager {
     }
 
     /**
+     * Finds an User by his {@link UUID}.
+     *
      * @param uuid The uuid of the player
      * @return the User class of the player
      */
-
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return userList.stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
     }
 
     /**
-     * @param id The id  of the island
-     * @return The island
+     * Finds an Island by its id.
+     *
+     * @param id The id of the island
+     * @return An Optional with the Island, empty if there is none
      */
-
     public Optional<Island> getIslandById(int id) {
         return islandList.stream().filter(island -> island.getId() == id).findFirst();
     }
 
     /**
-     * Saves all users
+     * Saves all users to the database.
+     * Creates them if they don't exist
      */
     public void saveUsers() {
         try {
@@ -139,7 +159,8 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves all islands
+     * Saves all islands to the database.
+     * Creates them if they don't exist.
      */
     public void saveIslands() {
         try {
@@ -151,4 +172,5 @@ public class DatabaseManager {
             exception.printStackTrace();
         }
     }
+
 }
