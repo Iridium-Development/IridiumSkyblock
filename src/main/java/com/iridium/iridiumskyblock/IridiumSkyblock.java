@@ -46,13 +46,13 @@ public class IridiumSkyblock extends DependencyPlugin {
      */
     @Override
     public void enable() {
-        // Initialize the commands
-        this.commandManager = new CommandManager("iridiumskyblock", this);
-
         // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
         loadConfigs();
         saveConfigs();
+
+        // Initialize the commands
+        this.commandManager = new CommandManager("iridiumskyblock", this);
 
         // Try to connect to the database
         try {
