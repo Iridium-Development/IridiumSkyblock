@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class CreditsCommand extends Command {
@@ -37,6 +36,6 @@ public class CreditsCommand extends Command {
     }
 
     public enum Role {
-        Owner, Contributor;
+        Owner, Contributor
     }
 }
