@@ -30,7 +30,17 @@ public class PlayerUtils {
      * @return The total experience of the provided Player
      */
     public static int getTotalExperience(final Player player) {
-        return player.getTotalExperience();
+        int exp = Math.round(getExpAtLevel(player.getLevel()) * player.getExp());
+        int currentLevel = player.getLevel();
+
+        while (currentLevel > 0) {
+            currentLevel--;
+            exp += getExpAtLevel(currentLevel);
+        }
+        if (exp < 0) {
+            exp = Integer.MAX_VALUE;
+        }
+        return exp;
     }
 
     /**
@@ -46,7 +56,21 @@ public class PlayerUtils {
         player.setExp(0);
         player.setLevel(0);
         player.setTotalExperience(0);
-        player.setTotalExperience(exp);
+
+        int amount = exp;
+        while (amount > 0) {
+            final int expToLevel = getExpAtLevel(player.getLevel());
+            amount -= expToLevel;
+            if (amount >= 0) {
+                // give until next level
+                player.giveExp(expToLevel);
+            } else {
+                // give the rest
+                amount += expToLevel;
+                player.giveExp(amount);
+                amount = 0;
+            }
+        }
     }
 
 }
