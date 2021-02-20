@@ -14,6 +14,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents an Island of IridiumSkyblock.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,18 +38,41 @@ public final class Island {
     @Setter(AccessLevel.PRIVATE)
     private ForeignCollection<User> members;
 
+    /**
+     * Default constructor.
+     * @param name The name of this island
+     */
+    public Island(@NotNull String name) {
+        this.name = name;
+    }
+
+    /**
+     * The Location of the home of this island.
+     *
+     * @return The home location
+     */
     public @NotNull Location getHome() {
         String[] params = home.split(",");
         World world = IridiumSkyblockAPI.getInstance().getWorld();
         return new Location(world, Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Float.parseFloat(params[3]), Float.parseFloat(params[4])).add(getCenter(world));
     }
 
+    /**
+     * Alters the spawn Location of this island.
+     * @param location The new home Location
+     */
     public void setHome(@NotNull Location location) {
         location = getCenter(location.getWorld()).subtract(location);
         this.home = location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getPitch() + "," + location.getYaw();
     }
 
-    //Function based off: https://stackoverflow.com/a/19287714
+    /**
+     * Finds the center of this island.
+     * Function based of: https://stackoverflow.com/a/19287714.
+     *
+     * @param world The world where this island is in
+     * @return The center Location of this island
+     */
     public Location getCenter(World world) {
         if (id == 1) return new Location(world, 0, 0, 0);
         // In this algorithm id  0 will be where we want id 2 to be and 1 will be where 3 is ect
@@ -87,17 +113,28 @@ public final class Island {
         return location.multiply(IridiumSkyblockAPI.getInstance().getConfiguration().distance);
     }
 
+    /**
+     * Returns the first corner point Location of this island.
+     * Is smaller than {@link Island#getPos2(World)}.
+     *
+     * @param world The world where this island is in
+     * @return The Location of the first corner point
+     */
     public Location getPos1(World world) {
         int size = IridiumSkyblockAPI.getInstance().getConfiguration().distance - 1;
         return getCenter(world).subtract(new Location(world, size, 0, size));
     }
 
+    /**
+     * Returns the second corner point Location of this island.
+     * Is greater than {@link Island#getPos1(World)}.
+     *
+     * @param world The world where this island is in
+     * @return The Location of the second corner point
+     */
     public Location getPos2(World world) {
         int size = IridiumSkyblockAPI.getInstance().getConfiguration().distance - 1;
         return getCenter(world).add(new Location(world, size, 0, size));
     }
 
-    public Island(@NotNull String name) {
-        this.name = name;
-    }
 }

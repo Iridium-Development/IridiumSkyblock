@@ -10,6 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+/**
+ * Represents a User of IridiumSkyblock.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,4 +32,5 @@ public final class User {
         this.uuid = uuid;
         this.name = name;
     }
+
 }
