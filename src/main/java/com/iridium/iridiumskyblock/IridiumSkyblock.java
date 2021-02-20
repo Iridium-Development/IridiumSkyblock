@@ -14,6 +14,10 @@ import org.bukkit.Bukkit;
 
 import java.sql.SQLException;
 
+/**
+ * The main class of this plugin which handles initialization
+ * and shutdown of the plugin.
+ */
 @MavenDependency("com|fasterxml|jackson|core:jackson-databind:2.12.1")
 @MavenDependency("com|fasterxml|jackson|core:jackson-core:2.12.1")
 @MavenDependency("com|fasterxml|jackson|core:jackson-annotations:2.12.1")
@@ -22,6 +26,7 @@ import java.sql.SQLException;
 @Relocation(from = "org|yaml", to = "com|iridium|iridiumskyblock")
 @Getter
 public class IridiumSkyblock extends DependencyPlugin {
+
     private Persist persist;
 
     private CommandManager commandManager;
@@ -33,22 +38,37 @@ public class IridiumSkyblock extends DependencyPlugin {
 
     @Override
     public void load() {
-
+        // Empty because we don't need any logic
     }
 
+    /**
+     * Plugin startup logic.
+     */
     @Override
     public void enable() {
+        // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
-        this.commandManager = new CommandManager("iridiumskyblock", this);
         loadConfigs();
         saveConfigs();
+
+        // Initialize the commands
+        this.commandManager = new CommandManager("iridiumskyblock", this);
+
+        // Try to connect to the database
         try {
             this.databaseManager = new DatabaseManager(this);
         } catch (SQLException exception) {
+            // We don't want the plugin to start if the connection fails
             exception.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
         }
-        new IridiumSkyblockAPI(this);
+
+        // Initialize the API
+        IridiumSkyblockAPI.initializeInstance(this);
+
+        // Save data regularly
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
+
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
@@ -57,6 +77,9 @@ public class IridiumSkyblock extends DependencyPlugin {
         getLogger().info("----------------------------------------");
     }
 
+    /**
+     * Plugin shutdown logic.
+     */
     @Override
     public void disable() {
         saveData();
@@ -67,20 +90,34 @@ public class IridiumSkyblock extends DependencyPlugin {
         getLogger().info("-------------------------------");
     }
 
+    /**
+     * Saves islands and users to the database.
+     */
     public void saveData() {
         getDatabaseManager().saveIslands();
         getDatabaseManager().saveUsers();
     }
 
-    public void loadConfigs() {
+    /**
+     * Loads the configuration required for this plugin.
+     *
+     * @see Persist
+     */
+    private void loadConfigs() {
         this.configuration = persist.load(Configuration.class);
         this.messages = persist.load(Messages.class);
         this.sql = persist.load(SQL.class);
     }
 
-    public void saveConfigs() {
+    /**
+     * Saves changes to the configuration files.
+     *
+     * @see Persist
+     */
+    private void saveConfigs() {
         this.persist.save(configuration);
         this.persist.save(messages);
         this.persist.save(sql);
     }
+
 }

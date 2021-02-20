@@ -10,25 +10,35 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * General api for IridiumSkyblock.
+ * It is accessible via {@link IridiumSkyblockAPI#getInstance()}.
+ */
 public class IridiumSkyblockAPI {
+
     private static IridiumSkyblockAPI instance;
     private final IridiumSkyblock iridiumSkyblock;
 
-    public IridiumSkyblockAPI(IridiumSkyblock iridiumSkyblock) {
-        instance = this;
+    /**
+     * Constructor for api initialization.
+     *
+     * @param iridiumSkyblock The instance of the {@link IridiumSkyblock} class
+     */
+    private IridiumSkyblockAPI(IridiumSkyblock iridiumSkyblock) {
         this.iridiumSkyblock = iridiumSkyblock;
     }
 
     /**
-     * Gets a User's info
+     * Gets a {@link User}'s info. Creates one if he doesn't exist.
      *
-     * @param offlinePlayer The player who's data we are fetching
-     * @return The user data or creates one if not found
+     * @param offlinePlayer The player who's data should be fetched
+     * @return The user data
      * @since 3.0.0
      */
     public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
@@ -44,12 +54,13 @@ public class IridiumSkyblockAPI {
     }
 
     /**
-     * Gets an Island from a location
+     * Gets an {@link Island} from a location.
      *
      * @param location The location you are looking at
-     * @return The island at the location
+     * @return Optional of the island at the location, empty if there is none
+     * @since 3.0.0
      */
-    public Optional<Island> getIslandViaLocation(@NotNull Location location) {
+    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
         return iridiumSkyblock.getDatabaseManager().getIslandList().stream().filter(island -> {
             Location pos1 = island.getPos1(location.getWorld());
             Location pos2 = island.getPos2(location.getWorld());
@@ -58,27 +69,56 @@ public class IridiumSkyblockAPI {
     }
 
     /**
-     * @return The plugins Configuration file
+     * Returns the main configuration file of IridiumSkyblock.
+     * All changes to it will be saved to the file automatically on shutdown.
+     *
+     * @return The plugins {@link Configuration} file
+     * @since 3.0.0
      */
-    public Configuration getConfiguration() {
+    public @NotNull Configuration getConfiguration() {
         return iridiumSkyblock.getConfiguration();
     }
 
     /**
-     * @return The main skyblock world
+     * Returns the overworld as specified in {@link Configuration#worldName}.
+     *
+     * @return The main skyblock {@link World}, might be null if some third-party plugin deleted it
+     * @since 3.0.0
      */
-    public World getWorld() {
+    public @Nullable World getWorld() {
         return Bukkit.getWorld(iridiumSkyblock.getConfiguration().worldName);
     }
 
     /**
-     * @return The nether skyblock world
+     * Returns the overworld as specified in {@link Configuration#netherWorldName}.
+     *
+     * @return The nether skyblock {@link World}, might be null if some third-party plugin deleted it
+     * @since 3.0.0
      */
-    public World getNetherWorld() {
+    public @Nullable World getNetherWorld() {
         return Bukkit.getWorld(iridiumSkyblock.getConfiguration().netherWorldName);
     }
 
-    public static IridiumSkyblockAPI getInstance() {
+    /**
+     * Accesses the api instance.
+     * Might be null if this method is called when {@link IridiumSkyblock}'s startup method is still being executed.
+     *
+     * @return The instance of this api
+     * @since 3.0.0
+     */
+    public static @Nullable IridiumSkyblockAPI getInstance() {
         return instance;
     }
+
+    /**
+     * Initializes the api. For internal use only.
+     *
+     * @param iridiumSkyblock The {@link IridiumSkyblock} instance used by the plugin
+     */
+    public static synchronized void initializeInstance(IridiumSkyblock iridiumSkyblock) {
+        if (instance == null) {
+            instance = new IridiumSkyblockAPI(iridiumSkyblock);
+        }
+    }
+
 }
