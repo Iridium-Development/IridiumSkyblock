@@ -30,6 +30,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         this.iridiumSkyblock = iridiumSkyblock;
         iridiumSkyblock.getCommand(command).setExecutor(this);
         iridiumSkyblock.getCommand(command).setTabCompleter(this);
+        registerCommands();
     }
 
     /**
@@ -38,7 +39,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public void registerCommands() {
         registerCommand(new ReloadCommand(iridiumSkyblock));
         registerCommand(new CreditsCommand(iridiumSkyblock));
-        
+
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
 

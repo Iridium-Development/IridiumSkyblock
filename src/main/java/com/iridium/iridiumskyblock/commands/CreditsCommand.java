@@ -15,12 +15,7 @@ public class CreditsCommand extends Command {
     /*
     Please dont add yourself to this list, if you contribute enough I will add you
      */
-    private final HashMap<String, Role> contributors = new HashMap<String, Role>() {{
-        put("Peaches_MLG", Role.Owner);
-        put("Das", Role.Contributor);
-        put("SlashRemix", Role.Contributor);
-        put("BomBardyGamer", Role.Contributor);
-    }};
+    private final List<String> contributors = Arrays.asList("Peaches_MLG", "Das", "SlashRemix");
 
     public CreditsCommand(IridiumSkyblock iridiumSkyblock) {
         super(Arrays.asList("credits", "contributors"), "A list of players who helped make IridiumSkyblock", "", false);
@@ -30,8 +25,8 @@ public class CreditsCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         iridiumSkyblock.loadConfigs();
-        for (String name : contributors.keySet()) {
-            Role role = contributors.get(name);
+        for (String name : contributors) {
+            Role role = name.equalsIgnoreCase("Peaches_MLG") ? Role.Owner : Role.Contributor;
             sender.sendMessage(StringUtils.color("&7 - &b" + name + " (" + role.name() + ")"));
         }
     }
