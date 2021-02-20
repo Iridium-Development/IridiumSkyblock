@@ -64,9 +64,11 @@ public class IridiumSkyblock extends DependencyPlugin {
         }
 
         // Initialize the API
-        // TODO: Change this
         IridiumSkyblockAPI.initializeInstance(this);
 
+        // Save data regularly
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
+      
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
@@ -80,6 +82,7 @@ public class IridiumSkyblock extends DependencyPlugin {
      */
     @Override
     public void disable() {
+        saveData();
         getLogger().info("-------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Disabled!");
@@ -87,6 +90,14 @@ public class IridiumSkyblock extends DependencyPlugin {
         getLogger().info("-------------------------------");
     }
 
+    /**
+     * Saves islands and users to the database.
+     */
+    public void saveData() {
+        getDatabaseManager().saveIslands();
+        getDatabaseManager().saveUsers();
+    }
+  
     /**
      * Loads the configuration required for this plugin.
      * @see Persist
