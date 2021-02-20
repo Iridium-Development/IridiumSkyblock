@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -35,7 +36,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Registers all commands of this plugin.
      */
     public void registerCommands() {
-        // TODO: Add and register commands
+        registerCommand(new ReloadCommand(iridiumSkyblock));
+        registerCommand(new CreditsCommand(iridiumSkyblock));
+        
+        commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
 
     /**
