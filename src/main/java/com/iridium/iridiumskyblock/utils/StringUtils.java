@@ -13,6 +13,7 @@ public class StringUtils {
     /**
      * Applies colors to the provided string.
      * Supports hex colors in Minecraft 1.16+.
+     *
      * @param string The string which should have colors
      * @return The new String with applied colors
      */
@@ -24,6 +25,7 @@ public class StringUtils {
      * Applies colors to the provided strings.
      * Supports hex colors in Minecraft 1.16+.
      * The order of the elements in the list will be the same.
+     *
      * @param strings The strings which should have colors
      * @return A list of the same strings with colors
      */
@@ -35,7 +37,8 @@ public class StringUtils {
      * Applies placeholders to the provided strings.
      * Also adds colors.
      * The order of the Strings will be the same.
-     * @param lines The lines which potentially have placeholders
+     *
+     * @param lines        The lines which potentially have placeholders
      * @param placeholders The placeholders which should be replaced
      * @return The same lines with replaced placeholders
      */
@@ -46,7 +49,8 @@ public class StringUtils {
     /**
      * Applies Placeholders to the provided string.
      * Also adds colors.
-     * @param line The line which potentially has placeholders
+     *
+     * @param line         The line which potentially has placeholders
      * @param placeholders The placeholders which should be replaced
      * @return The same line with replaced placeholders
      */

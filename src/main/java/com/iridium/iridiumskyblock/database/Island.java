@@ -40,6 +40,7 @@ public final class Island {
 
     /**
      * Default constructor.
+     *
      * @param name The name of this island
      */
     public Island(@NotNull String name) {
@@ -59,6 +60,7 @@ public final class Island {
 
     /**
      * Alters the spawn Location of this island.
+     *
      * @param location The new home Location
      */
     public void setHome(@NotNull Location location) {

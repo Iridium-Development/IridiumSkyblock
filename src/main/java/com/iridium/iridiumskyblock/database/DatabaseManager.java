@@ -34,6 +34,7 @@ public class DatabaseManager {
 
     /**
      * The default constructor.
+     *
      * @param iridiumSkyblock The instance of IridiumSkyblock used by the plugin
      * @throws SQLException If the connection or any operations failed
      */

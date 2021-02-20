@@ -21,7 +21,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     /**
      * The default constructor.
-     * @param command The base command of the plugin
+     *
+     * @param command         The base command of the plugin
      * @param iridiumSkyblock The instance of IridiumSkyblock used by this plugin
      */
     public CommandManager(String command, IridiumSkyblock iridiumSkyblock) {
@@ -39,6 +40,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     /**
      * Registers a single command in the command system.
+     *
      * @param command The command which should be registered
      */
     public void registerCommand(Command command) {
@@ -47,6 +49,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     /**
      * Unregisters a single command in the command system.
+     *
      * @param command The command which should be registered
      */
     public void unregisterCommand(Command command) {
@@ -59,9 +62,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * All parameters are provided by Bukkit.
      *
      * @param commandSender The sender which executes this command
-     * @param cmd The Bukkit {@link org.bukkit.command.Command} representation
-     * @param label The label of this command. Not used.
-     * @param args The arguments of this command
+     * @param cmd           The Bukkit {@link org.bukkit.command.Command} representation
+     * @param label         The label of this command. Not used.
+     * @param args          The arguments of this command
      * @return true if this command was executed successfully
      */
     @Override
@@ -109,9 +112,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Method which handles tab-completion of the main command and all sub-commands.
      *
      * @param commandSender The CommandSender which tries to tab-complete
-     * @param cmd The command
-     * @param label The label of the command
-     * @param args The arguments already provided by the sender
+     * @param cmd           The command
+     * @param label         The label of the command
+     * @param args          The arguments already provided by the sender
      * @return The list of tab completions for this command
      */
     @Override

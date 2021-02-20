@@ -13,7 +13,7 @@ public class InventoryUtils {
      * Counts the amount of the specified Material in the Inventory.
      *
      * @param inventory The inventory which should be searched
-     * @param material The material which should be counted
+     * @param material  The material which should be counted
      * @return The amount of the material in the inventory
      */
     public static int getAmount(Inventory inventory, XMaterial material) {
@@ -30,9 +30,10 @@ public class InventoryUtils {
 
     /**
      * Removes the amount of the specified Material from the Inventory.
+     *
      * @param inventory The inventory where the items should be taken from
-     * @param material The material which should be removed
-     * @param amount The amount of items of the specified material which should be removed
+     * @param material  The material which should be removed
+     * @param amount    The amount of items of the specified material which should be removed
      */
     public static void removeAmount(Inventory inventory, XMaterial material, int amount) {
         int removed = 0;
@@ -64,6 +65,7 @@ public class InventoryUtils {
 
     /**
      * Checks if the Inventory has an empty slot where ItemStacks of any type can be stored.
+     *
      * @param inventory The Inventory which should be checked
      * @return true if there is at least one empty slot
      */

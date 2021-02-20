@@ -10,7 +10,8 @@ public class Placeholder {
 
     /**
      * Default constructor.
-     * @param key The placeholder without curly brackets.
+     *
+     * @param key   The placeholder without curly brackets.
      * @param value The actual value of the placeholder
      */
     public Placeholder(String key, String value) {
@@ -20,6 +21,7 @@ public class Placeholder {
 
     /**
      * Replaces this placeholder in the provided line with the value of this placeholder.
+     *
      * @param line The line which potentially contains the placeholder
      * @return The processed line with this placeholder replaced
      */

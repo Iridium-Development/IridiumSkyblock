@@ -23,7 +23,7 @@ public class Persist {
      * Default constructor.
      *
      * @param persistType The format which should be used for persisting
-     * @param javaPlugin The plugin which persists. Parameter for dependency injection
+     * @param javaPlugin  The plugin which persists. Parameter for dependency injection
      */
     public Persist(PersistType persistType, JavaPlugin javaPlugin) {
         this.persistType = persistType;
@@ -35,6 +35,7 @@ public class Persist {
     /**
      * The name of a provided class.
      * Used as the file name for persisting.
+     *
      * @param clazz The class whose name is to be returned
      * @return The name of the configuration file
      */
@@ -49,6 +50,7 @@ public class Persist {
     /**
      * The name of a provided object.
      * Used as the file name for persisting.     *
+     *
      * @param instance The object whose name is to be returned
      * @return The name of the configuration file
      */
@@ -109,6 +111,7 @@ public class Persist {
 
     /**
      * Saves an object to a file.
+     *
      * @param instance The instance of the object which should be saved
      */
     public void save(Object instance) {
@@ -117,8 +120,9 @@ public class Persist {
 
     /**
      * Saves an object to a file.
+     *
      * @param instance The instance of the object which should be saved
-     * @param file The file where the object should be persisted to
+     * @param file     The file where the object should be persisted to
      */
     private void save(Object instance, File file) {
         try {
@@ -133,6 +137,7 @@ public class Persist {
      * Converts an object to a string which can be saved.
      * Uses the specified {@link PersistType}.
      * Might be empty if an {@link IOException} occurs.
+     *
      * @param instance The instance which should be converted
      * @return The string representation of the object.
      */
@@ -153,7 +158,7 @@ public class Persist {
      * Returns the new instance.
      *
      * @param clazz The class which should be loaded
-     * @param <T> The type of class
+     * @param <T>   The type of class
      * @return The loaded class. Might be null
      */
     public <T> T load(Class<T> clazz) {
@@ -165,8 +170,8 @@ public class Persist {
      * Returns the new instance.
      *
      * @param clazz The class which should be loaded
-     * @param file The file where the class should be loaded from
-     * @param <T> The type of class
+     * @param file  The file where the class should be loaded from
+     * @param <T>   The type of class
      * @return The loaded class. Might be null
      */
     public <T> T load(Class<T> clazz, File file) {
@@ -190,9 +195,9 @@ public class Persist {
      * Creates a new instance of a class and deserializes the provided content.
      * Returns the new instance.
      *
-     * @param clazz The class which should be loaded
+     * @param clazz   The class which should be loaded
      * @param content The content which should be loaded into the class
-     * @param <T> The type of class
+     * @param <T>     The type of class
      * @return The loaded class. Might be null
      */
     private <T> T load(Class<T> clazz, String content) {
@@ -219,8 +224,9 @@ public class Persist {
 
         /**
          * Default constructor.
+         *
          * @param extension The file extension with a leading full stop
-         * @param factory The JsonFactory which should be used for persisting
+         * @param factory   The JsonFactory which should be used for persisting
          */
         PersistType(String extension, JsonFactory factory) {
             this.extension = extension;

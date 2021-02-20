@@ -10,6 +10,7 @@ public class PlayerUtils {
     /**
      * Returns the experience a Player needs for the specified level.
      * Might be wrong if Minecraft's level system changes.
+     *
      * @param level The level of the Player
      * @return The amount of experience the Player needs for the next level
      */
@@ -24,6 +25,7 @@ public class PlayerUtils {
 
     /**
      * Calculates the total amount of experience a Player has without the level system.
+     *
      * @param player The Player whose experience should be calculated
      * @return The total experience of the provided Player
      */
@@ -33,8 +35,9 @@ public class PlayerUtils {
 
     /**
      * Sets the experience of a Player. Overrides the current amount.
+     *
      * @param player The Player whose experience should be updated
-     * @param exp The total amount of experience the Player should have
+     * @param exp    The total amount of experience the Player should have
      */
     public static void setTotalExperience(final Player player, final int exp) {
         if (exp < 0) {
