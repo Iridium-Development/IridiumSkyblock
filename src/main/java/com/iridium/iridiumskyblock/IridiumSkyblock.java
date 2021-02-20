@@ -103,7 +103,7 @@ public class IridiumSkyblock extends DependencyPlugin {
      *
      * @see Persist
      */
-    private void loadConfigs() {
+    public void loadConfigs() {
         this.configuration = persist.load(Configuration.class);
         this.messages = persist.load(Messages.class);
         this.sql = persist.load(SQL.class);
@@ -114,7 +114,7 @@ public class IridiumSkyblock extends DependencyPlugin {
      *
      * @see Persist
      */
-    private void saveConfigs() {
+    public void saveConfigs() {
         this.persist.save(configuration);
         this.persist.save(messages);
         this.persist.save(sql);
