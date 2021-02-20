@@ -41,7 +41,7 @@ public class ItemStackUtils {
 
     public static ItemStack makeItem(Item item, List<Placeholder> placeholders) {
         try {
-            ItemStack itemstack = makeItem(item.material, item.amount, StringUtils.processMultiplePlaceholders(item.title, placeholders), StringUtils.processMultiplePlaceholders(item.lore, placeholders));
+            ItemStack itemstack = makeItem(item.material, item.amount, StringUtils.processMultiplePlaceholders(item.displayName, placeholders), StringUtils.processMultiplePlaceholders(item.lore, placeholders));
             if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
                 NBTItem nbtItem = new NBTItem(itemstack);
                 NBTCompound skull = nbtItem.addCompound("SkullOwner");
@@ -60,13 +60,13 @@ public class ItemStackUtils {
             }
             return itemstack;
         } catch (Exception e) {
-            return makeItem(XMaterial.STONE, item.amount, StringUtils.processMultiplePlaceholders(item.title, placeholders), StringUtils.processMultiplePlaceholders(item.lore, placeholders));
+            return makeItem(XMaterial.STONE, item.amount, StringUtils.processMultiplePlaceholders(item.displayName, placeholders), StringUtils.processMultiplePlaceholders(item.lore, placeholders));
         }
     }
 
     public static ItemStack makeItem(Item item) {
         try {
-            ItemStack itemstack = makeItem(item.material, item.amount, item.title, item.lore);
+            ItemStack itemstack = makeItem(item.material, item.amount, item.displayName, item.lore);
             if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
                 NBTItem nbtItem = new NBTItem(itemstack);
                 NBTCompound skull = nbtItem.addCompound("SkullOwner");
@@ -85,7 +85,8 @@ public class ItemStackUtils {
             }
             return itemstack;
         } catch (Exception e) {
-            return makeItem(XMaterial.STONE, item.amount, item.title, item.lore);
+            return makeItem(XMaterial.STONE, item.amount, item.displayName, item.lore);
         }
     }
+
 }
