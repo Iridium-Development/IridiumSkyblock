@@ -2,7 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 /**
  * The SQL database connection file used by IridiumSkyblock.
- * Is persisted automatically on plugin shutdown and reload.
+ * Is deserialized automatically on plugin startup and reload.
  */
 public class SQL {
 

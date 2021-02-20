@@ -2,7 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 /**
  * The main configuration of IridiumSkyblock.
- * Is persisted automatically on plugin shutdown and reload.
+ * Is deserialized automatically on plugin startup and reload.
  */
 public class Configuration {
 

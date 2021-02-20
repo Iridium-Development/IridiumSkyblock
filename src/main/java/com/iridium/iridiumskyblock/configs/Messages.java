@@ -2,7 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 /**
  * The message configuration used by IridiumSkyblock.
- * Is persisted automatically on plugin shutdown and reload.
+ * Is deserialized automatically on plugin startup and reload.
  */
 public class Messages {
 

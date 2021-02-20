@@ -50,7 +50,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     /**
      * Unregisters a single command in the command system.
      *
-     * @param command The command which should be registered
+     * @param command The command which should be unregistered
      */
     public void unregisterCommand(Command command) {
         commands.remove(command);
