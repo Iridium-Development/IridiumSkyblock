@@ -106,7 +106,7 @@ public class IridiumSkyblockAPI {
      * @return The instance of this api
      * @since 3.0.0
      */
-    public static @Nullable IridiumSkyblockAPI getInstance() {
+    public static IridiumSkyblockAPI getInstance() {
         return instance;
     }
 

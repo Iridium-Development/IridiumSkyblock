@@ -27,7 +27,7 @@ public final class Island {
     @Setter(AccessLevel.PRIVATE)
     private int id;
 
-    @DatabaseField(columnName = "name", canBeNull = false)
+    @DatabaseField(columnName = "name", canBeNull = false, unique = true)
     private @NotNull String name;
 
     //Stores the islands home relative to the island center
