@@ -19,8 +19,7 @@ public class Item {
     public Integer slot;
 
     /**
-     * Default, empty constructor.
-     * No one knows why it exists in the first place.
+     * Default and empty constructor.
      */
     public Item() {
     }
