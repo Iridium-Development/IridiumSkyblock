@@ -1,5 +1,6 @@
-package com.iridium.iridiumskyblock;
+package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -12,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.CompletableFuture;
 
 public class IslandManager {
-    private IridiumSkyblock iridiumSkyblock;
+    private final IridiumSkyblock iridiumSkyblock;
 
     public IslandManager(IridiumSkyblock iridiumSkyblock) {
         this.iridiumSkyblock = iridiumSkyblock;

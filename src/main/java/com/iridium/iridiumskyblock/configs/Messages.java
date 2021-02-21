@@ -10,5 +10,8 @@ public class Messages {
     public String noPermission = "%prefix% &7You don't have permission for that.";
     public String mustBeAPlayer = "%prefix% &7You must be a player to execute this command.";
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
+    public String creatingIsland = "%prefix% &7Creating Island...";
+    public String alreadyHaveIsland = "%prefix% &7You already have an Island.";
+    public String islandWithNameAlreadyExists = "%prefix% &7An Island with that name already exists.";
 
 }

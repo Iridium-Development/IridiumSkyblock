@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.iridium.iridiumskyblock.managers.DatabaseManager;
+
 /**
  * The SQL database connection file used by IridiumSkyblock.
  * Is deserialized automatically on plugin startup and reload.
@@ -15,7 +17,7 @@ public class SQL {
 
     /**
      * Represents a Driver of a database.
-     * Used in the {@link com.iridium.iridiumskyblock.database.DatabaseManager}.
+     * Used in the {@link DatabaseManager}.
      */
     public enum Driver {
         MYSQL,
