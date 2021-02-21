@@ -38,7 +38,7 @@ public class SchematicManager {
                     schematic.getBlockData()[x][ylevel][z].setBlock(block);
                 }
             }
-        }, 0, 5);
+        }, 0, iridiumSkyblock.getConfiguration().SchematicPastingDelay);
 
         return completableFuture;
     }
