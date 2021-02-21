@@ -8,8 +8,10 @@ import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.SQL;
-import com.iridium.iridiumskyblock.database.DatabaseManager;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
+import com.iridium.iridiumskyblock.managers.DatabaseManager;
+import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.managers.SchematicManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -37,6 +39,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
     private IslandManager islandManager;
+    private SchematicManager schematicManager;
 
     private Configuration configuration;
     private Messages messages;
@@ -61,6 +64,8 @@ public class IridiumSkyblock extends DependencyPlugin {
 
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock", this);
+
+        this.schematicManager = new SchematicManager(this);
 
         // Try to connect to the database
         try {

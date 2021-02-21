@@ -1,7 +1,9 @@
-package com.iridium.iridiumskyblock.database;
+package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
+import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -143,6 +145,16 @@ public class DatabaseManager {
      */
     public Optional<Island> getIslandById(int id) {
         return islandList.stream().filter(island -> island.getId() == id).findFirst();
+    }
+
+    /**
+     * Finds an Island by its name.
+     *
+     * @param name The name of the island
+     * @return An Optional with the Island, empty if there is none
+     */
+    public Optional<Island> getIslandByName(String name) {
+        return islandList.stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     /**
