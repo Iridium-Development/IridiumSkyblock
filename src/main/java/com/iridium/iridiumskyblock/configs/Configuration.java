@@ -6,9 +6,9 @@ package com.iridium.iridiumskyblock.configs;
  */
 public class Configuration {
 
-    public String prefix = "&b&lIridiumSkyblock &8»";
-    public String worldName = "IridiumSkyblock";
-    public String netherWorldName = "IridiumSkyblock_nether";
+    public String prefix = "&b&lDasSkyblock &8»";
+    public String worldName = "DasSkyblock";
+    public String netherWorldName = "DasSkyblock_nether";
 
     public int distance = 151;
     public int SchematicPastingDelay = 3;
