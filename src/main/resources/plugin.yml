@@ -3,7 +3,7 @@ version: 3.0.0
 description: Skyblock Redifined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
-author: Peaches_MLG
+author: Das
 commands:
   iridiumskyblock:
     aliases: [ "island", is]
