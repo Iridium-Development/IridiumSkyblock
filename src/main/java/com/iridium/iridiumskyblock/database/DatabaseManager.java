@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -11,7 +10,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -20,7 +18,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
 
@@ -149,31 +146,15 @@ public class DatabaseManager {
     }
 
     /**
-     * Creates an Island
-     *
-     * @param player The owner of the Island
-     * @param name   The name of the Island
-     * @return The island being created
-     */
-
-    public @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name) {
-        return CompletableFuture.supplyAsync(() -> {
-            User user = IridiumSkyblockAPI.getInstance().getUser(player);
-            Island island = saveIsland(new Island(name));
-            user.setIsland(island);
-            return island;
-        });
-    }
-
-    /**
      * Saves an island to the database and initializes variables like ID
      *
      * @param island The island we are saving
      * @return The island with variables like id added
      */
-    private Island saveIsland(Island island) {
+    public Island saveIsland(Island island) {
         try {
             islandDao.createOrUpdate(island);
+            islandDao.commit(getDatabaseConnection());
             return islandDao.queryBuilder().where().eq("name", island.getName()).queryForFirst();
         } catch (SQLException exception) {
             exception.printStackTrace();

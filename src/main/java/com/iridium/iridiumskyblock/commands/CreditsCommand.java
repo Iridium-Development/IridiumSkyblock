@@ -23,7 +23,6 @@ public class CreditsCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        iridiumSkyblock.loadConfigs();
         for (String name : contributors) {
             Role role = name.equalsIgnoreCase("Peaches_MLG") ? Role.Owner : Role.Contributor;
             sender.sendMessage(StringUtils.color("&7 - &b" + name + " (" + role.name() + ")"));

@@ -9,8 +9,13 @@ import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.DatabaseManager;
+import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.generator.ChunkGenerator;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 
@@ -31,14 +36,17 @@ public class IridiumSkyblock extends DependencyPlugin {
 
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
+    private IslandManager islandManager;
 
     private Configuration configuration;
     private Messages messages;
     private SQL sql;
 
+    private ChunkGenerator chunkGenerator;
+
     @Override
     public void load() {
-        // Empty because we don't need any logic
+        chunkGenerator = new SkyblockGenerator();
     }
 
     /**
@@ -62,6 +70,8 @@ public class IridiumSkyblock extends DependencyPlugin {
             exception.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
         }
+        this.islandManager = new IslandManager(this);
+        this.islandManager.makeWorld(World.Environment.NORMAL, configuration.worldName);
 
         // Initialize the API
         IridiumSkyblockAPI.initializeInstance(this);
@@ -75,6 +85,15 @@ public class IridiumSkyblock extends DependencyPlugin {
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("");
         getLogger().info("----------------------------------------");
+    }
+
+    /**
+     * Gets the World Generator for the Skyblock worlds
+     */
+    @Nullable
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(@NotNull String worldName, @Nullable String id) {
+        return this.chunkGenerator;
     }
 
     /**
