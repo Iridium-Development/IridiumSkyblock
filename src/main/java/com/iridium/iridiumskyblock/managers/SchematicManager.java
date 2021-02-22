@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Class which handles schematics und pastes them.
+ * Class which handles schematics and pastes them.
  */
 public class SchematicManager {
 
