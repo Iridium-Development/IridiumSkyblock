@@ -9,7 +9,7 @@ public class Placeholder {
     private final String value;
 
     /**
-     * Default constructor.
+     * The default constructor.
      *
      * @param key   The placeholder without curly brackets.
      * @param value The actual value of the placeholder

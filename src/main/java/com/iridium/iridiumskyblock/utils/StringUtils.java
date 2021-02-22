@@ -55,10 +55,11 @@ public class StringUtils {
      * @return The same line with replaced placeholders
      */
     public static String processMultiplePlaceholders(String line, List<Placeholder> placeholders) {
+        String processedLine = line;
         for (Placeholder placeholder : placeholders) {
-            line = placeholder.process(line);
+            processedLine = placeholder.process(processedLine);
         }
-        return color(line);
+        return color(processedLine);
     }
 
 }

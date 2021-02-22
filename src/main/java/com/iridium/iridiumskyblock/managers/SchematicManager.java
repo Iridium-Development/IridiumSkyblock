@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Schematic;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.SchematicData;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -14,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class SchematicManager {
     private final IridiumSkyblock iridiumSkyblock;
+    @Getter
     private final List<SchematicData> schematics;
 
     //If we cant find a schematic by the id we will use this one instead
