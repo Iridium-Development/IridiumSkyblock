@@ -48,7 +48,7 @@ public final class Island {
      */
     public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
-        this.home = schematicConfig.getXHome() + "," + schematicConfig.getYHome() + "," + schematicConfig.getZHome() + ",0,0";
+        this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0,0";
     }
 
     /**
