@@ -60,7 +60,7 @@ public class IslandManager {
             // Paste schematic and then teleport the player (this needs to be done sync)
             Bukkit.getScheduler().runTask(iridiumSkyblock, () ->
                     iridiumSkyblock.getSchematicManager()
-                            .pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematic.getOverworld().getSchematicID())
+                            .pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematic.overworld.schematicID)
                             .thenRun(() -> completableFuture.complete(island))
             );
         });

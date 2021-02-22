@@ -46,7 +46,7 @@ public class CreateCommand extends Command {
         } else if (args.length == 2) {
             createIsland(player, args[1], iridiumSkyblock.getSchematics().schematics.get(0));
         } else if (args.length == 3) {
-            Optional<Schematics.SchematicConfig> schematicConfig = iridiumSkyblock.getSchematics().schematics.stream().filter(config -> config.getName().equalsIgnoreCase(args[2])).findFirst();
+            Optional<Schematics.SchematicConfig> schematicConfig = iridiumSkyblock.getSchematics().schematics.stream().filter(config -> config.name.equalsIgnoreCase(args[2])).findFirst();
             if (schematicConfig.isPresent()) {
                 createIsland(player, args[1], schematicConfig.get());
             } else {
@@ -87,7 +87,7 @@ public class CreateCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return iridiumSkyblock.getSchematics().schematics.stream().map(Schematics.SchematicConfig::getName).collect(Collectors.toList());
+            return iridiumSkyblock.getSchematics().schematics.stream().map(schematicConfig -> schematicConfig.name).collect(Collectors.toList());
         }
         return null;
     }
