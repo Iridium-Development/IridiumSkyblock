@@ -82,7 +82,7 @@ public class SchematicManager {
         for (int x = 0; x < schematic.getLength(); x++) {
             for (int z = 0; z < schematic.getWidth(); z++) {
                 Block block = island.getCenter(world).subtract(schematic.getLength(), -90, schematic.getWidth()).add(x, y, z).getBlock();
-                schematic.setBlock(block);
+                schematic.setBlock(block, x, y, z);
             }
         }
 
