@@ -34,7 +34,7 @@ public class IridiumSkyblockAPI {
     /**
      * Gets a {@link User}'s info. Creates one if he doesn't exist.
      *
-     * @param offlinePlayer The onlyForPlayers who's data should be fetched
+     * @param offlinePlayer The player who's data should be fetched
      * @return The user data
      * @since 3.0.0
      */
