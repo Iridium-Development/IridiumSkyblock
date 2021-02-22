@@ -11,7 +11,11 @@ import org.bukkit.block.Block;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Class which handles schematics und pastes them.
+ */
 public class SchematicManager {
+
     private final IridiumSkyblock iridiumSkyblock;
     private final HashMap<String, Schematic> schematics = new HashMap<>();
 
@@ -44,30 +48,33 @@ public class SchematicManager {
      * @param island            The island the schematic is being pasted at
      * @param world             The world the schematic is being pasted at
      * @param schematic         The schematic being pasted
-     * @param completableFuture The completable future thats being returned
-     * @param y                 The starting layer of the schematic thats being pasted
+     * @param completableFuture The completable future that's being returned
+     * @param y                 The starting layer of the schematic that's being pasted
      */
 
     private void pasteSchematic(final Island island, final World world, final Schematic schematic, final CompletableFuture<Void> completableFuture, final int y) {
-        //If y is equal to schematic#getHeight then theres nothing else to paste so we should return and complete the completable future
+        //If y is equal to Schematic#getHeight then theres nothing else to paste so we should return and complete the completable future
         if (y == schematic.getHeight()) {
             completableFuture.complete(null);
             return;
         }
-        //Loop all blocks in the schematics layer at the current y level
+
+        // Loop all blocks in the schematics layer at the current y level
         for (int x = 0; x < schematic.getLength(); x++) {
             for (int z = 0; z < schematic.getWidth(); z++) {
                 Block block = island.getCenter(world).subtract(schematic.getLength(), 0, schematic.getWidth()).add(x, y, z).getBlock();
                 Schematic.BlockData blockData = schematic.getBlockData()[x][y][z];
-                //If the block is air blockData is null to save storage (plus its more efficient)
+                // If the block is air blockData is null to save storage (plus its more efficient)
                 if (blockData != null) blockData.setBlock(block);
             }
         }
-        //If schematicPastingDelay is 0 then we want it to execute immediately
+
+        // If schematicPastingDelay is 0 then we want it to execute immediately
         if (iridiumSkyblock.getConfiguration().schematicPastingDelay == 0) {
             pasteSchematic(island, world, schematic, completableFuture, y + 1);
         } else {
             Bukkit.getScheduler().runTaskLater(iridiumSkyblock, () -> pasteSchematic(island, world, schematic, completableFuture, y + 1), iridiumSkyblock.getConfiguration().schematicPastingDelay);
         }
     }
+
 }
