@@ -200,7 +200,7 @@ public class Persist {
      * @param <T>     The type of class
      * @return The loaded class. Might be null
      */
-    private <T> T load(Class<T> clazz, String content) {
+    public <T> T load(Class<T> clazz, String content) {
         try {
             return objectMapper.readValue(content, clazz);
         } catch (IOException e) {

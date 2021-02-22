@@ -65,8 +65,6 @@ public class IridiumSkyblock extends DependencyPlugin {
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock", this);
 
-        this.schematicManager = new SchematicManager(this);
-
         // Try to connect to the database
         try {
             this.databaseManager = new DatabaseManager(this);
@@ -80,6 +78,8 @@ public class IridiumSkyblock extends DependencyPlugin {
 
         // Initialize the API
         IridiumSkyblockAPI.initializeInstance(this);
+
+        this.schematicManager = new SchematicManager(this);
 
         // Save data regularly
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);

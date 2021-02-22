@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.managers;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.SchematicData;
 import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -16,10 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class DatabaseManager {
 
@@ -29,6 +27,7 @@ public class DatabaseManager {
 
     private final Dao<User, UUID> userDao;
     private final Dao<Island, Integer> islandDao;
+    private final Dao<SchematicData, String> schematicDao;
 
     @Getter
     private final List<User> userList;
@@ -55,9 +54,11 @@ public class DatabaseManager {
 
         TableUtils.createTableIfNotExists(connectionSource, User.class);
         TableUtils.createTableIfNotExists(connectionSource, Island.class);
+        TableUtils.createTableIfNotExists(connectionSource, SchematicData.class);
 
         this.userDao = DaoManager.createDao(connectionSource, User.class);
         this.islandDao = DaoManager.createDao(connectionSource, Island.class);
+        this.schematicDao = DaoManager.createDao(connectionSource, SchematicData.class);
 
         userDao.setAutoCommit(getDatabaseConnection(), false);
         islandDao.setAutoCommit(getDatabaseConnection(), false);
@@ -125,6 +126,21 @@ public class DatabaseManager {
             exception.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    /**
+     * Returns a list of all schematics in the database.
+     * Might be empty if an error occurs.
+     *
+     * @return a list of all schematics in the database
+     */
+    public @NotNull List<SchematicData> getSchematics() {
+        try {
+            return schematicDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     /**
@@ -199,6 +215,21 @@ public class DatabaseManager {
                 islandDao.createOrUpdate(island);
             }
             islandDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves all schematics to the database.
+     * Creates them if they don't exist.
+     */
+
+    public void saveSchematics(@NotNull Collection<SchematicData> schematics) {
+        try {
+            for (SchematicData schematic : schematics) {
+                schematicDao.createOrUpdate(schematic);
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

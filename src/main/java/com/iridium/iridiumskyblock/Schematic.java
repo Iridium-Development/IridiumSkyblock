@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -8,11 +9,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
 @Getter
+@NoArgsConstructor
 public class Schematic {
-    private final BlockData[][][] blockData;
-    private final int length;
-    private final int height;
-    private final int width;
+    private Material[][][] materials;
+    private byte[][][] data;
+    private int length;
+    private int height;
+    private int width;
 
     public Schematic(Location pos1, Location pos2) {
         World world = pos1.getWorld();
@@ -28,35 +31,28 @@ public class Schematic {
         this.height = maxy - miny;
         this.width = maxz - minz;
 
-        blockData = new BlockData[length][height][width];
+        materials = new Material[length][height][width];
+        data = new byte[length][height][width];
 
         for (int x = minx; x < maxx; x++) {
             for (int y = miny; y < maxy; y++) {
                 for (int z = minz; z < maxz; z++) {
                     Block block = world.getBlockAt(x, y, z);
                     if (block.getType().equals(Material.AIR)) continue;
-                    blockData[x - minx][y - miny][z - minz] = new BlockData(block.getState());
+                    BlockState blockState = block.getState();
+                    materials[x - minx][y - miny][z - minz] = blockState.getType();
+                    data[x - minx][y - miny][z - minz] = blockState.getRawData();
                 }
             }
         }
-
     }
 
-    public static class BlockData {
-
-        private final Material material;
-        private final byte data;
-
-        public BlockData(BlockState blockState) {
-            this.material = blockState.getType();
-            this.data = blockState.getRawData();
-        }
-
-        public void setBlock(Block block) {
-            BlockState blockState = block.getState();
-            blockState.setType(material);
-            blockState.setRawData(data);
-            blockState.update(true, false);
-        }
+    public void setBlock(Block block, int x, int y, int z) {
+        if (materials[x][y][z] == null) return;
+        BlockState blockState = block.getState();
+        blockState.setType(materials[x][y][z]);
+        blockState.setRawData(data[x][y][z]);
+        blockState.update(true, false);
     }
+
 }
