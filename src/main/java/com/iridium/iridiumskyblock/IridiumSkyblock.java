@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
+import com.iridium.iridiumskyblock.gui.schematicgui.SchematicGUIListener;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
@@ -86,6 +87,8 @@ public class IridiumSkyblock extends DependencyPlugin {
         // Save data regularly
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
 
+        registerListeners();
+
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
@@ -114,6 +117,13 @@ public class IridiumSkyblock extends DependencyPlugin {
         getLogger().info(getDescription().getName() + " Disabled!");
         getLogger().info("");
         getLogger().info("-------------------------------");
+    }
+
+    /**
+     * Registers the plugin's listeners
+     */
+    public void registerListeners() {
+        Bukkit.getPluginManager().registerEvents(new SchematicGUIListener(), this);
     }
 
     /**
