@@ -7,7 +7,6 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -21,7 +20,6 @@ public class SchematicGUI implements GUI {
     private @NotNull IridiumSkyblock iridiumSkyblock;
     private @NotNull Player player;
     private @NotNull String islandName;
-    @Getter
     private HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
 
     public SchematicGUI(@NotNull Player player, @NotNull String islandName, IridiumSkyblock iridiumSkyblock) {
@@ -59,9 +57,8 @@ public class SchematicGUI implements GUI {
     }
 
     public void onInventoryClick(InventoryClickEvent event) {
-        SchematicGUI schematicGUI = (SchematicGUI) event.getClickedInventory().getHolder();
-        if (schematicGUI.getSchematics().containsKey(event.getSlot())) {
-            schematicGUI.createIsland(schematicGUI.getSchematics().get(event.getSlot()));
+        if (schematics.containsKey(event.getSlot())) {
+            createIsland(schematics.get(event.getSlot()));
             event.getWhoClicked().closeInventory();
         }
     }
