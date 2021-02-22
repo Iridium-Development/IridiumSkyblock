@@ -12,8 +12,8 @@ import java.util.List;
 public class Schematics {
 
     public List<SchematicConfig> schematics = Arrays.asList(
-            new SchematicConfig("test", new Item(XMaterial.GRASS, 0, 1, "&b&lTest Schematic", Arrays.asList()), -7, 97, -8, new SchematicWorld(XBiome.PLAINS, "test")),
-            new SchematicConfig("test2", new Item(XMaterial.GRASS, 0, 1, "&b&lTest2 Schematic", Arrays.asList()), -7, 97, -8, new SchematicWorld(XBiome.PLAINS, "test2"))
+            new SchematicConfig("test", new Item(XMaterial.GRASS, 0, 1, "&b&lTest Schematic", Arrays.asList()), -7.5, 97, -8.5, new SchematicWorld(XBiome.PLAINS, "test")),
+            new SchematicConfig("test2", new Item(XMaterial.GRASS, 0, 1, "&b&lTest2 Schematic", Arrays.asList()), -7.5, 97, -8.5, new SchematicWorld(XBiome.PLAINS, "test2"))
     );
 
     @Getter
@@ -21,12 +21,12 @@ public class Schematics {
     public static class SchematicConfig {
         private String name;
         private Item item;
-        private int xHome;
-        private int yHome;
-        private int zHome;
+        private double xHome;
+        private double yHome;
+        private double zHome;
         private SchematicWorld overworld;
 
-        public SchematicConfig(String name, Item item, int xHome, int yHome, int zHome, SchematicWorld overworld) {
+        public SchematicConfig(String name, Item item, double xHome, double yHome, double zHome, SchematicWorld overworld) {
             this.name = name;
             this.item = item;
             this.xHome = xHome;
