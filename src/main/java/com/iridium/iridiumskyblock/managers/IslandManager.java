@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
@@ -44,11 +45,12 @@ public class IslandManager {
     /**
      * Creates an Island for the specified player with the provided name.
      *
-     * @param player The owner of the Island
-     * @param name   The name of the Island
+     * @param player    The owner of the Island
+     * @param name      The name of the Island
+     * @param schematic The schematic of the Island
      * @return The island being created
      */
-    public @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name) {
+    public @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(iridiumSkyblock, () -> {
             final User user = IridiumSkyblockAPI.getInstance().getUser(player);
@@ -58,7 +60,7 @@ public class IslandManager {
             // Paste schematic and then teleport the player (this needs to be done sync)
             Bukkit.getScheduler().runTask(iridiumSkyblock, () ->
                     iridiumSkyblock.getSchematicManager()
-                            .pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), "test")
+                            .pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematic.getOverworld().getSchematicID())
                             .thenRun(() -> completableFuture.complete(island))
             );
         });
