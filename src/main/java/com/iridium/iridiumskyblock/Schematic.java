@@ -54,7 +54,7 @@ public class Schematic {
     }
 
     /**
-     * Represents the state of a block, {@link Material} and additional data.
+     * Represents the state of a block, consisting of {@link Material} and additional data.
      */
     public static class BlockData {
 
