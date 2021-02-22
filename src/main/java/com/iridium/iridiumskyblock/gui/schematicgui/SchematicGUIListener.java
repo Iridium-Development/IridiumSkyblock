@@ -14,6 +14,7 @@ public class SchematicGUIListener implements Listener {
                 SchematicGUI schematicGUI = (SchematicGUI) event.getClickedInventory().getHolder();
                 if (schematicGUI.getSchematics().containsKey(event.getSlot())) {
                     schematicGUI.createIsland(schematicGUI.getSchematics().get(event.getSlot()));
+                    event.getWhoClicked().closeInventory();
                 }
             }
         }
