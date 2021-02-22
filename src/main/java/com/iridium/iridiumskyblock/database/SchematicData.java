@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Base64;
 
 /**
- * Represents a User of IridiumSkyblock.
+ * Represents data of a schematic from IridiumSkyblock.
  */
 @Getter
 @NoArgsConstructor
@@ -25,14 +25,32 @@ public final class SchematicData {
     @DatabaseField(columnName = "schematic", canBeNull = false)
     private @NotNull String schematic;
 
+    /**
+     * Constructs the Schematic object to this data.
+     * Decodes the base64 schematic data.
+     *
+     * @return The newly loaded schematic object
+     */
     public Schematic getSchematic() {
         return IridiumSkyblockAPI.getInstance().getPersist(Persist.PersistType.JSON).load(Schematic.class, new String(Base64.getDecoder().decode(schematic)));
     }
 
+    /**
+     * Copy the provided schematic and save its data.
+     * Converts it into base64.
+     *
+     * @param schematic The schematic that should be saved
+     */
     public void setSchematic(Schematic schematic) {
         this.schematic = new String(Base64.getEncoder().encode(IridiumSkyblockAPI.getInstance().getPersist(Persist.PersistType.JSON).toString(schematic).getBytes()));
     }
 
+    /**
+     * The default constructor.
+     *
+     * @param id        The ID of this schematic, used as a unique identifier
+     * @param schematic The schematic whose data should be saved
+     */
     public SchematicData(final @NotNull String id, final @NotNull Schematic schematic) {
         this.id = id;
         setSchematic(schematic);

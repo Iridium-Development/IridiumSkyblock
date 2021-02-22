@@ -8,15 +8,26 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 
+/**
+ * Class which represents a schematic.
+ * Used for our own schematic storage system.
+ */
 @Getter
 @NoArgsConstructor
 public class Schematic {
+
     private Material[][][] materials;
     private byte[][][] data;
     private int length;
     private int height;
     private int width;
 
+    /**
+     * The default constructor. Will most likely change soon.
+     *
+     * @param pos1 The minimum corner point position of this schematic
+     * @param pos2 The maximum corner point position of this schematic
+     */
     public Schematic(Location pos1, Location pos2) {
         World world = pos1.getWorld();
 
@@ -47,7 +58,16 @@ public class Schematic {
         }
     }
 
-    public void setBlock(Block block, int x, int y, int z) {
+    /**
+     * Applies block data of the schematic to the specified block.
+     *
+     * @param block The block whose data should be updated
+     */
+    public void setBlock(Block block) {
+        int x = block.getLocation().getBlockX();
+        int y = block.getLocation().getBlockY();
+        int z = block.getLocation().getBlockZ();
+
         if (materials[x][y][z] == null) return;
         BlockState blockState = block.getState();
         blockState.setType(materials[x][y][z]);
