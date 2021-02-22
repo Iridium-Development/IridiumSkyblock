@@ -11,6 +11,6 @@ public class Configuration {
     public String netherWorldName = "IridiumSkyblock_nether";
 
     public int distance = 151;
-    public int SchematicPastingDelay = 3;
+    public int schematicPastingDelay = 3;
 
 }
