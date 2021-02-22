@@ -10,7 +10,7 @@ import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
-import com.iridium.iridiumskyblock.gui.schematicgui.SchematicGUIListener;
+import com.iridium.iridiumskyblock.listeners.InventoryClickListener;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
@@ -123,7 +123,7 @@ public class IridiumSkyblock extends DependencyPlugin {
      * Registers the plugin's listeners
      */
     public void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new SchematicGUIListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
     }
 
     /**
