@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.Item;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -13,31 +12,59 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Class which creates {@link ItemStack}'s.
+ * TODO: Apply the builder pattern to this class
+ */
 public class ItemStackUtils {
 
     private static final boolean supports = XMaterial.supports(14);
 
+    /**
+     * Creates a new ItemStack from the provided arguments.
+     *
+     * @param material The material of this item
+     * @param amount   The amount of this item in the Inventory
+     * @param name     The name of this item. Will be colored automatically
+     * @return The new ItemStack
+     */
     public static ItemStack makeItem(XMaterial material, int amount, String name) {
         ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
-        m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        m.setDisplayName(StringUtils.color(name));
         item.setItemMeta(m);
         return item;
     }
 
+    /**
+     * Creates a new ItemStack from the provided arguments.
+     *
+     * @param material The material of this item
+     * @param amount   The amount of this item in the Inventory
+     * @param name     The name of this item. Will be colored automatically
+     * @param lore     The lore of this item
+     * @return The new ItemStack
+     */
     public static ItemStack makeItem(XMaterial material, int amount, String name, List<String> lore) {
         ItemStack item = material.parseItem();
         if (item == null) return null;
         item.setAmount(amount);
         ItemMeta m = item.getItemMeta();
         m.setLore(StringUtils.color(lore));
-        m.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        m.setDisplayName(StringUtils.color(name));
         item.setItemMeta(m);
         return item;
     }
 
+    /**
+     * Creates a new ItemStack from the provided arguments.
+     *
+     * @param item         An existing item we should clone
+     * @param placeholders A list of Placeholders we should apply to the display name and lore
+     * @return The new ItemStack
+     */
     public static ItemStack makeItem(Item item, List<Placeholder> placeholders) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, StringUtils.processMultiplePlaceholders(item.displayName, placeholders), StringUtils.processMultiplePlaceholders(item.lore, placeholders));
@@ -63,6 +90,12 @@ public class ItemStackUtils {
         }
     }
 
+    /**
+     * Creates a new ItemStack from the provided arguments.
+     *
+     * @param item An existing item we should clone
+     * @return The new ItemStack
+     */
     public static ItemStack makeItem(Item item) {
         try {
             ItemStack itemstack = makeItem(item.material, item.amount, item.displayName, item.lore);
@@ -84,6 +117,7 @@ public class ItemStackUtils {
             }
             return itemstack;
         } catch (Exception e) {
+            // Create a fallback item
             return makeItem(XMaterial.STONE, item.amount, item.displayName, item.lore);
         }
     }

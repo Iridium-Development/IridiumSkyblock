@@ -38,7 +38,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      */
     public void registerCommands() {
         registerCommand(new ReloadCommand(iridiumSkyblock));
-        registerCommand(new CreditsCommand(iridiumSkyblock));
+        registerCommand(new CreditsCommand());
         registerCommand(new CreateCommand(iridiumSkyblock));
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
@@ -89,7 +89,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 continue;
             }
 
-            if (command.player && !(commandSender instanceof Player)) {
+            if (command.onlyForPlayers && !(commandSender instanceof Player)) {
                 // Must be a player
                 commandSender.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().mustBeAPlayer
                         .replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));

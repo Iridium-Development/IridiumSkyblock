@@ -13,11 +13,11 @@ public abstract class Command {
     public final @NotNull List<String> aliases;
     public final @NotNull String description;
     public final @NotNull String permission;
-    public final boolean player;
+    public final boolean onlyForPlayers;
     public final boolean enabled = true;
 
     /**
-     * Default constructor.
+     * The default constructor.
      *
      * @param aliases        The list of aliases for this command, can be empty. Also contains the command name.
      * @param description    The description of this command
@@ -28,7 +28,7 @@ public abstract class Command {
         this.aliases = aliases;
         this.description = description;
         this.permission = permission;
-        this.player = onlyForPlayers;
+        this.onlyForPlayers = onlyForPlayers;
     }
 
     /**
