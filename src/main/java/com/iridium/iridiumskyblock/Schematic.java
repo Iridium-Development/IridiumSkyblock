@@ -62,12 +62,11 @@ public class Schematic {
      * Applies block data of the schematic to the specified block.
      *
      * @param block The block whose data should be updated
+     * @param x     the x coordinate of the schematic
+     * @param y     the y coordinate of the schematic
+     * @param z     the z coordinate of the schematic
      */
-    public void setBlock(Block block) {
-        int x = block.getLocation().getBlockX();
-        int y = block.getLocation().getBlockY();
-        int z = block.getLocation().getBlockZ();
-
+    public void setBlock(Block block, int x, int y, int z) {
         if (materials[x][y][z] == null) return;
         BlockState blockState = block.getState();
         blockState.setType(materials[x][y][z]);
