@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Class which handles the database connection and acts as a DAO.
+ * TODO: Split up this class
+ */
 public class DatabaseManager {
 
     private final SQL sqlConfig;
@@ -83,8 +87,9 @@ public class DatabaseManager {
                 return "jdbc:h2:file:" + sqlConfig.database;
             case SQLITE:
                 return "jdbc:sqlite:" + new File(iridiumSkyblock.getDataFolder(), sqlConfig.database + ".db");
+            default:
+                throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
         }
-        throw new RuntimeException("How did we get here?");
     }
 
     /**
@@ -130,8 +135,8 @@ public class DatabaseManager {
     /**
      * Finds an User by his {@link UUID}.
      *
-     * @param uuid The uuid of the player
-     * @return the User class of the player
+     * @param uuid The uuid of the onlyForPlayers
+     * @return the User class of the onlyForPlayers
      */
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return userList.stream().filter(user -> user.getUuid().equals(uuid)).findFirst();

@@ -29,7 +29,10 @@ public final class Island {
     @DatabaseField(columnName = "name", canBeNull = false, unique = true)
     private @NotNull String name;
 
-    //Stores the islands home relative to the island center
+    /*
+    The islands home relative to the island center as a string.
+    Format: x,y,z,pitch,yaw
+    */
     @DatabaseField(columnName = "home")
     private @NotNull String home;
 
@@ -38,7 +41,7 @@ public final class Island {
     private ForeignCollection<User> members;
 
     /**
-     * Default constructor.
+     * The default constructor.
      *
      * @param name The name of this island
      */
@@ -63,8 +66,8 @@ public final class Island {
      * @param location The new home Location
      */
     public void setHome(@NotNull Location location) {
-        location = getCenter(location.getWorld()).subtract(location);
-        this.home = location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getPitch() + "," + location.getYaw();
+        Location homeLocation = getCenter(location.getWorld()).subtract(location);
+        this.home = homeLocation.getX() + "," + homeLocation.getY() + "," + homeLocation.getZ() + "," + homeLocation.getPitch() + "," + homeLocation.getYaw();
     }
 
     /**
