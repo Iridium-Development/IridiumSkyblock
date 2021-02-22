@@ -9,7 +9,7 @@ import org.bukkit.block.BlockState;
 
 /**
  * Class which represents a schematic.
- * Used fpr our own schematic storage system.
+ * Used for our own schematic storage system.
  */
 @Getter
 public class Schematic {
