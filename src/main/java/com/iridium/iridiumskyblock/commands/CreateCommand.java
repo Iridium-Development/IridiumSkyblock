@@ -40,9 +40,7 @@ public class CreateCommand extends Command {
             return;
         }
         player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().creatingIsland.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
-        iridiumSkyblock.getIslandManager().createIsland(player, name).thenAccept(island -> iridiumSkyblock.getSchematicManager().pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), "test").thenRun(() ->
-                player.teleport(island.getCenter(IridiumSkyblockAPI.getInstance().getWorld()))
-        ));
+        iridiumSkyblock.getIslandManager().createIsland(player, name).thenAccept(island -> player.teleport(island.getCenter(IridiumSkyblockAPI.getInstance().getWorld())));
     }
 
     @Override

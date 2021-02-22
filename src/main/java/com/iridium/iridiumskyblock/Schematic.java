@@ -34,6 +34,7 @@ public class Schematic {
             for (int y = miny; y < maxy; y++) {
                 for (int z = minz; z < maxz; z++) {
                     Block block = world.getBlockAt(x, y, z);
+                    if (block.getType().equals(Material.AIR)) continue;
                     blockData[x - minx][y - miny][z - minz] = new BlockData(block.getState());
                 }
             }
