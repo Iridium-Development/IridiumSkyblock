@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.configs.SQL;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -44,6 +45,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     private Configuration configuration;
     private Messages messages;
     private SQL sql;
+    private Schematics schematics;
 
     private ChunkGenerator chunkGenerator;
 
@@ -131,6 +133,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.configuration = persist.load(Configuration.class);
         this.messages = persist.load(Messages.class);
         this.sql = persist.load(SQL.class);
+        this.schematics = persist.load(Schematics.class);
     }
 
     /**
@@ -142,6 +145,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.persist.save(configuration);
         this.persist.save(messages);
         this.persist.save(sql);
+        this.persist.save(schematics);
     }
 
 }

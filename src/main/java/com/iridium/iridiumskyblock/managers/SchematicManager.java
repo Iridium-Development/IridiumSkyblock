@@ -25,7 +25,7 @@ public class SchematicManager {
         this.iridiumSkyblock = iridiumSkyblock;
         this.schematics = iridiumSkyblock.getDatabaseManager().getSchematics();
         //The default schematic, if we cant find a schematic by its id the plugin will use this one instead.
-        this.defaultSchematic = new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 70, 10)));
+        this.defaultSchematic = new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10)));
         if (schematics.size() == 0) addDefaultSchematics();
 
         //Saves the new schematics we added to the database.
@@ -36,7 +36,8 @@ public class SchematicManager {
      * Adds the default schematics to the list
      */
     private void addDefaultSchematics() {
-        schematics.add(new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 70, 10))));
+        schematics.add(new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10))));
+        schematics.add(new SchematicData("test2", new Schematic(new Location(Bukkit.getWorlds().get(0), 20, 60, 20), new Location(Bukkit.getWorlds().get(0), 30, 78, 30))));
     }
 
 
@@ -76,7 +77,7 @@ public class SchematicManager {
         //Loop all blocks in the schematics layer at the current y level
         for (int x = 0; x < schematic.getLength(); x++) {
             for (int z = 0; z < schematic.getWidth(); z++) {
-                Block block = island.getCenter(world).subtract(schematic.getLength(), 0, schematic.getWidth()).add(x, y, z).getBlock();
+                Block block = island.getCenter(world).subtract(schematic.getLength(), -90, schematic.getWidth()).add(x, y, z).getBlock();
                 schematic.setBlock(block, x, y, z);
             }
         }
