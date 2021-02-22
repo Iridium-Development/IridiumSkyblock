@@ -54,7 +54,7 @@ public class IslandManager {
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(iridiumSkyblock, () -> {
             final User user = IridiumSkyblockAPI.getInstance().getUser(player);
-            final Island island = iridiumSkyblock.getDatabaseManager().saveIsland(new Island(name));
+            final Island island = iridiumSkyblock.getDatabaseManager().saveIsland(new Island(name, schematic));
             user.setIsland(island);
 
             // Paste schematic and then teleport the player (this needs to be done sync)

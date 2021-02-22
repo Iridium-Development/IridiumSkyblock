@@ -72,7 +72,7 @@ public class CreateCommand extends Command {
             return;
         }
         player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().creatingIsland.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
-        iridiumSkyblock.getIslandManager().createIsland(player, name, schematicConfig).thenAccept(island -> player.teleport(island.getCenter(IridiumSkyblockAPI.getInstance().getWorld())));
+        iridiumSkyblock.getIslandManager().createIsland(player, name, schematicConfig).thenAccept(island -> player.teleport(island.getHome()));
     }
 
     /**
@@ -86,7 +86,10 @@ public class CreateCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return iridiumSkyblock.getSchematics().schematics.stream().map(Schematics.SchematicConfig::getName).collect(Collectors.toList());
+        if (args.length == 3) {
+            return iridiumSkyblock.getSchematics().schematics.stream().map(Schematics.SchematicConfig::getName).collect(Collectors.toList());
+        }
+        return null;
     }
 
 }

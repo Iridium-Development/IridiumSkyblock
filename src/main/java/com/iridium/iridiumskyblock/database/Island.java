@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.field.ForeignCollectionField;
@@ -45,8 +46,9 @@ public final class Island {
      *
      * @param name The name of this island
      */
-    public Island(@NotNull String name) {
+    public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
+        this.home = schematicConfig.getXHome() + "," + schematicConfig.getYHome() + "," + schematicConfig.getZHome() + ",0,0";
     }
 
     /**

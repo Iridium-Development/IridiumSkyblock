@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Item;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,13 +17,14 @@ public class Schematics {
     );
 
     @Getter
+    @NoArgsConstructor
     public static class SchematicConfig {
-        private final String name;
-        private final Item item;
-        private final int xHome;
-        private final int yHome;
-        private final int zHome;
-        private final SchematicWorld overworld;
+        private String name;
+        private Item item;
+        private int xHome;
+        private int yHome;
+        private int zHome;
+        private SchematicWorld overworld;
 
         public SchematicConfig(String name, Item item, int xHome, int yHome, int zHome, SchematicWorld overworld) {
             this.name = name;
@@ -35,9 +37,10 @@ public class Schematics {
     }
 
     @Getter
+    @NoArgsConstructor
     public static class SchematicWorld {
-        private final XBiome biome;
-        private final String schematicID;
+        private XBiome biome;
+        private String schematicID;
 
         public SchematicWorld(XBiome biome, String schematicID) {
             this.biome = biome;
