@@ -1,4 +1,4 @@
-package com.iridium.iridiumskyblock.gui.schematicgui;
+package com.iridium.iridiumskyblock.gui;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -10,13 +10,13 @@ import com.iridium.iridiumskyblock.utils.StringUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class SchematicGUI implements InventoryHolder {
+public class SchematicGUI implements GUI {
 
     private @NotNull IridiumSkyblock iridiumSkyblock;
     private @NotNull Player player;
@@ -56,5 +56,13 @@ public class SchematicGUI implements InventoryHolder {
         }
         player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().creatingIsland.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
         iridiumSkyblock.getIslandManager().createIsland(player, islandName, schematicConfig).thenAccept(island -> player.teleport(island.getHome()));
+    }
+
+    public void onInventoryClick(InventoryClickEvent event) {
+        SchematicGUI schematicGUI = (SchematicGUI) event.getClickedInventory().getHolder();
+        if (schematicGUI.getSchematics().containsKey(event.getSlot())) {
+            schematicGUI.createIsland(schematicGUI.getSchematics().get(event.getSlot()));
+            event.getWhoClicked().closeInventory();
+        }
     }
 }
