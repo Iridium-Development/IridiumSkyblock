@@ -6,5 +6,5 @@ api-version: '1.13'
 author: Peaches_MLG
 commands:
   iridiumskyblock:
-    aliases: [ "island", is]
+    aliases: [ "island", is ]
     description: Main plugin command

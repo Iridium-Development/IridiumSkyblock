@@ -20,7 +20,7 @@ public class Persist {
     private final JavaPlugin javaPlugin;
 
     /**
-     * Default constructor.
+     * The default constructor.
      *
      * @param persistType The format which should be used for persisting
      * @param javaPlugin  The plugin which persists. Parameter for dependency injection
@@ -223,7 +223,7 @@ public class Persist {
         private final JsonFactory factory;
 
         /**
-         * Default constructor.
+         * The default constructor.
          *
          * @param extension The file extension with a leading full stop
          * @param factory   The JsonFactory which should be used for persisting

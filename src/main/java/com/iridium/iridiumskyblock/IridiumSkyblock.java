@@ -76,10 +76,10 @@ public class IridiumSkyblock extends DependencyPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
         this.islandManager = new IslandManager(this);
-        this.islandManager.makeWorld(World.Environment.NORMAL, configuration.worldName);
+        this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
 
         // Initialize the API
-        IridiumSkyblockAPI.initializeInstance(this);
+        IridiumSkyblockAPI.initializeAPI(this);
 
         // Save data regularly
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
@@ -93,7 +93,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     }
 
     /**
-     * Gets the World Generator for the Skyblock worlds
+     * Sets the {@link ChunkGenerator} for the Skyblock worlds.
      */
     @Nullable
     @Override

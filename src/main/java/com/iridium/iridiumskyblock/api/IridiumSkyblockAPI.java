@@ -112,7 +112,7 @@ public class IridiumSkyblockAPI {
      *
      * @param iridiumSkyblock The {@link IridiumSkyblock} instance used by the plugin
      */
-    public static synchronized void initializeInstance(IridiumSkyblock iridiumSkyblock) {
+    public static synchronized void initializeAPI(IridiumSkyblock iridiumSkyblock) {
         if (instance == null) {
             instance = new IridiumSkyblockAPI(iridiumSkyblock);
         }
