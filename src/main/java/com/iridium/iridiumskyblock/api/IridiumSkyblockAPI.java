@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.api;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Persist;
 import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -29,6 +30,16 @@ public class IridiumSkyblockAPI {
      */
     private IridiumSkyblockAPI(IridiumSkyblock iridiumSkyblock) {
         this.iridiumSkyblock = iridiumSkyblock;
+    }
+
+    /**
+     * Gets the persist class to serialize objects
+     *
+     * @param persistType Persist type, are we using yaml or json
+     * @return The persist object
+     */
+    public Persist getPersist(Persist.PersistType persistType) {
+        return new Persist(persistType, iridiumSkyblock);
     }
 
     /**
