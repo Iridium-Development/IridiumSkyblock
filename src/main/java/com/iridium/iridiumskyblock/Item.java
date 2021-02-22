@@ -78,7 +78,7 @@ public class Item {
 
     /**
      * Creates a new item with the provided data.
-     * Used for creating player heads.
+     * Used for creating onlyForPlayers heads.
      *
      * @param material    The material of the item. Specifies the type
      * @param slot        The slot where this item should be in
@@ -98,7 +98,7 @@ public class Item {
 
     /**
      * Creates a new item with the provided data.
-     * Used for creating player heads in an inventory.
+     * Used for creating onlyForPlayers heads in an inventory.
      *
      * @param material    The material of the item. Specifies the type
      * @param amount      The amount of this item. Should not be higher than the max stack size
