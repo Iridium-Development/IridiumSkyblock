@@ -2,11 +2,13 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Schematic;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.SchematicData;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
@@ -55,6 +57,9 @@ public class SchematicManager {
         Schematic schematic = schematics.stream().filter(schematicData -> schematicData.getId().equalsIgnoreCase(schematicID)).findFirst().orElse(defaultSchematic).getSchematic();
 
         pasteSchematic(island, world, schematic, completableFuture, 0, delay);
+
+        island.getPos1(IridiumSkyblockAPI.getInstance().getWorld()).getBlock().setType(Material.STONE);
+        island.getPos2(IridiumSkyblockAPI.getInstance().getWorld()).getBlock().setType(Material.STONE);
 
         return completableFuture;
     }
