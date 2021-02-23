@@ -186,7 +186,7 @@ public class DatabaseManager {
      * @param island The island we are saving
      * @return The island with variables like id added
      */
-    public Island saveIsland(Island island) {
+    public Island registerIsland(Island island) {
         try {
             islandDao.createOrUpdate(island);
             islandDao.commit(getDatabaseConnection());
