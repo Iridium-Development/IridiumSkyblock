@@ -1,11 +1,22 @@
 package com.iridium.iridiumskyblock.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 /**
  * Various utils for working with {@link Player}'s.
  */
 public class PlayerUtils {
+
+    /**
+     * Teleports the specified player to spawn.
+     *
+     * @param player The player we are teleporting
+     */
+
+    public static void teleportSpawn(Player player) {
+        player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+    }
 
     /**
      * Returns the experience a Player needs for the specified level.

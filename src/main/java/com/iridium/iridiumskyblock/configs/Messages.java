@@ -12,7 +12,9 @@ public class Messages {
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
     public String creatingIsland = "%prefix% &7Creating Island...";
     public String alreadyHaveIsland = "%prefix% &7You already have an Island.";
+    public String dontHaveIsland = "%prefix% &7You dont have an Island.";
     public String islandWithNameAlreadyExists = "%prefix% &7An Island with that name already exists.";
     public String islandSchematicNotFound = "%prefix% &7No schematic with that name exists.";
+    public String islandDeleted = "%prefix% &7Your island has been deleted.";
 
 }

@@ -2,9 +2,7 @@ package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import com.j256.ormlite.dao.ForeignCollection;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.field.ForeignCollectionField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -36,10 +34,6 @@ public final class Island {
     */
     @DatabaseField(columnName = "home")
     private @NotNull String home;
-
-    @ForeignCollectionField(eager = true)
-    @Setter(AccessLevel.PRIVATE)
-    private ForeignCollection<User> members;
 
     /**
      * The default constructor.
@@ -141,6 +135,19 @@ public final class Island {
     public Location getPos2(World world) {
         int size = IridiumSkyblockAPI.getInstance().getConfiguration().distance - 1;
         return getCenter(world).add(new Location(world, size, 0, size));
+    }
+
+    /**
+     * Returns if a location is inside the island or not
+     *
+     * @param location The location we are testing
+     * @return if the location is inside the island
+     */
+
+    public boolean isInIsland(@NotNull Location location) {
+        Location pos1 = getPos1(location.getWorld());
+        Location pos2 = getPos2(location.getWorld());
+        return pos1.getX() <= location.getX() && pos1.getZ() <= location.getZ() && pos2.getX() >= location.getX() && pos2.getZ() >= location.getZ();
     }
 
 }
