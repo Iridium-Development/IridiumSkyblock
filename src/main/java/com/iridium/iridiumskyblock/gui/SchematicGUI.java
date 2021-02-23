@@ -12,7 +12,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class SchematicGUI implements GUI {
+public abstract class SchematicGUI implements GUI {
+
+    /**
+     * A class that gets extended by IslandRegenGUI and IslandCreateGUI
+     */
 
     private HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
 
@@ -30,8 +34,7 @@ public class SchematicGUI implements GUI {
         return inventory;
     }
 
-    public void selectSchematic(Schematics.SchematicConfig schematicConfig) {
-    }
+    public abstract void selectSchematic(Schematics.SchematicConfig schematicConfig);
 
     public void onInventoryClick(InventoryClickEvent event) {
         if (schematics.containsKey(event.getSlot())) {
