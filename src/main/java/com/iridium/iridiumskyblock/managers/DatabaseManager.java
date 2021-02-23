@@ -190,7 +190,9 @@ public class DatabaseManager {
         try {
             islandDao.createOrUpdate(island);
             islandDao.commit(getDatabaseConnection());
-            return islandDao.queryBuilder().where().eq("name", island.getName()).queryForFirst();
+            Island is = islandDao.queryBuilder().where().eq("name", island.getName()).queryForFirst();
+            islandList.add(is);
+            return is;
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

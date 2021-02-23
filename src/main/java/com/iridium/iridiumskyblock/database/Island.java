@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
@@ -38,6 +39,9 @@ public final class Island {
     @DatabaseField(columnName = "home")
     private @NotNull String home;
 
+    @DatabaseField(columnName = "color", canBeNull = false, unique = true)
+    private @NotNull Color color;
+
     /**
      * The default constructor.
      *
@@ -46,6 +50,7 @@ public final class Island {
     public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
         this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0,0";
+        this.color = Color.BLUE;
     }
 
     /**
