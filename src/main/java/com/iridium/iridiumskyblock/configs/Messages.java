@@ -11,6 +11,7 @@ public class Messages {
     public String mustBeAPlayer = "%prefix% &7You must be a player to execute this command.";
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
     public String creatingIsland = "%prefix% &7Creating Island...";
+    public String regeneratingIsland = "%prefix% &7Regenerating Island...";
     public String alreadyHaveIsland = "%prefix% &7You already have an Island.";
     public String dontHaveIsland = "%prefix% &7You dont have an Island.";
     public String islandWithNameAlreadyExists = "%prefix% &7An Island with that name already exists.";

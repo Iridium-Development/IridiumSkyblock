@@ -4,7 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.SchematicGUI;
+import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -67,7 +67,7 @@ public class CreateCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        player.openInventory(new SchematicGUI(player, name, IridiumSkyblock.getInstance()).getInventory());
+        player.openInventory(new IslandCreateGUI(player, name).getInventory());
     }
 
     /**

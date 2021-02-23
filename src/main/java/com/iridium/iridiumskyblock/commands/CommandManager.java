@@ -22,7 +22,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     /**
      * The default constructor.
      *
-     * @param command         The base command of the plugin
+     * @param command The base command of the plugin
      */
     public CommandManager(String command) {
         IridiumSkyblock.getInstance().getCommand(command).setExecutor(this);
@@ -38,6 +38,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new CreditsCommand());
         registerCommand(new CreateCommand());
         registerCommand(new DeleteCommand());
+        registerCommand(new RegenCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }

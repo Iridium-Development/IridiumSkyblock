@@ -50,11 +50,11 @@ public class SchematicManager {
      * @param schematicID The schematic's id
      * @return A completable future of when its finished pasting
      */
-    public CompletableFuture<Void> pasteSchematic(final Island island, final World world, final String schematicID) {
+    public CompletableFuture<Void> pasteSchematic(final Island island, final World world, final String schematicID, final int delay) {
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
         Schematic schematic = schematics.stream().filter(schematicData -> schematicData.getId().equalsIgnoreCase(schematicID)).findFirst().orElse(defaultSchematic).getSchematic();
 
-        pasteSchematic(island, world, schematic, completableFuture, 0);
+        pasteSchematic(island, world, schematic, completableFuture, 0, delay);
 
         return completableFuture;
     }
@@ -69,7 +69,7 @@ public class SchematicManager {
      * @param y                 The starting layer of the schematic that's being pasted
      */
 
-    private void pasteSchematic(final Island island, final World world, final Schematic schematic, final CompletableFuture<Void> completableFuture, final int y) {
+    private void pasteSchematic(final Island island, final World world, final Schematic schematic, final CompletableFuture<Void> completableFuture, final int y, final int delay) {
         // If y is equal to Schematic#getHeight then theres nothing else to paste so we should return and complete the completable future
         if (y == schematic.getHeight()) {
             completableFuture.complete(null);
@@ -85,10 +85,10 @@ public class SchematicManager {
         }
 
         // If schematicPastingDelay is 0 then we want it to execute immediately
-        if (IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay == 0) {
-            pasteSchematic(island, world, schematic, completableFuture, y + 1);
+        if (delay == 0) {
+            pasteSchematic(island, world, schematic, completableFuture, y + 1, delay);
         } else {
-            Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, world, schematic, completableFuture, y + 1), IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay);
+            Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, world, schematic, completableFuture, y + 1, delay), delay);
         }
     }
 }

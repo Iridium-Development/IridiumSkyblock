@@ -11,6 +11,8 @@ import com.iridium.iridiumskyblock.listeners.InventoryClickListener;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
+import com.iridium.iridiumskyblock.nms.NMS;
+import com.iridium.iridiumskyblock.nms.v1_16_R3;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -36,6 +38,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     private static IridiumSkyblock instance;
 
     private Persist persist;
+    private NMS nms;
 
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
@@ -89,6 +92,8 @@ public class IridiumSkyblock extends DependencyPlugin {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
 
         registerListeners();
+
+        this.nms = new v1_16_R3();
 
         getLogger().info("----------------------------------------");
         getLogger().info("");
