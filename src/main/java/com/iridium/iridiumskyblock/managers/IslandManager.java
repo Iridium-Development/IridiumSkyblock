@@ -5,6 +5,8 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
@@ -65,6 +67,24 @@ public class IslandManager {
             );
         });
         return completableFuture;
+    }
+
+    /**
+     * Deletes the specified Island
+     *
+     * @param island The specified Island
+     */
+    public void deleteIsland(@NotNull Island island) {
+        iridiumSkyblock.getDatabaseManager().getIslandMembers(island).forEach(user -> {
+            Player player = Bukkit.getPlayer(user.getUuid());
+            if (player != null) {
+                player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().islandDeleted.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+                if (island.isInIsland(player.getLocation())) {
+                    PlayerUtils.teleportSpawn(player);
+                }
+            }
+        });
+        Bukkit.getScheduler().runTaskAsynchronously(iridiumSkyblock, () -> iridiumSkyblock.getDatabaseManager().deleteIsland(island));
     }
 
 }

@@ -40,6 +40,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new ReloadCommand(iridiumSkyblock));
         registerCommand(new CreditsCommand());
         registerCommand(new CreateCommand(iridiumSkyblock));
+        registerCommand(new DeleteCommand(iridiumSkyblock));
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }

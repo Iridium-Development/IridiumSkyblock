@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -133,6 +134,10 @@ public class DatabaseManager {
         return Collections.emptyList();
     }
 
+    public @NotNull List<User> getIslandMembers(@NotNull Island island) {
+        return userList.stream().filter(user -> island.equals(user.getIsland())).collect(Collectors.toList());
+    }
+
     /**
      * Returns a list of all schematics in the database.
      * Might be empty if an error occurs.
@@ -235,6 +240,17 @@ public class DatabaseManager {
             for (SchematicData schematic : schematics) {
                 schematicDao.createOrUpdate(schematic);
             }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void deleteIsland(@NotNull Island island) {
+        try {
+            getIslandMembers(island).forEach(user -> user.setIsland(null));
+            islandDao.delete(island);
+            islandList.remove(island);
+            islandDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
