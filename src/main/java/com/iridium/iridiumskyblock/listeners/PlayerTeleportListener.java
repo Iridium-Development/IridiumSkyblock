@@ -19,7 +19,7 @@ public class PlayerTeleportListener implements Listener {
         Optional<Island> optionalIsland = IridiumSkyblockAPI.getInstance().getIslandViaLocation(event.getTo());
         if (optionalIsland.isPresent()) {
             Island island = optionalIsland.get();
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), (IridiumSkyblock.getInstance().getConfiguration().distance - 1) / 2.00, island.getCenter(event.getTo().getWorld())));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), (IridiumSkyblock.getInstance().getConfiguration().distance - 1) - 0.5, island.getCenter(event.getTo().getWorld())));
         }
     }
 

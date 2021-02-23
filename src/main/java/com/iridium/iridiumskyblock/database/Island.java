@@ -39,7 +39,7 @@ public final class Island {
     @DatabaseField(columnName = "home")
     private @NotNull String home;
 
-    @DatabaseField(columnName = "color", canBeNull = false, unique = true)
+    @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
     /**
@@ -138,7 +138,7 @@ public final class Island {
      * @return The Location of the first corner point
      */
     public Location getPos1(World world) {
-        int size = IridiumSkyblock.getInstance().getConfiguration().distance - 1;
+        double size = (IridiumSkyblock.getInstance().getConfiguration().distance - 1) / 2.00;
         return getCenter(world).subtract(new Location(world, size, 0, size));
     }
 
@@ -150,7 +150,7 @@ public final class Island {
      * @return The Location of the second corner point
      */
     public Location getPos2(World world) {
-        int size = IridiumSkyblock.getInstance().getConfiguration().distance - 1;
+        double size = (IridiumSkyblock.getInstance().getConfiguration().distance - 1) / 2.00;
         return getCenter(world).add(new Location(world, size, 0, size));
     }
 
