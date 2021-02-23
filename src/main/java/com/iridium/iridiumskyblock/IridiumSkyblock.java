@@ -15,6 +15,7 @@ import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.nms.v1_16_R3;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -96,6 +97,9 @@ public class IridiumSkyblock extends DependencyPlugin {
         registerListeners();
 
         this.nms = new v1_16_R3();
+
+        //Send island border to all players
+        Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         getLogger().info("----------------------------------------");
         getLogger().info("");
