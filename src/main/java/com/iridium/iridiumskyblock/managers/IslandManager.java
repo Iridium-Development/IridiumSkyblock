@@ -19,13 +19,6 @@ import java.util.concurrent.CompletableFuture;
  * Class which handles islands and their worlds.
  */
 public class IslandManager {
-
-    /**
-     * The default constructor.
-     */
-    public IslandManager() {
-    }
-
     /**
      * Creates a new world using the current skyblock generator.
      *
