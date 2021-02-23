@@ -242,12 +242,18 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Removes an island from the database and removes all references to the island
+     *
+     * @param island The island being deleted.
+     */
     public void deleteIsland(@NotNull Island island) {
         try {
             island.getMembers().forEach(user -> user.setIsland(null));
             islandDao.delete(island);
             islandList.remove(island);
             islandDao.commit(getDatabaseConnection());
+            saveIslands();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -71,7 +70,7 @@ public class IridiumSkyblockAPI {
      * @return The main skyblock {@link World}, might be null if some third-party plugin deleted it
      * @since 3.0.0
      */
-    public @Nullable World getWorld() {
+    public World getWorld() {
         return Bukkit.getWorld(iridiumSkyblock.getConfiguration().worldName);
     }
 
@@ -81,7 +80,7 @@ public class IridiumSkyblockAPI {
      * @return The nether skyblock {@link World}, might be null if some third-party plugin deleted it
      * @since 3.0.0
      */
-    public @Nullable World getNetherWorld() {
+    public World getNetherWorld() {
         return Bukkit.getWorld(iridiumSkyblock.getConfiguration().netherWorldName);
     }
 
