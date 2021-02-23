@@ -7,9 +7,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -58,6 +56,23 @@ public class IslandManager {
     }
 
     /**
+     * Deletes all blocks in an Island
+     *
+     * @param island The specified Island
+     */
+    public void deleteIslandBlocks(@NotNull Island island, @NotNull World world) {
+        Location pos1 = island.getPos1(world);
+        Location pos2 = island.getPos2(world);
+        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
+            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
+                for (int y = 0; y <= world.getMaxHeight(); y++) {
+                    world.getBlockAt(x, y, z).setType(Material.AIR, false);
+                }
+            }
+        }
+    }
+
+    /**
      * Deletes the specified Island
      *
      * @param island The specified Island
@@ -69,6 +84,7 @@ public class IslandManager {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 if (island.isInIsland(player.getLocation())) {
                     PlayerUtils.teleportSpawn(player);
+                    deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld());
                 }
             }
         });
