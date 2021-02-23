@@ -5,10 +5,7 @@ import com.heretere.hdl.relocation.annotation.Relocation;
 import com.heretere.hdl.spigot.DependencyPlugin;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.commands.CommandManager;
-import com.iridium.iridiumskyblock.configs.Configuration;
-import com.iridium.iridiumskyblock.configs.Messages;
-import com.iridium.iridiumskyblock.configs.SQL;
-import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
 import com.iridium.iridiumskyblock.listeners.InventoryClickListener;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
@@ -47,6 +44,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     private Messages messages;
     private SQL sql;
     private Schematics schematics;
+    private Inventories inventories;
 
     private ChunkGenerator chunkGenerator;
 
@@ -144,6 +142,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.messages = persist.load(Messages.class);
         this.sql = persist.load(SQL.class);
         this.schematics = persist.load(Schematics.class);
+        this.inventories = persist.load(Inventories.class);
     }
 
     /**
@@ -156,6 +155,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.persist.save(messages);
         this.persist.save(sql);
         this.persist.save(schematics);
+        this.persist.save(inventories);
     }
 
 }
