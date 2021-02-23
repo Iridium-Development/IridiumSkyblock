@@ -17,5 +17,6 @@ public class Messages {
     public String islandWithNameAlreadyExists = "%prefix% &7An Island with that name already exists.";
     public String islandSchematicNotFound = "%prefix% &7No schematic with that name exists.";
     public String islandDeleted = "%prefix% &7Your island has been deleted.";
+    public String teleportingHome = "%prefix% &7Teleporting Home...";
 
 }

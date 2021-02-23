@@ -33,6 +33,17 @@ public class IslandManager {
     }
 
     /**
+     * Teleports a player to the Island's home
+     *
+     * @param player The player we are teleporting
+     * @param island The island we are teleporting them to
+     */
+    public void teleportHome(@NotNull Player player, @NotNull Island island) {
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        player.teleport(island.getHome());
+    }
+
+    /**
      * Creates an Island for the specified player with the provided name.
      *
      * @param player    The owner of the Island

@@ -85,6 +85,7 @@ public final class Island {
 
     /**
      * Gets the islands current size
+     * Must be lower than island distance
      */
     public int getSize() {
         return IridiumSkyblock.getInstance().getConfiguration().distance - 1;
