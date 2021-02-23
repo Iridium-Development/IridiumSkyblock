@@ -1,7 +1,10 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -79,7 +82,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             if (commandSender instanceof Player) {
                 Player p = (Player) commandSender;
-                // TODO: Send message
+                User user = IridiumSkyblockAPI.getInstance().getUser(p);
+                if (user.getIsland() == null) {
+                    Bukkit.getServer().dispatchCommand(p, "is create");
+                } else {
+                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, user.getIsland());
+                }
                 return true;
             }
         }
