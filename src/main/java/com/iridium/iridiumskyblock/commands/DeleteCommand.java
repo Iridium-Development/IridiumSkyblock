@@ -16,16 +16,11 @@ import java.util.List;
  */
 public class DeleteCommand extends Command {
 
-    private final IridiumSkyblock iridiumSkyblock;
-
     /**
      * The default constructor.
-     *
-     * @param iridiumSkyblock The instance of IridiumSkyblock used by this plugin
      */
-    public DeleteCommand(IridiumSkyblock iridiumSkyblock) {
+    public DeleteCommand() {
         super(Collections.singletonList("delete"), "Delete an island", "", true);
-        this.iridiumSkyblock = iridiumSkyblock;
     }
 
     /**
@@ -41,10 +36,10 @@ public class DeleteCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         if (user.getIsland() == null) {
-            player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().dontHaveIsland.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        player.openInventory(new ConfirmationGUI(iridiumSkyblock, () -> iridiumSkyblock.getIslandManager().deleteIsland(user.getIsland())).getInventory());
+        player.openInventory(new ConfirmationGUI(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(user.getIsland())).getInventory());
     }
 
     /**

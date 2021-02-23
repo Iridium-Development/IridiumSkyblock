@@ -12,16 +12,11 @@ import java.util.List;
  */
 public class ReloadCommand extends Command {
 
-    private final IridiumSkyblock iridiumSkyblock;
-
     /**
      * The default constructor.
-     *
-     * @param iridiumSkyblock The instance of IridiumSkyblock used by this plugin
      */
-    public ReloadCommand(IridiumSkyblock iridiumSkyblock) {
+    public ReloadCommand() {
         super(Collections.singletonList("reload"), "Reload your configurations", "iridiumskyblock.reload", false);
-        this.iridiumSkyblock = iridiumSkyblock;
     }
 
     /**
@@ -34,8 +29,8 @@ public class ReloadCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
-        iridiumSkyblock.loadConfigs();
-        sender.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().reloaded.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+        IridiumSkyblock.getInstance().loadConfigs();
+        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 
     /**
@@ -49,9 +44,7 @@ public class ReloadCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        // We currently don't want to tab-completion here
-        // Return a new ArrayList so it isn't a list of online players
-        return Collections.emptyList();
+        return null;
     }
 
 }

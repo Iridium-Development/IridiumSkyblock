@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.j256.ormlite.field.DatabaseField;
@@ -11,6 +12,8 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -43,6 +46,15 @@ public final class Island {
     public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
         this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0,0";
+    }
+
+    /**
+     * Gets a list of Island Members
+     *
+     * @return A list of all Users belonging to the island
+     */
+    public List<User> getMembers() {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(this);
     }
 
     /**
@@ -110,7 +122,7 @@ public final class Island {
                 throw new IllegalStateException("Could not find island location with ID: " + id);
         }
 
-        return location.multiply(IridiumSkyblockAPI.getInstance().getConfiguration().distance);
+        return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);
     }
 
     /**
@@ -121,7 +133,7 @@ public final class Island {
      * @return The Location of the first corner point
      */
     public Location getPos1(World world) {
-        int size = IridiumSkyblockAPI.getInstance().getConfiguration().distance - 1;
+        int size = IridiumSkyblock.getInstance().getConfiguration().distance - 1;
         return getCenter(world).subtract(new Location(world, size, 0, size));
     }
 
@@ -133,7 +145,7 @@ public final class Island {
      * @return The Location of the second corner point
      */
     public Location getPos2(World world) {
-        int size = IridiumSkyblockAPI.getInstance().getConfiguration().distance - 1;
+        int size = IridiumSkyblock.getInstance().getConfiguration().distance - 1;
         return getCenter(world).add(new Location(world, size, 0, size));
     }
 

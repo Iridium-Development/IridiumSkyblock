@@ -27,7 +27,6 @@ import java.util.stream.Collectors;
 public class DatabaseManager {
 
     private final SQL sqlConfig;
-    private final IridiumSkyblock iridiumSkyblock;
     private final ConnectionSource connectionSource;
 
     private final Dao<User, UUID> userDao;
@@ -42,12 +41,10 @@ public class DatabaseManager {
     /**
      * The default constructor.
      *
-     * @param iridiumSkyblock The instance of IridiumSkyblock used by the plugin
      * @throws SQLException If the connection or any operations failed
      */
-    public DatabaseManager(IridiumSkyblock iridiumSkyblock) throws SQLException {
-        this.sqlConfig = iridiumSkyblock.getSql();
-        this.iridiumSkyblock = iridiumSkyblock;
+    public DatabaseManager() throws SQLException {
+        this.sqlConfig = IridiumSkyblock.getInstance().getSql();
         String databaseURL = getDatabaseURL();
 
         connectionSource = new JdbcConnectionSource(
@@ -88,7 +85,7 @@ public class DatabaseManager {
             case H2:
                 return "jdbc:h2:file:" + sqlConfig.database;
             case SQLITE:
-                return "jdbc:sqlite:" + new File(iridiumSkyblock.getDataFolder(), sqlConfig.database + ".db");
+                return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
             default:
                 throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
         }
@@ -247,7 +244,7 @@ public class DatabaseManager {
 
     public void deleteIsland(@NotNull Island island) {
         try {
-            getIslandMembers(island).forEach(user -> user.setIsland(null));
+            island.getMembers().forEach(user -> user.setIsland(null));
             islandDao.delete(island);
             islandList.remove(island);
             islandDao.commit(getDatabaseConnection());
