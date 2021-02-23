@@ -33,6 +33,8 @@ import java.sql.SQLException;
 @Getter
 public class IridiumSkyblock extends DependencyPlugin {
 
+    private static IridiumSkyblock instance;
+
     private Persist persist;
 
     private CommandManager commandManager;
@@ -58,29 +60,30 @@ public class IridiumSkyblock extends DependencyPlugin {
      */
     @Override
     public void enable() {
+        instance = this;
         // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
         loadConfigs();
         saveConfigs();
 
         // Initialize the commands
-        this.commandManager = new CommandManager("iridiumskyblock", this);
+        this.commandManager = new CommandManager("iridiumskyblock");
 
         // Try to connect to the database
         try {
-            this.databaseManager = new DatabaseManager(this);
+            this.databaseManager = new DatabaseManager();
         } catch (SQLException exception) {
             // We don't want the plugin to start if the connection fails
             exception.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        this.islandManager = new IslandManager(this);
+        this.islandManager = new IslandManager();
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
 
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
 
-        this.schematicManager = new SchematicManager(this);
+        this.schematicManager = new SchematicManager();
 
         // Save data regularly
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
@@ -158,4 +161,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.persist.save(inventories);
     }
 
+    public static IridiumSkyblock getInstance() {
+        return instance;
+    }
 }

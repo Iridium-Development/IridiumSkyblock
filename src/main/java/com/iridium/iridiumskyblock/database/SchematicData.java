@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Persist;
 import com.iridium.iridiumskyblock.Schematic;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public final class SchematicData {
      * @return The newly loaded schematic object
      */
     public Schematic getSchematic() {
-        return IridiumSkyblockAPI.getInstance().getPersist(Persist.PersistType.JSON).load(Schematic.class, new String(Base64.getDecoder().decode(schematic)));
+        return new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance()).load(Schematic.class, new String(Base64.getDecoder().decode(schematic)));
     }
 
     /**
@@ -42,7 +42,7 @@ public final class SchematicData {
      * @param schematic The schematic that should be saved
      */
     public void setSchematic(Schematic schematic) {
-        this.schematic = new String(Base64.getEncoder().encode(IridiumSkyblockAPI.getInstance().getPersist(Persist.PersistType.JSON).toString(schematic).getBytes()));
+        this.schematic = new String(Base64.getEncoder().encode(new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance()).toString(schematic).getBytes()));
     }
 
     /**

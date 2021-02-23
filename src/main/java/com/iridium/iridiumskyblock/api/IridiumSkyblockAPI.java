@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.api;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Persist;
 import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -30,16 +29,6 @@ public class IridiumSkyblockAPI {
      */
     private IridiumSkyblockAPI(IridiumSkyblock iridiumSkyblock) {
         this.iridiumSkyblock = iridiumSkyblock;
-    }
-
-    /**
-     * Gets the persist class to serialize objects
-     *
-     * @param persistType Persist type, are we using yaml or json
-     * @return The persist object
-     */
-    public Persist getPersist(Persist.PersistType persistType) {
-        return new Persist(persistType, iridiumSkyblock);
     }
 
     /**
@@ -74,17 +63,6 @@ public class IridiumSkyblockAPI {
             Location pos2 = island.getPos2(location.getWorld());
             return pos1.getX() <= location.getX() && pos2.getX() >= location.getX() && pos1.getX() <= location.getZ() && pos2.getZ() >= location.getZ();
         }).findFirst();
-    }
-
-    /**
-     * Returns the main configuration file of IridiumSkyblock.
-     * All changes to it will be saved to the file automatically on shutdown.
-     *
-     * @return The plugins {@link Configuration} file
-     * @since 3.0.0
-     */
-    public @NotNull Configuration getConfiguration() {
-        return iridiumSkyblock.getConfiguration();
     }
 
     /**

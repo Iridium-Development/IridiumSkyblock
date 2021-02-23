@@ -17,19 +17,16 @@ import java.util.List;
  */
 public class CommandManager implements CommandExecutor, TabCompleter {
 
-    private final IridiumSkyblock iridiumSkyblock;
     public final List<Command> commands = new ArrayList<>();
 
     /**
      * The default constructor.
      *
      * @param command         The base command of the plugin
-     * @param iridiumSkyblock The instance of IridiumSkyblock used by this plugin
      */
-    public CommandManager(String command, IridiumSkyblock iridiumSkyblock) {
-        this.iridiumSkyblock = iridiumSkyblock;
-        iridiumSkyblock.getCommand(command).setExecutor(this);
-        iridiumSkyblock.getCommand(command).setTabCompleter(this);
+    public CommandManager(String command) {
+        IridiumSkyblock.getInstance().getCommand(command).setExecutor(this);
+        IridiumSkyblock.getInstance().getCommand(command).setTabCompleter(this);
         registerCommands();
     }
 
@@ -37,10 +34,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Registers all commands of this plugin.
      */
     public void registerCommands() {
-        registerCommand(new ReloadCommand(iridiumSkyblock));
+        registerCommand(new ReloadCommand());
         registerCommand(new CreditsCommand());
-        registerCommand(new CreateCommand(iridiumSkyblock));
-        registerCommand(new DeleteCommand(iridiumSkyblock));
+        registerCommand(new CreateCommand());
+        registerCommand(new DeleteCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
@@ -92,8 +89,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
             if (command.onlyForPlayers && !(commandSender instanceof Player)) {
                 // Must be a player
-                commandSender.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().mustBeAPlayer
-                        .replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+                commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
 
@@ -101,8 +98,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     .equalsIgnoreCase("") || command.permission
                     .equalsIgnoreCase("iridiumskyblock.")) && command.enabled)) {
                 // No permissions
-                commandSender.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().noPermission
-                        .replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+                commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
 
@@ -110,8 +107,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             return true;
         }
         // Unknown command message
-        commandSender.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().unknownCommand
-                .replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+        commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownCommand
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return false;
     }
 

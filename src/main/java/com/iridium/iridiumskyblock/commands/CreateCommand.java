@@ -19,16 +19,11 @@ import java.util.stream.Collectors;
  */
 public class CreateCommand extends Command {
 
-    private final IridiumSkyblock iridiumSkyblock;
-
     /**
      * The default constructor.
-     *
-     * @param iridiumSkyblock The instance of IridiumSkyblock used by this plugin
      */
-    public CreateCommand(IridiumSkyblock iridiumSkyblock) {
+    public CreateCommand() {
         super(Collections.singletonList("create"), "Create an island", "", true);
-        this.iridiumSkyblock = iridiumSkyblock;
     }
 
     /**
@@ -47,11 +42,11 @@ public class CreateCommand extends Command {
         } else if (args.length == 2) {
             createIsland(player, args[1]);
         } else if (args.length == 3) {
-            Optional<Schematics.SchematicConfig> schematicConfig = iridiumSkyblock.getSchematics().schematics.stream().filter(config -> config.name.equalsIgnoreCase(args[2])).findFirst();
+            Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.stream().filter(config -> config.name.equalsIgnoreCase(args[2])).findFirst();
             if (schematicConfig.isPresent()) {
                 createIsland(player, args[1], schematicConfig.get());
             } else {
-                player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().islandSchematicNotFound.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
     }
@@ -65,14 +60,14 @@ public class CreateCommand extends Command {
     private void createIsland(Player player, String name) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         if (user.getIsland() != null) {
-            player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().alreadyHaveIsland.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        if (iridiumSkyblock.getDatabaseManager().getIslandByName(name).isPresent()) {
-            player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().islandWithNameAlreadyExists.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandByName(name).isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        player.openInventory(new SchematicGUI(player, name, iridiumSkyblock).getInventory());
+        player.openInventory(new SchematicGUI(player, name, IridiumSkyblock.getInstance()).getInventory());
     }
 
     /**
@@ -84,15 +79,15 @@ public class CreateCommand extends Command {
     private void createIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         if (user.getIsland() != null) {
-            player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().alreadyHaveIsland.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        if (iridiumSkyblock.getDatabaseManager().getIslandByName(name).isPresent()) {
-            player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().islandWithNameAlreadyExists.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
+        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandByName(name).isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        player.sendMessage(StringUtils.color(iridiumSkyblock.getMessages().creatingIsland.replace("%prefix%", iridiumSkyblock.getConfiguration().prefix)));
-        iridiumSkyblock.getIslandManager().createIsland(player, name, schematicConfig).thenAccept(island -> player.teleport(island.getHome()));
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        IridiumSkyblock.getInstance().getIslandManager().createIsland(player, name, schematicConfig).thenAccept(island -> player.teleport(island.getHome()));
     }
 
     /**
@@ -107,7 +102,7 @@ public class CreateCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return iridiumSkyblock.getSchematics().schematics.stream().map(schematicConfig -> schematicConfig.name).collect(Collectors.toList());
+            return IridiumSkyblock.getInstance().getSchematics().schematics.stream().map(schematicConfig -> schematicConfig.name).collect(Collectors.toList());
         }
         return null;
     }
