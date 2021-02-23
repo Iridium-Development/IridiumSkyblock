@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
 import com.iridium.iridiumskyblock.listeners.InventoryClickListener;
+import com.iridium.iridiumskyblock.listeners.PlayerJoinListener;
 import com.iridium.iridiumskyblock.listeners.PlayerTeleportListener;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -132,6 +133,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     public void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
     }
 
     /**
