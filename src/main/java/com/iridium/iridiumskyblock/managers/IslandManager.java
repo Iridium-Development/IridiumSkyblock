@@ -51,7 +51,15 @@ public class IslandManager {
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
                     IridiumSkyblock.getInstance().getSchematicManager()
                             .pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematic.overworld.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay)
-                            .thenRun(() -> completableFuture.complete(island))
+                            .thenRun(() -> {
+                                completableFuture.complete(island);
+                                if (!IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle.isEmpty()) {
+                                    IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
+                                }
+                                if (!IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle.isEmpty()) {
+                                    IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
+                                }
+                            })
             );
         });
         return completableFuture;
