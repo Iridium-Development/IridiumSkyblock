@@ -57,11 +57,7 @@ public class IridiumSkyblockAPI {
      * @since 3.0.0
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        return iridiumSkyblock.getDatabaseManager().getIslandList().stream().filter(island -> {
-            Location pos1 = island.getPos1(location.getWorld());
-            Location pos2 = island.getPos2(location.getWorld());
-            return pos1.getX() <= location.getX() && pos2.getX() >= location.getX() && pos1.getX() <= location.getZ() && pos2.getZ() >= location.getZ();
-        }).findFirst();
+        return iridiumSkyblock.getDatabaseManager().getIslandList().stream().filter(island -> island.isInIsland(location)).findFirst();
     }
 
     /**
