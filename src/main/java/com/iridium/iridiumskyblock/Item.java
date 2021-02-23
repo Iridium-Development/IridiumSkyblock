@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.cryptomorin.xseries.XMaterial;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -8,6 +9,7 @@ import java.util.List;
  * Class which represents an item in an inventory.
  * Uses {@link XMaterial} for multi-version support.
  */
+@NoArgsConstructor
 public class Item {
 
     public XMaterial material;
@@ -17,12 +19,6 @@ public class Item {
     public String headOwner;
     public List<String> lore;
     public Integer slot;
-
-    /**
-     * Default and empty constructor.
-     */
-    public Item() {
-    }
 
     /**
      * Creates a new item with the provided data.
