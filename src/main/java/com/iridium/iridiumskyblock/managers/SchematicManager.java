@@ -58,6 +58,7 @@ public class SchematicManager {
 
         pasteSchematic(island, world, schematic, completableFuture, 0, delay);
 
+        //TODO Remove these, just using to test if islands overlap ect
         island.getPos1(IridiumSkyblockAPI.getInstance().getWorld()).getBlock().setType(Material.STONE);
         island.getPos2(IridiumSkyblockAPI.getInstance().getWorld()).getBlock().setType(Material.STONE);
 

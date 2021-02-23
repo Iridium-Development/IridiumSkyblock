@@ -146,6 +146,8 @@ public class IslandManager {
      * @param island The specified Island
      */
     public void deleteIsland(@NotNull Island island) {
+        deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld(), 3);
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().deleteIsland(island));
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(island).forEach(user -> {
             Player player = Bukkit.getPlayer(user.getUuid());
             if (player != null) {
@@ -155,8 +157,6 @@ public class IslandManager {
                 }
             }
         });
-        deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld(), 3);
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().deleteIsland(island));
     }
 
 }
