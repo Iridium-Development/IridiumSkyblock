@@ -1,12 +1,25 @@
 package com.iridium.iridiumskyblock.utils;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Various utils for working with {@link Player}'s.
  */
 public class PlayerUtils {
+
+    /**
+     * Sends an island's border to a player
+     *
+     * @param player The specified Player
+     * @param island The specified Island
+     */
+    public static void sendBorder(@NotNull Player player, @NotNull Island island) {
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + 1, island.getCenter(player.getWorld())));
+    }
 
     /**
      * Teleports the specified player to spawn.

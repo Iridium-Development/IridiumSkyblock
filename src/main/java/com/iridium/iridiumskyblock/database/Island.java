@@ -84,6 +84,13 @@ public final class Island {
     }
 
     /**
+     * Gets the islands current size
+     */
+    public int getSize() {
+        return IridiumSkyblock.getInstance().getConfiguration().distance - 1;
+    }
+
+    /**
      * Finds the center of this island.
      * Function based of: https://stackoverflow.com/a/19287714.
      *
@@ -138,7 +145,7 @@ public final class Island {
      * @return The Location of the first corner point
      */
     public Location getPos1(World world) {
-        double size = (IridiumSkyblock.getInstance().getConfiguration().distance - 1) / 2.00;
+        double size = getSize() / 2.00;
         return getCenter(world).subtract(new Location(world, size, 0, size));
     }
 
@@ -150,7 +157,7 @@ public final class Island {
      * @return The Location of the second corner point
      */
     public Location getPos2(World world) {
-        double size = (IridiumSkyblock.getInstance().getConfiguration().distance - 1) / 2.00;
+        double size = getSize() / 2.00;
         return getCenter(world).add(new Location(world, size, 0, size));
     }
 
