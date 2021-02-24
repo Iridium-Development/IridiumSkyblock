@@ -44,7 +44,7 @@ public class CreateCommand extends Command {
         } else if (args.length == 3) {
             Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.stream().filter(config -> config.name.equalsIgnoreCase(args[2])).findFirst();
             if (schematicConfig.isPresent()) {
-                createIsland(player, args[1], schematicConfig.get());
+                IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
@@ -52,7 +52,7 @@ public class CreateCommand extends Command {
     }
 
     /**
-     * Creates a new island for the specified Player.
+     * Opens the island schematic picker GUI
      *
      * @param player The player who performed this command
      * @param name   The name of the new island
@@ -68,26 +68,6 @@ public class CreateCommand extends Command {
             return;
         }
         player.openInventory(new IslandCreateGUI(player, name).getInventory());
-    }
-
-    /**
-     * Creates a new island for the specified Player.
-     *
-     * @param player The player who performed this command
-     * @param name   The name of the new island
-     */
-    private void createIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        if (user.getIsland() != null) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
-        }
-        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandByName(name).isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
-        }
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        IridiumSkyblock.getInstance().getIslandManager().createIsland(player, name, schematicConfig).thenAccept(island -> player.teleport(island.getHome()));
     }
 
     /**
