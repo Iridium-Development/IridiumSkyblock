@@ -44,6 +44,31 @@ public class IslandManager {
     }
 
     /**
+     * Creates an island for a specific Player and then teleports them to the island home
+     *
+     * @param player          The owner of the island
+     * @param name            The name of  the island
+     * @param schematicConfig The schematic of the island
+     */
+    public void makeIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
+        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        if (user.getIsland() != null) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandByName(name).isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        createIsland(player, name, schematicConfig).thenAccept(island -> {
+            player.teleport(island.getHome());
+            IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
+            IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
+        });
+    }
+
+    /**
      * Creates an Island for the specified player with the provided name.
      *
      * @param player    The owner of the Island
@@ -51,7 +76,7 @@ public class IslandManager {
      * @param schematic The schematic of the Island
      * @return The island being created
      */
-    public @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
+    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             final User user = IridiumSkyblockAPI.getInstance().getUser(player);
@@ -62,11 +87,7 @@ public class IslandManager {
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
                     IridiumSkyblock.getInstance().getSchematicManager()
                             .pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematic.overworld.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay)
-                            .thenRun(() -> {
-                                completableFuture.complete(island);
-                                IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
-                                IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
-                            })
+                            .thenRun(() -> completableFuture.complete(island))
             );
         });
         return completableFuture;
