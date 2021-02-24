@@ -325,4 +325,19 @@ public class DatabaseManager {
         }
     }
 
+    /**
+     * Removes an IslandInvite from the database
+     *
+     * @param islandInvite The island Invite being deleted
+     */
+    public void deleteInvite(@NotNull IslandInvite islandInvite) {
+        try {
+            islandInviteDao.delete(islandInvite);
+            islandInviteList.remove(islandInvite);
+            islandInviteDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
 }
