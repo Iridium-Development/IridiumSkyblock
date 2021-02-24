@@ -27,4 +27,7 @@ public class Messages {
     public String playerJoinedYourIsland = "%prefix% &7%player% has joined your island!";
     public String noInvite = "%prefix% &7You have not been invited to this island.";
     public String userNoIsland = "%prefix% &7That user doesnt have an island.";
+    public String cannotLeaveIsland = "%prefix% &7You cannot leave your island, do /is delete instead.";
+    public String youHaveLeftIsland = "%prefix% &7You have left your island.";
+    public String playerLeftIsland = "%prefix% &7%player% has left your island.";
 }
