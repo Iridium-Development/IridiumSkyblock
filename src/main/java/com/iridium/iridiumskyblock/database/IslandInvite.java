@@ -45,6 +45,10 @@ public final class IslandInvite {
         return IridiumSkyblockAPI.getInstance().getUser(Bukkit.getOfflinePlayer(user));
     }
 
+    public User getInviter() {
+        return IridiumSkyblockAPI.getInstance().getUser(Bukkit.getOfflinePlayer(inviter));
+    }
+
     public LocalDateTime getTime() {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault());
     }

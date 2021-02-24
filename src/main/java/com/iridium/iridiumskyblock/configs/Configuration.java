@@ -11,6 +11,7 @@ public class Configuration {
     public String netherWorldName = "IridiumSkyblock_nether";
     public String islandCreateTitle = "&b&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
+    public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
