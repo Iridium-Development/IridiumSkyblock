@@ -64,6 +64,11 @@ public final class Island {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(this);
     }
 
+    /**
+     * Gets the Islands owner
+     *
+     * @return The Owner of the Island
+     */
     public Optional<User> getOwner() {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> user.getIslandRank().equals(IslandRank.OWNER) && this.equals(user.getIsland().orElse(null))).findFirst();
     }
