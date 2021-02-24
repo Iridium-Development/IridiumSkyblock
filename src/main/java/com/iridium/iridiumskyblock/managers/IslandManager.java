@@ -52,7 +52,7 @@ public class IslandManager {
      */
     public void makeIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        if (user.getIsland() != null) {
+        if (user.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }

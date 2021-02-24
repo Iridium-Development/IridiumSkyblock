@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -25,8 +27,17 @@ public final class User {
     @DatabaseField(columnName = "name", canBeNull = false)
     private @NotNull String name;
 
-    @DatabaseField(columnName = "island_id", foreign = true, foreignAutoRefresh = true)
-    private @Nullable Island island;
+    @DatabaseField(columnName = "island_id")
+    private @Nullable Integer island;
+
+    public @NotNull Optional<Island> getIsland() {
+        if (island == null) return Optional.empty();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);
+    }
+
+    public void setIsland(Island island) {
+        this.island = island.getId();
+    }
 
     /**
      * The default constructor.

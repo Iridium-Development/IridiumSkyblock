@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandRegenGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -36,14 +38,15 @@ public class RegenCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        if (user.getIsland() == null) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
-        }
-        if (args.length == 1) {
-            player.openInventory(new IslandRegenGUI(player).getInventory());
+        Optional<Island> island = user.getIsland();
+        if (island.isPresent()) {
+            if (args.length == 1) {
+                player.openInventory(new IslandRegenGUI(player).getInventory());
+            } else {
+                IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), args[1]);
+            }
         } else {
-            IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(user.getIsland(), args[1]);
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

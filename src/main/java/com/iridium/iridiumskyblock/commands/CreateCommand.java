@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -59,7 +60,8 @@ public class CreateCommand extends Command {
      */
     private void createIsland(Player player, String name) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        if (user.getIsland() != null) {
+        Optional<Island> island = user.getIsland();
+        if(island.isPresent()){
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
