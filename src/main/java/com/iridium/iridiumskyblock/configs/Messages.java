@@ -18,5 +18,8 @@ public class Messages {
     public String islandSchematicNotFound = "%prefix% &7No schematic with that name exists.";
     public String islandDeleted = "%prefix% &7Your island has been deleted.";
     public String teleportingHome = "%prefix% &7Teleporting Home...";
+    public String invitedPlayer = "%prefix% &7You have invited %player% to join your island";
+    public String userInvitedPlayer = "%prefix% &7%inviter% has invited %player% to join your island";
+    public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their island";
 
 }

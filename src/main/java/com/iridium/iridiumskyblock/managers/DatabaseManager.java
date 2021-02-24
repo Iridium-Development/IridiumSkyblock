@@ -154,6 +154,12 @@ public class DatabaseManager {
         return Collections.emptyList();
     }
 
+    /**
+     * Gets a list of Users from an island
+     *
+     * @param island The specified Island
+     * @return A list of users
+     */
     public @NotNull List<User> getIslandMembers(@NotNull Island island) {
         return userList.stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
     }
