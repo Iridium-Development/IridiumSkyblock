@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -40,7 +41,7 @@ public class LeaveCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            if (island.get().getMembers().size() == 1) {
+            if (user.getIslandRank().equals(IslandRank.OWNER)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotLeaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
                 user.setIsland(null);
