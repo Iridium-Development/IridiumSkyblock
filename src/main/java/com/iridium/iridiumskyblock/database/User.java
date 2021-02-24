@@ -35,8 +35,8 @@ public final class User {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);
     }
 
-    public void setIsland(Island island) {
-        this.island = island.getId();
+    public void setIsland(@Nullable Island island) {
+        this.island = island == null ? null : island.getId();
     }
 
     /**
