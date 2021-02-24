@@ -132,7 +132,7 @@ public class DatabaseManager {
     }
 
     public @NotNull List<User> getIslandMembers(@NotNull Island island) {
-        return userList.stream().filter(user -> island.equals(user.getIsland())).collect(Collectors.toList());
+        return userList.stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
     }
 
     /**
