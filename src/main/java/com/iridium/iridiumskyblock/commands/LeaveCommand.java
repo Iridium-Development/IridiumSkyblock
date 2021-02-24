@@ -50,8 +50,8 @@ public class LeaveCommand extends Command {
                     if (p != null) {
                         p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerLeftIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
-                    PlayerUtils.teleportSpawn(player);
                 }
+                PlayerUtils.teleportSpawn(player);
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
