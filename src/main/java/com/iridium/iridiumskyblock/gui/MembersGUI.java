@@ -38,6 +38,7 @@ public class MembersGUI implements GUI {
         for (User member : island.getMembers()) {
             inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandMember, Arrays.asList(
                     new Placeholder("player", member.getName()),
+                    new Placeholder("rank", member.getIslandRank().name()),
                     new Placeholder("time", member.getJoinTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
             )));
             i++;

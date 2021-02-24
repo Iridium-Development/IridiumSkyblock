@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
@@ -55,6 +56,7 @@ public class JoinCommand extends Command {
                         }
                     }
                     user.setIsland(island.get());
+                    user.setIslandRank(IslandRank.MEMBER);
                     IridiumSkyblock.getInstance().getDatabaseManager().deleteInvite(islandInvite.get());
                     IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get());
                 } else {

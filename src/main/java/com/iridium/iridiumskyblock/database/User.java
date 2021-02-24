@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -37,6 +38,9 @@ public final class User {
     @DatabaseField(columnName = "join_time")
     private @NotNull Long joinTime;
 
+    @DatabaseField(columnName = "island_rank")
+    private @NotNull IslandRank islandRank;
+
     public @NotNull Optional<Island> getIsland() {
         if (island == null) return Optional.empty();
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);
@@ -64,6 +68,7 @@ public final class User {
         this.uuid = uuid;
         this.name = name;
         this.joinTime = 0L;
+        this.islandRank = IslandRank.VISITOR;
     }
 
 }

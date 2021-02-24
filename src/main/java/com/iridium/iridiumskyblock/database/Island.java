@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.j256.ormlite.field.DatabaseField;
@@ -15,6 +16,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -60,6 +62,10 @@ public final class Island {
      */
     public List<User> getMembers() {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(this);
+    }
+
+    public Optional<User> getOwner() {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> user.getIslandRank().equals(IslandRank.OWNER) && this.equals(user.getIsland().orElse(null))).findFirst();
     }
 
     /**
