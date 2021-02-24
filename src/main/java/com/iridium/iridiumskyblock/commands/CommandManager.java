@@ -50,6 +50,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new UnInviteCommand());
         registerCommand(new JoinCommand());
         registerCommand(new LeaveCommand());
+        registerCommand(new MembersCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
