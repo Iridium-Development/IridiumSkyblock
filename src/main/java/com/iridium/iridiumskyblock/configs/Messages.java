@@ -24,4 +24,7 @@ public class Messages {
     public String inviteRevoked = "%prefix% &7Island invite for %player% has been revoked";
     public String inviteDoesntExist = "%prefix% &7%player% has no active invite for your island.";
     public String alreadyInvited = "%prefix% &7You have already invited this user to your island.";
+    public String playerJoinedYourIsland = "%prefix% &7%player% has joined your island!";
+    public String noInvite = "%prefix% &7You have not been invited to this island.";
+    public String userNoIsland = "%prefix% &7That user doesnt have an island.";
 }
