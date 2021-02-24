@@ -9,6 +9,10 @@ import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,6 +34,9 @@ public final class User {
     @DatabaseField(columnName = "island_id")
     private @Nullable Integer island;
 
+    @DatabaseField(columnName = "join_time")
+    private @NotNull Long joinTime;
+
     public @NotNull Optional<Island> getIsland() {
         if (island == null) return Optional.empty();
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);
@@ -37,6 +44,14 @@ public final class User {
 
     public void setIsland(@Nullable Island island) {
         this.island = island == null ? null : island.getId();
+    }
+
+    public LocalDateTime getJoinTime() {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(joinTime), ZoneId.systemDefault());
+    }
+
+    public void setJoinTime(LocalDateTime joinTime) {
+        this.joinTime = ZonedDateTime.of(joinTime, ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
     /**
@@ -48,6 +63,7 @@ public final class User {
     public User(final @NotNull UUID uuid, final @NotNull String name) {
         this.uuid = uuid;
         this.name = name;
+        this.joinTime = 0L;
     }
 
 }
