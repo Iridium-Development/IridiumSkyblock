@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
@@ -88,6 +89,7 @@ public class IslandManager {
             final User user = IridiumSkyblockAPI.getInstance().getUser(player);
             final Island island = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic));
             user.setIsland(island);
+            user.setIslandRank(IslandRank.OWNER);
 
             // Paste schematic and then teleport the player (this needs to be done sync)
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
