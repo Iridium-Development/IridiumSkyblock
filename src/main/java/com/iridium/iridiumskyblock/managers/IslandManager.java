@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandInvite;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -30,6 +32,10 @@ public class IslandManager {
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(env)
                 .createWorld();
+    }
+
+    public Optional<IslandInvite> getIslandInvite(@NotNull Island island, @NotNull User user) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteList().stream().filter(islandInvite -> islandInvite.getUser().equals(user) && island.equals(islandInvite.getIsland().orElse(null))).findFirst();
     }
 
     /**

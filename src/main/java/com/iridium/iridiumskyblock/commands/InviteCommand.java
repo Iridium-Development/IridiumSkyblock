@@ -35,17 +35,21 @@ public class InviteCommand extends Command {
             } else {
                 OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
                 User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
-                IslandInvite islandInvite = new IslandInvite(island.get(), offlinePlayerUser, user);
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteList().add(islandInvite);
-                String playerName = offlinePlayer.getName() != null ? offlinePlayerUser.getName() : args[1];
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedPlayer.replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                for (User member : IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(island.get())) {
-                    Player islandMember = Bukkit.getPlayer(member.getUuid());
-                    if (islandMember == null || islandMember.equals(player)) continue;
-                    islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userInvitedPlayer.replace("%inviter%", player.getName()).replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-                if (offlinePlayer instanceof Player) {
-                    ((Player) offlinePlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited.replace("%inviter%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                if (IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), offlinePlayerUser).isPresent()) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInvited.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                } else {
+                    IslandInvite islandInvite = new IslandInvite(island.get(), offlinePlayerUser, user);
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteList().add(islandInvite);
+                    String playerName = offlinePlayer.getName() != null ? offlinePlayerUser.getName() : args[1];
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedPlayer.replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    for (User member : IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(island.get())) {
+                        Player islandMember = Bukkit.getPlayer(member.getUuid());
+                        if (islandMember == null || islandMember.equals(player)) continue;
+                        islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userInvitedPlayer.replace("%inviter%", player.getName()).replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
+                    if (offlinePlayer instanceof Player) {
+                        ((Player) offlinePlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited.replace("%inviter%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
                 }
             }
         } else {
