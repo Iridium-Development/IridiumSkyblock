@@ -21,5 +21,6 @@ public class Messages {
     public String invitedPlayer = "%prefix% &7You have invited %player% to join your island";
     public String userInvitedPlayer = "%prefix% &7%inviter% has invited %player% to join your island";
     public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their island";
-
+    public String inviteRevoked = "%prefix% &7Island invite for %player% has been revoked";
+    public String inviteDoesntExist = "%prefix% &7%player% has no active invite for your island.";
 }

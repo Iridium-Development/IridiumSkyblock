@@ -32,6 +32,7 @@ public class InvitesGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (invites.containsKey(event.getSlot())) {
             Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is uninvite " + invites.get(event.getSlot()));
+            event.getWhoClicked().openInventory(getInventory());
         }
     }
 
