@@ -35,8 +35,8 @@ public class SetHomeCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         if (user.getIsland() != null) {
-            // TODO: There should be a is safe method
-            if (true) {
+            // TODO: There should be a is safe method is now just for test
+            if (user.getIsland().isInIsland(player.getLocation())) {
                 user.getIsland().setHome(player.getLocation());
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
