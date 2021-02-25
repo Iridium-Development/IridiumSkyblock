@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -39,8 +40,12 @@ public class DeleteCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            player.openInventory(new ConfirmationGUI(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get())).getInventory());
-        }else{
+            if (user.getIslandRank().equals(IslandRank.OWNER)) {
+                player.openInventory(new ConfirmationGUI(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get())).getInventory());
+            } else {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotDeleteIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+        } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
