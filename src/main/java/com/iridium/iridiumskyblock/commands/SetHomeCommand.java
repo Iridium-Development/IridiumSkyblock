@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Command which sets a User's Island Home'
@@ -34,10 +36,10 @@ public class SetHomeCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        if (user.getIsland() != null) {
-            // TODO: There should be a is safe method is now just for test
-            if (user.getIsland().isInIsland(player.getLocation())) {
-                user.getIsland().setHome(player.getLocation());
+        Optional<Island> island = user.getIsland();
+        if (island.isPresent()) {
+            if (island.get().isInIsland(player.getLocation())) {
+                island.get().setHome(player.getLocation());
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
