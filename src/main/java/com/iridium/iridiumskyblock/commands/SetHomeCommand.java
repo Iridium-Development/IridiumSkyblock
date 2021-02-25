@@ -1,11 +1,9 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,21 +13,21 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which deletes a User's Island'
+ * Command which sets a User's Island Home'
  */
-public class DeleteCommand extends Command {
+public class SetHomeCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public DeleteCommand() {
-        super(Collections.singletonList("delete"), "Delete an island", "", true);
+    public SetHomeCommand() {
+        super(Collections.singletonList("sethome"), "Set the island home", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Sets island home of the user.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -40,10 +38,11 @@ public class DeleteCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            if (user.getIslandRank().equals(IslandRank.OWNER)) {
-                player.openInventory(new ConfirmationGUI(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get())).getInventory());
+            if (island.get().isInIsland(player.getLocation())) {
+                island.get().setHome(player.getLocation());
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotDeleteIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

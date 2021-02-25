@@ -18,6 +18,8 @@ public class Messages {
     public String islandSchematicNotFound = "%prefix% &7No schematic with that name exists.";
     public String islandDeleted = "%prefix% &7Your island has been deleted.";
     public String teleportingHome = "%prefix% &7Teleporting Home...";
+    public String setHome = "%prefix% &7Your Island home has been set to this location.";
+    public String isNotSafe = "%prefix% &7This location is not safe.";
     public String invitedPlayer = "%prefix% &7You have invited %player% to join your island";
     public String userInvitedPlayer = "%prefix% &7%inviter% has invited %player% to join your island";
     public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their island";
@@ -33,8 +35,17 @@ public class Messages {
     public String userNotInYourIsland = "%prefix% &7That user is not in your island.";
     public String youKickedPlayer = "%prefix% &7You have kicked %player%.";
     public String kickedPlayer = "%prefix% &7%kicker% has kicked %player%.";
-    public String YouHaveBeenKicked = "%prefix% &7You have been kicked by %player%.";
     public String islandIsPrivate = "%prefix% &7That player's island is private.";
     public String islandNowPrivate = "%prefix% &7Your island is now private and %amount% players have been expelled from your island";
     public String islandNowPublic = "%prefix% &7Your island is now public.";
+    public String youHaveBeenKicked = "%prefix% &7You have been kicked by %player%.";
+    public String cannotKickUser = "%prefix% &7You cannot kick this user";
+    public String cannotDeleteIsland = "%prefix% &7Only the Island Owner can delete an island";
+    public String cannotPromoteUser = "%prefix% &7You cannot promote this user.";
+    public String promotedPlayer = "%prefix% &7You have promoted %player% to %rank%.";
+    public String userPromotedPlayer = "%prefix% &7%promoter% has promoted %player% to %rank%.";
+    public String cannotDemoteUser = "%prefix% &7You cannot demote this user.";
+    public String demotedPlayer = "%prefix% &7You have demoted %player% to %rank%.";
+    public String userDemotedPlayer = "%prefix% &7%promoter% has demoted %player% to %rank%.";
+    public String transferredOwnership = "%prefix% &7%oldowner% has transferred Island ownership to %newowner%.";
 }
