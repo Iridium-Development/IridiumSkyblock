@@ -15,6 +15,10 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +45,18 @@ public final class Island {
     @DatabaseField(columnName = "home")
     private @NotNull String home;
 
+    @DatabaseField(columnName = "value")
+    private @NotNull Double value;
+
+    @DatabaseField(columnName = "votes")
+    private @NotNull Integer votes;
+
+    @DatabaseField(columnName = "visit")
+    private @NotNull Boolean visitable;
+
+    @DatabaseField(columnName = "create_time")
+    private @NotNull Long time;
+
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
@@ -51,7 +67,9 @@ public final class Island {
      */
     public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
+        this.visitable = IridiumSkyblock.getInstance().getConfiguration().defaultIslandPublic;
         this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0,0";
+        this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
         this.color = Color.BLUE;
     }
 
@@ -82,6 +100,15 @@ public final class Island {
         String[] params = home.split(",");
         World world = IridiumSkyblockAPI.getInstance().getWorld();
         return new Location(world, Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Float.parseFloat(params[3]), Float.parseFloat(params[4])).add(getCenter(world));
+    }
+
+    /**
+     * Milliseconds of date this island was created
+     *
+     * @return A LocalDateTime of this island was created
+     */
+    public LocalDateTime getCreateTime() {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(getTime()), ZoneId.systemDefault());
     }
 
     /**

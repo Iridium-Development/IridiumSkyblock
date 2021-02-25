@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Class which handles islands and their worlds.
@@ -178,6 +179,27 @@ public class IslandManager {
                 Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, y - 1, completableFuture, delay), delay);
             }
         }
+    }
+
+    /**
+     * Spawn players on an specified island
+     *
+     * @param island The specified Island
+     * @return spawned players amount
+     */
+    public int privateIsland(@NotNull Island island) {
+        AtomicInteger amount = new AtomicInteger();
+        Bukkit.getOnlinePlayers().forEach(visitor -> {
+            if (visitor != null) {
+                Optional<Island> visitorIsland = IridiumSkyblockAPI.getInstance().getUser(visitor).getIsland();
+                if ((!visitorIsland.isPresent() || !island.equals(visitorIsland.get())) && island.isInIsland(visitor.getLocation())) {
+                    visitor.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    PlayerUtils.teleportSpawn(visitor);
+                    amount.getAndIncrement();
+                }
+            }
+        });
+        return amount.get();
     }
 
     /**
