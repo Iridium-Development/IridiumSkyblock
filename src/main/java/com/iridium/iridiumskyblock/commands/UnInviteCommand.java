@@ -3,8 +3,10 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandInvite;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,15 +15,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which deletes a User's Island'
+ * Command which creates a new island for an user.
  */
-public class HomeCommand extends Command {
+public class UnInviteCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public HomeCommand() {
-        super(Collections.singletonList("home"), "Teleport to your island home", "", true);
+    public UnInviteCommand() {
+        super(Collections.singletonList("uninvite"), "Revoke an invitation to your island", "", true);
     }
 
     /**
@@ -37,8 +39,15 @@ public class HomeCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+        User unInvitedUser = IridiumSkyblockAPI.getInstance().getUser(Bukkit.getServer().getOfflinePlayer(args[1]));
         if (island.isPresent()) {
-            IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get());
+            Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), unInvitedUser);
+            if (islandInvite.isPresent()) {
+                IridiumSkyblock.getInstance().getDatabaseManager().deleteInvite(islandInvite.get());
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteRevoked.replace("%player%", unInvitedUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            } else {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteDoesntExist.replace("%player%", unInvitedUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }

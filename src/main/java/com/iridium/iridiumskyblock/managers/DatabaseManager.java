@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.managers;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandInvite;
 import com.iridium.iridiumskyblock.database.SchematicData;
 import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.dao.Dao;
@@ -32,11 +33,14 @@ public class DatabaseManager {
     private final Dao<User, UUID> userDao;
     private final Dao<Island, Integer> islandDao;
     private final Dao<SchematicData, String> schematicDao;
+    private final Dao<IslandInvite, Integer> islandInviteDao;
 
     @Getter
     private final List<User> userList;
     @Getter
     private final List<Island> islandList;
+    @Getter
+    private final List<IslandInvite> islandInviteList;
 
     /**
      * The default constructor.
@@ -57,16 +61,20 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, User.class);
         TableUtils.createTableIfNotExists(connectionSource, Island.class);
         TableUtils.createTableIfNotExists(connectionSource, SchematicData.class);
+        TableUtils.createTableIfNotExists(connectionSource, IslandInvite.class);
 
         this.userDao = DaoManager.createDao(connectionSource, User.class);
         this.islandDao = DaoManager.createDao(connectionSource, Island.class);
         this.schematicDao = DaoManager.createDao(connectionSource, SchematicData.class);
+        this.islandInviteDao = DaoManager.createDao(connectionSource, IslandInvite.class);
 
         userDao.setAutoCommit(getDatabaseConnection(), false);
         islandDao.setAutoCommit(getDatabaseConnection(), false);
+        islandInviteDao.setAutoCommit(getDatabaseConnection(), false);
 
         this.userList = getUsers();
         this.islandList = getIslands();
+        this.islandInviteList = getIslandInvites();
     }
 
     /**
@@ -131,8 +139,29 @@ public class DatabaseManager {
         return Collections.emptyList();
     }
 
+    /**
+     * Returns a list of all islandInvites in the database.
+     * Might be empty if an error occurs.
+     *
+     * @return a List of all islandInvites
+     */
+    private @NotNull List<IslandInvite> getIslandInvites() {
+        try {
+            return islandInviteDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Gets a list of Users from an island
+     *
+     * @param island The specified Island
+     * @return A list of users
+     */
     public @NotNull List<User> getIslandMembers(@NotNull Island island) {
-        return userList.stream().filter(user -> island.equals(user.getIsland())).collect(Collectors.toList());
+        return userList.stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
     }
 
     /**
@@ -148,6 +177,26 @@ public class DatabaseManager {
             exception.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+    /**
+     * Gets all IslandInvites for an Island
+     *
+     * @param island The island who's invites we are retrieving
+     * @return A list of Invites
+     */
+    public List<IslandInvite> getInvitesByIsland(@NotNull Island island) {
+        return islandInviteList.stream().filter(islandInvite -> island.equals(islandInvite.getIsland().orElse(null))).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all IslandInvites for a User
+     *
+     * @param user The user who's invites we are retrieving
+     * @return A list of Invites
+     */
+    public List<IslandInvite> getInvitesByUser(@NotNull User user) {
+        return islandInviteList.stream().filter(islandInvite -> user.equals(islandInvite.getUser())).collect(Collectors.toList());
     }
 
     /**
@@ -230,6 +279,21 @@ public class DatabaseManager {
     }
 
     /**
+     * Saves all islandInvites to the database.
+     * Creates them if they don't exist.
+     */
+    public void saveIslandInvites() {
+        try {
+            for (IslandInvite islandInvite : islandInviteList) {
+                islandInviteDao.createOrUpdate(islandInvite);
+            }
+            islandInviteDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
      * Saves all schematics to the database.
      * Creates them if they don't exist.
      */
@@ -256,6 +320,21 @@ public class DatabaseManager {
             islandList.remove(island);
             islandDao.commit(getDatabaseConnection());
             saveIslands();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Removes an IslandInvite from the database
+     *
+     * @param islandInvite The island Invite being deleted
+     */
+    public void deleteInvite(@NotNull IslandInvite islandInvite) {
+        try {
+            islandInviteDao.delete(islandInvite);
+            islandInviteList.remove(islandInvite);
+            islandInviteDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

@@ -1,10 +1,13 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,15 +16,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which deletes a User's Island'
+ * Command which creates a new island for an user.
  */
-public class HomeCommand extends Command {
+public class LeaveCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public HomeCommand() {
-        super(Collections.singletonList("home"), "Teleport to your island home", "", true);
+    public LeaveCommand() {
+        super(Collections.singletonList("leave"), "Leave your island", "", true);
     }
 
     /**
@@ -38,7 +41,19 @@ public class HomeCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get());
+            if (user.getIslandRank().equals(IslandRank.OWNER)) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotLeaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            } else {
+                user.setIsland(null);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                for (User member : island.get().getMembers()) {
+                    Player p = Bukkit.getPlayer(member.getUuid());
+                    if (p != null) {
+                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerLeftIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
+                }
+                PlayerUtils.teleportSpawn(player);
+            }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }

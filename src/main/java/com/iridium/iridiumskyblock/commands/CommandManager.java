@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Handles command executions and tab-completions for all commands of this plugin.
@@ -45,6 +47,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new HomeCommand());
         registerCommand(new AboutCommand());
         registerCommand(new SetHomeCommand());
+        registerCommand(new InviteCommand());
+        registerCommand(new UnInviteCommand());
+        registerCommand(new JoinCommand());
+        registerCommand(new LeaveCommand());
+        registerCommand(new MembersCommand());
+        registerCommand(new KickCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
@@ -84,10 +92,11 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             if (commandSender instanceof Player) {
                 Player p = (Player) commandSender;
                 User user = IridiumSkyblockAPI.getInstance().getUser(p);
-                if (user.getIsland() == null) {
-                    Bukkit.getServer().dispatchCommand(p, "is create");
+                Optional<Island> island = user.getIsland();
+                if (island.isPresent()) {
+                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, island.get());
                 } else {
-                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, user.getIsland());
+                    Bukkit.getServer().dispatchCommand(p, "is create");
                 }
                 return true;
             }

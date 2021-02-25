@@ -20,5 +20,20 @@ public class Messages {
     public String teleportingHome = "%prefix% &7Teleporting Home...";
     public String setHome = "%prefix% &7Your Island home has been set to this location.";
     public String isNotSafe = "%prefix% &7This location is not safe.";
-
+    public String invitedPlayer = "%prefix% &7You have invited %player% to join your island";
+    public String userInvitedPlayer = "%prefix% &7%inviter% has invited %player% to join your island";
+    public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their island";
+    public String inviteRevoked = "%prefix% &7Island invite for %player% has been revoked";
+    public String inviteDoesntExist = "%prefix% &7%player% has no active invite for your island.";
+    public String alreadyInvited = "%prefix% &7You have already invited this user to your island.";
+    public String playerJoinedYourIsland = "%prefix% &7%player% has joined your island!";
+    public String noInvite = "%prefix% &7You have not been invited to this island.";
+    public String userNoIsland = "%prefix% &7That user doesnt have an island.";
+    public String cannotLeaveIsland = "%prefix% &7You cannot leave your island, do /is delete instead.";
+    public String youHaveLeftIsland = "%prefix% &7You have left your island.";
+    public String playerLeftIsland = "%prefix% &7%player% has left your island.";
+    public String userNotInYourIsland = "%prefix% &7That user is not in your island.";
+    public String youKickedPlayer = "%prefix% &7You have kicked %player%.";
+    public String kickedPlayer = "%prefix% &7%kicker% has kicked %player%.";
+    public String YouHaveBeenKicked = "%prefix% &7You have been kicked by %player%.";
 }

@@ -4,26 +4,27 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.IslandRegenGUI;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Command which creates a new island for an user.
  */
-public class RegenCommand extends Command {
+public class KickCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public RegenCommand() {
-        super(Collections.singletonList("regen"), "Regenerate an island", "", true);
+    public KickCommand() {
+        super(Collections.singletonList("kick"), "Kick a player", "", true);
     }
 
     /**
@@ -40,10 +41,27 @@ public class RegenCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            if (args.length == 1) {
-                player.openInventory(new IslandRegenGUI(player).getInventory());
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[1]);
+            User offlineUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
+            if (island.get().equals(offlineUser.getIsland().orElse(null))) {
+                //TODO implement ranks and people cant kick ranks higher then theirs
+                if (offlinePlayer instanceof Player) {
+                    ((Player) offlinePlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().YouHaveBeenKicked.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    PlayerUtils.teleportSpawn((Player) offlinePlayer);
+                }
+                offlineUser.setIsland(null);
+                for (User member : island.get().getMembers()) {
+                    Player p = Bukkit.getPlayer(member.getUuid());
+                    if (p != null) {
+                        if (p != player) {
+                            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().kickedPlayer.replace("%kicker%", player.getName()).replace("%player%", offlineUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        } else {
+                            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youKickedPlayer.replace("%player%", offlineUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        }
+                    }
+                }
             } else {
-                IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), args[1]);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -61,9 +79,6 @@ public class RegenCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (args.length == 2) {
-            return IridiumSkyblock.getInstance().getSchematics().schematics.stream().map(schematicConfig -> schematicConfig.name).collect(Collectors.toList());
-        }
         return null;
     }
 
