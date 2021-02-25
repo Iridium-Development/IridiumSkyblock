@@ -35,5 +35,6 @@ public class Messages {
     public String userNotInYourIsland = "%prefix% &7That user is not in your island.";
     public String youKickedPlayer = "%prefix% &7You have kicked %player%.";
     public String kickedPlayer = "%prefix% &7%kicker% has kicked %player%.";
-    public String YouHaveBeenKicked = "%prefix% &7You have been kicked by %player%.";
+    public String youHaveBeenKicked = "%prefix% &7You have been kicked by %player%.";
+    public String cannotKickUser = "%prefix% &7You cannot kick this user";
 }
