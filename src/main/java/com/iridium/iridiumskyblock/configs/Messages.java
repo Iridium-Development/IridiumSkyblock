@@ -38,4 +38,10 @@ public class Messages {
     public String youHaveBeenKicked = "%prefix% &7You have been kicked by %player%.";
     public String cannotKickUser = "%prefix% &7You cannot kick this user";
     public String cannotDeleteIsland = "%prefix% &7Only the Island Owner can delete an island";
+    public String cannotPromoteUser = "%prefix% &7You cannot promote this user.";
+    public String promotedPlayer = "%prefix% &7You have promoted %player% to %rank%.";
+    public String userPromotedPlayer = "%prefix% &7%promoter% has promoted %player% to %rank%.";
+    public String cannotDemoteUser = "%prefix% &7You cannot demote this user.";
+    public String demotedPlayer = "%prefix% &7You have demoted %player% to %rank%.";
+    public String userDemotedPlayer = "%prefix% &7%promoter% has demoted %player% to %rank%.";
 }
