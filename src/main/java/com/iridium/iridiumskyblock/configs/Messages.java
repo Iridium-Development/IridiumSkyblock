@@ -44,4 +44,5 @@ public class Messages {
     public String cannotDemoteUser = "%prefix% &7You cannot demote this user.";
     public String demotedPlayer = "%prefix% &7You have demoted %player% to %rank%.";
     public String userDemotedPlayer = "%prefix% &7%promoter% has demoted %player% to %rank%.";
+    public String transferredOwnership = "%prefix% &7%oldowner% has transferred Island ownership to %newowner%.";
 }
