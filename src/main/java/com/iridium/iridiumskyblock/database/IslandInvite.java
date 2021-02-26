@@ -34,8 +34,7 @@ public final class IslandInvite {
     private @NotNull UUID inviter;
 
     @DatabaseField(columnName = "time", canBeNull = false)
-    @NotNull
-    private Long time;
+    private long time;
 
     public @NotNull Optional<Island> getIsland() {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);

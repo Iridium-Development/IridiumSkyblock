@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class VisitGUI implements GUI {
@@ -24,44 +23,48 @@ public class VisitGUI implements GUI {
 
     public VisitGUI(int page) {
         this.page = page;
-        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable).collect(Collectors.toList());
-        int toIndex = page * IridiumSkyblock.getInstance().getInventories().visitGuiSize;
-        int fromIndex = toIndex - IridiumSkyblock.getInstance().getInventories().visitGuiSize;
-        islands = islandList.subList(fromIndex, Math.min(islandList.size(), toIndex));
+        this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable).collect(Collectors.toList());
     }
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        // TODO: Add a check thing for next/previous page is exist
         if (event.getSlot() == getInventory().getSize() - 7) {
-            event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
+            if (page > 1) {
+                event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
+            }
         } else if (event.getSlot() == getInventory().getSize() - 3) {
-            event.getWhoClicked().openInventory(new VisitGUI(page + 1).getInventory());
+            if ((event.getInventory().getSize() - 9) * page < islands.size()) {
+                event.getWhoClicked().openInventory(new VisitGUI(page + 1).getInventory());
+            }
         } else if (event.getSlot() + 1 <= islands.size()) {
-            Optional<Island> islandOptional = Optional.ofNullable(islands.get(event.getSlot()));
-            islandOptional.ifPresent(island -> IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island));
+            int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
+            if (islands.size() > index) {
+                Island island = islands.get(index);
+                IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
+            }
         }
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().visitGuiSize, StringUtils.color("&7Visitable Islands"));
+        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().visitGuiSize, StringUtils.color("&7Visit an Island"));
         for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
         }
-        inventory.setItem(getInventory().getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
-        inventory.setItem(getInventory().getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
-        for (int i = 0; i < islands.size() - 1; i++) {
-            Optional<Island> islandOptional = Optional.ofNullable(islands.get(i));
-            int finalI = i;
-            islandOptional.ifPresent(island -> inventory.setItem(finalI, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
-                    new Placeholder("name", island.getName()),
-                    new Placeholder("membersize", String.valueOf(island.getMembers().size())),
-                    // TODO: get this date format from config (i couldn't cause that added after then this branch created)
-                    new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern("EEEE, MMMM dd HH:mm:ss")))
-            ))));
-            if (islandOptional.isPresent()) i++;
+        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
+        int slot = 0;
+        for (int i = 0; i < islands.size(); i++) {
+            if (i >= (inventory.getSize() - 9) * (page - 1) && i < (inventory.getSize() - 9) * page) {
+                Island island = islands.get(i);
+                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
+                        new Placeholder("name", island.getName()),
+                        new Placeholder("owner", island.getOwner().isPresent() ? island.getOwner().get().getName() : island.getName()),
+                        new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
+                )));
+                slot++;
+            }
         }
         return inventory;
     }

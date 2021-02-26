@@ -49,7 +49,7 @@ public final class Island {
     private boolean visitable;
 
     @DatabaseField(columnName = "create_time")
-    private @NotNull Long time;
+    private long time;
 
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
