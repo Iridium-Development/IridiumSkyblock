@@ -36,7 +36,7 @@ public final class User {
     private @Nullable Integer island;
 
     @DatabaseField(columnName = "join_time")
-    private @NotNull Long joinTime;
+    private long joinTime;
 
     @DatabaseField(columnName = "island_rank")
     private @NotNull IslandRank islandRank;
