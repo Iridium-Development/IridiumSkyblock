@@ -13,6 +13,8 @@ public class Configuration {
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
 
+    public boolean defaultIslandPublic = true;
+
     public int distance = 151;
     public int schematicPastingDelay = 1;
 
