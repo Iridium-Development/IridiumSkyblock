@@ -24,7 +24,7 @@ public class VisitGUI implements GUI {
 
     public VisitGUI(int page) {
         this.page = page;
-        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::getVisitable).collect(Collectors.toList());
+        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable).collect(Collectors.toList());
         int toIndex = page * IridiumSkyblock.getInstance().getInventories().visitGuiSize;
         int fromIndex = toIndex - IridiumSkyblock.getInstance().getInventories().visitGuiSize;
         islands = islandList.subList(fromIndex, Math.min(islandList.size(), toIndex));
@@ -52,14 +52,11 @@ public class VisitGUI implements GUI {
         }
         inventory.setItem(getInventory().getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(getInventory().getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
-        int i = 0;
-        while (i <= (islands.size() - 1)) {
+        for (int i = 0; i < islands.size() - 1; i++) {
             Optional<Island> islandOptional = Optional.ofNullable(islands.get(i));
             int finalI = i;
             islandOptional.ifPresent(island -> inventory.setItem(finalI, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
                     new Placeholder("name", island.getName()),
-                    new Placeholder("votes", String.valueOf(island.getVotes())),
-                    new Placeholder("value", String.valueOf(island.getValue())),
                     new Placeholder("membersize", String.valueOf(island.getMembers().size())),
                     // TODO: get this date format from config (i couldn't cause that added after then this branch created)
                     new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern("EEEE, MMMM dd HH:mm:ss")))

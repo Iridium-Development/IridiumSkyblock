@@ -45,14 +45,8 @@ public final class Island {
     @DatabaseField(columnName = "home")
     private @NotNull String home;
 
-    @DatabaseField(columnName = "value")
-    private @NotNull Double value;
-
-    @DatabaseField(columnName = "votes")
-    private @NotNull Integer votes;
-
     @DatabaseField(columnName = "visit")
-    private @NotNull Boolean visitable;
+    private boolean visitable;
 
     @DatabaseField(columnName = "create_time")
     private @NotNull Long time;

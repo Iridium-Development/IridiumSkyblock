@@ -39,10 +39,9 @@ public class PrivateCommand extends Command {
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
             island.get().setVisitable(false);
-            int amount = IridiumSkyblock.getInstance().getIslandManager().privateIsland(island.get());
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%amount%", String.valueOf(amount))));
+                    .replace("%amount%", String.valueOf(0))));
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
