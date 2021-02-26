@@ -73,7 +73,7 @@ public final class Island {
      * @return A list of all Users belonging to the island
      */
     public List<User> getMembers() {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(this);
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(this);
     }
 
     /**

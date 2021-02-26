@@ -15,8 +15,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -39,6 +41,8 @@ public class DatabaseManager {
     private final List<Island> islandList;
     @Getter
     private final List<IslandInvite> islandInviteList;
+    @Getter
+    private final List<SchematicData> schematicDataList;
     @Getter
     private final List<IslandPermission> islandPermissionList;
 
@@ -78,6 +82,7 @@ public class DatabaseManager {
         this.userList = getUsers();
         this.islandList = getIslands();
         this.islandInviteList = getIslandInvites();
+        this.schematicDataList = getSchematics();
         this.islandPermissionList = getIslandPermissions();
     }
 
@@ -174,78 +179,18 @@ public class DatabaseManager {
     }
 
     /**
-     * Gets a list of Users from an island
-     *
-     * @param island The specified Island
-     * @return A list of users
-     */
-    public @NotNull List<User> getIslandMembers(@NotNull Island island) {
-        return userList.stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
-    }
-
-    /**
      * Returns a list of all schematics in the database.
      * Might be empty if an error occurs.
      *
      * @return a list of all schematics in the database
      */
-    public @NotNull List<SchematicData> getSchematics() {
+    private @NotNull List<SchematicData> getSchematics() {
         try {
             return schematicDao.queryForAll();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return new ArrayList<>();
-    }
-
-    /**
-     * Gets all IslandInvites for an Island
-     *
-     * @param island The island who's invites we are retrieving
-     * @return A list of Invites
-     */
-    public List<IslandInvite> getInvitesByIsland(@NotNull Island island) {
-        return islandInviteList.stream().filter(islandInvite -> island.equals(islandInvite.getIsland().orElse(null))).collect(Collectors.toList());
-    }
-
-    /**
-     * Gets all IslandInvites for a User
-     *
-     * @param user The user who's invites we are retrieving
-     * @return A list of Invites
-     */
-    public List<IslandInvite> getInvitesByUser(@NotNull User user) {
-        return islandInviteList.stream().filter(islandInvite -> user.equals(islandInvite.getUser())).collect(Collectors.toList());
-    }
-
-    /**
-     * Finds an User by his {@link UUID}.
-     *
-     * @param uuid The uuid of the onlyForPlayers
-     * @return the User class of the onlyForPlayers
-     */
-    public Optional<User> getUserByUUID(@NotNull UUID uuid) {
-        return userList.stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
-    }
-
-    /**
-     * Finds an Island by its id.
-     *
-     * @param id The id of the island
-     * @return An Optional with the Island, empty if there is none
-     */
-    public Optional<Island> getIslandById(int id) {
-        return islandList.stream().filter(island -> island.getId() == id).findFirst();
-    }
-
-    /**
-     * Finds an Island by its name.
-     *
-     * @param name The name of the island
-     * @return An Optional with the Island, empty if there is none
-     */
-    public Optional<Island> getIslandByName(String name) {
-        return islandList.stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     /**
@@ -332,9 +277,9 @@ public class DatabaseManager {
      * Creates them if they don't exist.
      */
 
-    public void saveSchematics(@NotNull Collection<SchematicData> schematics) {
+    public void saveSchematics() {
         try {
-            for (SchematicData schematic : schematics) {
+            for (SchematicData schematic : schematicDataList) {
                 schematicDao.createOrUpdate(schematic);
             }
         } catch (SQLException exception) {

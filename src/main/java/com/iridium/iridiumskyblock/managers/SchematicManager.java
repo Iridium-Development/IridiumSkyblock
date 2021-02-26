@@ -4,41 +4,36 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Schematic;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.SchematicData;
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * Class which handles schematics and pastes them.
  */
 public class SchematicManager {
-    @Getter
-    private final List<SchematicData> schematics;
 
     // If we cant find a schematic by the id we will use this one instead
     private final SchematicData defaultSchematic;
 
     public SchematicManager() {
-        this.schematics = IridiumSkyblock.getInstance().getDatabaseManager().getSchematics();
         // The default schematic, if we cant find a schematic by its id the plugin will use this one instead.
         this.defaultSchematic = new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10)));
-        if (schematics.size() == 0) addDefaultSchematics();
+        if (IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().size() == 0) addDefaultSchematics();
 
         // Saves the new schematics we added to the database.
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().saveSchematics(schematics));
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().saveSchematics());
     }
 
     /**
      * Adds the default schematics to the list
      */
     private void addDefaultSchematics() {
-        schematics.add(new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10))));
-        schematics.add(new SchematicData("test2", new Schematic(new Location(Bukkit.getWorlds().get(0), 20, 60, 20), new Location(Bukkit.getWorlds().get(0), 30, 78, 30))));
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10))));
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(new SchematicData("test2", new Schematic(new Location(Bukkit.getWorlds().get(0), 20, 60, 20), new Location(Bukkit.getWorlds().get(0), 30, 78, 30))));
     }
 
 
@@ -52,7 +47,7 @@ public class SchematicManager {
      */
     public CompletableFuture<Void> pasteSchematic(final Island island, final World world, final String schematicID, final int delay) {
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        Schematic schematic = schematics.stream().filter(schematicData -> schematicData.getId().equalsIgnoreCase(schematicID)).findFirst().orElse(defaultSchematic).getSchematic();
+        Schematic schematic = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().stream().filter(schematicData -> schematicData.getId().equalsIgnoreCase(schematicID)).findFirst().orElse(defaultSchematic).getSchematic();
 
         pasteSchematic(island, world, schematic, completableFuture, 0, delay);
 

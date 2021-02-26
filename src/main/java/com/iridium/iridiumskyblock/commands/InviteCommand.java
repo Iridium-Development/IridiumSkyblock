@@ -42,7 +42,7 @@ public class InviteCommand extends Command {
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteList().add(islandInvite);
                     String playerName = offlinePlayer.getName() != null ? offlinePlayerUser.getName() : args[1];
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedPlayer.replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    for (User member : IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(island.get())) {
+                    for (User member : IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island.get())) {
                         Player islandMember = Bukkit.getPlayer(member.getUuid());
                         if (islandMember == null || islandMember.equals(player)) continue;
                         islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userInvitedPlayer.replace("%inviter%", player.getName()).replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
