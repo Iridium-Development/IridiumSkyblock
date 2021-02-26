@@ -35,6 +35,9 @@ public class Messages {
     public String userNotInYourIsland = "%prefix% &7That user is not in your island.";
     public String youKickedPlayer = "%prefix% &7You have kicked %player%.";
     public String kickedPlayer = "%prefix% &7%kicker% has kicked %player%.";
+    public String islandIsPrivate = "%prefix% &7That player's island is private.";
+    public String islandNowPrivate = "%prefix% &7Your island is now private and %amount% players have been expelled from your island";
+    public String islandNowPublic = "%prefix% &7Your island is now public.";
     public String youHaveBeenKicked = "%prefix% &7You have been kicked by %player%.";
     public String cannotKickUser = "%prefix% &7You cannot kick this user";
     public String cannotDeleteIsland = "%prefix% &7Only the Island Owner can delete an island";
