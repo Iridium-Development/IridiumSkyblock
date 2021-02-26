@@ -37,7 +37,7 @@ public final class IslandInvite {
     private long time;
 
     public @NotNull Optional<Island> getIsland() {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
 
     public User getUser() {

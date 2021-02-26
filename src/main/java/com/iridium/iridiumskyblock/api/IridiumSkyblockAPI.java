@@ -38,15 +38,7 @@ public class IridiumSkyblockAPI {
      * @since 3.0.0
      */
     public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
-        Optional<User> userOptional = iridiumSkyblock.getDatabaseManager().getUserByUUID(offlinePlayer.getUniqueId());
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
-            Optional<String> name = Optional.ofNullable(offlinePlayer.getName());
-            User user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
-            iridiumSkyblock.getDatabaseManager().getUserList().add(user);
-            return user;
-        }
+        return IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
     }
 
     /**
@@ -57,7 +49,7 @@ public class IridiumSkyblockAPI {
      * @since 3.0.0
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        return iridiumSkyblock.getDatabaseManager().getIslandList().stream().filter(island -> island.isInIsland(location)).findFirst();
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(location);
     }
 
     /**

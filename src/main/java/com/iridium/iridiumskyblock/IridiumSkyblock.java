@@ -13,6 +13,7 @@ import com.iridium.iridiumskyblock.listeners.PlayerTeleportListener;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
+import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.nms.v1_16_R3;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -46,6 +47,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
     private IslandManager islandManager;
+    private UserManager userManager;
     private SchematicManager schematicManager;
 
     private Configuration configuration;
@@ -84,6 +86,7 @@ public class IridiumSkyblock extends DependencyPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
         this.islandManager = new IslandManager();
+        this.userManager = new UserManager();
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
 
         // Initialize the API

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * Class which handles islands and their worlds.
@@ -63,7 +64,7 @@ public class IslandManager {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandByName(name).isPresent()) {
+        if (getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
@@ -150,6 +151,56 @@ public class IslandManager {
     }
 
     /**
+     * Gets a list of Users from an island
+     *
+     * @param island The specified Island
+     * @return A list of users
+     */
+    public @NotNull List<User> getIslandMembers(@NotNull Island island) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all IslandInvites for an Island
+     *
+     * @param island The island who's invites we are retrieving
+     * @return A list of Invites
+     */
+    public List<IslandInvite> getInvitesByIsland(@NotNull Island island) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteList().stream().filter(islandInvite -> island.equals(islandInvite.getIsland().orElse(null))).collect(Collectors.toList());
+    }
+
+    /**
+     * Finds an Island by its id.
+     *
+     * @param id The id of the island
+     * @return An Optional with the Island, empty if there is none
+     */
+    public Optional<Island> getIslandById(int id) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(island -> island.getId() == id).findFirst();
+    }
+
+    /**
+     * Finds an Island by its name.
+     *
+     * @param name The name of the island
+     * @return An Optional with the Island, empty if there is none
+     */
+    public Optional<Island> getIslandByName(String name) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
+    }
+
+    /**
+     * Gets an {@link Island} from a location.
+     *
+     * @param location The location you are looking at
+     * @return Optional of the island at the location, empty if there is none
+     */
+    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(island -> island.isInIsland(location)).findFirst();
+    }
+
+    /**
      * Deletes all blocks in an Island.
      * Starts at the top and works down to y = 0
      *
@@ -188,7 +239,7 @@ public class IslandManager {
     public void deleteIsland(@NotNull Island island) {
         deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld(), 3);
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().deleteIsland(island));
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandMembers(island).forEach(user -> {
+        IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).forEach(user -> {
             Player player = Bukkit.getPlayer(user.getUuid());
             if (player != null) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

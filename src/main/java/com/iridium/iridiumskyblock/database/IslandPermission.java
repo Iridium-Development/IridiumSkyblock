@@ -27,7 +27,7 @@ public final class IslandPermission {
     private boolean allowed;
 
     public @NotNull Optional<Island> getIsland() {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
 
     public IslandPermission(@NotNull Island island, @NotNull String permission, boolean allowed) {

@@ -43,7 +43,7 @@ public final class User {
 
     public @NotNull Optional<Island> getIsland() {
         if (island == null) return Optional.empty();
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandById(island);
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
 
     public void setIsland(@Nullable Island island) {
