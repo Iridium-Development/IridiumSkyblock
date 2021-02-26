@@ -2,10 +2,7 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandInvite;
-import com.iridium.iridiumskyblock.database.SchematicData;
-import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.database.*;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -34,6 +31,7 @@ public class DatabaseManager {
     private final Dao<Island, Integer> islandDao;
     private final Dao<SchematicData, String> schematicDao;
     private final Dao<IslandInvite, Integer> islandInviteDao;
+    private final Dao<IslandPermission, Integer> islandPermissionDao;
 
     @Getter
     private final List<User> userList;
@@ -41,6 +39,8 @@ public class DatabaseManager {
     private final List<Island> islandList;
     @Getter
     private final List<IslandInvite> islandInviteList;
+    @Getter
+    private final List<IslandPermission> islandPermissionList;
 
     /**
      * The default constructor.
@@ -62,19 +62,23 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, Island.class);
         TableUtils.createTableIfNotExists(connectionSource, SchematicData.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandInvite.class);
+        TableUtils.createTableIfNotExists(connectionSource, IslandPermission.class);
 
         this.userDao = DaoManager.createDao(connectionSource, User.class);
         this.islandDao = DaoManager.createDao(connectionSource, Island.class);
         this.schematicDao = DaoManager.createDao(connectionSource, SchematicData.class);
         this.islandInviteDao = DaoManager.createDao(connectionSource, IslandInvite.class);
+        this.islandPermissionDao = DaoManager.createDao(connectionSource, IslandPermission.class);
 
         userDao.setAutoCommit(getDatabaseConnection(), false);
         islandDao.setAutoCommit(getDatabaseConnection(), false);
         islandInviteDao.setAutoCommit(getDatabaseConnection(), false);
+        islandPermissionDao.setAutoCommit(getDatabaseConnection(), false);
 
         this.userList = getUsers();
         this.islandList = getIslands();
         this.islandInviteList = getIslandInvites();
+        this.islandPermissionList = getIslandPermissions();
     }
 
     /**
@@ -148,6 +152,21 @@ public class DatabaseManager {
     private @NotNull List<IslandInvite> getIslandInvites() {
         try {
             return islandInviteDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Returns a list of all islandPermissions in the database.
+     * Might be empty if an error occurs.
+     *
+     * @return a List of all islandPermissions
+     */
+    private @NotNull List<IslandPermission> getIslandPermissions() {
+        try {
+            return islandPermissionDao.queryForAll();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -288,6 +307,21 @@ public class DatabaseManager {
                 islandInviteDao.createOrUpdate(islandInvite);
             }
             islandInviteDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves all islandPermissions to the database.
+     * Creates them if they don't exist.
+     */
+    public void saveIslandPermissions() {
+        try {
+            for (IslandPermission islandPermission : islandPermissionList) {
+                islandPermissionDao.createOrUpdate(islandPermission);
+            }
+            islandPermissionDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
