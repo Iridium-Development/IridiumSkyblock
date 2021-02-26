@@ -48,6 +48,7 @@ public final class User {
 
     public void setIsland(@Nullable Island island) {
         this.island = island == null ? null : island.getId();
+        setJoinTime(LocalDateTime.now());
     }
 
     public LocalDateTime getJoinTime() {
