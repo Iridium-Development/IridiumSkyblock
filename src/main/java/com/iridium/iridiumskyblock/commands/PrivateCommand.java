@@ -21,7 +21,7 @@ public class PrivateCommand extends Command {
      * The default constructor.
      */
     public PrivateCommand() {
-        super(Collections.singletonList("private"), "Make your island to unvisitable", "", true);
+        super(Collections.singletonList("private"), "Make your island private", "", true);
     }
 
     /**
@@ -39,9 +39,7 @@ public class PrivateCommand extends Command {
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
             island.get().setVisitable(false);
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%amount%", String.valueOf(0))));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
