@@ -1,10 +1,12 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -23,16 +25,21 @@ public final class IslandPermission {
     @DatabaseField(columnName = "permission", canBeNull = false)
     private @NotNull String permission;
 
+    @DatabaseField(columnName = "rank", canBeNull = false)
+    private @NotNull IslandRank rank;
+
     @DatabaseField(columnName = "allowed", canBeNull = false)
+    @Setter
     private boolean allowed;
 
     public @NotNull Optional<Island> getIsland() {
         return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
 
-    public IslandPermission(@NotNull Island island, @NotNull String permission, boolean allowed) {
+    public IslandPermission(@NotNull Island island, @NotNull String permission, @NotNull IslandRank rank, boolean allowed) {
         this.island = island.getId();
         this.permission = permission;
+        this.rank = rank;
         this.allowed = allowed;
     }
 

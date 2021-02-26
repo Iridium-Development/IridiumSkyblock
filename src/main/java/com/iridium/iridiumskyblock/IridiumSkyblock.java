@@ -55,6 +55,7 @@ public class IridiumSkyblock extends DependencyPlugin {
     private SQL sql;
     private Schematics schematics;
     private Inventories inventories;
+    private Permissions permissions;
 
     private ChunkGenerator chunkGenerator;
 
@@ -164,6 +165,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.sql = persist.load(SQL.class);
         this.schematics = persist.load(Schematics.class);
         this.inventories = persist.load(Inventories.class);
+        this.permissions = persist.load(Permissions.class);
     }
 
     /**
@@ -177,6 +179,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         this.persist.save(sql);
         this.persist.save(schematics);
         this.persist.save(inventories);
+        this.persist.save(permissions);
     }
 
     public static IridiumSkyblock getInstance() {

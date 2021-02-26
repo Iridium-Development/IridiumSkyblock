@@ -2,10 +2,12 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.Permission;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
+import com.iridium.iridiumskyblock.database.IslandPermission;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -198,6 +200,36 @@ public class IslandManager {
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(island -> island.isInIsland(location)).findFirst();
+    }
+
+    /**
+     * Gets weather a permission is allowed or denied
+     *
+     * @param island     The specified Island
+     * @param islandRank The Specified Rank
+     * @param permission The Specified permission
+     * @return The the permission is allowed
+     */
+    public boolean getIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
+        Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionList().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
+        return islandPermission.map(IslandPermission::isAllowed).orElseGet(() -> islandRank.getLevel() >= permission.getDefaultRank().getLevel());
+    }
+
+    /**
+     * Sets weather a permission is allowed or denied
+     *
+     * @param island     The specified Island
+     * @param islandRank The specified Rank
+     * @param permission The specified Permission
+     * @param allowed    If the permission is allowed
+     */
+    public void setIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull String permission, boolean allowed) {
+        Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionList().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
+        if (islandPermission.isPresent()) {
+            islandPermission.get().setAllowed(allowed);
+        } else {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionList().add(new IslandPermission(island, permission, islandRank, allowed));
+        }
     }
 
     /**
