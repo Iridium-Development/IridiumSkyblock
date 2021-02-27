@@ -54,16 +54,25 @@ public class IridiumSkyblock extends JavaPlugin {
     private ChunkGenerator chunkGenerator;
 
     /**
+     * Code that should be executed before this plugin gets enabled.
+     * Sets the default world generator.
+     */
+    @Override
+    public void onLoad() {
+        chunkGenerator = new SkyblockGenerator();
+
+        // Load all dependencies that are required by this plugin
+        loadDependencies();
+    }
+
+    /**
      * Plugin startup logic.
      */
     @Override
     public void onEnable() {
         instance = this;
 
-        // Load all dependencies that are required by this plugin
-        loadDependencies();
-
-        chunkGenerator = new SkyblockGenerator();
+        getDataFolder().mkdir();
 
         // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
@@ -81,6 +90,8 @@ public class IridiumSkyblock extends JavaPlugin {
             exception.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
         }
+
+        // Initialize the manager classes (bad) and create the world
         this.islandManager = new IslandManager();
         this.userManager = new UserManager();
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
@@ -111,13 +122,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private void loadDependencies() {
         PluginDependencyManager dependencyManager = SpigotDependencyManager.of(this);
         CompletableFuture<Void> loadAllDependencies = dependencyManager.loadAllDependencies();
-        try {
-            loadAllDependencies.thenRun(() -> getLogger().info("Successfully loaded all dependencies!")).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            getLogger().warning("Could not load all dependencies.");
-            exception.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
+        loadAllDependencies.thenRun(() -> getLogger().info("Successfully loaded all dependencies!"));
     }
 
     /**
