@@ -1,8 +1,5 @@
 package com.iridium.iridiumskyblock;
 
-import com.heretere.hdl.dependency.maven.annotation.MavenDependency;
-import com.heretere.hdl.relocation.annotation.Relocation;
-import com.heretere.hdl.spigot.DependencyPlugin;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
@@ -16,26 +13,25 @@ import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.nms.v1_16_R3;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.Getter;
+import me.bristermitten.pdm.PluginDependencyManager;
+import me.bristermitten.pdm.SpigotDependencyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 /**
  * The main class of this plugin which handles initialization
  * and shutdown of the plugin.
  */
-@MavenDependency("com|fasterxml|jackson|core:jackson-databind:2.12.1")
-@MavenDependency("com|fasterxml|jackson|core:jackson-core:2.12.1")
-@MavenDependency("com|fasterxml|jackson|core:jackson-annotations:2.12.1")
-@MavenDependency("com|fasterxml|jackson|dataformat:jackson-dataformat-yaml:2.12.1")
-@MavenDependency("org|yaml:snakeyaml:1.27")
-@Relocation(from = "org|yaml", to = "com|iridium|iridiumskyblock")
 @Getter
-public class IridiumSkyblock extends DependencyPlugin {
+public class IridiumSkyblock extends JavaPlugin {
 
     private static IridiumSkyblock instance;
 
@@ -57,17 +53,18 @@ public class IridiumSkyblock extends DependencyPlugin {
 
     private ChunkGenerator chunkGenerator;
 
-    @Override
-    public void load() {
-        chunkGenerator = new SkyblockGenerator();
-    }
-
     /**
      * Plugin startup logic.
      */
     @Override
-    public void enable() {
+    public void onEnable() {
         instance = this;
+
+        // Load all dependencies that are required by this plugin
+        loadDependencies();
+
+        chunkGenerator = new SkyblockGenerator();
+
         // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
         loadConfigs();
@@ -111,6 +108,18 @@ public class IridiumSkyblock extends DependencyPlugin {
         getLogger().info("----------------------------------------");
     }
 
+    private void loadDependencies() {
+        PluginDependencyManager dependencyManager = SpigotDependencyManager.of(this);
+        CompletableFuture<Void> loadAllDependencies = dependencyManager.loadAllDependencies();
+        try {
+            loadAllDependencies.thenRun(() -> getLogger().info("Successfully loaded all dependencies!")).get();
+        } catch (InterruptedException | ExecutionException exception) {
+            getLogger().warning("Could not load all dependencies.");
+            exception.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+    }
+
     /**
      * Sets the {@link ChunkGenerator} for the Skyblock worlds.
      */
@@ -124,7 +133,7 @@ public class IridiumSkyblock extends DependencyPlugin {
      * Plugin shutdown logic.
      */
     @Override
-    public void disable() {
+    public void onDisable() {
         saveData();
         getLogger().info("-------------------------------");
         getLogger().info("");
