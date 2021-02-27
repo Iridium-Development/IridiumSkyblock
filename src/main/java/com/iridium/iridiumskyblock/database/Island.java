@@ -97,15 +97,6 @@ public final class Island {
     }
 
     /**
-     * Milliseconds of date this island was created
-     *
-     * @return A LocalDateTime of this island was created
-     */
-    public LocalDateTime getCreateTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(getTime()), ZoneId.systemDefault());
-    }
-
-    /**
      * Alters the spawn Location of this island.
      *
      * @param location The new home Location
@@ -113,6 +104,15 @@ public final class Island {
     public void setHome(@NotNull Location location) {
         Location homeLocation = getCenter(location.getWorld()).subtract(location);
         this.home = homeLocation.getX() + "," + homeLocation.getY() + "," + homeLocation.getZ() + "," + homeLocation.getPitch() + "," + homeLocation.getYaw();
+    }
+
+    /**
+     * Milliseconds of date this island was created
+     *
+     * @return A LocalDateTime of this island was created
+     */
+    public LocalDateTime getCreateTime() {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(getTime()), ZoneId.systemDefault());
     }
 
     /**

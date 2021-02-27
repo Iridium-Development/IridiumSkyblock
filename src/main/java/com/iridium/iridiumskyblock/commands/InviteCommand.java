@@ -35,14 +35,18 @@ public class InviteCommand extends Command {
             } else {
                 OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
                 User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
-                if (IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), offlinePlayerUser).isPresent()) {
+                List<User> islandMembers = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island.get());
+                if (islandMembers.contains(user)) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
+                else if (IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), offlinePlayerUser).isPresent()) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInvited.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 } else {
                     IslandInvite islandInvite = new IslandInvite(island.get(), offlinePlayerUser, user);
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteList().add(islandInvite);
                     String playerName = offlinePlayer.getName() != null ? offlinePlayerUser.getName() : args[1];
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedPlayer.replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    for (User member : IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island.get())) {
+                    for (User member : islandMembers) {
                         Player islandMember = Bukkit.getPlayer(member.getUuid());
                         if (islandMember == null || islandMember.equals(player)) continue;
                         islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userInvitedPlayer.replace("%inviter%", player.getName()).replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
