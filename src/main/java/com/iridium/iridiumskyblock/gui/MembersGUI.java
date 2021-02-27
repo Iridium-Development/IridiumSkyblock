@@ -31,9 +31,9 @@ public class MembersGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
-            if (event.getClick().equals(ClickType.RIGHT)) {
+            if (event.getClick().equals(ClickType.LEFT)) {
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is demote " + user.getName());
-            } else {
+            } else if (event.getClick().equals(ClickType.RIGHT)) {
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is promote " + user.getName());
             }
             event.getWhoClicked().openInventory(getInventory());
