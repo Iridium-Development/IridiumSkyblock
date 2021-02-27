@@ -48,4 +48,6 @@ public class Messages {
     public String demotedPlayer = "%prefix% &7You have demoted %player% to %rank%.";
     public String userDemotedPlayer = "%prefix% &7%promoter% has demoted %player% to %rank%.";
     public String transferredOwnership = "%prefix% &7%oldowner% has transferred Island ownership to %newowner%.";
+    public String cannotBreakBlocks = "%prefix% &7You cannot break blocks on this island.";
+    public String cannotPlaceBlocks = "%prefix% &7You cannot place blocks on this island.";
 }
