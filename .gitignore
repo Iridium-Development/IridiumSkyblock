@@ -1,4 +1,3 @@
-
 # Created by https://www.toptal.com/developers/gitignore/api/maven,intellij,eclipse,windows,linux,macos,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=maven,intellij,eclipse,windows,linux,macos,visualstudiocode
 
@@ -269,3 +268,7 @@ $RECYCLE.BIN/
 
 .idea/misc.xml
 .idea/discord.xml
+
+build/
+.idea/
+.gradle/
