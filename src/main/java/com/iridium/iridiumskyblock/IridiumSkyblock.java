@@ -122,7 +122,13 @@ public class IridiumSkyblock extends JavaPlugin {
     private void loadDependencies() {
         PluginDependencyManager dependencyManager = SpigotDependencyManager.of(this);
         CompletableFuture<Void> loadAllDependencies = dependencyManager.loadAllDependencies();
-        loadAllDependencies.thenRun(() -> getLogger().info("Successfully loaded all dependencies!"));
+        try {
+            loadAllDependencies.thenRun(() -> getLogger().info("Successfully loaded all dependencies!")).get();
+        } catch (InterruptedException | ExecutionException e) {
+            getLogger().warning("Failed to load the required dependencies!");
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
     }
 
     /**
