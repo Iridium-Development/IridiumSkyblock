@@ -50,4 +50,5 @@ public class Messages {
     public String transferredOwnership = "%prefix% &7%oldowner% has transferred Island ownership to %newowner%.";
     public String cannotBreakBlocks = "%prefix% &7You cannot break blocks on this island.";
     public String cannotPlaceBlocks = "%prefix% &7You cannot place blocks on this island.";
+    public String cannotUseBuckets = "%prefix% &7You cannot use buckets on this island.";
 }
