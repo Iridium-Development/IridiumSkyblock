@@ -53,4 +53,7 @@ public class Messages {
     public String cannotBreakBlocks = "%prefix% &7You cannot break blocks on this island.";
     public String cannotPlaceBlocks = "%prefix% &7You cannot place blocks on this island.";
     public String cannotUseBuckets = "%prefix% &7You cannot use buckets on this island.";
+    public String cannotMineSpawners = "%prefix% &7You cannot place blocks on this island.";
+    public String cannotOpenDoors = "%prefix% &7You cannot open doors on this island.";
+    public String cannotOpenContainers = "%prefix% &7You cannot open containers on this island.";
 }
