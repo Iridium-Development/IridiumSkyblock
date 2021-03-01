@@ -8,13 +8,24 @@ import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 
 import java.util.Optional;
 
 public class BucketListener implements Listener {
 
     @EventHandler
+    public void onBucketEmptyEvent(PlayerBucketEmptyEvent event) {
+        onBucketEvent(event);
+    }
+
+    @EventHandler
+    public void onBucketFillEvent(PlayerBucketFillEvent event) {
+        onBucketEvent(event);
+    }
+
     public void onBucketEvent(PlayerBucketEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
