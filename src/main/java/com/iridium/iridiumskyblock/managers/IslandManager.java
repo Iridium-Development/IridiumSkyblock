@@ -206,11 +206,12 @@ public class IslandManager {
      * Gets weather a permission is allowed or denied
      *
      * @param island     The specified Island
-     * @param islandRank The Specified Rank
+     * @param user       The Specified User
      * @param permission The Specified permission
      * @return The the permission is allowed
      */
-    public boolean getIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
+    public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission) {
+        IslandRank islandRank = island.equals(user.getIsland().orElse(null)) ? user.getIslandRank() : IslandRank.VISITOR;
         Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionList().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
         return islandPermission.map(IslandPermission::isAllowed).orElseGet(() -> islandRank.getLevel() >= permission.getDefaultRank().getLevel());
     }
