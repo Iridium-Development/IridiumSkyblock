@@ -153,6 +153,7 @@ public class IridiumSkyblock extends DependencyPlugin {
         getDatabaseManager().saveUsers();
         getDatabaseManager().saveIslandInvites();
         getDatabaseManager().saveIslandPermissions();
+        getDatabaseManager().saveStackedBlocks();
     }
 
     /**

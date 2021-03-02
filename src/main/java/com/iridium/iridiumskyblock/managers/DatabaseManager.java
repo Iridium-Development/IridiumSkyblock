@@ -34,6 +34,7 @@ public class DatabaseManager {
     private final Dao<SchematicData, String> schematicDao;
     private final Dao<IslandInvite, Integer> islandInviteDao;
     private final Dao<IslandPermission, Integer> islandPermissionDao;
+    private final Dao<StackedBlock, Integer> stackedBlocksDao;
 
     @Getter
     private final List<User> userList;
@@ -45,6 +46,8 @@ public class DatabaseManager {
     private final List<SchematicData> schematicDataList;
     @Getter
     private final List<IslandPermission> islandPermissionList;
+    @Getter
+    private final List<StackedBlock> stackedBlocksList;
 
     /**
      * The default constructor.
@@ -67,24 +70,29 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, SchematicData.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandInvite.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandPermission.class);
+        TableUtils.createTableIfNotExists(connectionSource, StackedBlock.class);
 
         this.userDao = DaoManager.createDao(connectionSource, User.class);
         this.islandDao = DaoManager.createDao(connectionSource, Island.class);
         this.schematicDao = DaoManager.createDao(connectionSource, SchematicData.class);
         this.islandInviteDao = DaoManager.createDao(connectionSource, IslandInvite.class);
         this.islandPermissionDao = DaoManager.createDao(connectionSource, IslandPermission.class);
+        this.stackedBlocksDao = DaoManager.createDao(connectionSource, StackedBlock.class);
 
         userDao.setAutoCommit(getDatabaseConnection(), false);
         islandDao.setAutoCommit(getDatabaseConnection(), false);
         islandInviteDao.setAutoCommit(getDatabaseConnection(), false);
         islandPermissionDao.setAutoCommit(getDatabaseConnection(), false);
+        stackedBlocksDao.setAutoCommit(getDatabaseConnection(), false);
 
         this.userList = getUsers();
         this.islandList = getIslands();
         this.islandInviteList = getIslandInvites();
         this.schematicDataList = getSchematics();
         this.islandPermissionList = getIslandPermissions();
+        this.stackedBlocksList = getStackedBlocks();
     }
+
 
     /**
      * Database connection String used for establishing a connection.
@@ -172,6 +180,21 @@ public class DatabaseManager {
     private @NotNull List<IslandPermission> getIslandPermissions() {
         try {
             return islandPermissionDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Returns a list of all stackedBlocks in the database.
+     * Might be empty if an error occurs.
+     *
+     * @return a List of all stackedBlocks
+     */
+    private @NotNull List<StackedBlock> getStackedBlocks() {
+        try {
+            return stackedBlocksDao.queryForAll();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -271,6 +294,20 @@ public class DatabaseManager {
             exception.printStackTrace();
         }
     }
+    /**
+     * Saves all stackedBlocks to the database.
+     * Creates them if they don't exist.
+     */
+    public void saveStackedBlocks() {
+        try {
+            for (StackedBlock stackedBlock : stackedBlocksList) {
+                stackedBlocksDao.createOrUpdate(stackedBlock);
+            }
+            stackedBlocksDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
 
     /**
      * Saves all schematics to the database.
@@ -314,6 +351,21 @@ public class DatabaseManager {
             islandInviteDao.delete(islandInvite);
             islandInviteList.remove(islandInvite);
             islandInviteDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Removes an StackedBlock from the database
+     *
+     * @param stackedBlock The stackedBlock being deleted
+     */
+    public void deleteInvite(@NotNull StackedBlock stackedBlock) {
+        try {
+            stackedBlocksDao.delete(stackedBlock);
+            stackedBlocksList.remove(stackedBlock);
+            stackedBlocksDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

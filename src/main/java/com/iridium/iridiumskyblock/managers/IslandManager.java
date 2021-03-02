@@ -5,10 +5,7 @@ import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Permission;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandInvite;
-import com.iridium.iridiumskyblock.database.IslandPermission;
-import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.*;
@@ -170,6 +167,16 @@ public class IslandManager {
      */
     public List<IslandInvite> getInvitesByIsland(@NotNull Island island) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteList().stream().filter(islandInvite -> island.equals(islandInvite.getIsland().orElse(null))).collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all IslandInvites for an Island
+     *
+     * @param island The island who's invites we are retrieving
+     * @return A list of Invites
+     */
+    public List<StackedBlock> getIslandStackedBlocks(@NotNull Island island) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getStackedBlocksList().stream().filter(stackedBlock -> island.equals(stackedBlock.getIsland().orElse(null))).collect(Collectors.toList());
     }
 
     /**
