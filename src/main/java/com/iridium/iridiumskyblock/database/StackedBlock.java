@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
