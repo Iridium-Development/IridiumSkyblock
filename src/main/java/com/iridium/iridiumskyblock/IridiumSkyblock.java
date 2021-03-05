@@ -21,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The main class of this plugin which handles initialization
@@ -48,6 +50,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private Permissions permissions;
 
     private ChunkGenerator chunkGenerator;
+    private List<Permission> permissionList;
 
     /**
      * Code that should be executed before this plugin gets enabled.
@@ -143,6 +146,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BucketListener(), this);
     }
 
     /**
@@ -167,6 +171,16 @@ public class IridiumSkyblock extends JavaPlugin {
         this.schematics = persist.load(Schematics.class);
         this.inventories = persist.load(Inventories.class);
         this.permissions = persist.load(Permissions.class);
+
+        permissionList = new ArrayList<>();
+        permissionList.add(permissions.redstone);
+        permissionList.add(permissions.blockPlace);
+        permissionList.add(permissions.blockBreak);
+        permissionList.add(permissions.bucket);
+        permissionList.add(permissions.doors);
+        permissionList.add(permissions.killMobs);
+        permissionList.add(permissions.openContainers);
+        permissionList.add(permissions.spawners);
     }
 
     /**
