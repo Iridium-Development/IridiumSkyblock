@@ -13,8 +13,6 @@ import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.nms.v1_16_R3;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.Getter;
-import me.bristermitten.pdm.PluginDependencyManager;
-import me.bristermitten.pdm.SpigotDependencyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
@@ -60,9 +58,6 @@ public class IridiumSkyblock extends JavaPlugin {
     @Override
     public void onLoad() {
         chunkGenerator = new SkyblockGenerator();
-
-        // Load all dependencies that are required by this plugin
-        loadDependencies();
     }
 
     /**
@@ -117,18 +112,6 @@ public class IridiumSkyblock extends JavaPlugin {
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("");
         getLogger().info("----------------------------------------");
-    }
-
-    private void loadDependencies() {
-        PluginDependencyManager dependencyManager = SpigotDependencyManager.of(this);
-        CompletableFuture<Void> loadAllDependencies = dependencyManager.loadAllDependencies();
-        try {
-            loadAllDependencies.thenRun(() -> getLogger().info("Successfully loaded all dependencies!")).get();
-        } catch (InterruptedException | ExecutionException e) {
-            getLogger().warning("Failed to load the required dependencies!");
-            e.printStackTrace();
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
     }
 
     /**
