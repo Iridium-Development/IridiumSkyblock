@@ -6,7 +6,7 @@ package com.iridium.iridiumskyblock.configs;
  */
 public class Configuration {
 
-    public String prefix = "&b&lIridiumSkyblock &8»";
+    public String prefix = "&l<GRADIENT:09C6F9>IridiumSkyblock</GRADIENT:045DE9> &8»";
     public String worldName = "IridiumSkyblock";
     public String netherWorldName = "IridiumSkyblock_nether";
     public String islandCreateTitle = "&b&lIsland Created";
