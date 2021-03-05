@@ -1,8 +1,13 @@
 plugins {
     java
     `maven-publish`
-    id("me.bristermitten.pdm") version "0.0.33"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
+
+group = "com.iridium"
+version = "3.0.0"
+description = "IridiumSkyblock"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenLocal()
@@ -19,34 +24,41 @@ repositories {
 }
 
 dependencies {
-    // Dependencies that are loaded using PDM
-    pdm("de.tr7zw:item-nbt-api:2.7.1")
-    pdm("com.iridium:IridiumColorAPI:1.0.2")
-    pdm("com.github.cryptomorin:XSeries:7.8.0")
-    pdm("org.jetbrains:annotations:16.0.1")
-    pdm("com.j256.ormlite:ormlite-core:5.3")
-    pdm("com.j256.ormlite:ormlite-jdbc:5.3")
-    pdm("com.fasterxml.jackson.core:jackson-databind:2.12.1")
-    pdm("com.fasterxml.jackson.core:jackson-core:2.12.1")
-    pdm("com.fasterxml.jackson.core:jackson-annotations:2.12.1")
-    pdm("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.1")
+    // Dependencies that we want to shade in
+    implementation("de.tr7zw:item-nbt-api:2.7.1")
+    implementation("com.iridium:IridiumColorAPI:1.0.2")
+    implementation("com.github.cryptomorin:XSeries:7.8.0")
+    implementation("org.jetbrains:annotations:16.0.1")
+    implementation("com.j256.ormlite:ormlite-core:5.3")
+    implementation("com.j256.ormlite:ormlite-jdbc:5.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.12.1")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.12.1")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.1")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.1")
+    implementation("org.yaml:snakeyaml:1.27")
 
     // Other dependencies that are not required or already available at runtime
-    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
-    compileOnly("org.spigotmc:spigot:1.16.4")
-    compileOnly("org.yaml:snakeyaml:1.27")
-    compileOnly("org.projectlombok:lombok:1.18.16")
+    shadow("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    shadow("org.spigotmc:spigot:1.16.4")
+    shadow("org.projectlombok:lombok:1.18.16")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.16")
 }
 
-group = "com.peaches"
-version = "3.0.0"
-description = "IridiumSkyblock"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+tasks {
+    jar {
+        dependsOn("shadowJar")
+        archiveClassifier.set(null as String?)
+        enabled = false
+    }
 
-tasks.getByName("jar").dependsOn(project.tasks.getByName("pdm"))
+    shadowJar {
+        archiveClassifier.set("")
+        relocate("de.tr7zw.changeme.nbtapi", "com.iridium.iridiumskyblock.nbtapi")
+        relocate("org.yaml.snakeyaml", "com.iridium.iridiumskyblock.snakeyaml")
+    }
+}
 
 publishing {
     publications.create<MavenPublication>("maven") {
