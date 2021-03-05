@@ -4,11 +4,14 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Permission;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +32,14 @@ public class PermissionsGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Permission permission : IridiumSkyblock.getInstance().getPermissionList()) {
             if (permission.getItem().slot == event.getSlot()) {
-                boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission);
-                IridiumSkyblock.getInstance().getIslandManager().setIslandPermission(island, islandRank, permission, !allowed);
-                event.getWhoClicked().openInventory(getInventory());
+                User user = IridiumSkyblockAPI.getInstance().getUser((Player) event.getWhoClicked());
+                if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, IridiumSkyblock.getInstance().getPermissions().changePermissions)) {
+                    event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangePermissions.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                } else {
+                    boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission);
+                    IridiumSkyblock.getInstance().getIslandManager().setIslandPermission(island, islandRank, permission, !allowed);
+                    event.getWhoClicked().openInventory(getInventory());
+                }
                 return;
             }
         }
