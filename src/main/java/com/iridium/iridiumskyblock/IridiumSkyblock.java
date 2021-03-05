@@ -1,8 +1,5 @@
 package com.iridium.iridiumskyblock;
 
-import com.heretere.hdl.dependency.maven.annotation.MavenDependency;
-import com.heretere.hdl.relocation.annotation.Relocation;
-import com.heretere.hdl.spigot.DependencyPlugin;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
@@ -19,6 +16,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,14 +28,8 @@ import java.util.List;
  * The main class of this plugin which handles initialization
  * and shutdown of the plugin.
  */
-@MavenDependency("com|fasterxml|jackson|core:jackson-databind:2.12.1")
-@MavenDependency("com|fasterxml|jackson|core:jackson-core:2.12.1")
-@MavenDependency("com|fasterxml|jackson|core:jackson-annotations:2.12.1")
-@MavenDependency("com|fasterxml|jackson|dataformat:jackson-dataformat-yaml:2.12.1")
-@MavenDependency("org|yaml:snakeyaml:1.27")
-@Relocation(from = "org|yaml", to = "com|iridium|iridiumskyblock")
 @Getter
-public class IridiumSkyblock extends DependencyPlugin {
+public class IridiumSkyblock extends JavaPlugin {
 
     private static IridiumSkyblock instance;
 
@@ -60,8 +52,12 @@ public class IridiumSkyblock extends DependencyPlugin {
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
 
+    /**
+     * Code that should be executed before this plugin gets enabled.
+     * Sets the default world generator.
+     */
     @Override
-    public void load() {
+    public void onLoad() {
         chunkGenerator = new SkyblockGenerator();
     }
 
@@ -69,8 +65,11 @@ public class IridiumSkyblock extends DependencyPlugin {
      * Plugin startup logic.
      */
     @Override
-    public void enable() {
+    public void onEnable() {
         instance = this;
+
+        getDataFolder().mkdir();
+
         // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
         loadConfigs();
@@ -87,6 +86,8 @@ public class IridiumSkyblock extends DependencyPlugin {
             exception.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
         }
+
+        // Initialize the manager classes (bad) and create the world
         this.islandManager = new IslandManager();
         this.userManager = new UserManager();
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
@@ -127,7 +128,7 @@ public class IridiumSkyblock extends DependencyPlugin {
      * Plugin shutdown logic.
      */
     @Override
-    public void disable() {
+    public void onDisable() {
         saveData();
         getLogger().info("-------------------------------");
         getLogger().info("");
