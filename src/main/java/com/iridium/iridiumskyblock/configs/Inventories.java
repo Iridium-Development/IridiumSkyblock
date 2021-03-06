@@ -18,6 +18,6 @@ public class Inventories {
     public Item visit = new Item(XMaterial.PLAYER_HEAD, 1, "&b&l{name}", "{owner}", Arrays.asList("&7Created: {time}", "&7Owner: {owner}"));
     public Item nextPage = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", Collections.emptyList());
     public Item previousPage = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", Collections.emptyList());
-
+    public Item islandRank = new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l{rank}", Collections.emptyList());
 
 }
