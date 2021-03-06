@@ -19,6 +19,12 @@ public class Permissions {
     public Permission openContainers = new Permission("openContainers", new Item(XMaterial.CHEST, 16, 1, "&bOpen Containers", Arrays.asList("&7Grant the ability to open containers on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
     public Permission killMobs = new Permission("killMobs", new Item(XMaterial.DIAMOND_SWORD, 19, 1, "&bKill Mobs", Arrays.asList("&7Grant the ability to kill mobs on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
     public Permission changePermissions = new Permission("changePermissions", new Item(XMaterial.SUNFLOWER, 20, 1, "&bChange Permissions", Arrays.asList("&7Grant the ability to edit island permissions.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
+    /**
+     * To Implement:
+     * killMobs
+     * RedStone
+     */
+
     //KICK
     //INVITE
     //REGEN
