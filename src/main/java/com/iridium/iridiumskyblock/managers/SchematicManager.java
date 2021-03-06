@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumskyblock.BlockData;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Schematic;
 import com.iridium.iridiumskyblock.database.Island;
@@ -22,7 +23,8 @@ public class SchematicManager {
     public SchematicManager() {
         // The default schematic, if we cant find a schematic by its id the plugin will use this one instead.
         this.defaultSchematic = new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10)));
-        if (IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().size() == 0) addDefaultSchematics();
+        if (IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().size() == 0)
+            addDefaultSchematics();
 
         // Saves the new schematics we added to the database.
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().saveSchematics());
@@ -75,7 +77,8 @@ public class SchematicManager {
         for (int x = 0; x < schematic.getLength(); x++) {
             for (int z = 0; z < schematic.getWidth(); z++) {
                 Block block = island.getCenter(world).subtract(schematic.getLength(), -90, schematic.getWidth()).add(x, y, z).getBlock();
-                schematic.setBlock(block, x, y, z);
+                BlockData blockData = schematic.getBlockData()[x][y][z];
+                if (blockData != null) blockData.setBlock(block);
             }
         }
 
