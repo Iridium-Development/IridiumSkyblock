@@ -48,7 +48,7 @@ public class PermissionsGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Members"));
+        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Permissions"));
         for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
         }
