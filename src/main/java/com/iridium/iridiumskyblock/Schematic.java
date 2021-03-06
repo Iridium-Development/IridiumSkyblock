@@ -16,8 +16,7 @@ import org.bukkit.block.BlockState;
 @NoArgsConstructor
 public class Schematic {
 
-    private Material[][][] materials;
-    private byte[][][] data;
+    private BlockData[][][] blockData;
     private int length;
     private int height;
     private int width;
@@ -42,36 +41,17 @@ public class Schematic {
         this.height = maxy - miny;
         this.width = maxz - minz;
 
-        materials = new Material[length][height][width];
-        data = new byte[length][height][width];
+        blockData = new BlockData[length][height][width];
 
         for (int x = minx; x < maxx; x++) {
             for (int y = miny; y < maxy; y++) {
                 for (int z = minz; z < maxz; z++) {
                     Block block = world.getBlockAt(x, y, z);
                     if (block.getType().equals(Material.AIR)) continue;
-                    BlockState blockState = block.getState();
-                    materials[x - minx][y - miny][z - minz] = blockState.getType();
-                    data[x - minx][y - miny][z - minz] = blockState.getRawData();
+                    blockData[x - minx][y - miny][z - minz] = new BlockData(block);
                 }
             }
         }
-    }
-
-    /**
-     * Applies block data of the schematic to the specified block.
-     *
-     * @param block The block whose data should be updated
-     * @param x     The x coordinate of the schematic
-     * @param y     The y coordinate of the schematic
-     * @param z     The z coordinate of the schematic
-     */
-    public void setBlock(Block block, int x, int y, int z) {
-        if (materials[x][y][z] == null) return;
-        BlockState blockState = block.getState();
-        blockState.setType(materials[x][y][z]);
-        blockState.setRawData(data[x][y][z]);
-        blockState.update(true, false);
     }
 
 }
