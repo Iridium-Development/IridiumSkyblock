@@ -36,10 +36,9 @@ public class InviteCommand extends Command {
                 OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
                 User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
                 List<User> islandMembers = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island.get());
-                if (islandMembers.contains(user)) {
+                if (islandMembers.contains(offlinePlayerUser)) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-                else if (IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), offlinePlayerUser).isPresent()) {
+                } else if (IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), offlinePlayerUser).isPresent()) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInvited.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 } else {
                     IslandInvite islandInvite = new IslandInvite(island.get(), offlinePlayerUser, user);
