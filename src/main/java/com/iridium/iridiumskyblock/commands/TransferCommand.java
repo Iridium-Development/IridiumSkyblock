@@ -25,7 +25,7 @@ public class TransferCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length == 2) {
+        if (args.length != 2) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " /is transfer <player>"));
             return;
         }
@@ -33,23 +33,28 @@ public class TransferCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
+            Optional<User> islandOwner = island.get().getOwner();
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
             User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
-            if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
-                if (!player.getUniqueId().equals(offlinePlayer.getUniqueId())) {
-                    user.setIslandRank(IslandRank.CO_OWNER);
-                    offlinePlayerUser.setIslandRank(IslandRank.OWNER);
-                    for (User member : island.get().getMembers()) {
-                        Player p = Bukkit.getPlayer(member.getUuid());
-                        if (p != null) {
-                            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().transferredOwnership.replace("%oldowner%", user.getName()).replace("%newowner%", offlinePlayerUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            if (user.getIslandRank().equals(IslandRank.OWNER) || user.isBypass()) {
+                if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
+                    if (islandOwner.isPresent() && !islandOwner.get().getUuid().equals(offlinePlayer.getUniqueId())) {
+                        islandOwner.ifPresent(owner -> owner.setIslandRank(IslandRank.CO_OWNER));
+                        offlinePlayerUser.setIslandRank(IslandRank.OWNER);
+                        for (User member : island.get().getMembers()) {
+                            Player p = Bukkit.getPlayer(member.getUuid());
+                            if (p != null) {
+                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().transferredOwnership.replace("%oldowner%", user.getName()).replace("%newowner%", offlinePlayerUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            }
                         }
+                    } else {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTransferYourself.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTransferYourself.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTransferOwnership.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

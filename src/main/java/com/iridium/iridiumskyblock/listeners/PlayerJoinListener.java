@@ -17,6 +17,7 @@ public class PlayerJoinListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        user.setBypass(false);
         //Update incase of namechange
         user.setName(event.getPlayer().getName());
         //Send their island border

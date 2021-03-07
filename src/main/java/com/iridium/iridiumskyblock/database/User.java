@@ -41,6 +41,8 @@ public final class User {
     @DatabaseField(columnName = "island_rank")
     private @NotNull IslandRank islandRank;
 
+    private boolean bypass = false;
+
     public @NotNull Optional<Island> getIsland() {
         if (island == null) return Optional.empty();
         return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
