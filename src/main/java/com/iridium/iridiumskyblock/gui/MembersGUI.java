@@ -20,7 +20,7 @@ import java.util.HashMap;
 public class MembersGUI implements GUI {
 
     private final Island island;
-    private HashMap<Integer, User> members;
+    private final HashMap<Integer, User> members;
 
     public MembersGUI(@NotNull Island island) {
         this.island = island;

@@ -55,7 +55,7 @@ public class KickCommand extends Command {
                     for (User member : island.get().getMembers()) {
                         Player p = Bukkit.getPlayer(member.getUuid());
                         if (p != null) {
-                            if (p != player) {
+                            if (!p.equals(player)) {
                                 p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().kickedPlayer.replace("%kicker%", player.getName()).replace("%player%", offlineUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                             } else {
                                 p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youKickedPlayer.replace("%player%", offlineUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
