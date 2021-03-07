@@ -18,7 +18,7 @@ public abstract class SchematicGUI implements GUI {
      * A class that gets extended by IslandRegenGUI and IslandCreateGUI
      */
 
-    private HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
+    private final HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
 
     @NotNull
     @Override
