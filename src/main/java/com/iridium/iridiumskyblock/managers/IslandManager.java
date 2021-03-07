@@ -189,7 +189,11 @@ public class IslandManager {
      * @return An Optional with the Island, empty if there is none
      */
     public Optional<Island> getIslandByName(String name) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
+        for (Island island : IridiumSkyblock.getInstance().getDatabaseManager().getIslandList()) {
+            if (!island.getName().equalsIgnoreCase(name)) continue;
+            return Optional.of(island);
+        }
+        return Optional.empty();
     }
 
     /**
@@ -199,7 +203,11 @@ public class IslandManager {
      * @return Optional of the island at the location, empty if there is none
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(island -> island.isInIsland(location)).findFirst();
+        for (Island island : IridiumSkyblock.getInstance().getDatabaseManager().getIslandList()) {
+            if (!island.isInIsland(location)) continue;
+            return Optional.of(island);
+        }
+        return Optional.empty();
     }
 
     /**
