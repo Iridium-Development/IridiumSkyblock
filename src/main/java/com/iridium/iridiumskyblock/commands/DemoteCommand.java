@@ -33,7 +33,7 @@ public class DemoteCommand extends Command {
             User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
             if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
                 IslandRank nextRank = IslandRank.getByLevel(offlinePlayerUser.getIslandRank().getLevel() - 1);
-                if (nextRank != null && offlinePlayerUser.getIslandRank().getLevel() < user.getIslandRank().getLevel()) {
+                if (nextRank != null && offlinePlayerUser.getIslandRank().getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().demote)) {
                     if (nextRank.equals(IslandRank.VISITOR)) {
                         Bukkit.getServer().dispatchCommand(player, "is kick " + args[1]);
                     } else {

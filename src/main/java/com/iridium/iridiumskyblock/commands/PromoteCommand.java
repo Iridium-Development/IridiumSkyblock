@@ -33,7 +33,7 @@ public class PromoteCommand extends Command {
             User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
             if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
                 IslandRank nextRank = IslandRank.getByLevel(offlinePlayerUser.getIslandRank().getLevel() + 1);
-                if (nextRank != null && nextRank.getLevel() < user.getIslandRank().getLevel()) {
+                if (nextRank != null && nextRank.getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().promote)) {
                     offlinePlayerUser.setIslandRank(nextRank);
                     for (User member : island.get().getMembers()) {
                         Player p = Bukkit.getPlayer(member.getUuid());
