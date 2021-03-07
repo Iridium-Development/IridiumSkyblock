@@ -49,7 +49,6 @@ dependencies {
 tasks {
     jar {
         dependsOn("shadowJar")
-        archiveClassifier.set(null as String?)
         enabled = false
     }
 
@@ -57,6 +56,10 @@ tasks {
         archiveClassifier.set("")
         relocate("de.tr7zw.changeme.nbtapi", "com.iridium.iridiumskyblock.nbtapi")
         relocate("org.yaml.snakeyaml", "com.iridium.iridiumskyblock.snakeyaml")
+    }
+
+    compileJava {
+        options.encoding = "UTF-8"
     }
 }
 
