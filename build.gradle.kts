@@ -26,7 +26,7 @@ repositories {
 dependencies {
     // Dependencies that we want to shade in
     implementation("de.tr7zw:item-nbt-api:2.7.1")
-    implementation("com.iridium:IridiumColorAPI:1.0.2")
+    implementation("com.iridium:IridiumColorAPI:1.0.4")
     implementation("com.github.cryptomorin:XSeries:7.8.0")
     implementation("org.jetbrains:annotations:16.0.1")
     implementation("com.j256.ormlite:ormlite-core:5.3")
