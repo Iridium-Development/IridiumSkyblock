@@ -61,4 +61,6 @@ public class Messages {
     public String cannotHurtMobs = "%prefix% &7You cannot hurt mobs on this island.";
     public String cannotInviteMember = "%prefix% &7You cannot invite members to this island.";
     public String cannotRegenIsland = "%prefix% &7You cannot regenerate your island.";
+    public String cannotInteractEntities = "%prefix% &7You cannot interact with entities on this island.";
+    public String cannotDropItems = "%prefix% &7You cannot drop items on this island.";
 }

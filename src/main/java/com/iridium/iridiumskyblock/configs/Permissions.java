@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Item;
 import com.iridium.iridiumskyblock.Permission;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.Arrays;
 
@@ -25,5 +24,7 @@ public class Permissions {
     public Permission regen = new Permission("regen", new Item(XMaterial.TNT, 23, 1, "&bRegenerate Island", Arrays.asList("&7Grant the ability to regenerate your island.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
     public Permission promote = new Permission("promote", new Item(XMaterial.PLAYER_HEAD, 24, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2Y0NmFiYWQ5MjRiMjIzNzJiYzk2NmE2ZDUxN2QyZjFiOGI1N2ZkZDI2MmI0ZTA0ZjQ4MzUyZTY4M2ZmZjkyIn19fQ==", 1, "&bPromote Users", Arrays.asList("&7Grant the ability to promote users in your island.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
     public Permission demote = new Permission("demote", new Item(XMaterial.PLAYER_HEAD, 25, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmU5YWU3YTRiZTY1ZmNiYWVlNjUxODEzODlhMmY3ZDQ3ZTJlMzI2ZGI1OWVhM2ViNzg5YTkyYzg1ZWE0NiJ9fX0=", 1, "&bDemote Users", Arrays.asList("&7Grant the ability to demote users in your island.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
-    public Permission pickupItems = new Permission("pickupItems", new Item(XMaterial.HOPPER, 26, 1, "&bPickup Items", Arrays.asList("&7Grant the ability to pickup items on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
+    public Permission pickupItems = new Permission("pickupItems", new Item(XMaterial.HOPPER, 28, 1, "&bPickup Items", Arrays.asList("&7Grant the ability to pickup items on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
+    public Permission dropItems = new Permission("dropItems", new Item(XMaterial.GHAST_TEAR, 29, 1, "&bDrop Items", Arrays.asList("&7Grant the ability to drop items on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
+    public Permission interactEntities = new Permission("interactEntities", new Item(XMaterial.CREEPER_HEAD, 30, 1, "&bInteract with Entities", Arrays.asList("&7Grant the ability to interact with entities on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
 }
