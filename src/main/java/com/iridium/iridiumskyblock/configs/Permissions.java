@@ -20,9 +20,8 @@ public class Permissions {
     public Permission openContainers = new Permission("openContainers", new Item(XMaterial.CHEST, 16, 1, "&bOpen Containers", Arrays.asList("&7Grant the ability to open containers on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
     public Permission killMobs = new Permission("killMobs", new Item(XMaterial.DIAMOND_SWORD, 19, 1, "&bKill Mobs", Arrays.asList("&7Grant the ability to kill mobs on your island.", "", "&b&lPermission", "{permission}")), IslandRank.MEMBER);
     public Permission changePermissions = new Permission("changePermissions", new Item(XMaterial.SUNFLOWER, 20, 1, "&bChange Permissions", Arrays.asList("&7Grant the ability to edit island permissions.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
-
-    //KICK
-    //INVITE
+    public Permission kick = new Permission("kick", new Item(XMaterial.IRON_BOOTS, 21, 1, "&bKick Users", Arrays.asList("&7Grant the ability to kick island members.", "", "&b&lPermission", "{permission}")), IslandRank.MODERATOR);
+    public Permission invite = new Permission("invite", new Item(XMaterial.DIAMOND, 22, 1, "&bInvite Users", Arrays.asList("&7Grant the ability to invite island members.", "", "&b&lPermission", "{permission}")), IslandRank.MODERATOR);
     //REGEN
     //Interact Entities
     //Change Permissions
