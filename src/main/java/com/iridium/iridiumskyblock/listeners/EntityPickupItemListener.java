@@ -13,7 +13,7 @@ import java.util.Optional;
 public class EntityPickupItemListener implements Listener {
 
     @EventHandler
-    public void onEntityPickupItemEvent(EntityPickupItemEvent event) {
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getItem().getLocation());

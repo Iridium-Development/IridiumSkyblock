@@ -150,6 +150,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityPickupItemListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerDropItemListener(), this);
     }
 
     /**
@@ -191,6 +192,8 @@ public class IridiumSkyblock extends JavaPlugin {
         permissionList.add(permissions.promote);
         permissionList.add(permissions.demote);
         permissionList.add(permissions.pickupItems);
+        permissionList.add(permissions.dropItems);
+        permissionList.add(permissions.interactEntities);
     }
 
     /**
