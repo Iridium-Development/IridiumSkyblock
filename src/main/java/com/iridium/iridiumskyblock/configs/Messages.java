@@ -63,4 +63,7 @@ public class Messages {
     public String cannotRegenIsland = "%prefix% &7You cannot regenerate your island.";
     public String cannotInteractEntities = "%prefix% &7You cannot interact with entities on this island.";
     public String cannotDropItems = "%prefix% &7You cannot drop items on this island.";
+    public String cannotTransferOwnership = "%prefix% &7Only the Island Owner can transfer ownership.";
+    public String nowBypassing = "%prefix% &7You are now bypassing island restrictions.";
+    public String noLongerBypassing = "%prefix% &7You are no longer bypassing island restrictions.";
 }

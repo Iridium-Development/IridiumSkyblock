@@ -225,7 +225,7 @@ public class IslandManager {
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission) {
         IslandRank islandRank = island.equals(user.getIsland().orElse(null)) ? user.getIslandRank() : IslandRank.VISITOR;
-        return getIslandPermission(island, islandRank, permission);
+        return getIslandPermission(island, islandRank, permission) || user.isBypass();
     }
 
     /**
