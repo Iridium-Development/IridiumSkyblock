@@ -59,4 +59,5 @@ public class Messages {
     public String cannotChangePermissions = "%prefix% &7You cannot change this Permission.";
     public String cannotUseRedstone = "%prefix% &7You cannot use redstone on this island.";
     public String cannotHurtMobs = "%prefix% &7You cannot hurt mobs on this island.";
+    public String cannotInviteMember = "%prefix% &7You cannot invite members to this island.";
 }
