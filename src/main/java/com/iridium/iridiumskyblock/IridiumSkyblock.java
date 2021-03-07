@@ -186,6 +186,9 @@ public class IridiumSkyblock extends JavaPlugin {
         permissionList.add(permissions.changePermissions);
         permissionList.add(permissions.kick);
         permissionList.add(permissions.invite);
+        permissionList.add(permissions.regen);
+        permissionList.add(permissions.promote);
+        permissionList.add(permissions.demote);
     }
 
     /**

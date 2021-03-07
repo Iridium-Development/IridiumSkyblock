@@ -22,9 +22,7 @@ public class Permissions {
     public Permission changePermissions = new Permission("changePermissions", new Item(XMaterial.SUNFLOWER, 20, 1, "&bChange Permissions", Arrays.asList("&7Grant the ability to edit island permissions.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
     public Permission kick = new Permission("kick", new Item(XMaterial.IRON_BOOTS, 21, 1, "&bKick Users", Arrays.asList("&7Grant the ability to kick island members.", "", "&b&lPermission", "{permission}")), IslandRank.MODERATOR);
     public Permission invite = new Permission("invite", new Item(XMaterial.DIAMOND, 22, 1, "&bInvite Users", Arrays.asList("&7Grant the ability to invite island members.", "", "&b&lPermission", "{permission}")), IslandRank.MODERATOR);
-    //REGEN
-    //Interact Entities
-    //Change Permissions
-    //Promote
-    //Demote
+    public Permission regen = new Permission("regen", new Item(XMaterial.TNT, 23, 1, "&bRegenerate Island", Arrays.asList("&7Grant the ability to regenerate your island.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
+    public Permission promote = new Permission("promote", new Item(XMaterial.PLAYER_HEAD, 24, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2Y0NmFiYWQ5MjRiMjIzNzJiYzk2NmE2ZDUxN2QyZjFiOGI1N2ZkZDI2MmI0ZTA0ZjQ4MzUyZTY4M2ZmZjkyIn19fQ==", 1, "&bPromote Users", Arrays.asList("&7Grant the ability to promote users in your island.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
+    public Permission demote = new Permission("demote", new Item(XMaterial.PLAYER_HEAD, 25, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmU5YWU3YTRiZTY1ZmNiYWVlNjUxODEzODlhMmY3ZDQ3ZTJlMzI2ZGI1OWVhM2ViNzg5YTkyYzg1ZWE0NiJ9fX0=", 1, "&bDemote Users", Arrays.asList("&7Grant the ability to demote users in your island.", "", "&b&lPermission", "{permission}")), IslandRank.CO_OWNER);
 }

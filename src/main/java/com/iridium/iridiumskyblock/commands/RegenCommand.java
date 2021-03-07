@@ -41,7 +41,11 @@ public class RegenCommand extends Command {
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
             if (args.length == 1) {
-                player.openInventory(new IslandRegenGUI(player).getInventory());
+                if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().regen)) {
+                    player.openInventory(new IslandRegenGUI(player).getInventory());
+                } else {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
             } else {
                 IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), args[1]);
             }
