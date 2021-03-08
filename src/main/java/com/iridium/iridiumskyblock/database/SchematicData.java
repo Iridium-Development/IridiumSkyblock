@@ -56,4 +56,15 @@ public final class SchematicData {
         setSchematic(schematic);
     }
 
+    /**
+     * The default constructor.
+     *
+     * @param id        The ID of this schematic, used as a unique identifier
+     * @param schematic The schematic whose data should be saved
+     */
+    public SchematicData(final @NotNull String id, final @NotNull String schematic) {
+        this.id = id;
+        this.schematic = schematic;
+    }
+
 }
