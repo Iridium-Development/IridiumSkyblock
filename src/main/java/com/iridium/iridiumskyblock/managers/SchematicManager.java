@@ -6,10 +6,13 @@ import com.iridium.iridiumskyblock.Schematic;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.SchematicData;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -22,9 +25,14 @@ public class SchematicManager {
 
     public SchematicManager() {
         // The default schematic, if we cant find a schematic by its id the plugin will use this one instead.
-        this.defaultSchematic = new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10)));
-        if (IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().size() == 0)
-            addDefaultSchematics();
+        try {
+            if (IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().size() == 0) {
+                addDefaultSchematics();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.defaultSchematic = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().get(0);
 
         // Saves the new schematics we added to the database.
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().saveSchematics());
@@ -33,9 +41,9 @@ public class SchematicManager {
     /**
      * Adds the default schematics to the list
      */
-    private void addDefaultSchematics() {
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(new SchematicData("test", new Schematic(new Location(Bukkit.getWorlds().get(0), -4, 60, -4), new Location(Bukkit.getWorlds().get(0), 10, 78, 10))));
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(new SchematicData("test2", new Schematic(new Location(Bukkit.getWorlds().get(0), 20, 60, 20), new Location(Bukkit.getWorlds().get(0), 30, 78, 30))));
+    private void addDefaultSchematics() throws IOException {
+        InputStream inputStream = IridiumSkyblock.getInstance().getResource("island.schem");
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(new SchematicData("island", new BufferedReader(new InputStreamReader(inputStream)).readLine()));
     }
 
 
