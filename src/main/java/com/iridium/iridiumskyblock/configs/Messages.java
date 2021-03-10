@@ -10,8 +10,11 @@ public class Messages {
     public String noPermission = "%prefix% &7You don't have permission for that.";
     public String mustBeAPlayer = "%prefix% &7You must be a player to execute this command.";
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help";
-    public String helpCommandHeader = "&b&lCommands for IridiumSkyblock";
+    public String helpCommandHeader = "&8===== &b&lIridiumSkyblock Help &r&8=====";
     public String helpCommandMessage = "<GRADIENT:09C6F9>/is %command%</GRADIENT:045DE9>&r: &7%description%";
+    public String helpCommandFooter = " &7Page %page% of %max_page% ";
+    public String helpCommandPreviousPage = "&b<<";
+    public String helpCommandNextPage = "&b>>";
     public String creatingIsland = "%prefix% &7Creating Island...";
     public String regeneratingIsland = "%prefix% &7Regenerating Island...";
     public String alreadyHaveIsland = "%prefix% &7You already have an Island.";
