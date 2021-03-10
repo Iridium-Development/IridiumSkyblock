@@ -3,20 +3,14 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Messages;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class HelpCommand extends Command {
 
@@ -68,8 +62,10 @@ public class HelpCommand extends Command {
                 .replace("%max_page%", String.valueOf(maxPage))));
         TextComponent previousButton = new TextComponent(StringUtils.color(messages.helpCommandPreviousPage));
         TextComponent nextButton = new TextComponent(StringUtils.color(messages.helpCommandNextPage));
-        if (page != 1) previousButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page - 1)));
-        if (page != maxPage) nextButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page + 1)));
+        if (page != 1)
+            previousButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page - 1)));
+        if (page != maxPage)
+            nextButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page + 1)));
 
         // Send all messages
         sender.sendMessage(StringUtils.color(header));
