@@ -49,6 +49,7 @@ public class IslandManager {
      * @param island The island we are teleporting them to
      */
     public void teleportHome(@NotNull Player player, @NotNull Island island) {
+        player.setFallDistance(0);
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         player.teleport(island.getHome());
     }
