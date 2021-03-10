@@ -31,8 +31,6 @@ public class HelpCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] arguments) {
         Messages messages = IridiumSkyblock.getInstance().getMessages();
-        String header = messages.helpCommandHeader;
-        String commandTemplate = messages.helpCommandMessage;
         List<Command> availableCommands = IridiumSkyblock.getInstance().getCommandManager().commands.stream()
                 .filter(command -> command.enabled)
                 .filter(command -> sender.hasPermission(command.permission) || command.permission.isEmpty())
@@ -68,11 +66,11 @@ public class HelpCommand extends Command {
             nextButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page + 1)));
 
         // Send all messages
-        sender.sendMessage(StringUtils.color(header));
+        sender.sendMessage(StringUtils.color(messages.helpCommandHeader));
         availableCommands.stream()
                 .skip((page - 1) * 8L)
                 .limit(8)
-                .map(command -> StringUtils.color(commandTemplate
+                .map(command -> StringUtils.color(messages.helpCommandMessage
                         .replace("%command%", command.aliases.get(0))
                         .replace("%description%", command.description)))
                 .forEach(sender::sendMessage);
