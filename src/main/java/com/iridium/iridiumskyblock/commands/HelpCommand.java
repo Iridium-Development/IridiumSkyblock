@@ -30,7 +30,6 @@ public class HelpCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] arguments) {
-        Messages messages = IridiumSkyblock.getInstance().getMessages();
         List<Command> availableCommands = IridiumSkyblock.getInstance().getCommandManager().commands.stream()
                 .filter(command -> command.enabled)
                 .filter(command -> sender.hasPermission(command.permission) || command.permission.isEmpty())
@@ -55,22 +54,22 @@ public class HelpCommand extends Command {
         }
 
         // Prepare the footer
-        TextComponent footerText = new TextComponent(StringUtils.color(messages.helpCommandFooter
+        TextComponent footerText = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandFooter
                 .replace("%page%", String.valueOf(page))
                 .replace("%max_page%", String.valueOf(maxPage))));
-        TextComponent previousButton = new TextComponent(StringUtils.color(messages.helpCommandPreviousPage));
-        TextComponent nextButton = new TextComponent(StringUtils.color(messages.helpCommandNextPage));
+        TextComponent previousButton = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandPreviousPage));
+        TextComponent nextButton = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandNextPage));
         if (page != 1)
             previousButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page - 1)));
         if (page != maxPage)
             nextButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page + 1)));
 
         // Send all messages
-        sender.sendMessage(StringUtils.color(messages.helpCommandHeader));
+        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandHeader));
         availableCommands.stream()
                 .skip((page - 1) * 8L)
                 .limit(8)
-                .map(command -> StringUtils.color(messages.helpCommandMessage
+                .map(command -> StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandMessage
                         .replace("%command%", command.aliases.get(0))
                         .replace("%description%", command.description)))
                 .forEach(sender::sendMessage);
