@@ -93,7 +93,7 @@ public final class Island {
     public @NotNull Location getHome() {
         String[] params = home.split(",");
         World world = IridiumSkyblockAPI.getInstance().getWorld();
-        return new Location(world, Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Float.parseFloat(params[3]), Float.parseFloat(params[4])).add(getCenter(world));
+        return new Location(world, Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Float.parseFloat(params[4]), Float.parseFloat(params[3])).add(getCenter(world));
     }
 
     /**
@@ -102,7 +102,7 @@ public final class Island {
      * @param location The new home Location
      */
     public void setHome(@NotNull Location location) {
-        Location homeLocation = getCenter(location.getWorld()).subtract(location);
+        Location homeLocation = location.subtract(getCenter(location.getWorld()));
         this.home = homeLocation.getX() + "," + homeLocation.getY() + "," + homeLocation.getZ() + "," + homeLocation.getPitch() + "," + homeLocation.getYaw();
     }
 
