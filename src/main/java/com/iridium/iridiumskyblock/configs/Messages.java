@@ -15,6 +15,8 @@ public class Messages {
     public String helpCommandFooter = " &7Page %page% of %max_page% ";
     public String helpCommandPreviousPage = "&b<<";
     public String helpCommandNextPage = "&b>>";
+    public String helpCommandNextPageHover = "&7Click to go to the next page.";
+    public String helpCommandPreviousPageHover = "&7Click to go to the previous page.";
     public String creatingIsland = "%prefix% &7Creating Island...";
     public String regeneratingIsland = "%prefix% &7Regenerating Island...";
     public String alreadyHaveIsland = "%prefix% &7You already have an Island.";
