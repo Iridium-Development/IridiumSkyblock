@@ -21,6 +21,7 @@ repositories {
     maven("https://jitpack.io")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://nexus.savagelabs.net/repository/maven-releases/")
+    maven("https://papermc.io/repo/repository/maven-public/")
 }
 
 dependencies {
@@ -36,6 +37,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.1")
     implementation("org.yaml:snakeyaml:1.27")
+    implementation("io.papermc:paperlib:1.0.6")
 
     // Other dependencies that are not required or already available at runtime
     shadow("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
@@ -55,7 +57,9 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         relocate("de.tr7zw.changeme.nbtapi", "com.iridium.iridiumskyblock.nbtapi")
+        relocate("com.iridium.iridiumcolorapi", "com.iridium.iridiumskyblock")
         relocate("org.yaml.snakeyaml", "com.iridium.iridiumskyblock.snakeyaml")
+        relocate("io.papermc.lib", "com.iridium.iridiumskyblock.paperlib")
     }
 
     compileJava {
