@@ -1,14 +1,12 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Permission;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandInvite;
-import com.iridium.iridiumskyblock.database.IslandPermission;
-import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.*;
@@ -227,6 +225,17 @@ public class IslandManager {
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission) {
         IslandRank islandRank = island.equals(user.getIsland().orElse(null)) ? user.getIslandRank() : IslandRank.VISITOR;
         return getIslandPermission(island, islandRank, permission) || user.isBypass();
+    }
+
+    /**
+     * Gets the IslandBlock for a specific island and material
+     *
+     * @param island   The specified Island
+     * @param material The specified Material
+     * @return The IslandBlock
+     */
+    public Optional<IslandBlocks> getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksList().stream().filter(islandBlocks -> material.equals(islandBlocks.getMaterial()) && island.equals(islandBlocks.getIsland().orElse(null))).findFirst();
     }
 
     /**

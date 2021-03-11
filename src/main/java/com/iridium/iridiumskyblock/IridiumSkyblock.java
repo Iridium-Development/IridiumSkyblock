@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.commands.BlockValues;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
@@ -48,6 +49,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private Schematics schematics;
     private Inventories inventories;
     private Permissions permissions;
+    private BlockValues blockValues;
 
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
@@ -161,6 +163,7 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().saveUsers();
         getDatabaseManager().saveIslandInvites();
         getDatabaseManager().saveIslandPermissions();
+        getDatabaseManager().saveIslandBlocks();
     }
 
     /**
@@ -175,6 +178,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.schematics = persist.load(Schematics.class);
         this.inventories = persist.load(Inventories.class);
         this.permissions = persist.load(Permissions.class);
+        this.blockValues = persist.load(BlockValues.class);
 
         permissionList = new ArrayList<>();
         permissionList.add(permissions.redstone);
@@ -208,6 +212,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(schematics);
         this.persist.save(inventories);
         this.persist.save(permissions);
+        this.persist.save(blockValues);
     }
 
     public static IridiumSkyblock getInstance() {
