@@ -343,13 +343,12 @@ public class IslandManager {
                                         Optional<IslandBlocks> optionalIslandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, xMaterial);
                                         if (optionalIslandBlock.isPresent()) {
                                             optionalIslandBlock.get().setAmount(optionalIslandBlock.get().getAmount() + 1);
-                                            island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial));
                                         } else {
                                             IslandBlocks islandBlocks = new IslandBlocks(island, xMaterial);
                                             islandBlocks.setAmount(1);
                                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksList().add(islandBlocks);
-                                            island.setValue(IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial));
                                         }
+                                        island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial));
                                     }
                                 }
                             }
