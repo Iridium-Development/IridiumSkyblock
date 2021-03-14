@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -48,8 +49,9 @@ public class IslandManager {
      */
     public void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        player.teleport(island.getHome());
+        PaperLib.teleportAsync(player, island.getHome()).thenRun(() ->
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
+        );
     }
 
     /**
@@ -71,9 +73,10 @@ public class IslandManager {
         }
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         createIsland(player, name, schematicConfig).thenAccept(island -> {
-            player.teleport(island.getHome());
-            IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
-            IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
+            PaperLib.teleportAsync(player, island.getHome()).thenRun(() -> {
+                IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
+                IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
+            });
         });
     }
 
@@ -135,20 +138,22 @@ public class IslandManager {
      * @param world  The world
      * @return A list of Chunks the island is in
      */
-    private List<Chunk> getIslandChunks(@NotNull Island island, @NotNull World world) {
-        List<Chunk> chunks = new ArrayList<>();
+    private CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
 
-        int minX = island.getPos1(world).getChunk().getX();
-        int minZ = island.getPos1(world).getChunk().getZ();
-        int maxX = island.getPos2(world).getChunk().getX();
-        int maxZ = island.getPos2(world).getChunk().getZ();
+            int minX = island.getPos1(world).getChunk().getX();
+            int minZ = island.getPos1(world).getChunk().getZ();
+            int maxX = island.getPos2(world).getChunk().getX();
+            int maxZ = island.getPos2(world).getChunk().getZ();
 
-        for (int x = minX; x <= maxX; x++) {
-            for (int z = minZ; z <= maxZ; z++) {
-                chunks.add(world.getChunkAt(x, z));
+            for (int x = minX; x <= maxX; x++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    chunks.add(PaperLib.getChunkAtAsyncUrgently(world, x, z, true));
+                }
             }
-        }
-        return chunks;
+            return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        });
     }
 
     /**
@@ -276,7 +281,7 @@ public class IslandManager {
         }
         if (y == 0) {
             completableFuture.complete(null);
-            getIslandChunks(island, world).forEach(chunk -> IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk));
+            getIslandChunks(island, world).thenAccept(chunks -> chunks.forEach(chunk -> IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk)));
         } else {
             if (delay < 1) {
                 deleteIslandBlocks(island, world, y - 1, completableFuture, delay);
