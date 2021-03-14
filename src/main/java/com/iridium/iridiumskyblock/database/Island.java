@@ -220,11 +220,16 @@ public final class Island {
      * @param location The location we are testing
      * @return if the location is inside the island
      */
-
     public boolean isInIsland(@NotNull Location location) {
         Location pos1 = getPos1(location.getWorld());
         Location pos2 = getPos2(location.getWorld());
         return pos1.getX() <= location.getX() && pos1.getZ() <= location.getZ() && pos2.getX() >= location.getX() && pos2.getZ() >= location.getZ();
+    }
+
+    public boolean isInIsland(int x, int z) {
+        Location pos1 = getPos1(null);
+        Location pos2 = getPos2(null);
+        return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
     }
 
 }

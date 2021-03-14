@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.commands.BlockValues;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
@@ -24,6 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * The main class of this plugin which handles initialization
@@ -108,6 +111,20 @@ public class IridiumSkyblock extends JavaPlugin {
 
         //Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
+
+        //Auto recalculate islands
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            ListIterator<Integer> islands = getDatabaseManager().getIslandList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+
+            @Override
+            public void run() {
+                if (!islands.hasNext()) {
+                    islands = getDatabaseManager().getIslandList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                } else {
+                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
+                }
+            }
+        }, 0, getConfiguration().islandRecalculateInterval);
 
         getLogger().info("----------------------------------------");
         getLogger().info("");

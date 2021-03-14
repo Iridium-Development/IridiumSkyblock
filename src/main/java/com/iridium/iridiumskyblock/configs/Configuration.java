@@ -17,5 +17,6 @@ public class Configuration {
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
+    public int islandRecalculateInterval = 20 * 10;
 
 }

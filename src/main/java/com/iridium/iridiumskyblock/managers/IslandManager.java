@@ -72,12 +72,12 @@ public class IslandManager {
             return;
         }
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, name, schematicConfig).thenAccept(island -> {
-            PaperLib.teleportAsync(player, island.getHome()).thenRun(() -> {
-                IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
-                IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
-            });
-        });
+        createIsland(player, name, schematicConfig).thenAccept(island ->
+                PaperLib.teleportAsync(player, island.getHome()).thenRun(() -> {
+                    IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
+                    IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
+                })
+        );
     }
 
     /**
@@ -308,6 +308,54 @@ public class IslandManager {
                 }
             }
         });
+    }
+
+    /**
+     * Recalculates an island value
+     *
+     * @param island The specified Island
+     */
+    public void recalculateIsland(@NotNull Island island) {
+        //Reset their value
+        IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material)).forEach(islandBlocks -> islandBlocks.ifPresent(blocks -> blocks.setAmount(0)));
+        island.setValue(0.00);
+        //Calculate their value
+        getIslandChunks(island, IridiumSkyblockAPI.getInstance().getWorld()).thenAccept(chunks -> recalculateIsland(island, chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).collect(Collectors.toList())));
+    }
+
+    /**
+     * Recalculates the island async with specified ChunkSnapshots
+     *
+     * @param island         The specified Island
+     * @param chunkSnapshots The specified ChunkSnapshots
+     */
+    private void recalculateIsland(@NotNull Island island, @NotNull List<ChunkSnapshot> chunkSnapshots) {
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () ->
+                chunkSnapshots.forEach(chunk -> {
+                    for (int x = 0; x < 16; x++) {
+                        for (int z = 0; z < 16; z++) {
+                            if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
+                                final int maxy = chunk.getHighestBlockYAt(x, z);
+                                for (int y = 0; y <= maxy; y++) {
+                                    XMaterial xMaterial = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
+                                    if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(xMaterial)) {
+                                        Optional<IslandBlocks> optionalIslandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, xMaterial);
+                                        if (optionalIslandBlock.isPresent()) {
+                                            optionalIslandBlock.get().setAmount(optionalIslandBlock.get().getAmount() + 1);
+                                            island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial));
+                                        } else {
+                                            IslandBlocks islandBlocks = new IslandBlocks(island, xMaterial);
+                                            islandBlocks.setAmount(1);
+                                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksList().add(islandBlocks);
+                                            island.setValue(IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+        );
     }
 
 }
