@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -356,6 +357,25 @@ public class IslandManager {
                     }
                 })
         );
+    }
+
+    /**
+     * Gets a list of islands sorted by SortType
+     *
+     * @param sortType How we are sorting the islands
+     * @return The sorted list of islands
+     */
+    public List<Island> getIslands(SortType sortType) {
+        switch (sortType) {
+            case VALUE:
+                return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
+            default:
+                return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList();
+        }
+    }
+
+    public enum SortType {
+        VALUE
     }
 
 }

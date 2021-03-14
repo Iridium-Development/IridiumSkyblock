@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.AccessLevel;
@@ -212,6 +213,15 @@ public final class Island {
     public Location getPos2(World world) {
         double size = getSize() / 2.00;
         return getCenter(world).add(new Location(world, size, 0, size));
+    }
+
+    /**
+     * Returns the Rank of the island
+     *
+     * @return The islands rank
+     */
+    public int getRank() {
+        return IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE).indexOf(this) + 1;
     }
 
     /**

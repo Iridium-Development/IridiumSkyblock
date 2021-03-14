@@ -38,7 +38,7 @@ public class ValueCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandValue.replace("%value%", String.valueOf(island.get().getValue())).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandValue.replace("%rank%", String.valueOf(island.get().getRank())).replace("%value%", String.valueOf(island.get().getValue())).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
