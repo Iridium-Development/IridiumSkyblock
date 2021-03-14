@@ -1,10 +1,12 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.AccessLevel;
@@ -50,6 +52,9 @@ public final class Island {
 
     @DatabaseField(columnName = "create_time")
     private long time;
+
+    @DatabaseField(columnName = "value")
+    private double value;
 
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
@@ -113,6 +118,22 @@ public final class Island {
      */
     public LocalDateTime getCreateTime() {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(getTime()), ZoneId.systemDefault());
+    }
+
+    /**
+     * Returns the island's total value
+     *
+     * @return Island value
+     */
+    public double getValue() {
+        double value = 0;
+        for (XMaterial xMaterial : IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet()) {
+            Optional<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(this, xMaterial);
+            if (islandBlocks.isPresent()) {
+                value += islandBlocks.get().getAmount() * IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial);
+            }
+        }
+        return value;
     }
 
     /**
@@ -195,16 +216,28 @@ public final class Island {
     }
 
     /**
+     * Returns the Rank of the island
+     *
+     * @return The islands rank
+     */
+    public int getRank() {
+        return IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE).indexOf(this) + 1;
+    }
+
+    /**
      * Returns if a location is inside the island or not
      *
      * @param location The location we are testing
      * @return if the location is inside the island
      */
-
     public boolean isInIsland(@NotNull Location location) {
-        Location pos1 = getPos1(location.getWorld());
-        Location pos2 = getPos2(location.getWorld());
-        return pos1.getX() <= location.getX() && pos1.getZ() <= location.getZ() && pos2.getX() >= location.getX() && pos2.getZ() >= location.getZ();
+        return isInIsland(location.getBlockX(), location.getBlockZ());
+    }
+
+    public boolean isInIsland(int x, int z) {
+        Location pos1 = getPos1(null);
+        Location pos2 = getPos2(null);
+        return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
     }
 
 }

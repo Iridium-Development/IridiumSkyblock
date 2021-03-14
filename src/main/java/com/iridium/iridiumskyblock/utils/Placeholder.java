@@ -1,8 +1,11 @@
 package com.iridium.iridiumskyblock.utils;
 
+import lombok.Getter;
+
 /**
  * Represents a placeholder used in configuration files.
  */
+@Getter
 public class Placeholder {
 
     private final String key;

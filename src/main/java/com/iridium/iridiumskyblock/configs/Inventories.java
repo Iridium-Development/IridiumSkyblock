@@ -19,5 +19,6 @@ public class Inventories {
     public Item nextPage = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", Collections.emptyList());
     public Item previousPage = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", Collections.emptyList());
     public Item islandRank = new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l{rank}", Collections.emptyList());
-
+    public Item topIsland = new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f{owner} &7(#{rank})", "{owner}", Arrays.asList("", "&b&l * &7Island Name: &b{name}", "&b&l * &7Island Rank: &b{rank}", "&b&l * &7Island Value: &b{value}", "&b&l * &7Netherite Blocks: &b{NETHERITE_BLOCK_AMOUNT}", "&b&l * &7Emerald Blocks: &b{EMERALD_BLOCK_AMOUNT}", "&b&l * &7Diamond Blocks: &b{DIAMOND_BLOCK_AMOUNT}", "&b&l * &7Gold Blocks: &b{GOLD_BLOCK_AMOUNT}", "&b&l * &7Iron Blocks: &b{IRON_BLOCK_AMOUNT}", "&b&l * &7Hopper Blocks: &b{HOPPER_AMOUNT}", "&b&l * &7Beacon Blocks: &b{BEACON_AMOUNT}", "", "&b&l[!] &bLeft Click to Teleport to this island."));
+    public Item topFiller = new Item(XMaterial.BARRIER, 1, " ", Collections.emptyList());
 }

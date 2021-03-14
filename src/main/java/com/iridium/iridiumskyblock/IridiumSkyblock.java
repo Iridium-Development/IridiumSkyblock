@@ -1,8 +1,10 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.commands.BlockValues;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
@@ -23,6 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * The main class of this plugin which handles initialization
@@ -48,6 +52,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private Schematics schematics;
     private Inventories inventories;
     private Permissions permissions;
+    private BlockValues blockValues;
 
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
@@ -107,6 +112,20 @@ public class IridiumSkyblock extends JavaPlugin {
         //Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
+        //Auto recalculate islands
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            ListIterator<Integer> islands = getDatabaseManager().getIslandList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+
+            @Override
+            public void run() {
+                if (!islands.hasNext()) {
+                    islands = getDatabaseManager().getIslandList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                } else {
+                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
+                }
+            }
+        }, 0, getConfiguration().islandRecalculateInterval * 20L);
+
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
@@ -161,6 +180,7 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().saveUsers();
         getDatabaseManager().saveIslandInvites();
         getDatabaseManager().saveIslandPermissions();
+        getDatabaseManager().saveIslandBlocks();
     }
 
     /**
@@ -175,6 +195,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.schematics = persist.load(Schematics.class);
         this.inventories = persist.load(Inventories.class);
         this.permissions = persist.load(Permissions.class);
+        this.blockValues = persist.load(BlockValues.class);
 
         permissionList = new ArrayList<>();
         permissionList.add(permissions.redstone);
@@ -208,6 +229,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(schematics);
         this.persist.save(inventories);
         this.persist.save(permissions);
+        this.persist.save(blockValues);
     }
 
     public static IridiumSkyblock getInstance() {

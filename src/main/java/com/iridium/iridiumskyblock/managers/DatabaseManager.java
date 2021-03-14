@@ -34,6 +34,7 @@ public class DatabaseManager {
     private final Dao<SchematicData, String> schematicDao;
     private final Dao<IslandInvite, Integer> islandInviteDao;
     private final Dao<IslandPermission, Integer> islandPermissionDao;
+    private final Dao<IslandBlocks, Integer> islandblocksDao;
 
     @Getter
     private final List<User> userList;
@@ -45,6 +46,8 @@ public class DatabaseManager {
     private final List<SchematicData> schematicDataList;
     @Getter
     private final List<IslandPermission> islandPermissionList;
+    @Getter
+    private final List<IslandBlocks> islandBlocksList;
 
     /**
      * The default constructor.
@@ -67,23 +70,27 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, SchematicData.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandInvite.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandPermission.class);
+        TableUtils.createTableIfNotExists(connectionSource, IslandBlocks.class);
 
         this.userDao = DaoManager.createDao(connectionSource, User.class);
         this.islandDao = DaoManager.createDao(connectionSource, Island.class);
         this.schematicDao = DaoManager.createDao(connectionSource, SchematicData.class);
         this.islandInviteDao = DaoManager.createDao(connectionSource, IslandInvite.class);
         this.islandPermissionDao = DaoManager.createDao(connectionSource, IslandPermission.class);
+        this.islandblocksDao = DaoManager.createDao(connectionSource, IslandBlocks.class);
 
         userDao.setAutoCommit(getDatabaseConnection(), false);
         islandDao.setAutoCommit(getDatabaseConnection(), false);
         islandInviteDao.setAutoCommit(getDatabaseConnection(), false);
         islandPermissionDao.setAutoCommit(getDatabaseConnection(), false);
+        islandblocksDao.setAutoCommit(getDatabaseConnection(), false);
 
         this.userList = getUsers();
         this.islandList = getIslands();
         this.islandInviteList = getIslandInvites();
         this.schematicDataList = getSchematics();
         this.islandPermissionList = getIslandPermissions();
+        this.islandBlocksList = getIslandBlocks();
     }
 
     /**
@@ -172,6 +179,21 @@ public class DatabaseManager {
     private @NotNull List<IslandPermission> getIslandPermissions() {
         try {
             return islandPermissionDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * Returns a list of all island blocks in the database.
+     * Might be empty if an error occurs.
+     *
+     * @return a List of all island blocks
+     */
+    private @NotNull List<IslandBlocks> getIslandBlocks() {
+        try {
+            return islandblocksDao.queryForAll();
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
@@ -282,6 +304,22 @@ public class DatabaseManager {
             for (SchematicData schematic : schematicDataList) {
                 schematicDao.createOrUpdate(schematic);
             }
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves all islandBlocks to the database.
+     * Creates them if they don't exist.
+     */
+
+    public void saveIslandBlocks() {
+        try {
+            for (IslandBlocks islandBlocks : islandBlocksList) {
+                islandblocksDao.createOrUpdate(islandBlocks);
+            }
+            islandblocksDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
