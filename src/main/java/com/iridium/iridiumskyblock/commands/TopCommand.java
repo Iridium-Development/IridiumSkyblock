@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which Opens visitable islands or visits an island
+ * Command which Opens the IslandTop GUI
  */
 public class TopCommand extends Command {
 

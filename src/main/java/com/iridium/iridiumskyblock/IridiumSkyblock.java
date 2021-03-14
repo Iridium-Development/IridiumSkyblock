@@ -124,7 +124,7 @@ public class IridiumSkyblock extends JavaPlugin {
                     getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
                 }
             }
-        }, 0, getConfiguration().islandRecalculateInterval);
+        }, 0, getConfiguration().islandRecalculateInterval * 20L);
 
         getLogger().info("----------------------------------------");
         getLogger().info("");

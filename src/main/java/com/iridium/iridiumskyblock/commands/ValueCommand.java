@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which makes User's island to unvisitable'
+ * Command which shows your island's Value
  */
 public class ValueCommand extends Command {
 

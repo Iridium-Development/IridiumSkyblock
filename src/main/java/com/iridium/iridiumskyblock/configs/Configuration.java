@@ -21,7 +21,7 @@ public class Configuration {
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
-    public int islandRecalculateInterval = 20 * 10;
+    public int islandRecalculateInterval = 10;
 
     public Map<Integer, Integer> islandTopSlots = ImmutableMap.<Integer, Integer>builder()
             .put(1, 4)
