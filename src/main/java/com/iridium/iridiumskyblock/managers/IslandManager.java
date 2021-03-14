@@ -338,17 +338,18 @@ public class IslandManager {
                             if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                                 final int maxy = chunk.getHighestBlockYAt(x, z);
                                 for (int y = 0; y <= maxy; y++) {
-                                    XMaterial xMaterial = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
-                                    if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(xMaterial)) {
-                                        Optional<IslandBlocks> optionalIslandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, xMaterial);
+                                    XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
+                                    if (material.equals(XMaterial.AIR)) continue;
+                                    if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(material)) {
+                                        Optional<IslandBlocks> optionalIslandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
                                         if (optionalIslandBlock.isPresent()) {
                                             optionalIslandBlock.get().setAmount(optionalIslandBlock.get().getAmount() + 1);
                                         } else {
-                                            IslandBlocks islandBlocks = new IslandBlocks(island, xMaterial);
+                                            IslandBlocks islandBlocks = new IslandBlocks(island, material);
                                             islandBlocks.setAmount(1);
                                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksList().add(islandBlocks);
                                         }
-                                        island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial));
+                                        island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material));
                                     }
                                 }
                             }
