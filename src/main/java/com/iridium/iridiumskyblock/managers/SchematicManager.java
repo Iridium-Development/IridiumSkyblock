@@ -44,7 +44,7 @@ public class SchematicManager {
     private void addDefaultSchematics() throws IOException {
         InputStream inputStream = IridiumSkyblock.getInstance().getResource("island.schem");
         IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(new SchematicData("island", new BufferedReader(new InputStreamReader(inputStream)).readLine()));
-    }
+        }
 
 
     /**
