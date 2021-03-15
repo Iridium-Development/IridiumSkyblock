@@ -49,23 +49,24 @@ public class VisitGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().visitGuiSize, StringUtils.color("&7Visit an Island"));
+
         for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
         }
+
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
-        int slot = 0;
-        for (int i = 0; i < islands.size(); i++) {
-            if (i >= (inventory.getSize() - 9) * (page - 1) && i < (inventory.getSize() - 9) * page) {
-                Island island = islands.get(i);
-                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
+
+        int elementsPerPage = inventory.getSize() - 9;
+        islands.stream()
+                .skip((long) (page - 1) * elementsPerPage)
+                .limit(elementsPerPage)
+                .forEachOrdered(island -> inventory.addItem( ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
                         new Placeholder("name", island.getName()),
                         new Placeholder("owner", island.getOwner().isPresent() ? island.getOwner().get().getName() : island.getName()),
                         new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
-                )));
-                slot++;
-            }
-        }
+                ))));
+
         return inventory;
     }
 }
