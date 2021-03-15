@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class VisitGUI implements GUI {
@@ -58,10 +59,11 @@ public class VisitGUI implements GUI {
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         int elementsPerPage = inventory.getSize() - 9;
+        AtomicInteger index = new AtomicInteger(0);
         islands.stream()
                 .skip((long) (page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(island -> inventory.addItem( ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
+                .forEachOrdered(island -> inventory.setItem( index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
                         new Placeholder("name", island.getName()),
                         new Placeholder("owner", island.getOwner().isPresent() ? island.getOwner().get().getName() : island.getName()),
                         new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
