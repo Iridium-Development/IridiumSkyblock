@@ -8,7 +8,13 @@ import de.tr7zw.changeme.nbtapi.NBTListCompound;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,24 +25,6 @@ import java.util.UUID;
 public class ItemStackUtils {
 
     private static final boolean supports = XMaterial.supports(14);
-
-    /**
-     * Creates a new ItemStack from the provided arguments.
-     *
-     * @param material The material of this item
-     * @param amount   The amount of this item in the Inventory
-     * @param name     The name of this item. Will be colored automatically
-     * @return The new ItemStack
-     */
-    public static ItemStack makeItem(XMaterial material, int amount, String name) {
-        ItemStack item = material.parseItem();
-        if (item == null) return null;
-        item.setAmount(amount);
-        ItemMeta m = item.getItemMeta();
-        m.setDisplayName(StringUtils.color(name));
-        item.setItemMeta(m);
-        return item;
-    }
 
     /**
      * Creates a new ItemStack from the provided arguments.
@@ -119,6 +107,31 @@ public class ItemStackUtils {
         } catch (Exception e) {
             // Create a fallback item
             return makeItem(XMaterial.STONE, item.amount, item.displayName, item.lore);
+        }
+    }
+
+    public static String serialize(ItemStack itemStack) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            BukkitObjectOutputStream bukkitObjectOutputStream = new BukkitObjectOutputStream(byteArrayOutputStream);
+            bukkitObjectOutputStream.writeObject(itemStack);
+            bukkitObjectOutputStream.flush();
+
+            return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static ItemStack deserialize(String string) {
+        try {
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.getDecoder().decode(string));
+            BukkitObjectInputStream bukkitObjectInputStream = new BukkitObjectInputStream(byteArrayInputStream);
+            return (ItemStack) bukkitObjectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return XMaterial.AIR.parseItem();
         }
     }
 
