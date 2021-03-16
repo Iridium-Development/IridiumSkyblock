@@ -5,12 +5,15 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Schematic;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.SchematicData;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import com.iridium.iridiumskyblock.utils.TriFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -106,7 +109,27 @@ public class SchematicManager {
         }
     }
 
-    public void addSchematic(String name, Location pos1, Location pos2) {
+    public void addSchematic(Player player, String name, Location pos1, Location pos2) {
+        boolean existsAlready = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().stream()
+                .map(SchematicData::getId)
+                .anyMatch(schematicName -> schematicName.equals(name));
+
+        if (existsAlready) {
+            player.openInventory(new ConfirmationGUI(IridiumSkyblock.getInstance(), () -> {
+                adjustAndSaveSchematic(player, name, pos1, pos2);
+            }).getInventory());
+        } else {
+            adjustAndSaveSchematic(player, name, pos1, pos2);
+        }
+    }
+
+    private void adjustAndSaveSchematic(Player player, String name, Location pos1, Location pos2) {
+        Schematic schematic = shrinkSchematic(pos1, pos2);
+        saveSchematic(name, schematic);
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().addedSchematic.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+    }
+
+    private Schematic shrinkSchematic(Location pos1, Location pos2) {
         World world = pos1.getWorld();
 
         int minX = min(pos1.getBlockX(), pos2.getBlockX());
@@ -123,8 +146,12 @@ public class SchematicManager {
         int lastNonEmptyY = findLastNonEmpty(minY, maxY, minX, maxX, minZ, maxZ, (y, x, z) -> world.getBlockAt(x, y, z));
         int lastNonEmptyZ = findLastNonEmpty(minZ, maxZ, minX, maxX, minY, maxY, (z, x, y) -> world.getBlockAt(x, y, z));
 
-        Schematic schematic = new Schematic(new Location(world, firstNonEmptyX, firstNonEmptyY, firstNonEmptyZ), new Location(world, lastNonEmptyX, lastNonEmptyY, lastNonEmptyZ));
+        return new Schematic(new Location(world, firstNonEmptyX, firstNonEmptyY, firstNonEmptyZ), new Location(world, lastNonEmptyX, lastNonEmptyY, lastNonEmptyZ));
+    }
+
+    private void saveSchematic(String name, Schematic schematic) {
         SchematicData schematicData = new SchematicData(name, schematic);
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().removeIf(s -> s.getId().equals(name));
         IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(schematicData);
     }
 

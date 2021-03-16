@@ -43,8 +43,7 @@ public class SaveSchematicCommand extends Command {
             return;
         }
 
-        IridiumSkyblock.getInstance().getSchematicManager().addSchematic(arguments[1], schematicPos1, schematicPos2);
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().addedSchematic.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        IridiumSkyblock.getInstance().getSchematicManager().addSchematic(player, arguments[1], schematicPos1, schematicPos2);
     }
 
     /**
