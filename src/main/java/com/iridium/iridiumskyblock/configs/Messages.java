@@ -74,5 +74,10 @@ public class Messages {
     public String cannotTransferOwnership = "%prefix% &7Only the Island Owner can transfer ownership.";
     public String nowBypassing = "%prefix% &7You are now bypassing island restrictions.";
     public String noLongerBypassing = "%prefix% &7You are no longer bypassing island restrictions.";
+    public String setSchematicPosition = "%prefix% &7The position has been set.";
+    public String addedSchematic = "%prefix% &7Schematic has been added.";
+    public String invalidPositionCommandSyntax = "%prefix% &7Please use /is position <1/2>.";
+    public String invalidSaveSchematicCommandSyntax = "%prefix% &7Please use /is saveSchematic <Name>.";
+    public String invalidSchematicPositions = "%prefix% &7You haven't set valid schematic positions with /is position.";
 
 }
