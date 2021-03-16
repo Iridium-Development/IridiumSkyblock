@@ -40,7 +40,6 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      */
     public void registerCommands() {
         registerCommand(new ReloadCommand());
-        registerCommand(new CreditsCommand());
         registerCommand(new CreateCommand());
         registerCommand(new DeleteCommand());
         registerCommand(new RegenCommand());
