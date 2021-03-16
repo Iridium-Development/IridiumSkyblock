@@ -79,5 +79,6 @@ public class Messages {
     public String invalidPositionCommandSyntax = "%prefix% &7Please use /is position <1/2>.";
     public String invalidSaveSchematicCommandSyntax = "%prefix% &7Please use /is saveSchematic <Name>.";
     public String invalidSchematicPositions = "%prefix% &7You haven't set valid schematic positions with /is position.";
+    public String missingSchematicConfirmation = "%prefix% &7A schematic by that name already exists, to overwrite it use /is save <name> confirm.";
 
 }
