@@ -7,6 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,6 +43,9 @@ public final class User {
     private @NotNull IslandRank islandRank;
 
     private boolean bypass = false;
+
+    private Location schematicPos1;
+    private Location schematicPos2;
 
     public @NotNull Optional<Island> getIsland() {
         if (island == null) return Optional.empty();
