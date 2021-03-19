@@ -5,12 +5,21 @@ import org.bukkit.entity.Player;
 
 @Getter
 public abstract class BankItem {
-    private String name;
-    private Number defaultAmount;
-    private boolean enabled;
-    private Item item;
+    private final String name;
+    private final double defaultAmount;
+    private final boolean enabled;
+    private final Item item;
 
-    public abstract boolean withdraw(Player player, Number amount);
+    public BankItem(String name, double defaultAmount, boolean enabled, Item item) {
+        this.name = name;
+        this.defaultAmount = defaultAmount;
+        this.enabled = enabled;
+        this.item = item;
+    }
 
-    public abstract boolean deposit(Player player, Number amount);
+    public abstract void withdraw(Player player, Number amount);
+
+    public abstract void deposit(Player player, Number amount);
+
+    public abstract String toString(Number number);
 }

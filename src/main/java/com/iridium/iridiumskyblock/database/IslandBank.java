@@ -23,9 +23,9 @@ public class IslandBank {
 
     @DatabaseField(columnName = "number")
     @Setter
-    private Number number;
+    private double number;
 
-    public IslandBank(@NotNull Island island, @NotNull String bankItem, @NotNull Number number) {
+    public IslandBank(@NotNull Island island, @NotNull String bankItem, double number) {
         this.island = island.getId();
         this.bankItem = bankItem;
         this.number = number;

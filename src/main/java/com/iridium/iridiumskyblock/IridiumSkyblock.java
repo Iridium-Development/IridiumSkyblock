@@ -53,9 +53,11 @@ public class IridiumSkyblock extends JavaPlugin {
     private Inventories inventories;
     private Permissions permissions;
     private BlockValues blockValues;
+    private BankItems bankItems;
 
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
+    private List<BankItem> bankItemList;
 
     /**
      * Code that should be executed before this plugin gets enabled.
@@ -197,6 +199,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.inventories = persist.load(Inventories.class);
         this.permissions = persist.load(Permissions.class);
         this.blockValues = persist.load(BlockValues.class);
+        this.bankItems = persist.load(BankItems.class);
 
         permissionList = new ArrayList<>();
         permissionList.add(permissions.redstone);
@@ -216,6 +219,11 @@ public class IridiumSkyblock extends JavaPlugin {
         permissionList.add(permissions.pickupItems);
         permissionList.add(permissions.dropItems);
         permissionList.add(permissions.interactEntities);
+
+        bankItemList = new ArrayList<>();
+        bankItemList.add(bankItems.crystalsBankItem);
+        bankItemList.add(bankItems.experienceBankItem);
+        bankItemList.add(bankItems.moneyBankItem);
     }
 
     /**
@@ -231,6 +239,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(inventories);
         this.persist.save(permissions);
         this.persist.save(blockValues);
+        this.persist.save(bankItems);
     }
 
     public static IridiumSkyblock getInstance() {
