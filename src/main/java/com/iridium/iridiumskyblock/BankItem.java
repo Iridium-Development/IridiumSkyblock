@@ -1,14 +1,16 @@
 package com.iridium.iridiumskyblock;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 
+@NoArgsConstructor
 @Getter
 public abstract class BankItem {
-    private final String name;
-    private final double defaultAmount;
-    private final boolean enabled;
-    private final Item item;
+    private String name;
+    private double defaultAmount;
+    private boolean enabled;
+    private Item item;
 
     public BankItem(String name, double defaultAmount, boolean enabled, Item item) {
         this.name = name;

@@ -64,6 +64,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new ValueCommand());
         registerCommand(new TopCommand());
         registerCommand(new BankCommand());
+        registerCommand(new WithdrawCommand());
+        registerCommand(new DepositCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }

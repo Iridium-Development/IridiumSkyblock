@@ -4,6 +4,8 @@ description: Skyblock Redifined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
 author: Peaches_MLG
+depend:
+  - Vault
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]

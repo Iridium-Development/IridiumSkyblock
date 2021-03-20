@@ -15,9 +15,11 @@ import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.nms.v1_16_R3;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.Getter;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -58,6 +60,8 @@ public class IridiumSkyblock extends JavaPlugin {
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
     private List<BankItem> bankItemList;
+
+    private Economy economy;
 
     /**
      * Code that should be executed before this plugin gets enabled.
@@ -110,6 +114,8 @@ public class IridiumSkyblock extends JavaPlugin {
         registerListeners();
 
         this.nms = new v1_16_R3();
+
+        this.economy = setupEconomy();
 
         //Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
@@ -184,6 +190,15 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().saveIslandPermissions();
         getDatabaseManager().saveIslandBlocks();
         getDatabaseManager().saveIslandBank();
+    }
+
+    private Economy setupEconomy() {
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            getLogger().warning("You do not have an economy plugin installed (Like Essentials)");
+            return null;
+        }
+        return rsp.getProvider();
     }
 
     /**
