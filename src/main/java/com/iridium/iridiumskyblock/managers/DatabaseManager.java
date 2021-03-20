@@ -35,6 +35,7 @@ public class DatabaseManager {
     private final Dao<IslandInvite, Integer> islandInviteDao;
     private final Dao<IslandPermission, Integer> islandPermissionDao;
     private final Dao<IslandBlocks, Integer> islandblocksDao;
+    private final Dao<IslandBank, Integer> islandBankDao;
 
     @Getter
     private final List<User> userList;
@@ -48,6 +49,8 @@ public class DatabaseManager {
     private final List<IslandPermission> islandPermissionList;
     @Getter
     private final List<IslandBlocks> islandBlocksList;
+    @Getter
+    private final List<IslandBank> islandBankList;
 
     /**
      * The default constructor.
@@ -71,6 +74,7 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, IslandInvite.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandPermission.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandBlocks.class);
+        TableUtils.createTableIfNotExists(connectionSource, IslandBank.class);
 
         this.userDao = DaoManager.createDao(connectionSource, User.class);
         this.islandDao = DaoManager.createDao(connectionSource, Island.class);
@@ -78,12 +82,14 @@ public class DatabaseManager {
         this.islandInviteDao = DaoManager.createDao(connectionSource, IslandInvite.class);
         this.islandPermissionDao = DaoManager.createDao(connectionSource, IslandPermission.class);
         this.islandblocksDao = DaoManager.createDao(connectionSource, IslandBlocks.class);
+        this.islandBankDao = DaoManager.createDao(connectionSource, IslandBank.class);
 
         userDao.setAutoCommit(getDatabaseConnection(), false);
         islandDao.setAutoCommit(getDatabaseConnection(), false);
         islandInviteDao.setAutoCommit(getDatabaseConnection(), false);
         islandPermissionDao.setAutoCommit(getDatabaseConnection(), false);
         islandblocksDao.setAutoCommit(getDatabaseConnection(), false);
+        islandBankDao.setAutoCommit(getDatabaseConnection(), false);
 
         this.userList = getUsers();
         this.islandList = getIslands();
@@ -91,6 +97,7 @@ public class DatabaseManager {
         this.schematicDataList = getSchematics();
         this.islandPermissionList = getIslandPermissions();
         this.islandBlocksList = getIslandBlocks();
+        this.islandBankList = getIslandBank();
     }
 
     /**
@@ -216,6 +223,21 @@ public class DatabaseManager {
     }
 
     /**
+     * Returns a list of all island banks's in the database.
+     * Might be empty if an error occurs.
+     *
+     * @return a List of all island blocks
+     */
+    private @NotNull List<IslandBank> getIslandBank() {
+        try {
+            return islandBankDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    /**
      * Saves an island to the database and initializes variables like ID
      *
      * @param island The island we are saving
@@ -320,6 +342,22 @@ public class DatabaseManager {
                 islandblocksDao.createOrUpdate(islandBlocks);
             }
             islandblocksDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves all islandBank to the database.
+     * Creates them if they don't exist.
+     */
+
+    public void saveIslandBank() {
+        try {
+            for (IslandBank islandBank : islandBankList) {
+                islandBankDao.createOrUpdate(islandBank);
+            }
+            islandBankDao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

@@ -43,6 +43,7 @@ dependencies {
     shadow("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
     shadow("org.spigotmc:spigot:1.16.4")
     shadow("org.projectlombok:lombok:1.18.16")
+    shadow("com.github.MilkBowl:VaultAPI:1.7")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.16")

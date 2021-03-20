@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumskyblock.BankItem;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Permission;
@@ -231,6 +232,24 @@ public class IslandManager {
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission) {
         IslandRank islandRank = island.equals(user.getIsland().orElse(null)) ? user.getIslandRank() : IslandRank.VISITOR;
         return getIslandPermission(island, islandRank, permission) || user.isBypass();
+    }
+
+    /**
+     * Gets an Island's bank from BankItem
+     *
+     * @param island   The specified Island
+     * @param bankItem The BankItem we are getting
+     * @return the IslandBank
+     */
+    public IslandBank getIslandBank(@NotNull Island island, @NotNull BankItem bankItem) {
+        Optional<IslandBank> optionalIslandBank = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankList().stream().filter(islandBank -> islandBank.getIsland() == island.getId() && islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())).findFirst();
+        if (optionalIslandBank.isPresent()) {
+            return optionalIslandBank.get();
+        } else {
+            IslandBank islandBank = new IslandBank(island, bankItem.getName(), 0);
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankList().add(islandBank);
+            return islandBank;
+        }
     }
 
     /**
