@@ -63,6 +63,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new HelpCommand());
         registerCommand(new ValueCommand());
         registerCommand(new TopCommand());
+        registerCommand(new BankCommand());
+        registerCommand(new WithdrawCommand());
+        registerCommand(new DepositCommand());
         registerCommand(new PositionCommand());
         registerCommand(new SaveSchematicCommand());
 

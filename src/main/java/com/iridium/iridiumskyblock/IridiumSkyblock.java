@@ -15,9 +15,11 @@ import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.nms.v1_16_R3;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.Getter;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -53,9 +55,13 @@ public class IridiumSkyblock extends JavaPlugin {
     private Inventories inventories;
     private Permissions permissions;
     private BlockValues blockValues;
+    private BankItems bankItems;
 
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
+    private List<BankItem> bankItemList;
+
+    private Economy economy;
 
     /**
      * Code that should be executed before this plugin gets enabled.
@@ -108,6 +114,8 @@ public class IridiumSkyblock extends JavaPlugin {
         registerListeners();
 
         this.nms = new v1_16_R3();
+
+        this.economy = setupEconomy();
 
         //Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
@@ -181,6 +189,16 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().saveIslandInvites();
         getDatabaseManager().saveIslandPermissions();
         getDatabaseManager().saveIslandBlocks();
+        getDatabaseManager().saveIslandBank();
+    }
+
+    private Economy setupEconomy() {
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            getLogger().warning("You do not have an economy plugin installed (Like Essentials)");
+            return null;
+        }
+        return rsp.getProvider();
     }
 
     /**
@@ -196,6 +214,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.inventories = persist.load(Inventories.class);
         this.permissions = persist.load(Permissions.class);
         this.blockValues = persist.load(BlockValues.class);
+        this.bankItems = persist.load(BankItems.class);
 
         permissionList = new ArrayList<>();
         permissionList.add(permissions.redstone);
@@ -215,6 +234,11 @@ public class IridiumSkyblock extends JavaPlugin {
         permissionList.add(permissions.pickupItems);
         permissionList.add(permissions.dropItems);
         permissionList.add(permissions.interactEntities);
+
+        bankItemList = new ArrayList<>();
+        bankItemList.add(bankItems.crystalsBankItem);
+        bankItemList.add(bankItems.experienceBankItem);
+        bankItemList.add(bankItems.moneyBankItem);
     }
 
     /**
@@ -230,6 +254,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(inventories);
         this.persist.save(permissions);
         this.persist.save(blockValues);
+        this.persist.save(bankItems);
     }
 
     public static IridiumSkyblock getInstance() {
