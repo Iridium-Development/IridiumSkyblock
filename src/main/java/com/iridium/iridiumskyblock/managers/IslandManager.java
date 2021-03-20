@@ -242,7 +242,7 @@ public class IslandManager {
      * @return the IslandBank
      */
     public IslandBank getIslandBank(@NotNull Island island, @NotNull BankItem bankItem) {
-        Optional<IslandBank> optionalIslandBank = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankList().stream().filter(isBank -> isBank.getIsland() == island.getId() && isBank.getBankItem().equalsIgnoreCase(bankItem.getName())).findFirst();
+        Optional<IslandBank> optionalIslandBank = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankList().stream().filter(islandBank -> islandBank.getIsland() == island.getId() && islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())).findFirst();
         if (optionalIslandBank.isPresent()) {
             return optionalIslandBank.get();
         } else {
