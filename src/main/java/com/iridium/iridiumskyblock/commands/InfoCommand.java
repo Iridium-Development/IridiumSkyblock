@@ -108,16 +108,7 @@ public class InfoCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (commandSender instanceof Player) {
-            // Only show players in tab-completion that this Player can see
-            // to add support for vanish plugins etc
-            return Bukkit.getOnlinePlayers().stream()
-                    .filter(((Player) commandSender)::canSee)
-                    .map(Player::getDisplayName)
-                    .collect(Collectors.toList());
-        } else {
-            return Bukkit.getOnlinePlayers().stream().map(Player::getDisplayName).collect(Collectors.toList());
-        }
+        return null;
     }
 
 }
