@@ -41,7 +41,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Registers all commands of this plugin.
      */
     public void registerCommands() {
-        Reflections reflections = new Reflections("com.iridium.iridiumskyblock.commands");
+        Reflections reflections = new Reflections(getClass().getPackage().getName());
         reflections.getSubTypesOf(Command.class).stream()
                 .map(this::getCommandByClass)
                 .forEach(this::registerCommand);
