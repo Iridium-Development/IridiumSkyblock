@@ -53,7 +53,7 @@ public class IslandTopGUI implements GUI {
                 List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
                         new Placeholder("rank", String.valueOf(island.getRank())),
                         new Placeholder("value", String.valueOf(island.getValue())),
-                        new Placeholder("owner", island.getOwner().map(User::getName).orElse("N/A")),
+                        new Placeholder("owner", island.getOwner().getName()),
                         new Placeholder("name", island.getName())
                 ));
                 IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> new Placeholder(material.name() + "_AMOUNT", String.valueOf(IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material).map(IslandBlocks::getAmount).orElse(0)))).forEach(placeholders::add);
