@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
+import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,8 +14,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Handles command executions and tab-completions for all commands of this plugin.
@@ -40,19 +43,21 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public void registerCommands() {
         Reflections reflections = new Reflections("com.iridium.iridiumskyblock.commands");
         reflections.getSubTypesOf(Command.class).stream()
-                .map(clazz -> {
-                    try {
-                        return clazz.getDeclaredConstructor().newInstance();
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                        // Should not happen
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
-                .filter(Objects::nonNull)
+                .map(this::getCommandByClass)
                 .forEach(this::registerCommand);
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
+    }
+
+    /**
+     * Creates and returns a new instance of the provided class.
+     *
+     * @param clazz The class which should be initiated
+     * @return The new instance of the class
+     */
+    @SneakyThrows
+    private Command getCommandByClass(Class<? extends Command> clazz) {
+        return clazz.getDeclaredConstructor().newInstance();
     }
 
     /**
