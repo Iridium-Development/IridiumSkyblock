@@ -11,11 +11,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.reflections.Reflections;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * Handles command executions and tab-completions for all commands of this plugin.
@@ -39,36 +38,19 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Registers all commands of this plugin.
      */
     public void registerCommands() {
-        registerCommand(new ReloadCommand());
-        registerCommand(new CreateCommand());
-        registerCommand(new DeleteCommand());
-        registerCommand(new RegenCommand());
-        registerCommand(new HomeCommand());
-        registerCommand(new AboutCommand());
-        registerCommand(new SetHomeCommand());
-        registerCommand(new InviteCommand());
-        registerCommand(new UnInviteCommand());
-        registerCommand(new JoinCommand());
-        registerCommand(new LeaveCommand());
-        registerCommand(new MembersCommand());
-        registerCommand(new KickCommand());
-        registerCommand(new VisitCommand());
-        registerCommand(new PublicCommand());
-        registerCommand(new PrivateCommand());
-        registerCommand(new PromoteCommand());
-        registerCommand(new DemoteCommand());
-        registerCommand(new TransferCommand());
-        registerCommand(new PermissionsCommand());
-        registerCommand(new BypassCommand());
-        registerCommand(new HelpCommand());
-        registerCommand(new ValueCommand());
-        registerCommand(new TopCommand());
-        registerCommand(new BankCommand());
-        registerCommand(new WithdrawCommand());
-        registerCommand(new DepositCommand());
-        registerCommand(new PositionCommand());
-        registerCommand(new SaveSchematicCommand());
-        registerCommand(new InfoCommand());
+        Reflections reflections = new Reflections("com.iridium.iridiumskyblock.commands");
+        reflections.getSubTypesOf(Command.class).stream()
+                .map(clazz -> {
+                    try {
+                        return clazz.getDeclaredConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                        // Should not happen
+                        e.printStackTrace();
+                    }
+                    return null;
+                })
+                .filter(Objects::nonNull)
+                .forEach(this::registerCommand);
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
