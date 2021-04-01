@@ -1,5 +1,8 @@
 package com.iridium.iridiumskyblock.configs;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * The message configuration used by IridiumSkyblock.
  * Is deserialized automatically on plugin startup and reload.
@@ -80,5 +83,18 @@ public class Messages {
     public String invalidSaveSchematicCommandSyntax = "%prefix% &7Please use /is saveSchematic <Name>.";
     public String invalidSchematicPositions = "%prefix% &7You haven't set valid schematic positions with /is position.";
     public String missingSchematicConfirmation = "%prefix% &7A schematic by that name already exists, to overwrite it use /is save <name> confirm.";
+    public String yes = "Yes";
+    public String no = "No";
+    public String none = "None";
+
+    public List<String> infoCommand = Arrays.asList(
+            "&8===== &b&lIsland Info for %player% &r&8=====",
+            "<GRADIENT:09C6F9>Island Name</GRADIENT:045DE9>&r: &7%island_name%",
+            "<GRADIENT:09C6F9>Island Owner</GRADIENT:045DE9>&r: &7%owner%",
+            "<GRADIENT:09C6F9>Island Members</GRADIENT:045DE9>&r: &7%members%",
+            "<GRADIENT:09C6F9>Island Level</GRADIENT:045DE9>&r: &7%level%",
+            "<GRADIENT:09C6F9>Island Value</GRADIENT:045DE9>&r: &7%value%",
+            "<GRADIENT:09C6F9>Island Visitable</GRADIENT:045DE9>&r: &7%visitable%"
+    );
 
 }
