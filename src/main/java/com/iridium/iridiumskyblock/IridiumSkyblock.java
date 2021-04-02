@@ -25,9 +25,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -136,12 +134,30 @@ public class IridiumSkyblock extends JavaPlugin {
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
 
+        resetIslandMissions();
+
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("");
         getLogger().info("----------------------------------------");
+    }
+
+    private void resetIslandMissions() {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_MONTH, 1);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                IridiumSkyblock.getInstance().getDatabaseManager().deleteDailyMissions();
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> resetIslandMissions());
+            }
+        }, c.getTime());
     }
 
     /**

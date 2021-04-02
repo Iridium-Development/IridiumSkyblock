@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
@@ -9,8 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
 
 public class MissionSelectGUI implements GUI {
 
@@ -22,9 +21,9 @@ public class MissionSelectGUI implements GUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getSlot() == 15) {
+        if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().dailyQuests.slot) {
             event.getWhoClicked().openInventory(new MissionsGUI(island, Mission.MissionType.DAILY).getInventory());
-        } else if (event.getSlot() == 11) {
+        } else if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().oneTimeQuests.slot) {
             event.getWhoClicked().openInventory(new MissionsGUI(island, Mission.MissionType.ONCE).getInventory());
         }
     }
@@ -36,8 +35,8 @@ public class MissionSelectGUI implements GUI {
         for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
         }
-        inventory.setItem(11, ItemStackUtils.makeItem(XMaterial.COBBLESTONE, 1, "&b&lDaily Missions", Collections.emptyList()));
-        inventory.setItem(15, ItemStackUtils.makeItem(XMaterial.COBBLESTONE, 1, "&b&lQuests", Collections.emptyList()));
+        inventory.setItem(IridiumSkyblock.getInstance().getInventories().dailyQuests.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().dailyQuests));
+        inventory.setItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests));
         return inventory;
     }
 }

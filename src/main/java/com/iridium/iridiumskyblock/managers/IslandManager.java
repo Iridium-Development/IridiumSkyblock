@@ -12,10 +12,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -338,10 +335,32 @@ public class IslandManager {
         if (islandMissionOptional.isPresent()) {
             return islandMissionOptional.get();
         } else {
-            IslandMission islandMission = new IslandMission(island, mission.getName());
+            IslandMission islandMission = new IslandMission(island, mission);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().add(islandMission);
             return islandMission;
         }
+    }
+
+    /**
+     * Gets the islands daily Missions
+     *
+     * @param island The specified Island
+     * @return The daily missions
+     */
+    public List<Mission> getDailyIslandMissions(@NotNull Island island) {
+        List<IslandMission> islandMissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().stream().filter(islandMission -> islandMission.getIsland() == island.getId() && islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
+        if (islandMissions.isEmpty()) {
+            Random random = new Random();
+            List<Mission> missionList = IridiumSkyblock.getInstance().getMissionsList().stream().filter(mission -> mission.getMissionType() == Mission.MissionType.DAILY).collect(Collectors.toList());
+            for (int i = 0; i < IridiumSkyblock.getInstance().getMissions().dailySlots.size(); i++) {
+                Mission mission = missionList.get(random.nextInt(missionList.size()));
+                missionList.remove(mission);
+                IslandMission islandMission = new IslandMission(island, mission);
+                islandMissions.add(islandMission);
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().add(islandMission);
+            }
+        }
+        return islandMissions.stream().map(islandMission -> IridiumSkyblock.getInstance().getMissionsList().stream().filter(mission -> mission.getName().equalsIgnoreCase(islandMission.getMission())).findFirst().orElse(null)).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.Mission;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -25,9 +26,14 @@ public class IslandMission {
     @Setter
     private int progress;
 
-    public IslandMission(@NotNull Island island, @NotNull String mission) {
+    @DatabaseField(columnName = "type")
+    @Setter
+    private Mission.MissionType type;
+
+    public IslandMission(@NotNull Island island, @NotNull Mission mission) {
         this.island = island.getId();
-        this.mission = mission;
+        this.mission = mission.getName();
+        this.type = mission.getMissionType();
         this.progress = 0;
     }
 }
