@@ -18,7 +18,7 @@ public class Placeholder {
      * @param value The actual value of the placeholder
      */
     public Placeholder(String key, String value) {
-        this.key = "{" + key + "}";
+        this.key = "%" + key + "%";
         this.value = value;
     }
 

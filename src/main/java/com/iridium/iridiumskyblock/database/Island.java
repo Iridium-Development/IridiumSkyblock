@@ -23,6 +23,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -86,8 +87,8 @@ public final class Island {
      *
      * @return The Owner of the Island
      */
-    public Optional<User> getOwner() {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> user.getIslandRank().equals(IslandRank.OWNER) && this.equals(user.getIsland().orElse(null))).findFirst();
+    public User getOwner() {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> user.getIslandRank().equals(IslandRank.OWNER) && this.equals(user.getIsland().orElse(null))).findFirst().orElse(new User(UUID.randomUUID(), IridiumSkyblock.getInstance().getMessages().none));
     }
 
     /**

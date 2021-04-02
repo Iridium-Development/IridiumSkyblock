@@ -33,13 +33,13 @@ public class TransferCommand extends Command {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            Optional<User> islandOwner = island.get().getOwner();
+            User islandOwner = island.get().getOwner();
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
             User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
             if (user.getIslandRank().equals(IslandRank.OWNER) || user.isBypass()) {
                 if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
-                    if (islandOwner.isPresent() && !islandOwner.get().getUuid().equals(offlinePlayer.getUniqueId())) {
-                        islandOwner.ifPresent(owner -> owner.setIslandRank(IslandRank.CO_OWNER));
+                    if (!islandOwner.getUuid().equals(offlinePlayer.getUniqueId())) {
+                        islandOwner.setIslandRank(IslandRank.CO_OWNER);
                         offlinePlayerUser.setIslandRank(IslandRank.OWNER);
                         for (User member : island.get().getMembers()) {
                             Player p = Bukkit.getPlayer(member.getUuid());
