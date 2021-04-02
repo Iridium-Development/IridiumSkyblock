@@ -10,6 +10,7 @@ public class Inventories {
     public String ConfirmationGUITitle = "&7Are you sure?";
 
     public int visitGuiSize = 54;
+    public int missionsGUISize = 54;
 
     public Item yes = new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&a&lYes", Collections.emptyList());
     public Item no = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lNo", Collections.emptyList());

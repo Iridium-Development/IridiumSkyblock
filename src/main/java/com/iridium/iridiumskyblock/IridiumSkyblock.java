@@ -56,10 +56,12 @@ public class IridiumSkyblock extends JavaPlugin {
     private Permissions permissions;
     private BlockValues blockValues;
     private BankItems bankItems;
+    private Missions missions;
 
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
     private List<BankItem> bankItemList;
+    private List<Mission> missionsList;
 
     private Economy economy;
 
@@ -190,6 +192,7 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().saveIslandPermissions();
         getDatabaseManager().saveIslandBlocks();
         getDatabaseManager().saveIslandBank();
+        getDatabaseManager().saveIslandMissions();
     }
 
     private Economy setupEconomy() {
@@ -215,30 +218,33 @@ public class IridiumSkyblock extends JavaPlugin {
         this.permissions = persist.load(Permissions.class);
         this.blockValues = persist.load(BlockValues.class);
         this.bankItems = persist.load(BankItems.class);
+        this.missions = persist.load(Missions.class);
 
-        permissionList = new ArrayList<>();
-        permissionList.add(permissions.redstone);
-        permissionList.add(permissions.blockPlace);
-        permissionList.add(permissions.blockBreak);
-        permissionList.add(permissions.bucket);
-        permissionList.add(permissions.doors);
-        permissionList.add(permissions.killMobs);
-        permissionList.add(permissions.openContainers);
-        permissionList.add(permissions.spawners);
-        permissionList.add(permissions.changePermissions);
-        permissionList.add(permissions.kick);
-        permissionList.add(permissions.invite);
-        permissionList.add(permissions.regen);
-        permissionList.add(permissions.promote);
-        permissionList.add(permissions.demote);
-        permissionList.add(permissions.pickupItems);
-        permissionList.add(permissions.dropItems);
-        permissionList.add(permissions.interactEntities);
+        this.permissionList = new ArrayList<>();
+        this.permissionList.add(permissions.redstone);
+        this.permissionList.add(permissions.blockPlace);
+        this.permissionList.add(permissions.blockBreak);
+        this.permissionList.add(permissions.bucket);
+        this.permissionList.add(permissions.doors);
+        this.permissionList.add(permissions.killMobs);
+        this.permissionList.add(permissions.openContainers);
+        this.permissionList.add(permissions.spawners);
+        this.permissionList.add(permissions.changePermissions);
+        this.permissionList.add(permissions.kick);
+        this.permissionList.add(permissions.invite);
+        this.permissionList.add(permissions.regen);
+        this.permissionList.add(permissions.promote);
+        this.permissionList.add(permissions.demote);
+        this.permissionList.add(permissions.pickupItems);
+        this.permissionList.add(permissions.dropItems);
+        this.permissionList.add(permissions.interactEntities);
 
-        bankItemList = new ArrayList<>();
-        bankItemList.add(bankItems.crystalsBankItem);
-        bankItemList.add(bankItems.experienceBankItem);
-        bankItemList.add(bankItems.moneyBankItem);
+        this.bankItemList = new ArrayList<>();
+        this.bankItemList.add(bankItems.crystalsBankItem);
+        this.bankItemList.add(bankItems.experienceBankItem);
+        this.bankItemList.add(bankItems.moneyBankItem);
+
+        this.missionsList = new ArrayList<>(missions.missions);
     }
 
     /**
@@ -255,6 +261,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(permissions);
         this.persist.save(blockValues);
         this.persist.save(bankItems);
+        this.persist.save(missions);
     }
 
     public static IridiumSkyblock getInstance() {

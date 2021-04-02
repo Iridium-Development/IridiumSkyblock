@@ -1,10 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumskyblock.BankItem;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.IslandRank;
-import com.iridium.iridiumskyblock.Permission;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
@@ -328,6 +325,23 @@ public class IslandManager {
                 }
             }
         });
+    }
+
+    /**
+     * Gets all island missions and creates them if they dont exist
+     *
+     * @param island The specified Island
+     * @return a list of Island Missions
+     */
+    public IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission) {
+        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMission().equalsIgnoreCase(mission.getName())).findFirst();
+        if (islandMissionOptional.isPresent()) {
+            return islandMissionOptional.get();
+        } else {
+            IslandMission islandMission = new IslandMission(island, mission.getName());
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().add(islandMission);
+            return islandMission;
+        }
     }
 
     /**
