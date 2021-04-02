@@ -55,6 +55,7 @@ public class MissionsGUI implements GUI {
         } else {
             for (String key : IridiumSkyblock.getInstance().getMissionsList().keySet()) {
                 Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
+                if (mission.getMissionType() != Mission.MissionType.ONCE) continue;
                 List<Placeholder> placeholders = new ArrayList<>();
                 for (int j = 1; j <= mission.getMissions().size(); j++) {
                     IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, mission, key, j);
