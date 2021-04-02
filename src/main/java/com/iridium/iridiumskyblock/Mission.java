@@ -3,18 +3,18 @@ package com.iridium.iridiumskyblock;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @Getter
 public class Mission {
-    private String name;
     private Item item;
-    private String condition;
+    private List<String> missions;
     private MissionType missionType;
 
-    public Mission(String name, Item item, String condition, MissionType missionType) {
-        this.name = name;
+    public Mission(Item item, List<String> missions, MissionType missionType) {
         this.item = item;
-        this.condition = condition;
+        this.missions = missions;
         this.missionType = missionType;
     }
 

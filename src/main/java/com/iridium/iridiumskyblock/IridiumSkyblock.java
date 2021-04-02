@@ -59,7 +59,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private ChunkGenerator chunkGenerator;
     private List<Permission> permissionList;
     private List<BankItem> bankItemList;
-    private List<Mission> missionsList;
+    private HashMap<String, Mission> missionsList;
 
     private Economy economy;
 
@@ -260,7 +260,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.bankItemList.add(bankItems.experienceBankItem);
         this.bankItemList.add(bankItems.moneyBankItem);
 
-        this.missionsList = new ArrayList<>(missions.missions);
+        this.missionsList = new HashMap<>(missions.missions);
     }
 
     /**

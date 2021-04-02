@@ -1,21 +1,24 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumskyblock.Item;
 import com.iridium.iridiumskyblock.Mission;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class Missions {
-    public List<Mission> missions = Arrays.asList(
-            new Mission("cobblegen", new Item(XMaterial.COBBLESTONE, 0, 1, "&b&lMine Cobblestone", Arrays.asList("&7Mine 100 cobblestone", "&7Progress: &b{progress}/100")), "MINE:COBBLESTONE:100", Mission.MissionType.ONCE),
-            new Mission("enchanter", new Item(XMaterial.ENCHANTING_TABLE, 0, 1, "&b&lEnchanter", Arrays.asList("&7Enchant 10 items", "&7Progress: &b{progress}/10")), "ENCHANT:ANY:10", Mission.MissionType.DAILY),
-            new Mission("sugarCane", new Item(XMaterial.SUGAR_CANE, 0, 1, "&b&lFarmer", Arrays.asList("&7Harvest 100 Sugar Cane", "&7Progress: &b{progress}/100")), "MINE:SUGARCANE:100", Mission.MissionType.DAILY),
-            new Mission("miner", new Item(XMaterial.COBBLESTONE, 0, 1, "&b&lMiner", Arrays.asList("&7Mine 100 Blocks", "&7Progress: &b{progress}/1000")), "MINE:ANY:1000", Mission.MissionType.DAILY),
-            new Mission("builder", new Item(XMaterial.OAK_LOG, 0, 1, "&b&lBuilder", Arrays.asList("&7Place 100 Blocks", "&7Progress: &b{progress}/100")), "PLACE:ANY:100", Mission.MissionType.DAILY),
-            new Mission("hunter", new Item(XMaterial.BLAZE_ROD, 0, 1, "&b&lHunter", Arrays.asList("&7Kill 100 Mobs", "&7Progress: &b{progress}/100")), "KILL:ANY:100", Mission.MissionType.DAILY)
-    );
+    //Stored as a hashmap to make the configs look better
+    public Map<String, Mission> missions = ImmutableMap.<String, Mission>builder()
+            .put("farmer", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lFarmer", Arrays.asList("&7Complete Island Missions to gain rewards", "&7Which can be used to purchase Island Upgrades", "", "&b&lObjectives:", "&b&l* &7Grow 10 Sugarcane: %progress_1%/10", "&b&l* &7Grow 10 Wheat: %progress_2%/10", "&b&l* &7Grow 10 Carrots: %progress_3%/10", "", "&b&lRewards", "&b&l* &72 Island Crystals", "&b&l* &7$1000")), Arrays.asList("GROW:SUGAR_CANE:10", "GROW:WHEAT:10", "GROW:CARROT:10"), Mission.MissionType.DAILY))
+            .put("hunter", new Mission(new Item(XMaterial.BONE, 1, "&b&lHunter", Arrays.asList("&7Complete Island Missions to gain rewards", "&7Which can be used to purchase Island Upgrades", "", "&b&lObjectives:", "&b&l* &7Kill 10 Zombies: %progress_1%/10", "&b&l* &7Kill 10 Skeletons: %progress_2%/10", "&b&l* &7Kill 10 Creepers: %progress_3%/10", "", "&b&lRewards", "&b&l* &72 Island Crystals", "&b&l* &7$1000")), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.DAILY))
+            .put("enchanter", new Mission(new Item(XMaterial.ENCHANTING_TABLE, 1, "&b&lEnchanter", Arrays.asList("&7Complete Island Missions to gain rewards", "&7Which can be used to purchase Island Upgrades", "", "&b&lObjectives:", "&b&l* &7Enchant 10 Items: %progress_1%/10", "", "&b&lRewards", "&b&l* &72 Island Crystals", "&b&l* &7$1000")), Collections.singletonList("ENCHANT:ANY:10"), Mission.MissionType.DAILY))
+            .put("baker", new Mission(new Item(XMaterial.BREAD, 1, "&b&lBaker", Arrays.asList("&7Complete Island Missions to gain rewards", "&7Which can be used to purchase Island Upgrades", "", "&b&lObjectives:", "&b&l* &7Bake 64 Bread: %progress_1%/10", "", "&b&lRewards", "&b&l* &72 Island Crystals", "&b&l* &7$1000")), Collections.singletonList("CRAFT:BREAD:64"), Mission.MissionType.DAILY))
+            .put("miner", new Mission(new Item(XMaterial.GOLD_ORE, 1, "&b&lMiner", Arrays.asList("&7Complete Island Missions to gain rewards", "&7Which can be used to purchase Island Upgrades", "", "&b&lObjectives:", "&b&l* &7Mine 15 Iron Ores: %progress_1%/10", "&b&l* &7Mine 30 Coal Ores: %progress_2%/10", "&b&l* &7Mine 1 Diamond Ores: %progress_3%/10", "", "&b&lRewards", "&b&l* &72 Island Crystals", "&b&l* &7$1000")), Arrays.asList("MINE:IRON_ORE:15", "MINE:COAL_ORE:30", "MINE:DIAMOND_ORE:1"), Mission.MissionType.DAILY))
+            .build();
 
     public List<Integer> dailySlots = Arrays.asList(11, 13, 15);
 }

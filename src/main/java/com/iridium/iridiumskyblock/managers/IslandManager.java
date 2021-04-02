@@ -330,12 +330,12 @@ public class IslandManager {
      * @param island The specified Island
      * @return a list of Island Missions
      */
-    public IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission) {
-        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMission().equalsIgnoreCase(mission.getName())).findFirst();
+    public IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
+        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMissionName().equalsIgnoreCase(missionKey)).findFirst();
         if (islandMissionOptional.isPresent()) {
             return islandMissionOptional.get();
         } else {
-            IslandMission islandMission = new IslandMission(island, mission);
+            IslandMission islandMission = new IslandMission(island, mission, missionKey, missionIndex);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().add(islandMission);
             return islandMission;
         }
@@ -347,20 +347,25 @@ public class IslandManager {
      * @param island The specified Island
      * @return The daily missions
      */
-    public List<Mission> getDailyIslandMissions(@NotNull Island island) {
+    public HashMap<String, Mission> getDailyIslandMissions(@NotNull Island island) {
+        HashMap<String, Mission> missions = new HashMap<>();
         List<IslandMission> islandMissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().stream().filter(islandMission -> islandMission.getIsland() == island.getId() && islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
         if (islandMissions.isEmpty()) {
             Random random = new Random();
-            List<Mission> missionList = IridiumSkyblock.getInstance().getMissionsList().stream().filter(mission -> mission.getMissionType() == Mission.MissionType.DAILY).collect(Collectors.toList());
+            List<String> missionList = IridiumSkyblock.getInstance().getMissionsList().keySet().stream().filter(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getMissionType() == Mission.MissionType.DAILY).collect(Collectors.toList());
             for (int i = 0; i < IridiumSkyblock.getInstance().getMissions().dailySlots.size(); i++) {
-                Mission mission = missionList.get(random.nextInt(missionList.size()));
-                missionList.remove(mission);
-                IslandMission islandMission = new IslandMission(island, mission);
-                islandMissions.add(islandMission);
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().add(islandMission);
+                String key = missionList.get(random.nextInt(missionList.size()));
+                Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
+                missionList.remove(key);
+                for (int j = 0; j < mission.getMissions().size(); j++) {
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().add(new IslandMission(island, mission, key, j));
+                }
+                missions.put(key, mission);
             }
+        } else {
+            islandMissions.forEach(islandMission -> missions.put(islandMission.getMissionName(), IridiumSkyblock.getInstance().getMissionsList().get(islandMission.getMissionName())));
         }
-        return islandMissions.stream().map(islandMission -> IridiumSkyblock.getInstance().getMissionsList().stream().filter(mission -> mission.getName().equalsIgnoreCase(islandMission.getMission())).findFirst().orElse(null)).filter(Objects::nonNull).collect(Collectors.toList());
+        return missions;
     }
 
     /**

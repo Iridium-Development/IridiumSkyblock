@@ -19,8 +19,11 @@ public class IslandMission {
     @DatabaseField(columnName = "island_id")
     private int island;
 
-    @DatabaseField(columnName = "mission")
-    private String mission;
+    @DatabaseField(columnName = "mission_name")
+    private String missionName;
+
+    @DatabaseField(columnName = "mission_index")
+    private int missionIndex;
 
     @DatabaseField(columnName = "progress")
     @Setter
@@ -30,10 +33,11 @@ public class IslandMission {
     @Setter
     private Mission.MissionType type;
 
-    public IslandMission(@NotNull Island island, @NotNull Mission mission) {
+    public IslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
         this.island = island.getId();
-        this.mission = mission.getName();
+        this.missionName = missionKey;
         this.type = mission.getMissionType();
+        this.missionIndex = missionIndex;
         this.progress = 0;
     }
 }
