@@ -331,11 +331,11 @@ public class IslandManager {
      * @return a list of Island Missions
      */
     public IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
-        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMissionName().equalsIgnoreCase(missionKey)).findFirst();
+        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMissionName().equalsIgnoreCase(missionKey) && isMission.getMissionIndex() == missionIndex - 1).findFirst();
         if (islandMissionOptional.isPresent()) {
             return islandMissionOptional.get();
         } else {
-            IslandMission islandMission = new IslandMission(island, mission, missionKey, missionIndex);
+            IslandMission islandMission = new IslandMission(island, mission, missionKey, missionIndex - 1);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionList().add(islandMission);
             return islandMission;
         }
