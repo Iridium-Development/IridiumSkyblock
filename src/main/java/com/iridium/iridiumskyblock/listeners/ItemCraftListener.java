@@ -33,7 +33,7 @@ public class ItemCraftListener implements Listener {
                     XMaterial material = XMaterial.matchXMaterial(event.getRecipe().getResult().getType());
                     if (conditions[0].equals("CRAFT") && (conditions[1].equals(material.name()) || conditions[1].equals("ANY"))) {
                         IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island.get(), mission, key, i);
-                        if (islandMission.getProgress() > Integer.parseInt(conditions[2]) + amount) {
+                        if (islandMission.getProgress() + amount > Integer.parseInt(conditions[2]) && islandMission.getProgress() < Integer.parseInt(conditions[2])) {
                             islandMission.setProgress(Integer.parseInt(conditions[2]));
                             //Check if Mission is completed
                         } else {
