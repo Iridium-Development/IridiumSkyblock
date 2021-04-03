@@ -48,12 +48,12 @@ public class BlockPlaceListener implements Listener {
         Player player = event.getPlayer();
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+        XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
         if (island.isPresent()) {
             for (String key : IridiumSkyblock.getInstance().getMissionsList().keySet()) {
                 Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
                 for (int i = 1; i <= mission.getMissions().size(); i++) {
                     String[] conditions = mission.getMissions().get(i - 1).toUpperCase().split(":");
-                    XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
                     if (conditions[0].equals("PLACE") && (conditions[1].equals(material.name()) || conditions[1].equals("ANY"))) {
                         IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island.get(), mission, key, i);
                         if (islandMission.getProgress() >= Integer.parseInt(conditions[2])) {
