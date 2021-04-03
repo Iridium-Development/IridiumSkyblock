@@ -417,6 +417,47 @@ public class IslandManager {
     }
 
     /**
+     * Increments a mission's data based on requirements
+     *
+     * @param island      The island
+     * @param missionData The mission data e.g. BREAK:COBBLESTONE
+     * @param increment   The amount we are incrementing by
+     */
+    public void incrementMission(@NotNull Island island, @NotNull String missionData, int increment) {
+        String[] missionConditions = missionData.toUpperCase().split(":");
+        for (String key : IridiumSkyblock.getInstance().getMissionsList().keySet()) {
+            Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
+            for (int i = 1; i <= mission.getMissions().size(); i++) {
+                String[] conditions = mission.getMissions().get(i - 1).toUpperCase().split(":");
+                //If the conditions are the same length (+1 because missionConditions doesnt include amount)
+                if (missionConditions.length + 1 != conditions.length) break;
+                boolean matches = true;
+                for (int j = 0; j < missionConditions.length; j++) {
+                    if (!(conditions[j].equals(missionConditions[j]) || missionConditions[j].equals("ANY"))) {
+                        matches = false;
+                        break;
+                    }
+                }
+                if (!matches) continue;
+                IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, mission, key, i);
+                String number = conditions[missionData.split(":").length];
+                if (number.matches("^[0-9]*$")) {
+                    int amount = Integer.parseInt(number);
+                    if (islandMission.getProgress() + increment > amount) {
+                        islandMission.setProgress(amount);
+                        //Check if Mission is completed
+                    } else {
+                        islandMission.setProgress(islandMission.getProgress() + increment);
+                    }
+                } else {
+                    IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + mission.getMissions().get(i - 1));
+                    IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
+                }
+            }
+        }
+    }
+
+    /**
      * Gets a list of islands sorted by SortType
      *
      * @param sortType How we are sorting the islands
