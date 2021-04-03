@@ -21,7 +21,7 @@ public class ItemCraftListener implements Listener {
 
     @EventHandler
     public void onItemCraftEventMonitor(CraftItemEvent event) {
-        int amount = event.isShiftClick() ? Arrays.stream(event.getInventory().getMatrix()).filter(Objects::nonNull).map(ItemStack::getAmount).sorted().findFirst().orElse(1) : 1;
+        int amount = event.isShiftClick() ? Arrays.stream(event.getInventory().getMatrix()).filter(Objects::nonNull).map(ItemStack::getAmount).sorted().findFirst().orElse(1) * event.getRecipe().getResult().getAmount() : event.getRecipe().getResult().getAmount();
         Player player = (Player) event.getWhoClicked();
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
