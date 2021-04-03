@@ -443,12 +443,8 @@ public class IslandManager {
                 String number = conditions[missionData.split(":").length];
                 if (number.matches("^[0-9]*$")) {
                     int amount = Integer.parseInt(number);
-                    if (islandMission.getProgress() + increment > amount) {
-                        islandMission.setProgress(amount);
-                        //Check if Mission is completed
-                    } else {
-                        islandMission.setProgress(islandMission.getProgress() + increment);
-                    }
+                    if (islandMission.getProgress() >= amount) break;
+                    islandMission.setProgress(Math.min(islandMission.getProgress() + increment, amount));
                 } else {
                     IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + mission.getMissions().get(i - 1));
                     IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
