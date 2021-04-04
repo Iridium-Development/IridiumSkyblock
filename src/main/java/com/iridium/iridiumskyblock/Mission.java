@@ -13,17 +13,15 @@ public class Mission {
     private List<String> missions;
     private MissionType missionType;
     private XSound completeSound;
-    private int exp;
-    private List<String> commands;
+    private Reward reward;
     private List<String> message;
 
-    public Mission(Item item, List<String> missions, MissionType missionType, int exp, List<String> commands, List<String> message) {
+    public Mission(Item item, List<String> missions, MissionType missionType, Reward reward, List<String> message) {
         this.item = item;
         this.missions = missions;
         this.missionType = missionType;
         this.completeSound = XSound.ENTITY_PLAYER_LEVELUP;
-        this.exp = exp;
-        this.commands = commands;
+        this.reward = reward;
         this.message = message;
     }
 

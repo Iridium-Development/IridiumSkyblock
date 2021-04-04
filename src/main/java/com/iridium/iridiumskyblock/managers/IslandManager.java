@@ -473,7 +473,6 @@ public class IslandManager {
                         mission.getMessage().stream().map(string -> StringUtils.color(string.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))).forEach(player::sendMessage);
                         mission.getCompleteSound().play(player);
                     });
-                    island.setExperience(island.getExperience() + mission.getExp());
                 }
             }
         }
