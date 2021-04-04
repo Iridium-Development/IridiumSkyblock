@@ -29,7 +29,6 @@ public class MissionsGUI implements GUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-
     }
 
     @NotNull
