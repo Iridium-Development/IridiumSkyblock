@@ -15,10 +15,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -205,6 +202,7 @@ public class IslandManager {
      * @return Optional of the island at the location, empty if there is none
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
+        if (!Objects.equals(location.getWorld(), IridiumSkyblockAPI.getInstance().getWorld())) return Optional.empty();
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(island -> island.isInIsland(location)).findFirst();
     }
 
