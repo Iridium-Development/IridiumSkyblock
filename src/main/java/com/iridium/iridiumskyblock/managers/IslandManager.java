@@ -427,6 +427,8 @@ public class IslandManager {
         String[] missionConditions = missionData.toUpperCase().split(":");
         for (String key : IridiumSkyblock.getInstance().getMissionsList().keySet()) {
             Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
+            boolean completedBefore = true;
+            boolean completed = true;
             for (int i = 1; i <= mission.getMissions().size(); i++) {
                 String[] conditions = mission.getMissions().get(i - 1).toUpperCase().split(":");
                 //If the conditions are the same length (+1 because missionConditions doesnt include amount)
@@ -444,10 +446,33 @@ public class IslandManager {
                 if (number.matches("^[0-9]*$")) {
                     int amount = Integer.parseInt(number);
                     if (islandMission.getProgress() >= amount) break;
+                    completedBefore = false;
                     islandMission.setProgress(Math.min(islandMission.getProgress() + increment, amount));
                 } else {
                     IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + mission.getMissions().get(i - 1));
                     IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
+                }
+            }
+            if (!completedBefore) {
+                for (int i = 1; i <= mission.getMissions().size(); i++) {
+                    IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, mission, key, i);
+                    String number = mission.getMissions().get(i - 1).toUpperCase().split(":")[missionData.split(":").length];
+                    if (number.matches("^[0-9]*$")) {
+                        int amount = Integer.parseInt(number);
+                        if (islandMission.getProgress() < amount) {
+                            completed = false;
+                            break;
+                        }
+                    } else {
+                        IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + mission.getMissions().get(i - 1));
+                        IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
+                    }
+                }
+                if (completed) {
+                    island.getMembers().stream().map(user -> Bukkit.getPlayer(user.getUuid())).filter(Objects::nonNull).forEach(player -> {
+                        player.sendMessage(key + " Mission Completed!");
+                        mission.getCompleteSound().play(player);
+                    });
                 }
             }
         }
