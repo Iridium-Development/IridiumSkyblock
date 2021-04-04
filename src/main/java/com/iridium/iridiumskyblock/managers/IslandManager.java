@@ -470,9 +470,10 @@ public class IslandManager {
                 }
                 if (completed) {
                     island.getMembers().stream().map(user -> Bukkit.getPlayer(user.getUuid())).filter(Objects::nonNull).forEach(player -> {
-                        player.sendMessage(key + " Mission Completed!");
+                        mission.getMessage().stream().map(string -> StringUtils.color(string.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))).forEach(player::sendMessage);
                         mission.getCompleteSound().play(player);
                     });
+                    island.setExperience(island.getExperience() + mission.getExp());
                 }
             }
         }
