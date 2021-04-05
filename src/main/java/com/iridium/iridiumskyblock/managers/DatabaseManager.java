@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.*;
 import com.j256.ormlite.dao.Dao;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -36,6 +38,7 @@ public class DatabaseManager {
     private final Dao<IslandPermission, Integer> islandPermissionDao;
     private final Dao<IslandBlocks, Integer> islandblocksDao;
     private final Dao<IslandBank, Integer> islandBankDao;
+    private final Dao<IslandMission, Integer> islandMissionDao;
 
     @Getter
     private final List<User> userList;
@@ -51,6 +54,8 @@ public class DatabaseManager {
     private final List<IslandBlocks> islandBlocksList;
     @Getter
     private final List<IslandBank> islandBankList;
+    @Getter
+    private final List<IslandMission> islandMissionList;
 
     /**
      * The default constructor.
@@ -75,6 +80,7 @@ public class DatabaseManager {
         TableUtils.createTableIfNotExists(connectionSource, IslandPermission.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandBlocks.class);
         TableUtils.createTableIfNotExists(connectionSource, IslandBank.class);
+        TableUtils.createTableIfNotExists(connectionSource, IslandMission.class);
 
         this.userDao = DaoManager.createDao(connectionSource, User.class);
         this.islandDao = DaoManager.createDao(connectionSource, Island.class);
@@ -83,6 +89,7 @@ public class DatabaseManager {
         this.islandPermissionDao = DaoManager.createDao(connectionSource, IslandPermission.class);
         this.islandblocksDao = DaoManager.createDao(connectionSource, IslandBlocks.class);
         this.islandBankDao = DaoManager.createDao(connectionSource, IslandBank.class);
+        this.islandMissionDao = DaoManager.createDao(connectionSource, IslandMission.class);
 
         userDao.setAutoCommit(getDatabaseConnection(), false);
         islandDao.setAutoCommit(getDatabaseConnection(), false);
@@ -90,6 +97,7 @@ public class DatabaseManager {
         islandPermissionDao.setAutoCommit(getDatabaseConnection(), false);
         islandblocksDao.setAutoCommit(getDatabaseConnection(), false);
         islandBankDao.setAutoCommit(getDatabaseConnection(), false);
+        islandMissionDao.setAutoCommit(getDatabaseConnection(), false);
 
         this.userList = getUsers();
         this.islandList = getIslands();
@@ -98,6 +106,7 @@ public class DatabaseManager {
         this.islandPermissionList = getIslandPermissions();
         this.islandBlocksList = getIslandBlocks();
         this.islandBankList = getIslandBank();
+        this.islandMissionList = getIslandMissions();
     }
 
     /**
@@ -238,6 +247,21 @@ public class DatabaseManager {
     }
 
     /**
+     * Returns a list of all island missions's in the database.
+     * Might be empty if an error occurs.
+     *
+     * @return a List of all island blocks
+     */
+    private @NotNull List<IslandMission> getIslandMissions() {
+        try {
+            return islandMissionDao.queryForAll();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    /**
      * Saves an island to the database and initializes variables like ID
      *
      * @param island The island we are saving
@@ -358,6 +382,36 @@ public class DatabaseManager {
                 islandBankDao.createOrUpdate(islandBank);
             }
             islandBankDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Saves all islandMissions to the database.
+     * Creates them if they don't exist.
+     */
+
+    public void saveIslandMissions() {
+        try {
+            for (IslandMission islandMission : islandMissionList) {
+                islandMissionDao.createOrUpdate(islandMission);
+            }
+            islandMissionDao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Deletes all dailyMission saved in the database
+     */
+    public void deleteDailyMissions() {
+        try {
+            List<IslandMission> islandMissions = getIslandMissionList().stream().filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
+            islandMissionDao.delete(islandMissions);
+            islandMissionDao.commit(getDatabaseConnection());
+            islandMissions.forEach(islandMissionList::remove);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
