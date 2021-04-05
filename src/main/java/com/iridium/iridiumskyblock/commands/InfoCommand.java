@@ -71,8 +71,8 @@ public class InfoCommand extends Command {
     /**
      * Sends infos about the specified island to the sender.
      *
-     * @param sender The CommandSender who invoked the command
-     * @param island The Island whose data was requested
+     * @param sender        The CommandSender who invoked the command
+     * @param island        The Island whose data was requested
      * @param requestedUser The User whose data was requested
      */
     private void sendInfo(CommandSender sender, Island island, User requestedUser) {
@@ -90,7 +90,7 @@ public class InfoCommand extends Command {
                     .replace("%island_name%", island.getName())
                     .replace("%owner%", island.getOwner().getName())
                     .replace("%members%", members)
-                    .replace("%level%", "TODO") // TODO
+                    .replace("%level%", String.valueOf(island.getLevel()))
                     .replace("%value%", String.valueOf(island.getValue()))
                     .replace("%visitable%", island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().yes : IridiumSkyblock.getInstance().getMessages().no)
             ));
