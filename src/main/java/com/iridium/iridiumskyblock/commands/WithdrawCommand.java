@@ -36,7 +36,7 @@ public class WithdrawCommand extends Command {
             if (bankItem.isPresent()) {
                 bankItem.get().withdraw(player, Double.parseDouble(args[2]));
             } else {
-                //Bank item doesnt exist
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankItemDoesntExist.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
