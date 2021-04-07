@@ -33,7 +33,7 @@ public class MissionSelectGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Missions"));
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
         }
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().dailyQuests.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().dailyQuests));
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests));

@@ -44,7 +44,7 @@ public class IslandTopGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Members"));
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
         }
         for (int slot : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.values()) {
             if (islandSlots.containsKey(slot)) {
