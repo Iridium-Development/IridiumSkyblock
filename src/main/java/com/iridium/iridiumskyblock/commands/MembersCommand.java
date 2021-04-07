@@ -18,7 +18,7 @@ public class MembersCommand extends Command {
      * The default constructor.
      */
     public MembersCommand() {
-        super(Collections.singletonList("members"), "view your island members", "", true);
+        super(Collections.singletonList("members"), "View your Island members", "", true);
     }
 
     @Override

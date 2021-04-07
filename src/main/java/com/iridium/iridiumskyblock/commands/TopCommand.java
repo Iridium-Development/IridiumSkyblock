@@ -16,7 +16,7 @@ public class TopCommand extends Command {
      * The default constructor.
      */
     public TopCommand() {
-        super(Collections.singletonList("top"), "Display the top islands", "", true);
+        super(Collections.singletonList("top"), "Display the top Islands", "", true);
     }
 
     /**

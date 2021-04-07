@@ -23,7 +23,7 @@ public class DeleteCommand extends Command {
      * The default constructor.
      */
     public DeleteCommand() {
-        super(Collections.singletonList("delete"), "Delete an island", "", true);
+        super(Collections.singletonList("delete"), "Delete your Island", "", true);
     }
 
     /**

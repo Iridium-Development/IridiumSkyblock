@@ -24,7 +24,7 @@ public class LeaveCommand extends Command {
      * The default constructor.
      */
     public LeaveCommand() {
-        super(Collections.singletonList("leave"), "Leave your island", "", true);
+        super(Collections.singletonList("leave"), "Leave your Island", "", true);
     }
 
     /**

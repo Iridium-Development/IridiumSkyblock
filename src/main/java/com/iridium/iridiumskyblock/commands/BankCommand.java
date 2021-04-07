@@ -18,7 +18,7 @@ public class BankCommand extends Command {
      * The default constructor.
      */
     public BankCommand() {
-        super(Collections.singletonList("bank"), "view your island bank", "", true);
+        super(Collections.singletonList("bank"), "Open your Island bank", "", true);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class BypassCommand extends Command {
      * The default constructor.
      */
     public BypassCommand() {
-        super(Collections.singletonList("bypass"), "bypass island restrictions", "iridiumskyblock.bypass", true);
+        super(Collections.singletonList("bypass"), "Bypass Island restrictions", "iridiumskyblock.bypass", true);
     }
 
     /**
