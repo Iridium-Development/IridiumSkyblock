@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
-import com.iridium.iridiumskyblock.commands.BlockValues;
+import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;

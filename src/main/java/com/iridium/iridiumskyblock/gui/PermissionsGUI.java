@@ -50,7 +50,7 @@ public class PermissionsGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 45, StringUtils.color("&7Island Permissions"));
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
         }
         for (Permission permission : IridiumSkyblock.getInstance().getPermissionList()) {
             boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission);

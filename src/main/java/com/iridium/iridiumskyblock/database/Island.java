@@ -129,12 +129,14 @@ public final class Island {
     public double getValue() {
         double value = 0;
         for (XMaterial xMaterial : IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet()) {
-            Optional<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(this, xMaterial);
-            if (islandBlocks.isPresent()) {
-                value += islandBlocks.get().getAmount() * IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial);
-            }
+            value += getValueOf(xMaterial);
         }
         return value;
+    }
+
+    public double getValueOf(XMaterial material) {
+        Optional<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(this, material);
+        return islandBlocks.map(blocks -> blocks.getAmount() * IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material)).orElse(0.0);
     }
 
     /**

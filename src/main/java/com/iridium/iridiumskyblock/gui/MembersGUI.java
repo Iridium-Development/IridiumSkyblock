@@ -45,7 +45,7 @@ public class MembersGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Members"));
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
         }
         int i = 0;
         for (User member : island.getMembers()) {
