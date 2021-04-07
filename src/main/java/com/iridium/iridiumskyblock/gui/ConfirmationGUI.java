@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -23,9 +24,9 @@ public class ConfirmationGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color(iridiumSkyblock.getInventories().ConfirmationGUITitle));
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
-        }
+
+        InventoryUtils.fillInventory(inventory);
+
         inventory.setItem(11, ItemStackUtils.makeItem(iridiumSkyblock.getInventories().no));
         inventory.setItem(15, ItemStackUtils.makeItem(iridiumSkyblock.getInventories().yes));
         return inventory;

@@ -11,6 +11,9 @@ import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 @NoArgsConstructor
 public class ExperienceBankItem extends BankItem {
@@ -22,14 +25,16 @@ public class ExperienceBankItem extends BankItem {
     @Override
     public void withdraw(Player player, Number amount) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        Island island = user.getIsland().orElse(null);
-        if (island != null) {
-            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, this);
+        Optional<Island> island = user.getIsland();
+
+        if (island.isPresent()) {
+            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
             int experience = Math.min(amount.intValue(), (int) islandBank.getNumber());
+
             if (experience > 0) {
                 islandBank.setNumber(islandBank.getNumber() - experience);
                 PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) + experience);
-                //Success Message
+                // TODO: Success Message
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -39,14 +44,15 @@ public class ExperienceBankItem extends BankItem {
     @Override
     public void deposit(Player player, Number amount) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        Island island = user.getIsland().orElse(null);
-        if (island != null) {
-            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, this);
+        Optional<Island> island = user.getIsland();
+
+        if (island.isPresent()) {
+            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
             int experience = Math.min(amount.intValue(), PlayerUtils.getTotalExperience(player));
             if (experience > 0) {
                 islandBank.setNumber(islandBank.getNumber() + experience);
                 PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) - experience);
-                //Success Message
+                // TODO: Success Message
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -57,4 +63,5 @@ public class ExperienceBankItem extends BankItem {
     public String toString(Number number) {
         return String.valueOf(number.intValue());
     }
+
 }

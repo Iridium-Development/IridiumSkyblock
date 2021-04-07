@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class DemoteCommand extends Command {
+
     /**
      * The default constructor.
      */
@@ -28,9 +29,11 @@ public class DemoteCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
             User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
+
             if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
                 IslandRank nextRank = IslandRank.getByLevel(offlinePlayerUser.getIslandRank().getLevel() - 1);
                 if (nextRank != null && offlinePlayerUser.getIslandRank().getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().demote)) {
@@ -64,4 +67,5 @@ public class DemoteCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return null;
     }
+
 }

@@ -63,6 +63,10 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private Economy economy;
 
+    public IridiumSkyblock() {
+        instance = this;
+    }
+
     /**
      * Code that should be executed before this plugin gets enabled.
      * Sets the default world generator.
@@ -77,8 +81,6 @@ public class IridiumSkyblock extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        instance = this;
-
         getDataFolder().mkdir();
 
         // Initialize the configs
@@ -151,6 +153,7 @@ public class IridiumSkyblock extends JavaPlugin {
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
+
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -219,12 +222,12 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     private Economy setupEconomy() {
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
-            getLogger().warning("You do not have an economy plugin installed (Like Essentials)");
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
+        if (economyProvider == null) {
+            getLogger().warning("You do not have an economy plugin installed (like Essentials)");
             return null;
         }
-        return rsp.getProvider();
+        return economyProvider.getProvider();
     }
 
     /**
@@ -290,4 +293,5 @@ public class IridiumSkyblock extends JavaPlugin {
     public static IridiumSkyblock getInstance() {
         return instance;
     }
+
 }

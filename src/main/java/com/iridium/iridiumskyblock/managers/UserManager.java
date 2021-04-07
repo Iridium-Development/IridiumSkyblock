@@ -37,4 +37,5 @@ public class UserManager {
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
     }
+
 }

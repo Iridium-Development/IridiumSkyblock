@@ -10,6 +10,9 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 @NoArgsConstructor
 public class MoneyBankItem extends BankItem {
@@ -21,14 +24,15 @@ public class MoneyBankItem extends BankItem {
     @Override
     public void withdraw(Player player, Number amount) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        Island island = user.getIsland().orElse(null);
-        if (island != null) {
-            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, this);
+        Optional<Island> island = user.getIsland();
+
+        if (island.isPresent()) {
+            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
             double money = Math.min(amount.doubleValue(), islandBank.getNumber());
             if (money > 0) {
                 islandBank.setNumber(islandBank.getNumber() - money);
                 IridiumSkyblock.getInstance().getEconomy().depositPlayer(player, money);
-                //Success Message
+                // TODO: Success Message
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -38,14 +42,15 @@ public class MoneyBankItem extends BankItem {
     @Override
     public void deposit(Player player, Number amount) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        Island island = user.getIsland().orElse(null);
-        if (island != null) {
-            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, this);
+        Optional<Island> island = user.getIsland();
+
+        if (island.isPresent()) {
+            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
             double money = Math.min(amount.doubleValue(), IridiumSkyblock.getInstance().getEconomy().getBalance(player));
             if (money > 0) {
                 islandBank.setNumber(islandBank.getNumber() + money);
                 IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, money);
-                //Success Message
+                // TODO: Success Message
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -56,4 +61,5 @@ public class MoneyBankItem extends BankItem {
     public String toString(Number number) {
         return String.valueOf(number.doubleValue());
     }
+
 }

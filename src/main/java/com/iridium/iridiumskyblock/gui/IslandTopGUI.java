@@ -1,10 +1,10 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBlocks;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -25,6 +25,7 @@ public class IslandTopGUI implements GUI {
 
     public IslandTopGUI() {
         List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
+
         for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
             if (islands.size() < rank) continue;
             islandSlots.put(IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank), islands.get(rank - 1));
@@ -33,19 +34,19 @@ public class IslandTopGUI implements GUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (islandSlots.containsKey(event.getSlot())) {
-            Island island = islandSlots.get(event.getSlot());
-            IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
-        }
+        if (!islandSlots.containsKey(event.getSlot())) return;
+
+        Island island = islandSlots.get(event.getSlot());
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Members"));
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
-        }
+
+        InventoryUtils.fillInventory(inventory);
+
         for (int slot : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.values()) {
             if (islandSlots.containsKey(slot)) {
                 Island island = islandSlots.get(slot);
@@ -61,6 +62,8 @@ public class IslandTopGUI implements GUI {
                 inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().topFiller));
             }
         }
+
         return inventory;
     }
+
 }

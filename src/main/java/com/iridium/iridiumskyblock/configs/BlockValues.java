@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.collect.ImmutableMap;
-import lombok.AllArgsConstructor;
+import lombok.*;
 import org.bukkit.entity.EntityType;
 
 import java.util.Map;
@@ -24,6 +25,7 @@ public class BlockValues {
             .build();
 
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class ValuableBlock {
         public double value;
         public String name;

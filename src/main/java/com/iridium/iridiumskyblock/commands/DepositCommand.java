@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class DepositCommand extends Command {
+
     /**
      * The default constructor.
      */
@@ -48,6 +49,10 @@ public class DepositCommand extends Command {
         if (args.length == 2) {
             return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).collect(Collectors.toList());
         }
-        return null;
+
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
+
 }

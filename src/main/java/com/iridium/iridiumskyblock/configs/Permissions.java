@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.Permission;
 import java.util.Arrays;
 
 public class Permissions {
+
     public String allowed = "&a&lALLOWED";
     public String denied = "&c&lDENIED";
     public Permission blockBreak = new Permission("blockBreak", new Item(XMaterial.DIAMOND_PICKAXE, 10, 1, "&bBreak Blocks", Arrays.asList("&7Grant the ability to break any blocks on your Island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
@@ -27,4 +28,5 @@ public class Permissions {
     public Permission pickupItems = new Permission("pickupItems", new Item(XMaterial.HOPPER, 28, 1, "&bPickup Items", Arrays.asList("&7Grant the ability to pickup items on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
     public Permission dropItems = new Permission("dropItems", new Item(XMaterial.GHAST_TEAR, 29, 1, "&bDrop Items", Arrays.asList("&7Grant the ability to drop items on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
     public Permission interactEntities = new Permission("interactEntities", new Item(XMaterial.CREEPER_HEAD, 30, 1, "&bInteract with Entities", Arrays.asList("&7Grant the ability to interact with entities on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
+
 }

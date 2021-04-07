@@ -36,12 +36,15 @@ public class VisitCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
+
         if (args.length != 2) {
             p.openInventory(new VisitGUI(1).getInventory());
             return;
         }
+
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
+
         if (user.getIsland().isPresent()) {
             if ((user.getIsland()).get().isVisitable() || p.hasPermission("iridiumskyblock.visitbypass")) {
                 IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, user.getIsland().get());
