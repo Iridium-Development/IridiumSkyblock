@@ -16,7 +16,6 @@ public class BlockValueSelectGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().blockValue.slot) {
             event.getWhoClicked().openInventory(new BlockValueGUI(BlockValueGUI.BlockValueType.BLOCK).getInventory());
-            InventoryUtils.removeAmount(event.getWhoClicked().getInventory(), XMaterial.DIRT, 128);
         } else if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().spawnerBlockValue.slot) {
             event.getWhoClicked().openInventory(new BlockValueGUI(BlockValueGUI.BlockValueType.SPAWNER).getInventory());
         }
