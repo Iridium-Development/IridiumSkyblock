@@ -41,9 +41,7 @@ public class InvitesGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Invites"));
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getIslandManager().getInvitesByIsland(island);
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
-        }
+InventoryUtils.fillInventory(inventory)
         int i = 0;
         for (IslandInvite islandInvite : islandInvites) {
             inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvite, Arrays.asList(

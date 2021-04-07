@@ -247,7 +247,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Returns a list of all island missions's in the database.
+     * Returns a list of all island missions in the database.
      * Might be empty if an error occurs.
      *
      * @return a List of all island blocks

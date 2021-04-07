@@ -38,6 +38,6 @@ public class IslandMission {
         this.missionName = missionKey;
         this.type = mission.getMissionType();
         this.missionIndex = missionIndex;
-        this.progress = 0;
     }
+
 }

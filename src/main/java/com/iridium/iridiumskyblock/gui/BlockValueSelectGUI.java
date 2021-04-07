@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -15,6 +16,7 @@ public class BlockValueSelectGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().blockValue.slot) {
             event.getWhoClicked().openInventory(new BlockValueGUI(BlockValueGUI.BlockValueType.BLOCK).getInventory());
+            InventoryUtils.removeAmount(event.getWhoClicked().getInventory(), XMaterial.DIRT, 128);
         } else if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().spawnerBlockValue.slot) {
             event.getWhoClicked().openInventory(new BlockValueGUI(BlockValueGUI.BlockValueType.SPAWNER).getInventory());
         }
@@ -25,9 +27,7 @@ public class BlockValueSelectGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().blockValueSelectGuiSize, StringUtils.color(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUITitle));
 
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
-        }
+InventoryUtils.fillInventory(inventory)
 
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().blockValue.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().blockValue));
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().spawnerBlockValue.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().spawnerBlockValue));

@@ -30,7 +30,9 @@ public class StringUtils {
      * @return A list of the same strings with colors
      */
     public static List<String> color(List<String> strings) {
-        return strings.stream().map(StringUtils::color).collect(Collectors.toList());
+        return strings.stream()
+                .map(StringUtils::color)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -43,7 +45,9 @@ public class StringUtils {
      * @return The same lines with replaced placeholders
      */
     public static List<String> processMultiplePlaceholders(List<String> lines, List<Placeholder> placeholders) {
-        return lines.stream().map(s -> processMultiplePlaceholders(s, placeholders)).collect(Collectors.toList());
+        return lines.stream()
+                .map(s -> processMultiplePlaceholders(s, placeholders))
+                .collect(Collectors.toList());
     }
 
     /**

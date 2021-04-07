@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class WithdrawCommand extends Command {
+
     /**
      * The default constructor.
      */
@@ -28,9 +29,11 @@ public class WithdrawCommand extends Command {
             // /is withdraw <name> <amount>
             return;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
             if (bankItem.isPresent()) {
@@ -48,6 +51,10 @@ public class WithdrawCommand extends Command {
         if (args.length == 2) {
             return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).collect(Collectors.toList());
         }
-        return null;
+
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
+
 }

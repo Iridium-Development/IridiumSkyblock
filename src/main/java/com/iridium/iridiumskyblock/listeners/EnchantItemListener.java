@@ -16,7 +16,7 @@ import java.util.Optional;
 public class EnchantItemListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onEnchantItemEventMonitor(EnchantItemEvent event) {
+    public void monitorItemEnchant(EnchantItemEvent event) {
         Player player = event.getEnchanter();
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();

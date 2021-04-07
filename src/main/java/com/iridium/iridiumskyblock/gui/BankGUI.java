@@ -28,6 +28,7 @@ public class BankGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
+
         switch (event.getClick()) {
             case LEFT:
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is withdraw " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
@@ -35,6 +36,7 @@ public class BankGUI implements GUI {
             case RIGHT:
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is deposit " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
         }
+
         event.getWhoClicked().openInventory(getInventory());
     }
 
@@ -42,13 +44,17 @@ public class BankGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Bank"));
+
         for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
         }
+
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, bankItem);
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", bankItem.toString(islandBank.getNumber())))));
         }
+
         return inventory;
     }
+
 }

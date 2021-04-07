@@ -19,12 +19,12 @@ public class v1_16_R3 implements NMS {
         Chunk nmsChunk = nmsWorld.getChunkAt(x >> 4, z >> 4);
         IBlockData ibd = Block.getByCombinedId(blockId + (data << 12));
 
-        ChunkSection cs = nmsChunk.getSections()[y >> 4];
-        if (cs == null) {
-            cs = new ChunkSection(y >> 4 << 4);
-            nmsChunk.getSections()[y >> 4] = cs;
+        ChunkSection chunkSection = nmsChunk.getSections()[y >> 4];
+        if (chunkSection == null) {
+            chunkSection = new ChunkSection(y >> 4 << 4);
+            nmsChunk.getSections()[y >> 4] = chunkSection;
         }
-        cs.setType(x & 15, y & 15, z & 15, ibd);
+        chunkSection.setType(x & 15, y & 15, z & 15, ibd);
         nmsChunk.getWorld().getChunkProvider().getLightEngine().a(new BlockPosition(x, y, z));
     }
 
@@ -61,15 +61,15 @@ public class v1_16_R3 implements NMS {
 
     @Override
     public void sendSubTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
-        IChatBaseComponent iChatBaseComponent = IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
-        PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, iChatBaseComponent, fadeIn, displayTime, fadeOut);
+        IChatBaseComponent chatBaseComponent = IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
+        PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, chatBaseComponent, fadeIn, displayTime, fadeOut);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packetPlayOutTitle);
     }
 
     @Override
     public void sendTitle(Player player, String message, int fadeIn, int displayTime, int fadeOut) {
-        IChatBaseComponent iChatBaseComponent = IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
-        PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, iChatBaseComponent, fadeIn, displayTime, fadeOut);
+        IChatBaseComponent chatBaseComponent = IChatBaseComponent.ChatSerializer.a(ChatColor.translateAlternateColorCodes('&', "{\"text\":\"" + message + "\"}"));
+        PacketPlayOutTitle packetPlayOutTitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, chatBaseComponent, fadeIn, displayTime, fadeOut);
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packetPlayOutTitle);
     }
 }

@@ -26,4 +26,5 @@ public class CrystalsBankItem extends BankItem {
     public String toString(Number number) {
         return String.valueOf(number.intValue());
     }
+
 }

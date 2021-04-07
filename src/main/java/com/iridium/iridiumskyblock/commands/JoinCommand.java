@@ -40,21 +40,25 @@ public class JoinCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
+
         if (user.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
             User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
             Optional<Island> island = offlinePlayerUser.getIsland();
+
             if (island.isPresent()) {
                 Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), user);
                 if (islandInvite.isPresent() || user.isBypass()) {
+                    // Send a message to all other members
                     for (User member : island.get().getMembers()) {
                         Player pl = Bukkit.getPlayer(member.getName());
                         if (pl != null) {
                             pl.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerJoinedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                     }
+
                     user.setIsland(island.get());
                     user.setIslandRank(IslandRank.MEMBER);
                     islandInvite.ifPresent(invite -> IridiumSkyblock.getInstance().getDatabaseManager().deleteInvite(invite));

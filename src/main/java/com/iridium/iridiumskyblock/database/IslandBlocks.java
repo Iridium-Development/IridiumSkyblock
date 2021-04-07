@@ -36,7 +36,6 @@ public final class IslandBlocks {
     public IslandBlocks(@NotNull Island island, @NotNull XMaterial material) {
         this.island = island.getId();
         this.material = material;
-        this.amount = 0;
     }
 
 }

@@ -17,30 +17,33 @@ import java.util.Optional;
 public class BlockBreakListener implements Listener {
 
     @EventHandler
-    public void onBlockBreakEvent(BlockBreakEvent event) {
+    public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
-        if (island.isPresent()) {
-            XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().blockBreak)) {
-                event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            } else if (material.equals(XMaterial.SPAWNER) && !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().spawners)) {
-                event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotMineSpawners.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            } else if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(material)) {
-                IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material).ifPresent(islandBlocks -> {
-                    if (islandBlocks.getAmount() <= 0) return;
-                    islandBlocks.setAmount(islandBlocks.getAmount() - 1);
-                    island.get().setValue(island.get().getValue() - IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value);
-                });
-            }
+
+        if (!island.isPresent()) {
+            return;
+        }
+
+        XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
+        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().blockBreak)) {
+            event.setCancelled(true);
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        } else if (material.equals(XMaterial.SPAWNER) && !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().spawners)) {
+            event.setCancelled(true);
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotMineSpawners.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        } else if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(material)) {
+            IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material).ifPresent(islandBlocks -> {
+                if (islandBlocks.getAmount() <= 0) return;
+                islandBlocks.setAmount(islandBlocks.getAmount() - 1);
+                island.get().setValue(island.get().getValue() - IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value);
+            });
         }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onBlockBreakEventMonitor(BlockBreakEvent event) {
+    public void monitorBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();

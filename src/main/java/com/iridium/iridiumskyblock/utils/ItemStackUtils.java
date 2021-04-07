@@ -50,7 +50,7 @@ public class ItemStackUtils {
      * Creates a new ItemStack from the provided arguments.
      *
      * @param item         An existing item we should clone
-     * @param placeholders A list of Placeholders we should apply to the display name and lore
+     * @param placeholders A list of Placeholders we should claim to the display name and lore
      * @return The new ItemStack
      */
     public static ItemStack makeItem(Item item, List<Placeholder> placeholders) {

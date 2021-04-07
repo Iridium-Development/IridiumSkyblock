@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Missions {
-    //Stored as a hashmap to make the configs look better
+
     public Map<String, Mission> missions = ImmutableMap.<String, Mission>builder()
             .put("farmer", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lFarmer", Arrays.asList("&7Complete Island Missions to gain rewards", "&7Which can be used to purchase Island Upgrades", "", "&b&lObjectives:", "&b&l* &7Grow 10 Sugarcane: %progress_1%/10", "&b&l* &7Grow 10 Wheat: %progress_2%/10", "&b&l* &7Grow 10 Carrots: %progress_3%/10", "", "&b&lRewards", "&b&l* &72 Island Crystals", "&b&l* &7$1000")), Arrays.asList("GROW:SUGAR_CANE:10", "GROW:WHEAT:10", "GROW:CARROTS:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lFarmer Reward", Arrays.asList("&b&l Rewards", "&b&l* &73 Island Crystals")), 5, Collections.singletonList("is bank give %player% crystals 3"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList("%prefix% &7Farmer mission Completed!", "&b&l* &7+5 Island Experience", "&b&l* &7+3 Island Crystals", "&7/is rewards to redeem rewards")))
             .put("hunter", new Mission(new Item(XMaterial.BONE, 1, "&b&lHunter", Arrays.asList("&7Complete Island Missions to gain rewards", "&7Which can be used to purchase Island Upgrades", "", "&b&lObjectives:", "&b&l* &7Kill 10 Zombies: %progress_1%/10", "&b&l* &7Kill 10 Skeletons: %progress_2%/10", "&b&l* &7Kill 10 Creepers: %progress_3%/10", "", "&b&lRewards", "&b&l* &72 Island Crystals", "&b&l* &7$1000")), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lHunter Reward", Arrays.asList("&b&l Rewards", "&b&l* &73 Island Crystals")), 5, Collections.singletonList("is bank give %player% crystals 3"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList("%prefix% &7Hunter mission Completed!", "&b&l* &7+5 Island Experience", "&b&l* &7+3 Island Crystals", "&7/is rewards to redeem rewards")))
@@ -27,4 +27,5 @@ public class Missions {
             .build();
 
     public List<Integer> dailySlots = Arrays.asList(10, 12, 14, 16);
+
 }

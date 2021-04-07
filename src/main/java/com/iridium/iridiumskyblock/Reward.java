@@ -10,6 +10,7 @@ import java.util.List;
 
 @NoArgsConstructor
 public class Reward {
+
     public Item item;
     public List<String> commands;
     public int islandExperience;
@@ -22,8 +23,9 @@ public class Reward {
         this.sound = sound;
     }
 
-    public void apply(Player player, Island island) {
+    public void claim(Player player, Island island) {
         island.setExperience(island.getExperience() + islandExperience);
         commands.forEach(command -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName())));
     }
+
 }
