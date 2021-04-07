@@ -15,12 +15,15 @@ import java.util.Optional;
 public class BlockGrowListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onBlockGrowEventMonitor(BlockGrowEvent event) {
+    public void monitorBlockGrow(BlockGrowEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
         XMaterial material = XMaterial.matchXMaterial(event.getNewState().getType());
+
         if (event.getNewState().getData() instanceof Crops) {
             if (!((Crops) event.getNewState().getData()).getState().equals(CropState.RIPE)) return;
         }
+
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:" + material.name(), 1));
     }
+
 }

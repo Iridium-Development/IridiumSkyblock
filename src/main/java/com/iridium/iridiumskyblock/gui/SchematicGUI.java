@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -24,22 +24,24 @@ public abstract class SchematicGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Select a Schematic"));
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
-        }
+
+        InventoryUtils.fillInventory(inventory);
+
         for (Schematics.SchematicConfig schematicConfig : IridiumSkyblock.getInstance().getSchematics().schematics) {
             inventory.setItem(schematicConfig.item.slot, ItemStackUtils.makeItem(schematicConfig.item));
             schematics.put(schematicConfig.item.slot, schematicConfig);
         }
+
         return inventory;
+    }
+
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!schematics.containsKey(event.getSlot())) return;
+        selectSchematic(schematics.get(event.getSlot()));
+        event.getWhoClicked().closeInventory();
     }
 
     public abstract void selectSchematic(Schematics.SchematicConfig schematicConfig);
 
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (schematics.containsKey(event.getSlot())) {
-            selectSchematic(schematics.get(event.getSlot()));
-            event.getWhoClicked().closeInventory();
-        }
-    }
 }

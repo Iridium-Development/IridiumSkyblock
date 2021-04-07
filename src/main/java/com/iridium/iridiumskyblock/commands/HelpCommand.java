@@ -92,15 +92,22 @@ public class HelpCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command cmd, String label, String[] args) {
-        int availableCommandAmount = (int) IridiumSkyblock.getInstance().getCommandManager().commands.stream()
-                .filter(command -> command.enabled)
-                .filter(command -> commandSender.hasPermission(command.permission) || command.permission.isEmpty())
-                .count();
+        if (args.length == 2) {
+            int availableCommandAmount = (int) IridiumSkyblock.getInstance().getCommandManager().commands.stream()
+                    .filter(command -> command.enabled)
+                    .filter(command -> commandSender.hasPermission(command.permission) || command.permission.isEmpty())
+                    .count();
 
-        return IntStream.rangeClosed(1, (int) Math.ceil(availableCommandAmount / 8.0)) // Convert to page numbers
-                .boxed()
-                .map(String::valueOf)
-                .collect(Collectors.toList());
+            // Return all numbers from 1 to the max page
+            return IntStream.rangeClosed(1, (int) Math.ceil(availableCommandAmount / 8.0))
+                    .boxed()
+                    .map(String::valueOf)
+                    .collect(Collectors.toList());
+        }
+
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

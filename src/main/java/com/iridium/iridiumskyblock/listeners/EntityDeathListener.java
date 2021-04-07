@@ -15,9 +15,10 @@ import java.util.Optional;
 public class EntityDeathListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onEntityDeathEventMonitor(EntityDeathEvent event) {
+    public void monitorEntityDeath(EntityDeathEvent event) {
         Player player = event.getEntity().getKiller();
         if (player == null) return;
+
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "KILL:" + event.getEntityType().name(), 1));

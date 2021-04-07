@@ -47,6 +47,7 @@ public final class SchematicData {
 
     /**
      * The default constructor.
+     * TODO: Change this, because it's not the default constructor.
      *
      * @param id        The ID of this schematic, used as a unique identifier
      * @param schematic The schematic whose data should be saved

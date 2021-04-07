@@ -18,14 +18,13 @@ public class EntityDamageListener implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
-        if (island.isPresent()) {
-            if (event.getDamager() instanceof Player) {
-                Player player = (Player) event.getDamager();
-                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().killMobs)) {
-                    event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            }
-        }
+        if (!island.isPresent()) return;
+        if (!(event.getDamager() instanceof Player)) return;
+
+        Player player = (Player) event.getDamager();
+        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().killMobs)) return;
+
+        event.setCancelled(true);
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 }

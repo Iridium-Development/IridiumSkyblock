@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class IslandRegenGUI extends SchematicGUI {
+
     private final @NotNull Player player;
 
     public IslandRegenGUI(@NotNull Player player) {
@@ -29,4 +30,5 @@ public class IslandRegenGUI extends SchematicGUI {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
+
 }

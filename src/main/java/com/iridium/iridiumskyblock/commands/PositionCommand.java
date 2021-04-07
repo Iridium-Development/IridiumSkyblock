@@ -13,6 +13,9 @@ import java.util.List;
 
 public class PositionCommand extends Command {
 
+    /**
+     * The default constructor.
+     */
     public PositionCommand() {
         super(Arrays.asList("pos", "position"), "Set the corner position of a schematic", "iridiumskyblock.schematic", true);
     }
@@ -58,6 +61,8 @@ public class PositionCommand extends Command {
             return Arrays.asList("1", "2");
         }
 
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
         return Collections.emptyList();
     }
 

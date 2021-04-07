@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.gui;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.BlockValues.ValuableBlock;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -34,9 +35,7 @@ public class BlockValueGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().blockValueGuiSize, StringUtils.color(IridiumSkyblock.getInstance().getInventories().blockValueGUITitle));
 
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
-        }
+        InventoryUtils.fillInventory(inventory);
 
         if (guiType == BlockValueType.BLOCK) {
             for (Map.Entry<XMaterial, ValuableBlock> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {
@@ -47,7 +46,7 @@ public class BlockValueGUI implements GUI {
             }
         } else if (guiType == BlockValueType.SPAWNER) {
             for (Map.Entry<EntityType, ValuableBlock> valuableSpawner : IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet()) {
-                EntityType spawnerType = valuableSpawner.getKey(); // TODO: Set spawner type of item
+                EntityType spawnerType = valuableSpawner.getKey();
                 ValuableBlock spawnerInfo = valuableSpawner.getValue();
                 ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
                 inventory.setItem(spawnerInfo.slot, spawnerItem);

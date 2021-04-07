@@ -1,5 +1,10 @@
 package com.iridium.iridiumskyblock;
 
 public enum Color {
-    BLUE, GREEN, RED, OFF
+
+    BLUE,
+    GREEN,
+    RED,
+    OFF
+
 }

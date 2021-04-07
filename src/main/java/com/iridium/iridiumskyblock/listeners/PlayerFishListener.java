@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,11 +16,13 @@ import java.util.Optional;
 public class PlayerFishListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlayerFishEventMonitor(PlayerFishEvent event) {
-        if (event.getCaught() == null) return;
-        Player player = event.getPlayer();
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+    public void monitorPlayerFish(PlayerFishEvent event) {
+        Entity caughtEntity = event.getCaught();
+        if (caughtEntity == null) return;
+
+        User user = IridiumSkyblockAPI.getInstance().getUser(event.getPlayer());
         Optional<Island> island = user.getIsland();
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "FISH:" + event.getCaught().getType().name(), 1));
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "FISH:" + caughtEntity.getType().name(), 1));
     }
+
 }

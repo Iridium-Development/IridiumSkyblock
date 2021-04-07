@@ -39,14 +39,15 @@ public class UnInviteCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
-        User unInvitedUser = IridiumSkyblockAPI.getInstance().getUser(Bukkit.getServer().getOfflinePlayer(args[1]));
+        User targetUser = IridiumSkyblockAPI.getInstance().getUser(Bukkit.getServer().getOfflinePlayer(args[1]));
+
         if (island.isPresent()) {
-            Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), unInvitedUser);
+            Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), targetUser);
             if (islandInvite.isPresent()) {
                 IridiumSkyblock.getInstance().getDatabaseManager().deleteInvite(islandInvite.get());
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteRevoked.replace("%player%", unInvitedUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteDoesntExist.replace("%player%", unInvitedUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteDoesntExist.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

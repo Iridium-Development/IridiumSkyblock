@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class TransferCommand extends Command {
+
     /**
      * The default constructor.
      */
@@ -29,22 +30,25 @@ public class TransferCommand extends Command {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " /is transfer <player>"));
             return;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             User islandOwner = island.get().getOwner();
-            OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-            User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
+            OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+            User targetUser = IridiumSkyblockAPI.getInstance().getUser(targetPlayer);
+
             if (user.getIslandRank().equals(IslandRank.OWNER) || user.isBypass()) {
-                if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
-                    if (!islandOwner.getUuid().equals(offlinePlayer.getUniqueId())) {
+                if (island.get().equals(targetUser.getIsland().orElse(null))) {
+                    if (!islandOwner.getUuid().equals(targetPlayer.getUniqueId())) {
                         islandOwner.setIslandRank(IslandRank.CO_OWNER);
-                        offlinePlayerUser.setIslandRank(IslandRank.OWNER);
+                        targetUser.setIslandRank(IslandRank.OWNER);
                         for (User member : island.get().getMembers()) {
                             Player p = Bukkit.getPlayer(member.getUuid());
                             if (p != null) {
-                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().transferredOwnership.replace("%oldowner%", user.getName()).replace("%newowner%", offlinePlayerUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().transferredOwnership.replace("%oldowner%", user.getName()).replace("%newowner%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                             }
                         }
                     } else {
@@ -65,4 +69,5 @@ public class TransferCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return null;
     }
+
 }

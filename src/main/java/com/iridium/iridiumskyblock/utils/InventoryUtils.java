@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.utils;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -71,6 +72,12 @@ public class InventoryUtils {
      */
     public static boolean hasEmptySlot(Inventory inventory) {
         return inventory.firstEmpty() != -1;
+    }
+
+    public static void fillInventory(Inventory inventory) {
+        for (int i = 0; i < inventory.getSize(); i++) {
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
+        }
     }
 
 }

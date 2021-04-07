@@ -9,6 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class Mission {
+
     private Item item;
     private List<String> missions;
     private MissionType missionType;
@@ -28,4 +29,5 @@ public class Mission {
     public enum MissionType {
         ONCE, DAILY
     }
+
 }

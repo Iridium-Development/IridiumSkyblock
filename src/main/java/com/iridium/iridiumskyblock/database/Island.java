@@ -74,7 +74,6 @@ public final class Island {
         this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0,0";
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
         this.color = Color.BLUE;
-        this.experience = 0;
     }
 
     /**
@@ -141,8 +140,8 @@ public final class Island {
      */
     public double getValue() {
         double value = 0;
-        for (XMaterial xMaterial : IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet()) {
-            value += getValueOf(xMaterial);
+        for (XMaterial material : IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet()) {
+            value += getValueOf(material);
         }
         return value;
     }
@@ -253,6 +252,7 @@ public final class Island {
     public boolean isInIsland(int x, int z) {
         Location pos1 = getPos1(null);
         Location pos2 = getPos2(null);
+
         return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
     }
 

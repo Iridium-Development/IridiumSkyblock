@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 @NoArgsConstructor
 @Getter
 public abstract class BankItem {
+
     private String name;
     private double defaultAmount;
     private boolean enabled;
@@ -24,4 +25,5 @@ public abstract class BankItem {
     public abstract void deposit(Player player, Number amount);
 
     public abstract String toString(Number number);
+
 }

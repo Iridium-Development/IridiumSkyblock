@@ -30,4 +30,5 @@ public class IslandBank {
         this.bankItem = bankItem;
         this.number = number;
     }
+
 }

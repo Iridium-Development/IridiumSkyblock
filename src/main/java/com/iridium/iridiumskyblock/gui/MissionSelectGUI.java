@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -32,11 +32,13 @@ public class MissionSelectGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Missions"));
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
-        }
+
+        InventoryUtils.fillInventory(inventory);
+
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().dailyQuests.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().dailyQuests));
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests));
+
         return inventory;
     }
+
 }

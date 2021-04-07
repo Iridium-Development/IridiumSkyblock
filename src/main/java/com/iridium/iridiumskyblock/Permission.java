@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class Permission {
+
     /**
      * The name of the permission used for storage purposes
      */
@@ -25,4 +26,5 @@ public class Permission {
         this.item = item;
         this.defaultRank = defaultRank;
     }
+
 }
