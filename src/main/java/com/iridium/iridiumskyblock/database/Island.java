@@ -57,6 +57,9 @@ public final class Island {
     @DatabaseField(columnName = "value")
     private double value;
 
+    @DatabaseField(columnName = "experience")
+    private int experience;
+
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
@@ -71,6 +74,16 @@ public final class Island {
         this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0,0";
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
         this.color = Color.BLUE;
+        this.experience = 0;
+    }
+
+    /**
+     * Gets the island's level
+     *
+     * @return The islands level
+     */
+    public int getLevel() {
+        return (int) Math.cbrt(experience + 1);
     }
 
     /**

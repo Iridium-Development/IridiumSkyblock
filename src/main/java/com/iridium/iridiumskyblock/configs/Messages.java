@@ -83,6 +83,7 @@ public class Messages {
     public String invalidSaveSchematicCommandSyntax = "%prefix% &7Please use /is saveSchematic <Name>.";
     public String invalidSchematicPositions = "%prefix% &7You haven't set valid schematic positions with /is position.";
     public String missingSchematicConfirmation = "%prefix% &7A schematic by that name already exists, to overwrite it use /is save <name> confirm.";
+    public String bankItemDoesntExist = "%prefix% &7That bank item doesn't exist.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

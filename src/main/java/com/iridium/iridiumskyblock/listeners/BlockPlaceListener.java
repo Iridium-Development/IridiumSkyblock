@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -38,6 +39,15 @@ public class BlockPlaceListener implements Listener {
                 island.get().setValue(island.get().getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(xMaterial));
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onBlockPlaceEventMonitor(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        Optional<Island> island = user.getIsland();
+        XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "PLACE:" + material.name(), 1));
     }
 
 }

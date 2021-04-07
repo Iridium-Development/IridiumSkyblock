@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
@@ -36,6 +37,15 @@ public class BlockBreakListener implements Listener {
                 });
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onBlockBreakEventMonitor(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        Optional<Island> island = user.getIsland();
+        XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + material.name(), 1));
     }
 
 }
