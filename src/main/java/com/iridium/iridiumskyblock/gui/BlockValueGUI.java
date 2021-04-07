@@ -2,7 +2,7 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.configs.BlockValues.ValuableBlock;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -11,17 +11,14 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class BlockValueGUI implements GUI {
 
-    private final @NotNull BlockValueType guiType;
+    private final BlockValueType guiType;
 
     public BlockValueGUI(BlockValueType type) {
         this.guiType = type;
@@ -42,20 +39,18 @@ public class BlockValueGUI implements GUI {
         }
 
         if (guiType == BlockValueType.BLOCK) {
-            Iterator<Integer> slots = IridiumSkyblock.getInstance().getBlockValues().blockSlots.iterator();
-            for (Map.Entry<XMaterial, Double> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {
+            for (Map.Entry<XMaterial, ValuableBlock> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {
                 XMaterial material = valuableBlock.getKey();
-                String itemName = IridiumSkyblock.getInstance().getBlockValues().blockNames.getOrDefault(material, material.name());
-                ItemStack blockItem = ItemStackUtils.makeItem(material, 1, itemName, getColoredValueLore(valuableBlock.getValue()));
-                inventory.setItem(slots.next(), blockItem);
+                ValuableBlock blockInfo = valuableBlock.getValue();
+                ItemStack blockItem = ItemStackUtils.makeItem(material, 1, StringUtils.color(blockInfo.name), getColoredValueLore(blockInfo.value));
+                inventory.setItem(blockInfo.slot, blockItem);
             }
         } else if (guiType == BlockValueType.SPAWNER) {
-            Iterator<Integer> slots = IridiumSkyblock.getInstance().getBlockValues().spawnerSlots.iterator();
-            for (Map.Entry<EntityType, Double> valuableSpawner : IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet()) {
-                EntityType spawnerType = valuableSpawner.getKey();
-                String itemName = IridiumSkyblock.getInstance().getBlockValues().spawnerNames.getOrDefault(spawnerType, spawnerType.name());
-                ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, itemName, getColoredValueLore(valuableSpawner.getValue()));
-                inventory.setItem(slots.next(), spawnerItem);
+            for (Map.Entry<EntityType, ValuableBlock> valuableSpawner : IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet()) {
+                EntityType spawnerType = valuableSpawner.getKey(); // TODO: Set spawner type of item
+                ValuableBlock spawnerInfo = valuableSpawner.getValue();
+                ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
+                inventory.setItem(spawnerInfo.slot, spawnerItem);
             }
         }
 

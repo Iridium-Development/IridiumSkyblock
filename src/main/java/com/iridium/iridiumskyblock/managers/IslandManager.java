@@ -407,7 +407,7 @@ public class IslandManager {
                                             islandBlocks.setAmount(1);
                                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksList().add(islandBlocks);
                                         }
-                                        island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material));
+                                        island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value);
                                     }
                                 }
                             }
