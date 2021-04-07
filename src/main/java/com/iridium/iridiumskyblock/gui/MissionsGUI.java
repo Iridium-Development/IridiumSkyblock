@@ -36,7 +36,7 @@ public class MissionsGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, missionType == Mission.MissionType.ONCE ? IridiumSkyblock.getInstance().getInventories().missionsGUISize : 27, StringUtils.color("&7Island Missions"));
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
         }
         if (missionType == Mission.MissionType.DAILY) {
             HashMap<String, Mission> missions = IridiumSkyblock.getInstance().getIslandManager().getDailyIslandMissions(island);
