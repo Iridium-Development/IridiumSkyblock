@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -41,7 +42,9 @@ public class InvitesGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Invites"));
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getIslandManager().getInvitesByIsland(island);
-InventoryUtils.fillInventory(inventory)
+
+        InventoryUtils.fillInventory(inventory);
+
         int i = 0;
         for (IslandInvite islandInvite : islandInvites) {
             inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvite, Arrays.asList(
@@ -52,6 +55,7 @@ InventoryUtils.fillInventory(inventory)
             invites.put(i, islandInvite.getUser().getName());
             i++;
         }
+
         return inventory;
     }
 }

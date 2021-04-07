@@ -27,7 +27,7 @@ public class BlockValueSelectGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().blockValueSelectGuiSize, StringUtils.color(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUITitle));
 
-InventoryUtils.fillInventory(inventory)
+        InventoryUtils.fillInventory(inventory);
 
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().blockValue.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().blockValue));
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().spawnerBlockValue.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().spawnerBlockValue));
