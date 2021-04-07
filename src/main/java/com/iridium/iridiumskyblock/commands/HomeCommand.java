@@ -21,7 +21,7 @@ public class HomeCommand extends Command {
      * The default constructor.
      */
     public HomeCommand() {
-        super(Collections.singletonList("home"), "Teleport to your island home", "", true);
+        super(Collections.singletonList("home"), "Teleport to your Island home", "", true);
     }
 
     /**

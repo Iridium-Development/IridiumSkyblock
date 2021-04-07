@@ -23,7 +23,7 @@ public class RegenCommand extends Command {
      * The default constructor.
      */
     public RegenCommand() {
-        super(Collections.singletonList("regen"), "Regenerate an island", "", true);
+        super(Collections.singletonList("regen"), "Regenerate your Island", "", true);
     }
 
     /**

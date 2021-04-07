@@ -23,7 +23,7 @@ public class UnInviteCommand extends Command {
      * The default constructor.
      */
     public UnInviteCommand() {
-        super(Collections.singletonList("uninvite"), "Revoke an invitation to your island", "", true);
+        super(Collections.singletonList("uninvite"), "Revoke an invitation to your Island", "", true);
     }
 
     /**

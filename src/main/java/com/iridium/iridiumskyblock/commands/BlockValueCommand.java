@@ -10,7 +10,8 @@ import java.util.List;
 public class BlockValueCommand extends Command {
 
     public BlockValueCommand() {
-        super(Collections.singletonList("blockvalues"), "Shows the values of blocks", "", true);
+        super(Collections.singletonList("blockvalues"), "Show the values of blocks", "", true);
+
     }
 
     /**

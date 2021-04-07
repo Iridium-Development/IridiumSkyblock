@@ -14,7 +14,7 @@ import java.util.List;
 public class PositionCommand extends Command {
 
     public PositionCommand() {
-        super(Arrays.asList("pos", "position"), "Sets the corner position for a schematic", "iridiumskyblock.schematic", true);
+        super(Arrays.asList("pos", "position"), "Set the corner position of a schematic", "iridiumskyblock.schematic", true);
     }
 
     /**
