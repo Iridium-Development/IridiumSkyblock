@@ -23,7 +23,7 @@ public class AboutCommand extends Command {
      * The default constructor.
      */
     public AboutCommand() {
-        super(Collections.singletonList("about"), "Displays plugin info", "", false);
+        super(Collections.singletonList("about"), "Display plugin info", "", false);
     }
 
     /**

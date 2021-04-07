@@ -18,7 +18,7 @@ public class MissionCommand extends Command {
      * The default constructor.
      */
     public MissionCommand() {
-        super(Collections.singletonList("missions"), "view your island missions", "", true);
+        super(Collections.singletonList("missions"), "View your Island missions", "", true);
     }
 
     @Override

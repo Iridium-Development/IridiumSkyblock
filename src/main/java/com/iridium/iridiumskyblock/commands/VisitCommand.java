@@ -22,7 +22,7 @@ public class VisitCommand extends Command {
      * The default constructor.
      */
     public VisitCommand() {
-        super(Collections.singletonList("visit"), "Visit another players island", "", true);
+        super(Collections.singletonList("visit"), "Visit another players Island", "", true);
     }
 
     /**

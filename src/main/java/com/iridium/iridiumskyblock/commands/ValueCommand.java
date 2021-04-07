@@ -21,7 +21,7 @@ public class ValueCommand extends Command {
      * The default constructor.
      */
     public ValueCommand() {
-        super(Collections.singletonList("value"), "Get your island value", "", true);
+        super(Collections.singletonList("value"), "View your Island value", "", true);
     }
 
     /**

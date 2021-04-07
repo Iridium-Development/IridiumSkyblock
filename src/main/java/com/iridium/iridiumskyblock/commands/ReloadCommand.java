@@ -16,7 +16,7 @@ public class ReloadCommand extends Command {
      * The default constructor.
      */
     public ReloadCommand() {
-        super(Collections.singletonList("reload"), "Reload your configurations", "iridiumskyblock.reload", false);
+        super(Collections.singletonList("reload"), "Reload the plugin configurations", "iridiumskyblock.reload", false);
     }
 
     /**
