@@ -18,35 +18,29 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * GUI which shows a list of all Islands a user can visit.
+ */
 public class VisitGUI implements GUI {
 
     private final List<Island> islands;
     private final int page;
 
+    /**
+     * The default constructor.
+     *
+     * @param page The current page of this GUI
+     */
     public VisitGUI(int page) {
         this.page = page;
         this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable).collect(Collectors.toList());
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getSlot() == getInventory().getSize() - 7) {
-            if (page > 1) {
-                event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
-            }
-        } else if (event.getSlot() == getInventory().getSize() - 3) {
-            if ((event.getInventory().getSize() - 9) * page < islands.size()) {
-                event.getWhoClicked().openInventory(new VisitGUI(page + 1).getInventory());
-            }
-        } else if (event.getSlot() + 1 <= islands.size()) {
-            int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
-            if (islands.size() > index) {
-                Island island = islands.get(index);
-                IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
-            }
-        }
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -69,6 +63,31 @@ public class VisitGUI implements GUI {
                 ))));
 
         return inventory;
+    }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getSlot() == getInventory().getSize() - 7) {
+            if (page > 1) {
+                event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
+            }
+        } else if (event.getSlot() == getInventory().getSize() - 3) {
+            if ((event.getInventory().getSize() - 9) * page < islands.size()) {
+                event.getWhoClicked().openInventory(new VisitGUI(page + 1).getInventory());
+            }
+        } else if (event.getSlot() + 1 <= islands.size()) {
+            int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
+            if (islands.size() > index) {
+                Island island = islands.get(index);
+                IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
+            }
+        }
     }
 
 }

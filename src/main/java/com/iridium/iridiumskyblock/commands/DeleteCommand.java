@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which deletes a User's Island'
+ * Command which deletes a User's Island.
  */
 public class DeleteCommand extends Command {
 
@@ -29,7 +29,7 @@ public class DeleteCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Deletes a User's Island.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -42,7 +42,7 @@ public class DeleteCommand extends Command {
 
         if (island.isPresent()) {
             if (user.getIslandRank().equals(IslandRank.OWNER)) {
-                player.openInventory(new ConfirmationGUI(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get())).getInventory());
+                player.openInventory(new ConfirmationGUI(() -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get())).getInventory());
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotDeleteIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }

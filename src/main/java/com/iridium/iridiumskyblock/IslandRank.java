@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.Arrays;
 
+/**
+ * Represents a rank of a {@link com.iridium.iridiumskyblock.database.User} on an {@link com.iridium.iridiumskyblock.database.Island}.
+ */
 @Getter
 public enum IslandRank {
 
@@ -18,6 +21,12 @@ public enum IslandRank {
      */
     private final int level;
 
+    /**
+     * The default constructor.
+     * The higher the level, the more permissions this rank has.
+     *
+     * @param level The index of this rank
+     */
     IslandRank(int level) {
         this.level = level;
     }

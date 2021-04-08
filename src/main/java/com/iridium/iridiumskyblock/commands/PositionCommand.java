@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Command which sets a corner position of a schematic in our own schematic system.
+ */
 public class PositionCommand extends Command {
 
     /**
@@ -23,6 +26,7 @@ public class PositionCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
+     * Sets the corner position of a schematic.
      *
      * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command

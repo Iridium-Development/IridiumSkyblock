@@ -12,14 +12,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
+/**
+ * Allows users to select a schematic.
+ * Extended by {@link IslandRegenGUI} and {@link IslandCreateGUI}.
+ */
 public abstract class SchematicGUI implements GUI {
-
-    /**
-     * A class that gets extended by IslandRegenGUI and IslandCreateGUI
-     */
 
     private final HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
 
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -35,6 +40,12 @@ public abstract class SchematicGUI implements GUI {
         return inventory;
     }
 
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         if (!schematics.containsKey(event.getSlot())) return;
@@ -42,6 +53,11 @@ public abstract class SchematicGUI implements GUI {
         event.getWhoClicked().closeInventory();
     }
 
+    /**
+     * Executed when the player selects the Island schematic.
+     *
+     * @param schematicConfig The data of the selected schematic
+     */
     public abstract void selectSchematic(Schematics.SchematicConfig schematicConfig);
 
 }

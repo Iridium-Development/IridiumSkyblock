@@ -77,7 +77,8 @@ public final class Island {
     }
 
     /**
-     * Gets the island's level
+     * Gets the island's level.
+     * TODO: Change the equation
      *
      * @return The islands level
      */
@@ -86,7 +87,7 @@ public final class Island {
     }
 
     /**
-     * Gets a list of Island Members
+     * Gets a list of Island members as Users.
      *
      * @return A list of all Users belonging to the island
      */
@@ -95,9 +96,9 @@ public final class Island {
     }
 
     /**
-     * Gets the Islands owner
+     * Gets the Islands owner.
      *
-     * @return The Owner of the Island
+     * @return The owner of the Island
      */
     public User getOwner() {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> user.getIslandRank().equals(IslandRank.OWNER) && this.equals(user.getIsland().orElse(null))).findFirst().orElse(new User(UUID.randomUUID(), IridiumSkyblock.getInstance().getMessages().none));
@@ -125,7 +126,7 @@ public final class Island {
     }
 
     /**
-     * Milliseconds of date this island was created
+     * The date this island was created.
      *
      * @return A LocalDateTime of this island was created
      */
@@ -134,33 +135,42 @@ public final class Island {
     }
 
     /**
-     * Returns the island's total value
+     * Returns the Island's total value, based on the valuable blocks and spawners.
+     * TODO: Actually account for spawners
      *
-     * @return Island value
+     * @return The Island value
      */
     public double getValue() {
         double value = 0;
+
         for (XMaterial material : IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet()) {
             value += getValueOf(material);
         }
+
         return value;
     }
 
+    /**
+     * Returns the value of the provided material on this Island.
+     *
+     * @param material The material
+     * @return The value of this block on the island, 0 if it isn't valuable
+     */
     public double getValueOf(XMaterial material) {
         Optional<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(this, material);
         return islandBlocks.map(blocks -> blocks.getAmount() * IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value).orElse(0.0);
     }
 
     /**
-     * Gets the islands current size
-     * Must be lower than island distance
+     * Gets the Islands current size.
+     * Must be lower than the distance between Islands.
      */
     public int getSize() {
         return IridiumSkyblock.getInstance().getConfiguration().distance - 1;
     }
 
     /**
-     * Finds the center of this island.
+     * Finds the center of this Island.
      * Function based of: https://stackoverflow.com/a/19287714.
      *
      * @param world The world where this island is in
@@ -207,7 +217,7 @@ public final class Island {
     }
 
     /**
-     * Returns the first corner point Location of this island.
+     * Returns the first corner point Location of this Island.
      * Is smaller than {@link Island#getPos2(World)}.
      *
      * @param world The world where this island is in
@@ -219,7 +229,7 @@ public final class Island {
     }
 
     /**
-     * Returns the second corner point Location of this island.
+     * Returns the second corner point Location of this Island.
      * Is greater than {@link Island#getPos1(World)}.
      *
      * @param world The world where this island is in
@@ -231,7 +241,7 @@ public final class Island {
     }
 
     /**
-     * Returns the Rank of the island
+     * Returns the rank of this Island in comparison to the other Islands.
      *
      * @return The islands rank
      */
@@ -240,7 +250,7 @@ public final class Island {
     }
 
     /**
-     * Returns if a location is inside the island or not
+     * Returns if a location is inside this Island or not.
      *
      * @param location The location we are testing
      * @return if the location is inside the island
@@ -249,6 +259,13 @@ public final class Island {
         return isInIsland(location.getBlockX(), location.getBlockZ());
     }
 
+    /**
+     * Returns if the provided x and z coordinates are inside this Island or not.
+     *
+     * @param x The x coordinates
+     * @param z The z coordinates
+     * @return Whether or not the coordinates are in this island
+     */
     public boolean isInIsland(int x, int z) {
         Location pos1 = getPos1(null);
         Location pos2 = getPos2(null);

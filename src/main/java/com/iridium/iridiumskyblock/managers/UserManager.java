@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Class which handles users.
+ */
 public class UserManager {
 
     /**

@@ -7,6 +7,10 @@ import com.iridium.iridiumskyblock.Permission;
 
 import java.util.Arrays;
 
+/**
+ * The Island permission configuration used by IridiumSkyblock (permissions.yml).
+ * Is deserialized automatically on plugin startup and reload.
+ */
 public class Permissions {
 
     public String allowed = "&a&lALLOWED";

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerUtils {
 
     /**
-     * Sends an island's border to a player
+     * Sends an island's border to a player.
      *
      * @param player The specified Player
      * @param island The specified Island
@@ -48,7 +48,7 @@ public class PlayerUtils {
     }
 
     /**
-     * Calculates the total amount of experience a Player has without the level system.
+     * Calculates the total amount of experience a Player has with levels converted to experience.
      *
      * @param player The Player whose experience should be calculated
      * @return The total experience of the provided Player
@@ -61,9 +61,11 @@ public class PlayerUtils {
             currentLevel--;
             exp += getExpAtLevel(currentLevel);
         }
+
         if (exp < 0) {
             exp = Integer.MAX_VALUE;
         }
+
         return exp;
     }
 
@@ -77,6 +79,7 @@ public class PlayerUtils {
         if (exp < 0) {
             throw new IllegalArgumentException("Experience is negative!");
         }
+
         player.setExp(0);
         player.setLevel(0);
         player.setTotalExperience(0);

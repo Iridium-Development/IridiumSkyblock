@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which Opens the IslandTop GUI
+ * Command which opens the {@link IslandTopGUI}.
  */
 public class TopCommand extends Command {
 
@@ -22,7 +22,7 @@ public class TopCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Opens visitable islands or visits an island
+     * Opens the {@link IslandTopGUI}.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command

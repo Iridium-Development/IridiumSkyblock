@@ -3,6 +3,10 @@ package com.iridium.iridiumskyblock;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * Represents a permission in the Island permissions system.
+ * Serialized in the Configuration files.
+ */
 @Getter
 @NoArgsConstructor
 public class Permission {
@@ -21,6 +25,13 @@ public class Permission {
      */
     private IslandRank defaultRank;
 
+    /**
+     * The default constructor.
+     *
+     * @param name The internal name of this permission
+     * @param item The item which should represents this mission
+     * @param defaultRank The lowest Island rank which should have this permission by default
+     */
     public Permission(String name, Item item, IslandRank defaultRank) {
         this.name = name;
         this.item = item;

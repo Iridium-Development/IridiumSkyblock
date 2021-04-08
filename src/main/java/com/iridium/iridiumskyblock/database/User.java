@@ -47,24 +47,6 @@ public final class User {
     private Location schematicPos1;
     private Location schematicPos2;
 
-    public @NotNull Optional<Island> getIsland() {
-        if (island == null) return Optional.empty();
-        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
-    }
-
-    public void setIsland(@Nullable Island island) {
-        this.island = island == null ? null : island.getId();
-        setJoinTime(LocalDateTime.now());
-    }
-
-    public LocalDateTime getJoinTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(joinTime), ZoneId.systemDefault());
-    }
-
-    public void setJoinTime(LocalDateTime joinTime) {
-        this.joinTime = ZonedDateTime.of(joinTime, ZoneId.systemDefault()).toInstant().toEpochMilli();
-    }
-
     /**
      * The default constructor.
      *
@@ -76,6 +58,45 @@ public final class User {
         this.name = name;
         this.joinTime = 0L;
         this.islandRank = IslandRank.VISITOR;
+    }
+
+    /**
+     * Returns the Island of this user.
+     *
+     * @return The user's Island
+     */
+    public @NotNull Optional<Island> getIsland() {
+        if (island == null) return Optional.empty();
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
+    }
+
+    /**
+     * Alters the Island of this user.
+     * Use null as a parameter to remove his association to the Island.
+     *
+     * @param island The new Island of this user, can be null
+     */
+    public void setIsland(@Nullable Island island) {
+        this.island = island == null ? null : island.getId();
+        setJoinTime(LocalDateTime.now());
+    }
+
+    /**
+     * Gets the time this user has first been created.
+     *
+     * @return The internal creation time
+     */
+    public LocalDateTime getJoinTime() {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(joinTime), ZoneId.systemDefault());
+    }
+
+    /**
+     * Alters this users creation time.
+     *
+     * @param joinTime The internal time this user has been created
+     */
+    public void setJoinTime(LocalDateTime joinTime) {
+        this.joinTime = ZonedDateTime.of(joinTime, ZoneId.systemDefault()).toInstant().toEpochMilli();
     }
 
 }

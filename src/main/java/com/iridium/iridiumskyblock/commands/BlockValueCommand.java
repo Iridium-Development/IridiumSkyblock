@@ -7,8 +7,15 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Command which shows all the valuable blocks and spawners.
+ * @see com.iridium.iridiumskyblock.configs.BlockValues
+ */
 public class BlockValueCommand extends Command {
 
+    /**
+     * The default constructor.
+     */
     public BlockValueCommand() {
         super(Collections.singletonList("blockvalues"), "Show the values of blocks", "", true);
 
@@ -17,6 +24,7 @@ public class BlockValueCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
+     * Shows all the valuable blocks and spawners.
      *
      * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command

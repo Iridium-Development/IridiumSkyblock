@@ -22,15 +22,23 @@ public class MissionsGUI implements GUI {
     private final Island island;
     private final Mission.MissionType missionType;
 
+    /**
+     * The default constructor.
+     *
+     * @param island The Island this GUI belongs to
+     * @param missionType The amount of times the containing missions can be claimed
+     * @see com.iridium.iridiumskyblock.Mission.MissionType
+     */
     public MissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType) {
         this.island = island;
         this.missionType = missionType;
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -69,8 +77,19 @@ public class MissionsGUI implements GUI {
                 inventory.setItem(mission.getItem().slot, ItemStackUtils.makeItem(mission.getItem(), placeholders));
             }
         }
-        
+
         return inventory;
+    }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        // Do nothing here
     }
 
 }

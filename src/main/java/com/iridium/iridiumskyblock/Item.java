@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Class which represents an item in an inventory.
  * Uses {@link XMaterial} for multi-version support.
+ * Serialized in the Configuration files.
  */
 @NoArgsConstructor
 public class Item {

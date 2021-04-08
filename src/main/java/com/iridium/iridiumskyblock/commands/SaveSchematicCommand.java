@@ -12,6 +12,9 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Command which saves a schematic in our internal schematic system.
+ */
 public class SaveSchematicCommand extends Command {
 
     public SaveSchematicCommand() {
@@ -21,6 +24,7 @@ public class SaveSchematicCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
+     * Saves a schematic in our internal schematic system.
      *
      * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command

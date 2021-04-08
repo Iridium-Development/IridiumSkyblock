@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which sets a User's Island Home'
+ * Command which sets a User's Island home.
  */
 public class SetHomeCommand extends Command {
 
@@ -27,7 +27,7 @@ public class SetHomeCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Sets island home of the user.
+     * Sets the Island home of the user's Island.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
