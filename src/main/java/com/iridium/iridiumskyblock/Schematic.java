@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 /**
  * Class which represents a schematic.
  * Used for our own schematic storage system.
+ * Serialized in the database.
  */
 @Getter
 @NoArgsConstructor

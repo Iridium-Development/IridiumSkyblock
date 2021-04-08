@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableMap;
 import java.util.Map;
 
 /**
- * The main configuration of IridiumSkyblock.
+ * The main configuration of IridiumSkyblock (configuration.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
 public class Configuration {

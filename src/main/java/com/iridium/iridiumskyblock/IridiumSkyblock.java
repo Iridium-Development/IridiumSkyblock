@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
-import com.iridium.iridiumskyblock.configs.BlockValues;
+import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
@@ -63,6 +63,9 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private Economy economy;
 
+    /**
+     * The default constructor.
+     */
     public IridiumSkyblock() {
         instance = this;
     }
@@ -81,6 +84,7 @@ public class IridiumSkyblock extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        // Create the data folder in order to make Jackson work
         getDataFolder().mkdir();
 
         // Initialize the configs
@@ -115,14 +119,16 @@ public class IridiumSkyblock extends JavaPlugin {
 
         registerListeners();
 
+        // TODO: Add other NMS versions, use the right one automatically
         this.nms = new v1_16_R3();
 
+        // Initialize Vault economy support
         this.economy = setupEconomy();
 
-        //Send island border to all players
+        // Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
-        //Auto recalculate islands
+        // Auto recalculate islands
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             ListIterator<Integer> islands = getDatabaseManager().getIslandList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
@@ -146,6 +152,9 @@ public class IridiumSkyblock extends JavaPlugin {
         getLogger().info("----------------------------------------");
     }
 
+    /**
+     * Automatically resets the Island missions in a defined time intervall.
+     */
     private void resetIslandMissions() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_MONTH, 1);
@@ -186,7 +195,7 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
-     * Registers the plugin's listeners
+     * Registers the plugin's listeners.
      */
     public void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
@@ -209,7 +218,7 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
-     * Saves islands and users to the database.
+     * Saves islands, users and other data to the database.
      */
     public void saveData() {
         getDatabaseManager().saveIslands();
@@ -221,6 +230,11 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().saveIslandMissions();
     }
 
+    /**
+     * Tries to initialize the Vault support.
+     *
+     * @return Vault's economy interface, null if none is found
+     */
     private Economy setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
         if (economyProvider == null) {
@@ -231,7 +245,7 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
-     * Loads the configuration required for this plugin.
+     * Loads the configurations required for this plugin.
      *
      * @see Persist
      */
@@ -290,6 +304,11 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(missions);
     }
 
+    /**
+     * Returns the plugin's instance of this class.
+     *
+     * @return Instance of this class
+     */
     public static IridiumSkyblock getInstance() {
         return instance;
     }

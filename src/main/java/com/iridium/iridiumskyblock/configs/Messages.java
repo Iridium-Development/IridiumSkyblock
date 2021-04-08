@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The message configuration used by IridiumSkyblock.
+ * The message configuration used by IridiumSkyblock (messages.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
 public class Messages {

@@ -11,23 +11,28 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * GUI which allows users to select the type of mission they want in the {@link MissionsGUI}.
+ * @see Mission.MissionType
+ */
 public class MissionSelectGUI implements GUI {
 
     private final Island island;
 
+    /**
+     * The default constructor.
+     *
+     * @param island The Island this GUI belongs to
+     */
     public MissionSelectGUI(@NotNull Island island) {
         this.island = island;
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().dailyQuests.slot) {
-            event.getWhoClicked().openInventory(new MissionsGUI(island, Mission.MissionType.DAILY).getInventory());
-        } else if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().oneTimeQuests.slot) {
-            event.getWhoClicked().openInventory(new MissionsGUI(island, Mission.MissionType.ONCE).getInventory());
-        }
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -39,6 +44,21 @@ public class MissionSelectGUI implements GUI {
         inventory.setItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().oneTimeQuests));
 
         return inventory;
+    }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().dailyQuests.slot) {
+            event.getWhoClicked().openInventory(new MissionsGUI(island, Mission.MissionType.DAILY).getInventory());
+        } else if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().oneTimeQuests.slot) {
+            event.getWhoClicked().openInventory(new MissionsGUI(island, Mission.MissionType.ONCE).getInventory());
+        }
     }
 
 }

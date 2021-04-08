@@ -26,6 +26,28 @@ public final class SchematicData {
     private @NotNull String schematic;
 
     /**
+     * The default constructor.
+     *
+     * @param id        The ID of this schematic, used as a unique identifier
+     * @param schematic The schematic whose data should be saved
+     */
+    public SchematicData(final @NotNull String id, final @NotNull String schematic) {
+        this.id = id;
+        this.schematic = schematic;
+    }
+
+    /**
+     * Constructor which automatically persists the given schematic.
+     *
+     * @param id        The ID of this schematic, used as a unique identifier
+     * @param schematic The schematic whose data should be saved
+     */
+    public SchematicData(final @NotNull String id, final @NotNull Schematic schematic) {
+        this.id = id;
+        setSchematic(schematic);
+    }
+
+    /**
      * Constructs the Schematic object to this data.
      * Decodes the base64 schematic data.
      *
@@ -43,29 +65,6 @@ public final class SchematicData {
      */
     public void setSchematic(Schematic schematic) {
         this.schematic = new String(Base64.getEncoder().encode(new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance()).toString(schematic).getBytes()));
-    }
-
-    /**
-     * The default constructor.
-     * TODO: Change this, because it's not the default constructor.
-     *
-     * @param id        The ID of this schematic, used as a unique identifier
-     * @param schematic The schematic whose data should be saved
-     */
-    public SchematicData(final @NotNull String id, final @NotNull Schematic schematic) {
-        this.id = id;
-        setSchematic(schematic);
-    }
-
-    /**
-     * The default constructor.
-     *
-     * @param id        The ID of this schematic, used as a unique identifier
-     * @param schematic The schematic whose data should be saved
-     */
-    public SchematicData(final @NotNull String id, final @NotNull String schematic) {
-        this.id = id;
-        this.schematic = schematic;
     }
 
 }

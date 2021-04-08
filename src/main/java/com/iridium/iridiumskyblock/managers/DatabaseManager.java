@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 /**
  * Class which handles the database connection and acts as a DAO.
- * TODO: Split up this class
  */
 public class DatabaseManager {
 
@@ -143,7 +142,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all users in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a List of all users
      */
@@ -158,7 +157,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all islands in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a List of all islands
      */
@@ -173,7 +172,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all islandInvites in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a List of all islandInvites
      */
@@ -188,7 +187,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all islandPermissions in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a List of all islandPermissions
      */
@@ -203,7 +202,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all island blocks in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a List of all island blocks
      */
@@ -218,7 +217,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all schematics in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a list of all schematics in the database
      */
@@ -233,7 +232,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all island banks's in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a List of all island blocks
      */
@@ -248,7 +247,7 @@ public class DatabaseManager {
 
     /**
      * Returns a list of all island missions in the database.
-     * Might be empty if an error occurs.
+     * Empty if an error occurs.
      *
      * @return a List of all island blocks
      */
@@ -296,7 +295,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves all islands to the database.
+     * Saves all Islands to the database.
      * Creates them if they don't exist.
      */
     public void saveIslands() {
@@ -311,7 +310,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves all islandInvites to the database.
+     * Saves all Island invites to the database.
      * Creates them if they don't exist.
      */
     public void saveIslandInvites() {
@@ -326,7 +325,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves all islandPermissions to the database.
+     * Saves all Island permissions to the database.
      * Creates them if they don't exist.
      */
     public void saveIslandPermissions() {
@@ -344,7 +343,6 @@ public class DatabaseManager {
      * Saves all schematics to the database.
      * Creates them if they don't exist.
      */
-
     public void saveSchematics() {
         try {
             for (SchematicData schematic : schematicDataList) {
@@ -356,10 +354,9 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves all islandBlocks to the database.
+     * Saves all island blocks to the database.
      * Creates them if they don't exist.
      */
-
     public void saveIslandBlocks() {
         try {
             for (IslandBlocks islandBlocks : islandBlocksList) {
@@ -372,10 +369,9 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves all islandBank to the database.
+     * Saves all Island bank items to the database.
      * Creates them if they don't exist.
      */
-
     public void saveIslandBank() {
         try {
             for (IslandBank islandBank : islandBankList) {
@@ -388,10 +384,9 @@ public class DatabaseManager {
     }
 
     /**
-     * Saves all islandMissions to the database.
+     * Saves all Island missions to the database.
      * Creates them if they don't exist.
      */
-
     public void saveIslandMissions() {
         try {
             for (IslandMission islandMission : islandMissionList) {
@@ -404,7 +399,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Deletes all dailyMission saved in the database
+     * Deletes all daily missions saved in the database
      */
     public void deleteDailyMissions() {
         try {
@@ -418,7 +413,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Removes an island from the database and removes all references to the island
+     * Removes an island and all references to the island from the database.
      *
      * @param island The island being deleted.
      */
@@ -435,7 +430,7 @@ public class DatabaseManager {
     }
 
     /**
-     * Removes an IslandInvite from the database
+     * Removes an IslandInvite from the database.
      *
      * @param islandInvite The island Invite being deleted
      */

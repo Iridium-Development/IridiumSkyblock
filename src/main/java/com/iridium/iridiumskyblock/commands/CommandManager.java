@@ -146,8 +146,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         }
 
         // Unknown command message
-        commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownCommand
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownCommand.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return false;
     }
 
@@ -162,7 +161,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      */
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, org.bukkit.command.@NotNull Command cmd, @NotNull String label, String[] args) {
-        // Handle the tab completion if it's a sub-command.
+        // Handle the tab completion if it's the sub-command selection
         if (args.length == 1) {
             ArrayList<String> result = new ArrayList<>();
             for (Command command : commands) {

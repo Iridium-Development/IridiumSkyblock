@@ -1,13 +1,17 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.google.common.collect.ImmutableMap;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.bukkit.entity.EntityType;
 
 import java.util.Map;
 
+/**
+ * The block value configuration used by IridiumSkyblock (blockvalues.yml).
+ * Is deserialized automatically on plugin startup and reload.
+ */
 public class BlockValues {
     
     public Map<XMaterial, ValuableBlock> blockValues = ImmutableMap.<XMaterial, ValuableBlock>builder()

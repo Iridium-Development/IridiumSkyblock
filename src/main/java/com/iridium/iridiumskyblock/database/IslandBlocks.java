@@ -11,6 +11,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+/**
+ * Represents a valuable block in the database.
+ * @see com.iridium.iridiumskyblock.configs.BlockValues
+ */
 @Getter
 @NoArgsConstructor
 @DatabaseTable(tableName = "island_blocks")
@@ -29,13 +33,24 @@ public final class IslandBlocks {
     @Setter
     private int amount;
 
-    public @NotNull Optional<Island> getIsland() {
-        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
-    }
-
+    /**
+     * The default constructor.
+     *
+     * @param island The Island which has this valuable block
+     * @param material The material of this valuable block
+     */
     public IslandBlocks(@NotNull Island island, @NotNull XMaterial material) {
         this.island = island.getId();
         this.material = material;
+    }
+
+    /**
+     * Returns the Island this block belongs to.
+     *
+     * @return The Island of this block
+     */
+    public @NotNull Optional<Island> getIsland() {
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
 
 }

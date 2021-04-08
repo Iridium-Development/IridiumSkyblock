@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which creates a new island for an user.
+ * Command which enables users to join other Islands.
  */
 public class JoinCommand extends Command {
 
@@ -31,7 +31,7 @@ public class JoinCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Enables users to join other Islands.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command

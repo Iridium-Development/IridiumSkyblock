@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which creates a new island for an user.
+ * Command which allows admins to bypass Island restrictions.
  */
 public class BypassCommand extends Command {
 
@@ -25,7 +25,7 @@ public class BypassCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Allows admins to bypass Island restrictions.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command

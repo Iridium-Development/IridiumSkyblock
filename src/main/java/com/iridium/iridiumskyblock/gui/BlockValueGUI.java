@@ -17,19 +17,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * GUI which shows the value of valuable blocks.
+ * @see ValuableBlock
+ */
 public class BlockValueGUI implements GUI {
 
     private final BlockValueType guiType;
 
+    /**
+     * The default constructor.
+     *
+     * @param type The type of valuable block shown in this GUI
+     */
     public BlockValueGUI(BlockValueType type) {
         this.guiType = type;
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        // Don't do anything here, it gets cancelled automatically
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -61,6 +70,17 @@ public class BlockValueGUI implements GUI {
                 .map(StringUtils::color)
                 .map(line -> line.replace("%value%", String.valueOf(value)))
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        // Don't do anything here, it gets cancelled automatically
     }
 
     enum BlockValueType {

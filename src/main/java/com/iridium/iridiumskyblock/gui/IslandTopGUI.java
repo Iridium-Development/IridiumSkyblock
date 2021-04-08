@@ -19,10 +19,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * GUI which shows the Islands with the highest Island value.
+ * @see Island#getValue()
+ */
 public class IslandTopGUI implements GUI {
 
     private final HashMap<Integer, Island> islandSlots = new HashMap<>();
 
+    /**
+     * The default constructor.
+     */
     public IslandTopGUI() {
         List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
 
@@ -32,14 +39,11 @@ public class IslandTopGUI implements GUI {
         }
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (!islandSlots.containsKey(event.getSlot())) return;
-
-        Island island = islandSlots.get(event.getSlot());
-        IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -64,6 +68,20 @@ public class IslandTopGUI implements GUI {
         }
 
         return inventory;
+    }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!islandSlots.containsKey(event.getSlot())) return;
+
+        Island island = islandSlots.get(event.getSlot());
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
     }
 
 }

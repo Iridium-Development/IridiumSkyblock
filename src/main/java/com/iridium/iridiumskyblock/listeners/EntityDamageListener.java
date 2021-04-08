@@ -13,7 +13,7 @@ import java.util.Optional;
 
 public class EntityDamageListener implements Listener {
 
-    //TODO: Implement Peaceful, fix hurting with projectiles
+    // TODO: Implement Peaceful, fix hurting with projectiles
 
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {

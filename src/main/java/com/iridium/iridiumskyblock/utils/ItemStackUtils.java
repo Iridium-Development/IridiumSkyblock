@@ -110,6 +110,13 @@ public class ItemStackUtils {
         }
     }
 
+    /**
+     * Serializes an ItemStack to a Base64 encoded String.
+     * Returns an empty String if an error occurs.
+     *
+     * @param itemStack The ItemStack which should be serialized
+     * @return The Base64 encoded String representation of this ItemStack
+     */
     public static String serialize(ItemStack itemStack) {
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -124,6 +131,13 @@ public class ItemStackUtils {
         }
     }
 
+    /**
+     * Deserializes an ItemStack from a Base64 encoded String.
+     * Returns AIR if an error occurs.
+     *
+     * @param string The Base64 encoded string which should be deserialized
+     * @return The deserialized ItemStack
+     */
     public static ItemStack deserialize(String string) {
         try {
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.getDecoder().decode(string));

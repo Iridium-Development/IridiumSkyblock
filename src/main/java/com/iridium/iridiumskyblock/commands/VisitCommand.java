@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which Opens visitable islands or visits an island
+ * Command which opens visitable islands or visits an island.
  */
 public class VisitCommand extends Command {
 
@@ -28,7 +28,7 @@ public class VisitCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Opens visitable islands or visits an island
+     * Opens visitable islands or visits an island.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
