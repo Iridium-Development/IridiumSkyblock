@@ -12,6 +12,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The mission configuration used by IridiumSkyblock (missions.yml).
+ * Is deserialized automatically on plugin startup and reload.
+ */
 public class Missions {
 
     public Map<String, Mission> missions = ImmutableMap.<String, Mission>builder()

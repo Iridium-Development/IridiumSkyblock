@@ -74,6 +74,12 @@ public class InventoryUtils {
         return inventory.firstEmpty() != -1;
     }
 
+    /**
+     * Fills the provided Inventory with the filler material (black stained glass panes by default).
+     * Replaces existing items.
+     *
+     * @param inventory The inventory which should be filled
+     */
     public static void fillInventory(Inventory inventory) {
         for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));

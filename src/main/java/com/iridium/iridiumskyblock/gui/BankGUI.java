@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumskyblock.BankItem;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
@@ -16,30 +16,27 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Optional;
 
+/**
+ * GUI which allows users to manage the Island bank.
+ */
 public class BankGUI implements GUI {
 
     private final Island island;
 
+    /**
+     * The default constructor.
+     *
+     * @param island The Island this GUI belongs to
+     */
     public BankGUI(@NotNull Island island) {
         this.island = island;
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
-        if (!bankItem.isPresent()) return;
-
-        switch (event.getClick()) {
-            case LEFT:
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is withdraw " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
-                break;
-            case RIGHT:
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is deposit " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
-        }
-
-        event.getWhoClicked().openInventory(getInventory());
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -55,6 +52,28 @@ public class BankGUI implements GUI {
         }
 
         return inventory;
+    }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
+        if (!bankItem.isPresent()) return;
+
+        switch (event.getClick()) {
+            case LEFT:
+                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is withdraw " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
+                break;
+            case RIGHT:
+                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is deposit " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
+        }
+
+        event.getWhoClicked().openInventory(getInventory());
     }
 
 }

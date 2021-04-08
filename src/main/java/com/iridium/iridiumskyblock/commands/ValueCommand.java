@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which shows your island's Value
+ * Command which shows the Island's value.
  */
 public class ValueCommand extends Command {
 
@@ -27,7 +27,7 @@ public class ValueCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Makes User's island to unvisitable
+     * Shows the Island's value.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command

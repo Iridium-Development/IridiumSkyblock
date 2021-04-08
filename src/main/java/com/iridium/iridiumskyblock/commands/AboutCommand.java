@@ -7,10 +7,9 @@ import org.bukkit.command.CommandSender;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Display plugin information to the player
+ * Command which display plugin information to the user.
  */
 public class AboutCommand extends Command {
 
@@ -29,7 +28,7 @@ public class AboutCommand extends Command {
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Displays plugin info for the player
+     * Display plugin information to the user.
      *
      * @param sender The CommandSender which executes this command
      * @param args The arguments used with this command. They contain the sub-command

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Represents a currency in the Island bank.
+ */
 @Getter
 @NoArgsConstructor
 @DatabaseTable(tableName = "island_bank")
@@ -25,6 +28,13 @@ public class IslandBank {
     @Setter
     private double number;
 
+    /**
+     * The default constructor.
+     *
+     * @param island The Island of this Island bank
+     * @param bankItem The bank item in the Island bank
+     * @param number The amount of this currency in the Island bank
+     */
     public IslandBank(@NotNull Island island, @NotNull String bankItem, double number) {
         this.island = island.getId();
         this.bankItem = bankItem;

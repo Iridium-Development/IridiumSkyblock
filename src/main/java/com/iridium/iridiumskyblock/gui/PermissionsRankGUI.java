@@ -14,26 +14,27 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 
+/**
+ * GUI which allows users to select ranks to edit in the {@link PermissionsGUI}.
+ */
 public class PermissionsRankGUI implements GUI {
 
     private final Island island;
 
+    /**
+     * The default constructor.
+     *
+     * @param island The Island this GUI belongs to
+     */
     public PermissionsRankGUI(@NotNull Island island) {
         this.island = island;
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        for (int i = 0; i < 5; i++) {
-            if (event.getSlot() != i + 11) continue;
-
-            IslandRank islandRank = IslandRank.getByLevel(i);
-            if (islandRank != null) {
-                event.getWhoClicked().openInventory(new PermissionsGUI(island, islandRank).getInventory());
-            }
-        }
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -47,6 +48,24 @@ public class PermissionsRankGUI implements GUI {
         }
 
         return inventory;
+    }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        for (int i = 0; i < 5; i++) {
+            if (event.getSlot() != i + 11) continue;
+
+            IslandRank islandRank = IslandRank.getByLevel(i);
+            if (islandRank != null) {
+                event.getWhoClicked().openInventory(new PermissionsGUI(island, islandRank).getInventory());
+            }
+        }
     }
 
 }

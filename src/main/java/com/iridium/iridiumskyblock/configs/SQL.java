@@ -3,7 +3,7 @@ package com.iridium.iridiumskyblock.configs;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 
 /**
- * The SQL database connection file used by IridiumSkyblock.
+ * The SQL database connection file used by IridiumSkyblock (sql.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
 public class SQL {

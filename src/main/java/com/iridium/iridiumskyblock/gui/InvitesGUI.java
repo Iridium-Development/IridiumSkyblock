@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
@@ -18,25 +17,29 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * GUI which allows users to manage invites.
+ */
 public class InvitesGUI implements GUI {
 
     private final Island island;
-
     private final HashMap<Integer, String> invites;
 
+    /**
+     * The default constructor.
+     *
+     * @param island The Island this GUI belongs to
+     */
     public InvitesGUI(@NotNull Island island) {
         this.island = island;
         invites = new HashMap<>();
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (invites.containsKey(event.getSlot())) {
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is uninvite " + invites.get(event.getSlot()));
-            event.getWhoClicked().openInventory(getInventory());
-        }
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
@@ -58,4 +61,19 @@ public class InvitesGUI implements GUI {
 
         return inventory;
     }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (invites.containsKey(event.getSlot())) {
+            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is uninvite " + invites.get(event.getSlot()));
+            event.getWhoClicked().openInventory(getInventory());
+        }
+    }
+
 }

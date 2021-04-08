@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which allows the Admins to quickly reload the configuration files without a restart.
+ * Command which reloads all configuration files.
  */
 public class ReloadCommand extends Command {
 
