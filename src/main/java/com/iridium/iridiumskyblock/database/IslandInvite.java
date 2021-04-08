@@ -42,8 +42,8 @@ public final class IslandInvite {
     /**
      * The default constructor.
      *
-     * @param island The Island this invite belongs to
-     * @param user The User who is invited
+     * @param island  The Island this invite belongs to
+     * @param user    The User who is invited
      * @param inviter The User who invited the invitee
      */
     public IslandInvite(@NotNull Island island, @NotNull User user, @NotNull User inviter) {

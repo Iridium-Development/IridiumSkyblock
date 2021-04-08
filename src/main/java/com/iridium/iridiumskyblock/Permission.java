@@ -28,8 +28,8 @@ public class Permission {
     /**
      * The default constructor.
      *
-     * @param name The internal name of this permission
-     * @param item The item which should represents this mission
+     * @param name        The internal name of this permission
+     * @param item        The item which should represents this mission
      * @param defaultRank The lowest Island rank which should have this permission by default
      */
     public Permission(String name, Item item, IslandRank defaultRank) {

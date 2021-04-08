@@ -23,10 +23,10 @@ public class Reward {
     /**
      * The default constructor.
      *
-     * @param item The item which represents this reward
+     * @param item             The item which represents this reward
      * @param islandExperience The amount of experience this rewards gives
-     * @param commands The commands this reward should execute upon completion
-     * @param sound The sound that should be played upon completion
+     * @param commands         The commands this reward should execute upon completion
+     * @param sound            The sound that should be played upon completion
      */
     public Reward(Item item, int islandExperience, List<String> commands, XSound sound) {
         this.item = item;

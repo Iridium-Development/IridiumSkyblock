@@ -13,6 +13,7 @@ import java.util.Optional;
 
 /**
  * Represents a valuable block in the database.
+ *
  * @see com.iridium.iridiumskyblock.configs.BlockValues
  */
 @Getter
@@ -36,7 +37,7 @@ public final class IslandBlocks {
     /**
      * The default constructor.
      *
-     * @param island The Island which has this valuable block
+     * @param island   The Island which has this valuable block
      * @param material The material of this valuable block
      */
     public IslandBlocks(@NotNull Island island, @NotNull XMaterial material) {

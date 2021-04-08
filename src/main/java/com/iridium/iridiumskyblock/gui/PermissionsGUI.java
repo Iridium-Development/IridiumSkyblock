@@ -29,7 +29,7 @@ public class PermissionsGUI implements GUI {
     /**
      * The default constructor.
      *
-     * @param island The Island this GUI belongs to
+     * @param island     The Island this GUI belongs to
      * @param islandRank The rank which is being configured
      */
     public PermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank) {

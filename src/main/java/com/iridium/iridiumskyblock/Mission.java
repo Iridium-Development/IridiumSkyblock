@@ -24,11 +24,11 @@ public class Mission {
     /**
      * The default constructor.
      *
-     * @param item The item which represents this mission in the missions GUI
-     * @param missions A list of the conditions for this mission
+     * @param item        The item which represents this mission in the missions GUI
+     * @param missions    A list of the conditions for this mission
      * @param missionType The type of this mission (amount of possible completions)
-     * @param reward The reward for this mission
-     * @param message The messages which should be sent after completing this mission
+     * @param reward      The reward for this mission
+     * @param message     The messages which should be sent after completing this mission
      */
     public Mission(Item item, List<String> missions, MissionType missionType, Reward reward, List<String> message) {
         this.item = item;

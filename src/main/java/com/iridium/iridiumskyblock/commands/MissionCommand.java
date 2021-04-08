@@ -27,7 +27,7 @@ public class MissionCommand extends Command {
      * Not called when the command execution was invalid (no permission, no player or command disabled).
      *
      * @param sender The CommandSender which executes this command
-     * @param args The arguments used with this command. They contain the sub-command
+     * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
