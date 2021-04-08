@@ -71,6 +71,15 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
+     * Returns the plugin's instance of this class.
+     *
+     * @return Instance of this class
+     */
+    public static IridiumSkyblock getInstance() {
+        return instance;
+    }
+
+    /**
      * Code that should be executed before this plugin gets enabled.
      * Sets the default world generator.
      */
@@ -302,15 +311,6 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(blockValues);
         this.persist.save(bankItems);
         this.persist.save(missions);
-    }
-
-    /**
-     * Returns the plugin's instance of this class.
-     *
-     * @return Instance of this class
-     */
-    public static IridiumSkyblock getInstance() {
-        return instance;
     }
 
 }

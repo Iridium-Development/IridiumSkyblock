@@ -21,6 +21,7 @@ import java.util.List;
 
 /**
  * GUI which shows the Islands with the highest Island value.
+ *
  * @see Island#getValue()
  */
 public class IslandTopGUI implements GUI {

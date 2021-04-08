@@ -39,9 +39,9 @@ public class IslandMission {
     /**
      * The default constructor.
      *
-     * @param island The Island that has this mission
-     * @param mission The mission that is represented in the database
-     * @param missionKey The key of the mission
+     * @param island       The Island that has this mission
+     * @param mission      The mission that is represented in the database
+     * @param missionKey   The key of the mission
      * @param missionIndex The index of the mission
      */
     public IslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {

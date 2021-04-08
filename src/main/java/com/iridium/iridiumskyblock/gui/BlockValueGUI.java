@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 /**
  * GUI which shows the value of valuable blocks.
+ *
  * @see ValuableBlock
  */
 public class BlockValueGUI implements GUI {

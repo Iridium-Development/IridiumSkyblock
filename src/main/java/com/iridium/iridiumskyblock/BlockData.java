@@ -26,6 +26,21 @@ public class BlockData {
     private List<String> inventory;
 
     /**
+     * The default constructor.
+     *
+     * @param block The block whose data should be represented by this class
+     */
+    public BlockData(Block block) {
+        this.material = block.getType();
+        this.data = block.getData();
+
+        if (block.getState() instanceof Container) {
+            Container container = (Container) block.getState();
+            this.inventory = Arrays.stream(container.getInventory().getContents()).map(item -> item != null ? ItemStackUtils.serialize(item) : null).collect(Collectors.toList());
+        }
+    }
+
+    /**
      * Applies block data of the schematic to the specified block.
      *
      * @param block The block whose data should be updated
@@ -40,21 +55,6 @@ public class BlockData {
         if (block.getState() instanceof Container && inventory != null) {
             Container container = (Container) block.getState();
             container.getInventory().setContents(inventory.stream().map(item -> item != null ? ItemStackUtils.deserialize(item) : null).toArray(ItemStack[]::new));
-        }
-    }
-
-    /**
-     * The default constructor.
-     *
-     * @param block The block whose data should be represented by this class
-     */
-    public BlockData(Block block) {
-        this.material = block.getType();
-        this.data = block.getData();
-
-        if (block.getState() instanceof Container) {
-            Container container = (Container) block.getState();
-            this.inventory = Arrays.stream(container.getInventory().getContents()).map(item -> item != null ? ItemStackUtils.serialize(item) : null).collect(Collectors.toList());
         }
     }
 

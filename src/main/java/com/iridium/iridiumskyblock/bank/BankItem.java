@@ -21,10 +21,10 @@ public abstract class BankItem {
     /**
      * The default constructor.
      *
-     * @param name The name of this
+     * @param name          The name of this
      * @param defaultAmount The default withdrawal amount of this item
-     * @param enabled Whether or not this item is usable
-     * @param item The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
+     * @param enabled       Whether or not this item is usable
+     * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public BankItem(String name, double defaultAmount, boolean enabled, Item item) {
         this.name = name;

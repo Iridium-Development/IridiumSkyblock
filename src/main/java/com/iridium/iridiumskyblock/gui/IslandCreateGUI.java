@@ -15,7 +15,7 @@ public class IslandCreateGUI extends SchematicGUI {
     /**
      * The default constructor.
      *
-     * @param player The player who wants to create an Island
+     * @param player     The player who wants to create an Island
      * @param islandName The name of the new Island
      */
     public IslandCreateGUI(@NotNull Player player, @NotNull String islandName) {
