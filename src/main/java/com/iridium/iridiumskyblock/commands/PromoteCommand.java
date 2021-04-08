@@ -33,7 +33,7 @@ public class PromoteCommand extends Command {
      * Promotes a user in the Island rank system.
      *
      * @param sender The CommandSender which executes this command
-     * @param args The arguments used with this command. They contain the sub-command
+     * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
     public void execute(CommandSender sender, String[] args) {

@@ -35,10 +35,10 @@ public final class IslandPermission {
     /**
      * The default constructor.
      *
-     * @param island The Island that has this permission
+     * @param island     The Island that has this permission
      * @param permission The permission that is represented in the database
-     * @param rank The rank which may or may not have this permission
-     * @param allowed Whether or not this permission has been granted for this Island rank.
+     * @param rank       The rank which may or may not have this permission
+     * @param allowed    Whether or not this permission has been granted for this Island rank.
      */
     public IslandPermission(@NotNull Island island, @NotNull String permission, @NotNull IslandRank rank, boolean allowed) {
         this.island = island.getId();

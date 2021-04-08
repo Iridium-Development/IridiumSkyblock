@@ -56,7 +56,7 @@ public class VisitGUI implements GUI {
         islands.stream()
                 .skip((long) (page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(island -> inventory.setItem( index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
+                .forEachOrdered(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
                         new Placeholder("name", island.getName()),
                         new Placeholder("owner", island.getOwner().getName()),
                         new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))

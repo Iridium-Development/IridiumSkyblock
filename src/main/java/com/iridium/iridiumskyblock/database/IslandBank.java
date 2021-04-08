@@ -31,9 +31,9 @@ public class IslandBank {
     /**
      * The default constructor.
      *
-     * @param island The Island of this Island bank
+     * @param island   The Island of this Island bank
      * @param bankItem The bank item in the Island bank
-     * @param number The amount of this currency in the Island bank
+     * @param number   The amount of this currency in the Island bank
      */
     public IslandBank(@NotNull Island island, @NotNull String bankItem, double number) {
         this.island = island.getId();

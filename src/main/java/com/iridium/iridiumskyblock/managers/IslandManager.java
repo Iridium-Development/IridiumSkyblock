@@ -28,8 +28,8 @@ public class IslandManager {
     /**
      * Creates a new world using the current skyblock generator.
      *
-     * @param environment  The world's Environment
-     * @param name The World's Name
+     * @param environment The world's Environment
+     * @param name        The World's Name
      */
     public void createWorld(World.Environment environment, String name) {
         new WorldCreator(name)
@@ -43,7 +43,7 @@ public class IslandManager {
      * Empty if there is none.
      *
      * @param island The island to which the user might have been invited to
-     * @param user The user which might have been invited
+     * @param user   The user which might have been invited
      * @return The invite of the user to this island, might be empty
      */
     public Optional<IslandInvite> getIslandInvite(@NotNull Island island, @NotNull User user) {
@@ -498,7 +498,7 @@ public class IslandManager {
      * Checks if the given conditions are a part of the provided mission conditions.
      *
      * @param missionConditions The mission conditions
-     * @param conditions The conditions that should be checked
+     * @param conditions        The conditions that should be checked
      * @return Whether or not the conditions are a part of the mission conditions
      */
     private boolean matchesMission(String[] missionConditions, String[] conditions) {
@@ -515,9 +515,9 @@ public class IslandManager {
     /**
      * Checks whether or not the Island has completed the provided mission.
      *
-     * @param island The Island which should be checked
+     * @param island  The Island which should be checked
      * @param mission The mission which should be checked
-     * @param key The key of the mission
+     * @param key     The key of the mission
      * @return Whether or not this mission has been completed
      */
     private boolean hasCompletedMission(@NotNull Island island, @NotNull Mission mission, @NotNull String key) {

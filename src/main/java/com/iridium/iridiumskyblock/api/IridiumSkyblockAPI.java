@@ -31,6 +31,28 @@ public class IridiumSkyblockAPI {
     }
 
     /**
+     * Accesses the api instance.
+     * Might be null if this method is called when {@link IridiumSkyblock}'s startup method is still being executed.
+     *
+     * @return The instance of this api
+     * @since 3.0.0
+     */
+    public static IridiumSkyblockAPI getInstance() {
+        return instance;
+    }
+
+    /**
+     * Initializes the api. For internal use only.
+     *
+     * @param iridiumSkyblock The {@link IridiumSkyblock} instance used by the plugin
+     */
+    public static synchronized void initializeAPI(IridiumSkyblock iridiumSkyblock) {
+        if (instance == null) {
+            instance = new IridiumSkyblockAPI(iridiumSkyblock);
+        }
+    }
+
+    /**
      * Gets a {@link User}'s info. Creates one if he doesn't exist.
      *
      * @param offlinePlayer The player who's data should be fetched
@@ -70,28 +92,6 @@ public class IridiumSkyblockAPI {
      */
     public World getNetherWorld() {
         return Bukkit.getWorld(iridiumSkyblock.getConfiguration().netherWorldName);
-    }
-
-    /**
-     * Accesses the api instance.
-     * Might be null if this method is called when {@link IridiumSkyblock}'s startup method is still being executed.
-     *
-     * @return The instance of this api
-     * @since 3.0.0
-     */
-    public static IridiumSkyblockAPI getInstance() {
-        return instance;
-    }
-
-    /**
-     * Initializes the api. For internal use only.
-     *
-     * @param iridiumSkyblock The {@link IridiumSkyblock} instance used by the plugin
-     */
-    public static synchronized void initializeAPI(IridiumSkyblock iridiumSkyblock) {
-        if (instance == null) {
-            instance = new IridiumSkyblockAPI(iridiumSkyblock);
-        }
     }
 
 }

@@ -31,7 +31,7 @@ public class BankCommand extends Command {
      * Opens the Island bank GUI.
      *
      * @param sender The CommandSender which executes this command
-     * @param args The arguments used with this command. They contain the sub-command
+     * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
