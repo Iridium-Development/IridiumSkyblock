@@ -154,18 +154,6 @@ public class SchematicManager {
     }
 
     /**
-     * Saves a schematic under the specified name to the database.
-     *
-     * @param name      The name of the schematic
-     * @param schematic The schematic which should be saved
-     */
-    private void saveSchematic(String name, Schematic schematic) {
-        SchematicData schematicData = new SchematicData(name, schematic);
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().removeIf(s -> s.getId().equals(name));
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(schematicData);
-    }
-
-    /**
      * Tries to find the first non empty row of blocks.
      * x1 - x6 are just weird names, their meaning changes based on the block mapper.
      * x1 & x2, x3 & x4, x5 & x6 are pairs, the first one should always be the smaller number.
@@ -239,17 +227,27 @@ public class SchematicManager {
      * @return Whether or not there a blocks on this section of the plane
      */
     private boolean isNotEmpty(int x3, int x4, int x5, int x6, int i, TriFunction<Integer, Integer, Integer, Block> blockMapper) {
-        boolean isEmpty = true;
-
         for (int j = x3; j < x4; j++) {
             for (int k = x5; k < x6; k++) {
                 if (blockMapper.apply(i, j, k).getType() != Material.AIR) {
-                    isEmpty = false;
+                    return true;
                 }
             }
         }
 
-        return !isEmpty;
+        return false;
+    }
+
+    /**
+     * Saves a schematic under the specified name to the database.
+     *
+     * @param name      The name of the schematic
+     * @param schematic The schematic which should be saved
+     */
+    private void saveSchematic(String name, Schematic schematic) {
+        SchematicData schematicData = new SchematicData(name, schematic);
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().removeIf(s -> s.getId().equals(name));
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(schematicData);
     }
 
 }
