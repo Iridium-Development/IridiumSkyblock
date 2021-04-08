@@ -14,6 +14,7 @@ public class SQL {
     public String username = "";
     public String password = "";
     public int port = 3306;
+    public boolean useSSL = false;
 
     /**
      * Represents a Driver of a database.
