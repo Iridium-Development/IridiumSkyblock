@@ -23,7 +23,7 @@ public class MoneyBankItem extends BankItem {
      * The default constructor.
      *
      * @param defaultAmount The default withdrawal amount of this item
-     * @param item The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
+     * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public MoneyBankItem(double defaultAmount, Item item) {
         super("money", defaultAmount, true, item);

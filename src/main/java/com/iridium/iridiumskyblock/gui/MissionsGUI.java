@@ -25,7 +25,7 @@ public class MissionsGUI implements GUI {
     /**
      * The default constructor.
      *
-     * @param island The Island this GUI belongs to
+     * @param island      The Island this GUI belongs to
      * @param missionType The amount of times the containing missions can be claimed
      * @see com.iridium.iridiumskyblock.Mission.MissionType
      */

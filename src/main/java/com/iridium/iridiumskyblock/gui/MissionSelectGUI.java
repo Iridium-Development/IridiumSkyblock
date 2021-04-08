@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * GUI which allows users to select the type of mission they want in the {@link MissionsGUI}.
+ *
  * @see Mission.MissionType
  */
 public class MissionSelectGUI implements GUI {

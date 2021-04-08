@@ -122,7 +122,7 @@ public class SchematicManager {
      * Shrinks a schematic by removing all the air blocks.
      * Required to automatically center island schematics.
      * It's irrelevant where pos1 and pos2 are.
-     *
+     * <p>
      * Don't even bother to understand this, but here is a short explanation:
      * Checks the 3 planes (x-y, x-z, y-z / x1-x2, x1-x3, x2-x3) from both directions and returns
      * the first non-empty row of blocks. This is used to build new corner positions.
@@ -156,7 +156,7 @@ public class SchematicManager {
     /**
      * Saves a schematic under the specified name to the database.
      *
-     * @param name The name of the schematic
+     * @param name      The name of the schematic
      * @param schematic The schematic which should be saved
      */
     private void saveSchematic(String name, Schematic schematic) {
@@ -169,18 +169,18 @@ public class SchematicManager {
      * Tries to find the first non empty row of blocks.
      * x1 - x6 are just weird names, their meaning changes based on the block mapper.
      * x1 & x2, x3 & x4, x5 & x6 are pairs, the first one should always be the smaller number.
-     *
+     * <p>
      * The block mapper takes the steadily increasing x1 as the first argument,
      * the steadily increasing x3 as the second argument and the steadily increasing x5 as the third one.
      * You can get a block in a world out of that, but I won't explain this, just check out
      * {@link SchematicManager#shrinkSchematic(Location, Location)}.
      *
-     * @param x1 x1, please read the explanation above
-     * @param x2 x2, please read the explanation above
-     * @param x3 x3, please read the explanation above
-     * @param x4 x4, please read the explanation above
-     * @param x5 x5, please read the explanation above
-     * @param x6 x6, please read the explanation above
+     * @param x1          x1, please read the explanation above
+     * @param x2          x2, please read the explanation above
+     * @param x3          x3, please read the explanation above
+     * @param x4          x4, please read the explanation above
+     * @param x5          x5, please read the explanation above
+     * @param x6          x6, please read the explanation above
      * @param blockMapper Maps coordinates to a block, please read the explanation above
      * @return The first non empty row, x1 if there is none
      */
@@ -196,18 +196,18 @@ public class SchematicManager {
      * Tries to find the last non empty row of blocks.
      * x1 - x6 are just weird names, their meaning changes based on the block mapper.
      * x1 & x2, x3 & x4, x5 & x6 are pairs, the first one should always be the smaller number.
-     *
+     * <p>
      * The block mapper takes the steadily decreasing x2 as the first argument,
      * the steadily increasing x3 as the second argument and the steadily increasing x5 as the third one.
      * You can get a block in a world out of that, but I won't explain this, just check out
      * {@link SchematicManager#shrinkSchematic(Location, Location)}.
      *
-     * @param x1 x1, please read the explanation above
-     * @param x2 x2, please read the explanation above
-     * @param x3 x3, please read the explanation above
-     * @param x4 x4, please read the explanation above
-     * @param x5 x5, please read the explanation above
-     * @param x6 x6, please read the explanation above
+     * @param x1          x1, please read the explanation above
+     * @param x2          x2, please read the explanation above
+     * @param x3          x3, please read the explanation above
+     * @param x4          x4, please read the explanation above
+     * @param x5          x5, please read the explanation above
+     * @param x6          x6, please read the explanation above
      * @param blockMapper Maps coordinates to a block, please read the explanation above
      * @return The last non empty row, x1 if there is none
      */
@@ -224,17 +224,17 @@ public class SchematicManager {
      * x3 - x6 are just weird names, their meaning changes based on the block mapper.
      * x3 & x4, x5 & x6 are pairs, the first one should always be the smaller number.
      * i is the current planes coordinate.
-     *
+     * <p>
      * The block mapper takes i as the first argument,
      * the steadily increasing x3 as the second argument and the steadily increasing x5 as the third one.
      * You can get a block in a world out of that, but I won't explain this, just check out
      * {@link SchematicManager#shrinkSchematic(Location, Location)}.
      *
-     * @param x3 x3, please read the explanation above
-     * @param x4 x4, please read the explanation above
-     * @param x5 x5, please read the explanation above
-     * @param x6 x6, please read the explanation above
-     * @param i i, representing the current planes coordinate, please read the explanation above
+     * @param x3          x3, please read the explanation above
+     * @param x4          x4, please read the explanation above
+     * @param x5          x5, please read the explanation above
+     * @param x6          x6, please read the explanation above
+     * @param i           i, representing the current planes coordinate, please read the explanation above
      * @param blockMapper Maps coordinates to a block, please read the explanation above
      * @return Whether or not there a blocks on this section of the plane
      */

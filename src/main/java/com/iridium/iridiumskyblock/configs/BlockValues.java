@@ -13,7 +13,7 @@ import java.util.Map;
  * Is deserialized automatically on plugin startup and reload.
  */
 public class BlockValues {
-    
+
     public Map<XMaterial, ValuableBlock> blockValues = ImmutableMap.<XMaterial, ValuableBlock>builder()
             .put(XMaterial.IRON_BLOCK, new ValuableBlock(3.0, "&b&lIron Block", 10))
             .put(XMaterial.GOLD_BLOCK, new ValuableBlock(5.00, "&b&lGold Block", 11))

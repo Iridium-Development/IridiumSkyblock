@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Command which shows all the valuable blocks and spawners.
+ *
  * @see com.iridium.iridiumskyblock.configs.BlockValues
  */
 public class BlockValueCommand extends Command {
