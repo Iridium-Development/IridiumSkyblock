@@ -48,6 +48,7 @@ public class BlockBreakListener implements Listener {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
+
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + material.name(), 1));
     }
 
