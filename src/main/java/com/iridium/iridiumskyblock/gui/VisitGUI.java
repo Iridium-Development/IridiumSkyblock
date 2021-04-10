@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.Lists;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -50,10 +49,8 @@ public class VisitGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().visitGuiSize, StringUtils.color("&7Visit an Island"));
-
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
-        }
+		
+		InventoryUtils.fillInventory(inventory);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
