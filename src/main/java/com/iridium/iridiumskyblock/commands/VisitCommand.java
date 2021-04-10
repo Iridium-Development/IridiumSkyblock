@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which Opens visitable islands or visits an island
+ * Command which opens visitable islands or visits an island.
  */
 public class VisitCommand extends Command {
 
@@ -22,13 +22,13 @@ public class VisitCommand extends Command {
      * The default constructor.
      */
     public VisitCommand() {
-        super(Collections.singletonList("visit"), "Visit another players island", "", true);
+        super(Collections.singletonList("visit"), "Visit another players Island", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Opens visitable islands or visits an island
+     * Opens visitable islands or visits an island.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -36,12 +36,15 @@ public class VisitCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
+
         if (args.length != 2) {
             p.openInventory(new VisitGUI(0).getInventory());
             return;
         }
+
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
+
         if (user.getIsland().isPresent()) {
             if ((user.getIsland()).get().isVisitable() || p.hasPermission("iridiumskyblock.visitbypass")) {
                 IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, user.getIsland().get());

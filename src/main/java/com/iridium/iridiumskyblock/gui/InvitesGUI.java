@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -17,33 +17,37 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * GUI which allows users to manage invites.
+ */
 public class InvitesGUI implements GUI {
 
     private final Island island;
-
     private final HashMap<Integer, String> invites;
 
+    /**
+     * The default constructor.
+     *
+     * @param island The Island this GUI belongs to
+     */
     public InvitesGUI(@NotNull Island island) {
         this.island = island;
         invites = new HashMap<>();
     }
 
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (invites.containsKey(event.getSlot())) {
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is uninvite " + invites.get(event.getSlot()));
-            event.getWhoClicked().openInventory(getInventory());
-        }
-    }
-
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Invites"));
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getIslandManager().getInvitesByIsland(island);
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
-        }
+
+        InventoryUtils.fillInventory(inventory);
+
         int i = 0;
         for (IslandInvite islandInvite : islandInvites) {
             inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvite, Arrays.asList(
@@ -54,6 +58,22 @@ public class InvitesGUI implements GUI {
             invites.put(i, islandInvite.getUser().getName());
             i++;
         }
+
         return inventory;
     }
+
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (invites.containsKey(event.getSlot())) {
+            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is uninvite " + invites.get(event.getSlot()));
+            event.getWhoClicked().openInventory(getInventory());
+        }
+    }
+
 }

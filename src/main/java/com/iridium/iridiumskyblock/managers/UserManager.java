@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Class which handles users.
+ */
 public class UserManager {
 
     /**
@@ -37,4 +40,5 @@ public class UserManager {
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserList().stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
     }
+
 }

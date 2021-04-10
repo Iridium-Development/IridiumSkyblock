@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which shows your island's Value
+ * Command which shows the Island's value.
  */
 public class ValueCommand extends Command {
 
@@ -21,13 +21,13 @@ public class ValueCommand extends Command {
      * The default constructor.
      */
     public ValueCommand() {
-        super(Collections.singletonList("value"), "Get your island value", "", true);
+        super(Collections.singletonList("value"), "View your Island value", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Makes User's island to unvisitable
+     * Shows the Island's value.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -37,6 +37,7 @@ public class ValueCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandValue.replace("%rank%", String.valueOf(island.get().getRank())).replace("%value%", String.valueOf(island.get().getValue())).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
@@ -55,6 +56,9 @@ public class ValueCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return null;
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
+
 }

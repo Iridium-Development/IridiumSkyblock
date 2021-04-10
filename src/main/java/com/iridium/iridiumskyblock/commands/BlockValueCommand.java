@@ -1,36 +1,39 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.utils.StringUtils;
+import com.iridium.iridiumskyblock.gui.BlockValueSelectGUI;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which reloads all configuration files.
+ * Command which shows all the valuable blocks and spawners.
+ *
+ * @see com.iridium.iridiumskyblock.configs.BlockValues
  */
-public class ReloadCommand extends Command {
+public class BlockValueCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public ReloadCommand() {
-        super(Collections.singletonList("reload"), "Reload the plugin configurations", "iridiumskyblock.reload", false);
+    public BlockValueCommand() {
+        super(Collections.singletonList("blockvalues"), "Show the values of blocks", "", true);
+
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Reloads all configuration files.
+     * Shows all the valuable blocks and spawners.
      *
-     * @param sender The CommandSender which executes this command
-     * @param args   The arguments used with this command. They contain the sub-command
+     * @param sender    The CommandSender which executes this command
+     * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        IridiumSkyblock.getInstance().loadConfigs();
-        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+    public void execute(CommandSender sender, String[] arguments) {
+        Player player = (Player) sender;
+        player.openInventory(new BlockValueSelectGUI().getInventory());
     }
 
     /**

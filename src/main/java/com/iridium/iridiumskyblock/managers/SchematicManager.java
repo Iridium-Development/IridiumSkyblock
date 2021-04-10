@@ -106,11 +106,32 @@ public class SchematicManager {
         }
     }
 
+    /**
+     * Shrinks and saves a schematic.
+     *
+     * @param name The name which this schematic should have
+     * @param pos1 One of the corner positions of this schematic
+     * @param pos2 The other corner position of this schematic
+     */
     public void addSchematic(String name, Location pos1, Location pos2) {
         Schematic schematic = shrinkSchematic(pos1, pos2);
         saveSchematic(name, schematic);
     }
 
+    /**
+     * Shrinks a schematic by removing all the air blocks.
+     * Required to automatically center island schematics.
+     * It's irrelevant where pos1 and pos2 are.
+     * <p>
+     * Don't even bother to understand this, but here is a short explanation:
+     * Checks the 3 planes (x-y, x-z, y-z / x1-x2, x1-x3, x2-x3) from both directions and returns
+     * the first non-empty row of blocks. This is used to build new corner positions.
+     * I (das_) take all the blame for implementing it in this horrific way.
+     *
+     * @param pos1 The original first position
+     * @param pos2 The original second position
+     * @return The newly created schematic representation of the shrunken area
+     */
     private Schematic shrinkSchematic(Location pos1, Location pos2) {
         World world = pos1.getWorld();
 
@@ -121,6 +142,7 @@ public class SchematicManager {
         int maxY = max(pos1.getBlockY(), pos2.getBlockY());
         int maxZ = max(pos1.getBlockZ(), pos2.getBlockZ());
 
+        // Here comes the madness
         int firstNonEmptyX = findFirstNonEmpty(minX, maxX, minY, maxY, minZ, maxZ, world::getBlockAt);
         int firstNonEmptyY = findFirstNonEmpty(minY, maxY, minX, maxX, minZ, maxZ, (y, x, z) -> world.getBlockAt(x, y, z));
         int firstNonEmptyZ = findFirstNonEmpty(minZ, maxZ, minX, maxX, minY, maxY, (z, x, y) -> world.getBlockAt(x, y, z));
@@ -131,12 +153,25 @@ public class SchematicManager {
         return new Schematic(new Location(world, firstNonEmptyX, firstNonEmptyY, firstNonEmptyZ), new Location(world, lastNonEmptyX, lastNonEmptyY, lastNonEmptyZ));
     }
 
-    private void saveSchematic(String name, Schematic schematic) {
-        SchematicData schematicData = new SchematicData(name, schematic);
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().removeIf(s -> s.getId().equals(name));
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(schematicData);
-    }
-
+    /**
+     * Tries to find the first non empty row of blocks.
+     * x1 - x6 are just weird names, their meaning changes based on the block mapper.
+     * x1 & x2, x3 & x4, x5 & x6 are pairs, the first one should always be the smaller number.
+     * <p>
+     * The block mapper takes the steadily increasing x1 as the first argument,
+     * the steadily increasing x3 as the second argument and the steadily increasing x5 as the third one.
+     * You can get a block in a world out of that, but I won't explain this, just check out
+     * {@link SchematicManager#shrinkSchematic(Location, Location)}.
+     *
+     * @param x1          x1, please read the explanation above
+     * @param x2          x2, please read the explanation above
+     * @param x3          x3, please read the explanation above
+     * @param x4          x4, please read the explanation above
+     * @param x5          x5, please read the explanation above
+     * @param x6          x6, please read the explanation above
+     * @param blockMapper Maps coordinates to a block, please read the explanation above
+     * @return The first non empty row, x1 if there is none
+     */
     private int findFirstNonEmpty(int x1, int x2, int x3, int x4, int x5, int x6, TriFunction<Integer, Integer, Integer, Block> blockMapper) {
         for (int i = x1; i < x2; i++) {
             if (isNotEmpty(x3, x4, x5, x6, i, blockMapper)) return i;
@@ -145,6 +180,25 @@ public class SchematicManager {
         return x1;
     }
 
+    /**
+     * Tries to find the last non empty row of blocks.
+     * x1 - x6 are just weird names, their meaning changes based on the block mapper.
+     * x1 & x2, x3 & x4, x5 & x6 are pairs, the first one should always be the smaller number.
+     * <p>
+     * The block mapper takes the steadily decreasing x2 as the first argument,
+     * the steadily increasing x3 as the second argument and the steadily increasing x5 as the third one.
+     * You can get a block in a world out of that, but I won't explain this, just check out
+     * {@link SchematicManager#shrinkSchematic(Location, Location)}.
+     *
+     * @param x1          x1, please read the explanation above
+     * @param x2          x2, please read the explanation above
+     * @param x3          x3, please read the explanation above
+     * @param x4          x4, please read the explanation above
+     * @param x5          x5, please read the explanation above
+     * @param x6          x6, please read the explanation above
+     * @param blockMapper Maps coordinates to a block, please read the explanation above
+     * @return The last non empty row, x1 if there is none
+     */
     private int findLastNonEmpty(int x1, int x2, int x3, int x4, int x5, int x6, TriFunction<Integer, Integer, Integer, Block> blockMapper) {
         for (int i = x2; i > x1; i--) {
             if (isNotEmpty(x3, x4, x5, x6, i, blockMapper)) return i;
@@ -153,18 +207,47 @@ public class SchematicManager {
         return x1;
     }
 
+    /**
+     * Checks if there a blocks on this section of the plane.
+     * x3 - x6 are just weird names, their meaning changes based on the block mapper.
+     * x3 & x4, x5 & x6 are pairs, the first one should always be the smaller number.
+     * i is the current planes coordinate.
+     * <p>
+     * The block mapper takes i as the first argument,
+     * the steadily increasing x3 as the second argument and the steadily increasing x5 as the third one.
+     * You can get a block in a world out of that, but I won't explain this, just check out
+     * {@link SchematicManager#shrinkSchematic(Location, Location)}.
+     *
+     * @param x3          x3, please read the explanation above
+     * @param x4          x4, please read the explanation above
+     * @param x5          x5, please read the explanation above
+     * @param x6          x6, please read the explanation above
+     * @param i           i, representing the current planes coordinate, please read the explanation above
+     * @param blockMapper Maps coordinates to a block, please read the explanation above
+     * @return Whether or not there a blocks on this section of the plane
+     */
     private boolean isNotEmpty(int x3, int x4, int x5, int x6, int i, TriFunction<Integer, Integer, Integer, Block> blockMapper) {
-        boolean isEmpty = true;
-
         for (int j = x3; j < x4; j++) {
             for (int k = x5; k < x6; k++) {
                 if (blockMapper.apply(i, j, k).getType() != Material.AIR) {
-                    isEmpty = false;
+                    return true;
                 }
             }
         }
 
-        return !isEmpty;
+        return false;
+    }
+
+    /**
+     * Saves a schematic under the specified name to the database.
+     *
+     * @param name      The name of the schematic
+     * @param schematic The schematic which should be saved
+     */
+    private void saveSchematic(String name, Schematic schematic) {
+        SchematicData schematicData = new SchematicData(name, schematic);
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().removeIf(s -> s.getId().equals(name));
+        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicDataList().add(schematicData);
     }
 
 }

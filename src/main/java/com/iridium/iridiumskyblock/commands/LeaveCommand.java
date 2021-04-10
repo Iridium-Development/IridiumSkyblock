@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which creates a new island for an user.
+ * Command which allows users to leave their Island.
  */
 public class LeaveCommand extends Command {
 
@@ -24,13 +24,13 @@ public class LeaveCommand extends Command {
      * The default constructor.
      */
     public LeaveCommand() {
-        super(Collections.singletonList("leave"), "Leave your island", "", true);
+        super(Collections.singletonList("leave"), "Leave your Island", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Allows users to leave their Island.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -40,10 +40,12 @@ public class LeaveCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             if (user.getIslandRank().equals(IslandRank.OWNER)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotLeaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
+                // TODO: Add confirmation GUI
                 user.setIsland(null);
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 for (User member : island.get().getMembers()) {
@@ -70,7 +72,9 @@ public class LeaveCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return null;
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

@@ -12,10 +12,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Handles command executions and tab-completions for all commands of this plugin.
@@ -70,6 +67,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new SaveSchematicCommand());
         registerCommand(new InfoCommand());
         registerCommand(new MissionCommand());
+        registerCommand(new BlockValueCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
@@ -107,13 +105,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public boolean onCommand(@NotNull CommandSender commandSender, org.bukkit.command.@NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length == 0) {
             if (commandSender instanceof Player) {
-                Player p = (Player) commandSender;
-                User user = IridiumSkyblockAPI.getInstance().getUser(p);
+                Player player = (Player) commandSender;
+                User user = IridiumSkyblockAPI.getInstance().getUser(player);
                 Optional<Island> island = user.getIsland();
                 if (island.isPresent()) {
-                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, island.get());
+                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get());
                 } else {
-                    Bukkit.getServer().dispatchCommand(p, "is create");
+                    Bukkit.getServer().dispatchCommand(player, "is create");
                 }
                 return true;
             }
@@ -125,6 +123,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 continue;
             }
 
+            // Check if this command is only for players
             if (command.onlyForPlayers && !(commandSender instanceof Player)) {
                 // Must be a player
                 commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer
@@ -132,6 +131,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 return false;
             }
 
+            // Check permissions
             if (!((commandSender.hasPermission(command.permission) || command.permission
                     .equalsIgnoreCase("") || command.permission
                     .equalsIgnoreCase("iridiumskyblock.")) && command.enabled)) {
@@ -144,9 +144,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             command.execute(commandSender, args);
             return true;
         }
+
         // Unknown command message
-        commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownCommand
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownCommand.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return false;
     }
 
@@ -161,7 +161,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      */
     @Override
     public List<String> onTabComplete(@NotNull CommandSender commandSender, org.bukkit.command.@NotNull Command cmd, @NotNull String label, String[] args) {
-        // Handle the tab completion if it's a sub-command.
+        // Handle the tab completion if it's the sub-command selection
         if (args.length == 1) {
             ArrayList<String> result = new ArrayList<>();
             for (Command command : commands) {
@@ -186,7 +186,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
         }
 
-        return null;
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

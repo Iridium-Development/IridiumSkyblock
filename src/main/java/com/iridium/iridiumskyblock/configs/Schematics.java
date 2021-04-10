@@ -9,6 +9,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The schematic configuration used by IridiumSkyblock (schematics.yml).
+ * Is deserialized automatically on plugin startup and reload.
+ */
 public class Schematics {
 
     public List<SchematicConfig> schematics = Arrays.asList(
@@ -52,4 +56,5 @@ public class Schematics {
             this.schematicID = schematicID;
         }
     }
+
 }

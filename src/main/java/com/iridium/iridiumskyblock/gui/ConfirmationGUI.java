@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -9,28 +9,46 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * GUI which executes code upon confirmation.
+ */
 public class ConfirmationGUI implements GUI {
 
     private final @NotNull Runnable runnable;
-    private final @NotNull IridiumSkyblock iridiumSkyblock;
 
-    public ConfirmationGUI(@NotNull IridiumSkyblock iridiumSkyblock, @NotNull Runnable runnable) {
-        this.iridiumSkyblock = iridiumSkyblock;
+    /**
+     * The default constructor.
+     *
+     * @param runnable The code that should be run when the user confirms his action
+     */
+    public ConfirmationGUI(@NotNull Runnable runnable) {
         this.runnable = runnable;
     }
 
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color(iridiumSkyblock.getInventories().ConfirmationGUITitle));
-        for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());
-        }
-        inventory.setItem(11, ItemStackUtils.makeItem(iridiumSkyblock.getInventories().no));
-        inventory.setItem(15, ItemStackUtils.makeItem(iridiumSkyblock.getInventories().yes));
+        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color(IridiumSkyblock.getInstance().getInventories().ConfirmationGUITitle));
+
+        InventoryUtils.fillInventory(inventory);
+
+        inventory.setItem(11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().no));
+        inventory.setItem(15, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().yes));
         return inventory;
     }
 
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getSlot() == 11) {
             event.getWhoClicked().closeInventory();
@@ -39,4 +57,5 @@ public class ConfirmationGUI implements GUI {
             event.getWhoClicked().closeInventory();
         }
     }
+
 }

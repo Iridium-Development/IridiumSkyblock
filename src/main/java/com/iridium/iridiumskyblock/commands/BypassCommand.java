@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Command which creates a new island for an user.
+ * Command which allows admins to bypass Island restrictions.
  */
 public class BypassCommand extends Command {
 
@@ -19,13 +19,13 @@ public class BypassCommand extends Command {
      * The default constructor.
      */
     public BypassCommand() {
-        super(Collections.singletonList("bypass"), "bypass island restrictions", "iridiumskyblock.bypass", true);
+        super(Collections.singletonList("bypass"), "Bypass Island restrictions", "iridiumskyblock.bypass", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Allows admins to bypass Island restrictions.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -49,7 +49,9 @@ public class BypassCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return null;
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

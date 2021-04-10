@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which sets a User's Island Home'
+ * Command which sets a User's Island home.
  */
 public class SetHomeCommand extends Command {
 
@@ -21,13 +21,13 @@ public class SetHomeCommand extends Command {
      * The default constructor.
      */
     public SetHomeCommand() {
-        super(Collections.singletonList("sethome"), "Set the island home", "", true);
+        super(Collections.singletonList("sethome"), "Set your Island home", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Sets island home of the user.
+     * Sets the Island home of the user's Island.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -37,6 +37,7 @@ public class SetHomeCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             if (island.get().isInIsland(player.getLocation())) {
                 island.get().setHome(player.getLocation());
@@ -60,7 +61,9 @@ public class SetHomeCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return null;
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

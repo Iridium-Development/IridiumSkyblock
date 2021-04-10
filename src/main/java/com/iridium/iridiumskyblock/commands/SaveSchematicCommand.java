@@ -12,15 +12,19 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Command which saves a schematic in our internal schematic system.
+ */
 public class SaveSchematicCommand extends Command {
 
     public SaveSchematicCommand() {
-        super(Collections.singletonList("saveschematic"), "Creates a schematic out of a selected area", "iridiumskyblock.schematic", true);
+        super(Collections.singletonList("saveschematic"), "Create a schematic out of a selected area", "iridiumskyblock.schematic", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
+     * Saves a schematic in our internal schematic system.
      *
      * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command
@@ -66,6 +70,9 @@ public class SaveSchematicCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
         return Collections.emptyList();
     }
+
 }

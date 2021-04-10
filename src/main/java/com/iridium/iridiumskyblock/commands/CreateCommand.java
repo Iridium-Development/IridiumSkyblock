@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Command which creates a new island for an user.
+ * Command which creates a new Island for a user.
  */
 public class CreateCommand extends Command {
 
@@ -24,13 +24,13 @@ public class CreateCommand extends Command {
      * The default constructor.
      */
     public CreateCommand() {
-        super(Collections.singletonList("create"), "Create an island", "", true);
+        super(Collections.singletonList("create"), "Create an Island", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Creates a new Island for a user.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -38,22 +38,27 @@ public class CreateCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        if (args.length == 1) {
-            createIsland(player, player.getName());
-        } else if (args.length == 2) {
-            createIsland(player, args[1]);
-        } else if (args.length == 3) {
-            Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.stream().filter(config -> config.name.equalsIgnoreCase(args[2])).findFirst();
-            if (schematicConfig.isPresent()) {
-                IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
+
+        switch (args.length) {
+            case 1:
+                createIsland(player, player.getName());
+                break;
+            case 2:
+                createIsland(player, args[1]);
+                break;
+            case 3:
+                Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.stream().filter(config -> config.name.equalsIgnoreCase(args[2])).findFirst();
+                if (schematicConfig.isPresent()) {
+                    IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
+                } else {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
+                break;
         }
     }
 
     /**
-     * Opens the island schematic picker GUI
+     * Opens the island schematic picker GUI.
      *
      * @param player The player who performed this command
      * @param name   The name of the new island
@@ -61,14 +66,17 @@ public class CreateCommand extends Command {
     private void createIsland(Player player, String name) {
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
+
         if (IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
+
         player.openInventory(new IslandCreateGUI(player, name).getInventory());
     }
 
@@ -86,7 +94,10 @@ public class CreateCommand extends Command {
         if (args.length == 3) {
             return IridiumSkyblock.getInstance().getSchematics().schematics.stream().map(schematicConfig -> schematicConfig.name).collect(Collectors.toList());
         }
-        return null;
+
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

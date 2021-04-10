@@ -19,17 +19,32 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+/**
+ * GUI which shows a list of all Islands a user can visit.
+ */
 public class VisitGUI implements GUI {
+
     private final List<Island> islands;
     private final int page;
 
+    /**
+     * The default constructor.
+     *
+     * @param page The current page of this GUI
+     */
     public VisitGUI(int page) {
         this.page = page;
         int elementsPerPage = IridiumSkyblock.getInstance().getInventories().visitGuiSize - 9;
         this.islands = Lists.partition(IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable)
                 .collect(Collectors.toList()), elementsPerPage).get(page);
     }
-
+  
+    /**
+     * Called when there is a click in this GUI.
+     * Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getSlot() == getInventory().getSize() - 7 && page != 0) {
@@ -46,12 +61,17 @@ public class VisitGUI implements GUI {
         }
     }
 
+    /**
+     * Builds and returns this inventory.
+     *
+     * @return The new inventory
+     */
     @NotNull
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().visitGuiSize, StringUtils.color("&7Visit an Island"));
-		
-		InventoryUtils.fillInventory(inventory);
+
+        InventoryUtils.fillInventory(inventory);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
@@ -66,4 +86,5 @@ public class VisitGUI implements GUI {
 
         return inventory;
     }
+
 }

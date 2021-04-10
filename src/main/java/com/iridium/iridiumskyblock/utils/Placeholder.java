@@ -26,7 +26,7 @@ public class Placeholder {
      * Replaces this placeholder in the provided line with the value of this placeholder.
      *
      * @param line The line which potentially contains the placeholder
-     * @return The processed line with this placeholder replaced
+     * @return The processed line with this placeholder replaced, empty if the parameter is null
      */
     public String process(String line) {
         if (line == null) return "";

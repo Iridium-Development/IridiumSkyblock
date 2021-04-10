@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Command which creates a new island for an user.
+ * Command which resets the Island of a user.
  */
 public class RegenCommand extends Command {
 
@@ -23,13 +23,13 @@ public class RegenCommand extends Command {
      * The default constructor.
      */
     public RegenCommand() {
-        super(Collections.singletonList("regen"), "Regenerate an island", "", true);
+        super(Collections.singletonList("regen"), "Regenerate your Island", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Tries to create a new island for the user.
+     * Resets the Island of a user.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
@@ -39,6 +39,7 @@ public class RegenCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
             if (args.length == 1) {
                 if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().regen)) {
@@ -68,7 +69,10 @@ public class RegenCommand extends Command {
         if (args.length == 2) {
             return IridiumSkyblock.getInstance().getSchematics().schematics.stream().map(schematicConfig -> schematicConfig.name).collect(Collectors.toList());
         }
-        return null;
+
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

@@ -7,15 +7,14 @@ import org.bukkit.command.CommandSender;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
- * Display plugin information to the player
+ * Command which display plugin information to the user.
  */
 public class AboutCommand extends Command {
 
     /*
-    Please dont add yourself to this list, if you contribute enough I (Peaches) will add you.
+    Please don't add yourself to this list, if you contribute enough I (Peaches) will add you.
     */
     private final List<String> contributors = Arrays.asList("das_", "SlashRemix");
 
@@ -23,16 +22,16 @@ public class AboutCommand extends Command {
      * The default constructor.
      */
     public AboutCommand() {
-        super(Collections.singletonList("about"), "Displays plugin info", "", false);
+        super(Collections.singletonList("about"), "Display plugin info", "", false);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Displays plugin info for the player
+     * Display plugin information to the user.
      *
      * @param sender The CommandSender which executes this command
-     * @param args The arguments used with this command. They contain the sub-command
+     * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
@@ -54,7 +53,7 @@ public class AboutCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new ArrayList so it isn't a list of online players
+        // Return a new List so it isn't a list of online players
         return Collections.emptyList();
     }
 

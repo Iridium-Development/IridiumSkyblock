@@ -14,8 +14,9 @@ import java.util.Optional;
 public class PotionBrewListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPotionBrewEventMonitor(BrewEvent event) {
+    public void monitorPotionBrew(BrewEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
+
         for (int i = 0; i < 3; i++) {
             ItemStack itemStack = event.getContents().getItem(i);
             if (itemStack != null && itemStack.getItemMeta() instanceof PotionMeta) {
@@ -24,4 +25,5 @@ public class PotionBrewListener implements Listener {
             }
         }
     }
+
 }

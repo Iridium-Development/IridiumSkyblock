@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Command which shows infos about an island.
+ * Command which shows infos about an Island.
  */
 public class InfoCommand extends Command {
 
@@ -24,12 +24,13 @@ public class InfoCommand extends Command {
      * The default constructor.
      */
     public InfoCommand() {
-        super(Collections.singletonList("info"), "Shows infos about this island.", "", false);
+        super(Collections.singletonList("info"), "Show infos about this Island.", "", false);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
+     * Shows infos about an Island.
      *
      * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command
