@@ -37,7 +37,7 @@ public class VisitCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length != 2) {
-            p.openInventory(new VisitGUI(1).getInventory());
+            p.openInventory(new VisitGUI(0).getInventory());
             return;
         }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);

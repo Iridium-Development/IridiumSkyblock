@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.google.common.collect.Lists;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
@@ -24,25 +25,24 @@ public class VisitGUI implements GUI {
 
     public VisitGUI(int page) {
         this.page = page;
-        this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable).collect(Collectors.toList());
+        int elementsPerPage = IridiumSkyblock.getInstance().getInventories().visitGuiSize - 9;
+        this.islands = Lists.partition(IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable)
+                .collect(Collectors.toList()), elementsPerPage).get(page);
     }
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getSlot() == getInventory().getSize() - 7) {
-            if (page > 1) {
-                event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
-            }
+        if (event.getSlot() == getInventory().getSize() - 7 && page != 0) {
+            event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
         } else if (event.getSlot() == getInventory().getSize() - 3) {
-            if ((event.getInventory().getSize() - 9) * page < islands.size()) {
+            int size = Lists.partition(IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable)
+                    .collect(Collectors.toList()), IridiumSkyblock.getInstance().getInventories().visitGuiSize - 9).size();
+            if ((page + 1) < size) {
                 event.getWhoClicked().openInventory(new VisitGUI(page + 1).getInventory());
             }
-        } else if (event.getSlot() + 1 <= islands.size()) {
-            int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
-            if (islands.size() > index) {
-                Island island = islands.get(index);
-                IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
-            }
+        } else if (event.getSlot() < islands.size()) {
+            Island island = islands.get(event.getSlot());
+            IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
         }
     }
 
@@ -58,16 +58,13 @@ public class VisitGUI implements GUI {
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
-        int elementsPerPage = inventory.getSize() - 9;
         AtomicInteger index = new AtomicInteger(0);
-        islands.stream()
-                .skip((long) (page - 1) * elementsPerPage)
-                .limit(elementsPerPage)
-                .forEachOrdered(island -> inventory.setItem( index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
-                        new Placeholder("name", island.getName()),
-                        new Placeholder("owner", island.getOwner().getName()),
-                        new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
-                ))));
+
+        islands.forEach(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, Arrays.asList(
+                new Placeholder("name", island.getName()),
+                new Placeholder("owner", island.getOwner().getName()),
+                new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
+        ))));
 
         return inventory;
     }
