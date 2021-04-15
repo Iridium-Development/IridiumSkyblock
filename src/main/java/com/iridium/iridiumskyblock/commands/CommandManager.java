@@ -68,6 +68,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new InfoCommand());
         registerCommand(new MissionCommand());
         registerCommand(new BlockValueCommand());
+        registerCommand(new BorderCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
