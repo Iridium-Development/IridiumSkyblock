@@ -84,6 +84,8 @@ public class Messages {
     public String invalidSchematicPositions = "%prefix% &7You haven't set valid schematic positions with /is position.";
     public String missingSchematicConfirmation = "%prefix% &7A schematic by that name already exists, to overwrite it use /is save <name> confirm.";
     public String bankItemDoesntExist = "%prefix% &7That bank item doesn't exist.";
+    public String islandBorderChanged = "%prefix% &7%player% has changed your island border to %color%.";
+    public String notAColor = "%prefix% &7That is not a valid color.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
