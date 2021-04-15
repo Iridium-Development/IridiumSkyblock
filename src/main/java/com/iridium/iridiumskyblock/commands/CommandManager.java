@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -110,7 +111,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 User user = IridiumSkyblockAPI.getInstance().getUser(player);
                 Optional<Island> island = user.getIsland();
                 if (island.isPresent()) {
-                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get());
+                    player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
                 } else {
                     Bukkit.getServer().dispatchCommand(player, "is create");
                 }

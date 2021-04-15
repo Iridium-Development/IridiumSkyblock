@@ -42,7 +42,7 @@ public class BorderCommand extends Command {
 
         if (island.isPresent()) {
             if (args.length != 2) {
-                player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().borderConfig).getInventory());
+                player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandBorder).getInventory());
             } else {
                 Color color = Color.getColor(args[1]);
                 if (color != null) {
