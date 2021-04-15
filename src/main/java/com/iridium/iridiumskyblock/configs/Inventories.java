@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumskyblock.InventoryConfig;
 import com.iridium.iridiumskyblock.Item;
 
 import java.util.Arrays;
@@ -8,6 +10,13 @@ import java.util.Collections;
 import java.util.List;
 
 public class Inventories {
+
+    public InventoryConfig borderConfig = new InventoryConfig(27, "&7Island Border", ImmutableMap.<String, Item>builder()
+            .put("is border blue", new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 10, 1, "&b&lBlue", Collections.emptyList()))
+            .put("is border red", new Item(XMaterial.RED_STAINED_GLASS_PANE, 12, 1, "&c&lRed", Collections.emptyList()))
+            .put("is border green", new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&a&lGreen", Collections.emptyList()))
+            .put("is border off", new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 16, 1, "&f&lOff", Collections.emptyList()))
+            .build());
 
     public String ConfirmationGUITitle = "&7Are you sure?";
     public String blockValueSelectGUITitle = "&7Block Values";
