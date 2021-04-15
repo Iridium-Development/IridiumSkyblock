@@ -20,6 +20,7 @@ public class Item {
     public String headOwner;
     public List<String> lore;
     public Integer slot;
+    public String command;
 
     /**
      * Creates a new item with the provided data.
