@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.TopInventoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBlocks;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -48,7 +49,8 @@ public class IslandTopGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Members"));
+        TopInventoryConfig topInventoryConfig = IridiumSkyblock.getInstance().getInventories().islandTopGUI;
+        Inventory inventory = Bukkit.createInventory(this, topInventoryConfig.size, StringUtils.color(topInventoryConfig.title));
 
         InventoryUtils.fillInventory(inventory);
 
@@ -62,9 +64,9 @@ public class IslandTopGUI implements GUI {
                         new Placeholder("name", island.getName())
                 ));
                 IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> new Placeholder(material.name() + "_AMOUNT", String.valueOf(IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material).map(IslandBlocks::getAmount).orElse(0)))).forEach(placeholders::add);
-                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().topIsland, placeholders));
+                inventory.setItem(slot, ItemStackUtils.makeItem(topInventoryConfig.item, placeholders));
             } else {
-                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().topFiller));
+                inventory.setItem(slot, ItemStackUtils.makeItem(topInventoryConfig.filler));
             }
         }
 

@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumskyblock.ConfirmationInventoryConfig;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
@@ -33,12 +34,13 @@ public class ConfirmationGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color(IridiumSkyblock.getInstance().getInventories().ConfirmationGUITitle));
+        ConfirmationInventoryConfig confirmationInventoryConfig = IridiumSkyblock.getInstance().getInventories().confirmationGUI;
+        Inventory inventory = Bukkit.createInventory(this, confirmationInventoryConfig.size, StringUtils.color(confirmationInventoryConfig.title));
 
         InventoryUtils.fillInventory(inventory);
 
-        inventory.setItem(11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().no));
-        inventory.setItem(15, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().yes));
+        inventory.setItem(11, ItemStackUtils.makeItem(confirmationInventoryConfig.no));
+        inventory.setItem(15, ItemStackUtils.makeItem(confirmationInventoryConfig.yes));
         return inventory;
     }
 
@@ -57,5 +59,4 @@ public class ConfirmationGUI implements GUI {
             event.getWhoClicked().closeInventory();
         }
     }
-
 }

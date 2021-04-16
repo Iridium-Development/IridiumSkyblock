@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.SingleItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
@@ -43,13 +44,14 @@ public class MembersGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Members"));
+        SingleItemGUI singleItemGUI = IridiumSkyblock.getInstance().getInventories().membersGUI;
+        Inventory inventory = Bukkit.createInventory(this, singleItemGUI.size, StringUtils.color(singleItemGUI.title));
 
         InventoryUtils.fillInventory(inventory);
 
         int i = 0;
         for (User member : island.getMembers()) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandMember, Arrays.asList(
+            inventory.setItem(i, ItemStackUtils.makeItem(singleItemGUI.item, Arrays.asList(
                     new Placeholder("player", member.getName()),
                     new Placeholder("rank", member.getIslandRank().name()),
                     new Placeholder("time", member.getJoinTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
