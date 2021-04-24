@@ -43,7 +43,7 @@ public class BlockValueGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().blockValueGuiSize, StringUtils.color(IridiumSkyblock.getInstance().getInventories().blockValueGUITitle));
+        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().blockValue.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().blockValue.title));
 
         InventoryUtils.fillInventory(inventory);
 
@@ -67,7 +67,7 @@ public class BlockValueGUI implements GUI {
     }
 
     private List<String> getColoredValueLore(double value) {
-        return IridiumSkyblock.getInstance().getInventories().blockValueLore.stream()
+        return IridiumSkyblock.getInstance().getInventories().blockValue.lore.stream()
                 .map(StringUtils::color)
                 .map(line -> line.replace("%value%", String.valueOf(value)))
                 .collect(Collectors.toList());
@@ -84,9 +84,18 @@ public class BlockValueGUI implements GUI {
         // Don't do anything here, it gets cancelled automatically
     }
 
-    enum BlockValueType {
+    public enum BlockValueType {
         BLOCK,
-        SPAWNER
+        SPAWNER;
+
+        public static BlockValueType getType(String type) {
+            for (BlockValueType blockValueType : values()) {
+                if (blockValueType.name().equals(type)) {
+                    return blockValueType;
+                }
+            }
+            return null;
+        }
     }
 
 }

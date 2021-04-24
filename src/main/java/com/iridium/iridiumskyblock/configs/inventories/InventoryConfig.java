@@ -1,5 +1,6 @@
-package com.iridium.iridiumskyblock;
+package com.iridium.iridiumskyblock.configs.inventories;
 
+import com.iridium.iridiumskyblock.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

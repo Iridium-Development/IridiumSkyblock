@@ -1,13 +1,14 @@
-package com.iridium.iridiumskyblock;
+package com.iridium.iridiumskyblock.configs.inventories;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConfirmationInventoryConfig {
+public class BlockValuesInventoryConfig {
     public int size;
     public String title;
-    public Item yes;
-    public Item no;
+    public List<String> lore;
 }

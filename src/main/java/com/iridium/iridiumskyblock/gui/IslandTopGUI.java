@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.TopInventoryConfig;
+import com.iridium.iridiumskyblock.configs.inventories.IslandTopInventoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBlocks;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -49,7 +49,7 @@ public class IslandTopGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        TopInventoryConfig topInventoryConfig = IridiumSkyblock.getInstance().getInventories().islandTopGUI;
+        IslandTopInventoryConfig topInventoryConfig = IridiumSkyblock.getInstance().getInventories().islandTopGUI;
         Inventory inventory = Bukkit.createInventory(this, topInventoryConfig.size, StringUtils.color(topInventoryConfig.title));
 
         InventoryUtils.fillInventory(inventory);

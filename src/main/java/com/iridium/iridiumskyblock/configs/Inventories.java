@@ -2,11 +2,11 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumskyblock.configs.inventories.*;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class Inventories {
 
@@ -40,11 +40,17 @@ public class Inventories {
             .build()
     );
 
+    public InventoryConfig blockValueSelectGUI = new InventoryConfig(27, "Block Values", ImmutableMap.<String, Item>builder()
+            .put("is blockvalues block", new Item(XMaterial.EMERALD_BLOCK, 11, 1, "&b&lValuable Blocks", Collections.emptyList()))
+            .put("is blockvalues spawner", new Item(XMaterial.SPAWNER, 15, 1, "&b&lValuable Spawners", Collections.emptyList()))
+            .build()
+    );
+
     public SingleItemGUI visitGUI = new SingleItemGUI(45, "&7Visit an Island", new Item(XMaterial.PLAYER_HEAD, 1, "&b&l%name%", "%owner%", Arrays.asList("&7Created: %time%", "&7Owner: %owner%")));
 
     public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList("&7Joined: %time%", "&7Rank: %rank%", "", "&b&l[!] &7Right Click to promote", "&b&l[!] &7Left click to demote/kick")));
 
-    public TopInventoryConfig islandTopGUI = new TopInventoryConfig(27, "&7Top Islands", new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%owner% &7(#%rank%)", "%owner%", Arrays.asList(
+    public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%owner% &7(#%rank%)", "%owner%", Arrays.asList(
             "",
             "&b&l * &7Island Name: &b%name%",
             "&b&l * &7Island Rank: &b%rank%",
@@ -62,21 +68,23 @@ public class Inventories {
 
     public ConfirmationInventoryConfig confirmationGUI = new ConfirmationInventoryConfig(27, "&7Are you sure?", new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&a&lYes", Collections.emptyList()), new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lNo", Collections.emptyList()));
 
-    public String blockValueSelectGUITitle = "&7Block Values";
-    public String blockValueGUITitle = "&7Block Values";
+    public NoItemGUI bankGUI = new NoItemGUI(27, "&7Island Bank");
 
-    public int missionsGUISize = 54;
-    public int blockValueSelectGuiSize = 27;
-    public int blockValueGuiSize = 27;
+    public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", Collections.singletonList("&bValue per block: &7%value%"));
 
-    public List<String> blockValueLore = Collections.singletonList("&bValue per block: &7%value%");
+    public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList("&7Invited By: %inviter%", "&7Time: %time%", "", "&b&l[!] &7Click to un-invite")));
+
+    public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic");
+
+    public NoItemGUI dailyMissionGUI = new NoItemGUI(27, "&7Daily Island Missions");
+
+    public NoItemGUI missionsGUI = new NoItemGUI(45, "&7Island Missions");
+
+    public NoItemGUI islandPermissionsGUI = new NoItemGUI(45, "&7Island Permissions");
+
+    public SingleItemGUI permissionsRankGUI = new SingleItemGUI(27, "&7Island Permissions", new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l%rank%", Collections.emptyList()));
 
     public Item filler = new Item(XMaterial.BLACK_STAINED_GLASS_PANE, 1, " ", Collections.emptyList());
-    public Item islandInvite = new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList("&7Invited By: %inviter%", "&7Time: %time%", "", "&b&l[!] &7Click to un-invite"));
     public Item nextPage = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", Collections.emptyList());
     public Item previousPage = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", Collections.emptyList());
-    public Item islandRank = new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l%rank%", Collections.emptyList());
-    public Item blockValue = new Item(XMaterial.EMERALD_BLOCK, 11, 1, "&b&lValuable Blocks", Collections.emptyList());
-    public Item spawnerBlockValue = new Item(XMaterial.SPAWNER, 15, 1, "&b&lValuable Spawners", Collections.emptyList());
-
 }

@@ -45,7 +45,7 @@ public class PermissionsGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 45, StringUtils.color("&7Island Permissions"));
+        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.title));
 
         InventoryUtils.fillInventory(inventory);
 

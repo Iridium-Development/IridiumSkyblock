@@ -1,13 +1,11 @@
-package com.iridium.iridiumskyblock;
+package com.iridium.iridiumskyblock.configs.inventories;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopInventoryConfig {
+public class NoItemGUI {
     public int size;
     public String title;
-    public Item item;
-    public Item filler;
 }
