@@ -1,10 +1,11 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.PlaceholderBuilder;
+import com.iridium.iridiumskyblock.configs.inventories.SingleItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -12,6 +13,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -42,7 +45,8 @@ public class VisitGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().visitGuiSize, StringUtils.color("&7Visit an Island"));
+        SingleItemGUI singleItemGUI = IridiumSkyblock.getInstance().getInventories().visitGUI;
+        Inventory inventory = Bukkit.createInventory(this, singleItemGUI.size, StringUtils.color(singleItemGUI.title));
 
         InventoryUtils.fillInventory(inventory);
 
@@ -54,7 +58,11 @@ public class VisitGUI implements GUI {
         islands.stream()
                 .skip((long) (page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visit, new PlaceholderBuilder().applyIslandPlaceholders(island).build())));
+                .forEachOrdered(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(singleItemGUI.item, Arrays.asList(
+                        new Placeholder("name", island.getName()),
+                        new Placeholder("owner", island.getOwner().getName()),
+                        new Placeholder("time", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat)))
+                ))));
 
         return inventory;
     }

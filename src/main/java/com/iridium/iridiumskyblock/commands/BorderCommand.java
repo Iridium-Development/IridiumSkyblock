@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -40,14 +41,18 @@ public class BorderCommand extends Command {
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
-            Color color = Color.getColor(args[1]);
-            if (color != null) {
-                island.get().setColor(color);
-                island.get().getMembers().stream().map(user1 -> Bukkit.getPlayer(user1.getUuid())).filter(Objects::nonNull).forEach(player1 ->
-                        player1.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%player%", player.getName()).replace("%color%", color.toString()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
-                );
+            if (args.length != 2) {
+                player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandBorder).getInventory());
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAColor.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                Color color = Color.getColor(args[1]);
+                if (color != null) {
+                    island.get().setColor(color);
+                    island.get().getMembers().stream().map(islandUser -> Bukkit.getPlayer(islandUser.getUuid())).filter(Objects::nonNull).forEach(islandPlayer ->
+                            islandPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandBorderChanged.replace("%player%", player.getName()).replace("%color%", color.toString()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
+                    );
+                } else {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAColor.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
