@@ -86,6 +86,7 @@ public class Messages {
     public String bankItemDoesntExist = "%prefix% &7That bank item doesn't exist.";
     public String islandBorderChanged = "%prefix% &7%player% has changed your island border to %color%.";
     public String notAColor = "%prefix% &7That is not a valid color.";
+    public String invalidMissionType = "%prefix% &7That is not a valid mission type.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

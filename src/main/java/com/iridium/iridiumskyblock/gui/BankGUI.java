@@ -40,7 +40,7 @@ public class BankGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Island Bank"));
+        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().bankGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().bankGUI.title));
 
         for (int i = 0; i < inventory.getSize(); i++) {
             inventory.setItem(i, XMaterial.BLACK_STAINED_GLASS_PANE.parseItem());

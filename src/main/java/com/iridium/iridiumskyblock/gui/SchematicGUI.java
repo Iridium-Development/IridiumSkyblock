@@ -28,7 +28,7 @@ public abstract class SchematicGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, 27, StringUtils.color("&7Select a Schematic"));
+        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.title));
 
         InventoryUtils.fillInventory(inventory);
 

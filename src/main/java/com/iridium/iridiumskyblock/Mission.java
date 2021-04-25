@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XSound;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -44,7 +45,11 @@ public class Mission {
      * Currently the amount of times a mission can be completed.
      */
     public enum MissionType {
-        ONCE, DAILY
+        ONCE, DAILY;
+
+        public static MissionType getMission(String mission) {
+            return Arrays.stream(MissionType.values()).filter(type -> type.name().equalsIgnoreCase(mission)).findFirst().orElse(null);
+        }
     }
 
 }

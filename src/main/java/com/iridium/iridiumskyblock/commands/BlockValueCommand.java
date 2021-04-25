@@ -1,11 +1,15 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumskyblock.gui.BlockValueSelectGUI;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.gui.BlockValueGUI;
+import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Command which shows all the valuable blocks and spawners.
@@ -33,7 +37,14 @@ public class BlockValueCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
-        player.openInventory(new BlockValueSelectGUI().getInventory());
+        if (arguments.length == 2) {
+            BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
+            if (blockValueType != null) {
+                player.openInventory(new BlockValueGUI(blockValueType).getInventory());
+                return;
+            }
+        }
+        player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
     }
 
     /**
@@ -49,7 +60,7 @@ public class BlockValueCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
-        return Collections.emptyList();
+        return Arrays.stream(BlockValueGUI.BlockValueType.values()).map(Enum::toString).collect(Collectors.toList());
     }
 
 }
