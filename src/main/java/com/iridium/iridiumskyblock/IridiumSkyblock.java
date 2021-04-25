@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
+import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -19,6 +20,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -150,6 +152,14 @@ public class IridiumSkyblock extends JavaPlugin {
                 }
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
+
+        //Automatically update all inventories
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
+            if (inventoryHolder instanceof GUI) {
+                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
+            }
+        }), 0, 20);
 
         resetIslandMissions();
 

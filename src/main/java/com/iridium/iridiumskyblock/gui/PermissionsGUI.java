@@ -47,14 +47,20 @@ public class PermissionsGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.title));
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
         InventoryUtils.fillInventory(inventory);
 
         for (Permission permission : IridiumSkyblock.getInstance().getPermissionList()) {
             boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission);
             inventory.setItem(permission.getItem().slot, ItemStackUtils.makeItem(permission.getItem(), Collections.singletonList(new Placeholder("permission", allowed ? IridiumSkyblock.getInstance().getPermissions().allowed : IridiumSkyblock.getInstance().getPermissions().denied))));
         }
-
-        return inventory;
     }
 
     /**

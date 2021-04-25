@@ -40,14 +40,20 @@ public class PermissionsRankGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().permissionsRankGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().permissionsRankGUI.title));
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
         InventoryUtils.fillInventory(inventory);
 
         for (int i = 0; i < 5; i++) {
             IslandRank islandRank = IslandRank.getByLevel(i);
             inventory.setItem(i + 11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().permissionsRankGUI.item, Collections.singletonList(new Placeholder("rank", islandRank.name()))));
         }
-
-        return inventory;
     }
 
     /**

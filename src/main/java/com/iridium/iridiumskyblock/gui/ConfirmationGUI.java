@@ -37,11 +37,18 @@ public class ConfirmationGUI implements GUI {
         ConfirmationInventoryConfig confirmationInventoryConfig = IridiumSkyblock.getInstance().getInventories().confirmationGUI;
         Inventory inventory = Bukkit.createInventory(this, confirmationInventoryConfig.size, StringUtils.color(confirmationInventoryConfig.title));
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
         InventoryUtils.fillInventory(inventory);
 
-        inventory.setItem(11, ItemStackUtils.makeItem(confirmationInventoryConfig.no));
-        inventory.setItem(15, ItemStackUtils.makeItem(confirmationInventoryConfig.yes));
-        return inventory;
+        inventory.setItem(11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.no));
+        inventory.setItem(15, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes));
     }
 
     /**

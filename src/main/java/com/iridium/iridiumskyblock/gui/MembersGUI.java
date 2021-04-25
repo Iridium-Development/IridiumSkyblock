@@ -45,16 +45,22 @@ public class MembersGUI implements GUI {
         SingleItemGUI singleItemGUI = IridiumSkyblock.getInstance().getInventories().membersGUI;
         Inventory inventory = Bukkit.createInventory(this, singleItemGUI.size, StringUtils.color(singleItemGUI.title));
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
         InventoryUtils.fillInventory(inventory);
 
         int i = 0;
         for (User member : island.getMembers()) {
-            inventory.setItem(i, ItemStackUtils.makeItem(singleItemGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
             members.put(i, member);
             i++;
         }
-
-        return inventory;
     }
 
     /**
