@@ -17,6 +17,24 @@ public class InventoryConfigGUI implements GUI {
         this.inventoryConfig = inventoryConfig;
     }
 
+    @NotNull
+    @Override
+    public Inventory getInventory() {
+        Inventory inventory = Bukkit.createInventory(this, inventoryConfig.size, StringUtils.color(inventoryConfig.title));
+
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
+        InventoryUtils.fillInventory(inventory);
+
+        inventoryConfig.items.values().forEach(item -> inventory.setItem(item.slot, ItemStackUtils.makeItem(item)));
+    }
+
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         for (String command : inventoryConfig.items.keySet()) {
@@ -24,17 +42,6 @@ public class InventoryConfigGUI implements GUI {
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), command);
             }
         }
-    }
-
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, inventoryConfig.size, StringUtils.color(inventoryConfig.title));
-
-        InventoryUtils.fillInventory(inventory);
-
-        inventoryConfig.items.values().forEach(item -> inventory.setItem(item.slot, ItemStackUtils.makeItem(item)));
-        return inventory;
     }
 
 }

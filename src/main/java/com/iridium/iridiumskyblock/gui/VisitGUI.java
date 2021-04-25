@@ -46,6 +46,15 @@ public class VisitGUI implements GUI {
         SingleItemGUI singleItemGUI = IridiumSkyblock.getInstance().getInventories().visitGUI;
         Inventory inventory = Bukkit.createInventory(this, singleItemGUI.size, StringUtils.color(singleItemGUI.title));
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
+
         InventoryUtils.fillInventory(inventory);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
@@ -56,9 +65,7 @@ public class VisitGUI implements GUI {
         islands.stream()
                 .skip((long) (page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(singleItemGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build())));
-
-        return inventory;
+                .forEachOrdered(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build())));
     }
 
     /**

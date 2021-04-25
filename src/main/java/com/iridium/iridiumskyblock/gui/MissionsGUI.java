@@ -42,11 +42,24 @@ public class MissionsGUI implements GUI {
     @NotNull
     @Override
     public Inventory getInventory() {
+        Inventory inventory;
+        if (missionType == Mission.MissionType.DAILY) {
+            inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().dailyMissionGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().dailyMissionGUI.title));
+
+        } else {
+            inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().missionsGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().missionsGUI.title));
+
+        }
+        addContent(inventory);
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
+        InventoryUtils.fillInventory(inventory);
 
         if (missionType == Mission.MissionType.DAILY) {
-            Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().dailyMissionGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().dailyMissionGUI.title));
-
-            InventoryUtils.fillInventory(inventory);
             HashMap<String, Mission> missions = IridiumSkyblock.getInstance().getIslandManager().getDailyIslandMissions(island);
             int i = 0;
 
@@ -62,11 +75,7 @@ public class MissionsGUI implements GUI {
                 inventory.setItem(IridiumSkyblock.getInstance().getMissions().dailySlots.get(i), ItemStackUtils.makeItem(mission.getItem(), placeholders));
                 i++;
             }
-            return inventory;
         } else {
-            Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().missionsGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().missionsGUI.title));
-
-            InventoryUtils.fillInventory(inventory);
             for (String key : IridiumSkyblock.getInstance().getMissionsList().keySet()) {
                 Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
                 if (mission.getMissionType() != Mission.MissionType.ONCE) continue;
@@ -80,7 +89,6 @@ public class MissionsGUI implements GUI {
 
                 inventory.setItem(mission.getItem().slot, ItemStackUtils.makeItem(mission.getItem(), placeholders));
             }
-            return inventory;
         }
     }
 

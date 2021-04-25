@@ -46,6 +46,15 @@ public class BlockValueGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().blockValue.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().blockValue.title));
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
+
         InventoryUtils.fillInventory(inventory);
 
         if (guiType == BlockValueType.BLOCK) {
@@ -63,8 +72,6 @@ public class BlockValueGUI implements GUI {
                 inventory.setItem(spawnerInfo.slot, spawnerItem);
             }
         }
-
-        return inventory;
     }
 
     private List<String> getColoredValueLore(double value) {

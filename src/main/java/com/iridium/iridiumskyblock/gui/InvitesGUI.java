@@ -42,9 +42,18 @@ public class InvitesGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.title));
-        List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getIslandManager().getInvitesByIsland(island);
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getIslandManager().getInvitesByIsland(island);
+        inventory.clear();
         InventoryUtils.fillInventory(inventory);
+
 
         int i = 0;
         for (IslandInvite islandInvite : islandInvites) {
@@ -52,8 +61,6 @@ public class InvitesGUI implements GUI {
             invites.put(i, islandInvite.getUser().getName());
             i++;
         }
-
-        return inventory;
     }
 
     /**

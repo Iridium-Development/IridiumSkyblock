@@ -49,18 +49,25 @@ public class IslandTopGUI implements GUI {
         IslandTopInventoryConfig topInventoryConfig = IridiumSkyblock.getInstance().getInventories().islandTopGUI;
         Inventory inventory = Bukkit.createInventory(this, topInventoryConfig.size, StringUtils.color(topInventoryConfig.title));
 
+        addContent(inventory);
+
+        return inventory;
+    }
+
+    @Override
+    public void addContent(Inventory inventory) {
+        inventory.clear();
         InventoryUtils.fillInventory(inventory);
+
 
         for (int slot : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.values()) {
             if (islandSlots.containsKey(slot)) {
                 Island island = islandSlots.get(slot);
-                inventory.setItem(slot, ItemStackUtils.makeItem(topInventoryConfig.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
+                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
             } else {
-                inventory.setItem(slot, ItemStackUtils.makeItem(topInventoryConfig.filler));
+                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.filler));
             }
         }
-
-        return inventory;
     }
 
     /**
