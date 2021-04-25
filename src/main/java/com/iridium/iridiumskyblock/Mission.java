@@ -48,7 +48,7 @@ public class Mission {
         ONCE, DAILY;
 
         public static MissionType getMission(String mission) {
-            return Arrays.stream(MissionType.values()).filter(type -> type.name().equalsIgnoreCase(mission)).findFirst().orElse(null);
+            return valueOf(mission.toUpperCase());
         }
     }
 

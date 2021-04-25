@@ -92,12 +92,22 @@ public class BlockValueGUI implements GUI {
         // Don't do anything here, it gets cancelled automatically
     }
 
+    /**
+     * Represents a category of blocks that are valuable.
+     */
     public enum BlockValueType {
         BLOCK,
         SPAWNER;
 
+        /**
+         * Returns the category of valuable blocks with the provided name, null if there is none.
+         * Case insensitive.
+         *
+         * @param type The type name which should be parsed
+         * @return The block value type, null if there is none
+         */
         public static BlockValueType getType(String type) {
-            return Arrays.stream(BlockValueType.values()).filter(blockValueType -> blockValueType.name().equalsIgnoreCase(type)).findFirst().orElse(null);
+            return valueOf(type.toUpperCase());
         }
     }
 
