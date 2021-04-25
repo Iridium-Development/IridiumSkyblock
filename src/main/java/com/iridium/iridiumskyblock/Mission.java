@@ -47,6 +47,13 @@ public class Mission {
     public enum MissionType {
         ONCE, DAILY;
 
+        /**
+         * Returns the mission type with the provided name, null if there is none.
+         * Case insensitive.
+         *
+         * @param mission The mission name which should be parsed
+         * @return The mission type, null if there is none
+         */
         public static MissionType getMission(String mission) {
             return valueOf(mission.toUpperCase());
         }
