@@ -13,6 +13,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -89,12 +90,7 @@ public class BlockValueGUI implements GUI {
         SPAWNER;
 
         public static BlockValueType getType(String type) {
-            for (BlockValueType blockValueType : values()) {
-                if (blockValueType.name().equals(type)) {
-                    return blockValueType;
-                }
-            }
-            return null;
+            return Arrays.stream(BlockValueType.values()).filter(blockValueType -> blockValueType.name().equalsIgnoreCase(type)).findFirst().orElse(null);
         }
     }
 

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Command which shows all the valuable blocks and spawners.
@@ -59,7 +60,7 @@ public class BlockValueCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
-        return Arrays.asList("BLOCK", "SPAWNER");
+        return Arrays.stream(BlockValueGUI.BlockValueType.values()).map(Enum::toString).collect(Collectors.toList());
     }
 
 }

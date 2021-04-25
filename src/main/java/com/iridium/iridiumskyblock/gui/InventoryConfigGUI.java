@@ -36,4 +36,5 @@ public class InventoryConfigGUI implements GUI {
         inventoryConfig.items.values().forEach(item -> inventory.setItem(item.slot, ItemStackUtils.makeItem(item)));
         return inventory;
     }
+
 }
