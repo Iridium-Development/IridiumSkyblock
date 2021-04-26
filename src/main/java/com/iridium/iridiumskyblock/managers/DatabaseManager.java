@@ -92,7 +92,7 @@ public class DatabaseManager {
             islandTableManager.getDao().createOrUpdate(island);
             islandTableManager.getDao().commit(connectionSource.getReadOnlyConnection(null));
             Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
-            islandTableManager.getList().add(is);
+            islandTableManager.getEntries().add(is);
             return is;
         } catch (SQLException exception) {
             exception.printStackTrace();

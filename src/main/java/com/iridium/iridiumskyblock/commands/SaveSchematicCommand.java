@@ -46,7 +46,7 @@ public class SaveSchematicCommand extends Command {
         }
 
         String schematicName = arguments[1];
-        boolean existsAlready = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().getList().stream()
+        boolean existsAlready = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().getEntries().stream()
                 .map(SchematicData::getId)
                 .anyMatch(schematic -> schematic.equals(schematicName));
 

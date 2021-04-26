@@ -141,12 +141,12 @@ public class IridiumSkyblock extends JavaPlugin {
 
         // Auto recalculate islands
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
             @Override
             public void run() {
                 if (!islands.hasNext()) {
-                    islands = getDatabaseManager().getIslandTableManager().getList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                    islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
                 } else {
                     getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
                 }
@@ -186,7 +186,7 @@ public class IridiumSkyblock extends JavaPlugin {
             @Override
             public void run() {
                 databaseManager.getIslandMissionTableManager().delete(
-                        databaseManager.getIslandMissionTableManager().getList().stream().filter(islandMission ->
+                        databaseManager.getIslandMissionTableManager().getEntries().stream().filter(islandMission ->
                                 islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList()
                         )
                 );

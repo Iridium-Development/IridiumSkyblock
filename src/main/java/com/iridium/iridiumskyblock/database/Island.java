@@ -101,7 +101,7 @@ public final class Island {
      * @return The owner of the Island
      */
     public User getOwner() {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getList().stream().filter(user -> user.getIslandRank().equals(IslandRank.OWNER) && this.equals(user.getIsland().orElse(null))).findFirst().orElse(new User(UUID.randomUUID(), IridiumSkyblock.getInstance().getMessages().none));
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries().stream().filter(user -> user.getIslandRank().equals(IslandRank.OWNER) && this.equals(user.getIsland().orElse(null))).findFirst().orElse(new User(UUID.randomUUID(), IridiumSkyblock.getInstance().getMessages().none));
     }
 
     /**

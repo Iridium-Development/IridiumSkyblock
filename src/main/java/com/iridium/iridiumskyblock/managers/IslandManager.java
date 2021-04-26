@@ -47,7 +47,7 @@ public class IslandManager {
      * @return The invite of the user to this island, might be empty
      */
     public Optional<IslandInvite> getIslandInvite(@NotNull Island island, @NotNull User user) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getList().stream()
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries().stream()
                 .filter(islandInvite -> islandInvite.getUser().equals(user) && island.equals(islandInvite.getIsland().orElse(null)))
                 .findFirst();
     }
@@ -177,7 +177,7 @@ public class IslandManager {
      * @return A list of users
      */
     public @NotNull List<User> getIslandMembers(@NotNull Island island) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getList().stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries().stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
     }
 
     /**
@@ -187,7 +187,7 @@ public class IslandManager {
      * @return A list of Invites
      */
     public List<IslandInvite> getInvitesByIsland(@NotNull Island island) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getList().stream().filter(islandInvite -> island.equals(islandInvite.getIsland().orElse(null))).collect(Collectors.toList());
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries().stream().filter(islandInvite -> island.equals(islandInvite.getIsland().orElse(null))).collect(Collectors.toList());
     }
 
     /**
@@ -197,7 +197,7 @@ public class IslandManager {
      * @return An Optional with the Island, empty if there is none
      */
     public Optional<Island> getIslandById(int id) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getList().stream().filter(island -> island.getId() == id).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.getId() == id).findFirst();
     }
 
     /**
@@ -207,7 +207,7 @@ public class IslandManager {
      * @return An Optional with the Island, empty if there is none
      */
     public Optional<Island> getIslandByName(String name) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getList().stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     /**
@@ -218,7 +218,7 @@ public class IslandManager {
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
         if (!Objects.equals(location.getWorld(), IridiumSkyblockAPI.getInstance().getWorld())) return Optional.empty();
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getList().stream().filter(island -> island.isInIsland(location)).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
     }
 
     /**
@@ -230,7 +230,7 @@ public class IslandManager {
      * @return If the permission is allowed
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
-        Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getList().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
+        Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
         return islandPermission.map(IslandPermission::isAllowed).orElseGet(() -> islandRank.getLevel() >= permission.getDefaultRank().getLevel());
     }
 
@@ -255,12 +255,12 @@ public class IslandManager {
      * @return the IslandBank
      */
     public IslandBank getIslandBank(@NotNull Island island, @NotNull BankItem bankItem) {
-        Optional<IslandBank> optionalIslandBank = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getList().stream().filter(islandBank -> islandBank.getIsland() == island.getId() && islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())).findFirst();
+        Optional<IslandBank> optionalIslandBank = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getEntries().stream().filter(islandBank -> islandBank.getIsland() == island.getId() && islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())).findFirst();
         if (optionalIslandBank.isPresent()) {
             return optionalIslandBank.get();
         } else {
             IslandBank islandBank = new IslandBank(island, bankItem.getName(), 0);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getList().add(islandBank);
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getEntries().add(islandBank);
             return islandBank;
         }
     }
@@ -273,7 +273,7 @@ public class IslandManager {
      * @return The IslandBlock
      */
     public Optional<IslandBlocks> getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getList().stream().filter(islandBlocks -> material.equals(islandBlocks.getMaterial()) && island.equals(islandBlocks.getIsland().orElse(null))).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries().stream().filter(islandBlocks -> material.equals(islandBlocks.getMaterial()) && island.equals(islandBlocks.getIsland().orElse(null))).findFirst();
     }
 
     /**
@@ -285,11 +285,11 @@ public class IslandManager {
      * @param allowed    If the permission is allowed
      */
     public void setIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission, boolean allowed) {
-        Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getList().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
+        Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
         if (islandPermission.isPresent()) {
             islandPermission.get().setAllowed(allowed);
         } else {
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getList().add(new IslandPermission(island, permission.getName(), islandRank, allowed));
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries().add(new IslandPermission(island, permission.getName(), islandRank, allowed));
         }
     }
 
@@ -353,12 +353,12 @@ public class IslandManager {
      * @return A list of Island Missions
      */
     public IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
-        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getList().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMissionName().equalsIgnoreCase(missionKey) && isMission.getMissionIndex() == missionIndex - 1).findFirst();
+        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMissionName().equalsIgnoreCase(missionKey) && isMission.getMissionIndex() == missionIndex - 1).findFirst();
         if (islandMissionOptional.isPresent()) {
             return islandMissionOptional.get();
         } else {
             IslandMission islandMission = new IslandMission(island, mission, missionKey, missionIndex - 1);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getList().add(islandMission);
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries().add(islandMission);
             return islandMission;
         }
     }
@@ -371,7 +371,7 @@ public class IslandManager {
      */
     public HashMap<String, Mission> getDailyIslandMissions(@NotNull Island island) {
         HashMap<String, Mission> missions = new HashMap<>();
-        List<IslandMission> islandMissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getList().stream().filter(islandMission -> islandMission.getIsland() == island.getId() && islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
+        List<IslandMission> islandMissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries().stream().filter(islandMission -> islandMission.getIsland() == island.getId() && islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
 
         if (islandMissions.isEmpty()) {
             Random random = new Random();
@@ -382,7 +382,7 @@ public class IslandManager {
                 missionList.remove(key);
 
                 for (int j = 0; j < mission.getMissions().size(); j++) {
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getList().add(new IslandMission(island, mission, key, j));
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries().add(new IslandMission(island, mission, key, j));
                 }
 
                 missions.put(key, mission);
@@ -433,7 +433,7 @@ public class IslandManager {
                                         } else {
                                             IslandBlocks islandBlocks = new IslandBlocks(island, material);
                                             islandBlocks.setAmount(1);
-                                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getList().add(islandBlocks);
+                                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries().add(islandBlocks);
                                         }
 
                                         island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value);
@@ -548,9 +548,9 @@ public class IslandManager {
      */
     public List<Island> getIslands(SortType sortType) {
         if (sortType == SortType.VALUE) {
-            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getList().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
+            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
         }
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getList();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
     /**

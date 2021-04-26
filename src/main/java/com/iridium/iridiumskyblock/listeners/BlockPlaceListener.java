@@ -35,7 +35,7 @@ public class BlockPlaceListener implements Listener {
             } else {
                 IslandBlocks islandBlocks = new IslandBlocks(island.get(), material);
                 islandBlocks.setAmount(1);
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getList().add(islandBlocks);
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries().add(islandBlocks);
             }
             island.get().setValue(island.get().getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value);
         }

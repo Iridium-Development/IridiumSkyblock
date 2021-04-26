@@ -11,11 +11,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
+ * Used for handling Crud operations on a table + handling cache
+ *
  * @param <T> The Table Class
  * @param <S> The Table Primary Id Class
  */
 public class TableManager<T, S> {
-    private final List<T> list;
+    private final List<T> entries;
     private final Dao<T, S> dao;
 
     private final boolean autoCommit;
@@ -27,7 +29,7 @@ public class TableManager<T, S> {
         TableUtils.createTableIfNotExists(connectionSource, clazz);
         this.dao = DaoManager.createDao(connectionSource, clazz);
         this.dao.setAutoCommit(getDatabaseConnection(), autoCommit);
-        this.list = dao.queryForAll();
+        this.entries = dao.queryForAll();
     }
 
     /**
@@ -35,7 +37,7 @@ public class TableManager<T, S> {
      */
     public void save() {
         try {
-            for (T t : list) {
+            for (T t : entries) {
                 dao.createOrUpdate(t);
             }
             if (!autoCommit) {
@@ -51,8 +53,8 @@ public class TableManager<T, S> {
      *
      * @return The list of all T's
      */
-    public List<T> getList() {
-        return list;
+    public List<T> getEntries() {
+        return entries;
     }
 
     /**
@@ -63,7 +65,7 @@ public class TableManager<T, S> {
     public void delete(T t) {
         try {
             dao.delete(t);
-            list.remove(t);
+            entries.remove(t);
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
             }
@@ -80,7 +82,7 @@ public class TableManager<T, S> {
     public void delete(Collection<T> t) {
         try {
             dao.delete(t);
-            list.removeAll(t);
+            entries.removeAll(t);
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
             }

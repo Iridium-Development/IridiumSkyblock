@@ -26,7 +26,7 @@ public class UserManager {
         } else {
             Optional<String> name = Optional.ofNullable(offlinePlayer.getName());
             User user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
-            IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getList().add(user);
+            IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries().add(user);
             return user;
         }
     }
@@ -38,7 +38,7 @@ public class UserManager {
      * @return the User class of the onlyForPlayers
      */
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getList().stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries().stream().filter(user -> user.getUuid().equals(uuid)).findFirst();
     }
 
 }
