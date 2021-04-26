@@ -47,18 +47,6 @@ public class TableManager<T, S> {
     }
 
     /**
-     * Saves a single variable to the db and gets the Value back
-     * with filled in Id's and other params
-     *
-     * @param t The variable we are saving
-     * @return The value saves the the db with filled ID's
-     */
-    public T save(T t) {
-        return null;
-        //TODO
-    }
-
-    /**
      * Gets all T's from cache
      *
      * @return The list of all T's
@@ -109,5 +97,14 @@ public class TableManager<T, S> {
      */
     private DatabaseConnection getDatabaseConnection() throws SQLException {
         return connectionSource.getReadWriteConnection(null);
+    }
+
+    /**
+     * Returns the Dao for this class
+     *
+     * @return The dao
+     */
+    public Dao<T, S> getDao() {
+        return dao;
     }
 }

@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.database.*;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
 import com.j256.ormlite.support.ConnectionSource;
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +29,9 @@ public class DatabaseManager {
     private final TableManager<IslandBank, Integer> islandBankTableManager;
     private final TableManager<IslandMission, Integer> islandMissionTableManager;
 
+    @Getter(AccessLevel.NONE)
+    private final ConnectionSource connectionSource;
+
     /**
      * The default constructor.
      *
@@ -37,7 +41,7 @@ public class DatabaseManager {
         SQL sqlConfig = IridiumSkyblock.getInstance().getSql();
         String databaseURL = getDatabaseURL(sqlConfig);
 
-        ConnectionSource connectionSource = new JdbcConnectionSource(
+        this.connectionSource = new JdbcConnectionSource(
                 databaseURL,
                 sqlConfig.username,
                 sqlConfig.password,
@@ -74,6 +78,26 @@ public class DatabaseManager {
             default:
                 throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
         }
+    }
+
+    /**
+     * Saves an island to the database and initializes variables like ID
+     * ik this is really dumb but I cant think of a better way to do this
+     *
+     * @param island The island we are saving
+     * @return The island with variables like id added
+     */
+    public Island registerIsland(Island island) {
+        try {
+            islandTableManager.getDao().createOrUpdate(island);
+            islandTableManager.getDao().commit(connectionSource.getReadOnlyConnection(null));
+            Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
+            islandTableManager.getList().add(is);
+            return is;
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return island;
     }
 
 }
