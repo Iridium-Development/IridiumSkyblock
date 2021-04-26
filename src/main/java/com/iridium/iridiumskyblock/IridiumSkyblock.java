@@ -185,7 +185,11 @@ public class IridiumSkyblock extends JavaPlugin {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                IridiumSkyblock.getInstance().getDatabaseManager().deleteDailyMissions();
+                databaseManager.getIslandMissionTableManager().delete(
+                        databaseManager.getIslandMissionTableManager().getList().stream().filter(islandMission ->
+                                islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList()
+                        )
+                );
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> resetIslandMissions());
             }
         }, c.getTime());

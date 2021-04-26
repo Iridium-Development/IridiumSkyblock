@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.*;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
@@ -13,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -76,13 +74,6 @@ public class DatabaseManager {
             default:
                 throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
         }
-    }
-
-    /**
-     * Deletes all daily missions saved in the database
-     */
-    public void deleteDailyMissions() {
-        islandMissionTableManager.delete(islandMissionTableManager.getList().stream().filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList()));
     }
 
 }
