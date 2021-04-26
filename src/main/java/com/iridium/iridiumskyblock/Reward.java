@@ -38,7 +38,6 @@ public class Reward {
     /**
      * Claims this reward for the provided user and island.
      * Sets the experience, executes the commands and plays the sound.
-     * TODO: Make this actually play the sound
      *
      * @param player The Player which should receive the reward
      * @param island The Island of the Player
