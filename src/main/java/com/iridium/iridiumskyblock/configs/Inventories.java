@@ -21,7 +21,7 @@ public class Inventories {
     public InventoryConfig islandMenu = new InventoryConfig(45, "&7Island Menu", ImmutableMap.<String, Item>builder()
             .put("is biomes", new Item(XMaterial.PLAYER_HEAD, 12, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTI4OWQ1YjE3ODYyNmVhMjNkMGIwYzNkMmRmNWMwODVlODM3NTA1NmJmNjg1YjVlZDViYjQ3N2ZlODQ3MmQ5NCJ9fX0=", 1, "&b&lIsland Biomes", Collections.singletonList("&7Change your island Biome")))
             .put("is home", new Item(XMaterial.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
-            .put("is members", new Item(XMaterial.PLAYER_HEAD, 14, 1, "&b&lIsland Home", "Peaches_MLG", Collections.singletonList("&7View your island members")))
+            .put("is members", new Item(XMaterial.PLAYER_HEAD, 14, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island members")))
             .put("is warps", new Item(XMaterial.END_PORTAL_FRAME, 20, 1, "&b&lIsland Warps", Collections.singletonList("&7View your island warps")))
             .put("is upgrade", new Item(XMaterial.DIAMOND, 21, 1, "&b&lIsland Upgrades", Collections.singletonList("&7View your island upgrades")))
             .put("is missions", new Item(XMaterial.IRON_SWORD, 22, 1, "&b&lIsland Missions", Collections.singletonList("&7View your island missions")))
@@ -46,15 +46,15 @@ public class Inventories {
             .build()
     );
 
-    public SingleItemGUI visitGUI = new SingleItemGUI(45, "&7Visit an Island", new Item(XMaterial.PLAYER_HEAD, 1, "&b&l%name%", "%owner%", Arrays.asList("&7Created: %time%", "&7Owner: %owner%")));
+    public SingleItemGUI visitGUI = new SingleItemGUI(45, "&7Visit an Island", new Item(XMaterial.PLAYER_HEAD, 1, "&b&l%island_name%", "%island_owner%", Arrays.asList("&7Created: %island_create%", "&7Owner: %island_owner%")));
 
-    public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList("&7Joined: %time%", "&7Rank: %rank%", "", "&b&l[!] &7Right Click to promote", "&b&l[!] &7Left click to demote/kick")));
+    public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList("&7Joined: %player_join%", "&7Rank: %player_rank%", "", "&b&l[!] &7Right Click to promote", "&b&l[!] &7Left click to demote/kick")));
 
-    public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%owner% &7(#%rank%)", "%owner%", Arrays.asList(
+    public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(
             "",
-            "&b&l * &7Island Name: &b%name%",
-            "&b&l * &7Island Rank: &b%rank%",
-            "&b&l * &7Island Value: &b%value%",
+            "&b&l * &7Island Name: &b%island_name%",
+            "&b&l * &7Island Rank: &b%island_rank%",
+            "&b&l * &7Island Value: &b%island_value%",
             "&b&l * &7Netherite Blocks: &b%NETHERITE_BLOCK_AMOUNT%",
             "&b&l * &7Emerald Blocks: &b%EMERALD_BLOCK_AMOUNT%",
             "&b&l * &7Diamond Blocks: &b%DIAMOND_BLOCK_AMOUNT%",
