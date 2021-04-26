@@ -489,6 +489,7 @@ public class IslandManager {
                 island.getMembers().stream().map(user -> Bukkit.getPlayer(user.getUuid())).filter(Objects::nonNull).forEach(player -> {
                     mission.getMessage().stream().map(string -> StringUtils.color(string.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))).forEach(player::sendMessage);
                     mission.getCompleteSound().play(player);
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries().add(new IslandReward(island, mission.getReward()));
                 });
             }
         }

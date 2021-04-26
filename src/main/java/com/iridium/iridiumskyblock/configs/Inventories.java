@@ -84,6 +84,8 @@ public class Inventories {
 
     public SingleItemGUI permissionsRankGUI = new SingleItemGUI(27, "&7Island Permissions", new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l%rank%", Collections.emptyList()));
 
+    public NoItemGUI islandReward = new NoItemGUI(45, "&7Island Rewards");
+
     public Item filler = new Item(XMaterial.BLACK_STAINED_GLASS_PANE, 1, " ", Collections.emptyList());
     public Item nextPage = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", Collections.emptyList());
     public Item previousPage = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", Collections.emptyList());
