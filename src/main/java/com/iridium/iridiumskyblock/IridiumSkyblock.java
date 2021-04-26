@@ -141,12 +141,12 @@ public class IridiumSkyblock extends JavaPlugin {
 
         // Auto recalculate islands
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            ListIterator<Integer> islands = getDatabaseManager().getIslandList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
             @Override
             public void run() {
                 if (!islands.hasNext()) {
-                    islands = getDatabaseManager().getIslandList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                    islands = getDatabaseManager().getIslandTableManager().getList().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
                 } else {
                     getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
                 }
@@ -240,13 +240,13 @@ public class IridiumSkyblock extends JavaPlugin {
      * Saves islands, users and other data to the database.
      */
     public void saveData() {
-        getDatabaseManager().saveIslands();
-        getDatabaseManager().saveUsers();
-        getDatabaseManager().saveIslandInvites();
-        getDatabaseManager().saveIslandPermissions();
-        getDatabaseManager().saveIslandBlocks();
-        getDatabaseManager().saveIslandBank();
-        getDatabaseManager().saveIslandMissions();
+        getDatabaseManager().getUserTableManager().save();
+        getDatabaseManager().getIslandTableManager().save();
+        getDatabaseManager().getIslandInviteTableManager().save();
+        getDatabaseManager().getIslandPermissionTableManager().save();
+        getDatabaseManager().getIslandBlocksTableManager().save();
+        getDatabaseManager().getIslandBankTableManager().save();
+        getDatabaseManager().getIslandMissionTableManager().save();
     }
 
     /**

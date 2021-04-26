@@ -32,7 +32,7 @@ public class VisitGUI implements GUI {
      */
     public VisitGUI(int page) {
         this.page = page;
-        this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandList().stream().filter(Island::isVisitable).collect(Collectors.toList());
+        this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getList().stream().filter(Island::isVisitable).collect(Collectors.toList());
     }
 
     /**
