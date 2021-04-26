@@ -17,6 +17,7 @@ import com.iridium.iridiumskyblock.nms.v1_16_R3;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
@@ -162,6 +163,8 @@ public class IridiumSkyblock extends JavaPlugin {
         }), 0, 20);
 
         resetIslandMissions();
+
+        new Metrics(this, 5825);
 
         getLogger().info("----------------------------------------");
         getLogger().info("");
