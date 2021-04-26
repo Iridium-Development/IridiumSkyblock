@@ -57,7 +57,7 @@ public class MembersGUI implements GUI {
 
         int i = 0;
         for (User member : island.getMembers()) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(member).applyIslandPlaceholders(island).build()));
             members.put(i, member);
             i++;
         }
