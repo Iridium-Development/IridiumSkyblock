@@ -27,6 +27,7 @@ repositories {
 dependencies {
     // Dependencies that we want to shade in
     implementation("de.tr7zw:item-nbt-api:2.7.1")
+    implementation("org.bstats:bstats-bukkit:2.2.1")
     implementation("com.iridium:IridiumColorAPI:1.0.4")
     implementation("com.github.cryptomorin:XSeries:7.8.0")
     implementation("org.jetbrains:annotations:16.0.1")
@@ -64,6 +65,7 @@ tasks {
         relocate("com.cryptomorin.xseries", "com.iridium.iridiumskyblock.dependencies.xseries")
         relocate("com.fasterxml.jackson", "com.iridium.iridiumskyblock.dependencies.fasterxml")
         relocate("com.j256.ormlite", "com.iridium.iridiumskyblock.dependencies.ormlite")
+        relocate("org.bstats", "com.iridium.iridiumskyblock.dependencies.bstats")
     }
 
     compileJava {
