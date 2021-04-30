@@ -13,7 +13,6 @@ import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.nms.NMS;
-import com.iridium.iridiumskyblock.nms.V1_16_R3;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
@@ -99,6 +98,12 @@ public class IridiumSkyblock extends JavaPlugin {
         // Create the data folder in order to make Jackson work
         getDataFolder().mkdir();
 
+        this.nms = getNMS();
+        if (this.nms == null) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
         loadConfigs();
@@ -130,9 +135,6 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
 
         registerListeners();
-
-        // TODO: Add other NMS versions, use the right one automatically
-        this.nms = new V1_16_R3();
 
         // Initialize Vault economy support
         this.economy = setupEconomy();
@@ -269,6 +271,22 @@ public class IridiumSkyblock extends JavaPlugin {
             return null;
         }
         return economyProvider.getProvider();
+    }
+
+    /**
+     * Automatically gets the correct NMS version from minecraft version
+     *
+     * @return The correct NMS Version
+     */
+    private NMS getNMS() {
+        try {
+            return (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            getLogger().warning("UnSupported Minecraft Version: " + Bukkit.getServer().getClass().getPackage().getName());
+        }
+        return null;
     }
 
     /**

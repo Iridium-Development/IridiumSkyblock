@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock;
 
 import java.util.Arrays;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a color of the border.
