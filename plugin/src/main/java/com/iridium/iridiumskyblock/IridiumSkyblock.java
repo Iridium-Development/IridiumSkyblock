@@ -14,6 +14,7 @@ import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -100,6 +101,13 @@ public class IridiumSkyblock extends JavaPlugin {
 
         this.nms = setupNMS();
         if (this.nms == null) {
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        if (!PaperLib.isSpigot()) {
+            //isSpigot returns true if the server is using spigot or a fork
+            getLogger().warning("CraftBukkit isnt support, please use spigot or one of its forks");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
