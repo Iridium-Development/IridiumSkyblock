@@ -1,7 +1,3 @@
-group = "com.iridium"
-version = "3.0.0"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-
 dependencies {
     // Dependencies that we want to shade in
     implementation("de.tr7zw:item-nbt-api:2.7.1")
@@ -20,7 +16,8 @@ dependencies {
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly(project(":nms"))
-    compileOnly(project(":nms:common"))
-    compileOnly(project(":nms:v1_16_R3"))
+
+    // Include all the nms sub-modules
+    val nmsProjects = project(":").dependencyProject.subprojects.filter { it.name != "plugin" }
+    nmsProjects.forEach { compileOnly(it) }
 }
