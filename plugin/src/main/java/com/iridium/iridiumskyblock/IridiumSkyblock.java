@@ -279,12 +279,13 @@ public class IridiumSkyblock extends JavaPlugin {
      * @return The correct NMS Version
      */
     private NMS setupNMS() {
+        String version = Bukkit.getServer().getClass().getPackage().getName().toUpperCase().split("\\.")[3];
         try {
-            return (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
+            return (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + version).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            getLogger().warning("UnSupported Minecraft Version: " + Bukkit.getServer().getClass().getPackage().getName());
+            getLogger().warning("Un-Supported Minecraft Version: " + version);
         }
         return null;
     }
