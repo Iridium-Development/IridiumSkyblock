@@ -98,7 +98,7 @@ public class IridiumSkyblock extends JavaPlugin {
         // Create the data folder in order to make Jackson work
         getDataFolder().mkdir();
 
-        this.nms = getNMS();
+        this.nms = setupNMS();
         if (this.nms == null) {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -278,7 +278,7 @@ public class IridiumSkyblock extends JavaPlugin {
      *
      * @return The correct NMS Version
      */
-    private NMS getNMS() {
+    private NMS setupNMS() {
         try {
             return (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
