@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.nms;
 
+import com.iridium.iridiumskyblock.Color;
 import org.bukkit.Chunk;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

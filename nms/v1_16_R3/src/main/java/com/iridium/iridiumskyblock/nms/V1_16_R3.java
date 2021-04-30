@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.nms;
 
+import com.iridium.iridiumskyblock.Color;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_16_R3.CraftChunk;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
@@ -76,7 +76,7 @@ public class V1_16_R3 implements NMS {
     worldBorder.world = ((CraftWorld) centerLocation.getWorld()).getHandle();
     worldBorder.setCenter(centerLocation.getBlockX() + 0.5, centerLocation.getBlockZ() + 0.5);
 
-    if (color == null) {
+    if (color == Color.OFF) {
       worldBorder.setSize(Integer.MAX_VALUE);
     } else {
       worldBorder.setSize(size);
