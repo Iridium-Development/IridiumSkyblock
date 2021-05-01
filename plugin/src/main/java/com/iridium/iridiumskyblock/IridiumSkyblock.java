@@ -107,7 +107,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
         if (!PaperLib.isSpigot()) {
             //isSpigot returns true if the server is using spigot or a fork
-            getLogger().warning("CraftBukkit isnt support, please use spigot or one of its forks");
+            getLogger().warning("CraftBukkit isnt supported, please use spigot or one of its forks");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
