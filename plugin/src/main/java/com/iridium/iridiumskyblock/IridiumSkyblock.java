@@ -12,7 +12,7 @@ import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
-import com.iridium.iridiumskyblock.multiversion.Multiversion;
+import com.iridium.iridiumskyblock.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import io.papermc.lib.PaperLib;
@@ -43,7 +43,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private Persist persist;
     private NMS nms;
-    private Multiversion multiversion;
+    private MultiVersion multiversion;
 
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
@@ -307,10 +307,10 @@ public class IridiumSkyblock extends JavaPlugin {
      *
      * @return The correct Multiversion Version
      */
-    private Multiversion setupMultiversion() {
+    private MultiVersion setupMultiversion() {
         String version = Bukkit.getServer().getClass().getPackage().getName().toUpperCase().split("\\.")[3];
         try {
-            return (Multiversion) Class.forName("com.iridium.iridiumskyblock.multiversion." + version).newInstance();
+            return (MultiVersion) Class.forName("com.iridium.iridiumskyblock.multiversion." + version).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
