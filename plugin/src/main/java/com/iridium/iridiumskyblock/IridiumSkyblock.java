@@ -274,7 +274,7 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
-     * Automatically gets the correct NMS version from minecraft version
+     * Automatically identifies the correct NMS version from minecraft version.
      *
      * @return The correct NMS Version
      */
