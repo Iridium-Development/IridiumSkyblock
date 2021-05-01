@@ -101,7 +101,8 @@ public class IslandManager {
      * @param schematic The schematic of the Island
      * @return The island being created
      */
-    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
+    private @NotNull CompletableFuture<Island> createIsland(
+            @NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             final User user = IridiumSkyblockAPI.getInstance().getUser(player);
@@ -229,7 +230,8 @@ public class IslandManager {
      * @param permission The specified Permission
      * @return If the permission is allowed
      */
-    public boolean getIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
+    public boolean getIslandPermission(
+            @NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
         Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
         return islandPermission.map(IslandPermission::isAllowed).orElseGet(() -> islandRank.getLevel() >= permission.getDefaultRank().getLevel());
     }
@@ -284,7 +286,8 @@ public class IslandManager {
      * @param permission The specified Permission
      * @param allowed    If the permission is allowed
      */
-    public void setIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission, boolean allowed) {
+    public void setIslandPermission(
+            @NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission, boolean allowed) {
         Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
         if (islandPermission.isPresent()) {
             islandPermission.get().setAllowed(allowed);
@@ -303,7 +306,8 @@ public class IslandManager {
      * @param completableFuture The completable future to be completed when task is finished
      * @param delay             The delay in ticks between each layer
      */
-    private void deleteIslandBlocks(@NotNull Island island, @NotNull World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    private void deleteIslandBlocks(
+            @NotNull Island island, @NotNull World world, int y, CompletableFuture<Void> completableFuture, int delay) {
         Location pos1 = island.getPos1(world);
         Location pos2 = island.getPos2(world);
 
@@ -352,7 +356,8 @@ public class IslandManager {
      * @param island The specified Island
      * @return A list of Island Missions
      */
-    public IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
+    public IslandMission getIslandMission(
+            @NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
         Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries().stream().filter(isMission -> isMission.getIsland() == island.getId() && isMission.getMissionName().equalsIgnoreCase(missionKey) && isMission.getMissionIndex() == missionIndex - 1).findFirst();
         if (islandMissionOptional.isPresent()) {
             return islandMissionOptional.get();
@@ -422,7 +427,7 @@ public class IslandManager {
                             if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                                 final int maxy = chunk.getHighestBlockYAt(x, z);
                                 for (int y = 0; y <= maxy; y++) {
-                                    XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
+                                    XMaterial material = IridiumSkyblock.getInstance().getMultiversion().getBlock(chunk, x, y, z);
                                     if (material.equals(XMaterial.AIR)) continue;
 
                                     if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(material)) {

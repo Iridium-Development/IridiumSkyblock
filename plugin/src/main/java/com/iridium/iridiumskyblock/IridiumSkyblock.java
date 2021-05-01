@@ -12,6 +12,7 @@ import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
+import com.iridium.iridiumskyblock.multiversion.Multiversion;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import io.papermc.lib.PaperLib;
@@ -42,6 +43,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private Persist persist;
     private NMS nms;
+    private Multiversion multiversion;
 
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
@@ -104,6 +106,8 @@ public class IridiumSkyblock extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        this.multiversion = setupMultiversion();
 
         if (!PaperLib.isSpigot()) {
             //isSpigot returns true if the server is using spigot or a fork
@@ -290,6 +294,23 @@ public class IridiumSkyblock extends JavaPlugin {
         String version = Bukkit.getServer().getClass().getPackage().getName().toUpperCase().split("\\.")[3];
         try {
             return (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + version).newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            getLogger().warning("Un-Supported Minecraft Version: " + version);
+        }
+        return null;
+    }
+
+    /**
+     * Automatically gets the correct Multiversion version from minecraft version
+     *
+     * @return The correct Multiversion Version
+     */
+    private Multiversion setupMultiversion() {
+        String version = Bukkit.getServer().getClass().getPackage().getName().toUpperCase().split("\\.")[3];
+        try {
+            return (Multiversion) Class.forName("com.iridium.iridiumskyblock.multiversion." + version).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
