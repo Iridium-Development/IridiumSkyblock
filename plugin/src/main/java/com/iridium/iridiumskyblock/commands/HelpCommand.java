@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +83,9 @@ public class HelpCommand extends Command {
                         .replace("%command%", command.aliases.get(0))
                         .replace("%description%", command.description)))
                 .forEach(sender::sendMessage);
-        sender.spigot().sendMessage(previousButton, footerText, nextButton);
+        if (sender instanceof Player) {
+            ((Player) sender).spigot().sendMessage(previousButton, footerText, nextButton);
+        }
     }
 
     /**
