@@ -1,4 +1,4 @@
 dependencies {
     compileOnly("org.spigotmc:spigot:1.11.2")
-    compileOnly(project(":nms:common"))
+    compileOnly(project(":multiversion:common"))
 }
