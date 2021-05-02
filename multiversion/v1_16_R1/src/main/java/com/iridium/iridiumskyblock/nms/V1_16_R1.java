@@ -42,6 +42,7 @@ public class V1_16_R1 implements NMS {
             chunkSection = new ChunkSection(y >> 4 << 4);
             nmsChunk.getSections()[y >> 4] = chunkSection;
         }
+
         chunkSection.setType(x & 15, y & 15, z & 15, ibd);
         nmsChunk.getWorld().getChunkProvider().getLightEngine().a(new BlockPosition(x, y, z));
     }

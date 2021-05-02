@@ -42,6 +42,7 @@ public class V1_10_R1 implements NMS {
             chunkSection = new ChunkSection(y >> 4 << 4, true);
             nmsChunk.getSections()[y >> 4] = chunkSection;
         }
+
         chunkSection.setType(x & 15, y & 15, z & 15, ibd);
     }
 
@@ -89,6 +90,7 @@ public class V1_10_R1 implements NMS {
         } else if (color == Color.GREEN) {
             worldBorder.transitionSizeBetween(size - 0.1D, size, 20000000L);
         }
+
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutWorldBorder(worldBorder, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
     }
 
