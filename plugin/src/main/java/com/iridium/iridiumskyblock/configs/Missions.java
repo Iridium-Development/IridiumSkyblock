@@ -200,7 +200,7 @@ public class Missions {
                                     "&b&l Rewards",
                                     "&b&l* &73 Island Crystals"
                             )), 5, Collections.singletonList("is bank give %player% crystals 3"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
-                    "%prefix% &7Potion Brewer mission Completed!",
+                    "%prefix% &7Lumberjack mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
                     "&7/is rewards to redeem rewards"
@@ -225,7 +225,7 @@ public class Missions {
                                     "&b&l Rewards",
                                     "&b&l* &73 Island Crystals"
                             )), 5, Collections.singletonList("is bank give %player% crystals 3"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
-                    "%prefix% &7Potion Brewer mission Completed!",
+                    "%prefix% &7Crafting Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
                     "&7/is rewards to redeem rewards"
