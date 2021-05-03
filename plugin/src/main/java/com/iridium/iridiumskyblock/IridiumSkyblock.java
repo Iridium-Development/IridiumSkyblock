@@ -169,7 +169,7 @@ public class IridiumSkyblock extends JavaPlugin {
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
 
         //Automatically update all inventories
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
             if (inventoryHolder instanceof GUI) {
                 ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
