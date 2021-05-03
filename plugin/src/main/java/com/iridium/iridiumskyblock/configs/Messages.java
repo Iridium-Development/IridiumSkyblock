@@ -12,6 +12,7 @@ public class Messages {
     public String reloaded = "%prefix% &7Configuration has been reloaded.";
     public String noPermission = "%prefix% &7You don't have permission for that.";
     public String mustBeAPlayer = "%prefix% &7You must be a player to execute this command.";
+    public String playerDoesntExist = "%prefix% &7That player doesnt exist.";
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help.";
     public String helpCommandHeader = "&8===== &b&lIridiumSkyblock Help &r&8=====";
     public String helpCommandMessage = "<GRADIENT:09C6F9>/is %command%</GRADIENT:045DE9>&r: &7%description%";
@@ -86,6 +87,8 @@ public class Messages {
     public String bankItemDoesntExist = "%prefix% &7That bank item doesn't exist.";
     public String islandBorderChanged = "%prefix% &7%player% has changed your island border to %color%.";
     public String notAColor = "%prefix% &7That is not a valid color.";
+    public String notANumber = "%prefix% &7That is not a valid number.";
+    public String gaveBank = "%prefix% &7You gave %player% %amount% %item%.";
     public String invalidMissionType = "%prefix% &7That is not a valid mission type.";
     public String yes = "Yes";
     public String no = "No";
