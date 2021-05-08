@@ -89,8 +89,13 @@ public class UpgradesGUI implements GUI {
             if (event.getSlot() == upgrade.getValue().item.slot) {
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island,
                         upgrade.getKey());
-                islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
-                //TODO make this take money
+                if (upgrade.getValue().upgrades.containsKey(islandUpgrade.getLevel() + 1)) {
+                    islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
+                    //TODO make this take money
+                } else {
+                    event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().maxLevelReached.replace("%prefix%",
+                            IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
             }
         }
     }

@@ -90,6 +90,7 @@ public class Messages {
     public String notANumber = "%prefix% &7That is not a valid number.";
     public String gaveBank = "%prefix% &7You gave %player% %amount% %item%.";
     public String invalidMissionType = "%prefix% &7That is not a valid mission type.";
+    public String maxLevelReached = "%prefix% &7Maximum level reached.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
