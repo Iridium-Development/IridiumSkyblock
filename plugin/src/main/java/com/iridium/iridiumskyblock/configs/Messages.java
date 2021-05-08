@@ -91,6 +91,7 @@ public class Messages {
     public String gaveBank = "%prefix% &7You gave %player% %amount% %item%.";
     public String invalidMissionType = "%prefix% &7That is not a valid mission type.";
     public String maxLevelReached = "%prefix% &7Maximum level reached.";
+    public String cannotAfford = "%prefix% &7You cannot afford this.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
