@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.Item;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.upgrades.OresUpgrade;
 import com.iridium.iridiumskyblock.upgrades.SizeUpgrade;
+import com.iridium.iridiumskyblock.upgrades.SpawnerUpgrade;
 
 import java.util.Arrays;
 
@@ -61,5 +62,26 @@ public class Upgrades {
                     .put(XMaterial.LAPIS_ORE, 10)
                     .put(XMaterial.COBBLESTONE, 40)
                     .build()))
+            .build());
+
+    public Upgrade<SpawnerUpgrade> spawnerUpgrade = new Upgrade<>(true,
+            new Item(XMaterial.SPAWNER, 15, 1, "&b&lSpawner Speed", Arrays.asList(
+                    "&7Need more room to expand? Buy this",
+                    "&7upgrade to increase your island size.",
+                    "",
+                    "&b&lInformation:",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Current Modifier: &b%modifier%x faster",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
+                    "&b&lLevels:",
+                    "&b&l * &7Level 1: &b1x Faster",
+                    "&b&l * &7Level 2: &b1.5x Faster",
+                    "&b&l * &7Level 3: &b2x Faster",
+                    "",
+                    "&b&l[!] &bLeft Click to Purchase this Upgrade"
+            )), ImmutableMap.<Integer, SpawnerUpgrade>builder()
+            .put(1, new SpawnerUpgrade(1000, 15, 1))
+            .put(2, new SpawnerUpgrade(1000, 15, 1.5))
+            .put(3, new SpawnerUpgrade(1000, 15, 2))
             .build());
 }

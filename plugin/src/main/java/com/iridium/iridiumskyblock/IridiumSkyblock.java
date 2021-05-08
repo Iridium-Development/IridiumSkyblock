@@ -260,6 +260,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PotionBrewListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
     }
 
     /**
@@ -371,6 +372,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.upgradesList = new HashMap<>(ImmutableMap.<String, Upgrade>builder()
                 .put("size", upgrades.sizeUpgrade)
                 .put("generator", upgrades.oresUpgrade)
+                .put("spawner", upgrades.spawnerUpgrade)
                 .build());
     }
 
