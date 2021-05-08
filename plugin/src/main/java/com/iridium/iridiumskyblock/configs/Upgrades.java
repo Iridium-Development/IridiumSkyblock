@@ -16,9 +16,9 @@ public class Upgrades {
                     "&7upgrade to increase your island size.",
                     "",
                     "&b&lInformation:",
-                    "&b&l * &7Current Level: &b{level}",
-                    "&b&l * &7Current Size: &b{size}x{size} Blocks",
-                    "&b&l * &7Upgrade Cost: &b{crystalscost} Crystals and ${vaultcost}",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Current Size: &b%size%x%size% Blocks",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
                     "&b&lLevels:",
                     "&b&l * &7Level 1: &b50x50 Blocks",
                     "&b&l * &7Level 2: &b100x100 Blocks",
@@ -37,8 +37,8 @@ public class Upgrades {
                     "&7upgrade to improve your island generator.",
                     "",
                     "&b&lInformation:",
-                    "&b&l * &7Current Level: &b{level}",
-                    "&b&l * &7Upgrade Cost: &b{crystalscost} Crystals and ${vaultcost}",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
                     "",
                     "&b&l[!] &bLeft Click to Purchase this Upgrade"
             )), ImmutableMap.<Integer, OresUpgrade>builder()

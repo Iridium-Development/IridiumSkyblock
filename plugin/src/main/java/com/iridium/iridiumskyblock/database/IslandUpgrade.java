@@ -5,6 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -24,6 +25,7 @@ public final class IslandUpgrade {
     private int island;
 
     @DatabaseField(columnName = "level", canBeNull = false)
+    @Setter
     private int level;
 
     @DatabaseField(columnName = "upgrade", canBeNull = false)
@@ -32,7 +34,7 @@ public final class IslandUpgrade {
     /**
      * The default constructor.
      *
-     * @param island The Island this reward belongs to
+     * @param island  The Island this reward belongs to
      * @param upgrade The upgrade name we are saving
      */
     public IslandUpgrade(@NotNull Island island, @NotNull String upgrade) {
