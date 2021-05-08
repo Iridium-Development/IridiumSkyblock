@@ -389,6 +389,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(blockValues);
         this.persist.save(bankItems);
         this.persist.save(missions);
+        this.persist.save(upgrades);
     }
 
 }
