@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.Item;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
-import com.iridium.iridiumskyblock.upgrades.SizeUpgrade;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
@@ -59,19 +58,18 @@ public class UpgradesGUI implements GUI {
 
         for (Map.Entry<String, Upgrade> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             Item item = upgrade.getValue().item;
-            int level = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island,
-                    upgrade.getKey()).getLevel();
+            int level = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, upgrade.getKey()).getLevel();
             List<Placeholder> placeholderList = new ArrayList<>();
             placeholderList.add(new Placeholder("level", String.valueOf(level)));
+
+            if (upgrade.getValue().upgrades.get(level) instanceof UpgradeData) {
+                UpgradeData upgradeData = (UpgradeData) upgrade.getValue().upgrades.get(level);
+                placeholderList.addAll(upgradeData.getPlaceholders());
+            }
             if (upgrade.getValue().upgrades.get(level + 1) instanceof UpgradeData) {
                 UpgradeData upgradeData = (UpgradeData) upgrade.getValue().upgrades.get(level + 1);
                 placeholderList.add(new Placeholder("crystalscost", String.valueOf(upgradeData.crystals)));
                 placeholderList.add(new Placeholder("vaultcost", String.valueOf(upgradeData.money)));
-            }
-
-            if (upgrade.getValue().upgrades.get(level) instanceof SizeUpgrade) {
-                SizeUpgrade upgradeData = (SizeUpgrade) upgrade.getValue().upgrades.get(level);
-                placeholderList.add(new Placeholder("size", String.valueOf(upgradeData.size)));
             }
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, placeholderList));
         }
