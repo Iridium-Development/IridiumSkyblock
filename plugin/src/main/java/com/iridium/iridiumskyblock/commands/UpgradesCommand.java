@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +20,7 @@ public class UpgradesCommand extends Command {
      * The default constructor.
      */
     public UpgradesCommand() {
-        super(Collections.singletonList("upgrades"), "Open the Island Upgrades Menu", "", true);
+        super(Arrays.asList("upgrades", "upgrade"), "Open the Island Upgrades Menu", "", true);
     }
 
     /**
