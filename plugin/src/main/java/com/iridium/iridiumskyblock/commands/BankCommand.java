@@ -10,11 +10,13 @@ import com.iridium.iridiumskyblock.gui.BankGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Command which opens the Island bank GUI.
@@ -97,6 +99,15 @@ public class BankCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
+        if (args.length == 2) {
+            return Collections.singletonList("give");
+        }
+        if (args.length == 3) {
+            return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList());
+        }
+        if (args.length==4) {
+            return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).collect(Collectors.toList());
+        }
         return Collections.emptyList();
     }
 
