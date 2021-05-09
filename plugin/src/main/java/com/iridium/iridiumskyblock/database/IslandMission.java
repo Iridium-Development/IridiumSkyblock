@@ -14,13 +14,10 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @NoArgsConstructor
 @DatabaseTable(tableName = "island_mission")
-public class IslandMission {
+public class IslandMission extends IslandData {
 
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
-
-    @DatabaseField(columnName = "island_id")
-    private int island;
 
     @DatabaseField(columnName = "mission_name")
     private String missionName;
@@ -45,7 +42,7 @@ public class IslandMission {
      * @param missionIndex The index of the mission
      */
     public IslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
-        this.island = island.getId();
+        super(island);
         this.missionName = missionKey;
         this.type = mission.getMissionType();
         this.missionIndex = missionIndex;

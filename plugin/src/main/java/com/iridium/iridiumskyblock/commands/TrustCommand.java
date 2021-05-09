@@ -44,10 +44,10 @@ public class TrustCommand extends Command {
             if (args.length == 2) {
                 Player p = Bukkit.getPlayer(args[1]);
                 if (p != null) {
-                    if (IridiumSkyblock.getInstance().getIslandManager().getIslandTrusts(island.get()).stream().noneMatch(it -> it.getUser().getUuid().equals(p.getUniqueId()))) {
+                    if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().noneMatch(it -> it.getUser().getUuid().equals(p.getUniqueId()))) {
                         IslandTrusted islandTrusted = new IslandTrusted(island.get(), IridiumSkyblockAPI.getInstance().getUser(p),
                                 IridiumSkyblockAPI.getInstance().getUser(player));
-                        IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries().add(islandTrusted);
+                        IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().addEntry(islandTrusted);
 
                         island.get().getMembers().stream().map(user1 -> Bukkit.getPlayer(user1.getUuid())).filter(Objects::nonNull).forEach(player1 ->
                                 player1.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().trustedPlayer

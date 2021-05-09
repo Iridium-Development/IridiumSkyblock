@@ -44,7 +44,7 @@ public class UnTrustCommand extends Command {
 
         if (island.isPresent()) {
             Optional<IslandTrusted> islandTrusted =
-                    IridiumSkyblock.getInstance().getIslandManager().getIslandTrusts(island.get()).stream().filter(islandTrusted1 ->
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().filter(islandTrusted1 ->
                             islandTrusted1.getUser().getUuid().equals(targetUser.getUuid())
                     ).findFirst();
             if (islandTrusted.isPresent()) {

@@ -23,14 +23,14 @@ public class DatabaseManager {
     private final TableManager<User, UUID> userTableManager;
     private final TableManager<Island, Integer> islandTableManager;
     private final TableManager<SchematicData, String> schematicTableManager;
-    private final TableManager<IslandInvite, Integer> islandInviteTableManager;
-    private final TableManager<IslandPermission, Integer> islandPermissionTableManager;
-    private final TableManager<IslandBlocks, Integer> islandBlocksTableManager;
-    private final TableManager<IslandBank, Integer> islandBankTableManager;
-    private final TableManager<IslandMission, Integer> islandMissionTableManager;
-    private final TableManager<IslandReward, Integer> islandRewardTableManager;
-    private final TableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
-    private final TableManager<IslandTrusted, Integer> islandTrustedTableManager;
+    private final IslandTableManager<IslandInvite, Integer> islandInviteTableManager;
+    private final IslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
+    private final IslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
+    private final IslandTableManager<IslandBank, Integer> islandBankTableManager;
+    private final IslandTableManager<IslandMission, Integer> islandMissionTableManager;
+    private final IslandTableManager<IslandReward, Integer> islandRewardTableManager;
+    private final IslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
+    private final IslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
 
     @Getter(AccessLevel.NONE)
     private final ConnectionSource connectionSource;
@@ -54,14 +54,14 @@ public class DatabaseManager {
         this.userTableManager = new TableManager<>(connectionSource, User.class, false);
         this.islandTableManager = new TableManager<>(connectionSource, Island.class, false);
         this.schematicTableManager = new TableManager<>(connectionSource, SchematicData.class, false);
-        this.islandInviteTableManager = new TableManager<>(connectionSource, IslandInvite.class, false);
-        this.islandPermissionTableManager = new TableManager<>(connectionSource, IslandPermission.class, false);
-        this.islandBlocksTableManager = new TableManager<>(connectionSource, IslandBlocks.class, false);
-        this.islandBankTableManager = new TableManager<>(connectionSource, IslandBank.class, false);
-        this.islandMissionTableManager = new TableManager<>(connectionSource, IslandMission.class, false);
-        this.islandRewardTableManager = new TableManager<>(connectionSource, IslandReward.class, false);
-        this.islandUpgradeTableManager = new TableManager<>(connectionSource, IslandUpgrade.class, false);
-        this.islandTrustedTableManager = new TableManager<>(connectionSource, IslandTrusted.class, false);
+        this.islandInviteTableManager = new IslandTableManager<>(connectionSource, IslandInvite.class, false);
+        this.islandPermissionTableManager = new IslandTableManager<>(connectionSource, IslandPermission.class, false);
+        this.islandBlocksTableManager = new IslandTableManager<>(connectionSource, IslandBlocks.class, false);
+        this.islandBankTableManager = new IslandTableManager<>(connectionSource, IslandBank.class, false);
+        this.islandMissionTableManager = new IslandTableManager<>(connectionSource, IslandMission.class, false);
+        this.islandRewardTableManager = new IslandTableManager<>(connectionSource, IslandReward.class, false);
+        this.islandUpgradeTableManager = new IslandTableManager<>(connectionSource, IslandUpgrade.class, false);
+        this.islandTrustedTableManager = new IslandTableManager<>(connectionSource, IslandTrusted.class, false);
     }
 
     /**
@@ -98,7 +98,7 @@ public class DatabaseManager {
             islandTableManager.getDao().createOrUpdate(island);
             islandTableManager.getDao().commit(connectionSource.getReadOnlyConnection(null));
             Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
-            islandTableManager.getEntries().add(is);
+            islandTableManager.addEntry(is);
             return is;
         } catch (SQLException exception) {
             exception.printStackTrace();
