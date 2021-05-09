@@ -1,18 +1,19 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.UpgradesGUI;
+import com.iridium.iridiumskyblock.upgrades.UpgradeData;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class UpgradesCommand extends Command {
 
@@ -38,7 +39,30 @@ public class UpgradesCommand extends Command {
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
-            player.openInventory(new UpgradesGUI(island.get()).getInventory());
+            if (args.length == 2) {
+                String upgradeName = args[1];
+                Upgrade upgrade = IridiumSkyblock.getInstance().getUpgradesList().get(upgradeName);
+                if (upgrade != null) {
+                    IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), upgradeName);
+                    if (upgrade.upgrades.containsKey(islandUpgrade.getLevel() + 1)) {
+                        UpgradeData upgradeData = (UpgradeData) upgrade.upgrades.get(islandUpgrade.getLevel() + 1);
+                        if (PlayerUtils.pay(player, island.get(), upgradeData.crystals, upgradeData.money)) {
+                            islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
+                        } else {
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
+                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        }
+                    } else {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().maxLevelReached.replace("%prefix%",
+                                IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
+                } else {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownUpgrade.replace("%prefix%",
+                            IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
+            } else {
+                player.openInventory(new UpgradesGUI(island.get()).getInventory());
+            }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
@@ -55,8 +79,9 @@ public class UpgradesCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        if (args.length == 2) {
+            return new ArrayList<>(IridiumSkyblock.getInstance().getUpgradesList().keySet());
+        }
         return Collections.emptyList();
     }
 
