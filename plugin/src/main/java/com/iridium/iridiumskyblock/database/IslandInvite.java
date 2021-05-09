@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.database;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -13,7 +12,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -22,13 +20,10 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @DatabaseTable(tableName = "island_invites")
-public final class IslandInvite {
+public final class IslandInvite extends IslandData{
 
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
-
-    @DatabaseField(columnName = "island_id")
-    private int island;
 
     @DatabaseField(columnName = "user", canBeNull = false)
     private @NotNull UUID user;
@@ -47,19 +42,10 @@ public final class IslandInvite {
      * @param inviter The User who invited the invitee
      */
     public IslandInvite(@NotNull Island island, @NotNull User user, @NotNull User inviter) {
-        this.island = island.getId();
+        super(island);
         this.user = user.getUuid();
         this.inviter = inviter.getUuid();
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
-    }
-
-    /**
-     * Returns the Island this invite belongs to.
-     *
-     * @return The Island of this invite
-     */
-    public @NotNull Optional<Island> getIsland() {
-        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
 
     /**

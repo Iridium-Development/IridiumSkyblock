@@ -21,16 +21,16 @@ import java.util.UUID;
 public class DatabaseManager {
 
     private final TableManager<User, UUID> userTableManager;
-    private final TableManager<Island, Integer> islandTableManager;
+    private final IslandTableManager islandTableManager;
     private final TableManager<SchematicData, String> schematicTableManager;
-    private final TableManager<IslandInvite, Integer> islandInviteTableManager;
-    private final TableManager<IslandPermission, Integer> islandPermissionTableManager;
-    private final TableManager<IslandBlocks, Integer> islandBlocksTableManager;
-    private final TableManager<IslandBank, Integer> islandBankTableManager;
-    private final TableManager<IslandMission, Integer> islandMissionTableManager;
-    private final TableManager<IslandReward, Integer> islandRewardTableManager;
-    private final TableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
-    private final TableManager<IslandTrusted, Integer> islandTrustedTableManager;
+    private final ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
+    private final ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
+    private final ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
+    private final ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
+    private final ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
+    private final ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
+    private final ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
+    private final ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
 
     @Getter(AccessLevel.NONE)
     private final ConnectionSource connectionSource;
@@ -52,16 +52,16 @@ public class DatabaseManager {
         );
 
         this.userTableManager = new TableManager<>(connectionSource, User.class, false);
-        this.islandTableManager = new TableManager<>(connectionSource, Island.class, false);
+        this.islandTableManager = new IslandTableManager(connectionSource, false);
         this.schematicTableManager = new TableManager<>(connectionSource, SchematicData.class, false);
-        this.islandInviteTableManager = new TableManager<>(connectionSource, IslandInvite.class, false);
-        this.islandPermissionTableManager = new TableManager<>(connectionSource, IslandPermission.class, false);
-        this.islandBlocksTableManager = new TableManager<>(connectionSource, IslandBlocks.class, false);
-        this.islandBankTableManager = new TableManager<>(connectionSource, IslandBank.class, false);
-        this.islandMissionTableManager = new TableManager<>(connectionSource, IslandMission.class, false);
-        this.islandRewardTableManager = new TableManager<>(connectionSource, IslandReward.class, false);
-        this.islandUpgradeTableManager = new TableManager<>(connectionSource, IslandUpgrade.class, false);
-        this.islandTrustedTableManager = new TableManager<>(connectionSource, IslandTrusted.class, false);
+        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
+        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, false);
+        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, false);
+        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, false);
+        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, false);
+        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, false);
+        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class, false);
+        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, false);
     }
 
     /**
@@ -98,7 +98,7 @@ public class DatabaseManager {
             islandTableManager.getDao().createOrUpdate(island);
             islandTableManager.getDao().commit(connectionSource.getReadOnlyConnection(null));
             Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
-            islandTableManager.getEntries().add(is);
+            islandTableManager.addEntry(is);
             return is;
         } catch (SQLException exception) {
             exception.printStackTrace();

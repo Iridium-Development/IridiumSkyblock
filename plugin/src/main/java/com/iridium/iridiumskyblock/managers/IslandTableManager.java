@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumskyblock.database.Island;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -8,28 +9,28 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Used for handling Crud operations on a table + handling cache
- *
- * @param <T> The Table Class
- * @param <S> The Table Primary Id Class
  */
-public class TableManager<T, S> {
-    private final List<T> entries;
-    private final Dao<T, S> dao;
+public class IslandTableManager {
+    private final List<Island> entries;
+    private final Dao<Island, Integer> dao;
 
     private final boolean autoCommit;
     private final ConnectionSource connectionSource;
 
-    public TableManager(ConnectionSource connectionSource, Class<T> clazz, boolean autoCommit) throws SQLException {
+    public IslandTableManager(ConnectionSource connectionSource, boolean autoCommit) throws SQLException {
         this.connectionSource = connectionSource;
         this.autoCommit = autoCommit;
-        TableUtils.createTableIfNotExists(connectionSource, clazz);
-        this.dao = DaoManager.createDao(connectionSource, clazz);
+        TableUtils.createTableIfNotExists(connectionSource, Island.class);
+        this.dao = DaoManager.createDao(connectionSource, Island.class);
         this.dao.setAutoCommit(getDatabaseConnection(), autoCommit);
         this.entries = dao.queryForAll();
+        sort();
     }
 
     /**
@@ -37,8 +38,8 @@ public class TableManager<T, S> {
      */
     public void save() {
         try {
-            for (T t : entries) {
-                dao.createOrUpdate(t);
+            for (Island island : entries) {
+                dao.createOrUpdate(island);
             }
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
@@ -49,12 +50,20 @@ public class TableManager<T, S> {
     }
 
     /**
-     * Adds an entry to list
-     *
-     * @param t the item we are adding
+     * Sort the list of entries by island id
      */
-    public void addEntry(T t) {
-        entries.add(t);
+    private void sort() {
+        entries.sort(Comparator.comparing(Island::getId));
+    }
+
+    /**
+     * Add an item to the list whilst maintaining sorted list
+     *
+     * @param island The item we are adding
+     */
+    public void addEntry(Island island) {
+        entries.add(island);
+        sort();
     }
 
     /**
@@ -62,19 +71,37 @@ public class TableManager<T, S> {
      *
      * @return The list of all T's
      */
-    public List<T> getEntries() {
+    public List<Island> getEntries() {
         return entries;
+    }
+
+    public Optional<Island> getIsland(int id) {
+        int first = 0;
+        int last = entries.size() - 1;
+        int mid = last / 2;
+        while (first <= last) {
+            int islandId = entries.get(mid).getId();
+            if (islandId < id) {
+                first = mid + 1;
+            } else if (islandId == id) {
+                return Optional.of(entries.get(mid));
+            } else {
+                last = mid - 1;
+            }
+            mid = (first + last) / 2;
+        }
+        return Optional.empty();
     }
 
     /**
      * Delete T from the database
      *
-     * @param t the variable we are deleting
+     * @param island the variable we are deleting
      */
-    public void delete(T t) {
+    public void delete(Island island) {
         try {
-            dao.delete(t);
-            entries.remove(t);
+            dao.delete(island);
+            entries.remove(island);
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
             }
@@ -86,12 +113,12 @@ public class TableManager<T, S> {
     /**
      * Delete all t's in the database
      *
-     * @param t The collection of variables we are deleting
+     * @param islands The collection of islands we are deleting
      */
-    public void delete(Collection<T> t) {
+    public void delete(Collection<Island> islands) {
         try {
-            dao.delete(t);
-            entries.removeAll(t);
+            dao.delete(islands);
+            entries.removeAll(islands);
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
             }
@@ -115,7 +142,7 @@ public class TableManager<T, S> {
      *
      * @return The dao
      */
-    public Dao<T, S> getDao() {
+    public Dao<Island, Integer> getDao() {
         return dao;
     }
 }
