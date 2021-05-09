@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.utils;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBank;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,23 @@ import org.jetbrains.annotations.NotNull;
  * Various utils for working with {@link Player}'s.
  */
 public class PlayerUtils {
+
+    public static boolean pay(@NotNull Player player, @NotNull Island island, int crystals, double money) {
+        IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
+                IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
+                IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        if (islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || IridiumSkyblock.getInstance().getEconomy().getBalance(player) >= money)) {
+            islandCrystals.setNumber(islandCrystals.getNumber() - crystals);
+            if (islandMoney.getNumber() >= money) {
+                islandMoney.setNumber(islandMoney.getNumber() - money);
+            } else {
+                IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, money);
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Sends an island's border to a player.

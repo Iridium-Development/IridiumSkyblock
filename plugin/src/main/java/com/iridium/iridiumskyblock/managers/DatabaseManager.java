@@ -29,6 +29,7 @@ public class DatabaseManager {
     private final TableManager<IslandBank, Integer> islandBankTableManager;
     private final TableManager<IslandMission, Integer> islandMissionTableManager;
     private final TableManager<IslandReward, Integer> islandRewardTableManager;
+    private final TableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
 
     @Getter(AccessLevel.NONE)
     private final ConnectionSource connectionSource;
@@ -58,6 +59,7 @@ public class DatabaseManager {
         this.islandBankTableManager = new TableManager<>(connectionSource, IslandBank.class, false);
         this.islandMissionTableManager = new TableManager<>(connectionSource, IslandMission.class, false);
         this.islandRewardTableManager = new TableManager<>(connectionSource, IslandReward.class, false);
+        this.islandUpgradeTableManager = new TableManager<>(connectionSource, IslandUpgrade.class, false);
     }
 
     /**

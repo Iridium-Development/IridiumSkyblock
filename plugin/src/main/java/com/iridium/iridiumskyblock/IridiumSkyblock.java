@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
@@ -60,11 +61,14 @@ public class IridiumSkyblock extends JavaPlugin {
     private BlockValues blockValues;
     private BankItems bankItems;
     private Missions missions;
+    private Upgrades upgrades;
 
     private ChunkGenerator chunkGenerator;
+
     private List<Permission> permissionList;
     private List<BankItem> bankItemList;
     private HashMap<String, Mission> missionsList;
+    private HashMap<String, Upgrade> upgradesList;
 
     private Economy economy;
 
@@ -255,6 +259,8 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BlockGrowListener(), this);
         Bukkit.getPluginManager().registerEvents(new PotionBrewListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDeathListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
     }
 
     /**
@@ -270,6 +276,7 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().getIslandMissionTableManager().save();
         getDatabaseManager().getIslandRewardTableManager().save();
         getDatabaseManager().getSchematicTableManager().save();
+        getDatabaseManager().getIslandUpgradeTableManager().save();
     }
 
     /**
@@ -335,6 +342,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.blockValues = persist.load(BlockValues.class);
         this.bankItems = persist.load(BankItems.class);
         this.missions = persist.load(Missions.class);
+        this.upgrades = persist.load(Upgrades.class);
 
         this.permissionList = new ArrayList<>();
         this.permissionList.add(permissions.redstone);
@@ -361,6 +369,11 @@ public class IridiumSkyblock extends JavaPlugin {
         this.bankItemList.add(bankItems.moneyBankItem);
 
         this.missionsList = new HashMap<>(missions.missions);
+        this.upgradesList = new HashMap<>(ImmutableMap.<String, Upgrade>builder()
+                .put("size", upgrades.sizeUpgrade)
+                .put("generator", upgrades.oresUpgrade)
+                .put("spawner", upgrades.spawnerUpgrade)
+                .build());
     }
 
     /**
@@ -378,6 +391,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(blockValues);
         this.persist.save(bankItems);
         this.persist.save(missions);
+        this.persist.save(upgrades);
     }
 
 }
