@@ -38,6 +38,10 @@ public class JoinCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if (args.length != 2) {
+            sender.sendMessage("/is join <name>");
+            return;
+        }
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
 
