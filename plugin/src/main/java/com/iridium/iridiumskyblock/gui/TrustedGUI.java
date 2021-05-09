@@ -58,7 +58,7 @@ public class TrustedGUI implements GUI {
         InventoryUtils.fillInventory(inventory);
 
         int i = 0;
-        List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusts(island);
+        List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island);
         for (IslandTrusted islandTrusted : islandTrustedList) {
             List<Placeholder> placeholderList =
                     new PlaceholderBuilder().applyPlayerPlaceholders(islandTrusted.getUser()).applyIslandPlaceholders(island).build();

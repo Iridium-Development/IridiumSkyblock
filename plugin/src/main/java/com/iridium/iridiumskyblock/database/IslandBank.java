@@ -13,13 +13,10 @@ import org.jetbrains.annotations.NotNull;
 @Getter
 @NoArgsConstructor
 @DatabaseTable(tableName = "island_bank")
-public class IslandBank {
+public class IslandBank extends IslandData {
 
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
-
-    @DatabaseField(columnName = "island_id")
-    private int island;
 
     @DatabaseField(columnName = "bank_item")
     private String bankItem;
@@ -36,7 +33,7 @@ public class IslandBank {
      * @param number   The amount of this currency in the Island bank
      */
     public IslandBank(@NotNull Island island, @NotNull String bankItem, double number) {
-        this.island = island.getId();
+        super(island);
         this.bankItem = bankItem;
         this.number = number;
     }
