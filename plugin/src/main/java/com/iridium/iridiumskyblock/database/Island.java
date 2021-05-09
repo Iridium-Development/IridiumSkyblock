@@ -166,7 +166,8 @@ public final class Island {
      * Must be lower than the distance between Islands.
      */
     public int getSize() {
-        return IridiumSkyblock.getInstance().getConfiguration().distance - 1;
+        int sizeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(this, "size").getLevel();
+        return IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size;
     }
 
     /**

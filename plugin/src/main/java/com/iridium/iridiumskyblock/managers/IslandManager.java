@@ -351,6 +351,27 @@ public class IslandManager {
     }
 
     /**
+     * Gets an Island upgrade
+     *
+     * @param island  The specified Island
+     * @param upgrade The specified Upgrade's name
+     * @return The island Upgrade
+     */
+    public IslandUpgrade getIslandUpgrade(@NotNull Island island, @NotNull String upgrade) {
+        Optional<IslandUpgrade> islandUpgrade =
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().getEntries().stream().filter(
+                        isUpgrade -> island.equals(isUpgrade.getIsland().orElse(null)) && isUpgrade.getUpgrade().equalsIgnoreCase(upgrade)
+                ).findFirst();
+        if (islandUpgrade.isPresent()) {
+            return islandUpgrade.get();
+        } else {
+            IslandUpgrade isUpgrade = new IslandUpgrade(island, upgrade);
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().getEntries().add(isUpgrade);
+            return isUpgrade;
+        }
+    }
+
+    /**
      * Gets all island missions and creates them if they don't exist.
      *
      * @param island The specified Island
