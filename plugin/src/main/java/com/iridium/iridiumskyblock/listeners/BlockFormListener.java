@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.upgrades.OresUpgrade;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
@@ -17,7 +18,8 @@ public class BlockFormListener implements Listener {
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
         XMaterial newMaterial = XMaterial.matchXMaterial(event.getNewState().getType());
-        if (newMaterial.equals(XMaterial.COBBLESTONE) || newMaterial.equals(XMaterial.BASALT)) {
+        // Custom basalt generators should only work in nether
+        if (newMaterial.equals(XMaterial.COBBLESTONE) || (newMaterial.equals(XMaterial.BASALT) && event.getBlock().getLocation().getWorld().getEnvironment().equals(World.Environment.NETHER))) {
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getNewState().getLocation());
             if (island.isPresent()) {
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "generator");
