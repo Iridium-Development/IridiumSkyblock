@@ -30,6 +30,7 @@ public class DatabaseManager {
     private final TableManager<IslandMission, Integer> islandMissionTableManager;
     private final TableManager<IslandReward, Integer> islandRewardTableManager;
     private final TableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
+    private final TableManager<IslandTrusted, Integer> islandTrustedTableManager;
 
     @Getter(AccessLevel.NONE)
     private final ConnectionSource connectionSource;
@@ -60,6 +61,7 @@ public class DatabaseManager {
         this.islandMissionTableManager = new TableManager<>(connectionSource, IslandMission.class, false);
         this.islandRewardTableManager = new TableManager<>(connectionSource, IslandReward.class, false);
         this.islandUpgradeTableManager = new TableManager<>(connectionSource, IslandUpgrade.class, false);
+        this.islandTrustedTableManager = new TableManager<>(connectionSource, IslandTrusted.class, false);
     }
 
     /**

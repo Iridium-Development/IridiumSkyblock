@@ -172,6 +172,19 @@ public class IslandManager {
     }
 
     /**
+     * Gets all trusts in the island
+     *
+     * @param island The specified Island
+     * @return All the IslandTrusts
+     */
+    public List<IslandTrusted> getIslandTrusts(@NotNull Island island) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries().stream().filter(islandTrusted ->
+                island.equals(islandTrusted.getIsland().orElse(null))
+        ).collect(Collectors.toList());
+    }
+
+
+    /**
      * Gets a list of Users from an island.
      *
      * @param island The specified Island
@@ -230,8 +243,7 @@ public class IslandManager {
      * @param permission The specified Permission
      * @return If the permission is allowed
      */
-    public boolean getIslandPermission(
-            @NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
+    public boolean getIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
         Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries().stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank) && island.equals(isPermission.getIsland().orElse(null))).findFirst();
         return islandPermission.map(IslandPermission::isAllowed).orElseGet(() -> islandRank.getLevel() >= permission.getDefaultRank().getLevel());
     }
@@ -246,6 +258,9 @@ public class IslandManager {
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission) {
         IslandRank islandRank = island.equals(user.getIsland().orElse(null)) ? user.getIslandRank() : IslandRank.VISITOR;
+        if (getIslandTrusts(island).stream().anyMatch(islandTrusted -> islandTrusted.getUser().equals(user))) {
+            islandRank = IslandRank.MEMBER;
+        }
         return getIslandPermission(island, islandRank, permission) || user.isBypass();
     }
 
