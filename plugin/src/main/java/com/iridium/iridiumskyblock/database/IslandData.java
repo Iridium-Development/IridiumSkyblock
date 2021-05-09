@@ -14,12 +14,12 @@ import java.util.Optional;
 @NoArgsConstructor
 public class IslandData {
 
+    @DatabaseField(columnName = "island_id")
+    private int island;
+
     public IslandData(Island island) {
         this.island = island.getId();
     }
-
-    @DatabaseField(columnName = "island_id")
-    private int island;
 
     /**
      * Returns the Island this block belongs to.
