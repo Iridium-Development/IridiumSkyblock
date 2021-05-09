@@ -50,6 +50,10 @@ public class Inventories {
 
     public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList("&7Joined: %player_join%", "&7Rank: %player_rank%", "", "&b&l[!] &7Right Click to promote", "&b&l[!] &7Left click to demote/kick")));
 
+    public SingleItemGUI trustedGUI = new SingleItemGUI(27, "&7Trusted Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
+            "%player_name%", Arrays.asList("&7Date: %player_join%", "&7Trusted By: %trustee%", "", "&b&l[!] &7Right Click to promote", "&b&l" +
+            "[!] &7Left click to demote/kick")));
+
     public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(
             "",
             "&b&l * &7Island Name: &b%island_name%",
