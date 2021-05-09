@@ -39,14 +39,16 @@ public final class Island {
     private int id;
 
     @DatabaseField(columnName = "name", canBeNull = false, unique = true)
-    private @NotNull String name;
+    private @NotNull
+    String name;
 
     /*
     The islands home relative to the island center as a string.
     Format: x,y,z,pitch,yaw
     */
     @DatabaseField(columnName = "home")
-    private @NotNull String home;
+    private @NotNull
+    String home;
 
     @DatabaseField(columnName = "visit")
     private boolean visitable;
@@ -61,7 +63,8 @@ public final class Island {
     private int experience;
 
     @DatabaseField(columnName = "color", canBeNull = false)
-    private @NotNull Color color;
+    private @NotNull
+    Color color;
 
     /**
      * The default constructor.
@@ -109,7 +112,8 @@ public final class Island {
      *
      * @return The home location
      */
-    public @NotNull Location getHome() {
+    public @NotNull
+    Location getHome() {
         String[] params = home.split(",");
         World world = IridiumSkyblockAPI.getInstance().getWorld();
         return new Location(world, Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Float.parseFloat(params[4]), Float.parseFloat(params[3])).add(getCenter(world));
@@ -166,7 +170,8 @@ public final class Island {
      * Must be lower than the distance between Islands.
      */
     public int getSize() {
-        return IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(this, "size").getLevel()).size;
+        int sizeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(this, "size").getLevel();
+        return IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size;
     }
 
     /**
