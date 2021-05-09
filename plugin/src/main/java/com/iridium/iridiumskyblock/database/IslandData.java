@@ -12,7 +12,7 @@ import java.util.Optional;
  * Used for binary searching
  */
 @NoArgsConstructor
-public class IslandData {
+public abstract class IslandData {
 
     @DatabaseField(columnName = "island_id")
     private int island;
