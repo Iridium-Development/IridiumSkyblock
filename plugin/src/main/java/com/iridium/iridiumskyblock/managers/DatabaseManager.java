@@ -21,16 +21,16 @@ import java.util.UUID;
 public class DatabaseManager {
 
     private final TableManager<User, UUID> userTableManager;
-    private final TableManager<Island, Integer> islandTableManager;
+    private final IslandTableManager islandTableManager;
     private final TableManager<SchematicData, String> schematicTableManager;
-    private final IslandTableManager<IslandInvite, Integer> islandInviteTableManager;
-    private final IslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
-    private final IslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
-    private final IslandTableManager<IslandBank, Integer> islandBankTableManager;
-    private final IslandTableManager<IslandMission, Integer> islandMissionTableManager;
-    private final IslandTableManager<IslandReward, Integer> islandRewardTableManager;
-    private final IslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
-    private final IslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
+    private final ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
+    private final ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
+    private final ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
+    private final ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
+    private final ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
+    private final ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
+    private final ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
+    private final ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
 
     @Getter(AccessLevel.NONE)
     private final ConnectionSource connectionSource;
@@ -52,16 +52,16 @@ public class DatabaseManager {
         );
 
         this.userTableManager = new TableManager<>(connectionSource, User.class, false);
-        this.islandTableManager = new TableManager<>(connectionSource, Island.class, false);
+        this.islandTableManager = new IslandTableManager(connectionSource, false);
         this.schematicTableManager = new TableManager<>(connectionSource, SchematicData.class, false);
-        this.islandInviteTableManager = new IslandTableManager<>(connectionSource, IslandInvite.class, false);
-        this.islandPermissionTableManager = new IslandTableManager<>(connectionSource, IslandPermission.class, false);
-        this.islandBlocksTableManager = new IslandTableManager<>(connectionSource, IslandBlocks.class, false);
-        this.islandBankTableManager = new IslandTableManager<>(connectionSource, IslandBank.class, false);
-        this.islandMissionTableManager = new IslandTableManager<>(connectionSource, IslandMission.class, false);
-        this.islandRewardTableManager = new IslandTableManager<>(connectionSource, IslandReward.class, false);
-        this.islandUpgradeTableManager = new IslandTableManager<>(connectionSource, IslandUpgrade.class, false);
-        this.islandTrustedTableManager = new IslandTableManager<>(connectionSource, IslandTrusted.class, false);
+        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
+        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, false);
+        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, false);
+        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, false);
+        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, false);
+        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, false);
+        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class, false);
+        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, false);
     }
 
     /**

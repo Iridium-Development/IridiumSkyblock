@@ -188,8 +188,7 @@ public class IslandManager {
      * @return An Optional with the Island, empty if there is none
      */
     public Optional<Island> getIslandById(int id) {
-        //TODO
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.getId() == id).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getIsland(id);
     }
 
     /**
