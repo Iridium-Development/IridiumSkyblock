@@ -78,7 +78,7 @@ public class MembersGUI implements GUI {
             } else if (event.getClick().equals(ClickType.RIGHT)) {
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is promote " + user.getName());
             }
-            event.getWhoClicked().openInventory(getInventory());
+            addContent(event.getInventory());
         }
     }
 

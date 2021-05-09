@@ -37,7 +37,7 @@ public class DepositCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            // /is deposit <name> <amount>
+            sender.sendMessage("/is deposit <name> <amount>");
             return;
         }
         Player player = (Player) sender;

@@ -37,6 +37,10 @@ public class DemoteCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if (args.length != 2) {
+            sender.sendMessage("/is demote <name>");
+            return;
+        }
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         Optional<Island> island = user.getIsland();

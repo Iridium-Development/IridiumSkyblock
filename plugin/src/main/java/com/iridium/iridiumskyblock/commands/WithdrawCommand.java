@@ -37,7 +37,7 @@ public class WithdrawCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            // /is withdraw <name> <amount>
+            sender.sendMessage("/is withdraw <name> <amount>");
             return;
         }
 
