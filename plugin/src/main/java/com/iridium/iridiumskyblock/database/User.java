@@ -79,6 +79,13 @@ public final class User {
     public void setIsland(@Nullable Island island) {
         this.island = island == null ? null : island.getId();
         setJoinTime(LocalDateTime.now());
+        if (island != null) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island).stream().filter(islandTrusted ->
+                    islandTrusted.getUser().equals(this)
+            ).findFirst().ifPresent(trusted ->
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(trusted)
+            );
+        }
     }
 
     /**
