@@ -492,12 +492,11 @@ public class IslandManager {
     public void incrementMission(@NotNull Island island, @NotNull String missionData, int increment) {
         String[] missionConditions = missionData.toUpperCase().split(":");
 
-        for (String key : IridiumSkyblock.getInstance().getMissionsList().keySet()) {
-            Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
+        for (Map.Entry<String, Mission> entry : IridiumSkyblock.getInstance().getMissionsList().entrySet()) {
             boolean completedBefore = true;
 
-            for (int i = 1; i <= mission.getMissions().size(); i++) {
-                String[] conditions = mission.getMissions().get(i - 1).toUpperCase().split(":");
+            for (int i = 1; i <= entry.getValue().getMissions().size(); i++) {
+                String[] conditions = entry.getValue().getMissions().get(i - 1).toUpperCase().split(":");
                 // If the conditions are the same length (+1 because missionConditions doesn't include amount)
                 if (missionConditions.length + 1 != conditions.length) break;
 
@@ -505,7 +504,8 @@ public class IslandManager {
                 boolean matches = matchesMission(missionConditions, conditions);
                 if (!matches) continue;
 
-                IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, mission, key, i);
+                IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, entry.getValue(),
+                        entry.getKey(), i);
                 String number = conditions[missionData.split(":").length];
 
                 // Validate the required number for this condition
@@ -515,17 +515,17 @@ public class IslandManager {
                     completedBefore = false;
                     islandMission.setProgress(Math.min(islandMission.getProgress() + increment, amount));
                 } else {
-                    IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + mission.getMissions().get(i - 1));
+                    IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + entry.getValue().getMissions().get(i - 1));
                     IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
                 }
             }
 
             // Check if this mission is now completed
-            if (!completedBefore && hasCompletedMission(island, mission, key)) {
+            if (!completedBefore && hasCompletedMission(island, entry.getValue(), entry.getKey())) {
                 island.getMembers().stream().map(user -> Bukkit.getPlayer(user.getUuid())).filter(Objects::nonNull).forEach(player -> {
-                    mission.getMessage().stream().map(string -> StringUtils.color(string.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))).forEach(player::sendMessage);
-                    mission.getCompleteSound().play(player);
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().addEntry(new IslandReward(island, mission.getReward()));
+                    entry.getValue().getMessage().stream().map(string -> StringUtils.color(string.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))).forEach(player::sendMessage);
+                    entry.getValue().getCompleteSound().play(player);
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().addEntry(new IslandReward(island, entry.getValue().getReward()));
                 });
             }
         }
