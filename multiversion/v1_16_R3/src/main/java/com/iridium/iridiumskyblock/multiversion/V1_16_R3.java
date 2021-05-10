@@ -6,6 +6,7 @@ import org.bukkit.craftbukkit.v1_16_R3.legacy.CraftLegacy;
 
 public class V1_16_R3 implements MultiVersion {
 
+    @SuppressWarnings("deprecation")
     public V1_16_R3(){
         CraftLegacy.init();
     }
