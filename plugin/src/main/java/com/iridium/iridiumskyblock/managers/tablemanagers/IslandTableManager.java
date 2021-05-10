@@ -20,8 +20,8 @@ public class IslandTableManager extends TableManager<Island, Integer> {
 
     @Override
     public void addEntry(Island island) {
-        super.addEntry(island);
-        sort();
+        int index = Collections.binarySearch(getEntries(), island, Comparator.comparing(Island::getId));
+        getEntries().add(index < 0 ? -(index + 1) : index, island);
     }
 
     /**
