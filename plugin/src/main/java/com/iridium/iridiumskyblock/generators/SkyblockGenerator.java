@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.generators;
 
-import com.iridium.iridiumskyblock.utils.BiomeUtils;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -30,7 +29,6 @@ public class SkyblockGenerator extends ChunkGenerator {
      */
     @Override
     public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biomeGrid) {
-        BiomeUtils.setGeneratorBiome(world, biomeGrid);
         return createChunkData(world);
     }
 

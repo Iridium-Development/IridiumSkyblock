@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.generators;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.utils.BiomeUtils;
 import java.util.Objects;
 import java.util.Random;
 import org.bukkit.World;
@@ -32,8 +31,6 @@ public class OceanGenerator extends ChunkGenerator {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
         final ChunkData chunkData = createChunkData(world);
         generator.setScale(0.005D);
-
-        BiomeUtils.setGeneratorBiome(world, biomeGrid);
 
         XMaterial bottomMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorBottomMaterial;
         XMaterial topMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorTopMaterial;
