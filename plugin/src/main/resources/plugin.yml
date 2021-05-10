@@ -1,5 +1,5 @@
 name: IridiumSkyblock
-version: "${version}"
+version: ${version}
 description: Skyblock Redifined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
