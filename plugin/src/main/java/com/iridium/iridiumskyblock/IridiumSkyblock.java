@@ -6,7 +6,6 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.generators.SkyblockGenerator;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
@@ -90,11 +89,17 @@ public class IridiumSkyblock extends JavaPlugin {
 
     /**
      * Code that should be executed before this plugin gets enabled.
-     * Sets the default world generator.
+     * Initializes the configurations and sets the default world generator.
      */
     @Override
     public void onLoad() {
-        chunkGenerator = new SkyblockGenerator();
+        // Initialize the configs
+        this.persist = new Persist(Persist.PersistType.YAML, this);
+        loadConfigs();
+        saveConfigs();
+
+        // Initialize the ChunkGenerator
+        this.chunkGenerator = configuration.generatorSettings.generatorType.getChunkGenerator();
     }
 
     /**
@@ -114,16 +119,11 @@ public class IridiumSkyblock extends JavaPlugin {
         this.multiversion = setupMultiversion();
 
         if (!PaperLib.isSpigot()) {
-            //isSpigot returns true if the server is using spigot or a fork
+            // isSpigot returns true if the server is using spigot or a fork
             getLogger().warning("CraftBukkit isnt supported, please use spigot or one of its forks");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-
-        // Initialize the configs
-        this.persist = new Persist(Persist.PersistType.YAML, this);
-        loadConfigs();
-        saveConfigs();
 
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock");
@@ -141,6 +141,7 @@ public class IridiumSkyblock extends JavaPlugin {
             // We don't want the plugin to start if the connection fails
             exception.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
 
         // Initialize the API
@@ -173,7 +174,7 @@ public class IridiumSkyblock extends JavaPlugin {
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
 
-        //Automatically update all inventories
+        // Automatically update all inventories
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
             if (inventoryHolder instanceof GUI) {
