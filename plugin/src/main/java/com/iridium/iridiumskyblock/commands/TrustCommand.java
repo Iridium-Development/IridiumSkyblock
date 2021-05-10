@@ -54,6 +54,10 @@ public class TrustCommand extends Command {
                                             .replace("%player%", p.getName())
                                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
                             );
+                            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerTrustedYou
+                                    .replace("%truster%", player.getName())
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                            );
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyTrusted.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));

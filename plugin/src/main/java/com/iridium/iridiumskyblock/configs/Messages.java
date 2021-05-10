@@ -95,6 +95,7 @@ public class Messages {
     public String unknownUpgrade = "%prefix% &7Unknown Island upgrade.";
     public String alreadyTrusted = "%prefix% &7This player is already trusted.";
     public String trustedPlayer = "%prefix% &7%truster% has trusted %player% to your island.";
+    public String playerTrustedYou = "%prefix% &7%truster% has trusted you to their island.";
     public String trustRevoked = "%prefix% &7Island Trust for %player% has been revoked.";
     public String trustDoesntExist = "%prefix% &7%player% is not trusted in your island.";
     public String yes = "Yes";

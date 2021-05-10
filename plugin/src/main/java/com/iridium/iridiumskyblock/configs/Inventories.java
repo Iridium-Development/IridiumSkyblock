@@ -46,13 +46,26 @@ public class Inventories {
             .build()
     );
 
-    public SingleItemGUI visitGUI = new SingleItemGUI(45, "&7Visit an Island", new Item(XMaterial.PLAYER_HEAD, 1, "&b&l%island_name%", "%island_owner%", Arrays.asList("&7Created: %island_create%", "&7Owner: %island_owner%")));
+    public SingleItemGUI visitGUI = new SingleItemGUI(45, "&7Visit an Island", new Item(XMaterial.PLAYER_HEAD, 1, "&b&l%island_name%", "%island_owner%", Arrays.asList(
+            "&7Created: %island_create%",
+            "&7Owner: %island_owner%"
+    )));
 
-    public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList("&7Joined: %player_join%", "&7Rank: %player_rank%", "", "&b&l[!] &7Right Click to promote", "&b&l[!] &7Left click to demote/kick")));
+    public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
+            "&7Joined: %player_join%",
+            "&7Rank: %player_rank%",
+            "",
+            "&b&l[!] &7Right Click to promote",
+            "&b&l[!] &7Left click to demote/kick"
+    )));
 
     public SingleItemGUI trustedGUI = new SingleItemGUI(27, "&7Trusted Members", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
-            "%player_name%", Arrays.asList("&7Date: %player_join%", "&7Trusted By: %trustee%", "", "&b&l[!] &7Right Click to promote", "&b&l" +
-            "[!] &7Left click to demote/kick")));
+            "%player_name%", Arrays.asList(
+            "&7Date: %player_join%",
+            "&7Trusted By: %trustee%",
+            "",
+            "&b&l [!] &7Left click to untrust"
+    )));
 
     public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(
             "",
@@ -78,7 +91,12 @@ public class Inventories {
 
     public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", Collections.singletonList("&bValue per block: &7%value%"));
 
-    public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList("&7Invited By: %inviter%", "&7Time: %time%", "", "&b&l[!] &7Click to un-invite")));
+    public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList(
+            "&7Invited By: %inviter%",
+            "&7Time: %time%",
+            "",
+            "&b&l[!] &7Click to un-invite"
+    )));
 
     public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic");
 
