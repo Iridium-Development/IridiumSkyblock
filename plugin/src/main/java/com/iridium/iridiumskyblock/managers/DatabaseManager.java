@@ -23,27 +23,22 @@ import java.sql.SQLException;
 @Getter
 public class DatabaseManager {
 
-    private final UserTableManager userTableManager;
-    private final IslandTableManager islandTableManager;
-    private final TableManager<SchematicData, String> schematicTableManager;
-    private final ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
-    private final ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
-    private final ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
-    private final ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
-    private final ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
-    private final ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
-    private final ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
-    private final ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
+    private IslandTableManager islandTableManager;
+    private UserTableManager userTableManager;
+    private TableManager<SchematicData, String> schematicTableManager;
+    private ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
+    private ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
+    private ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
+    private ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
+    private ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
+    private ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
+    private ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
+    private ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
 
     @Getter(AccessLevel.NONE)
-    private final ConnectionSource connectionSource;
+    private ConnectionSource connectionSource;
 
-    /**
-     * The default constructor.
-     *
-     * @throws SQLException If the connection or any operations failed
-     */
-    public DatabaseManager() throws SQLException {
+    public void init() throws SQLException {
         SQL sqlConfig = IridiumSkyblock.getInstance().getSql();
         String databaseURL = getDatabaseURL(sqlConfig);
 
@@ -54,8 +49,8 @@ public class DatabaseManager {
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
-        this.userTableManager = new UserTableManager(connectionSource, false);
         this.islandTableManager = new IslandTableManager(connectionSource, false);
+        this.userTableManager = new UserTableManager(connectionSource, false);
         this.schematicTableManager = new TableManager<>(connectionSource, SchematicData.class, false);
         this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
         this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, false);

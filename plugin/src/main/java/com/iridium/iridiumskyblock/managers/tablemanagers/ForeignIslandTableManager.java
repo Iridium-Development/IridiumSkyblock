@@ -26,12 +26,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
 
     @Override
     public void addEntry(T t) {
-        int index = Collections.binarySearch(getEntries(), t, Comparator.comparing(t1 -> {
-            if (t1.getIsland().isPresent()) {
-                return t1.getIsland().get().getId();
-            }
-            return 0;
-        }));
+        int index = Collections.binarySearch(getEntries(), t, Comparator.comparing(t1 -> t1.getIsland().map(Island::getId).orElse(0)));
         getEntries().add(index < 0 ? -(index + 1) : index, t);
     }
 
@@ -39,12 +34,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
      * Sort the list of entries by island id
      */
     private void sort() {
-        getEntries().sort(Comparator.comparing(t1 -> {
-            if (t1.getIsland().isPresent()) {
-                return t1.getIsland().get().getId();
-            }
-            return 0;
-        }));
+        getEntries().sort(Comparator.comparing(t1 -> t1.getIsland().map(Island::getId).orElse(0)));
     }
 
     /**

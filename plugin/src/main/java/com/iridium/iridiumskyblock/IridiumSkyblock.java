@@ -128,19 +128,20 @@ public class IridiumSkyblock extends JavaPlugin {
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock");
 
+        // Initialize the manager classes (bad) and create the world
+        this.islandManager = new IslandManager();
+        this.userManager = new UserManager();
+        this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
+
+        this.databaseManager = new DatabaseManager();
         // Try to connect to the database
         try {
-            this.databaseManager = new DatabaseManager();
+            databaseManager.init();
         } catch (SQLException exception) {
             // We don't want the plugin to start if the connection fails
             exception.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
         }
-
-        // Initialize the manager classes (bad) and create the world
-        this.islandManager = new IslandManager();
-        this.userManager = new UserManager();
-        this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
 
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
