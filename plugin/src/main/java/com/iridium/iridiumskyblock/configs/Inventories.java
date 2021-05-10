@@ -89,6 +89,8 @@ public class Inventories {
 
     public NoItemGUI upgradesGUI = new NoItemGUI(27, "&7Island Upgrades");
 
+    public NoItemGUI boostersGUI = new NoItemGUI(27, "&7Island Boosters");
+
     public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", Collections.singletonList("&bValue per block: &7%value%"));
 
     public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList(

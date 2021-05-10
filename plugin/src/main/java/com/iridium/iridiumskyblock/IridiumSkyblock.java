@@ -61,6 +61,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private BankItems bankItems;
     private Missions missions;
     private Upgrades upgrades;
+    private Boosters boosters;
 
     private ChunkGenerator chunkGenerator;
 
@@ -68,6 +69,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private List<BankItem> bankItemList;
     private HashMap<String, Mission> missionsList;
     private HashMap<String, Upgrade> upgradesList;
+    private HashMap<String, Booster> boosterList;
 
     private Economy economy;
 
@@ -281,6 +283,7 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().getSchematicTableManager().save();
         getDatabaseManager().getIslandUpgradeTableManager().save();
         getDatabaseManager().getIslandTrustedTableManager().save();
+        getDatabaseManager().getIslandBoosterTableManager().save();
     }
 
     /**
@@ -347,6 +350,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.bankItems = persist.load(BankItems.class);
         this.missions = persist.load(Missions.class);
         this.upgrades = persist.load(Upgrades.class);
+        this.boosters = persist.load(Boosters.class);
 
         this.permissionList = new ArrayList<>();
         this.permissionList.add(permissions.redstone);
@@ -378,6 +382,13 @@ public class IridiumSkyblock extends JavaPlugin {
                 .put("generator", upgrades.oresUpgrade)
                 .put("spawner", upgrades.spawnerUpgrade)
                 .build());
+
+        this.boosterList = new HashMap<>(ImmutableMap.<String, Booster>builder()
+                .put("experience", boosters.islandExperienceBooster)
+                .put("farming", boosters.islandFarmingBooster)
+                .put("flight", boosters.islandFlightBooster)
+                .put("hopper", boosters.islandHopperBooster)
+                .build());
     }
 
     /**
@@ -396,6 +407,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(bankItems);
         this.persist.save(missions);
         this.persist.save(upgrades);
+        this.persist.save(boosters);
     }
 
 }

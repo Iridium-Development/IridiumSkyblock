@@ -532,6 +532,26 @@ public class IslandManager {
     }
 
     /**
+     * Gets time remaining on an island booster
+     *
+     * @param island  The specified Island
+     * @param booster The booster name
+     * @return The time remaining
+     */
+    public IslandBooster getIslandBooster(@NotNull Island island, @NotNull String booster) {
+        List<IslandBooster> islandBoosters = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().getEntries(island);
+        Optional<IslandBooster> islandBooster =
+                islandBoosters.stream().filter(isBooster -> isBooster.getBooster().equalsIgnoreCase(booster)).findFirst();
+        if (islandBooster.isPresent()) {
+            return islandBooster.get();
+        } else {
+            IslandBooster newBooster = new IslandBooster(island, booster);
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().addEntry(newBooster);
+            return newBooster;
+        }
+    }
+
+    /**
      * Checks if the given conditions are a part of the provided mission conditions.
      *
      * @param missionConditions The mission conditions
