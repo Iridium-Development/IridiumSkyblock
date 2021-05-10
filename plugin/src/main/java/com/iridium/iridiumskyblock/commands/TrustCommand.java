@@ -12,10 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TrustCommand extends Command {
@@ -24,7 +21,7 @@ public class TrustCommand extends Command {
      * The default constructor.
      */
     public TrustCommand() {
-        super(Collections.singletonList("trust"), "View your Trusted members", "", true);
+        super(Arrays.asList("trust", "trusted"), "View your Trusted members", "", true);
     }
 
     /**
