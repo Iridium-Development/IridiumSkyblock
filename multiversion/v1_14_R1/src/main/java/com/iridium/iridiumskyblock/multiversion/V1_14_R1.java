@@ -2,11 +2,16 @@ package com.iridium.iridiumskyblock.multiversion;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.ChunkSnapshot;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftLegacy;
 
 /**
  * Interface for working with methods that were changed during an update by Spigot.
  */
 public class V1_14_R1 implements MultiVersion {
+
+    public V1_14_R1(){
+        new CraftLegacy();
+    }
 
     /**
      * Returns the material at a position in a chunk.
