@@ -45,7 +45,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
     public List<T> getEntries(@NotNull Island island) {
         int index = getIndex(island);
         if (index == -1) return Collections.emptyList();
-        int currentIndex = index;
+        int currentIndex = index - 1;
         List<T> result = new ArrayList<>();
         result.add(getEntries().get(index));
 
@@ -60,7 +60,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
             }
         }
 
-        currentIndex = index;
+        currentIndex = index + 1;
 
         while (true) {
             if (currentIndex >= getEntries().size()) break;
