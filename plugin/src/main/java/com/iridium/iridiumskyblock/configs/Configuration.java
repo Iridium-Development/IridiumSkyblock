@@ -1,8 +1,12 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
-
+import com.iridium.iridiumskyblock.generators.GeneratorType;
 import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 /**
  * The main configuration of IridiumSkyblock (configuration.yml).
@@ -23,6 +27,8 @@ public class Configuration {
     public int schematicPastingDelay = 1;
     public int islandRecalculateInterval = 10;
 
+    public GeneratorSettings generatorSettings = new GeneratorSettings();
+
     public Map<Integer, Integer> islandTopSlots = ImmutableMap.<Integer, Integer>builder()
             .put(1, 4)
             .put(2, 12)
@@ -35,5 +41,22 @@ public class Configuration {
             .put(9, 24)
             .put(10, 25)
             .build();
+
+    /**
+     * Settings for the {@link org.bukkit.generator.ChunkGenerator} of IridiumSkyblock.
+     * Allows fine-tuning of the {@link com.iridium.iridiumskyblock.generators.OceanGenerator}.
+     */
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class GeneratorSettings {
+
+        public GeneratorType generatorType = GeneratorType.SKYBLOCK;
+        public int waterHeight = 96;
+        public int minOceanFloorLevel = 10;
+        public int maxOceanFloorLevel = 25;
+        public XMaterial oceanFloorBottomMaterial = XMaterial.GRAVEL;
+        public XMaterial oceanFloorTopMaterial = XMaterial.SAND;
+
+    }
 
 }
