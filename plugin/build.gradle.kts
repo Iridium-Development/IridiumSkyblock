@@ -18,6 +18,6 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
 
     // Include all the nms sub-modules
-    val nmsProjects = project(":").dependencyProject.subprojects.filter { it.name != "plugin" }
-    nmsProjects.forEach { compileOnly(it) }
+    val multiVersionProjects = project(":multiversion").dependencyProject.subprojects
+    multiVersionProjects.forEach { compileOnly(it) }
 }
