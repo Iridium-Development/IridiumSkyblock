@@ -93,6 +93,9 @@ public class IridiumSkyblock extends JavaPlugin {
      */
     @Override
     public void onLoad() {
+        // Create the data folder in order to make Jackson work
+        getDataFolder().mkdir();
+
         // Initialize the configs
         this.persist = new Persist(Persist.PersistType.YAML, this);
         loadConfigs();
@@ -107,8 +110,6 @@ public class IridiumSkyblock extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        // Create the data folder in order to make Jackson work
-        getDataFolder().mkdir();
 
         this.nms = setupNMS();
         if (this.nms == null) {
