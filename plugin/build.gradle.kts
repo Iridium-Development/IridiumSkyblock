@@ -21,3 +21,15 @@ dependencies {
     val multiVersionProjects = project(":multiversion").dependencyProject.subprojects
     multiVersionProjects.forEach { compileOnly(it) }
 }
+
+tasks {
+    build {
+        dependsOn(processResources)
+    }
+
+    processResources {
+        filesMatching("**/plugin.yml") {
+            expand(rootProject.project.properties)
+        }
+    }
+}
