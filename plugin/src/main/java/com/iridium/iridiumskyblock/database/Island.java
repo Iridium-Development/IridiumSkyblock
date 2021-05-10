@@ -77,6 +77,13 @@ public final class Island {
     }
 
     /**
+     * Used for comparing
+     */
+    public Island(int id) {
+        this.id = id;
+    }
+
+    /**
      * Gets the island's level.
      * TODO: Change the equation
      *

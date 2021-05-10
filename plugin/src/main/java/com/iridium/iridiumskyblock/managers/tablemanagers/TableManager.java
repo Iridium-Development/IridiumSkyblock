@@ -1,6 +1,5 @@
-package com.iridium.iridiumskyblock.managers;
+package com.iridium.iridiumskyblock.managers.tablemanagers;
 
-import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -8,26 +7,29 @@ import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Used for handling Crud operations on a table + handling cache
+ *
+ * @param <T> The Table Class
+ * @param <S> The Table Primary Id Class
  */
-public class UserTableManager {
-    private final List<User> entries;
-    private final Dao<User, Integer> dao;
+public class TableManager<T, S> {
+    private final List<T> entries;
+    private final Dao<T, S> dao;
 
     private final boolean autoCommit;
     private final ConnectionSource connectionSource;
 
-    public UserTableManager(ConnectionSource connectionSource, boolean autoCommit) throws SQLException {
+    public TableManager(ConnectionSource connectionSource, Class<T> clazz, boolean autoCommit) throws SQLException {
         this.connectionSource = connectionSource;
         this.autoCommit = autoCommit;
-        TableUtils.createTableIfNotExists(connectionSource, User.class);
-        this.dao = DaoManager.createDao(connectionSource, User.class);
+        TableUtils.createTableIfNotExists(connectionSource, clazz);
+        this.dao = DaoManager.createDao(connectionSource, clazz);
         this.dao.setAutoCommit(getDatabaseConnection(), autoCommit);
         this.entries = dao.queryForAll();
-        sort();
     }
 
     /**
@@ -35,8 +37,8 @@ public class UserTableManager {
      */
     public void save() {
         try {
-            for (User island : entries) {
-                dao.createOrUpdate(island);
+            for (T t : entries) {
+                dao.createOrUpdate(t);
             }
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
@@ -47,20 +49,12 @@ public class UserTableManager {
     }
 
     /**
-     * Sort the list of entries by island id
-     */
-    public void sort() {
-        entries.sort(Comparator.comparing(User::getUuid));
-    }
-
-    /**
-     * Add an item to the list whilst maintaining sorted list
+     * Adds an entry to list
      *
-     * @param island The item we are adding
+     * @param t the item we are adding
      */
-    public void addEntry(User island) {
-        entries.add(island);
-        sort();
+    public void addEntry(T t) {
+        entries.add(t);
     }
 
     /**
@@ -68,25 +62,19 @@ public class UserTableManager {
      *
      * @return The list of all T's
      */
-    public List<User> getEntries() {
+    public List<T> getEntries() {
         return entries;
-    }
-
-    public Optional<User> getUser(UUID uuid) {
-        int index = Collections.binarySearch(entries, new User(uuid, ""), Comparator.comparing(User::getUuid));
-        if (index < 0) return Optional.empty();
-        return Optional.of(entries.get(index));
     }
 
     /**
      * Delete T from the database
      *
-     * @param island the variable we are deleting
+     * @param t the variable we are deleting
      */
-    public void delete(User island) {
+    public void delete(T t) {
         try {
-            dao.delete(island);
-            entries.remove(island);
+            dao.delete(t);
+            entries.remove(t);
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
             }
@@ -98,12 +86,12 @@ public class UserTableManager {
     /**
      * Delete all t's in the database
      *
-     * @param islands The collection of islands we are deleting
+     * @param t The collection of variables we are deleting
      */
-    public void delete(Collection<User> islands) {
+    public void delete(Collection<T> t) {
         try {
-            dao.delete(islands);
-            entries.removeAll(islands);
+            dao.delete(t);
+            entries.removeAll(t);
             if (!autoCommit) {
                 dao.commit(getDatabaseConnection());
             }
@@ -127,7 +115,7 @@ public class UserTableManager {
      *
      * @return The dao
      */
-    public Dao<User, Integer> getDao() {
+    public Dao<T, S> getDao() {
         return dao;
     }
 }
