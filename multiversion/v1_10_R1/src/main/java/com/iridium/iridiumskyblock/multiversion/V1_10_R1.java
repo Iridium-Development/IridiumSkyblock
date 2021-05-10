@@ -19,6 +19,7 @@ public class V1_10_R1 implements MultiVersion {
      * @return The material at the provided position in the chunk
      */
     @Override
+    @SuppressWarnings("deprecation")
     public XMaterial getMaterialAtPosition(ChunkSnapshot chunk, int x, int y, int z) {
         return XMaterial.matchXMaterial(Material.getMaterial(chunk.getBlockTypeId(x, y, z)));
     }
