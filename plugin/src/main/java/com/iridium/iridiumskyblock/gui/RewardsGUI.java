@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class RewardsGUI implements GUI {
 
@@ -26,7 +25,7 @@ public class RewardsGUI implements GUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        List<IslandReward> islandRewards = IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries().stream().filter(islandReward -> island == islandReward.getIsland().orElse(null)).collect(Collectors.toList());
+        List<IslandReward> islandRewards = IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island);
         if (islandRewards.size() > event.getSlot()) {
             IslandReward islandReward = islandRewards.get(event.getSlot());
             islandReward.getReward().claim((Player) event.getWhoClicked(), island);
@@ -42,7 +41,7 @@ public class RewardsGUI implements GUI {
         InventoryUtils.fillInventory(inventory);
 
         AtomicInteger atomicInteger = new AtomicInteger(0);
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries().stream().filter(islandReward -> island == islandReward.getIsland().orElse(null)).forEach(islandReward ->
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island).forEach(islandReward ->
                 inventory.setItem(atomicInteger.getAndIncrement(), ItemStackUtils.makeItem(islandReward.getReward().item))
         );
     }
