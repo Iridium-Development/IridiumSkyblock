@@ -93,6 +93,7 @@ public class Messages {
     public String maxLevelReached = "%prefix% &7Maximum level reached.";
     public String cannotAfford = "%prefix% &7You cannot afford this.";
     public String unknownUpgrade = "%prefix% &7Unknown Island upgrade.";
+    public String unknownBooster = "%prefix% &7Unknown Island booster.";
     public String alreadyTrusted = "%prefix% &7This player is already trusted.";
     public String trustedPlayer = "%prefix% &7%truster% has trusted %player% to your island.";
     public String playerTrustedYou = "%prefix% &7%truster% has trusted you to their island.";
