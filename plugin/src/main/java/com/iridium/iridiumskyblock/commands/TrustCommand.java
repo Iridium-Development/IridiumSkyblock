@@ -41,19 +41,25 @@ public class TrustCommand extends Command {
             if (args.length == 2) {
                 Player p = Bukkit.getPlayer(args[1]);
                 if (p != null) {
-                    if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().noneMatch(it -> it.getUser().getUuid().equals(p.getUniqueId()))) {
-                        IslandTrusted islandTrusted = new IslandTrusted(island.get(), IridiumSkyblockAPI.getInstance().getUser(p),
-                                IridiumSkyblockAPI.getInstance().getUser(player));
-                        IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().addEntry(islandTrusted);
+                    User u = IridiumSkyblockAPI.getInstance().getUser(p);
+                    if (u.getIsland().map(Island::getId).orElse(0) != island.get().getId()) {
+                        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().noneMatch(it -> it.getUser().getUuid().equals(p.getUniqueId()))) {
+                            IslandTrusted islandTrusted = new IslandTrusted(island.get(), IridiumSkyblockAPI.getInstance().getUser(p),
+                                    IridiumSkyblockAPI.getInstance().getUser(player));
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().addEntry(islandTrusted);
 
-                        island.get().getMembers().stream().map(user1 -> Bukkit.getPlayer(user1.getUuid())).filter(Objects::nonNull).forEach(player1 ->
-                                player1.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().trustedPlayer
-                                        .replace("%truster%", player.getName())
-                                        .replace("%player%", p.getName())
-                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
-                        );
+                            island.get().getMembers().stream().map(user1 -> Bukkit.getPlayer(user1.getUuid())).filter(Objects::nonNull).forEach(player1 ->
+                                    player1.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().trustedPlayer
+                                            .replace("%truster%", player.getName())
+                                            .replace("%player%", p.getName())
+                                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
+                            );
+                        } else {
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyTrusted.replace("%prefix%",
+                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        }
                     } else {
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyTrusted.replace("%prefix%",
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInYourIsland.replace("%prefix%",
                                 IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
