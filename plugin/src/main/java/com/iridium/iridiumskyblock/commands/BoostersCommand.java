@@ -13,7 +13,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +47,7 @@ public class BoostersCommand extends Command {
                 Booster booster = IridiumSkyblock.getInstance().getBoosterList().get(boosterName);
                 if (booster != null) {
                     IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), boosterName);
-                    if (LocalDateTime.now().until(islandBooster.getTime(), ChronoUnit.SECONDS) <= 0) {
+                    if (!islandBooster.isActive()) {
                         if (PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost)) {
                             islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
                         } else {

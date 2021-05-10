@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * Represents an islands booster
@@ -56,5 +57,14 @@ public final class IslandBooster extends IslandData {
      */
     public void setTime(LocalDateTime time) {
         this.time = ZonedDateTime.of(time, ZoneId.systemDefault()).toInstant().toEpochMilli();
+    }
+
+    /**
+     * Returns if the booster is currently active
+     *
+     * @return Returns if the booster is currently active
+     */
+    public boolean isActive() {
+        return LocalDateTime.now().until(getTime(), ChronoUnit.SECONDS) <= 0;
     }
 }
