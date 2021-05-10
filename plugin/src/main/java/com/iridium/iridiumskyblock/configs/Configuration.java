@@ -51,8 +51,6 @@ public class Configuration {
     public static class GeneratorSettings {
 
         public GeneratorType generatorType = GeneratorType.SKYBLOCK;
-        public XBiome defaultOverworldBiome = XBiome.PLAINS;
-        public XBiome defaultNetherBiome = XBiome.NETHER_WASTES;
         public int waterHeight = 96;
         public int minOceanFloorLevel = 10;
         public int maxOceanFloorLevel = 25;
