@@ -2,8 +2,13 @@ package com.iridium.iridiumskyblock.multiversion;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.ChunkSnapshot;
+import org.bukkit.craftbukkit.v1_16_R3.legacy.CraftLegacy;
 
 public class V1_16_R3 implements MultiVersion {
+
+    public V1_16_R3(){
+        CraftLegacy.init();
+    }
 
     /**
      * Returns the material at a position in a chunk.
