@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.UUID;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -20,7 +19,7 @@ import java.util.UUID;
 @Getter
 public class DatabaseManager {
 
-    private final TableManager<User, UUID> userTableManager;
+    private final UserTableManager userTableManager;
     private final IslandTableManager islandTableManager;
     private final TableManager<SchematicData, String> schematicTableManager;
     private final ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
@@ -51,7 +50,7 @@ public class DatabaseManager {
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
-        this.userTableManager = new TableManager<>(connectionSource, User.class, false);
+        this.userTableManager = new UserTableManager(connectionSource, false);
         this.islandTableManager = new IslandTableManager(connectionSource, false);
         this.schematicTableManager = new TableManager<>(connectionSource, SchematicData.class, false);
         this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
