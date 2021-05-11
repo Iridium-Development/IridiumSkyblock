@@ -9,12 +9,14 @@ import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -55,6 +57,7 @@ public class WarpsGUI implements GUI {
         AtomicInteger atomicInteger = new AtomicInteger(1);
 
         List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island);
+        Collections.reverse(islandWarps);
         for (IslandWarp islandWarp : islandWarps) {
             int slot = IridiumSkyblock.getInstance().getConfiguration().islandWarpSlots.get(atomicInteger.getAndIncrement());
             ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().warpsGUI.item, Arrays.asList(
@@ -77,10 +80,16 @@ public class WarpsGUI implements GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island);
+        Collections.reverse(islandWarps);
         AtomicInteger atomicInteger = new AtomicInteger(1);
         for (IslandWarp islandWarp : islandWarps) {
             if (IridiumSkyblock.getInstance().getConfiguration().islandWarpSlots.get(atomicInteger.getAndIncrement()) == event.getSlot()) {
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is warp " + islandWarp.getName());
+                if (event.getClick().equals(ClickType.RIGHT)) {
+                    Bukkit.dispatchCommand(event.getWhoClicked(), "is deletewarp " + islandWarp.getName());
+                } else {
+                    Bukkit.dispatchCommand(event.getWhoClicked(), "is warp " + islandWarp.getName());
+                }
+                addContent(event.getInventory());
                 return;
             }
         }

@@ -17,13 +17,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class EditWarpCommand extends Command {
+public class DeleteWarpCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public EditWarpCommand() {
-        super(Collections.singletonList("editwarp"), "Edits an Island warp", "", true);
+    public DeleteWarpCommand() {
+        super(Arrays.asList("delwarp", "deletewarp"), "Deletes an Island warp", "", true);
     }
 
     /**
@@ -44,31 +44,11 @@ public class EditWarpCommand extends Command {
             List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
             Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
             if (islandWarp.isPresent()) {
-                switch (args[2]) {
-                    case "icon":
-                        if (args.length != 4) {
-                            sender.sendMessage("/is editwarp <name> icon <icon>");
-                        }
-                        Optional<XMaterial> xMaterial = XMaterial.matchXMaterial(args[3]);
-                        if (xMaterial.isPresent()) {
-                            islandWarp.get().setIcon(xMaterial.get());
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpIconSet.replace("%prefix%",
-                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().materialDoesntExist.replace("%prefix%",
-                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        }
-                        break;
-                    case "description":
-                        if (args.length < 4) {
-                            sender.sendMessage("/is editwarp <name> description <description>");
-                        }
-                        String description = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
-                        islandWarp.get().setDescription(description);
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpDescriptionSet.replace("%prefix%",
-                                IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        break;
-                }
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().deletingWarp
+                        .replace("%name%", islandWarp.get().getName())
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                );
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().delete(islandWarp.get());
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%",
                         IridiumSkyblock.getInstance().getConfiguration().prefix)));

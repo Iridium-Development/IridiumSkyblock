@@ -94,6 +94,7 @@ public class Messages {
     public String cannotAfford = "%prefix% &7You cannot afford this.";
     public String unknownUpgrade = "%prefix% &7Unknown Island upgrade.";
     public String unknownBooster = "%prefix% &7Unknown Island booster.";
+    public String unknownWarp = "%prefix% &7Unknown Island warp.";
     public String alreadyTrusted = "%prefix% &7This player is already trusted.";
     public String trustedPlayer = "%prefix% &7%truster% has trusted %player% to your island.";
     public String playerTrustedYou = "%prefix% &7%truster% has trusted you to their island.";
@@ -107,6 +108,7 @@ public class Messages {
     public String warpLimitReached = "%prefix% &7The max warp limit has already been reached.";
     public String incorrectPassword = "%prefix% &7Incorrect Password.";
     public String teleportingWarp = "%prefix% &7Teleporting to warp %name%.";
+    public String deletingWarp = "%prefix% &7Deleting warp %name%.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
