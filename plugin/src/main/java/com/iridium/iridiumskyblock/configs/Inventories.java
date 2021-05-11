@@ -91,6 +91,14 @@ public class Inventories {
 
     public NoItemGUI boostersGUI = new NoItemGUI(27, "&7Island Boosters");
 
+    public SingleItemGUI warpsGUI = new SingleItemGUI(27, "&7%island_name%'s Island Warps", new Item(
+            XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l%warp_name%",
+            Arrays.asList(
+                    "&7%description%",
+                    "",
+                    "&b&l[!] &bLeft Click to Teleport"
+            )));
+
     public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", Collections.singletonList("&bValue per block: &7%value%"));
 
     public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player%", "%player%", Arrays.asList(
