@@ -109,6 +109,10 @@ public class Messages {
     public String incorrectPassword = "%prefix% &7Incorrect Password.";
     public String teleportingWarp = "%prefix% &7Teleporting to warp %name%.";
     public String deletingWarp = "%prefix% &7Deleting warp %name%.";
+    public String notOnAnIsland = "%prefix% &7You are not on an island.";
+    public String flightBoosterNotActive = "%prefix% &7The flight booster is not currently active.";
+    public String flightEnabled = "%prefix% &7Island flight enabled.";
+    public String flightDisabled = "%prefix% &7Island flight disabled.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
