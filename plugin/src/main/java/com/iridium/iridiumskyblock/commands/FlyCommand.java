@@ -82,7 +82,7 @@ public class FlyCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 2) {
-            return Arrays.asList("enabled", "disabled");
+            return Arrays.asList("enable", "disable", "on", "off");
         }
         return Collections.emptyList();
     }
