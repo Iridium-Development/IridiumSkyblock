@@ -381,7 +381,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.upgradesList = new HashMap<>(ImmutableMap.<String, Upgrade>builder()
                 .put("size", upgrades.sizeUpgrade)
                 .put("generator", upgrades.oresUpgrade)
-                .put("spawner", upgrades.spawnerUpgrade)
+                .put("warp", upgrades.warpsUpgrade)
                 .build());
 
         this.boosterList = new HashMap<>(ImmutableMap.<String, Booster>builder()
