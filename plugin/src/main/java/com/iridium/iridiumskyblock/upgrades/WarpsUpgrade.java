@@ -8,17 +8,17 @@ import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor
-public class SpawnerUpgrade extends UpgradeData {
-    public double modifier;
+public class WarpsUpgrade extends UpgradeData {
+    public int amount;
 
-    public SpawnerUpgrade(int money, int crystals, double modifier) {
+    public WarpsUpgrade(int money, int crystals, int amount) {
         super(money, crystals);
-        this.modifier = modifier;
+        this.amount = amount;
     }
 
     @JsonIgnore
     @Override
     public List<Placeholder> getPlaceholders() {
-        return Collections.singletonList(new Placeholder("modifier", String.valueOf(modifier)));
+        return Collections.singletonList(new Placeholder("amount", String.valueOf(amount)));
     }
 }

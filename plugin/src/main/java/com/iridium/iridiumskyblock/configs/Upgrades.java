@@ -6,7 +6,7 @@ import com.iridium.iridiumskyblock.Item;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.upgrades.OresUpgrade;
 import com.iridium.iridiumskyblock.upgrades.SizeUpgrade;
-import com.iridium.iridiumskyblock.upgrades.SpawnerUpgrade;
+import com.iridium.iridiumskyblock.upgrades.WarpsUpgrade;
 
 import java.util.Arrays;
 
@@ -80,24 +80,27 @@ public class Upgrades {
                     .build()))
             .build());
 
-    public Upgrade<SpawnerUpgrade> spawnerUpgrade = new Upgrade<>(true,
-            new Item(XMaterial.SPAWNER, 15, 1, "&b&lSpawner Speed", Arrays.asList(
-                    "&7Need more room to expand? Buy this",
-                    "&7upgrade to increase your island size.",
+    public Upgrade<WarpsUpgrade> warpsUpgrade = new Upgrade<>(true,
+            new Item(XMaterial.END_PORTAL_FRAME, 15, 1, "&b&lIsland Warps", Arrays.asList(
+                    "&7Need more island warps? Buy this",
+                    "&7upgrade to increase your island warps.",
                     "",
                     "&b&lInformation:",
                     "&b&l * &7Current Level: &b%level%",
-                    "&b&l * &7Current Modifier: &b%modifier%x faster",
                     "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
                     "&b&lLevels:",
-                    "&b&l * &7Level 1: &b1x Faster",
-                    "&b&l * &7Level 2: &b1.5x Faster",
-                    "&b&l * &7Level 3: &b2x Faster",
+                    "&b&l * &7Level 1: &b1 Warp",
+                    "&b&l * &7Level 2: &b2 Warp",
+                    "&b&l * &7Level 3: &b3 Warp",
+                    "&b&l * &7Level 4: &b4 Warp",
+                    "&b&l * &7Level 5: &b5 Warp",
                     "",
                     "&b&l[!] &bLeft Click to Purchase this Upgrade"
-            )), ImmutableMap.<Integer, SpawnerUpgrade>builder()
-            .put(1, new SpawnerUpgrade(1000, 15, 1))
-            .put(2, new SpawnerUpgrade(1000, 15, 1.5))
-            .put(3, new SpawnerUpgrade(1000, 15, 2))
+            )), ImmutableMap.<Integer, WarpsUpgrade>builder()
+            .put(1, new WarpsUpgrade(1000, 15, 1))
+            .put(2, new WarpsUpgrade(1000, 15, 2))
+            .put(3, new WarpsUpgrade(1000, 15, 3))
+            .put(4, new WarpsUpgrade(1000, 15, 4))
+            .put(5, new WarpsUpgrade(1000, 15, 5))
             .build());
 }

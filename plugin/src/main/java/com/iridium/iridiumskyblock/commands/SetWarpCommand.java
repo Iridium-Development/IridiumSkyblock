@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -46,7 +47,8 @@ public class SetWarpCommand extends Command {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpAlreadyExists.replace("%prefix%",
                         IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                if (islandWarps.size() < IridiumSkyblock.getInstance().getConfiguration().islandWarpSlots.size()) {
+                IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "warp");
+                if (islandWarps.size() < IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandUpgrade.getLevel()).amount) {
                     IslandWarp islandWarp = new IslandWarp(island.get(), player.getLocation(), args[1]);
                     if (args.length == 3) {
                         islandWarp.setPassword(args[2]);
