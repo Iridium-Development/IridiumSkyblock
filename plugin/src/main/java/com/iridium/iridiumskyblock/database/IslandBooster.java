@@ -65,6 +65,6 @@ public final class IslandBooster extends IslandData {
      * @return Returns if the booster is currently active
      */
     public boolean isActive() {
-        return LocalDateTime.now().until(getTime(), ChronoUnit.SECONDS) <= 0;
+        return LocalDateTime.now().until(getTime(), ChronoUnit.SECONDS) > 0;
     }
 }
