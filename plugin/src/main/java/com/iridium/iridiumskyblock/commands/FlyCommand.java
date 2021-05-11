@@ -49,8 +49,8 @@ public class FlyCommand extends Command {
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
             if (islandBooster.isActive() || player.hasPermission("iridiumskyblock.fly")) {
                 user.setFlying(flight);
-                player.setAllowFlight(true);
-                player.setFlying(true);
+                player.setAllowFlight(flight);
+                player.setFlying(flight);
                 if (flight) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightEnabled.replace("%prefix%",
                             IridiumSkyblock.getInstance().getConfiguration().prefix)));
