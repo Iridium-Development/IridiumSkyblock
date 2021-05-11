@@ -39,10 +39,11 @@ public class FlyCommand extends Command {
         if (island.isPresent()) {
             boolean flight = !user.isFlying();
             if (args.length == 2) {
-                if (args[1].equalsIgnoreCase("enabled") || args[1].equalsIgnoreCase("disabled") || args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("off")) {
-                    flight = args[1].equalsIgnoreCase("enabled") || args[1].equalsIgnoreCase("on");
+                if (args[1].equalsIgnoreCase("enable") || args[1].equalsIgnoreCase("disable") || args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("off")) {
+                    flight = args[1].equalsIgnoreCase("enable") || args[1].equalsIgnoreCase("on");
                 } else {
                     player.sendMessage("/is flight <enabled/disabled>");
+                    return;
                 }
             }
 
