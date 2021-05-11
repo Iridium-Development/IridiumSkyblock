@@ -389,6 +389,7 @@ public class IridiumSkyblock extends JavaPlugin {
                 .put("farming", boosters.islandFarmingBooster)
                 .put("flight", boosters.islandFlightBooster)
                 .put("hopper", boosters.islandHopperBooster)
+                .put("spawner", boosters.islandSpawnerBooster)
                 .build());
     }
 
