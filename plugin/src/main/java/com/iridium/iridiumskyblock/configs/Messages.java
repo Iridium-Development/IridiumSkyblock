@@ -101,6 +101,9 @@ public class Messages {
     public String trustDoesntExist = "%prefix% &7%player% is not trusted in your island.";
     public String createdWarp = "%prefix% &7Created warp %name%.";
     public String warpAlreadyExists = "%prefix% &7A warp with that name already exists.";
+    public String warpIconSet = "%prefix% &7Warp icon set.";
+    public String warpDescriptionSet = "%prefix% &7Warp description set.";
+    public String materialDoesntExist = "%prefix% &7Material doesnt exist.";
     public String warpLimitReached = "%prefix% &7The max warp limit has already been reached.";
     public String yes = "Yes";
     public String no = "No";
