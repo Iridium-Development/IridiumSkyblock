@@ -96,7 +96,8 @@ public class Inventories {
             Arrays.asList(
                     "&7%description%",
                     "",
-                    "&b&l[!] &bLeft Click to Teleport"
+                    "&b&l[!] &bLeft Click to Teleport",
+                    "&b&l[!] &bRight Click to Delete"
             )));
 
     public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", Collections.singletonList("&bValue per block: &7%value%"));
