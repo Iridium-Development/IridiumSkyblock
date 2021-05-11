@@ -20,7 +20,6 @@ import java.util.UUID;
 
 /**
  * Class which creates {@link ItemStack}'s.
- * TODO: Apply the builder pattern to this class
  */
 public class ItemStackUtils {
 

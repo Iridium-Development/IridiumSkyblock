@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
@@ -45,16 +46,18 @@ public class LeaveCommand extends Command {
             if (user.getIslandRank().equals(IslandRank.OWNER)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotLeaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                // TODO: Add confirmation GUI
-                user.setIsland(null);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                for (User member : island.get().getMembers()) {
-                    Player p = Bukkit.getPlayer(member.getUuid());
-                    if (p != null) {
-                        p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerLeftIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                ConfirmationGUI confirmationGUI = new ConfirmationGUI(() -> {
+                    user.setIsland(null);
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    for (User member : island.get().getMembers()) {
+                        Player p = Bukkit.getPlayer(member.getUuid());
+                        if (p != null) {
+                            p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerLeftIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        }
                     }
-                }
-                PlayerUtils.teleportSpawn(player);
+                    PlayerUtils.teleportSpawn(player);
+                });
+                player.openInventory(confirmationGUI.getInventory());
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
