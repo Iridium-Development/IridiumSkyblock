@@ -59,8 +59,9 @@ public class BoostersCommand extends Command {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownBooster.replace("%prefix%",
                             IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
+            } else {
+                player.openInventory(new BoostersGUI(island.get()).getInventory());
             }
-            player.openInventory(new BoostersGUI(island.get()).getInventory());
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
