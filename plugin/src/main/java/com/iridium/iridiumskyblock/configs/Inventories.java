@@ -35,8 +35,8 @@ public class Inventories {
     );
 
     public InventoryConfig missionSelectGUI = new InventoryConfig(27, "&7Island Missions", ImmutableMap.<String, Item>builder()
-            .put("is missions once", new Item(XMaterial.PLAYER_HEAD, 15, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGE2YWU1YjM0YzRmNzlhNWY5ZWQ2Y2NjMzNiYzk4MWZjNDBhY2YyYmZjZDk1MjI2NjRmZTFjNTI0ZDJlYjAifX19", 1, "&b&lQuests", Collections.emptyList()))
-            .put("is missions daily", new Item(XMaterial.PLAYER_HEAD, 11, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGE2YWU1YjM0YzRmNzlhNWY5ZWQ2Y2NjMzNiYzk4MWZjNDBhY2YyYmZjZDk1MjI2NjRmZTFjNTI0ZDJlYjAifX19", 1, "&b&lDaily Missions", Collections.emptyList()))
+            .put("is missions once", new Item(XMaterial.WRITABLE_BOOK, 15, 1, "&b&lQuests", Collections.emptyList()))
+            .put("is missions daily", new Item(XMaterial.DIAMOND_SWORD, 11, 1, "&b&lDaily Missions", Collections.emptyList()))
             .build()
     );
 
