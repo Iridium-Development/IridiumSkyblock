@@ -42,7 +42,7 @@ public class FlyCommand extends Command {
                 if (args[1].equalsIgnoreCase("enable") || args[1].equalsIgnoreCase("disable") || args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("off")) {
                     flight = args[1].equalsIgnoreCase("enable") || args[1].equalsIgnoreCase("on");
                 } else {
-                    player.sendMessage("/is flight <enabled/disabled>");
+                    player.sendMessage("/is flight <enable/disable>");
                     return;
                 }
             }
