@@ -99,6 +99,9 @@ public class Messages {
     public String playerTrustedYou = "%prefix% &7%truster% has trusted you to their island.";
     public String trustRevoked = "%prefix% &7Island Trust for %player% has been revoked.";
     public String trustDoesntExist = "%prefix% &7%player% is not trusted in your island.";
+    public String createdWarp = "%prefix% &7Created warp %name%.";
+    public String warpAlreadyExists = "%prefix% &7A warp with that name already exists.";
+    public String warpLimitReached = "%prefix% &7The max warp limit has already been reached.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

@@ -42,6 +42,14 @@ public class Configuration {
             .put(10, 25)
             .build();
 
+    public Map<Integer, Integer> islandWarpSlots = ImmutableMap.<Integer, Integer>builder()
+            .put(1, 9)
+            .put(2, 11)
+            .put(3, 13)
+            .put(4, 15)
+            .put(5, 17)
+            .build();
+
     /**
      * Settings for the {@link org.bukkit.generator.ChunkGenerator} of IridiumSkyblock.
      * Allows fine-tuning of the {@link com.iridium.iridiumskyblock.generators.OceanGenerator}.
