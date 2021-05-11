@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
@@ -49,7 +50,13 @@ public class BlockBreakListener implements Listener {
         Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + material.name(), 1));
+        island.ifPresent(value -> {
+            IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + material.name(), 1);
+            IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
+            if (islandBooster.isActive()) {
+                event.setExpToDrop(event.getExpToDrop() * 2);
+            }
+        });
     }
 
 }
