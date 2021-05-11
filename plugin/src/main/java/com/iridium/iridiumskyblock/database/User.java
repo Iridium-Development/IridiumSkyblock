@@ -44,6 +44,8 @@ public final class User {
 
     private boolean bypass = false;
 
+    private boolean flying = false;
+
     private Location schematicPos1;
     private Location schematicPos2;
 
