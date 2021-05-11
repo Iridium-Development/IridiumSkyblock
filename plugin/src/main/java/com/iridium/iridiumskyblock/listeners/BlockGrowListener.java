@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBooster;
 import org.bukkit.CropState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,7 +21,18 @@ public class BlockGrowListener implements Listener {
         XMaterial material = XMaterial.matchXMaterial(event.getNewState().getType());
 
         if (event.getNewState().getData() instanceof Crops) {
-            if (!((Crops) event.getNewState().getData()).getState().equals(CropState.RIPE)) return;
+            Crops crops = (Crops) event.getNewState().getData();
+            if (island.isPresent()) {
+                IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "farming");
+                if (islandBooster.isActive()) {
+                    CropState newState = CropState.getByData((byte) (crops.getState().getData() + 1));
+                    if (newState != null) {
+                        crops.setState(newState);
+                    }
+                }
+            }
+            if (!crops.getState().equals(CropState.RIPE)) return;
+
         }
 
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:" + material.name(), 1));

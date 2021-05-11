@@ -388,7 +388,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.boosterList = new HashMap<>(ImmutableMap.<String, Booster>builder()
                 .put("experience", boosters.islandExperienceBooster)
                 .put("flight", boosters.islandFlightBooster)
-                .put("hopper", boosters.islandHopperBooster)
+                .put("farming", boosters.islandFarmingBooster)
                 .put("spawner", boosters.islandSpawnerBooster)
                 .build());
     }
