@@ -42,12 +42,12 @@ public class EditWarpCommand extends Command {
 
         if (island.isPresent()) {
             List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
-            Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equals(args[1])).findFirst();
+            Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
             if (islandWarp.isPresent()) {
                 switch (args[2]) {
                     case "icon":
                         if (args.length != 4) {
-                            sender.sendMessage("/is setwarp <name> icon <icon>");
+                            sender.sendMessage("/is editwarp <name> icon <icon>");
                         }
                         Optional<XMaterial> xMaterial = XMaterial.matchXMaterial(args[3]);
                         if (xMaterial.isPresent()) {
@@ -61,7 +61,7 @@ public class EditWarpCommand extends Command {
                         break;
                     case "description":
                         if (args.length < 4) {
-                            sender.sendMessage("/is setwarp <name> description <description>");
+                            sender.sendMessage("/is editwarp <name> description <description>");
                         }
                         String description = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
                         islandWarp.get().setDescription(description);
@@ -99,7 +99,7 @@ public class EditWarpCommand extends Command {
         }
         if (args.length == 4) {
             if (args[2].equalsIgnoreCase("icon")) {
-                return Arrays.stream(XMaterial.values()).map(XMaterial::toString).collect(Collectors.toList());
+                return Arrays.stream(XMaterial.values()).map(XMaterial::name).filter(s -> s.toLowerCase().contains(args[3].toLowerCase())).collect(Collectors.toList());
             }
         }
         return Collections.emptyList();

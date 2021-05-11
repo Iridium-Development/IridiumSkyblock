@@ -105,6 +105,8 @@ public class Messages {
     public String warpDescriptionSet = "%prefix% &7Warp description set.";
     public String materialDoesntExist = "%prefix% &7Material doesnt exist.";
     public String warpLimitReached = "%prefix% &7The max warp limit has already been reached.";
+    public String incorrectPassword = "%prefix% &7Incorrect Password.";
+    public String teleportingWarp = "%prefix% &7Teleporting to warp %name%.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
