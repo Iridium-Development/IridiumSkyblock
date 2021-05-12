@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,6 +49,8 @@ public final class User {
 
     private Location schematicPos1;
     private Location schematicPos2;
+
+    private BukkitTask teleportingTask;
 
     /**
      * The default constructor.

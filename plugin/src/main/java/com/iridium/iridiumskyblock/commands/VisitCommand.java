@@ -47,7 +47,7 @@ public class VisitCommand extends Command {
 
         if (user.getIsland().isPresent()) {
             if ((user.getIsland()).get().isVisitable() || p.hasPermission("iridiumskyblock.visitbypass")) {
-                IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, user.getIsland().get());
+                IridiumSkyblock.getInstance().getIslandManager().teleportHome(p, user.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
             } else {
                 p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }

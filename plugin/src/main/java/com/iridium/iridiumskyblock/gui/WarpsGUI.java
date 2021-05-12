@@ -88,6 +88,7 @@ public class WarpsGUI implements GUI {
                     Bukkit.dispatchCommand(event.getWhoClicked(), "is deletewarp " + islandWarp.getName());
                 } else {
                     Bukkit.dispatchCommand(event.getWhoClicked(), "is warp " + islandWarp.getName());
+                    event.getWhoClicked().closeInventory();
                 }
                 addContent(event.getInventory());
                 return;
