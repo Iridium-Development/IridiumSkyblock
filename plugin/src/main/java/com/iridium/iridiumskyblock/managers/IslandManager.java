@@ -65,6 +65,22 @@ public class IslandManager {
     }
 
     /**
+     * Teleports a player to an Island Warp
+     *
+     * @param player     The player we are teleporting
+     * @param islandWarp The warp we are teleporting them to
+     */
+    public void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
+        player.setFallDistance(0);
+        PaperLib.teleportAsync(player, islandWarp.getLocation()).thenRun(() ->
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%name%", islandWarp.getName())
+                )
+        );
+    }
+
+    /**
      * Creates an island for a specific Player and then teleports them to the island home.
      *
      * @param player          The owner of the island

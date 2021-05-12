@@ -56,11 +56,7 @@ public class WarpsCommand extends Command {
                             }
                         }
                     }
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                            .replace("%name%", islandWarp.get().getName())
-                    );
-                    player.teleport(islandWarp.get().getLocation());
+                    IridiumSkyblock.getInstance().getIslandManager().teleportWarp(player, islandWarp.get());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%",
                             IridiumSkyblock.getInstance().getConfiguration().prefix)));
