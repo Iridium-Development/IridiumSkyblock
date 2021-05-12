@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Allows users to select a schematic.
@@ -41,9 +42,9 @@ public abstract class SchematicGUI implements GUI {
 
         InventoryUtils.fillInventory(inventory);
 
-        for (Schematics.SchematicConfig schematicConfig : IridiumSkyblock.getInstance().getSchematics().schematics) {
-            inventory.setItem(schematicConfig.item.slot, ItemStackUtils.makeItem(schematicConfig.item));
-            schematics.put(schematicConfig.item.slot, schematicConfig);
+        for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+            inventory.setItem(entry.getValue().item.slot, ItemStackUtils.makeItem(entry.getValue().item));
+            schematics.put(entry.getValue().item.slot, entry.getValue());
         }
     }
 
