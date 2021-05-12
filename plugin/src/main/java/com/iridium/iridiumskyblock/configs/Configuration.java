@@ -22,6 +22,7 @@ public class Configuration {
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
 
     public boolean defaultIslandPublic = true;
+    public boolean voidTeleport = true;
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
