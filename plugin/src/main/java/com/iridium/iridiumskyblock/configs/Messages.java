@@ -113,6 +113,8 @@ public class Messages {
     public String flightBoosterNotActive = "%prefix% &7The flight booster is not currently active.";
     public String flightEnabled = "%prefix% &7Island flight enabled.";
     public String flightDisabled = "%prefix% &7Island flight disabled.";
+    public String bankWithdrew = "%prefix% &7You successfully withdrew %amount% %type% from your island bank.";
+    public String bankDeposited = "%prefix% &7You successfully deposited %amount% %type% from your island bank.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

@@ -48,7 +48,11 @@ public class ExperienceBankItem extends BankItem {
             if (experience > 0) {
                 islandBank.setNumber(islandBank.getNumber() - experience);
                 PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) + experience);
-                // TODO: Success Message
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%amount%", String.valueOf(experience))
+                        .replace("%type%", "Experience")
+                );
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -72,7 +76,11 @@ public class ExperienceBankItem extends BankItem {
             if (experience > 0) {
                 islandBank.setNumber(islandBank.getNumber() + experience);
                 PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) - experience);
-                // TODO: Success Message
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%amount%", String.valueOf(experience))
+                        .replace("%type%", "Experience")
+                );
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
