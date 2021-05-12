@@ -46,6 +46,10 @@ public class PlayerMoveListener implements Listener {
                 }
             }
         }
+        if (event.getTo().getY() < 0 & IridiumSkyblock.getInstance().getConfiguration().voidTeleport) {
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+            island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, value, 0));
+        }
     }
 
 }
