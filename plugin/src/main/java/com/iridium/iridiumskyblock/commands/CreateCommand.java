@@ -10,10 +10,7 @@ import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * Command which creates a new Island for a user.
@@ -47,7 +44,7 @@ public class CreateCommand extends Command {
                 createIsland(player, args[1]);
                 break;
             case 3:
-                Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.stream().filter(config -> config.name.equalsIgnoreCase(args[2])).findFirst();
+                Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(args[2])).map(Map.Entry::getValue).findFirst();
                 if (schematicConfig.isPresent()) {
                     IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
                 } else {
@@ -92,7 +89,7 @@ public class CreateCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return IridiumSkyblock.getInstance().getSchematics().schematics.stream().map(schematicConfig -> schematicConfig.name).collect(Collectors.toList());
+            return new ArrayList<>(IridiumSkyblock.getInstance().getSchematics().schematics.keySet());
         }
 
         // We currently don't want to tab-completion here
