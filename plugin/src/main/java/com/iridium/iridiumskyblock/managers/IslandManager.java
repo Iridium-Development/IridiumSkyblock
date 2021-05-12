@@ -13,6 +13,7 @@ import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -443,6 +444,27 @@ public class IslandManager {
         }
 
         return missions;
+    }
+
+    /**
+     * Gets all entities on an island
+     *
+     * @param island The specified Island
+     * @return A list of all entities on that island
+     */
+    public CompletableFuture<List<Entity>> getEntities(@NotNull Island island, @NotNull World world) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Chunk> chunks = getIslandChunks(island, world).join();
+            List<Entity> entities = new ArrayList<>();
+            for (Chunk chunk : chunks) {
+                for (Entity entity : chunk.getEntities()) {
+                    if (island.isInIsland(entity.getLocation())) {
+                        entities.add(entity);
+                    }
+                }
+            }
+            return entities;
+        });
     }
 
     /**

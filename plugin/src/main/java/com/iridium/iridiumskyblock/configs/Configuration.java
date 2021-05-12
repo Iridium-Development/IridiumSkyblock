@@ -27,6 +27,8 @@ public class Configuration {
     public int schematicPastingDelay = 1;
     public int islandRecalculateInterval = 10;
 
+    public int maxIslandEntities = 100;
+
     public GeneratorSettings generatorSettings = new GeneratorSettings();
 
     public Map<Integer, Integer> islandTopSlots = ImmutableMap.<Integer, Integer>builder()
