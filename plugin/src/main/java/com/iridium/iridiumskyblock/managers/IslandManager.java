@@ -13,6 +13,7 @@ import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -142,6 +143,9 @@ public class IslandManager {
      * @param schematicID The ID of the schematic we are pasting
      */
     public void regenerateIsland(@NotNull Island island, @NotNull String schematicID) {
+        getEntities(island, IridiumSkyblockAPI.getInstance().getWorld()).thenAccept(entities ->
+                entities.stream().filter(entity -> !(entity instanceof Player)).forEach(Entity::remove)
+        );
         deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld(), 0).thenRun(() ->
                 IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematicID, 0)
         );
@@ -610,6 +614,27 @@ public class IslandManager {
             }
         }
         return true;
+    }
+
+    /**
+     * Gets all entities on an island
+     *
+     * @param island The specified Island
+     * @return A list of all entities on that island
+     */
+    public CompletableFuture<List<Entity>> getEntities(@NotNull Island island, @NotNull World world) {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Chunk> chunks = getIslandChunks(island, world).join();
+            List<Entity> entities = new ArrayList<>();
+            for (Chunk chunk : chunks) {
+                for (Entity entity : chunk.getEntities()) {
+                    if (island.isInIsland(entity.getLocation())) {
+                        entities.add(entity);
+                    }
+                }
+            }
+            return entities;
+        });
     }
 
     /**
