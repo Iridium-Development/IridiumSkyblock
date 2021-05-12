@@ -64,6 +64,7 @@ public class IslandManager {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         if (delay < 1) {
             teleportHome(player, island);
+            return;
         }
         BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
             teleportHome(player, island);
@@ -97,6 +98,7 @@ public class IslandManager {
         );
         if (delay < 1) {
             teleportWarp(player, islandWarp);
+            return;
         }
         BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
             teleportWarp(player, islandWarp);
@@ -174,15 +176,24 @@ public class IslandManager {
     /**
      * Deletes all blocks in the island and re-pastes the schematic.
      *
-     * @param island      The specified Island
-     * @param schematicID The ID of the schematic we are pasting
+     * @param island          The specified Island
+     * @param schematicConfig The schematic we are pasting
      */
-    public void regenerateIsland(@NotNull Island island, @NotNull String schematicID) {
-        getEntities(island, IridiumSkyblockAPI.getInstance().getWorld()).thenAccept(entities ->
-                entities.stream().filter(entity -> !(entity instanceof Player)).forEach(Entity::remove)
-        );
-        deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld(), 0).thenRun(() ->
-                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematicID, 0)
+    public void regenerateIsland(@NotNull Island island, @NotNull Schematics.SchematicConfig schematicConfig) {
+        deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld(), 0).join();
+        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, IridiumSkyblockAPI.getInstance().getWorld(), schematicConfig.overworld.schematicID, 0).join();
+
+        island.setHome(island.getCenter(IridiumSkyblockAPI.getInstance().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome));
+
+        getEntities(island, IridiumSkyblockAPI.getInstance().getWorld()).thenAccept(entities -> {
+                    for (Entity entity : entities) {
+                        if (entity instanceof Player) {
+                            teleportHome((Player) entity, island, 0);
+                        } else {
+                            entity.remove();
+                        }
+                    }
+                }
         );
     }
 

@@ -120,6 +120,7 @@ public class Messages {
     public String cannotManageTrusts = "%prefix% &7You cannot manage Island Trusts.";
     public String cannotManageBorder = "%prefix% &7You cannot change the Island Border.";
     public String teleportCanceled = "%prefix% &7Teleportation Canceled, Please stand still.";
+    public String unknownSchematic = "%prefix% &7Unknown Schematic.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
