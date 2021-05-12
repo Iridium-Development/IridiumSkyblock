@@ -372,6 +372,10 @@ public class IridiumSkyblock extends JavaPlugin {
         this.permissionList.add(permissions.pickupItems);
         this.permissionList.add(permissions.dropItems);
         this.permissionList.add(permissions.interactEntities);
+        this.permissionList.add(permissions.manageWarps);
+        this.permissionList.add(permissions.withdrawBank);
+        this.permissionList.add(permissions.trust);
+        this.permissionList.add(permissions.border);
 
         this.bankItemList = new ArrayList<>();
         this.bankItemList.add(bankItems.crystalsBankItem);
