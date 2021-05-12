@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
-import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.j256.ormlite.field.DatabaseField;
@@ -14,23 +13,17 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -152,23 +145,18 @@ public final class Island {
 
     /**
      * Returns the Island's total value, based on the valuable blocks and spawners.
+     * TODO: Actually account for spawners
      *
      * @return The Island value
      */
     public double getValue() {
-        AtomicReference<Double> value = new AtomicReference<>((double) 0);
+        double value = 0;
 
         for (XMaterial material : IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet()) {
-            value.updateAndGet(v -> v + getValueOf(material));
+            value += getValueOf(material);
         }
 
-        List<Chunk> chunks = IridiumSkyblock.getInstance().getIslandManager().getIslandChunks(this, IridiumSkyblockAPI.getInstance().getWorld()).join();
-
-        chunks.forEach(chunk -> Arrays.stream(chunk.getTileEntities()).filter(blockState -> blockState instanceof CreatureSpawner).map(blockState -> (CreatureSpawner) blockState).collect(Collectors.toList()).forEach(
-                creatureSpawner -> value.updateAndGet(v -> v + getValueOf(creatureSpawner.getSpawnedType())))
-        );
-
-        return value.get();
+        return value;
     }
 
     /**
@@ -180,20 +168,6 @@ public final class Island {
     public double getValueOf(XMaterial material) {
         Optional<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(this, material);
         return islandBlocks.map(blocks -> blocks.getAmount() * IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value).orElse(0.0);
-    }
-
-    /**
-     * Returns the value of the provided Spawner on this Island.
-     *
-     * @param entityType The EntityType
-     * @return The value of this block on the island, 0 if it isn't valuable
-     */
-    public double getValueOf(EntityType entityType) {
-        BlockValues.ValuableBlock valuableBlock = IridiumSkyblock.getInstance().getBlockValues().spawnerValues.get(entityType);
-        if (valuableBlock != null) {
-            return valuableBlock.value;
-        }
-        return 0;
     }
 
     /**
