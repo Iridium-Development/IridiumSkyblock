@@ -43,6 +43,10 @@ public class UnTrustCommand extends Command {
         User targetUser = IridiumSkyblockAPI.getInstance().getUser(Bukkit.getServer().getOfflinePlayer(args[1]));
 
         if (island.isPresent()) {
+            if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().trust)) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageTrusts.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return;
+            }
             Optional<IslandTrusted> islandTrusted =
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().filter(islandTrusted1 ->
                             islandTrusted1.getUser().getUuid().equals(targetUser.getUuid())

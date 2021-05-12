@@ -32,5 +32,9 @@ public class Permissions {
     public Permission pickupItems = new Permission("pickupItems", new Item(XMaterial.HOPPER, 28, 1, "&bPickup Items", Arrays.asList("&7Grant the ability to pickup items on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
     public Permission dropItems = new Permission("dropItems", new Item(XMaterial.GHAST_TEAR, 29, 1, "&bDrop Items", Arrays.asList("&7Grant the ability to drop items on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
     public Permission interactEntities = new Permission("interactEntities", new Item(XMaterial.CREEPER_HEAD, 30, 1, "&bInteract with Entities", Arrays.asList("&7Grant the ability to interact with entities on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
+    public Permission manageWarps = new Permission("manageWarps", new Item(XMaterial.END_PORTAL_FRAME, 31, 1, "&bManage Warps", Arrays.asList("&7Grant the ability to create/edit/delete warps for your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
+    public Permission withdrawBank = new Permission("withdrawBank", new Item(XMaterial.GOLD_INGOT, 32, 1, "&bWithdraw Bank", Arrays.asList("&7Grants the ability to withdraw money from the Island Bank.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
+    public Permission trust = new Permission("trust", new Item(XMaterial.EMERALD, 33, 1, "&bTrust Users", Arrays.asList("&7Grant the ability to manage Island Trusts.", "", "&b&lPermission", "%permission%")), IslandRank.MODERATOR);
+    public Permission border = new Permission("border", new Item(XMaterial.BEACON, 34, 1, "&bIsland Border", Arrays.asList("&7Grant the ability to Change the Island border.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
 
 }
