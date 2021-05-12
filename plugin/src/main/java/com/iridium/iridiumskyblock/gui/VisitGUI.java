@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -88,7 +87,8 @@ public class VisitGUI implements GUI {
             int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
             if (islands.size() > index) {
                 Island island = islands.get(index);
-                IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
+                Bukkit.dispatchCommand(event.getWhoClicked(), "is visit " + island.getOwner().getName());
+                event.getWhoClicked().closeInventory();
             }
         }
     }

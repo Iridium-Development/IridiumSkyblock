@@ -28,7 +28,7 @@ public class Messages {
     public String islandWithNameAlreadyExists = "%prefix% &7An Island with that name already exists.";
     public String islandSchematicNotFound = "%prefix% &7No schematic with that name exists.";
     public String islandDeleted = "%prefix% &7Your island has been deleted.";
-    public String teleportingHome = "%prefix% &7Teleporting home...";
+    public String teleportingHome = "%prefix% &7Teleporting to your Island Home";
     public String setHome = "%prefix% &7Your Island home has been set to this location.";
     public String isNotSafe = "%prefix% &7This location is not safe.";
     public String invitedPlayer = "%prefix% &7You have invited %player% to join your island.";
@@ -119,6 +119,7 @@ public class Messages {
     public String cannotWithdraw = "%prefix% &7You cannot withdraw from the island bank.";
     public String cannotManageTrusts = "%prefix% &7You cannot manage Island Trusts.";
     public String cannotManageBorder = "%prefix% &7You cannot change the Island Border.";
+    public String teleportCanceled = "%prefix% &7Teleportation Canceled, Please stand still.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

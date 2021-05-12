@@ -15,6 +15,7 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -57,12 +58,51 @@ public class IslandManager {
      *
      * @param player The player we are teleporting
      * @param island The island we are teleporting them to
+     * @param delay  How long the player should stand still for before teleporting
      */
-    public void teleportHome(@NotNull Player player, @NotNull Island island) {
+    public void teleportHome(@NotNull Player player, @NotNull Island island, int delay) {
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        if (delay < 1) {
+            teleportHome(player, island);
+        }
+        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
+            teleportHome(player, island);
+            IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(null);
+        }, 20L * delay);
+        IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(bukkitTask);
+    }
+
+    /**
+     * Teleports a player to the Island's home
+     *
+     * @param player The player we are teleporting
+     * @param island The island we are teleporting them to
+     */
+    private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, island.getHome()).thenRun(() ->
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
+        PaperLib.teleportAsync(player, island.getHome());
+    }
+
+    /**
+     * Teleports a player to an Island Warp
+     *
+     * @param player     The player we are teleporting
+     * @param islandWarp The warp we are teleporting them to
+     * @param delay      How long the player should stand still for before teleporting
+     */
+    public void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp, int delay) {
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                .replace("%name%", islandWarp.getName())
         );
+        if (delay < 1) {
+            teleportWarp(player, islandWarp);
+        }
+        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
+            teleportWarp(player, islandWarp);
+            IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(null);
+        }, 20L * delay);
+        IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(bukkitTask);
     }
 
     /**
@@ -71,14 +111,9 @@ public class IslandManager {
      * @param player     The player we are teleporting
      * @param islandWarp The warp we are teleporting them to
      */
-    public void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
+    private void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, islandWarp.getLocation()).thenRun(() ->
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%name%", islandWarp.getName())
-                )
-        );
+        PaperLib.teleportAsync(player, islandWarp.getLocation());
     }
 
     /**

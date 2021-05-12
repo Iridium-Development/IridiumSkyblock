@@ -9,7 +9,6 @@ import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +80,7 @@ public class IslandTopGUI implements GUI {
         if (!islandSlots.containsKey(event.getSlot())) return;
 
         Island island = islandSlots.get(event.getSlot());
-        IridiumSkyblock.getInstance().getIslandManager().teleportHome((Player) event.getWhoClicked(), island);
+        Bukkit.dispatchCommand(event.getWhoClicked(), "is visit " + island.getOwner().getName());
     }
 
 }
