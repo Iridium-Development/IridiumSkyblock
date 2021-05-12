@@ -185,7 +185,7 @@ public class IslandManager {
 
         island.setHome(island.getCenter(IridiumSkyblockAPI.getInstance().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome));
 
-        getEntities(island, IridiumSkyblockAPI.getInstance().getWorld()).thenAccept(entities -> {
+        getEntities(island, IridiumSkyblockAPI.getInstance().getWorld()).thenAccept(entities -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                     for (Entity entity : entities) {
                         if (entity instanceof Player) {
                             teleportHome((Player) entity, island, 0);
@@ -193,7 +193,7 @@ public class IslandManager {
                             entity.remove();
                         }
                     }
-                }
+                })
         );
     }
 
