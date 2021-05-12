@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -13,20 +14,31 @@ import java.util.Optional;
 
 public class EntityDamageListener implements Listener {
 
-    // TODO: Implement Peaceful, fix hurting with projectiles
-
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
         if (!island.isPresent()) return;
-        if (!(event.getDamager() instanceof Player)) return;
+        if (event.getDamager() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().killMobs)) {
+                return;
+            }
 
-        Player player = (Player) event.getDamager();
-        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().killMobs)) {
-            return;
+            event.setCancelled(true);
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
 
-        event.setCancelled(true);
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        if (event.getDamager() instanceof Projectile) {
+            Projectile projectile = (Projectile) event.getDamager();
+            if (projectile.getShooter() instanceof Player) {
+                Player player = (Player) projectile.getShooter();
+                if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().killMobs)) {
+                    return;
+                }
+
+                event.setCancelled(true);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+        }
     }
 }
