@@ -26,7 +26,7 @@ public class Configuration {
     public int distance = 151;
     public int schematicPastingDelay = 1;
     public int islandRecalculateInterval = 10;
-    public int teleportDelay = 3;
+    public int teleportDelay = 0;
 
     public GeneratorSettings generatorSettings = new GeneratorSettings();
 
