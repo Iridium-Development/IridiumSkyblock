@@ -46,7 +46,11 @@ public class MoneyBankItem extends BankItem {
             if (money > 0) {
                 islandBank.setNumber(islandBank.getNumber() - money);
                 IridiumSkyblock.getInstance().getEconomy().depositPlayer(player, money);
-                // TODO: Success Message
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%amount%", String.valueOf(money))
+                        .replace("%type%", "Money")
+                );
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -70,7 +74,11 @@ public class MoneyBankItem extends BankItem {
             if (money > 0) {
                 islandBank.setNumber(islandBank.getNumber() + money);
                 IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, money);
-                // TODO: Success Message
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%amount%", String.valueOf(money))
+                        .replace("%type%", "Money")
+                );
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
