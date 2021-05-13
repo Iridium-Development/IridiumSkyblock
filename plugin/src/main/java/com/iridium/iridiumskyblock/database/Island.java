@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -266,7 +267,13 @@ public final class Island {
      * @return if the location is inside the island
      */
     public boolean isInIsland(@NotNull Location location) {
-        return isInIsland(location.getBlockX(), location.getBlockZ());
+        IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
+        World world = location.getWorld();
+        if (Objects.equals(world, islandManager.getWorld()) || Objects.equals(world, islandManager.getNetherWorld()) || Objects.equals(world, islandManager.getEndWorld())) {
+            return isInIsland(location.getBlockX(), location.getBlockZ());
+        } else {
+            return false;
+        }
     }
 
     /**
