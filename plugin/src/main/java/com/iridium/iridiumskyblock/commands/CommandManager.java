@@ -79,6 +79,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(new EditWarpCommand());
         registerCommand(new DeleteWarpCommand());
         registerCommand(new FlyCommand());
+        registerCommand(new LevelCommand());
 
         commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
     }
