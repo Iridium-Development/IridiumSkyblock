@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -39,8 +40,13 @@ public class SetHomeCommand extends Command {
 
         if (island.isPresent()) {
             if (island.get().isInIsland(player.getLocation())) {
-                island.get().setHome(player.getLocation());
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                if (LocationUtils.isSafe(player.getLocation())) {
+                    island.get().setHome(player.getLocation());
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                } else {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%",
+                            IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().onlySetHomeOnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
@@ -59,7 +65,8 @@ public class SetHomeCommand extends Command {
      * @return The list of tab completions for this command
      */
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
+    public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String
+            label, String[] args) {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
         return Collections.emptyList();
