@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -53,15 +54,20 @@ public class SetWarpCommand extends Command {
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "warp");
                 if (islandWarps.size() < IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandUpgrade.getLevel()).amount) {
                     if (island.get().isInIsland(player.getLocation())) {
-                        IslandWarp islandWarp = new IslandWarp(island.get(), player.getLocation(), args[1]);
-                        if (args.length == 3) {
-                            islandWarp.setPassword(args[2]);
+                        if(LocationUtils.isSafe(player.getLocation())) {
+                            IslandWarp islandWarp = new IslandWarp(island.get(), player.getLocation(), args[1]);
+                            if (args.length == 3) {
+                                islandWarp.setPassword(args[2]);
+                            }
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().addEntry(islandWarp);
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().createdWarp
+                                    .replace("%name%", args[1])
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                            );
+                        }else {
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%",
+                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
-                        IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().addEntry(islandWarp);
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().createdWarp
-                                .replace("%name%", args[1])
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        );
                     } else {
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().onlySetWarpOnIsland.replace("%prefix%",
                                 IridiumSkyblock.getInstance().getConfiguration().prefix)));
