@@ -4,7 +4,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -81,17 +80,17 @@ public class IridiumSkyblockAPI {
      * @since 3.0.0
      */
     public World getWorld() {
-        return Bukkit.getWorld(iridiumSkyblock.getConfiguration().worldName);
+        return IridiumSkyblock.getInstance().getIslandManager().getWorld();
     }
 
     /**
-     * Returns the overworld as specified in {@link Configuration#netherWorldName}.
+     * Returns the Nether World.
      *
      * @return The nether skyblock {@link World}, might be null if some third-party plugin deleted it
      * @since 3.0.0
      */
     public World getNetherWorld() {
-        return Bukkit.getWorld(iridiumSkyblock.getConfiguration().netherWorldName);
+        return IridiumSkyblock.getInstance().getIslandManager().getNetherWorld();
     }
 
 }
