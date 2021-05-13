@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Permission;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
@@ -74,7 +73,7 @@ public class PermissionsGUI implements GUI {
         for (Permission permission : IridiumSkyblock.getInstance().getPermissionList()) {
             if (permission.getItem().slot != event.getSlot()) continue;
 
-            User user = IridiumSkyblockAPI.getInstance().getUser((Player) event.getWhoClicked());
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser((Player) event.getWhoClicked());
             if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, IridiumSkyblock.getInstance().getPermissions().changePermissions)) {
                 event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangePermissions.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {

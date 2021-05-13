@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -54,7 +54,7 @@ public final class IslandTrusted extends IslandData {
      * @return The trusted user
      */
     public User getUser() {
-        return IridiumSkyblockAPI.getInstance().getUser(Bukkit.getOfflinePlayer(user));
+        return IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getOfflinePlayer(user));
     }
 
     /**
@@ -63,7 +63,7 @@ public final class IslandTrusted extends IslandData {
      * @return The User who trusted the other user.
      */
     public User getTruster() {
-        return IridiumSkyblockAPI.getInstance().getUser(Bukkit.getOfflinePlayer(truster));
+        return IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getOfflinePlayer(truster));
     }
 
     /**

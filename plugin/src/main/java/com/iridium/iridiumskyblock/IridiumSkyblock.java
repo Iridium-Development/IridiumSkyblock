@@ -163,7 +163,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.economy = setupEconomy();
 
         // Send island border to all players
-        Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
+        Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         // Auto recalculate islands
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {

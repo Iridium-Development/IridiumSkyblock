@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -42,16 +41,16 @@ public class DemoteCommand extends Command {
             return;
         }
         Player player = (Player) sender;
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-            User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
+            User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
 
             if (island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
                 IslandRank nextRank = IslandRank.getByLevel(offlinePlayerUser.getIslandRank().getLevel() - 1);
-                if (nextRank != null && offlinePlayerUser.getIslandRank().getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().demote)) {
+                if (nextRank != null && offlinePlayerUser.getIslandRank().getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), IridiumSkyblock.getInstance().getPermissions().demote)) {
                     if (nextRank.equals(IslandRank.VISITOR)) {
                         Bukkit.getServer().dispatchCommand(player, "is kick " + args[1]);
                     } else {

@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
@@ -35,21 +34,21 @@ public class TrustCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(player), IridiumSkyblock.getInstance().getPermissions().trust)) {
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), IridiumSkyblock.getInstance().getPermissions().trust)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageTrusts.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return;
             }
             if (args.length == 2) {
                 Player p = Bukkit.getPlayer(args[1]);
                 if (p != null) {
-                    User u = IridiumSkyblockAPI.getInstance().getUser(p);
+                    User u = IridiumSkyblock.getInstance().getUserManager().getUser(p);
                     if (u.getIsland().map(Island::getId).orElse(0) != island.get().getId()) {
                         if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().noneMatch(it -> it.getUser().getUuid().equals(p.getUniqueId()))) {
-                            IslandTrusted islandTrusted = new IslandTrusted(island.get(), IridiumSkyblockAPI.getInstance().getUser(p),
-                                    IridiumSkyblockAPI.getInstance().getUser(player));
+                            IslandTrusted islandTrusted = new IslandTrusted(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(p),
+                                    IridiumSkyblock.getInstance().getUserManager().getUser(player));
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().addEntry(islandTrusted);
 
                             island.get().getMembers().stream().map(user1 -> Bukkit.getPlayer(user1.getUuid())).filter(Objects::nonNull).forEach(player1 ->

@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
 import com.iridium.iridiumskyblock.database.User;
@@ -43,13 +42,13 @@ public class JoinCommand extends Command {
             return;
         }
         Player player = (Player) sender;
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
 
         if (user.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
             OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-            User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
+            User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
             Optional<Island> island = offlinePlayerUser.getIsland();
 
             if (island.isPresent()) {

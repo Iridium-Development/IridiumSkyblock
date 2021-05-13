@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -43,13 +42,13 @@ public class TransferCommand extends Command {
         }
 
         Player player = (Player) sender;
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             User islandOwner = island.get().getOwner();
             OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-            User targetUser = IridiumSkyblockAPI.getInstance().getUser(targetPlayer);
+            User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
 
             if (user.getIslandRank().equals(IslandRank.OWNER) || user.isBypass()) {
                 if (island.get().equals(targetUser.getIsland().orElse(null))) {

@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
@@ -118,7 +117,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if (args.length == 0) {
             if (commandSender instanceof Player) {
                 Player player = (Player) commandSender;
-                User user = IridiumSkyblockAPI.getInstance().getUser(player);
+                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                 Optional<Island> island = user.getIsland();
                 if (island.isPresent()) {
                     player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());

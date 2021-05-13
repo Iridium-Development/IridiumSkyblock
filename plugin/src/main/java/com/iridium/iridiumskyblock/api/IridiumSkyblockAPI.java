@@ -1,15 +1,6 @@
 package com.iridium.iridiumskyblock.api;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.configs.Configuration;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
 
 /**
  * General api for IridiumSkyblock.
@@ -49,48 +40,6 @@ public class IridiumSkyblockAPI {
         if (instance == null) {
             instance = new IridiumSkyblockAPI(iridiumSkyblock);
         }
-    }
-
-    /**
-     * Gets a {@link User}'s info. Creates one if he doesn't exist.
-     *
-     * @param offlinePlayer The player who's data should be fetched
-     * @return The user data
-     * @since 3.0.0
-     */
-    public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
-        return IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
-    }
-
-    /**
-     * Gets an {@link Island} from a location.
-     *
-     * @param location The location you are looking at
-     * @return Optional of the island at the location, empty if there is none
-     * @since 3.0.0
-     */
-    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        return IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(location);
-    }
-
-    /**
-     * Returns the overworld as specified in {@link Configuration#worldName}.
-     *
-     * @return The main skyblock {@link World}, might be null if some third-party plugin deleted it
-     * @since 3.0.0
-     */
-    public World getWorld() {
-        return IridiumSkyblock.getInstance().getIslandManager().getWorld();
-    }
-
-    /**
-     * Returns the Nether World.
-     *
-     * @return The nether skyblock {@link World}, might be null if some third-party plugin deleted it
-     * @since 3.0.0
-     */
-    public World getNetherWorld() {
-        return IridiumSkyblock.getInstance().getIslandManager().getNetherWorld();
     }
 
 }

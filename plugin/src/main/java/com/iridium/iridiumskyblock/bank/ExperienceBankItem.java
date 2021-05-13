@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.bank;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Item;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
@@ -38,7 +37,7 @@ public class ExperienceBankItem extends BankItem {
      */
     @Override
     public void withdraw(Player player, Number amount) {
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
@@ -67,7 +66,7 @@ public class ExperienceBankItem extends BankItem {
      */
     @Override
     public void deposit(Player player, Number amount) {
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
