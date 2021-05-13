@@ -3,6 +3,8 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.bank.TransactionType;
+import com.iridium.iridiumskyblock.database.BankTransaction;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
@@ -48,6 +50,10 @@ public class UpgradesCommand extends Command {
                         UpgradeData upgradeData = (UpgradeData) upgrade.upgrades.get(islandUpgrade.getLevel() + 1);
                         if (PlayerUtils.pay(player, island.get(), upgradeData.crystals, upgradeData.money)) {
                             islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTransactionTableManager().addEntry(
+                                    new BankTransaction(island.get(), IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName(), upgradeData.crystals, System.currentTimeMillis(), player.getUniqueId(), TransactionType.PURCHASE, upgrade.item.displayName));
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTransactionTableManager().addEntry(
+                                    new BankTransaction(island.get(), IridiumSkyblock.getInstance().getBankItems().moneyBankItem.getName(), upgradeData.money, System.currentTimeMillis(), player.getUniqueId(), TransactionType.PURCHASE, upgrade.item.displayName));
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));

@@ -21,6 +21,8 @@ public class Configuration {
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
 
+    public int transactionSize = 15;
+
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
 

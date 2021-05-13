@@ -124,6 +124,10 @@ public class Messages {
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
+    public String days = "%day% Days";
+    public String hours = "%hour% Hours";
+    public String minutes = "%minute% Minutes";
+    public String seconds = "%second% Seconds";
 
     public List<String> infoCommand = Arrays.asList(
             "&8===== &b&lIsland Info for %player% &r&8=====",

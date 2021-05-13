@@ -154,8 +154,7 @@ public class IslandManager {
      * @param schematic The schematic of the Island
      * @return The island being created
      */
-    private @NotNull CompletableFuture<Island> createIsland(
-            @NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
+    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             final User user = IridiumSkyblockAPI.getInstance().getUser(player);
@@ -286,8 +285,7 @@ public class IslandManager {
      * @return If the permission is allowed
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission) {
-        List<IslandPermission> islandPermissions =
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries(island);
+        List<IslandPermission> islandPermissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries(island);
 
         Optional<IslandPermission> optionalIslandPermission =
                 islandPermissions.stream().filter(isPermission -> isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank)).findFirst();
@@ -334,6 +332,18 @@ public class IslandManager {
     }
 
     /**
+     * Gets an Island's bank from BankItem.
+     *
+     * @param island The specified Island
+     * @return A list of the Island bank transactions
+     */
+    public List<BankTransaction> getIslandTransactions(@NotNull Island island) {
+        List<BankTransaction> transactions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTransactionTableManager().getEntries(island);
+        List<BankTransaction> sortedTransactions = transactions.stream().sorted(Comparator.comparingLong(BankTransaction::getDate).reversed()).collect(Collectors.toList());
+        return sortedTransactions.subList(0, Math.min(IridiumSkyblock.getInstance().getConfiguration().transactionSize, sortedTransactions.size()));
+    }
+
+    /**
      * Gets the IslandBlock for a specific island and material.
      *
      * @param island   The specified Island
@@ -342,8 +352,7 @@ public class IslandManager {
      */
     public Optional<IslandBlocks> getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).stream().filter(islandBlocks ->
-                material.equals(islandBlocks.getMaterial())
-        ).findFirst();
+                material.equals(islandBlocks.getMaterial())).findFirst();
     }
 
     /**
@@ -354,8 +363,7 @@ public class IslandManager {
      * @param permission The specified Permission
      * @param allowed    If the permission is allowed
      */
-    public void setIslandPermission(
-            @NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission, boolean allowed) {
+    public void setIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission, boolean allowed) {
         Optional<IslandPermission> islandPermission =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries(island).stream().filter(isPermission ->
                         isPermission.getPermission().equalsIgnoreCase(permission.getName()) && isPermission.getRank().equals(islandRank)
@@ -377,8 +385,7 @@ public class IslandManager {
      * @param completableFuture The completable future to be completed when task is finished
      * @param delay             The delay in ticks between each layer
      */
-    private void deleteIslandBlocks(
-            @NotNull Island island, @NotNull World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    private void deleteIslandBlocks(@NotNull Island island, @NotNull World world, int y, CompletableFuture<Void> completableFuture, int delay) {
         Location pos1 = island.getPos1(world);
         Location pos2 = island.getPos2(world);
 
@@ -448,8 +455,7 @@ public class IslandManager {
      * @param island The specified Island
      * @return A list of Island Missions
      */
-    public IslandMission getIslandMission(
-            @NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
+    public IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
         Optional<IslandMission> islandMissionOptional =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream().filter(isMission ->
                         isMission.getMissionName().equalsIgnoreCase(missionKey) && isMission.getMissionIndex() == missionIndex - 1
@@ -690,17 +696,25 @@ public class IslandManager {
      * @return The sorted list of islands
      */
     public List<Island> getIslands(SortType sortType) {
-        if (sortType == SortType.VALUE) {
-            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
+        switch (sortType) {
+            case VALUE:
+                return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
+            case DATE:
+                return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getCreateTime).reversed()).collect(Collectors.toList());
+            case MEMBERS:
+                return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(island -> ((Island) island).getMembers().size()).reversed()).collect(Collectors.toList());
+            default:
+                return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
         }
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
     /**
      * Represents a way of ordering Islands.
      */
     public enum SortType {
-        VALUE
+        VALUE,
+        MEMBERS,
+        DATE
     }
 
 }

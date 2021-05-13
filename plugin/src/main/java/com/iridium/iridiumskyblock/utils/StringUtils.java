@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.utils;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
+import org.apache.commons.lang.WordUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,16 @@ public class StringUtils {
         return strings.stream()
                 .map(StringUtils::color)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * Capitalizes the provided string.
+     *
+     * @param string The string which should have capitalize
+     * @return The Capitalized string
+     */
+    public static String capitalize(String string) {
+        return WordUtils.capitalize(string);
     }
 
     /**

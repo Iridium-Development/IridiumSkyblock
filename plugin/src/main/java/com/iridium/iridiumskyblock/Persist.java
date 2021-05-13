@@ -40,7 +40,7 @@ public class Persist {
      * @return The name of the configuration file
      */
     private static String getName(Class<?> clazz) {
-        return clazz.getSimpleName().toLowerCase();
+        return clazz.getSimpleName().toLowerCase().replaceAll("ı", "i");
     }
 
     // ------------------------------------------------------------ //

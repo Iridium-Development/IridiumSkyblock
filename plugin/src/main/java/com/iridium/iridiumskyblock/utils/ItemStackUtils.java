@@ -1,10 +1,14 @@
 package com.iridium.iridiumskyblock.utils;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumskyblock.database.BankTransaction;
+import com.iridium.iridiumskyblock.database.Island;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import de.tr7zw.changeme.nbtapi.NBTListCompound;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -14,9 +18,8 @@ import org.bukkit.util.io.BukkitObjectOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Class which creates {@link ItemStack}'s.
@@ -74,6 +77,39 @@ public class ItemStackUtils {
             return itemstack;
         } catch (Exception e) {
             return makeItem(XMaterial.STONE, item.amount, StringUtils.processMultiplePlaceholders(item.displayName, placeholders), StringUtils.processMultiplePlaceholders(item.lore, placeholders));
+        }
+    }
+
+    /**
+     * Creates a new ItemStack from the provided arguments.
+     *
+     * @param item            An existing item we should clone
+     * @param transactionLore A list of Placeholders we should claim to the display name and lore
+     * @return The new ItemStack
+     */
+    private static ItemStack makeTransactionItem(Item item, List<String> transactionLore) {
+        try {
+            ItemStack itemstack = makeItem(item.material, item.amount, item.displayName, transactionLore);
+            if (item.material == XMaterial.PLAYER_HEAD && item.headData != null) {
+                NBTItem nbtItem = new NBTItem(itemstack);
+                NBTCompound skull = nbtItem.addCompound("SkullOwner");
+                if (supports) {
+                    skull.setUUID("Id", UUID.randomUUID());
+                } else {
+                    skull.setString("Id", UUID.randomUUID().toString());
+                }
+                NBTListCompound texture = skull.addCompound("Properties").getCompoundList("textures").addCompound();
+                texture.setString("Value", item.headData);
+                return nbtItem.getItem();
+            } else if (item.material == XMaterial.PLAYER_HEAD && item.headOwner != null) {
+                SkullMeta m = (SkullMeta) itemstack.getItemMeta();
+                m.setOwner(item.headOwner);
+                itemstack.setItemMeta(m);
+            }
+            return itemstack;
+        } catch (Exception e) {
+            // Create a fallback item
+            return makeItem(XMaterial.STONE, item.amount, item.displayName, transactionLore);
         }
     }
 
@@ -148,4 +184,54 @@ public class ItemStackUtils {
         }
     }
 
+    public static ItemStack makeTransaction(Item item, Island island) {
+        List<BankTransaction> bankTransactions = IridiumSkyblock.getInstance().getIslandManager().getIslandTransactions(island);
+        List<String> transactionLore = new ArrayList<String>() {{
+            for (BankTransaction transaction : bankTransactions) {
+                long time = (System.currentTimeMillis() - transaction.getDate()) / 1000L;
+                int day = (int) TimeUnit.SECONDS.toDays(time);
+                int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - day * 86400L));
+                int minute = (int) Math.floor((time - (day * 86400) - (hours * 3600)) / 60.0D);
+                int second = (int) Math.floor((time - (day * 86400) - (hours * 3600)) % 60.0D);
+                StringBuilder date = new StringBuilder();
+                if (day > 0) {
+                    date.append(IridiumSkyblock.getInstance().getMessages().days.replace("%day%", String.valueOf(day)));
+                } else if (hours > 0) {
+                    date.append(IridiumSkyblock.getInstance().getMessages().hours.replace("%hour%", String.valueOf(hours)));
+                    if (minute > 0)
+                        date.append(" ").append(IridiumSkyblock.getInstance().getMessages().minutes.replace("%minute%", String.valueOf(minute)));
+                } else if (minute > 0) {
+                    date.append(IridiumSkyblock.getInstance().getMessages().minutes.replace("%minute%", String.valueOf(minute)));
+                    if (second > 0)
+                        date.append(" ").append(IridiumSkyblock.getInstance().getMessages().seconds.replace("%second%", String.valueOf(second)));
+                } else {
+                    date.append(IridiumSkyblock.getInstance().getMessages().seconds.replace("%second%", String.valueOf(second)));
+                }
+                String transactionFormat = "";
+                switch (transaction.getType()) {
+                    case WITHDRAW:
+                        transactionFormat = IridiumSkyblock.getInstance().getInventories().transactionWithdraw;
+                        break;
+                    case DEPOSIT:
+                        transactionFormat = IridiumSkyblock.getInstance().getInventories().transactionDeposit;
+                        break;
+                    case REWARD:
+                        transactionFormat = IridiumSkyblock.getInstance().getInventories().transactionReward;
+                        break;
+                    case PURCHASE:
+                        transactionFormat = IridiumSkyblock.getInstance().getInventories().transactionPurchase;
+                        break;
+                    case ADMIN:
+                        transactionFormat = IridiumSkyblock.getInstance().getInventories().transactionAdmin;
+                        break;
+                }
+                add(transactionFormat.replace("%item%", transaction.getBankItem())
+                        .replace("%amount%", String.valueOf(transaction.getAmount()))
+                        .replace("%player%", Bukkit.getPlayer(transaction.getPlayer()).getName())
+                        .replace("%date%", date)
+                        .replace("%purchase%", (transaction.getPurchase() != null ? transaction.getPurchase() : "")));
+            }
+        }};
+        return makeTransactionItem(item, transactionLore);
+    }
 }

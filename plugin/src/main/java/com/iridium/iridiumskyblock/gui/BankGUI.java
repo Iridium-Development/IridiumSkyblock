@@ -56,6 +56,7 @@ public class BankGUI implements GUI {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, bankItem);
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", bankItem.toString(islandBank.getNumber())))));
         }
+        inventory.setItem(IridiumSkyblock.getInstance().getInventories().bankTransactions.slot, ItemStackUtils.makeTransaction(IridiumSkyblock.getInstance().getInventories().bankTransactions, island));
     }
 
     /**

@@ -9,6 +9,12 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Inventories {
+    
+    public String transactionDeposit = "&7[&a&l+&7] &dx%amount% %item% &edeposited by %player% &7(&e%date%&7 &eago)";
+    public String transactionWithdraw = "&7[&c&l-&7] &dx%amount% %item% &ewithdrew by %player% &7(&e%date%&7 &eago)";
+    public String transactionReward = "&7[&a&l+&7] &dx%amount% %item% &ereward redeemed by %player% &7(&e%date%&7 &eago)";
+    public String transactionPurchase = "&7[&c&l-&7] &dx%amount% %item% &espend by %player% for %purchase% &7(&e%date%&7 &eago)";
+    public String transactionAdmin =  "&7[&a&l+&7] &dx%amount% %item% &egave by %player% &7(&e%date%&7 &eago";
 
     public InventoryConfig islandBorder = new InventoryConfig(27, "&7Island Border", ImmutableMap.<String, Item>builder()
             .put("is border blue", new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 10, 1, "&b&lBlue", Collections.emptyList()))
@@ -124,4 +130,5 @@ public class Inventories {
     public Item filler = new Item(XMaterial.BLACK_STAINED_GLASS_PANE, 1, " ", Collections.emptyList());
     public Item nextPage = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", Collections.emptyList());
     public Item previousPage = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", Collections.emptyList());
+    public Item bankTransactions = new Item(XMaterial.MAP, 26, 1, "&6&lTransactions", Collections.emptyList());
 }

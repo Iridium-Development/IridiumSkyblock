@@ -3,6 +3,8 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.bank.TransactionType;
+import com.iridium.iridiumskyblock.database.BankTransaction;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -53,6 +55,8 @@ public class WithdrawCommand extends Command {
             Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
             if (bankItem.isPresent()) {
                 bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandTransactionTableManager().getEntries().add(
+                        new BankTransaction(island.get(), bankItem.get().getName(), Double.parseDouble(args[2]), System.currentTimeMillis(), player.getUniqueId(), TransactionType.WITHDRAW));
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankItemDoesntExist.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }

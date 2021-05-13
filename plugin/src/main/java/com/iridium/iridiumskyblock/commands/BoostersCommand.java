@@ -3,6 +3,8 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.bank.TransactionType;
+import com.iridium.iridiumskyblock.database.BankTransaction;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
@@ -50,6 +52,10 @@ public class BoostersCommand extends Command {
                     if (!islandBooster.isActive()) {
                         if (PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost)) {
                             islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTransactionTableManager().addEntry(
+                                    new BankTransaction(island.get(), IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName(), booster.crystalsCost, System.currentTimeMillis(), player.getUniqueId(), TransactionType.PURCHASE, booster.item.displayName));
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTransactionTableManager().addEntry(
+                                    new BankTransaction(island.get(), IridiumSkyblock.getInstance().getBankItems().moneyBankItem.getName(), booster.vaultCost, System.currentTimeMillis(), player.getUniqueId(), TransactionType.PURCHASE, booster.item.displayName));
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
