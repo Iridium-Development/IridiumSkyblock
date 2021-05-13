@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.Permission;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import io.papermc.lib.PaperLib;
@@ -80,7 +81,7 @@ public class IslandManager {
      */
     private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, island.getHome());
+        PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island));
     }
 
     /**
@@ -114,7 +115,7 @@ public class IslandManager {
      */
     private void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, islandWarp.getLocation());
+        PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)));
     }
 
     /**
