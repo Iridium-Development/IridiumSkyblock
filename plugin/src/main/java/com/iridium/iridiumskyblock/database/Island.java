@@ -90,7 +90,18 @@ public final class Island {
      * @return The islands level
      */
     public int getLevel() {
-        return (int) Math.cbrt(experience + 1);
+        return (int) Math.abs(Math.cbrt(experience + 1));
+    }
+
+    /**
+     * Returns the minimum experience required to reach this level
+     * The inverse of getLevel
+     *
+     * @param level The level
+     * @return The experience required to reach this level
+     */
+    private int getExperienceRequired(int level) {
+        return -1 + (level * level * level);
     }
 
     /**
@@ -99,8 +110,7 @@ public final class Island {
      * @return Gets the players current experience (resets to 0 each levelup)
      */
     public int getExperience() {
-        // TODO Implement
-        return 0;
+        return getTotalExperience() - getExperienceRequired(getLevel());
     }
 
     /**
@@ -118,10 +128,8 @@ public final class Island {
      * @return the required experience required to levelup
      */
     public int getExperienceRequiredToLevelUp() {
-        // TODO Implement
-        return 0;
+        return getExperienceRequired(getLevel() + 1);
     }
-
 
     /**
      * Gets the remaining experience required to levelup
