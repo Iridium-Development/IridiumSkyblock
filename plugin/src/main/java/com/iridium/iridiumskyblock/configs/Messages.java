@@ -123,6 +123,7 @@ public class Messages {
     public String unknownSchematic = "%prefix% &7Unknown Schematic.";
     public String onlySetWarpOnIsland = "%prefix% &7You can only create an Island Warp on your island.";
     public String onlySetHomeOnIsland = "%prefix% &7You can only set your Island Home on your island.";
+    public String islandLevel = "%prefix% &7Island Level %island_level% %island_experience%/%island_experienceRequired% Experience";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

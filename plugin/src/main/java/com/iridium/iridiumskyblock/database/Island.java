@@ -94,6 +94,45 @@ public final class Island {
     }
 
     /**
+     * Gets the players current experience (resets to 0 each levelup)
+     *
+     * @return Gets the players current experience (resets to 0 each levelup)
+     */
+    public int getExperience() {
+        // TODO Implement
+        return 0;
+    }
+
+    /**
+     * Gets the players total experience
+     *
+     * @return The players total experience
+     */
+    public int getTotalExperience() {
+        return experience;
+    }
+
+    /**
+     * Gets the required experience required to levelup
+     *
+     * @return the required experience required to levelup
+     */
+    public int getExperienceRequiredToLevelUp() {
+        // TODO Implement
+        return 0;
+    }
+
+
+    /**
+     * Gets the remaining experience required to levelup
+     *
+     * @return the remaining experience required to levelup
+     */
+    public int getExperienceRemainingToLevelUp() {
+        return getExperience() - getExperienceRequiredToLevelUp();
+    }
+
+    /**
      * Gets a list of Island members as Users.
      *
      * @return A list of all Users belonging to the island
