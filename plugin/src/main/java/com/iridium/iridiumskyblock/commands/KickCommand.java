@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -42,12 +41,12 @@ public class KickCommand extends Command {
             return;
         }
         Player player = (Player) sender;
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[1]);
-            User targetUser = IridiumSkyblockAPI.getInstance().getUser(targetPlayer);
+            User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
 
             if (island.get().equals(targetUser.getIsland().orElse(null))) {
                 if (targetUser.getIslandRank().getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().kick)) {

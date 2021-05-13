@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -33,7 +32,7 @@ public class BypassCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         user.setBypass(!user.isBypass());
         player.sendMessage(StringUtils.color((user.isBypass() ? IridiumSkyblock.getInstance().getMessages().nowBypassing : IridiumSkyblock.getInstance().getMessages().noLongerBypassing).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }

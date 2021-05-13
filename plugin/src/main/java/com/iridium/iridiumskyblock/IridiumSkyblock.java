@@ -135,6 +135,8 @@ public class IridiumSkyblock extends JavaPlugin {
         this.islandManager = new IslandManager();
         this.userManager = new UserManager();
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
+        this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
+        this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
 
         this.databaseManager = new DatabaseManager();
         // Try to connect to the database
@@ -161,7 +163,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.economy = setupEconomy();
 
         // Send island border to all players
-        Bukkit.getOnlinePlayers().forEach(player -> IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
+        Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         // Auto recalculate islands
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
@@ -267,6 +269,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
         Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
     }
 
     /**

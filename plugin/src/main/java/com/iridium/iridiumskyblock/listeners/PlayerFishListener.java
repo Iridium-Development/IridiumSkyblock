@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.entity.Entity;
@@ -19,7 +18,7 @@ public class PlayerFishListener implements Listener {
         Entity caughtEntity = event.getCaught();
         if (caughtEntity == null) return;
 
-        User user = IridiumSkyblockAPI.getInstance().getUser(event.getPlayer());
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer());
         Optional<Island> island = user.getIsland();
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "FISH:" + caughtEntity.getType().name(), 1));
     }

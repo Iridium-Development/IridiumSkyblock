@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
 import com.iridium.iridiumskyblock.database.User;
@@ -39,7 +38,7 @@ public class InviteCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
@@ -47,7 +46,7 @@ public class InviteCommand extends Command {
                 player.openInventory(new InvitesGUI(island.get()).getInventory());
             } else {
                 OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-                User offlinePlayerUser = IridiumSkyblockAPI.getInstance().getUser(offlinePlayer);
+                User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
                 List<User> islandMembers = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island.get());
 
                 if (islandMembers.contains(offlinePlayerUser)) {
