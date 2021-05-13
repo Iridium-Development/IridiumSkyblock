@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.Permission;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
@@ -68,9 +67,9 @@ public class IslandManager {
         }
         BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
             teleportHome(player, island);
-            IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(null);
+            IridiumSkyblock.getInstance().getUserManager().getUser(player).setTeleportingTask(null);
         }, 20L * delay);
-        IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(bukkitTask);
+        IridiumSkyblock.getInstance().getUserManager().getUser(player).setTeleportingTask(bukkitTask);
     }
 
     /**
@@ -102,9 +101,9 @@ public class IslandManager {
         }
         BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
             teleportWarp(player, islandWarp);
-            IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(null);
+            IridiumSkyblock.getInstance().getUserManager().getUser(player).setTeleportingTask(null);
         }, 20L * delay);
-        IridiumSkyblockAPI.getInstance().getUser(player).setTeleportingTask(bukkitTask);
+        IridiumSkyblock.getInstance().getUserManager().getUser(player).setTeleportingTask(bukkitTask);
     }
 
     /**
@@ -126,7 +125,7 @@ public class IslandManager {
      * @param schematicConfig The schematic of the island
      */
     public void makeIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (user.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
@@ -157,7 +156,7 @@ public class IslandManager {
     private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            final User user = IridiumSkyblockAPI.getInstance().getUser(player);
+            final User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             final Island island = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic));
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
@@ -182,7 +181,7 @@ public class IslandManager {
         deleteIslandBlocks(island, getEndWorld(), 0).join();
         pasteSchematic(island, schematicConfig).thenRun(() -> {
 
-            island.setHome(island.getCenter(IridiumSkyblockAPI.getInstance().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome));
+            island.setHome(island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome));
 
             getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entities -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                         for (Entity entity : entities) {
@@ -422,7 +421,7 @@ public class IslandManager {
      * @param island The Island which should be deleted
      */
     public void deleteIsland(@NotNull Island island) {
-        deleteIslandBlocks(island, IridiumSkyblockAPI.getInstance().getWorld(), 3);
+        deleteIslandBlocks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld(), 3);
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island));
         IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).forEach(user -> {
@@ -521,7 +520,7 @@ public class IslandManager {
         island.setValue(0.00);
 
         // Calculate and set their new value
-        getIslandChunks(island, IridiumSkyblockAPI.getInstance().getWorld()).thenAccept(chunks -> recalculateIsland(island, chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).collect(Collectors.toList())));
+        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld()).thenAccept(chunks -> recalculateIsland(island, chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).collect(Collectors.toList())));
     }
 
     /**

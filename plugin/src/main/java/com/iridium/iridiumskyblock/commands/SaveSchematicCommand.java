@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.SchematicData;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -37,7 +36,7 @@ public class SaveSchematicCommand extends Command {
             return;
         }
 
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Location schematicPos1 = user.getSchematicPos1();
         Location schematicPos2 = user.getSchematicPos2();
         if (schematicPos1 == null || schematicPos2 == null || schematicPos1.getWorld() != schematicPos2.getWorld()) {

@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.entity.Player;
@@ -28,7 +27,7 @@ public class ItemCraftListener implements Listener {
                 .orElse(1) * event.getRecipe().getResult().getAmount() : event.getRecipe().getResult().getAmount();
 
         Player player = (Player) event.getWhoClicked();
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getRecipe().getResult().getType());
 

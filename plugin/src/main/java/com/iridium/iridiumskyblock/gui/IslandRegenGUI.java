@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -34,7 +33,7 @@ public class IslandRegenGUI extends SchematicGUI {
      */
     @Override
     public void selectSchematic(Schematics.SchematicConfig schematicConfig) {
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
