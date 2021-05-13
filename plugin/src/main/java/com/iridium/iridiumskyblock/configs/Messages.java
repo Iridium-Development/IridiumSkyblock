@@ -121,6 +121,8 @@ public class Messages {
     public String cannotManageBorder = "%prefix% &7You cannot change the Island Border.";
     public String teleportCanceled = "%prefix% &7Teleportation Canceled, Please stand still.";
     public String unknownSchematic = "%prefix% &7Unknown Schematic.";
+    public String onlySetWarpOnIsland = "%prefix% &7You can only create an Island Warp on your island.";
+    public String onlySetHomeOnIsland = "%prefix% &7You can only set your Island Home on your island.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

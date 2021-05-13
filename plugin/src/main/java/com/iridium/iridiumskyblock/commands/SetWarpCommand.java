@@ -52,15 +52,20 @@ public class SetWarpCommand extends Command {
             } else {
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "warp");
                 if (islandWarps.size() < IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandUpgrade.getLevel()).amount) {
-                    IslandWarp islandWarp = new IslandWarp(island.get(), player.getLocation(), args[1]);
-                    if (args.length == 3) {
-                        islandWarp.setPassword(args[2]);
+                    if (island.get().isInIsland(player.getLocation())) {
+                        IslandWarp islandWarp = new IslandWarp(island.get(), player.getLocation(), args[1]);
+                        if (args.length == 3) {
+                            islandWarp.setPassword(args[2]);
+                        }
+                        IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().addEntry(islandWarp);
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().createdWarp
+                                .replace("%name%", args[1])
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        );
+                    } else {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().onlySetWarpOnIsland.replace("%prefix%",
+                                IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().addEntry(islandWarp);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().createdWarp
-                            .replace("%name%", args[1])
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                    );
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpLimitReached.replace("%prefix%",
                             IridiumSkyblock.getInstance().getConfiguration().prefix)));
