@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -40,7 +39,7 @@ public class InfoCommand extends Command {
         if (arguments.length == 1) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                User user = IridiumSkyblockAPI.getInstance().getUser(player);
+                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                 Optional<Island> userIsland = user.getIsland();
                 if (userIsland.isPresent()) {
                     sendInfo(sender, userIsland.get(), user);
@@ -59,7 +58,7 @@ public class InfoCommand extends Command {
                 return;
             }
 
-            User targetUser = IridiumSkyblockAPI.getInstance().getUser(targetPlayer);
+            User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
             Optional<Island> targetIsland = targetUser.getIsland();
             if (targetIsland.isPresent()) {
                 sendInfo(sender, targetIsland.get(), targetUser);

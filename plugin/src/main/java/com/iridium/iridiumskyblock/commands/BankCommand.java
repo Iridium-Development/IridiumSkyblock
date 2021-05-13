@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.bank.TransactionType;
 import com.iridium.iridiumskyblock.database.BankTransaction;
@@ -47,7 +46,7 @@ public class BankCommand extends Command {
             if (args[1].equalsIgnoreCase("give")) {
                 Player player = Bukkit.getPlayer(args[2]);
                 if (player != null) {
-                    User user = IridiumSkyblockAPI.getInstance().getUser(player);
+                    User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                     Optional<Island> island = user.getIsland();
                     if (island.isPresent()) {
                         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[3])).findFirst();
@@ -80,7 +79,7 @@ public class BankCommand extends Command {
             }
         } else if (sender instanceof Player) {
             Player player = (Player) sender;
-            User user = IridiumSkyblockAPI.getInstance().getUser(player);
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Optional<Island> island = user.getIsland();
 
             if (island.isPresent()) {

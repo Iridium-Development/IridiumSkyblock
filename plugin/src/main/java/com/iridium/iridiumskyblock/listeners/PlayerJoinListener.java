@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -16,14 +16,14 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         user.setBypass(false);
 
         // Update the internal username in case of name change
         user.setName(event.getPlayer().getName());
 
         // Send their island border
-        Optional<Island> optionalIsland = IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation());
+        Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
         optionalIsland.ifPresent(island -> PlayerUtils.sendBorder(player, island));
     }
 

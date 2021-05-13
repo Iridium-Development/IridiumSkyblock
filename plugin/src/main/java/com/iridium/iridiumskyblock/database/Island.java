@@ -4,7 +4,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.j256.ormlite.field.DatabaseField;
@@ -22,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -120,7 +120,7 @@ public final class Island {
      */
     public @NotNull Location getHome() {
         String[] params = home.split(",");
-        World world = IridiumSkyblockAPI.getInstance().getWorld();
+        World world = IridiumSkyblock.getInstance().getIslandManager().getWorld();
         return new Location(world, Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]), Float.parseFloat(params[4]), Float.parseFloat(params[3])).add(getCenter(world));
     }
 
@@ -266,7 +266,13 @@ public final class Island {
      * @return if the location is inside the island
      */
     public boolean isInIsland(@NotNull Location location) {
-        return isInIsland(location.getBlockX(), location.getBlockZ());
+        IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
+        World world = location.getWorld();
+        if (Objects.equals(world, islandManager.getWorld()) || Objects.equals(world, islandManager.getNetherWorld()) || Objects.equals(world, islandManager.getEndWorld())) {
+            return isInIsland(location.getBlockX(), location.getBlockZ());
+        } else {
+            return false;
+        }
     }
 
     /**

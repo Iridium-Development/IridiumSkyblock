@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.event.EventHandler;
@@ -17,7 +16,7 @@ public class PlayerDropItemListener implements Listener {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getItemDrop().getLocation());
 
         if (!island.isPresent()) return;
-        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblockAPI.getInstance().getUser(event.getPlayer()), IridiumSkyblock.getInstance().getPermissions().dropItems)) {
+        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer()), IridiumSkyblock.getInstance().getPermissions().dropItems)) {
             return;
         }
 
