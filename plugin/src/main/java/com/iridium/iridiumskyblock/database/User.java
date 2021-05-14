@@ -91,6 +91,7 @@ public final class User {
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(trusted)
             );
         }
+        IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().resortIsland(this);
     }
 
     /**
