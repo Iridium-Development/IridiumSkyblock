@@ -4,9 +4,11 @@ import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBlocks;
+import com.iridium.iridiumskyblock.database.IslandSpawners;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.World;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,16 +37,14 @@ public class BlockPlaceListener implements Listener {
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().blockPlace)) {
             event.setCancelled(true);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPlaceBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        } else if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(material)) {
-            Optional<IslandBlocks> optionalIslandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
-            if (optionalIslandBlock.isPresent()) {
-                optionalIslandBlock.get().setAmount(optionalIslandBlock.get().getAmount() + 1);
-            } else {
-                IslandBlocks islandBlocks = new IslandBlocks(island.get(), material);
-                islandBlocks.setAmount(1);
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().addEntry(islandBlocks);
-            }
-            island.get().setValue(island.get().getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value);
+        }
+        IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
+        islandBlocks.setAmount(islandBlocks.getAmount() + 1);
+
+        if (event.getBlock().getState() instanceof CreatureSpawner) {
+            CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
+            IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island.get(), creatureSpawner.getSpawnedType());
+            islandSpawners.setAmount(islandSpawners.getAmount() + 1);
         }
     }
 
