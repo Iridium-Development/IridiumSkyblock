@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.database.SchematicData;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Location;
@@ -45,9 +44,7 @@ public class SaveSchematicCommand extends Command {
         }
 
         String schematicName = arguments[1];
-        boolean existsAlready = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().getEntries().stream()
-                .map(SchematicData::getId)
-                .anyMatch(schematic -> schematic.equals(schematicName));
+        boolean existsAlready = IridiumSkyblock.getInstance().getSchematicManager().schematics.containsKey(schematicName);
 
         if (existsAlready && (arguments.length == 2 || !arguments[2].equalsIgnoreCase("confirm"))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().missingSchematicConfirmation.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

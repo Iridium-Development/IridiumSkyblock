@@ -5,7 +5,6 @@ import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.managers.tablemanagers.ForeignIslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.TableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
@@ -25,7 +24,6 @@ public class DatabaseManager {
 
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
-    private TableManager<SchematicData, String> schematicTableManager;
     private ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
     private ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
     private ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
@@ -53,7 +51,6 @@ public class DatabaseManager {
 
         this.islandTableManager = new IslandTableManager(connectionSource, false);
         this.userTableManager = new UserTableManager(connectionSource, false);
-        this.schematicTableManager = new TableManager<>(connectionSource, SchematicData.class, false);
         this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
         this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, false);
         this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, false);
