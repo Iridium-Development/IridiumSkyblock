@@ -258,7 +258,7 @@ public class IslandManager {
      * @return A list of users
      */
     public @NotNull List<User> getIslandMembers(@NotNull Island island) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries().stream().filter(user -> island.equals(user.getIsland().orElse(null))).collect(Collectors.toList());
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries(island);
     }
 
     /**
