@@ -283,6 +283,7 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().getIslandInviteTableManager().save();
         getDatabaseManager().getIslandPermissionTableManager().save();
         getDatabaseManager().getIslandBlocksTableManager().save();
+        getDatabaseManager().getIslandSpawnersTableManager().save();
         getDatabaseManager().getIslandBankTableManager().save();
         getDatabaseManager().getIslandMissionTableManager().save();
         getDatabaseManager().getIslandRewardTableManager().save();
