@@ -204,13 +204,13 @@ public class IslandManager {
 
     private CompletableFuture<Void> pasteSchematic(@NotNull Island island, @NotNull Schematics.SchematicConfig schematicConfig) {
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() -> {
-            IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() -> {
-                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() -> {
-                    completableFuture.complete(null);
-                });
-            });
-        });
+        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+                                completableFuture.complete(null)
+                        )
+                )
+        );
         return completableFuture;
     }
 
