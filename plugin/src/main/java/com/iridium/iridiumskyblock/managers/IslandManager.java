@@ -440,11 +440,16 @@ public class IslandManager {
             Player player = Bukkit.getPlayer(user.getUuid());
             if (player != null) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                if (island.isInIsland(player.getLocation())) {
-                    PlayerUtils.teleportSpawn(player);
-                }
             }
         });
+        getEntities(island, getWorld(), getEndWorld(), getNetherWorld()).thenAccept(entities ->
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                        entities.stream()
+                                .filter(entity -> entity instanceof Player)
+                                .map(entity -> (Player) entity)
+                                .forEach(PlayerUtils::teleportSpawn)
+                )
+        );
     }
 
     /**
