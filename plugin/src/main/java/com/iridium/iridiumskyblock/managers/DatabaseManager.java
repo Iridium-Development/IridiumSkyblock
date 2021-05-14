@@ -27,6 +27,7 @@ public class DatabaseManager {
     private ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
     private ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
     private ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
+    private ForeignIslandTableManager<IslandSpawners, Integer> islandSpawnersTableManager;
     private ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
     private ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
     private ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
@@ -54,6 +55,7 @@ public class DatabaseManager {
         this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
         this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, false);
         this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, false);
+        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class, false);
         this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, false);
         this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, false);
         this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, false);

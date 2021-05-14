@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandBlocks;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.Placeholder;
 
@@ -24,7 +23,7 @@ public class PlaceholderBuilder {
         placeholderList.add(new Placeholder("island_level", String.valueOf(island.getLevel())));
         placeholderList.add(new Placeholder("island_create", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
 
-        IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> new Placeholder(material.name() + "_AMOUNT", String.valueOf(IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material).map(IslandBlocks::getAmount).orElse(0)))).forEach(placeholderList::add);
+        IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> new Placeholder(material.name() + "_AMOUNT", String.valueOf(IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material).getAmount()))).forEach(placeholderList::add);
         return this;
     }
 

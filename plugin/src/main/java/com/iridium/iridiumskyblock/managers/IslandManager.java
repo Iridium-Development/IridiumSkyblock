@@ -14,8 +14,11 @@ import com.iridium.iridiumskyblock.utils.StringUtils;
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.TileState;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -360,10 +363,35 @@ public class IslandManager {
      * @param material The specified Material
      * @return The IslandBlock
      */
-    public Optional<IslandBlocks> getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).stream().filter(islandBlocks ->
+    public IslandBlocks getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
+        Optional<IslandBlocks> islandBlocksOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).stream().filter(islandBlocks ->
                 material.equals(islandBlocks.getMaterial())
         ).findFirst();
+        if (islandBlocksOptional.isPresent()) {
+            return islandBlocksOptional.get();
+        }
+        IslandBlocks islandBlocks = new IslandBlocks(island, material);
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().addEntry(islandBlocks);
+        return islandBlocks;
+    }
+
+    /**
+     * Gets the IslandBlock for a specific island and material.
+     *
+     * @param island      The specified Island
+     * @param spawnerType The specified spawner type
+     * @return The IslandBlock
+     */
+    public IslandSpawners getIslandSpawners(@NotNull Island island, @NotNull EntityType spawnerType) {
+        Optional<IslandSpawners> islandSpawnersOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).stream().filter(islandSpawners ->
+                spawnerType.equals(islandSpawners.getSpawnerType())
+        ).findFirst();
+        if (islandSpawnersOptional.isPresent()) {
+            return islandSpawnersOptional.get();
+        }
+        IslandSpawners islandSpawners = new IslandSpawners(island, spawnerType);
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().addEntry(islandSpawners);
+        return islandSpawners;
     }
 
     /**
@@ -533,63 +561,55 @@ public class IslandManager {
      */
     public void recalculateIsland(@NotNull Island island) {
         // Reset their value
-        IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material)).forEach(islandBlocks -> islandBlocks.ifPresent(blocks -> blocks.setAmount(0)));
-        island.setValue(0.00);
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).forEach(islandBlocks -> islandBlocks.setAmount(0));
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(islandSpawners -> islandSpawners.setAmount(0));
 
         // Calculate and set their new value
         getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld()).thenAccept(chunks ->
-                recalculateIsland(island, chunks.stream().map(chunk ->
-                        chunk.getChunkSnapshot(true, false, false)
-                ).collect(Collectors.toList()))
+                recalculateIsland(island, chunks)
         );
         getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getNetherWorld()).thenAccept(chunks ->
-                recalculateIsland(island, chunks.stream().map(chunk ->
-                        chunk.getChunkSnapshot(true, false, false)
-                ).collect(Collectors.toList()))
+                recalculateIsland(island, chunks)
         );
         getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getEndWorld()).thenAccept(chunks ->
-                recalculateIsland(island, chunks.stream().map(chunk ->
-                        chunk.getChunkSnapshot(true, false, false)
-                ).collect(Collectors.toList()))
+                recalculateIsland(island, chunks)
         );
     }
 
     /**
      * Recalculates the island async with specified ChunkSnapshots.
      *
-     * @param island         The specified Island
-     * @param chunkSnapshots The specified ChunkSnapshots
+     * @param island The specified Island
+     * @param chunks The Island's Chunks
      */
-    private void recalculateIsland(@NotNull Island island, @NotNull List<ChunkSnapshot> chunkSnapshots) {
+    private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () ->
-                chunkSnapshots.forEach(chunk -> {
-                    for (int x = 0; x < 16; x++) {
-                        for (int z = 0; z < 16; z++) {
-                            if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
-                                final int maxy = chunk.getHighestBlockYAt(x, z);
-                                for (int y = 0; y <= maxy; y++) {
-                                    XMaterial material = IridiumSkyblock.getInstance().getMultiversion().getMaterialAtPosition(chunk, x, y, z);
-                                    if (material.equals(XMaterial.AIR)) continue;
+                chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
+                            for (int x = 0; x < 16; x++) {
+                                for (int z = 0; z < 16; z++) {
+                                    if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
+                                        final int maxy = chunk.getHighestBlockYAt(x, z);
+                                        for (int y = 0; y <= maxy; y++) {
+                                            XMaterial material = IridiumSkyblock.getInstance().getMultiversion().getMaterialAtPosition(chunk, x, y, z);
+                                            if (material.equals(XMaterial.AIR)) continue;
 
-                                    if (IridiumSkyblock.getInstance().getBlockValues().blockValues.containsKey(material)) {
-                                        Optional<IslandBlocks> optionalIslandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
-
-                                        if (optionalIslandBlock.isPresent()) {
-                                            optionalIslandBlock.get().setAmount(optionalIslandBlock.get().getAmount() + 1);
-                                        } else {
-                                            IslandBlocks islandBlocks = new IslandBlocks(island, material);
-                                            islandBlocks.setAmount(1);
-                                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().addEntry(islandBlocks);
+                                            IslandBlocks IslandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
+                                            IslandBlocks.setAmount(IslandBlocks.getAmount() + 1);
                                         }
-
-                                        island.setValue(island.getValue() + IridiumSkyblock.getInstance().getBlockValues().blockValues.get(material).value);
                                     }
                                 }
                             }
                         }
-                    }
-                })
+                )
         );
+        chunks.forEach(chunk -> {
+            for (BlockState blockState : chunk.getTileEntities()) {
+                if (!(blockState instanceof CreatureSpawner)) continue;
+                CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
+                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
+                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
+            }
+        });
     }
 
     /**
