@@ -537,7 +537,21 @@ public class IslandManager {
         island.setValue(0.00);
 
         // Calculate and set their new value
-        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld()).thenAccept(chunks -> recalculateIsland(island, chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).collect(Collectors.toList())));
+        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld()).thenAccept(chunks ->
+                recalculateIsland(island, chunks.stream().map(chunk ->
+                        chunk.getChunkSnapshot(true, false, false)
+                ).collect(Collectors.toList()))
+        );
+        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getNetherWorld()).thenAccept(chunks ->
+                recalculateIsland(island, chunks.stream().map(chunk ->
+                        chunk.getChunkSnapshot(true, false, false)
+                ).collect(Collectors.toList()))
+        );
+        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getEndWorld()).thenAccept(chunks ->
+                recalculateIsland(island, chunks.stream().map(chunk ->
+                        chunk.getChunkSnapshot(true, false, false)
+                ).collect(Collectors.toList()))
+        );
     }
 
     /**
