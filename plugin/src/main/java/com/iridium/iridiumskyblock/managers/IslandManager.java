@@ -13,6 +13,8 @@ import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.TileState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -402,8 +404,14 @@ public class IslandManager {
 
         for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-                if (world.getBlockAt(x, y, z).getType() != Material.AIR)
-                    IridiumSkyblock.getInstance().getNms().setBlockFast(world, x, y, z, 0, (byte) 0, false);
+                Block block = world.getBlockAt(x, y, z);
+                if (block.getType() != Material.AIR) {
+                    if (block.getState() instanceof TileState) {
+                        block.setType(Material.AIR, false);
+                    } else {
+                        IridiumSkyblock.getInstance().getNms().setBlockFast(world, x, y, z, 0, (byte) 0, false);
+                    }
+                }
             }
         }
 
