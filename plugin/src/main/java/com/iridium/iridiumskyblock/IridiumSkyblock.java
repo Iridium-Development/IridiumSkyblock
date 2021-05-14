@@ -28,8 +28,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -152,7 +154,7 @@ public class IridiumSkyblock extends JavaPlugin {
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
 
-        this.schematicManager = new SchematicManager();
+        this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
 
         // Save data regularly
         Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
@@ -284,7 +286,6 @@ public class IridiumSkyblock extends JavaPlugin {
         getDatabaseManager().getIslandBankTableManager().save();
         getDatabaseManager().getIslandMissionTableManager().save();
         getDatabaseManager().getIslandRewardTableManager().save();
-        getDatabaseManager().getSchematicTableManager().save();
         getDatabaseManager().getIslandUpgradeTableManager().save();
         getDatabaseManager().getIslandTrustedTableManager().save();
         getDatabaseManager().getIslandBoosterTableManager().save();
@@ -398,7 +399,41 @@ public class IridiumSkyblock extends JavaPlugin {
                 .put("farming", boosters.islandFarmingBooster)
                 .put("spawner", boosters.islandSpawnerBooster)
                 .build());
+
+
+        File schematicFolder = new File(getDataFolder(), "schematics");
+        if (!schematicFolder.exists()) {
+            schematicFolder.mkdir();
+        }
+        saveFile(schematicFolder, "island.iridiumschem");
     }
+
+    private void saveFile(File parent, String name) {
+        File file = new File(parent, name);
+        if (!file.exists()) {
+            if (getResource(name) != null) {
+                InputStream in = this.getResource(name);
+                if (in != null) {
+                    try {
+                        OutputStream out = new FileOutputStream(file);
+                        byte[] buf = new byte[1024];
+
+                        int len;
+                        while ((len = in.read(buf)) > 0) {
+                            out.write(buf, 0, len);
+                        }
+
+                        out.close();
+                        in.close();
+                    } catch (IOException var10) {
+                        getLogger().log(Level.SEVERE, "Could not save " + file.getName() + " to " + file, var10);
+                    }
+
+                }
+            }
+        }
+    }
+
 
     /**
      * Saves changes to the configuration files.

@@ -2,20 +2,25 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.BlockData;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Persist;
 import com.iridium.iridiumskyblock.Schematic;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.SchematicData;
 import com.iridium.iridiumskyblock.utils.TriFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.Scanner;
 import java.util.concurrent.CompletableFuture;
 
 import static java.lang.Math.max;
@@ -26,35 +31,27 @@ import static java.lang.Math.min;
  */
 public class SchematicManager {
 
-    // If we cant find a schematic by the id we will use this one instead
-    private final SchematicData defaultSchematic;
+    private final Persist persist;
+    private final File parent;
 
-    /**
-     * The default constructor.
-     */
-    public SchematicManager() {
-        // The default schematic, if we cant find a schematic by its id the plugin will use this one instead.
-        try {
-            if (IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().getEntries().size() == 0) {
-                addDefaultSchematics();
+    public final HashMap<String, Schematic> schematics;
+
+    public SchematicManager(@NotNull File parent) {
+        this.persist = new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance());
+        this.parent = parent;
+        this.schematics = new HashMap<>();
+        for (File file : parent.listFiles()) {
+            try {
+                Scanner reader = new Scanner(file);
+                if (reader.hasNextLine()) {
+                    Schematic schematic = deserializeSchematic(reader.nextLine());
+                    schematics.put(file.getName(), schematic);
+                }
+            } catch (FileNotFoundException exception) {
+
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        this.defaultSchematic = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().getEntries().get(0);
-
-        // Saves the new schematics we added to the database.
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().save());
     }
-
-    /**
-     * Adds the default schematics to the list.
-     */
-    private void addDefaultSchematics() throws IOException {
-        InputStream inputStream = IridiumSkyblock.getInstance().getResource("island.schem");
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().addEntry(new SchematicData("island", new BufferedReader(new InputStreamReader(inputStream)).readLine()));
-    }
-
 
     /**
      * Pastes the island schematic at the designated island.
@@ -66,7 +63,21 @@ public class SchematicManager {
      */
     public CompletableFuture<Void> pasteSchematic(final Island island, final World world, final String schematicID, final int delay) {
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        Schematic schematic = IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().getEntries().stream().filter(schematicData -> schematicData.getId().equalsIgnoreCase(schematicID)).findFirst().orElse(defaultSchematic).getSchematic();
+        Schematic schematic;
+        if (schematics.containsKey(schematicID)) {
+            schematic = schematics.get(schematicID);
+        } else {
+            IridiumSkyblock.getInstance().getLogger().warning("Could not find schematic " + schematicID);
+            Optional<String> key = schematics.keySet().stream().findFirst();
+            if (key.isPresent()) {
+                IridiumSkyblock.getInstance().getLogger().warning("Using schematic " + key.get() + " Instead");
+                schematic = schematics.get(key.get());
+            } else {
+                IridiumSkyblock.getInstance().getLogger().warning("Could not find replacement schematic");
+                completableFuture.complete(null);
+                return completableFuture;
+            }
+        }
 
         pasteSchematic(island, world, schematic, completableFuture, 0, delay);
 
@@ -245,9 +256,39 @@ public class SchematicManager {
      * @param schematic The schematic which should be saved
      */
     private void saveSchematic(String name, Schematic schematic) {
-        SchematicData schematicData = new SchematicData(name, schematic);
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().getEntries().removeIf(s -> s.getId().equals(name));
-        IridiumSkyblock.getInstance().getDatabaseManager().getSchematicTableManager().addEntry(schematicData);
+        String fileType = ".iridiumschem";
+        try {
+            File file = new File(parent, name + fileType);
+            if (file.exists()) file.delete();
+            file.createNewFile();
+            FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(serializeSchematic(schematic));
+            fileWriter.flush();
+            fileWriter.close();
+            schematics.put(name + fileType, schematic);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    /**
+     * Serializes a schematic into a string
+     *
+     * @param schematic The specified Schematic
+     * @return A compressed base64 string
+     */
+    private String serializeSchematic(Schematic schematic) {
+        return new String(Base64.getEncoder().encode(new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance()).toString(schematic).getBytes()));
+    }
+
+    /**
+     * Deserializes a schematic
+     *
+     * @param string The compressed base64 String
+     * @return The schematic
+     */
+    private Schematic deserializeSchematic(String string) {
+        return persist.load(Schematic.class, new String(Base64.getDecoder().decode(string)));
     }
 
 }
