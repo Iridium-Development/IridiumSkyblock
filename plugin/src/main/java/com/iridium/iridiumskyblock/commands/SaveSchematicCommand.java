@@ -44,15 +44,14 @@ public class SaveSchematicCommand extends Command {
         }
 
         String schematicName = arguments[1];
-        String fileType = ".iridiumschem";
-        boolean existsAlready = IridiumSkyblock.getInstance().getSchematicManager().schematics.containsKey(schematicName+fileType);
+        boolean existsAlready = IridiumSkyblock.getInstance().getSchematicManager().schematics.containsKey(schematicName+".iridiumschem");
 
         if (existsAlready && (arguments.length == 2 || !arguments[2].equalsIgnoreCase("confirm"))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().missingSchematicConfirmation.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
 
-        IridiumSkyblock.getInstance().getSchematicManager().addSchematic(schematicName+fileType, schematicPos1, schematicPos2);
+        IridiumSkyblock.getInstance().getSchematicManager().addSchematic(schematicName, schematicPos1, schematicPos2);
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().addedSchematic.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 
