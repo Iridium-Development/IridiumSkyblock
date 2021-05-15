@@ -398,7 +398,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.boosterList = new HashMap<>();
         if (boosters.islandExperienceBooster.enabled) boosterList.put("experience", boosters.islandExperienceBooster);
         if (boosters.islandFlightBooster.enabled) boosterList.put("flight", boosters.islandFlightBooster);
-        if (boosters.islandFlightBooster.enabled) boosterList.put("farming", boosters.islandFlightBooster);
+        if (boosters.islandFarmingBooster.enabled) boosterList.put("farming", boosters.islandFarmingBooster);
         if (boosters.islandSpawnerBooster.enabled) boosterList.put("spawner", boosters.islandSpawnerBooster);
 
         File schematicFolder = new File(getDataFolder(), "schematics");
