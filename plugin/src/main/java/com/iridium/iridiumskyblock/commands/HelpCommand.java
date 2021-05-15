@@ -37,7 +37,6 @@ public class HelpCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] arguments) {
         List<Command> availableCommands = IridiumSkyblock.getInstance().getCommandManager().commands.stream()
-                .filter(command -> command.enabled)
                 .filter(command -> sender.hasPermission(command.permission) || command.permission.isEmpty())
                 .collect(Collectors.toList());
 
@@ -101,7 +100,6 @@ public class HelpCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command cmd, String label, String[] args) {
         if (args.length == 2) {
             int availableCommandAmount = (int) IridiumSkyblock.getInstance().getCommandManager().commands.stream()
-                    .filter(command -> command.enabled)
                     .filter(command -> commandSender.hasPermission(command.permission) || command.permission.isEmpty())
                     .count();
 
