@@ -84,7 +84,8 @@ public class UpgradesGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Upgrade> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             if (event.getSlot() == upgrade.getValue().item.slot) {
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is upgrade " + upgrade.getKey());
+                String command = IridiumSkyblock.getInstance().getCommands().upgradesCommand.aliases.get(0);
+                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + upgrade.getKey());
             }
         }
     }

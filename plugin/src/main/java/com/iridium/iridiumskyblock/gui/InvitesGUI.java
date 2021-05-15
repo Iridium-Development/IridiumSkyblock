@@ -77,7 +77,8 @@ public class InvitesGUI implements GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         if (invites.containsKey(event.getSlot())) {
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is uninvite " + invites.get(event.getSlot()));
+            String command = IridiumSkyblock.getInstance().getCommands().unInviteCommand.aliases.get(0);
+            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + invites.get(event.getSlot()));
             event.getWhoClicked().openInventory(getInventory());
         }
     }

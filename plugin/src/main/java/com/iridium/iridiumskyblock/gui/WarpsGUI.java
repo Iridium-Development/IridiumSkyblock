@@ -9,7 +9,6 @@ import com.iridium.iridiumskyblock.utils.Placeholder;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -84,12 +83,16 @@ public class WarpsGUI implements GUI {
         AtomicInteger atomicInteger = new AtomicInteger(1);
         for (IslandWarp islandWarp : islandWarps) {
             if (IridiumSkyblock.getInstance().getConfiguration().islandWarpSlots.get(atomicInteger.getAndIncrement()) == event.getSlot()) {
-                if (event.getClick().equals(ClickType.RIGHT)) {
-                    Bukkit.dispatchCommand(event.getWhoClicked(), "is deletewarp " + islandWarp.getName());
-                } else {
-                    Bukkit.dispatchCommand(event.getWhoClicked(), "is warp " + islandWarp.getName());
-                    event.getWhoClicked().closeInventory();
+                String command = null;
+                switch (event.getClick()) {
+                    case LEFT:
+                        command = IridiumSkyblock.getInstance().getCommands().warpsCommand.aliases.get(0);
+                        break;
+                    case RIGHT:
+                        command = IridiumSkyblock.getInstance().getCommands().deleteWarpCommand.aliases.get(0);
                 }
+                if (command != null)
+                    Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandWarp.getName());
                 addContent(event.getInventory());
                 return;
             }
