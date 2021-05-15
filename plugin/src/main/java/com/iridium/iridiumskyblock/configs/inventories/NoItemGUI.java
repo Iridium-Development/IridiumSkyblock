@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
+import com.iridium.iridiumskyblock.Background;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -14,4 +15,8 @@ public class NoItemGUI {
      * The title of the GUI
      */
     public String title;
+    /**
+     * The background of the GUI
+     */
+    public Background background;
 }

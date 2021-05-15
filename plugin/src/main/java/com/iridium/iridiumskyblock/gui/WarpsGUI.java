@@ -52,7 +52,7 @@ public class WarpsGUI implements GUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().warpsGUI.background);
 
         AtomicInteger atomicInteger = new AtomicInteger(1);
 

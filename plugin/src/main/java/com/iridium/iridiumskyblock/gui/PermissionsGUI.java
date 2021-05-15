@@ -54,7 +54,7 @@ public class PermissionsGUI implements GUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.background);
 
         for (Permission permission : IridiumSkyblock.getInstance().getPermissionList()) {
             boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission);

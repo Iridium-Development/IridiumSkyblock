@@ -54,7 +54,7 @@ public class BoostersGUI implements GUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().boostersGUI.background);
 
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             Item item = entry.getValue().item;

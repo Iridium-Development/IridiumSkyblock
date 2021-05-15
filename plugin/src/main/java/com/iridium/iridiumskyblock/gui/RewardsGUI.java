@@ -38,7 +38,7 @@ public class RewardsGUI implements GUI {
     public void addContent(Inventory inventory) {
         inventory.clear();
 
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandReward.background);
 
         AtomicInteger atomicInteger = new AtomicInteger(0);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island).forEach(islandReward ->
