@@ -16,7 +16,7 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600);
+    )), 15, 10000, 3600, true);
 
     public Booster islandSpawnerBooster = new Booster(new Item(XMaterial.SPAWNER, 12, 1, "&b&lSpawner Booster", Arrays.asList(
             "&7Spawners too slow? Buy this",
@@ -27,7 +27,7 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600);
+    )), 15, 10000, 3600, true);
 
     public Booster islandExperienceBooster = new Booster(new Item(XMaterial.EXPERIENCE_BOTTLE, 14, 1, "&b&lExperience Booster", Arrays.asList(
             "&7Gaining Experience too slow? Buy this",
@@ -38,7 +38,7 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600);
+    )), 15, 10000, 3600, true);
 
     public Booster islandFlightBooster = new Booster(new Item(XMaterial.FEATHER, 16, 1, "&b&lFlight Booster", Arrays.asList(
             "&7Keep falling off your island? Buy this",
@@ -49,6 +49,6 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600);
+    )), 15, 10000, 3600, true);
 
 }
