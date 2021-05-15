@@ -35,6 +35,10 @@ public class EditWarpCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if (args.length < 3) {
+            sender.sendMessage("/is editwarp <name> <icon/description>");
+            return;
+        }
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();

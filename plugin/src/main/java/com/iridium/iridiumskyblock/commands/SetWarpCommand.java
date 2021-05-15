@@ -36,6 +36,7 @@ public class SetWarpCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage("/is setwarp <name>");
+            return;
         }
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -54,7 +55,7 @@ public class SetWarpCommand extends Command {
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "warp");
                 if (islandWarps.size() < IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandUpgrade.getLevel()).amount) {
                     if (island.get().isInIsland(player.getLocation())) {
-                        if(LocationUtils.isSafe(player.getLocation())) {
+                        if (LocationUtils.isSafe(player.getLocation())) {
                             IslandWarp islandWarp = new IslandWarp(island.get(), player.getLocation(), args[1]);
                             if (args.length == 3) {
                                 islandWarp.setPassword(args[2]);
@@ -64,7 +65,7 @@ public class SetWarpCommand extends Command {
                                     .replace("%name%", args[1])
                                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                             );
-                        }else {
+                        } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
