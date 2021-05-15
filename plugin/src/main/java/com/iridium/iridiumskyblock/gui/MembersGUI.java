@@ -9,7 +9,6 @@ import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -73,11 +72,17 @@ public class MembersGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
-            if (event.getClick().equals(ClickType.LEFT)) {
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is demote " + user.getName());
-            } else if (event.getClick().equals(ClickType.RIGHT)) {
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is promote " + user.getName());
+
+            String command = null;
+            switch (event.getClick()) {
+                case LEFT:
+                    command = IridiumSkyblock.getInstance().getCommands().demoteCommand.aliases.get(0);
+                    break;
+                case RIGHT:
+                    command = IridiumSkyblock.getInstance().getCommands().promoteCommand.aliases.get(0);
             }
+            if (command != null)
+                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + user.getName());
             addContent(event.getInventory());
         }
     }

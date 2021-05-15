@@ -80,7 +80,8 @@ public class BoostersGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             if (entry.getValue().item.slot == event.getSlot()) {
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is booster " + entry.getKey());
+                String command = IridiumSkyblock.getInstance().getCommands().boostersCommand.aliases.get(0);
+                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + entry.getKey());
                 return;
             }
         }

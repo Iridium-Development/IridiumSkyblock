@@ -69,13 +69,16 @@ public class BankGUI implements GUI {
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
+        String command = null;
         switch (event.getClick()) {
             case LEFT:
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is withdraw " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
+                command = IridiumSkyblock.getInstance().getCommands().withdrawCommand.aliases.get(0);
                 break;
             case RIGHT:
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is deposit " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
+                command = IridiumSkyblock.getInstance().getCommands().depositCommand.aliases.get(0);
         }
+        if (command != null)
+            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
 
         event.getWhoClicked().openInventory(getInventory());
     }

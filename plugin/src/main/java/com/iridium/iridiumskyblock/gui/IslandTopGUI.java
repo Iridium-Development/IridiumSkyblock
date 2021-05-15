@@ -80,7 +80,8 @@ public class IslandTopGUI implements GUI {
         if (!islandSlots.containsKey(event.getSlot())) return;
 
         Island island = islandSlots.get(event.getSlot());
-        Bukkit.dispatchCommand(event.getWhoClicked(), "is visit " + island.getOwner().getName());
+        String command = IridiumSkyblock.getInstance().getCommands().visitCommand.aliases.get(0);
+        Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + island.getOwner().getName());
     }
 
 }

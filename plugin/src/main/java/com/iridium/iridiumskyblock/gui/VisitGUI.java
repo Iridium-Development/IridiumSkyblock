@@ -87,7 +87,8 @@ public class VisitGUI implements GUI {
             int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
             if (islands.size() > index) {
                 Island island = islands.get(index);
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is visit " + island.getOwner().getName());
+                String command = IridiumSkyblock.getInstance().getCommands().visitCommand.aliases.get(0);
+                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + island.getOwner().getName());
                 event.getWhoClicked().closeInventory();
             }
         }

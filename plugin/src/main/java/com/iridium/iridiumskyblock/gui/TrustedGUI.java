@@ -79,7 +79,8 @@ public class TrustedGUI implements GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is untrust " + user.getName());
+            String command = IridiumSkyblock.getInstance().getCommands().unTrustCommand.aliases.get(0);
+            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + user.getName());
             addContent(event.getInventory());
         }
     }
