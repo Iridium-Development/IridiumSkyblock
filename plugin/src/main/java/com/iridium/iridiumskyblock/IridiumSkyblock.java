@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock;
 
-import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
@@ -390,19 +389,17 @@ public class IridiumSkyblock extends JavaPlugin {
         this.bankItemList.add(bankItems.moneyBankItem);
 
         this.missionsList = new HashMap<>(missions.missions);
-        this.upgradesList = new HashMap<>(ImmutableMap.<String, Upgrade>builder()
-                .put("size", upgrades.sizeUpgrade)
-                .put("generator", upgrades.oresUpgrade)
-                .put("warp", upgrades.warpsUpgrade)
-                .build());
 
-        this.boosterList = new HashMap<>(ImmutableMap.<String, Booster>builder()
-                .put("experience", boosters.islandExperienceBooster)
-                .put("flight", boosters.islandFlightBooster)
-                .put("farming", boosters.islandFarmingBooster)
-                .put("spawner", boosters.islandSpawnerBooster)
-                .build());
+        this.upgradesList = new HashMap<>();
+        if (upgrades.sizeUpgrade.enabled) upgradesList.put("size", upgrades.sizeUpgrade);
+        if (upgrades.oresUpgrade.enabled) upgradesList.put("generator", upgrades.oresUpgrade);
+        if (upgrades.warpsUpgrade.enabled) upgradesList.put("warp", upgrades.warpsUpgrade);
 
+        this.boosterList = new HashMap<>();
+        if (boosters.islandExperienceBooster.enabled) boosterList.put("experience", boosters.islandExperienceBooster);
+        if (boosters.islandFlightBooster.enabled) boosterList.put("flight", boosters.islandFlightBooster);
+        if (boosters.islandFlightBooster.enabled) boosterList.put("farming", boosters.islandFlightBooster);
+        if (boosters.islandSpawnerBooster.enabled) boosterList.put("spawner", boosters.islandSpawnerBooster);
 
         File schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) {
