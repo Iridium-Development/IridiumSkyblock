@@ -53,7 +53,7 @@ public class MembersGUI implements GUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
 
         int i = 0;
         for (User member : island.getMembers()) {

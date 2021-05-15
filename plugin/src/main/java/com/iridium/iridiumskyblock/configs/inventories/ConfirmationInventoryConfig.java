@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
+import com.iridium.iridiumskyblock.Background;
 import com.iridium.iridiumskyblock.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,10 @@ public class ConfirmationInventoryConfig {
      * The title of the GUI
      */
     public String title;
+    /**
+     * The background of the GUI
+     */
+    public Background background;
     /**
      * The yes item
      */

@@ -48,7 +48,7 @@ public class PermissionsRankGUI implements GUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().permissionsRankGUI.background);
 
         for (int i = 0; i < 5; i++) {
             IslandRank islandRank = IslandRank.getByLevel(i);

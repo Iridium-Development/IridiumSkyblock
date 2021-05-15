@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
+import com.iridium.iridiumskyblock.Background;
 import com.iridium.iridiumskyblock.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,10 @@ public class InventoryConfig {
      * The title of the GUI
      */
     public String title;
+    /**
+     * The background of the GUI
+     */
+    public Background background;
     /**
      * A HashMap of the items in the GUI with the string representing the command to be executed
      */

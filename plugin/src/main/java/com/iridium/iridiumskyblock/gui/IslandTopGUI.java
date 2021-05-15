@@ -56,7 +56,7 @@ public class IslandTopGUI implements GUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandTopGUI.background);
 
 
         for (int slot : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.values()) {

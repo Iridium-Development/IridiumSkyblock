@@ -54,7 +54,7 @@ public class InvitesGUI implements GUI {
     public void addContent(Inventory inventory) {
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island);
         inventory.clear();
-        InventoryUtils.fillInventory(inventory);
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.background);
 
 
         int i = 0;

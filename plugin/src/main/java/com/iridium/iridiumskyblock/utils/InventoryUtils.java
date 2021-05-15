@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.utils;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Background;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -80,9 +80,13 @@ public class InventoryUtils {
      *
      * @param inventory The inventory which should be filled
      */
-    public static void fillInventory(Inventory inventory) {
+    public static void fillInventory(Inventory inventory, Background background) {
         for (int i = 0; i < inventory.getSize(); i++) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().filler));
+            inventory.setItem(i, ItemStackUtils.makeItem(background.filler));
+        }
+        for (int slot : background.items.keySet()) {
+            if (slot >= inventory.getSize()) continue;
+            inventory.setItem(slot, ItemStackUtils.makeItem(background.items.get(slot)));
         }
     }
 
