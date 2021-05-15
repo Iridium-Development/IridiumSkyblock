@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +14,7 @@ public abstract class Command {
     public final @NotNull List<String> aliases;
     public final @NotNull String description;
     public final @NotNull String permission;
+    @JsonIgnore
     public final boolean onlyForPlayers;
     public final boolean enabled = true;
 

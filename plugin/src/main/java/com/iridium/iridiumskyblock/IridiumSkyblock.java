@@ -64,6 +64,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private Missions missions;
     private Upgrades upgrades;
     private Boosters boosters;
+    private Commands commands;
 
     private ChunkGenerator chunkGenerator;
 
@@ -358,6 +359,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.missions = persist.load(Missions.class);
         this.upgrades = persist.load(Upgrades.class);
         this.boosters = persist.load(Boosters.class);
+        this.commands = persist.load(Commands.class);
 
         this.permissionList = new ArrayList<>();
         this.permissionList.add(permissions.redstone);
@@ -453,6 +455,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(missions);
         this.persist.save(upgrades);
         this.persist.save(boosters);
+        this.persist.save(commands);
     }
 
 }

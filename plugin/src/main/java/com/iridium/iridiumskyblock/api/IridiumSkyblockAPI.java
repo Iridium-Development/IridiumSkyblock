@@ -17,7 +17,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -106,8 +105,7 @@ public class IridiumSkyblockAPI {
      * @param command The command we are adding
      */
     public void addCommand(@NotNull Command command) {
-        iridiumSkyblock.getCommandManager().commands.add(command);
-        iridiumSkyblock.getCommandManager().commands.sort(Comparator.comparing(cmd -> cmd.aliases.get(0)));
+        iridiumSkyblock.getCommandManager().registerCommand(command);
     }
 
     /**

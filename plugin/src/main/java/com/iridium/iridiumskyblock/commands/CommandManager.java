@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.configs.Commands;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
@@ -36,52 +37,51 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Registers all commands of this plugin.
      */
     public void registerCommands() {
-        registerCommand(new ReloadCommand());
-        registerCommand(new CreateCommand());
-        registerCommand(new DeleteCommand());
-        registerCommand(new RegenCommand());
-        registerCommand(new HomeCommand());
-        registerCommand(new AboutCommand());
-        registerCommand(new SetHomeCommand());
-        registerCommand(new InviteCommand());
-        registerCommand(new UnInviteCommand());
-        registerCommand(new JoinCommand());
-        registerCommand(new LeaveCommand());
-        registerCommand(new MembersCommand());
-        registerCommand(new KickCommand());
-        registerCommand(new VisitCommand());
-        registerCommand(new PublicCommand());
-        registerCommand(new PrivateCommand());
-        registerCommand(new PromoteCommand());
-        registerCommand(new DemoteCommand());
-        registerCommand(new TransferCommand());
-        registerCommand(new PermissionsCommand());
-        registerCommand(new BypassCommand());
-        registerCommand(new HelpCommand());
-        registerCommand(new ValueCommand());
-        registerCommand(new TopCommand());
-        registerCommand(new BankCommand());
-        registerCommand(new WithdrawCommand());
-        registerCommand(new DepositCommand());
-        registerCommand(new PositionCommand());
-        registerCommand(new SaveSchematicCommand());
-        registerCommand(new InfoCommand());
-        registerCommand(new MissionCommand());
-        registerCommand(new BlockValueCommand());
-        registerCommand(new BorderCommand());
-        registerCommand(new RewardsCommand());
-        registerCommand(new UpgradesCommand());
-        registerCommand(new TrustCommand());
-        registerCommand(new UnTrustCommand());
-        registerCommand(new BoostersCommand());
-        registerCommand(new WarpsCommand());
-        registerCommand(new SetWarpCommand());
-        registerCommand(new EditWarpCommand());
-        registerCommand(new DeleteWarpCommand());
-        registerCommand(new FlyCommand());
-        registerCommand(new LevelCommand());
-
-        commands.sort(Comparator.comparing(command -> command.aliases.get(0)));
+        Commands commands = IridiumSkyblock.getInstance().getCommands();
+        registerCommand(commands.reloadCommand);
+        registerCommand(commands.createCommand);
+        registerCommand(commands.deleteCommand);
+        registerCommand(commands.regenCommand);
+        registerCommand(commands.homeCommand);
+        registerCommand(commands.aboutCommand);
+        registerCommand(commands.setHomeCommand);
+        registerCommand(commands.inviteCommand);
+        registerCommand(commands.unInviteCommand);
+        registerCommand(commands.joinCommand);
+        registerCommand(commands.leaveCommand);
+        registerCommand(commands.membersCommand);
+        registerCommand(commands.kickCommand);
+        registerCommand(commands.visitCommand);
+        registerCommand(commands.publicCommand);
+        registerCommand(commands.privateCommand);
+        registerCommand(commands.promoteCommand);
+        registerCommand(commands.demoteCommand);
+        registerCommand(commands.transferCommand);
+        registerCommand(commands.permissionsCommand);
+        registerCommand(commands.bypassCommand);
+        registerCommand(commands.helpCommand);
+        registerCommand(commands.valueCommand);
+        registerCommand(commands.topCommand);
+        registerCommand(commands.bankCommand);
+        registerCommand(commands.withdrawCommand);
+        registerCommand(commands.depositCommand);
+        registerCommand(commands.positionCommand);
+        registerCommand(commands.saveSchematicCommand);
+        registerCommand(commands.infoCommand);
+        registerCommand(commands.missionCommand);
+        registerCommand(commands.blockValueCommand);
+        registerCommand(commands.borderCommand);
+        registerCommand(commands.rewardsCommand);
+        registerCommand(commands.upgradesCommand);
+        registerCommand(commands.trustCommand);
+        registerCommand(commands.unTrustCommand);
+        registerCommand(commands.boostersCommand);
+        registerCommand(commands.warpsCommand);
+        registerCommand(commands.setWarpCommand);
+        registerCommand(commands.editWarpCommand);
+        registerCommand(commands.deleteWarpCommand);
+        registerCommand(commands.flyCommand);
+        registerCommand(commands.levelCommand);
     }
 
     /**
@@ -90,7 +90,10 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * @param command The command which should be registered
      */
     public void registerCommand(Command command) {
-        commands.add(command);
+        if (command.enabled) {
+            int index = Collections.binarySearch(commands, command, Comparator.comparing(cmd -> cmd.aliases.get(0)));
+            commands.add(index < 0 ? -(index + 1) : index, command);
+        }
     }
 
     /**
@@ -131,7 +134,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         for (Command command : commands) {
             // We don't want to execute other commands or ones that are disabled
-            if (!(command.aliases.contains(args[0]) && command.enabled)) {
+            if (!(command.aliases.contains(args[0]))) {
                 continue;
             }
 
@@ -146,7 +149,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             // Check permissions
             if (!((commandSender.hasPermission(command.permission) || command.permission
                     .equalsIgnoreCase("") || command.permission
-                    .equalsIgnoreCase("iridiumskyblock.")) && command.enabled)) {
+                    .equalsIgnoreCase("iridiumskyblock.")))) {
                 // No permissions
                 commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -179,7 +182,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             for (Command command : commands) {
                 for (String alias : command.aliases) {
                     if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && (
-                            command.enabled && (commandSender.hasPermission(command.permission)
+                            (commandSender.hasPermission(command.permission)
                                     || command.permission.equalsIgnoreCase("") || command.permission
                                     .equalsIgnoreCase("iridiumskyblock.")))) {
                         result.add(alias);
@@ -191,9 +194,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         // Let the sub-command handle the tab completion
         for (Command command : commands) {
-            if (command.aliases.contains(args[0]) && (command.enabled && (
+            if (command.aliases.contains(args[0]) && (
                     commandSender.hasPermission(command.permission) || command.permission.equalsIgnoreCase("")
-                            || command.permission.equalsIgnoreCase("iridiumskyblock.")))) {
+                            || command.permission.equalsIgnoreCase("iridiumskyblock."))) {
                 return command.onTabComplete(commandSender, cmd, label, args);
             }
         }
