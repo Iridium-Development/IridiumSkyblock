@@ -51,7 +51,7 @@ public class BoostersCommand extends Command {
                     if (!islandBooster.isActive()) {
                         if (PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost)) {
                             islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
-                            IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, booster.crystalsCost, booster.vaultCost, 0, boosterName);
+                            IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, 0, boosterName);
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",

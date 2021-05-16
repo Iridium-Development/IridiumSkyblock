@@ -73,7 +73,7 @@ public class KickCommand extends Command {
                         }
                     }
                     
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser, 0, 0, 0, "");
+                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser,0, "");
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 }
             } else {

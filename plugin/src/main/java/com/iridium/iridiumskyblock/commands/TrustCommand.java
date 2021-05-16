@@ -63,7 +63,7 @@ public class TrustCommand extends Command {
                                     .replace("%truster%", player.getName())
                                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                             );
-                            IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_TRUSTED, user, u, 0, 0, 0, "");
+                            IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_TRUSTED, user, u, 0, "");
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyTrusted.replace("%prefix%",

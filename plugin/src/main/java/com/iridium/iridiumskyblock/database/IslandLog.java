@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Getter
@@ -32,14 +28,8 @@ public final class IslandLog extends IslandData {
     @DatabaseField(columnName = "target")
     private UUID target;
 
-    @DatabaseField(columnName = "crystals", canBeNull = false)
-    private int crystals;
-
-    @DatabaseField(columnName = "money", canBeNull = false)
-    private double money;
-
-    @DatabaseField(columnName = "experience", canBeNull = false)
-    private int experience;
+    @DatabaseField(columnName = "amount", canBeNull = false)
+    private double amount;
 
     @DatabaseField(columnName = "data")
     private String data;
@@ -54,14 +44,12 @@ public final class IslandLog extends IslandData {
      * @param user   The user performing this action
      * @param target The user affected by this action
      */
-    public IslandLog(@NotNull Island island, @NotNull LogAction logAction, @NotNull User user, User target, int crystals, double money, int experience, String data) {
+    public IslandLog(@NotNull Island island, @NotNull LogAction logAction, @NotNull User user, User target, double amount, String data) {
         super(island);
-        this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
+        this.time = System.currentTimeMillis();
         this.user = user.getUuid();
         if (target != null) this.target = target.getUuid();
-        this.crystals = crystals;
-        this.money = money;
-        this.experience = experience;
+        this.amount = amount;
         this.data = data;
         this.logAction = logAction;
     }
@@ -81,16 +69,7 @@ public final class IslandLog extends IslandData {
      * @return The user who is targeted by this action
      */
     public User getTarget() {
-        if (target == null) return null;
+        if (target == null) return new User(UUID.randomUUID(), "");
         return IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getOfflinePlayer(target));
-    }
-
-    /**
-     * Returns the time of this log.
-     *
-     * @return The time of this log
-     */
-    public LocalDateTime getTime() {
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault());
     }
 }

@@ -104,7 +104,29 @@ public class Inventories {
 
     public NoItemGUI bankGUI = new NoItemGUI(27, "&7Island Bank", background2);
 
-    public NoItemGUI logsGUI = new NoItemGUI(27, "&7Island Logs", background2);
+    public LogInventoryConfig logsGUI = new LogInventoryConfig(27, "&7Island Logs",
+            new Item(XMaterial.PLAYER_HEAD, 10, 1, "&b&lIsland Members", "%island_owner%", Collections.emptyList()),
+            new Item(XMaterial.EMERALD, 11, 1, "&b&lIsland Trusts", Collections.emptyList()),
+            new Item(XMaterial.LAPIS_LAZULI, 12, 1, "&b&lIsland Invites", Collections.emptyList()),
+            new Item(XMaterial.GOLD_INGOT, 13, 1, "&b&lIsland Bank", Collections.emptyList()),
+            new Item(XMaterial.EXPERIENCE_BOTTLE, 14, 1, "&b&lIsland Boosters", Collections.emptyList()),
+            new Item(XMaterial.BEACON, 15, 1, "&b&lIsland Upgrades", Collections.emptyList()),
+            new Item(XMaterial.DIAMOND, 16, 1, "&b&lIsland Rewards", Collections.emptyList()),
+            "&b%user% Joined (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% kicked %target% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Left (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Invited %target% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Uninvited %target% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Promoted %target% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Demoted %target% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Trusted %target% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% UnTrusted %target% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Deposited %amount% %type% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Withdrew %amount% %type% (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Purchased %type% booster (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% Purchased %type% upgrade (%days% days %minutes% minutes %seconds% seconds ago)",
+            "&b%user% redeemed %type% reward (%days% days %minutes% minutes %seconds% seconds ago)",
+            background2);
 
     public NoItemGUI upgradesGUI = new NoItemGUI(27, "&7Island Upgrades", background2);
 

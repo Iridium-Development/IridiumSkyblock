@@ -57,7 +57,7 @@ public class LeaveCommand extends Command {
                         }
                     }
                     PlayerUtils.teleportSpawn(player);
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_LEFT, user, null, 0, 0, 0, "");
+                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_LEFT, user, null, 0, "");
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 });
                 player.openInventory(confirmationGUI.getInventory());

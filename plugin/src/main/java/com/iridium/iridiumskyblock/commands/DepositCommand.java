@@ -49,22 +49,7 @@ public class DepositCommand extends Command {
             if (bankItem.isPresent()) {
                 double amount = bankItem.get().deposit(player, Double.parseDouble(args[2]));
                 if (amount > 0) {
-                    int crystals = 0;
-                    double money = 0;
-                    int experience = 0;
-                    switch (bankItem.get().getName()) {
-                        case "crystals":
-                            crystals = (int) amount;
-                            break;
-                        case "money":
-                            money = amount;
-                            break;
-                        case "experience":
-                            experience = (int) amount;
-                            break;
-
-                    }
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, crystals, money, experience, "");
+                    IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, amount, bankItem.get().getName());
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 }
             } else {

@@ -40,7 +40,7 @@ public class Reward {
         island.setExperience(island.getExperience() + islandExperience);
         commands.forEach(command -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName())));
         sound.play(player);
-        IslandLog islandLog = new IslandLog(island, LogAction.REWARD_REDEEMED, user, null, crystals, money, experience, ChatColor.stripColor(item.displayName));
+        IslandLog islandLog = new IslandLog(island, LogAction.REWARD_REDEEMED, user, null, 0, ChatColor.stripColor(item.displayName));
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
     }
 
