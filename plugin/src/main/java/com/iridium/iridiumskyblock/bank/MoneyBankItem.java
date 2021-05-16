@@ -35,7 +35,7 @@ public class MoneyBankItem extends BankItem {
      * @param amount The amount which should be withdrawn
      */
     @Override
-    public void withdraw(Player player, Number amount) {
+    public double withdraw(Player player, Number amount) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
@@ -51,9 +51,11 @@ public class MoneyBankItem extends BankItem {
                         .replace("%type%", "Money")
                 );
             }
+            return money;
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+        return 0;
     }
 
     /**
@@ -63,7 +65,7 @@ public class MoneyBankItem extends BankItem {
      * @param amount The amount which should be deposited
      */
     @Override
-    public void deposit(Player player, Number amount) {
+    public double deposit(Player player, Number amount) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
@@ -79,9 +81,11 @@ public class MoneyBankItem extends BankItem {
                         .replace("%type%", "Money")
                 );
             }
+            return money;
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+        return 0;
     }
 
     /**

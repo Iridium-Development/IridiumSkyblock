@@ -38,16 +38,18 @@ public abstract class BankItem {
      *
      * @param player The player who wants to withdraw
      * @param amount The amount which should be withdrawn
+     * @return returns the resulting amount withdrawn
      */
-    public abstract void withdraw(Player player, Number amount);
+    public abstract double withdraw(Player player, Number amount);
 
     /**
      * Deposits the given amount of this item to the Player's bank.
      *
      * @param player The player who wants to deposit
      * @param amount The amount which should be deposited
+     * @return returns the resulting amount deposited
      */
-    public abstract void deposit(Player player, Number amount);
+    public abstract double deposit(Player player, Number amount);
 
     /**
      * Returns the string representation of the value of this item.

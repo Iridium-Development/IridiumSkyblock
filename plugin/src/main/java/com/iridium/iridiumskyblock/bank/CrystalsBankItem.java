@@ -28,8 +28,9 @@ public class CrystalsBankItem extends BankItem {
      * @param amount The amount which should be withdrawn
      */
     @Override
-    public void withdraw(Player player, Number amount) {
+    public double withdraw(Player player, Number amount) {
         // TODO cba to do this atm
+        return 0;
     }
 
     /**
@@ -39,8 +40,9 @@ public class CrystalsBankItem extends BankItem {
      * @param amount The amount which should be deposited
      */
     @Override
-    public void deposit(Player player, Number amount) {
+    public double deposit(Player player, Number amount) {
         // TODO cba to do this atm
+        return 0;
     }
 
     /**

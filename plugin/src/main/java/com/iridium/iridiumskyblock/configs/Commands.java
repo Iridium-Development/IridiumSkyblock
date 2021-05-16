@@ -47,4 +47,5 @@ public class Commands {
     public DeleteWarpCommand deleteWarpCommand = new DeleteWarpCommand();
     public FlyCommand flyCommand = new FlyCommand();
     public LevelCommand levelCommand = new LevelCommand();
+    public LogsCommand logsCommand = new LogsCommand();
 }
