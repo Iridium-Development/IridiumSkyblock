@@ -1,8 +1,10 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
+import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InvitesGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -58,6 +60,8 @@ public class InviteCommand extends Command {
                 } else {
                     IslandInvite islandInvite = new IslandInvite(island.get(), offlinePlayerUser, user);
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().addEntry(islandInvite);
+                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_INVITED, user, offlinePlayerUser, 0, 0, 0, "");
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                     String playerName = offlinePlayer.getName() != null ? offlinePlayerUser.getName() : args[1];
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedPlayer.replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 

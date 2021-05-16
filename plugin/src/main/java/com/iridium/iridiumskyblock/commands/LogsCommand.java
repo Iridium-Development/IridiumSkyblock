@@ -1,13 +1,10 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandInvite;
-import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.LogsGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,46 +13,32 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which un-invites a User from an Island.
+ * Command which opens the Island bank GUI.
  */
-public class UnInviteCommand extends Command {
+public class LogsCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public UnInviteCommand() {
-        super(Collections.singletonList("uninvite"), "Revoke an invitation to your Island", "", true);
+    public LogsCommand() {
+        super(Collections.singletonList("logs"), "Open your Island Logs", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Un-Invites a User from an Island.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length != 2) {
-            sender.sendMessage("/is uninvite <name>");
-            return;
-        }
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getServer().getOfflinePlayer(args[1]));
 
         if (island.isPresent()) {
-            Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), targetUser);
-            if (islandInvite.isPresent()) {
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(islandInvite.get());
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_UNINVITED, user, targetUser, 0, 0, 0, "");
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteDoesntExist.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
+            player.openInventory(new LogsGUI(island.get()).getInventory());
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
@@ -72,7 +55,7 @@ public class UnInviteCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return null;
+        return Collections.emptyList();
     }
 
 }

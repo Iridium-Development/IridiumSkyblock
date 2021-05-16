@@ -2,7 +2,9 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -55,6 +57,8 @@ public class LeaveCommand extends Command {
                         }
                     }
                     PlayerUtils.teleportSpawn(player);
+                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_LEFT, user, null, 0, 0, 0, "");
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 });
                 player.openInventory(confirmationGUI.getInventory());
             }

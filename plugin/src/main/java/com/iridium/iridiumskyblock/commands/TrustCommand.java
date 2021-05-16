@@ -1,7 +1,9 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.TrustedGUI;
@@ -61,6 +63,8 @@ public class TrustCommand extends Command {
                                     .replace("%truster%", player.getName())
                                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                             );
+                            IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_TRUSTED, user, u, 0, 0, 0, "");
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyTrusted.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));

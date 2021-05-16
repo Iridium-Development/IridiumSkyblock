@@ -104,6 +104,8 @@ public class Inventories {
 
     public NoItemGUI bankGUI = new NoItemGUI(27, "&7Island Bank", background2);
 
+    public NoItemGUI logsGUI = new NoItemGUI(27, "&7Island Logs", background2);
+
     public NoItemGUI upgradesGUI = new NoItemGUI(27, "&7Island Upgrades", background2);
 
     public NoItemGUI boostersGUI = new NoItemGUI(27, "&7Island Boosters", background2);

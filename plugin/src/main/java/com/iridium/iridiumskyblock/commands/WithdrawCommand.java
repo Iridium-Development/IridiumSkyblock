@@ -1,8 +1,10 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
@@ -51,7 +53,24 @@ public class WithdrawCommand extends Command {
             }
             Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
             if (bankItem.isPresent()) {
-                bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+                double amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+                int crystals = 0;
+                double money = 0;
+                int experience = 0;
+                switch (bankItem.get().getName()) {
+                    case "crystals":
+                        crystals = (int) amount;
+                        break;
+                    case "money":
+                        money = amount;
+                        break;
+                    case "experience":
+                        experience = (int) amount;
+                        break;
+
+                }
+                IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_WITHDRAW, user, null, crystals, money, experience, "");
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankItemDoesntExist.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
