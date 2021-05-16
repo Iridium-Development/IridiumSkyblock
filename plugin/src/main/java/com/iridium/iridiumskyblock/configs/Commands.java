@@ -48,4 +48,5 @@ public class Commands {
     public FlyCommand flyCommand = new FlyCommand();
     public LevelCommand levelCommand = new LevelCommand();
     public LogsCommand logsCommand = new LogsCommand();
+    public ClearDataCommand clearDataCommand = new ClearDataCommand();
 }

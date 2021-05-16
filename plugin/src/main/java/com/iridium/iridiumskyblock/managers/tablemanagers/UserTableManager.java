@@ -123,4 +123,10 @@ public class UserTableManager extends TableManager<User, Integer> {
         }
         return -1;
     }
+
+    @Override
+    public void clear() {
+        super.clear();
+        userIslandIndex.clear();
+    }
 }

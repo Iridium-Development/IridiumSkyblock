@@ -19,6 +19,7 @@ import java.util.List;
 public class TableManager<T, S> {
     private final List<T> entries;
     private final Dao<T, S> dao;
+    private final Class<T> clazz;
 
     private final boolean autoCommit;
     private final ConnectionSource connectionSource;
@@ -30,6 +31,7 @@ public class TableManager<T, S> {
         this.dao = DaoManager.createDao(connectionSource, clazz);
         this.dao.setAutoCommit(getDatabaseConnection(), autoCommit);
         this.entries = dao.queryForAll();
+        this.clazz = clazz;
     }
 
     /**
@@ -108,6 +110,21 @@ public class TableManager<T, S> {
      */
     private DatabaseConnection getDatabaseConnection() throws SQLException {
         return connectionSource.getReadWriteConnection(null);
+    }
+
+    /**
+     * Clear all entries in the database & cache
+     */
+    public void clear() {
+        try {
+            TableUtils.clearTable(connectionSource, clazz);
+            if (!autoCommit) {
+                dao.commit(getDatabaseConnection());
+            }
+            entries.clear();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     /**
