@@ -48,23 +48,25 @@ public class DepositCommand extends Command {
             Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
             if (bankItem.isPresent()) {
                 double amount = bankItem.get().deposit(player, Double.parseDouble(args[2]));
-                int crystals = 0;
-                double money = 0;
-                int experience = 0;
-                switch (bankItem.get().getName()) {
-                    case "crystals":
-                        crystals = (int) amount;
-                        break;
-                    case "money":
-                        money = amount;
-                        break;
-                    case "experience":
-                        experience = (int) amount;
-                        break;
+                if (amount > 0) {
+                    int crystals = 0;
+                    double money = 0;
+                    int experience = 0;
+                    switch (bankItem.get().getName()) {
+                        case "crystals":
+                            crystals = (int) amount;
+                            break;
+                        case "money":
+                            money = amount;
+                            break;
+                        case "experience":
+                            experience = (int) amount;
+                            break;
 
+                    }
+                    IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, crystals, money, experience, "");
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 }
-                IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, crystals, money, experience, "");
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankItemDoesntExist.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
