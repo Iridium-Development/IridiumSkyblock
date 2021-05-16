@@ -149,7 +149,17 @@ public class IridiumSkyblockAPI {
     }
 
     /**
-     * Gets weather a permission is allowed or denied.
+     * Gets a permission object from name
+     *
+     * @param permission The Specified permission
+     * @return The the permission object
+     */
+    public Optional<Permission> getPermissions(@NotNull String permission) {
+        return iridiumSkyblock.getPermissionList().stream().filter(perm -> perm.getName().equalsIgnoreCase(permission)).findFirst();
+    }
+
+    /**
+     * Gets whether a permission is allowed or denied.
      *
      * @param island     The specified Island
      * @param user       The Specified User
