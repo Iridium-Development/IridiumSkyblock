@@ -116,6 +116,7 @@ public class LogsGUI implements GUI {
                     break;
                 case USER_DEMOTED:
                     islandMembersLore.add(StringUtils.color(logInventoryConfig.USER_DEMOTED
+                            .replace("%target%", islandLog.getTarget().getName())
                             .replace("%user%", islandLog.getUser().getName()))
                             .replace("%seconds%", String.valueOf(seconds))
                             .replace("%minutes%", String.valueOf(minutes))
@@ -124,6 +125,7 @@ public class LogsGUI implements GUI {
                     break;
                 case USER_PROMOTED:
                     islandMembersLore.add(StringUtils.color(logInventoryConfig.USER_PROMOTED
+                            .replace("%target%", islandLog.getTarget().getName())
                             .replace("%user%", islandLog.getUser().getName()))
                             .replace("%seconds%", String.valueOf(seconds))
                             .replace("%minutes%", String.valueOf(minutes))
