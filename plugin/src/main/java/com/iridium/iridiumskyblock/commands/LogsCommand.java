@@ -1,11 +1,9 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.LogAction;
-import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.LogsGUI;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,48 +11,34 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
- * Command which deposits a currency into the Island bank.
+ * Command which opens the Island bank GUI.
  */
-public class DepositCommand extends Command {
+public class LogsCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public DepositCommand() {
-        super(Collections.singletonList("deposit"), "Deposit into your Island bank", "", true);
+    public LogsCommand() {
+        super(Collections.singletonList("logs"), "Open your Island Logs", "", true);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Deposits a currency into the Island bank.
      *
      * @param sender The CommandSender which executes this command
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if (args.length != 3) {
-            sender.sendMessage("/is deposit <name> <amount>");
-            return;
-        }
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
+
         if (island.isPresent()) {
-            Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
-            if (bankItem.isPresent()) {
-                double amount = bankItem.get().deposit(player, Double.parseDouble(args[2]));
-                if (amount > 0) {
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, amount, bankItem.get().getName());
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                }
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankItemDoesntExist.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
+            player.openInventory(new LogsGUI(island.get()).getInventory());
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
@@ -71,12 +55,6 @@ public class DepositCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (args.length == 2) {
-            return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).collect(Collectors.toList());
-        }
-
-        // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
         return Collections.emptyList();
     }
 

@@ -35,6 +35,7 @@ public class DatabaseManager {
     private ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
     private ForeignIslandTableManager<IslandBooster, Integer> islandBoosterTableManager;
     private ForeignIslandTableManager<IslandWarp, Integer> islandWarpTableManager;
+    private ForeignIslandTableManager<IslandLog, Integer> islandLogTableManager;
 
     @Getter(AccessLevel.NONE)
     private ConnectionSource connectionSource;
@@ -63,6 +64,7 @@ public class DatabaseManager {
         this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, false);
         this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class, false);
         this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, false);
+        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, false);
     }
 
     /**

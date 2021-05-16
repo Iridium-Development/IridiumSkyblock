@@ -37,7 +37,7 @@ public class Missions {
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
-                    )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Farmer mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -61,7 +61,7 @@ public class Missions {
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
-                    )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Hunter mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -83,7 +83,7 @@ public class Missions {
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
-                    )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Baker mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -107,7 +107,7 @@ public class Missions {
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
-                    )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Miner mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -129,7 +129,7 @@ public class Missions {
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
-                    )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Fisherman mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -152,7 +152,7 @@ public class Missions {
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
-                    )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Blacksmith mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -176,7 +176,7 @@ public class Missions {
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
-                    )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Potion Brewer mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -202,7 +202,7 @@ public class Missions {
                                     "&b&l Rewards",
                                     "&b&l* &73 Island Crystals",
                                     "&b&l* &7$1000"
-                            )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                            )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Lumberjack mission Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -229,7 +229,7 @@ public class Missions {
                                     "&b&l Rewards",
                                     "&b&l* &73 Island Crystals",
                                     "&b&l* &7$1000"
-                            )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"), XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                            )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Crafting Completed!",
                     "&b&l* &7+5 Island Experience",
                     "&b&l* &7+3 Island Crystals",
@@ -254,9 +254,7 @@ public class Missions {
                                     "&b&l Rewards",
                                     "&b&l* &73 Island Crystals",
                                     "&b&l* &7$1000"
-                            )), 5, Arrays.asList("is bank give %player% crystals 3", "eco give %player% 1000"),
-                            XSound.ENTITY_PLAYER_LEVELUP),
-                    Arrays.asList(
+                            )), Collections.emptyList(), 3, 1000, 0, 5, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                             "%prefix% &7Mining Completed!",
                             "&b&l* &7+5 Island Experience",
                             "&b&l* &7+3 Island Crystals",

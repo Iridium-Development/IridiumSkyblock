@@ -2,8 +2,10 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
+import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BoostersGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -49,6 +51,8 @@ public class BoostersCommand extends Command {
                     if (!islandBooster.isActive()) {
                         if (PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost)) {
                             islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
+                            IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, 0, boosterName);
+                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
