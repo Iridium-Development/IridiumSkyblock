@@ -83,7 +83,7 @@ public class LogsGUI implements GUI {
     public void setItemStack(Inventory inventory, Item item, int page, LogAction... logActions) {
         ItemStack itemStack = ItemStackUtils.makeItem(item, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
         ItemMeta itemMeta = itemStack.getItemMeta();
-        List<String> lore = itemMeta.getLore() != null ? itemMeta.getLore() : new ArrayList<>();
+        List<String> lore = new ArrayList<>();
 
         List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).stream()
                 .filter(islandLog -> Arrays.stream(logActions).anyMatch(logAction -> logAction.equals(islandLog.getLogAction())))
@@ -110,6 +110,10 @@ public class LogsGUI implements GUI {
                         .replace("%days%", String.valueOf(days)));
             }
             index++;
+        }
+
+        if (itemMeta.getLore() != null) {
+            lore.addAll(itemMeta.getLore());
         }
 
         int maxPage = (int) Math.ceil(islandLogs.size() / 10.00);
