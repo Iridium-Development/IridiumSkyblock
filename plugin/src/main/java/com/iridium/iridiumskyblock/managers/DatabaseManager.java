@@ -43,6 +43,8 @@ public class DatabaseManager {
     private ConnectionSource connectionSource;
 
     public void init() throws SQLException {
+        LoggerFactory.setLogBackendFactory(new NullLogBackend.NullLogBackendFactory());
+
         SQL sqlConfig = IridiumSkyblock.getInstance().getSql();
         String databaseURL = getDatabaseURL(sqlConfig);
 
@@ -52,8 +54,6 @@ public class DatabaseManager {
                 sqlConfig.password,
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
-
-        LoggerFactory.setLogBackendFactory(new NullLogBackend.NullLogBackendFactory());
 
         this.islandTableManager = new IslandTableManager(connectionSource, false);
         this.userTableManager = new UserTableManager(connectionSource, false);
