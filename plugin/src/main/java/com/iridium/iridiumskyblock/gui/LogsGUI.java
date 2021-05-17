@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.LogInventoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
@@ -9,6 +11,7 @@ import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,9 +19,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * GUI which allows users to manage the Island bank.
@@ -26,6 +31,14 @@ import java.util.concurrent.TimeUnit;
 public class LogsGUI implements GUI {
 
     private final Island island;
+
+    private int membersPage = 1;
+    private int invitesPage = 1;
+    private int trustsPage = 1;
+    private int bankPage = 1;
+    private int boostersPage = 1;
+    private int upgradesPage = 1;
+    private int rewardsPage = 1;
 
     /**
      * The default constructor.
@@ -58,181 +71,92 @@ public class LogsGUI implements GUI {
 
         InventoryUtils.fillInventory(inventory, logInventoryConfig.background);
 
-        List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island);
-        islandLogs.sort(Comparator.comparing(IslandLog::getTime).reversed());
-
-        ItemStack islandMembers = ItemStackUtils.makeItem(logInventoryConfig.IslandMembers, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
-        ArrayList<String> islandMembersLore = new ArrayList<>();
-
-        ItemStack islandInvites = ItemStackUtils.makeItem(logInventoryConfig.IslandInvites, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
-        ArrayList<String> islandInvitesLore = new ArrayList<>();
-
-        ItemStack islandTrusts = ItemStackUtils.makeItem(logInventoryConfig.IslandTrusts, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
-        ArrayList<String> islandTrustsLore = new ArrayList<>();
-
-        ItemStack islandBank = ItemStackUtils.makeItem(logInventoryConfig.IslandBank, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
-        ArrayList<String> islandBankLore = new ArrayList<>();
-
-        ItemStack islandBooster = ItemStackUtils.makeItem(logInventoryConfig.IslandBoosters, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
-        ArrayList<String> islandBoosterLore = new ArrayList<>();
-
-        ItemStack islandUpgrade = ItemStackUtils.makeItem(logInventoryConfig.IslandUpgrades, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
-        ArrayList<String> islandUpgradeLore = new ArrayList<>();
-
-        ItemStack islandRewards = ItemStackUtils.makeItem(logInventoryConfig.IslandRewards, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
-        ArrayList<String> islandRewardsLore = new ArrayList<>();
-
-        for (IslandLog islandLog : islandLogs) {
-
-            long time = (System.currentTimeMillis() - islandLog.getTime()) / 1000L;
-            int days = (int) TimeUnit.SECONDS.toDays(time);
-            int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - days * 86400L));
-            int minutes = (int) Math.floor((time - (days * 86400) - (hours * 3600)) / 60.0D);
-            int seconds = (int) Math.floor((time - (days * 86400) - (hours * 3600)) % 60.0D);
-            switch (islandLog.getLogAction()) {
-                case USER_JOINED:
-                    islandMembersLore.add(StringUtils.color(logInventoryConfig.USER_JOINED
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case USER_KICKED:
-                    islandMembersLore.add(StringUtils.color(logInventoryConfig.USER_KICKED
-                            .replace("%user%", islandLog.getUser().getName())
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days))));
-                    break;
-                case USER_LEFT:
-                    islandMembersLore.add(StringUtils.color(logInventoryConfig.USER_LEFT
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case USER_DEMOTED:
-                    islandMembersLore.add(StringUtils.color(logInventoryConfig.USER_DEMOTED
-                            .replace("%target%", islandLog.getTarget().getName())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case USER_PROMOTED:
-                    islandMembersLore.add(StringUtils.color(logInventoryConfig.USER_PROMOTED
-                            .replace("%target%", islandLog.getTarget().getName())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case USER_INVITED:
-                    islandInvitesLore.add(StringUtils.color(logInventoryConfig.USER_INVITED
-                            .replace("%target%", islandLog.getTarget().getName())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case USER_UNINVITED:
-                    islandInvitesLore.add(StringUtils.color(logInventoryConfig.USER_UNINVITED
-                            .replace("%target%", islandLog.getTarget().getName())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case USER_TRUSTED:
-                    islandTrustsLore.add(StringUtils.color(logInventoryConfig.USER_TRUSTED
-                            .replace("%target%", islandLog.getTarget().getName())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case USER_UNTRUSTED:
-                    islandTrustsLore.add(StringUtils.color(logInventoryConfig.USER_UNTRUSTED
-                            .replace("%target%", islandLog.getTarget().getName())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case BANK_DEPOSIT:
-                    islandBankLore.add(StringUtils.color(logInventoryConfig.BANK_DEPOSIT
-                            .replace("%amount%", String.valueOf(islandLog.getAmount()))
-                            .replace("%type%", islandLog.getData())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case BANK_WITHDRAW:
-                    islandBankLore.add(StringUtils.color(logInventoryConfig.BANK_WITHDRAW
-                            .replace("%amount%", String.valueOf(islandLog.getAmount()))
-                            .replace("%type%", islandLog.getData())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case BOOSTER_PURCHASE:
-                    islandBoosterLore.add(StringUtils.color(logInventoryConfig.BOOSTER_PURCHASE.
-                            replace("%type%", islandLog.getData())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case UPGRADE_PURCHASE:
-                    islandUpgradeLore.add(StringUtils.color(logInventoryConfig.UPGRADE_PURCHASE
-                            .replace("%type%", islandLog.getData())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-                case REWARD_REDEEMED:
-                    islandRewardsLore.add(StringUtils.color(logInventoryConfig.REWARD_REDEEMED
-                            .replace("%type%", islandLog.getData())
-                            .replace("%user%", islandLog.getUser().getName()))
-                            .replace("%seconds%", String.valueOf(seconds))
-                            .replace("%minutes%", String.valueOf(minutes))
-                            .replace("%hours%", String.valueOf(hours))
-                            .replace("%days%", String.valueOf(days)));
-                    break;
-
-            }
-        }
-
-        inventory.setItem(logInventoryConfig.IslandMembers.slot, setLore(islandMembers, islandMembersLore));
-        inventory.setItem(logInventoryConfig.IslandInvites.slot, setLore(islandInvites, islandInvitesLore));
-        inventory.setItem(logInventoryConfig.IslandTrusts.slot, setLore(islandTrusts, islandTrustsLore));
-        inventory.setItem(logInventoryConfig.IslandBank.slot, setLore(islandBank, islandBankLore));
-        inventory.setItem(logInventoryConfig.IslandBoosters.slot, setLore(islandBooster, islandBoosterLore));
-        inventory.setItem(logInventoryConfig.IslandUpgrades.slot, setLore(islandUpgrade, islandUpgradeLore));
-        inventory.setItem(logInventoryConfig.IslandRewards.slot, setLore(islandRewards, islandRewardsLore));
+        setItemStack(inventory, logInventoryConfig.IslandMembers, membersPage, LogAction.USER_JOINED, LogAction.USER_KICKED, LogAction.USER_LEFT, LogAction.USER_DEMOTED, LogAction.USER_PROMOTED);
+        setItemStack(inventory, logInventoryConfig.IslandInvites, invitesPage, LogAction.USER_INVITED, LogAction.USER_UNINVITED);
+        setItemStack(inventory, logInventoryConfig.IslandTrusts, trustsPage, LogAction.USER_TRUSTED, LogAction.USER_UNTRUSTED);
+        setItemStack(inventory, logInventoryConfig.IslandBank, bankPage, LogAction.BANK_DEPOSIT, LogAction.BANK_WITHDRAW);
+        setItemStack(inventory, logInventoryConfig.IslandBoosters, boostersPage, LogAction.BOOSTER_PURCHASE);
+        setItemStack(inventory, logInventoryConfig.IslandUpgrades, upgradesPage, LogAction.UPGRADE_PURCHASE);
+        setItemStack(inventory, logInventoryConfig.IslandRewards, rewardsPage, LogAction.REWARD_REDEEMED);
     }
 
-    public ItemStack setLore(ItemStack itemStack, List<String> lore) {
+    public void setItemStack(Inventory inventory, Item item, int page, LogAction... logActions) {
+        ItemStack itemStack = ItemStackUtils.makeItem(item, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setLore(lore);
+        List<String> lore = itemMeta.getLore() != null ? itemMeta.getLore() : new ArrayList<>();
+
+        List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).stream()
+                .filter(islandLog -> Arrays.stream(logActions).anyMatch(logAction -> logAction.equals(islandLog.getLogAction())))
+                .sorted(Comparator.comparing(IslandLog::getTime).reversed())
+                .collect(Collectors.toList());
+
+        int index = 0;
+        for (IslandLog islandLog : islandLogs) {
+            if ((page - 1) * 10 <= index && page * 10 > index) {
+                long time = (System.currentTimeMillis() - islandLog.getTime()) / 1000L;
+                int days = (int) TimeUnit.SECONDS.toDays(time);
+                int hours = (int) Math.floor(TimeUnit.SECONDS.toHours(time - days * 86400L));
+                int minutes = (int) Math.floor((time - (days * 86400) - (hours * 3600)) / 60.0D);
+                int seconds = (int) Math.floor((time - (days * 86400) - (hours * 3600)) % 60.0D);
+
+                lore.add(StringUtils.color(getLore(islandLog.getLogAction())
+                        .replace("%type%", islandLog.getData())
+                        .replace("%amount%", String.valueOf(islandLog.getAmount()))
+                        .replace("%user%", islandLog.getUser().getName()))
+                        .replace("%target%", islandLog.getTarget().getName())
+                        .replace("%seconds%", String.valueOf(seconds))
+                        .replace("%minutes%", String.valueOf(minutes))
+                        .replace("%hours%", String.valueOf(hours))
+                        .replace("%days%", String.valueOf(days)));
+            }
+            index++;
+        }
+
+        int maxPage = (int) Math.ceil(islandLogs.size() / 10.00);
+
+        itemMeta.setLore(lore.stream().map(s -> s
+                        .replace("%current_page%", String.valueOf(page))
+                        .replace("%max_page%", String.valueOf(maxPage > 0 ? maxPage : 1))
+                ).collect(Collectors.toList())
+        );
         itemStack.setItemMeta(itemMeta);
-        return itemStack;
+        inventory.setItem(item.slot, itemStack);
+    }
+
+    public String getLore(LogAction logAction) {
+        LogInventoryConfig logInventoryConfig = IridiumSkyblock.getInstance().getInventories().logsGUI;
+        switch (logAction) {
+            case USER_JOINED:
+                return logInventoryConfig.USER_JOINED;
+            case USER_KICKED:
+                return logInventoryConfig.USER_KICKED;
+            case USER_LEFT:
+                return logInventoryConfig.USER_LEFT;
+            case USER_DEMOTED:
+                return logInventoryConfig.USER_DEMOTED;
+            case USER_PROMOTED:
+                return logInventoryConfig.USER_PROMOTED;
+            case USER_INVITED:
+                return logInventoryConfig.USER_INVITED;
+            case USER_UNINVITED:
+                return logInventoryConfig.USER_UNINVITED;
+            case USER_TRUSTED:
+                return logInventoryConfig.USER_TRUSTED;
+            case USER_UNTRUSTED:
+                return logInventoryConfig.USER_UNTRUSTED;
+            case BANK_DEPOSIT:
+                return logInventoryConfig.BANK_DEPOSIT;
+            case BANK_WITHDRAW:
+                return logInventoryConfig.BANK_WITHDRAW;
+            case BOOSTER_PURCHASE:
+                return logInventoryConfig.BOOSTER_PURCHASE;
+            case UPGRADE_PURCHASE:
+                return logInventoryConfig.UPGRADE_PURCHASE;
+            case REWARD_REDEEMED:
+                return logInventoryConfig.REWARD_REDEEMED;
+            default:
+                return "";
+        }
     }
 
     /**
@@ -243,6 +167,49 @@ public class LogsGUI implements GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        if (!event.getClick().equals(ClickType.LEFT) && !event.getClick().equals(ClickType.RIGHT)) return;
+        int i = event.getClick().equals(ClickType.LEFT) ? -1 : 1;
+        LogInventoryConfig logInventoryConfig = IridiumSkyblock.getInstance().getInventories().logsGUI;
+        if (event.getSlot() == logInventoryConfig.IslandMembers.slot) {
+            if (canChangePage(membersPage, i, LogAction.USER_JOINED, LogAction.USER_KICKED, LogAction.USER_LEFT, LogAction.USER_DEMOTED, LogAction.USER_PROMOTED)) {
+                membersPage += i;
+            }
+        } else if (event.getSlot() == logInventoryConfig.IslandTrusts.slot) {
+            if (canChangePage(trustsPage, i, LogAction.USER_TRUSTED, LogAction.USER_UNTRUSTED)) {
+                trustsPage += i;
+            }
+        } else if (event.getSlot() == logInventoryConfig.IslandInvites.slot) {
+            if (canChangePage(invitesPage, i, LogAction.USER_INVITED, LogAction.USER_UNINVITED)) {
+                invitesPage += i;
+            }
+        } else if (event.getSlot() == logInventoryConfig.IslandBoosters.slot) {
+            if (canChangePage(boostersPage, i, LogAction.BOOSTER_PURCHASE)) {
+                boostersPage += i;
+            }
+        } else if (event.getSlot() == logInventoryConfig.IslandBank.slot) {
+            if (canChangePage(bankPage, i, LogAction.BANK_DEPOSIT, LogAction.BANK_WITHDRAW)) {
+                bankPage += i;
+            }
+        } else if (event.getSlot() == logInventoryConfig.IslandUpgrades.slot) {
+            if (canChangePage(upgradesPage, i, LogAction.UPGRADE_PURCHASE)) {
+                upgradesPage += i;
+            }
+        } else if (event.getSlot() == logInventoryConfig.IslandRewards.slot) {
+            if (canChangePage(rewardsPage, i, LogAction.REWARD_REDEEMED)) {
+                rewardsPage += i;
+            }
+        }
+        addContent(event.getInventory());
+    }
+
+    private boolean canChangePage(int page, int change, LogAction... logActions) {
+        List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).stream()
+                .filter(islandLog -> Arrays.stream(logActions).anyMatch(logAction -> logAction.equals(islandLog.getLogAction())))
+                .sorted(Comparator.comparing(IslandLog::getTime).reversed())
+                .collect(Collectors.toList());
+        int maxPage = (int) Math.ceil(islandLogs.size() / 10.00);
+
+        return page + change > 0 && page + change <= maxPage;
     }
 
 
