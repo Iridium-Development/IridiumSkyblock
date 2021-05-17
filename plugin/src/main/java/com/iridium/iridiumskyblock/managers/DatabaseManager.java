@@ -8,6 +8,8 @@ import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
+import com.j256.ormlite.logger.LoggerFactory;
+import com.j256.ormlite.logger.NullLogBackend;
 import com.j256.ormlite.support.ConnectionSource;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -50,6 +52,8 @@ public class DatabaseManager {
                 sqlConfig.password,
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
+
+        LoggerFactory.setLogBackendFactory(new NullLogBackend.NullLogBackendFactory());
 
         this.islandTableManager = new IslandTableManager(connectionSource, false);
         this.userTableManager = new UserTableManager(connectionSource, false);
