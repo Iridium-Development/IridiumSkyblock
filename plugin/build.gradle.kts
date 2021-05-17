@@ -4,7 +4,7 @@ dependencies {
     implementation("org.bstats:bstats-bukkit:2.2.1")
     implementation("com.iridium:IridiumColorAPI:1.0.4")
     implementation("org.jetbrains:annotations:16.0.1")
-    implementation("com.j256.ormlite:ormlite-core:5.3")
+    implementation("com.github.j256:ormlite-core:master-SNAPSHOT")
     implementation("com.j256.ormlite:ormlite-jdbc:5.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.12.1")
     implementation("com.fasterxml.jackson.core:jackson-core:2.12.1")
