@@ -274,6 +274,7 @@ public class IridiumSkyblock extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockPistonListener(), this);
     }
 
     /**
