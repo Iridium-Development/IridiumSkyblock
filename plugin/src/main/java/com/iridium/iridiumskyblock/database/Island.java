@@ -237,6 +237,11 @@ public final class Island {
         return IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size;
     }
 
+    public void setColor(@NotNull Color color) {
+        this.color = color;
+        IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(this);
+    }
+
     /**
      * Finds the center of this Island.
      * Function based of: https://stackoverflow.com/a/19287714.

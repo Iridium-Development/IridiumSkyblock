@@ -751,6 +751,21 @@ public class IslandManager {
     }
 
     /**
+     * Sends the island border to all players on the island
+     *
+     * @param island The specified Island
+     */
+    public void sendIslandBorder(@NotNull Island island) {
+        getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entities -> {
+            for (Entity entity : entities) {
+                if (entity instanceof Player) {
+                    PlayerUtils.sendBorder((Player) entity, island);
+                }
+            }
+        });
+    }
+
+    /**
      * Gets a list of islands sorted by SortType
      *
      * @param sortType How we are sorting the islands
