@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Interface for working with the net.minecraft.server package.
  * Version-specific, so it has to be implemented for every version we support.
- * This is the implementation for v1_16_R3.
+ * This is the implementation for V1_13_R1.
  */
 public class V1_13_R1 implements NMS {
 
