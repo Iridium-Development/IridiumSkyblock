@@ -51,6 +51,7 @@ public class UpgradesCommand extends Command {
                             islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
                             IslandLog islandLog = new IslandLog(island.get(), LogAction.UPGRADE_PURCHASE, user, null, 0, upgradeName);
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+                            IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(island.get());
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
