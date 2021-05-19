@@ -17,7 +17,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven("https://repo.codemc.org/repository/maven-public/")
-        maven("https://repo.mvdw-software.be/content/groups/public/")
+        maven("https://repo.mvdw-software.com/content/groups/public/")
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven("https://maven.sk89q.com/artifactory/repo")
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
