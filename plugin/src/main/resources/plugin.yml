@@ -5,6 +5,7 @@ main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
 author: Peaches_MLG
 depend: [ Vault ]
+softdepend: [ "MVdWPlaceholderAPI","PlaceholderAPI" ]
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]
