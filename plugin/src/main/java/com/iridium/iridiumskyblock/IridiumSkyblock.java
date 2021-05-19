@@ -13,6 +13,8 @@ import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.nms.NMS;
+import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
+import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
@@ -23,6 +25,7 @@ import org.bukkit.World;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -164,6 +167,20 @@ public class IridiumSkyblock extends JavaPlugin {
 
         // Initialize Vault economy support
         this.economy = setupEconomy();
+
+        // Register Placeholders Support
+        Plugin MVDWPlaceholderAPI = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
+        if (MVDWPlaceholderAPI != null && MVDWPlaceholderAPI.isEnabled()) {
+            new MVDWPlaceholderAPI();
+            getLogger().info("Successfully registered placeholders with MVDWPlaceholderAPI.");
+        }
+
+        Plugin PlaceholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        if (PlaceholderAPI != null && PlaceholderAPI.isEnabled()) {
+            if (new ClipPlaceholderAPI().register()) {
+                getLogger().info("Successfully registered placeholders with PlaceholderAPI.");
+            }
+        }
 
         // Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
