@@ -26,6 +26,7 @@ allprojects {
         maven("https://repo.rosewooddev.io/repository/public/")
         maven("https://nexus.savagelabs.net/repository/maven-releases/")
         maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.jeff-media.de/maven2/")
     }
 
     dependencies {

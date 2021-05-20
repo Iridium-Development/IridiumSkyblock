@@ -12,6 +12,7 @@ dependencies {
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.1")
     implementation("org.yaml:snakeyaml:1.27")
     implementation("io.papermc:paperlib:1.0.6")
+    implementation("de.jeff_media:SpigotUpdateChecker:1.2.0")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")

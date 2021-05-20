@@ -16,6 +16,7 @@ import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import de.jeff_media.updatechecker.UpdateChecker;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
@@ -217,6 +218,11 @@ public class IridiumSkyblock extends JavaPlugin {
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("");
         getLogger().info("----------------------------------------");
+        UpdateChecker.init(this, 62480)
+                .checkEveryXHours(24)
+                .setDownloadLink(62480)
+                .setDonationLink("https://www.patreon.com/join/Peaches_MLG")
+                .checkNow();
     }
 
     /**
