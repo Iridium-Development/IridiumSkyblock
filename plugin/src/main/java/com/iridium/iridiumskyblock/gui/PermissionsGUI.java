@@ -16,6 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
+import java.util.Map;
 
 /**
  * GUI which allows users to alter the Island's permissions.
@@ -56,9 +57,9 @@ public class PermissionsGUI implements GUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.background);
 
-        for (Permission permission : IridiumSkyblock.getInstance().getPermissionList()) {
-            boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission);
-            inventory.setItem(permission.getItem().slot, ItemStackUtils.makeItem(permission.getItem(), Collections.singletonList(new Placeholder("permission", allowed ? IridiumSkyblock.getInstance().getPermissions().allowed : IridiumSkyblock.getInstance().getPermissions().denied))));
+        for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
+            boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission.getValue(), permission.getKey());
+            inventory.setItem(permission.getValue().getItem().slot, ItemStackUtils.makeItem(permission.getValue().getItem(), Collections.singletonList(new Placeholder("permission", allowed ? IridiumSkyblock.getInstance().getPermissions().allowed : IridiumSkyblock.getInstance().getPermissions().denied))));
         }
     }
 
@@ -70,15 +71,15 @@ public class PermissionsGUI implements GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        for (Permission permission : IridiumSkyblock.getInstance().getPermissionList()) {
-            if (permission.getItem().slot != event.getSlot()) continue;
+        for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
+            if (permission.getValue().getItem().slot != event.getSlot()) continue;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser((Player) event.getWhoClicked());
-            if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, IridiumSkyblock.getInstance().getPermissions().changePermissions)) {
+            if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, IridiumSkyblock.getInstance().getPermissions().changePermissions, "changePermissions")) {
                 event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangePermissions.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission);
-                IridiumSkyblock.getInstance().getIslandManager().setIslandPermission(island, islandRank, permission, !allowed);
+                boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission.getValue(), permission.getKey());
+                IridiumSkyblock.getInstance().getIslandManager().setIslandPermission(island, islandRank, permission.getValue(), permission.getKey(), !allowed);
                 event.getWhoClicked().openInventory(getInventory());
             }
             return;

@@ -51,7 +51,7 @@ public class KickCommand extends Command {
             User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
 
             if (island.get().equals(targetUser.getIsland().orElse(null))) {
-                if (targetUser.getIslandRank().getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().kick)) {
+                if (targetUser.getIslandRank().getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().kick, "kick")) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotKickUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 } else {
                     if (targetPlayer instanceof Player) {
@@ -72,8 +72,8 @@ public class KickCommand extends Command {
                             }
                         }
                     }
-                    
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser,0, "");
+
+                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser, 0, "");
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 }
             } else {

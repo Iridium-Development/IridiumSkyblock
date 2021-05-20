@@ -94,9 +94,10 @@ public class IridiumSkyblockAPI {
      * Adds an island permission
      *
      * @param permission The specified Permission
+     * @param key        The unique key associated with this permission
      */
-    public void addPermission(@NotNull Permission permission) {
-        iridiumSkyblock.getPermissionList().add(permission);
+    public void addPermission(@NotNull Permission permission, @NotNull String key) {
+        iridiumSkyblock.getPermissionList().put(key, permission);
     }
 
     /**
@@ -151,11 +152,11 @@ public class IridiumSkyblockAPI {
     /**
      * Gets a permission object from name
      *
-     * @param permission The Specified permission
+     * @param permissionKey The permission key
      * @return The the permission object
      */
-    public Optional<Permission> getPermissions(@NotNull String permission) {
-        return iridiumSkyblock.getPermissionList().stream().filter(perm -> perm.getName().equalsIgnoreCase(permission)).findFirst();
+    public Optional<Permission> getPermissions(@NotNull String permissionKey) {
+        return Optional.ofNullable(iridiumSkyblock.getPermissionList().get(permissionKey));
     }
 
     /**
@@ -164,10 +165,11 @@ public class IridiumSkyblockAPI {
      * @param island     The specified Island
      * @param user       The Specified User
      * @param permission The Specified permission
+     * @param key        The permission key
      * @return The the permission is allowed
      */
-    public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission) {
-        return iridiumSkyblock.getIslandManager().getIslandPermission(island, user, permission);
+    public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission, @NotNull String key) {
+        return iridiumSkyblock.getIslandManager().getIslandPermission(island, user, permission, key);
     }
 
     /**

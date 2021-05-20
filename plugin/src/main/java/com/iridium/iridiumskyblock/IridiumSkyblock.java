@@ -71,8 +71,8 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private ChunkGenerator chunkGenerator;
 
-    private List<Permission> permissionList;
     private List<BankItem> bankItemList;
+    private HashMap<String, Permission> permissionList;
     private HashMap<String, Mission> missionsList;
     private HashMap<String, Upgrade> upgradesList;
     private HashMap<String, Booster> boosterList;
@@ -384,28 +384,28 @@ public class IridiumSkyblock extends JavaPlugin {
         this.boosters = persist.load(Boosters.class);
         this.commands = persist.load(Commands.class);
 
-        this.permissionList = new ArrayList<>();
-        this.permissionList.add(permissions.redstone);
-        this.permissionList.add(permissions.blockPlace);
-        this.permissionList.add(permissions.blockBreak);
-        this.permissionList.add(permissions.bucket);
-        this.permissionList.add(permissions.doors);
-        this.permissionList.add(permissions.killMobs);
-        this.permissionList.add(permissions.openContainers);
-        this.permissionList.add(permissions.spawners);
-        this.permissionList.add(permissions.changePermissions);
-        this.permissionList.add(permissions.kick);
-        this.permissionList.add(permissions.invite);
-        this.permissionList.add(permissions.regen);
-        this.permissionList.add(permissions.promote);
-        this.permissionList.add(permissions.demote);
-        this.permissionList.add(permissions.pickupItems);
-        this.permissionList.add(permissions.dropItems);
-        this.permissionList.add(permissions.interactEntities);
-        this.permissionList.add(permissions.manageWarps);
-        this.permissionList.add(permissions.withdrawBank);
-        this.permissionList.add(permissions.trust);
-        this.permissionList.add(permissions.border);
+        this.permissionList = new HashMap<>();
+        this.permissionList.put("redstone", permissions.redstone);
+        this.permissionList.put("blockPlace", permissions.blockPlace);
+        this.permissionList.put("blockBreak", permissions.blockBreak);
+        this.permissionList.put("bucket", permissions.bucket);
+        this.permissionList.put("doors", permissions.doors);
+        this.permissionList.put("killMobs", permissions.killMobs);
+        this.permissionList.put("openContainers", permissions.openContainers);
+        this.permissionList.put("spawners", permissions.spawners);
+        this.permissionList.put("changePermissions", permissions.changePermissions);
+        this.permissionList.put("kick", permissions.kick);
+        this.permissionList.put("invite", permissions.invite);
+        this.permissionList.put("regen", permissions.regen);
+        this.permissionList.put("promote", permissions.promote);
+        this.permissionList.put("demote", permissions.demote);
+        this.permissionList.put("pickupItems", permissions.pickupItems);
+        this.permissionList.put("dropItems", permissions.dropItems);
+        this.permissionList.put("interactEntities", permissions.interactEntities);
+        this.permissionList.put("manageWarps", permissions.manageWarps);
+        this.permissionList.put("withdrawBank", permissions.withdrawBank);
+        this.permissionList.put("trust", permissions.trust);
+        this.permissionList.put("border", permissions.border);
 
         this.bankItemList = new ArrayList<>();
         this.bankItemList.add(bankItems.crystalsBankItem);
