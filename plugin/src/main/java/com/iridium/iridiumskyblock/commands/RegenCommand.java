@@ -47,7 +47,7 @@ public class RegenCommand extends Command {
             } else {
                 Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(args[1])).map(Map.Entry::getValue).findFirst();
                 if (schematicConfig.isPresent()) {
-                    IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), schematicConfig.get());
+                    IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.get());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownSchematic.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }

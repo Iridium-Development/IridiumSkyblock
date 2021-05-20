@@ -5,6 +5,9 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.Permission;
+import com.iridium.iridiumskyblock.api.IslandCreateEvent;
+import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
+import com.iridium.iridiumskyblock.api.IslandRegenEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
@@ -22,6 +25,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -142,6 +146,10 @@ public class IslandManager {
             return;
         }
 
+        IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name);
+        Bukkit.getPluginManager().callEvent(islandCreateEvent);
+        if (islandCreateEvent.isCancelled()) return;
+
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         createIsland(player, name, schematicConfig).thenAccept(island ->
                 PaperLib.teleportAsync(player, island.getHome()).thenRun(() -> {
@@ -184,7 +192,10 @@ public class IslandManager {
      * @param island          The specified Island
      * @param schematicConfig The schematic we are pasting
      */
-    public void regenerateIsland(@NotNull Island island, @NotNull Schematics.SchematicConfig schematicConfig) {
+    public void regenerateIsland(@NotNull Island island, User user, @NotNull Schematics.SchematicConfig schematicConfig) {
+        IslandRegenEvent islandRegenEvent = new IslandRegenEvent(island, user, schematicConfig);
+        Bukkit.getPluginManager().callEvent(islandRegenEvent);
+        if (islandRegenEvent.isCancelled()) return;
         deleteIslandBlocks(island, getWorld(), 0).join();
         deleteIslandBlocks(island, getNetherWorld(), 0).join();
         deleteIslandBlocks(island, getEndWorld(), 0).join();
@@ -459,13 +470,18 @@ public class IslandManager {
      * Deletes the specified Island.
      *
      * @param island The Island which should be deleted
+     * @param user   The user who deleted the island
      */
-    public void deleteIsland(@NotNull Island island) {
+    public void deleteIsland(@NotNull Island island, @Nullable User user) {
+        IslandDeleteEvent islandDeleteEvent = new IslandDeleteEvent(island, user);
+        Bukkit.getPluginManager().callEvent(islandDeleteEvent);
+        if (islandDeleteEvent.isCancelled()) return;
+
         deleteIslandBlocks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld(), 3);
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island));
-        IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).forEach(user -> {
-            Player player = Bukkit.getPlayer(user.getUuid());
+        IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).forEach(u -> {
+            Player player = Bukkit.getPlayer(u.getUuid());
             if (player != null) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }

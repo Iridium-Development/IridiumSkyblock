@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.api.UserDemoteEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
@@ -57,6 +58,10 @@ public class DemoteCommand extends Command {
                         String command = IridiumSkyblock.getInstance().getCommands().kickCommand.aliases.get(0);
                         Bukkit.getServer().dispatchCommand(player, "is " + command + " " + args[1]);
                     } else {
+                        UserDemoteEvent userDemoteEvent = new UserDemoteEvent(island.get(), user, nextRank);
+                        Bukkit.getPluginManager().callEvent(userDemoteEvent);
+                        if (userDemoteEvent.isCancelled()) return;
+                        
                         offlinePlayerUser.setIslandRank(nextRank);
                         for (User member : island.get().getMembers()) {
                             Player p = Bukkit.getPlayer(member.getUuid());

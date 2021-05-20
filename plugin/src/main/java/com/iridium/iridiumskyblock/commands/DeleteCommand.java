@@ -41,7 +41,7 @@ public class DeleteCommand extends Command {
 
         if (island.isPresent()) {
             if (user.getIslandRank().equals(IslandRank.OWNER)) {
-                player.openInventory(new ConfirmationGUI(() -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get())).getInventory());
+                player.openInventory(new ConfirmationGUI(() -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get(), user)).getInventory());
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotDeleteIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }

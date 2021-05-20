@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.api.UserLeaveEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
@@ -48,6 +49,10 @@ public class LeaveCommand extends Command {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotLeaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
                 ConfirmationGUI confirmationGUI = new ConfirmationGUI(() -> {
+                    UserLeaveEvent userLeaveEvent = new UserLeaveEvent(island.get(), user);
+                    Bukkit.getPluginManager().callEvent(userLeaveEvent);
+                    if (userLeaveEvent.isCancelled()) return;
+
                     user.setIsland(null);
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     for (User member : island.get().getMembers()) {
