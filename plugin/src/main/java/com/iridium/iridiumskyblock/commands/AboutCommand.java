@@ -39,6 +39,7 @@ public class AboutCommand extends Command {
         sender.sendMessage(StringUtils.color("&7Plugin Version: &b" + IridiumSkyblock.getInstance().getDescription().getVersion()));
         sender.sendMessage(StringUtils.color("&7Plugin Author: &bPeaches_MLG"));
         sender.sendMessage(StringUtils.color("&7Plugin Contributors: &b" + String.join(", ", contributors)));
+        sender.sendMessage(StringUtils.color("&7Plugin Donations: &bwww.patreon.com/Peaches_MLG"));
     }
 
     /**
