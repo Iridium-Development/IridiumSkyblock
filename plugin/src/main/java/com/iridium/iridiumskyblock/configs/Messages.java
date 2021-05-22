@@ -14,11 +14,11 @@ public class Messages {
     public String mustBeAPlayer = "%prefix% &7You must be a player to execute this command.";
     public String playerDoesntExist = "%prefix% &7That player doesnt exist.";
     public String unknownCommand = "%prefix% &7Unknown Command, Try /is help.";
-    public String helpCommandHeader = "&8===== &b&lIridiumSkyblock Help &r&8=====";
+    public String helpCommandHeader = "&8===== &9&lIridiumSkyblock Help &r&8=====";
     public String helpCommandMessage = "<GRADIENT:09C6F9>/is %command%</GRADIENT:045DE9>&r: &7%description%";
     public String helpCommandFooter = " &7Page %page% of %max_page% ";
-    public String helpCommandPreviousPage = "&b<<";
-    public String helpCommandNextPage = "&b>>";
+    public String helpCommandPreviousPage = "&9<<";
+    public String helpCommandNextPage = "&9>>";
     public String helpCommandNextPageHover = "&7Click to go to the next page.";
     public String helpCommandPreviousPageHover = "&7Click to go to the previous page.";
     public String creatingIsland = "%prefix% &7Creating Island...";
@@ -60,7 +60,7 @@ public class Messages {
     public String demotedPlayer = "%prefix% &7You have demoted %player% to %rank%.";
     public String userDemotedPlayer = "%prefix% &7%promoter% has demoted %player% to %rank%.";
     public String transferredOwnership = "%prefix% &7%oldowner% has transferred Island ownership to %newowner%.";
-    public String islandValue = "%prefix% &b&l * &7%rank%: &b%value%";
+    public String islandValue = "%prefix% &9&l * &7%rank%: &9%value%";
     public String cannotTransferYourself = "%prefix% &7You cannot transfer the island ownership to yourself.";
     public String cannotBreakBlocks = "%prefix% &7You cannot break blocks on this island.";
     public String cannotPlaceBlocks = "%prefix% &7You cannot place blocks on this island.";
@@ -130,7 +130,7 @@ public class Messages {
     public String none = "None";
 
     public List<String> infoCommand = Arrays.asList(
-            "&8===== &b&lIsland Info for %player% &r&8=====",
+            "&8===== &9&lIsland Info for %player% &r&8=====",
             "<GRADIENT:09C6F9>Island Name</GRADIENT:045DE9>&r: &7%island_name%",
             "<GRADIENT:09C6F9>Island Owner</GRADIENT:045DE9>&r: &7%owner%",
             "<GRADIENT:09C6F9>Island Members</GRADIENT:045DE9>&r: &7%members%",

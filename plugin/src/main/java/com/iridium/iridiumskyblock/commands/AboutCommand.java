@@ -35,11 +35,11 @@ public class AboutCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
-        sender.sendMessage(StringUtils.color("&7Plugin Name: &bIridiumSkyblock"));
-        sender.sendMessage(StringUtils.color("&7Plugin Version: &b" + IridiumSkyblock.getInstance().getDescription().getVersion()));
-        sender.sendMessage(StringUtils.color("&7Plugin Author: &bPeaches_MLG"));
-        sender.sendMessage(StringUtils.color("&7Plugin Contributors: &b" + String.join(", ", contributors)));
-        sender.sendMessage(StringUtils.color("&7Plugin Donations: &bwww.patreon.com/Peaches_MLG"));
+        sender.sendMessage(StringUtils.color("&7Plugin Name: &9IridiumSkyblock"));
+        sender.sendMessage(StringUtils.color("&7Plugin Version: &9" + IridiumSkyblock.getInstance().getDescription().getVersion()));
+        sender.sendMessage(StringUtils.color("&7Plugin Author: &9Peaches_MLG"));
+        sender.sendMessage(StringUtils.color("&7Plugin Contributors: &9" + String.join(", ", contributors)));
+        sender.sendMessage(StringUtils.color("&7Plugin Donations: &9www.patreon.com/Peaches_MLG"));
     }
 
     /**
