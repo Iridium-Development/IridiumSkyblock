@@ -16,7 +16,7 @@ public class Configuration {
 
     public String prefix = "<GRADIENT:09C6F9>&lIridiumSkyblock</GRADIENT:045DE9> &8»";
     public String worldName = "IridiumSkyblock";
-    public String islandCreateTitle = "&9&lIsland Created";
+    public String islandCreateTitle = "&b&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
 

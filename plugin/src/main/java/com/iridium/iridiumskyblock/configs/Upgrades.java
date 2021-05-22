@@ -12,20 +12,20 @@ import java.util.Arrays;
 
 public class Upgrades {
     public Upgrade<SizeUpgrade> sizeUpgrade = new Upgrade<>(true,
-            new Item(XMaterial.GRASS_BLOCK, 11, 1, "&9&lIsland Size", Arrays.asList(
+            new Item(XMaterial.GRASS_BLOCK, 11, 1, "&b&lIsland Size", Arrays.asList(
                     "&7Need more room to expand? Buy this",
                     "&7upgrade to increase your island size.",
                     "",
-                    "&9&lInformation:",
-                    "&9&l * &7Current Level: &9%level%",
-                    "&9&l * &7Current Size: &9%size%x%size% Blocks",
-                    "&9&l * &7Upgrade Cost: &9%crystalscost% Crystals and $%vaultcost%",
-                    "&9&lLevels:",
-                    "&9&l * &7Level 1: &950x50 Blocks",
-                    "&9&l * &7Level 2: &9100x100 Blocks",
-                    "&9&l * &7Level 3: &9150x150 Blocks",
+                    "&b&lInformation:",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Current Size: &b%size%x%size% Blocks",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
+                    "&b&lLevels:",
+                    "&b&l * &7Level 1: &b50x50 Blocks",
+                    "&b&l * &7Level 2: &b100x100 Blocks",
+                    "&b&l * &7Level 3: &b150x150 Blocks",
                     "",
-                    "&9&l[!] &9Left Click to Purchase this Upgrade"
+                    "&b&l[!] &bLeft Click to Purchase this Upgrade"
             )), ImmutableMap.<Integer, SizeUpgrade>builder()
             .put(1, new SizeUpgrade(1000, 15, 50))
             .put(2, new SizeUpgrade(1000, 15, 100))
@@ -33,15 +33,15 @@ public class Upgrades {
             .build());
 
     public Upgrade<OresUpgrade> oresUpgrade = new Upgrade<>(true,
-            new Item(XMaterial.DIAMOND_ORE, 13, 1, "&9&lIsland Generator", Arrays.asList(
+            new Item(XMaterial.DIAMOND_ORE, 13, 1, "&b&lIsland Generator", Arrays.asList(
                     "&7Want to improve your generator? Buy this",
                     "&7upgrade to improve your island generator.",
                     "",
-                    "&9&lInformation:",
-                    "&9&l * &7Current Level: &9%level%",
-                    "&9&l * &7Upgrade Cost: &9%crystalscost% Crystals and $%vaultcost%",
+                    "&b&lInformation:",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
                     "",
-                    "&9&l[!] &9Left Click to Purchase this Upgrade"
+                    "&b&l[!] &bLeft Click to Purchase this Upgrade"
             )), ImmutableMap.<Integer, OresUpgrade>builder()
             .put(1, new OresUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
                     .put(XMaterial.COBBLESTONE, 1)
@@ -81,21 +81,21 @@ public class Upgrades {
             .build());
 
     public Upgrade<WarpsUpgrade> warpsUpgrade = new Upgrade<>(true,
-            new Item(XMaterial.END_PORTAL_FRAME, 15, 1, "&9&lIsland Warps", Arrays.asList(
+            new Item(XMaterial.END_PORTAL_FRAME, 15, 1, "&b&lIsland Warps", Arrays.asList(
                     "&7Need more island warps? Buy this",
                     "&7upgrade to increase your island warps.",
                     "",
-                    "&9&lInformation:",
-                    "&9&l * &7Current Level: &9%level%",
-                    "&9&l * &7Upgrade Cost: &9%crystalscost% Crystals and $%vaultcost%",
-                    "&9&lLevels:",
-                    "&9&l * &7Level 1: &91 Warp",
-                    "&9&l * &7Level 2: &92 Warp",
-                    "&9&l * &7Level 3: &93 Warp",
-                    "&9&l * &7Level 4: &94 Warp",
-                    "&9&l * &7Level 5: &95 Warp",
+                    "&b&lInformation:",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
+                    "&b&lLevels:",
+                    "&b&l * &7Level 1: &b1 Warp",
+                    "&b&l * &7Level 2: &b2 Warp",
+                    "&b&l * &7Level 3: &b3 Warp",
+                    "&b&l * &7Level 4: &b4 Warp",
+                    "&b&l * &7Level 5: &b5 Warp",
                     "",
-                    "&9&l[!] &9Left Click to Purchase this Upgrade"
+                    "&b&l[!] &bLeft Click to Purchase this Upgrade"
             )), ImmutableMap.<Integer, WarpsUpgrade>builder()
             .put(1, new WarpsUpgrade(1000, 15, 1))
             .put(2, new WarpsUpgrade(1000, 15, 2))
