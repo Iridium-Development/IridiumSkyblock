@@ -1,15 +1,14 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import com.iridium.iridiumskyblock.utils.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import java.util.Optional;
 
 public class PlayerJoinListener implements Listener {
 
@@ -23,8 +22,15 @@ public class PlayerJoinListener implements Listener {
         user.setName(event.getPlayer().getName());
 
         // Send their island border
-        Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
-        optionalIsland.ifPresent(island -> PlayerUtils.sendBorder(player, island));
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island ->
+                PlayerUtils.sendBorder(player, island)
+        );
+
+        if (player.isOp()) {
+            Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () ->
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " &7Thanks for using IridiumSkyblock, if you like the plugin, consider donating at &bwww.patreon.com/Peaches_MLG"))
+                    , 5);
+        }
     }
 
 }

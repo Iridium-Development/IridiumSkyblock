@@ -221,7 +221,6 @@ public class IridiumSkyblock extends JavaPlugin {
         UpdateChecker.init(this, 62480)
                 .checkEveryXHours(24)
                 .setDownloadLink(62480)
-                .setDonationLink("https://www.patreon.com/join/Peaches_MLG")
                 .checkNow();
     }
 

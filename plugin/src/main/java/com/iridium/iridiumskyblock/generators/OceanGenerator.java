@@ -2,13 +2,14 @@ package com.iridium.iridiumskyblock.generators;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import java.util.Objects;
-import java.util.Random;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.Random;
 
 /**
  * Class which handles the {@link World} generation of IridiumSkyblock.
@@ -44,19 +45,19 @@ public class OceanGenerator extends ChunkGenerator {
 
                 // Generate layer of bedrock
                 chunkData.setBlock(x, 0, z,
-                    Objects.requireNonNull(XMaterial.BEDROCK.parseMaterial())
+                        Objects.requireNonNull(XMaterial.BEDROCK.parseMaterial())
                 );
 
                 // Generate gravel layer
                 for (int y = 1; y < currentFloorHeight; y++) {
                     chunkData.setBlock(x, y, z,
-                        Objects.requireNonNull(bottomMaterial.parseMaterial())
+                            Objects.requireNonNull(bottomMaterial.parseMaterial())
                     );
                 }
 
                 // Generate sand on top of gravel
                 chunkData.setBlock(x, currentFloorHeight, z,
-                    Objects.requireNonNull(topMaterial.parseMaterial())
+                        Objects.requireNonNull(topMaterial.parseMaterial())
                 );
 
                 // Generate water or lava on top of the floor
