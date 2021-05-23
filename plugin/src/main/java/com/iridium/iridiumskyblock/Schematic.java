@@ -41,11 +41,11 @@ public class Schematic {
         this.height = maxY - minY;
         this.width = maxZ - minZ;
 
-        blockData = new BlockData[length][height][width];
+        blockData = new BlockData[length+1][height+1][width+1];
 
-        for (int x = minX; x < maxX; x++) {
-            for (int y = minY; y < maxY; y++) {
-                for (int z = minZ; z < maxZ; z++) {
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
                     Block block = world.getBlockAt(x, y, z);
                     if (block.getType().equals(Material.AIR)) continue;
                     blockData[x - minX][y - minY][z - minZ] = new BlockData(block);
