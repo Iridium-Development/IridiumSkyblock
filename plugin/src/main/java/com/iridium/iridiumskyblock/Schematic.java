@@ -37,9 +37,9 @@ public class Schematic {
         int maxY = pos2.getBlockY();
         int maxZ = pos2.getBlockZ();
 
-        this.length = (maxX - minX) + 1;
-        this.height = (maxY - minY) + 1;
-        this.width = (maxZ - minZ) + 1;
+        this.length = (maxX - minX)+1;
+        this.height = (maxY - minY)+1;
+        this.width = (maxZ - minZ)+1;
 
         blockData = new BlockData[length+1][height+1][width+1];
 
