@@ -211,7 +211,7 @@ public class SchematicManager {
      * @return The last non empty row, x1 if there is none
      */
     private int findLastNonEmpty(int x1, int x2, int x3, int x4, int x5, int x6, TriFunction<Integer, Integer, Integer, Block> blockMapper) {
-        for (int i = x2; i > x1; i--) {
+        for (int i = x2; i >= x1; i--) {
             if (isNotEmpty(x3, x4, x5, x6, i, blockMapper)) return i;
         }
 
