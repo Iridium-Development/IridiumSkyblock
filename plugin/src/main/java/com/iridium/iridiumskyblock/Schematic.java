@@ -30,12 +30,12 @@ public class Schematic {
     public Schematic(Location pos1, Location pos2) {
         World world = pos1.getWorld();
 
-        int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
-        int minY = Math.min(pos1.getBlockY(), pos2.getBlockY());
-        int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
-        int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
-        int maxY = Math.max(pos1.getBlockY(), pos2.getBlockY());
-        int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+        int minX = pos1.getBlockX();
+        int minY = pos1.getBlockY();
+        int minZ = pos1.getBlockZ();
+        int maxX = pos2.getBlockX();
+        int maxY = pos2.getBlockY();
+        int maxZ = pos2.getBlockZ();
 
         this.length = maxX - minX;
         this.height = maxY - minY;

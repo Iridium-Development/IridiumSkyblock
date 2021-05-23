@@ -161,10 +161,10 @@ public class SchematicManager {
         int lastNonEmptyY = findLastNonEmpty(minY, maxY, minX, maxX, minZ, maxZ, (y, x, z) -> world.getBlockAt(x, y, z));
         int lastNonEmptyZ = findLastNonEmpty(minZ, maxZ, minX, maxX, minY, maxY, (z, x, y) -> world.getBlockAt(x, y, z));
 
-        Location position1 = new Location(world, firstNonEmptyX, firstNonEmptyY, firstNonEmptyZ);
-        Location position2 = new Location(world, lastNonEmptyX, lastNonEmptyY, lastNonEmptyZ);
+        Location firstPosition = new Location(world, firstNonEmptyX, firstNonEmptyY, firstNonEmptyZ);
+        Location secondPosition = new Location(world, lastNonEmptyX, lastNonEmptyY, lastNonEmptyZ);
 
-        return new Schematic(position1, position2);
+        return new Schematic(firstPosition, secondPosition);
     }
 
     /**
