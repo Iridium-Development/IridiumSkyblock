@@ -125,6 +125,7 @@ public class Messages {
     public String onlySetHomeOnIsland = "%prefix% &7You can only set your Island Home on your island.";
     public String islandLevel = "%prefix% &7Island Level %island_level% %island_experience%/%island_experienceRequired% Experience";
     public String dataReset = "%prefix% &7All data has been reset.";
+    public String noShopCategory = "%prefix% &7There is no category with this name.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

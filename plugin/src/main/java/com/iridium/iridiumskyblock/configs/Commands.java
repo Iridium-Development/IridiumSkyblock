@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.configs;
 import com.iridium.iridiumskyblock.commands.*;
 
 public class Commands {
+
     public ReloadCommand reloadCommand = new ReloadCommand();
     public CreateCommand createCommand = new CreateCommand();
     public DeleteCommand deleteCommand = new DeleteCommand();
@@ -49,4 +50,6 @@ public class Commands {
     public LevelCommand levelCommand = new LevelCommand();
     public LogsCommand logsCommand = new LogsCommand();
     public ClearDataCommand clearDataCommand = new ClearDataCommand();
+    public ShopCommand shopCommand = new ShopCommand();
+
 }

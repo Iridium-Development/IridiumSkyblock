@@ -15,6 +15,7 @@ import com.iridium.iridiumskyblock.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.nms.NMS;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
+import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
 import io.papermc.lib.PaperLib;
@@ -56,6 +57,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private IslandManager islandManager;
     private UserManager userManager;
     private SchematicManager schematicManager;
+    private ShopManager shopManager;
 
     private Configuration configuration;
     private Messages messages;
@@ -69,6 +71,7 @@ public class IridiumSkyblock extends JavaPlugin {
     private Upgrades upgrades;
     private Boosters boosters;
     private Commands commands;
+    private Shop shop;
 
     private ChunkGenerator chunkGenerator;
 
@@ -155,6 +158,8 @@ public class IridiumSkyblock extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        this.shopManager = new ShopManager();
 
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
@@ -388,6 +393,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.upgrades = persist.load(Upgrades.class);
         this.boosters = persist.load(Boosters.class);
         this.commands = persist.load(Commands.class);
+        this.shop = persist.load(Shop.class);
 
         this.permissionList = new HashMap<>();
         this.permissionList.put("redstone", permissions.redstone);
@@ -482,6 +488,7 @@ public class IridiumSkyblock extends JavaPlugin {
         this.persist.save(upgrades);
         this.persist.save(boosters);
         this.persist.save(commands);
+        this.persist.save(shop);
     }
 
 }
