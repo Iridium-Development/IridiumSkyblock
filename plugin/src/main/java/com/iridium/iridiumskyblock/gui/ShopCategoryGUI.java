@@ -16,10 +16,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * GUI which shows all items in a {@link ShopCategory} and allows players to purchase them.
+ */
 public class ShopCategoryGUI implements GUI {
 
     private final ShopCategory category;
 
+    /**
+     * The default constructor.
+     *
+     * @param category The category whose items should be displayed in this GUI
+     */
     public ShopCategoryGUI(ShopCategory category) {
         this.category = category;
     }
@@ -44,6 +52,7 @@ public class ShopCategoryGUI implements GUI {
             return;
         }
 
+        // Perform the action corresponding to the click
         Player player = (Player) event.getWhoClicked();
         ShopItem shopItem = clickedItem.get();
         if (event.isLeftClick() && shopItem.isPurchasable()) {

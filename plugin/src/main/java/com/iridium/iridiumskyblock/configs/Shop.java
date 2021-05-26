@@ -14,6 +14,10 @@ import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+/**
+ * The shop configuration used by IridiumSkyblock (shop.yml).
+ * Is deserialized automatically on plugin startup and reload.
+ */
 public class Shop {
 
     public Map<String, ShopCategoryConfig> categories = ImmutableMap.<String, ShopCategoryConfig>builder()
@@ -60,6 +64,9 @@ public class Shop {
 
     public List<String> shopItemLore = Arrays.asList(" ", "&b[!] Left-Click to Purchase %amount%, Shift for 64", "&b[!] Right Click to Sell %amount%, Shift for 64");
 
+    /**
+     * Represents configurable options of a {@link com.iridium.iridiumskyblock.shop.ShopCategory}.
+     */
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ShopCategoryConfig {

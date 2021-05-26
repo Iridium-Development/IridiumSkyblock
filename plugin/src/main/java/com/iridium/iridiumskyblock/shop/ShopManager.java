@@ -14,15 +14,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+/**
+ * Handles the shop.
+ */
 public class ShopManager {
 
     private final List<ShopCategory> categories = new ArrayList<>();
 
+    /**
+     * The default constructor.
+     *
+     * Loads all categories and items.
+     */
     public ShopManager() {
         for (String categoryName : IridiumSkyblock.getInstance().getShop().items.keySet()) {
             ShopCategoryConfig shopCategoryConfig = IridiumSkyblock.getInstance().getShop().categories.get(categoryName);
             if (shopCategoryConfig == null) {
-                System.out.println("ERROR: Shop category " + categoryName + " is not configured");
+                IridiumSkyblock.getInstance().getLogger().warning("Shop category " + categoryName + " is not configured, skipping...");
                 continue;
             }
 
@@ -41,22 +49,47 @@ public class ShopManager {
         }
     }
 
+    /**
+     * Returns a list of all loaded categories.
+     *
+     * @return All loaded categories of the shop
+     */
     public List<ShopCategory> getCategories() {
         return categories;
     }
 
+    /**
+     * Returns the category with the provided name, null if there is none.
+     *
+     * @param name The name of the category
+     * @return The category with the name
+     */
     public Optional<ShopCategory> getCategoryByName(String name) {
         return categories.stream()
             .filter(category -> name.equals(category.name))
             .findAny();
     }
 
+    /**
+     * Returns the category with the provided name containing colors, null if there is none.
+     *
+     * @param formattedName The formatted name of the category
+     * @return The category with the name
+     */
     public Optional<ShopCategory> getCategoryByFormattedName(String formattedName) {
         return categories.stream()
             .filter(category -> StringUtils.color(formattedName).equals(category.formattedName))
             .findAny();
     }
 
+    /**
+     * Buys an item for the Player in the shop.
+     * He might not have enough money to do so.
+     *
+     * @param player The player which wants to buy the item
+     * @param shopItem The item which is requested
+     * @param amount The amount of the item which is requested
+     */
     public void buy(Player player, ShopItem shopItem, int amount) {
         BuyCost buyCost = shopItem.buyCost;
         double vaultCost = calculateCost(amount, shopItem.defaultAmount, buyCost.vault);
@@ -93,10 +126,26 @@ public class ShopManager {
         }
     }
 
+    /**
+     * Sells an item for the Player in the shop.
+     * He might not meet all requirements to do so.
+     *
+     * @param player The player which wants to sell the item
+     * @param shopItem The item which is to be sold
+     * @param amount The amount of the item which is to be sold
+     */
     public void sell(Player player, ShopItem shopItem, int amount) {
         // TODO: Check if player has item in the Inventory, Remove it, Give Reward
     }
 
+    /**
+     * Calculates the cost of an item with the provided amount given the default price and amount.
+     *
+     * @param amount The amount which should be calculated
+     * @param defaultAmount The default amount of the item
+     * @param defaultPrice The default price of the item
+     * @return The price of the item in the given quantity
+     */
     public double calculateCost(int amount, int defaultAmount, double defaultPrice) {
         double costPerItem = defaultPrice / defaultAmount;
         return costPerItem * amount;

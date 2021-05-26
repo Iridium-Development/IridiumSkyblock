@@ -4,6 +4,9 @@ import com.cryptomorin.xseries.XMaterial;
 import java.util.List;
 import lombok.AllArgsConstructor;
 
+/**
+ * Represents a category of items in the shop.
+ */
 @AllArgsConstructor
 public class ShopCategory {
 
