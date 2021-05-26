@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
+import com.iridium.iridiumskyblock.utils.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -33,13 +34,13 @@ public class ClearDataCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            player.openInventory(new ConfirmationGUI(this::execute).getInventory());
+            player.openInventory(new ConfirmationGUI(() -> execute(player)).getInventory());
         } else {
-            execute();
+            execute(sender);
         }
     }
 
-    private void execute() {
+    private void execute(CommandSender commandSender) {
         DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
         databaseManager.getUserTableManager().clear();
         databaseManager.getIslandTableManager().clear();
@@ -55,6 +56,8 @@ public class ClearDataCommand extends Command {
         databaseManager.getIslandBoosterTableManager().clear();
         databaseManager.getIslandWarpTableManager().clear();
         databaseManager.getIslandLogTableManager().clear();
+
+        commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dataReset.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 
     /**
