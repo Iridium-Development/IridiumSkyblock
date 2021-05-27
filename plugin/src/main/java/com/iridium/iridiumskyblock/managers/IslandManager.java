@@ -601,10 +601,12 @@ public class IslandManager {
     private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () ->
                 chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
+                            World world = Bukkit.getWorld(chunk.getWorldName());
+                            int maxHeight = world == null ? 255 : world.getMaxHeight();
                             for (int x = 0; x < 16; x++) {
                                 for (int z = 0; z < 16; z++) {
                                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
-                                        final int maxy = Math.min(255, chunk.getHighestBlockYAt(x, z));
+                                        final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                                         for (int y = 0; y <= maxy; y++) {
                                             XMaterial material = IridiumSkyblock.getInstance().getMultiversion().getMaterialAtPosition(chunk, x, y, z);
                                             if (material.equals(XMaterial.AIR)) continue;
