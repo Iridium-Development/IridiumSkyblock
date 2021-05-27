@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import java.util.Optional;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -36,7 +37,8 @@ public class ShopOverviewGUI implements GUI {
             return;
         }
 
-        event.getWhoClicked().openInventory(new ShopCategoryGUI(shopCategory.get()).getInventory());
+        Player player = (Player) event.getWhoClicked();
+        player.performCommand("is shop " + shopCategory.get().name);
     }
 
     /**
