@@ -34,7 +34,8 @@ public class ShopOverviewGUI implements GUI {
         }
 
         Player player = (Player) event.getWhoClicked();
-        player.performCommand("is shop " + shopCategory.get().name);
+        String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
+        player.performCommand("is " + command + " " + shopCategory.get().name);
     }
 
     /**
