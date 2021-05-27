@@ -1,9 +1,16 @@
 package com.iridium.iridiumskyblock.shop;
 
+import com.cryptomorin.xseries.XSound;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.bank.MoneyBankItem;
 import com.iridium.iridiumskyblock.configs.Shop.ShopCategoryConfig;
+import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.shop.ShopItem.BuyCost;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,17 +102,23 @@ public class ShopManager {
         double vaultCost = calculateCost(amount, shopItem.defaultAmount, buyCost.vault);
         int crystalCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.crystals);
 
-        // TODO: Check if player has money + crystals, Remove them
+        boolean canPurchase = PlayerUtils.pay(
+            player,
+            IridiumSkyblockAPI.getInstance().getUser(player).getIsland().get(),
+            crystalCost,
+            vaultCost
+        );
+
+        if (!canPurchase) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            XSound.BLOCK_ANVIL_LAND.play(player);
+            return;
+        }
 
         if (shopItem.command == null) {
             // Add item to the player Inventory
             if (!InventoryUtils.hasEmptySlot(player.getInventory())) {
-                player.sendMessage(
-                    StringUtils.color(
-                        IridiumSkyblock.getInstance().getMessages().cannotAfford
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    )
-                );
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inventoryFull.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return;
             }
 
@@ -124,6 +137,19 @@ public class ShopManager {
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         }
+
+        XSound.ENTITY_PLAYER_LEVELUP.play(player);
+
+        player.sendMessage(
+            StringUtils.color(
+                IridiumSkyblock.getInstance().getMessages().successfullyBought
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%amount%", String.valueOf(amount))
+                    .replace("%item%", StringUtils.color(shopItem.name))
+                    .replace("%vault_cost%", String.valueOf(vaultCost))
+                    .replace("%crystal_cost%", String.valueOf(crystalCost))
+            )
+        );
     }
 
     /**
@@ -135,7 +161,39 @@ public class ShopManager {
      * @param amount The amount of the item which is to be sold
      */
     public void sell(Player player, ShopItem shopItem, int amount) {
-        // TODO: Check if player has item in the Inventory, Remove it, Give Reward
+        int inventoryAmount = InventoryUtils.getAmount(player.getInventory(), shopItem.type);
+        if (inventoryAmount == 0) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+
+        int soldAmount = Math.min(inventoryAmount, amount);
+        InventoryUtils.removeAmount(player.getInventory(), shopItem.type, soldAmount);
+        giveReward(player, shopItem, soldAmount);
+        XSound.ENTITY_PLAYER_LEVELUP.play(player);
+    }
+
+    public void giveReward(Player player, ShopItem item, int amount) {
+        double vaultReward = calculateCost(amount, item.defaultAmount, item.sellReward.vault);
+        int crystalReward = (int) calculateCost(amount, item.defaultAmount, item.sellReward.crystals);
+
+        Island island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland().get();
+        IslandBank moneyIslandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        IslandBank crystalIslandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+
+        moneyIslandBank.setNumber(moneyIslandBank.getNumber() + vaultReward);
+        crystalIslandBank.setNumber(crystalIslandBank.getNumber() + crystalReward);
+
+        player.sendMessage(
+            StringUtils.color(
+                IridiumSkyblock.getInstance().getMessages().successfullySold
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%amount%", String.valueOf(amount))
+                    .replace("%item%", StringUtils.color(item.name))
+                    .replace("%vault_reward%", String.valueOf(vaultReward))
+                    .replace("%crystal_reward%", String.valueOf(crystalReward))
+            )
+        );
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.ShopCategoryGUI;
 import com.iridium.iridiumskyblock.gui.ShopOverviewGUI;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
@@ -36,7 +38,12 @@ public class ShopCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
-
+        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        if (!user.getIsland().isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+        
         if (arguments.length == 1) {
             player.openInventory(new ShopOverviewGUI().getInventory());
         } else {
