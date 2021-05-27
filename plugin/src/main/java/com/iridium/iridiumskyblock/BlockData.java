@@ -49,7 +49,7 @@ public class BlockData {
         BlockState blockState = block.getState();
         blockState.setType(material);
         blockState.setRawData(data);
-        blockState.update(true, false);
+        blockState.update(true, true);
 
         // We gotta create a new BlockState because the old one is still air and wont be instance of container
         if (block.getState() instanceof Container && inventory != null) {
