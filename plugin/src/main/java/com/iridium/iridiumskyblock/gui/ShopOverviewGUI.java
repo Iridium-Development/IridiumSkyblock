@@ -26,10 +26,6 @@ public class ShopOverviewGUI implements GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         ItemStack currentItem = event.getCurrentItem();
-        if (currentItem == null || currentItem.getItemMeta() == null) {
-            return;
-        }
-
         String itemName = currentItem.getItemMeta().getDisplayName();
         Optional<ShopCategory> shopCategory = IridiumSkyblock.getInstance().getShopManager().getCategoryByFormattedName(itemName);
 

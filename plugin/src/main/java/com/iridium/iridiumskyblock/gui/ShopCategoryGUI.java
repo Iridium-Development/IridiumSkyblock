@@ -39,11 +39,6 @@ public class ShopCategoryGUI implements GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        ItemStack currentItem = event.getCurrentItem();
-        if (currentItem == null || currentItem.getItemMeta() == null) {
-            return;
-        }
-
         Optional<ShopItem> clickedItem = category.items.stream()
             .filter(item -> item.slot == event.getSlot())
             .findAny();
