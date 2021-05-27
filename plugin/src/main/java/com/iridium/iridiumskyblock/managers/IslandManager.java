@@ -604,7 +604,7 @@ public class IslandManager {
                             for (int x = 0; x < 16; x++) {
                                 for (int z = 0; z < 16; z++) {
                                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
-                                        final int maxy = chunk.getHighestBlockYAt(x, z);
+                                        final int maxy = Math.min(255, chunk.getHighestBlockYAt(x, z));
                                         for (int y = 0; y <= maxy; y++) {
                                             XMaterial material = IridiumSkyblock.getInstance().getMultiversion().getMaterialAtPosition(chunk, x, y, z);
                                             if (material.equals(XMaterial.AIR)) continue;
