@@ -86,38 +86,45 @@ public class ShopCategoryGUI implements GUI {
             itemMeta.setDisplayName(StringUtils.color(item.name));
 
             List<String> lore = item.lore == null ? new ArrayList<>() : new ArrayList<>(StringUtils.color(item.lore));
-
-            if (item.isPurchasable()) {
-                lore.add(
-                    StringUtils.color(IridiumSkyblock.getInstance().getShop().buyPriceLore
-                        .replace("%amount%", String.valueOf(item.defaultAmount))
-                        .replace("%buy_price_vault%", String.valueOf(item.buyCost.vault))
-                        .replace("%buy_price_crystals%", String.valueOf(item.buyCost.crystals))
-                ));
-            } else {
-                lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notPurchasableLore));
-            }
-
-            if (item.isSellable()) {
-                lore.add(
-                    StringUtils.color(IridiumSkyblock.getInstance().getShop().sellRewardLore
-                        .replace("%amount%", String.valueOf(item.defaultAmount))
-                        .replace("%sell_reward_vault%", String.valueOf(item.sellReward.vault))
-                        .replace("%sell_reward_crystals%", String.valueOf(item.sellReward.crystals))
-                ));
-            } else {
-                lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notSellableLore));
-            }
-
-            IridiumSkyblock.getInstance().getShop().shopItemLore.stream()
-                .map(StringUtils::color)
-                .forEach(line -> lore.add(line.replace("%amount%", String.valueOf(item.defaultAmount))));
+            addShopLore(lore, item);
 
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
             inventory.setItem(item.slot, itemStack);
         }
+    }
+
+    private void addShopLore(List<String> lore, ShopItem item) {
+        if (item.isPurchasable()) {
+            lore.add(
+                StringUtils.color(IridiumSkyblock.getInstance().getShop().buyPriceLore
+                    .replace("%amount%", String.valueOf(item.defaultAmount))
+                    .replace("%buy_price_vault%", String.valueOf(item.buyCost.vault))
+                    .replace("%buy_price_crystals%", String.valueOf(item.buyCost.crystals))
+                )
+            );
+        } else {
+            lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notPurchasableLore));
+        }
+
+        if (item.isSellable()) {
+            lore.add(
+                StringUtils.color(IridiumSkyblock.getInstance().getShop().sellRewardLore
+                    .replace("%amount%", String.valueOf(item.defaultAmount))
+                    .replace("%sell_reward_vault%", String.valueOf(item.sellReward.vault))
+                    .replace("%sell_reward_crystals%", String.valueOf(item.sellReward.crystals))
+                )
+            );
+        } else {
+            lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notSellableLore));
+        }
+
+        IridiumSkyblock.getInstance().getShop().shopItemLore.stream()
+            .map(StringUtils::color)
+            .forEach(line -> lore.add(
+                line.replace("%amount%", String.valueOf(item.defaultAmount))
+            ));
     }
 
     /**
