@@ -62,7 +62,7 @@ public class PlayerUtils {
         } else if (level <= 30) {
             return (5 * level) - 38;
         }
-        return (9 * level) - 158;
+        return (int) (Math.pow(level, 1.5) - 158);
     }
 
     /**
