@@ -10,14 +10,6 @@ import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +18,15 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -70,7 +71,7 @@ public final class Island {
     public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
         this.visitable = IridiumSkyblock.getInstance().getConfiguration().defaultIslandPublic;
-        this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0,0";
+        this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0," + schematicConfig.yawHome;
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
         this.color = Color.BLUE;
     }
@@ -359,7 +360,7 @@ public final class Island {
      */
     public double getMoney() {
         return IridiumSkyblock.getInstance().getIslandManager()
-            .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().moneyBankItem).getNumber();
+                .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().moneyBankItem).getNumber();
     }
 
     /**
@@ -369,7 +370,7 @@ public final class Island {
      */
     public long getBankExperience() {
         return (long) IridiumSkyblock.getInstance().getIslandManager()
-            .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().experienceBankItem).getNumber();
+                .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().experienceBankItem).getNumber();
     }
 
     /**
@@ -379,7 +380,7 @@ public final class Island {
      */
     public int getCrystals() {
         return (int) IridiumSkyblock.getInstance().getIslandManager()
-            .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem).getNumber();
+                .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem).getNumber();
     }
 
     /**
