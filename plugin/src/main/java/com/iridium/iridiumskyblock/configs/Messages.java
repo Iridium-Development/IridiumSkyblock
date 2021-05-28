@@ -125,6 +125,11 @@ public class Messages {
     public String onlySetHomeOnIsland = "%prefix% &7You can only set your Island Home on your island.";
     public String islandLevel = "%prefix% &7Island Level %island_level% %island_experience%/%island_experienceRequired% Experience";
     public String dataReset = "%prefix% &7All data has been reset.";
+    public String noShopCategory = "%prefix% &7There is no category with this name.";
+    public String inventoryFull = "%prefix% &7Your inventory is full!";
+    public String noSuchItem = "%prefix% &7You don't have this item!";
+    public String successfullyBought = "%prefix% &7You have successfully bought %amount%x %item% &r&7for $%vault_cost% and %crystal_cost% Crystals.";
+    public String successfullySold = "%prefix% &7You have successfully sold %amount%x %item% &r&7for $%vault_reward% and %crystal_reward% Crystals.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

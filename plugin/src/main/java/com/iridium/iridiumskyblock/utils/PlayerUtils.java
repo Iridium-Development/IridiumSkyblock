@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.utils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,12 +18,14 @@ public class PlayerUtils {
                 IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
         IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
                 IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
-        if (islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || IridiumSkyblock.getInstance().getEconomy().getBalance(player) >= money)) {
+        Economy economy = IridiumSkyblock.getInstance().getEconomy();
+
+        if (islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money))) {
             islandCrystals.setNumber(islandCrystals.getNumber() - crystals);
             if (islandMoney.getNumber() >= money) {
                 islandMoney.setNumber(islandMoney.getNumber() - money);
             } else {
-                IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, money);
+                economy.withdrawPlayer(player, money);
             }
             return true;
         }
