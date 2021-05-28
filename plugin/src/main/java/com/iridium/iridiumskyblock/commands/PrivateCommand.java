@@ -41,7 +41,7 @@ public class PrivateCommand extends Command {
             island.get().setVisitable(false);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

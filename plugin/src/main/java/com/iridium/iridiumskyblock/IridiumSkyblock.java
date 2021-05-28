@@ -433,10 +433,10 @@ public class IridiumSkyblock extends JavaPlugin {
         if (upgrades.warpsUpgrade.enabled) upgradesList.put("warp", upgrades.warpsUpgrade);
 
         this.boosterList = new HashMap<>();
-        if (boosters.islandExperienceBooster.enabled) boosterList.put("experience", boosters.islandExperienceBooster);
-        if (boosters.islandFlightBooster.enabled) boosterList.put("flight", boosters.islandFlightBooster);
-        if (boosters.islandFarmingBooster.enabled) boosterList.put("farming", boosters.islandFarmingBooster);
-        if (boosters.islandSpawnerBooster.enabled) boosterList.put("spawner", boosters.islandSpawnerBooster);
+        if (boosters.experienceBooster.enabled) boosterList.put("experience", boosters.experienceBooster);
+        if (boosters.flightBooster.enabled) boosterList.put("flight", boosters.flightBooster);
+        if (boosters.farmingBooster.enabled) boosterList.put("farming", boosters.farmingBooster);
+        if (boosters.spawnerBooster.enabled) boosterList.put("spawner", boosters.spawnerBooster);
 
         File schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) {

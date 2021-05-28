@@ -7,7 +7,8 @@ import com.iridium.iridiumskyblock.Item;
 import java.util.Arrays;
 
 public class Boosters {
-    public Booster islandFarmingBooster = new Booster(new Item(XMaterial.WHEAT, 10, 1, "&b&lFarming Booster", Arrays.asList(
+
+    public Booster farmingBooster = new Booster(new Item(XMaterial.WHEAT, 10, 1, "&b&lFarming Booster", Arrays.asList(
             "&7Crops growing too slow? Buy this",
             "&7booster and double crop growth.",
             "",
@@ -18,7 +19,7 @@ public class Boosters {
             "&b&l[!] &bRight Click to Purchase this Booster."
     )), 15, 10000, 3600, true);
 
-    public Booster islandSpawnerBooster = new Booster(new Item(XMaterial.SPAWNER, 12, 1, "&b&lSpawner Booster", Arrays.asList(
+    public Booster spawnerBooster = new Booster(new Item(XMaterial.SPAWNER, 12, 1, "&b&lSpawner Booster", Arrays.asList(
             "&7Spawners too slow? Buy this",
             "&7booster and double your spawner speed.",
             "",
@@ -29,7 +30,7 @@ public class Boosters {
             "&b&l[!] &bRight Click to Purchase this Booster."
     )), 15, 10000, 3600, true);
 
-    public Booster islandExperienceBooster = new Booster(new Item(XMaterial.EXPERIENCE_BOTTLE, 14, 1, "&b&lExperience Booster", Arrays.asList(
+    public Booster experienceBooster = new Booster(new Item(XMaterial.EXPERIENCE_BOTTLE, 14, 1, "&b&lExperience Booster", Arrays.asList(
             "&7Gaining Experience too slow? Buy this",
             "&7booster and double experience drops.",
             "",
@@ -40,7 +41,7 @@ public class Boosters {
             "&b&l[!] &bRight Click to Purchase this Booster."
     )), 15, 10000, 3600, true);
 
-    public Booster islandFlightBooster = new Booster(new Item(XMaterial.FEATHER, 16, 1, "&b&lFlight Booster", Arrays.asList(
+    public Booster flightBooster = new Booster(new Item(XMaterial.FEATHER, 16, 1, "&b&lFlight Booster", Arrays.asList(
             "&7Keep falling off your island? Buy this",
             "&7booster and Gain access to /is fly.",
             "",
