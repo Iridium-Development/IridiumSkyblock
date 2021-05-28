@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import com.iridium.iridiumskyblock.utils.LocationUtils;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,8 +22,9 @@ public class PlayerPortalListener implements Listener {
                 event.setTo(island.getCenter(world));
             }
             if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.END_PORTAL)) {
-                World world = Objects.equals(event.getFrom().getWorld(), islandManager.getEndWorld()) ? islandManager.getWorld() : islandManager.getEndWorld();
-                event.setTo(LocationUtils.getSafeLocation(island.getCenter(world), island));
+                event.setCancelled(true);
+//                World world = Objects.equals(event.getFrom().getWorld(), islandManager.getEndWorld()) ? islandManager.getWorld() : islandManager.getEndWorld();
+//                event.setTo(LocationUtils.getSafeLocation(island.getCenter(world), island));
             }
         });
     }
