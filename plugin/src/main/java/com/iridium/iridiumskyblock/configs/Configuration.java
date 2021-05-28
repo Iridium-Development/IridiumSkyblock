@@ -3,9 +3,10 @@ package com.iridium.iridiumskyblock.configs;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.util.Map;
 
 /**
  * The main configuration of IridiumSkyblock (configuration.yml).
@@ -65,7 +66,7 @@ public class Configuration {
     public static class GeneratorSettings {
 
         public GeneratorType generatorType = GeneratorType.SKYBLOCK;
-        public int waterHeight = 95;
+        public int waterHeight = 93;
         public int minOceanFloorLevel = 10;
         public int maxOceanFloorLevel = 25;
         public XMaterial oceanFloorBottomMaterial = XMaterial.GRAVEL;
