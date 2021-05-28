@@ -61,14 +61,99 @@ public class OceanGenerator extends ChunkGenerator {
                 );
 
                 // Generate water or lava on top of the floor
+                XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
                 for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
-                    XMaterial material = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
-                    chunkData.setBlock(x, y, z, Objects.requireNonNull(material.parseMaterial()));
+                    chunkData.setBlock(x, y, z, Objects.requireNonNull(oceanMaterial.parseMaterial()));
                 }
             }
         }
 
         return chunkData;
+    }
+
+    public void generateWater(World world, int x, int z) {
+        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
+        generator.setScale(0.005D);
+
+        XMaterial bottomMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorBottomMaterial;
+        XMaterial topMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorTopMaterial;
+        int waterHeight = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.waterHeight;
+        int maxOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.maxOceanFloorLevel;
+        int minOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.minOceanFloorLevel;
+
+        int currentFloorHeight = (int) ((generator.noise(x, z, 1.5D, 0.5D, true) + 1) * (maxOceanFloorLevel - minOceanFloorLevel) + minOceanFloorLevel);
+
+        // Generate layer of bedrock
+        if (world.getBlockAt(x, 0, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
+            IridiumSkyblock.getInstance().getNms().setBlockFast(
+                world,
+                x,
+                0,
+                z,
+                XMaterial.BEDROCK.getId(),
+                XMaterial.BEDROCK.getData(),
+                false
+            );
+        }
+
+        // Generate gravel layer
+        for (int y = 1; y < currentFloorHeight; y++) {
+            if (world.getBlockAt(x, y, z).getType() != bottomMaterial.parseMaterial()) {
+                IridiumSkyblock.getInstance().getNms().setBlockFast(
+                    world,
+                    x,
+                    y,
+                    z,
+                    bottomMaterial.getId(),
+                    bottomMaterial.getData(),
+                    false
+                );
+            }
+        }
+
+        // Generate sand on top of gravel
+        if (world.getBlockAt(x, currentFloorHeight, z).getType() != topMaterial.parseMaterial()) {
+            IridiumSkyblock.getInstance().getNms().setBlockFast(
+                world,
+                x,
+                currentFloorHeight,
+                z,
+                topMaterial.getId(),
+                topMaterial.getData(),
+                false
+            );
+        }
+
+        // Generate water or lava on top of the floor
+        XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
+        for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
+            if (world.getBlockAt(x, y, z).getType() != oceanMaterial.parseMaterial()) {
+                IridiumSkyblock.getInstance().getNms().setBlockFast(
+                    world,
+                    x,
+                    y,
+                    z,
+                    oceanMaterial.getId(),
+                    oceanMaterial.getData(),
+                    false
+                );
+            }
+        }
+
+        // Replace everything else with air
+        for (int y = waterHeight + 1; y < world.getMaxHeight(); y++) {
+            if (world.getBlockAt(x, y, z).getType() != XMaterial.AIR.parseMaterial()) {
+                IridiumSkyblock.getInstance().getNms().setBlockFast(
+                    world,
+                    x,
+                    y,
+                    z,
+                    XMaterial.AIR.getId(),
+                    XMaterial.AIR.getData(),
+                    true
+                );
+            }
+        }
     }
 
     /**
