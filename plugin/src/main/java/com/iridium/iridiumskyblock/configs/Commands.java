@@ -34,6 +34,7 @@ public class Commands {
     public PrivateCommand privateCommand = new PrivateCommand();
     public PromoteCommand promoteCommand = new PromoteCommand();
     public PublicCommand publicCommand = new PublicCommand();
+    public RecalculateCommand recalculateCommand = new RecalculateCommand();
     public RegenCommand regenCommand = new RegenCommand();
     public ReloadCommand reloadCommand = new ReloadCommand();
     public RewardsCommand rewardsCommand = new RewardsCommand();
@@ -51,6 +52,5 @@ public class Commands {
     public VisitCommand visitCommand = new VisitCommand();
     public WarpsCommand warpsCommand = new WarpsCommand();
     public WithdrawCommand withdrawCommand = new WithdrawCommand();
-    public RecalculateCommand recalculateCommand = new RecalculateCommand();
 
 }
