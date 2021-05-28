@@ -3,14 +3,11 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import java.util.Optional;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -25,17 +22,11 @@ public class ShopOverviewGUI implements GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        ItemStack currentItem = event.getCurrentItem();
-        String itemName = currentItem.getItemMeta().getDisplayName();
-        Optional<ShopCategory> shopCategory = IridiumSkyblock.getInstance().getShopManager().getCategoryByFormattedName(itemName);
+        IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory -> {
+            String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
+            Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + shopCategory.name);
 
-        if (!shopCategory.isPresent()) {
-            return;
-        }
-
-        Player player = (Player) event.getWhoClicked();
-        String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
-        player.performCommand("is " + command + " " + shopCategory.get().name);
+        });
     }
 
     /**
@@ -48,16 +39,7 @@ public class ShopOverviewGUI implements GUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getShop().overviewBackground);
 
         for (ShopCategory category : IridiumSkyblock.getInstance().getShopManager().getCategories()) {
-            ItemStack itemStack = category.overviewItem.parseItem();
-
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            if (!category.itemLore.isEmpty()) {
-                itemMeta.setLore(category.itemLore);
-            }
-            itemMeta.setDisplayName(category.formattedName);
-            itemStack.setItemMeta(itemMeta);
-
-            inventory.setItem(category.slot, itemStack);
+            inventory.setItem(category.item.slot, ItemStackUtils.makeItem(category.item));
         }
     }
 
@@ -70,9 +52,9 @@ public class ShopOverviewGUI implements GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(
-            this,
-            IridiumSkyblock.getInstance().getShop().overviewSize,
-            StringUtils.color(IridiumSkyblock.getInstance().getShop().overviewTitle)
+                this,
+                IridiumSkyblock.getInstance().getShop().overviewSize,
+                StringUtils.color(IridiumSkyblock.getInstance().getShop().overviewTitle)
         );
 
         addContent(inventory);

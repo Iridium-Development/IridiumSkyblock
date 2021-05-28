@@ -9,14 +9,14 @@ import com.iridium.iridiumskyblock.shop.ShopItem.BuyCost;
 import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Handles the shop.
@@ -27,7 +27,7 @@ public class ShopManager {
 
     /**
      * The default constructor.
-     *
+     * <p>
      * Loads all categories and items.
      */
     public ShopManager() {
@@ -38,18 +38,13 @@ public class ShopManager {
                 continue;
             }
 
-            List<String> lore = shopCategoryConfig.lore == null ? Collections.emptyList() : StringUtils.color(shopCategoryConfig.lore);
-
             categories.add(
-                new ShopCategory(
-                    categoryName,
-                    StringUtils.color(shopCategoryConfig.displayName),
-                    shopCategoryConfig.representativeItem,
-                    lore,
-                    IridiumSkyblock.getInstance().getShop().items.get(categoryName),
-                    shopCategoryConfig.slot,
-                    shopCategoryConfig.inventoryRows * 9
-                )
+                    new ShopCategory(
+                            categoryName,
+                            shopCategoryConfig.item,
+                            IridiumSkyblock.getInstance().getShop().items.get(categoryName),
+                            shopCategoryConfig.inventoryRows * 9
+                    )
             );
         }
     }
@@ -71,29 +66,29 @@ public class ShopManager {
      */
     public Optional<ShopCategory> getCategoryByName(String name) {
         return categories.stream()
-            .filter(category -> name.equals(category.name))
-            .findAny();
+                .filter(category -> name.equals(category.name))
+                .findAny();
     }
 
     /**
      * Returns the category with the provided name containing colors, null if there is none.
      *
-     * @param formattedName The formatted name of the category
+     * @param slot The slot of the category
      * @return The category with the name
      */
-    public Optional<ShopCategory> getCategoryByFormattedName(String formattedName) {
+    public Optional<ShopCategory> getCategoryBySlot(int slot) {
         return categories.stream()
-            .filter(category -> StringUtils.color(formattedName).equals(category.formattedName))
-            .findAny();
+                .filter(category -> category.item.slot == slot)
+                .findAny();
     }
 
     /**
      * Buys an item for the Player in the shop.
      * He might not have enough money to do so.
      *
-     * @param player The player which wants to buy the item
+     * @param player   The player which wants to buy the item
      * @param shopItem The item which is requested
-     * @param amount The amount of the item which is requested
+     * @param amount   The amount of the item which is requested
      */
     public void buy(Player player, ShopItem shopItem, int amount) {
         BuyCost buyCost = shopItem.buyCost;
@@ -101,10 +96,10 @@ public class ShopManager {
         int crystalCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.crystals);
 
         boolean canPurchase = PlayerUtils.pay(
-            player,
-            IridiumSkyblockAPI.getInstance().getUser(player).getIsland().get(),
-            crystalCost,
-            vaultCost
+                player,
+                IridiumSkyblockAPI.getInstance().getUser(player).getIsland().get(),
+                crystalCost,
+                vaultCost
         );
 
         if (!canPurchase) {
@@ -130,8 +125,8 @@ public class ShopManager {
         } else {
             // Run the command
             String command = shopItem.command
-                .replace("%player%", player.getName())
-                .replace("%amount%", String.valueOf(amount));
+                    .replace("%player%", player.getName())
+                    .replace("%amount%", String.valueOf(amount));
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         }
@@ -139,14 +134,14 @@ public class ShopManager {
         IridiumSkyblock.getInstance().getShop().successSound.play(player);
 
         player.sendMessage(
-            StringUtils.color(
-                IridiumSkyblock.getInstance().getMessages().successfullyBought
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%amount%", String.valueOf(amount))
-                    .replace("%item%", StringUtils.color(shopItem.name))
-                    .replace("%vault_cost%", String.valueOf(vaultCost))
-                    .replace("%crystal_cost%", String.valueOf(crystalCost))
-            )
+                StringUtils.color(
+                        IridiumSkyblock.getInstance().getMessages().successfullyBought
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                .replace("%amount%", String.valueOf(amount))
+                                .replace("%item%", StringUtils.color(shopItem.name))
+                                .replace("%vault_cost%", String.valueOf(vaultCost))
+                                .replace("%crystal_cost%", String.valueOf(crystalCost))
+                )
         );
     }
 
@@ -154,9 +149,9 @@ public class ShopManager {
      * Sells an item for the Player in the shop.
      * He might not meet all requirements to do so.
      *
-     * @param player The player which wants to sell the item
+     * @param player   The player which wants to sell the item
      * @param shopItem The item which is to be sold
-     * @param amount The amount of the item which is to be sold
+     * @param amount   The amount of the item which is to be sold
      */
     public void sell(Player player, ShopItem shopItem, int amount) {
         int inventoryAmount = InventoryUtils.getAmount(player.getInventory(), shopItem.type);
@@ -184,23 +179,23 @@ public class ShopManager {
         crystalIslandBank.setNumber(crystalIslandBank.getNumber() + crystalReward);
 
         player.sendMessage(
-            StringUtils.color(
-                IridiumSkyblock.getInstance().getMessages().successfullySold
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%amount%", String.valueOf(amount))
-                    .replace("%item%", StringUtils.color(item.name))
-                    .replace("%vault_reward%", String.valueOf(vaultReward))
-                    .replace("%crystal_reward%", String.valueOf(crystalReward))
-            )
+                StringUtils.color(
+                        IridiumSkyblock.getInstance().getMessages().successfullySold
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                .replace("%amount%", String.valueOf(amount))
+                                .replace("%item%", StringUtils.color(item.name))
+                                .replace("%vault_reward%", String.valueOf(vaultReward))
+                                .replace("%crystal_reward%", String.valueOf(crystalReward))
+                )
         );
     }
 
     /**
      * Calculates the cost of an item with the provided amount given the default price and amount.
      *
-     * @param amount The amount which should be calculated
+     * @param amount        The amount which should be calculated
      * @param defaultAmount The default amount of the item
-     * @param defaultPrice The default price of the item
+     * @param defaultPrice  The default price of the item
      * @return The price of the item in the given quantity
      */
     public double calculateCost(int amount, int defaultAmount, double defaultPrice) {
