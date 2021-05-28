@@ -16,5 +16,6 @@ public class ShopCategory {
     public List<String> itemLore;
     public List<ShopItem> items;
     public int slot;
+    public int size;
 
 }

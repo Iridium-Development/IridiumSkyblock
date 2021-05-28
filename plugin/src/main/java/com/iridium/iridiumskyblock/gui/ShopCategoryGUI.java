@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.cryptomorin.xseries.XSound;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
 import com.iridium.iridiumskyblock.shop.ShopItem;
@@ -62,6 +63,8 @@ public class ShopCategoryGUI implements GUI {
             } else {
                 IridiumSkyblock.getInstance().getShopManager().sell(player, shopItem, shopItem.defaultAmount);
             }
+        } else {
+            IridiumSkyblock.getInstance().getShop().failSound.play(player);
         }
     }
 
@@ -78,6 +81,7 @@ public class ShopCategoryGUI implements GUI {
             ItemStack itemStack = item.type.parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
 
+            itemStack.setAmount(item.defaultAmount);
             itemMeta.setDisplayName(StringUtils.color(item.name));
 
             List<String> lore = item.lore == null ? new ArrayList<>() : new ArrayList<>(StringUtils.color(item.lore));
@@ -132,7 +136,7 @@ public class ShopCategoryGUI implements GUI {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(
             this,
-            IridiumSkyblock.getInstance().getShop().categorySize,
+            category.size,
             StringUtils.color(
                 IridiumSkyblock.getInstance().getShop().categoryTitle
                     .replace("%category_name%", category.name)

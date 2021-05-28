@@ -44,11 +44,12 @@ public class ShopManager {
             categories.add(
                 new ShopCategory(
                     categoryName,
-                    StringUtils.color(shopCategoryConfig.formattedName),
+                    StringUtils.color(shopCategoryConfig.displayName),
                     shopCategoryConfig.representativeItem,
                     lore,
                     IridiumSkyblock.getInstance().getShop().items.get(categoryName),
-                    shopCategoryConfig.slot
+                    shopCategoryConfig.slot,
+                    shopCategoryConfig.inventoryRows * 9
                 )
             );
         }
@@ -109,7 +110,7 @@ public class ShopManager {
 
         if (!canPurchase) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            XSound.BLOCK_ANVIL_LAND.play(player);
+            IridiumSkyblock.getInstance().getShop().failSound.play(player);
             return;
         }
 
@@ -136,7 +137,7 @@ public class ShopManager {
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         }
 
-        XSound.ENTITY_PLAYER_LEVELUP.play(player);
+        IridiumSkyblock.getInstance().getShop().successSound.play(player);
 
         player.sendMessage(
             StringUtils.color(
@@ -162,13 +163,14 @@ public class ShopManager {
         int inventoryAmount = InventoryUtils.getAmount(player.getInventory(), shopItem.type);
         if (inventoryAmount == 0) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            IridiumSkyblock.getInstance().getShop().failSound.play(player);
             return;
         }
 
         int soldAmount = Math.min(inventoryAmount, amount);
         InventoryUtils.removeAmount(player.getInventory(), shopItem.type, soldAmount);
         giveReward(player, shopItem, soldAmount);
-        XSound.ENTITY_PLAYER_LEVELUP.play(player);
+        IridiumSkyblock.getInstance().getShop().successSound.play(player);
     }
 
     public void giveReward(Player player, ShopItem item, int amount) {
@@ -204,7 +206,7 @@ public class ShopManager {
      */
     public double calculateCost(int amount, int defaultAmount, double defaultPrice) {
         double costPerItem = defaultPrice / defaultAmount;
-        return costPerItem * amount;
+        return Double.parseDouble(String.format("%.2f", costPerItem * amount));
     }
 
 }
