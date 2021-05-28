@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock.utils;
 
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
@@ -49,7 +51,13 @@ public class PlayerUtils {
      */
 
     public static void teleportSpawn(Player player) {
-        player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+        if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
+            EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
+            Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+            player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
+        } else {
+            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+        }
     }
 
     /**
