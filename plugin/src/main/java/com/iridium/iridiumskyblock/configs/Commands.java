@@ -51,14 +51,6 @@ public class Commands {
     public VisitCommand visitCommand = new VisitCommand();
     public WarpsCommand warpsCommand = new WarpsCommand();
     public WithdrawCommand withdrawCommand = new WithdrawCommand();
-    public SetWarpCommand setWarpCommand = new SetWarpCommand();
-    public EditWarpCommand editWarpCommand = new EditWarpCommand();
-    public DeleteWarpCommand deleteWarpCommand = new DeleteWarpCommand();
-    public FlyCommand flyCommand = new FlyCommand();
-    public LevelCommand levelCommand = new LevelCommand();
-    public LogsCommand logsCommand = new LogsCommand();
-    public ClearDataCommand clearDataCommand = new ClearDataCommand();
-    public ShopCommand shopCommand = new ShopCommand();
     public RecalculateCommand recalculateCommand = new RecalculateCommand();
 
 }
