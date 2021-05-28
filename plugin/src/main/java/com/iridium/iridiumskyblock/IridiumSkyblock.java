@@ -169,12 +169,12 @@ public class IridiumSkyblock extends JavaPlugin {
         this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
 
         // Save data regularly
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, this::saveData, 0, 20 * 60 * 5);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::saveData, 0, 20 * 60 * 5);
 
         registerListeners();
 
         // Initialize Vault economy support
-        this.economy = setupEconomy();
+        Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
 
         // Register Placeholders Support
         Plugin MVDWPlaceholderAPI = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
