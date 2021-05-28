@@ -10,6 +10,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:2.12.1")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.12.1")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.1")
+    implementation("net.ess3:EssentialsXSpawn:2.16.1")
     implementation("org.yaml:snakeyaml:1.27")
     implementation("io.papermc:paperlib:1.0.6")
     implementation("de.jeff_media:SpigotUpdateChecker:1.2.0")
