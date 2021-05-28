@@ -23,11 +23,11 @@ public class Placeholders {
             })
             .put("island_rank", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> String.valueOf(island.getRank())).orElse(defaultValue());
+                return user.getIsland().map(island -> NumberFormatter.format(island.getRank())).orElse(defaultValue());
             })
             .put("island_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> String.valueOf(island.getLevel())).orElse(defaultValue());
+                return user.getIsland().map(island -> NumberFormatter.format(island.getLevel())).orElse(defaultValue());
             })
             .put("island_value", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
