@@ -119,6 +119,8 @@ public class IridiumSkyblock extends JavaPlugin {
      */
     @Override
     public void onEnable() {
+        // Convert old IridiumSkyblock data
+        DataConverter.run(this);
 
         this.nms = setupNMS();
         if (this.nms == null) {
