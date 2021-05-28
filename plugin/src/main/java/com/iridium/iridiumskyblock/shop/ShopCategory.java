@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.shop;
 
-import com.cryptomorin.xseries.XMaterial;
-import java.util.List;
+import com.iridium.iridiumskyblock.Item;
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 /**
  * Represents a category of items in the shop.
@@ -11,11 +12,8 @@ import lombok.AllArgsConstructor;
 public class ShopCategory {
 
     public String name;
-    public String formattedName;
-    public XMaterial overviewItem;
-    public List<String> itemLore;
+    public Item item;
     public List<ShopItem> items;
-    public int slot;
     public int size;
 
 }
