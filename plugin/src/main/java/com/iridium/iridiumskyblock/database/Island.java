@@ -7,17 +7,9 @@ import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -26,6 +18,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.entity.EntityType;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -350,6 +350,81 @@ public final class Island {
         Location pos2 = getPos2(null);
 
         return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
+    }
+
+    /**
+     * Returns the money of this island that is in the Island bank.
+     *
+     * @return The money in the bank
+     */
+    public double getMoney() {
+        return IridiumSkyblock.getInstance().getIslandManager()
+            .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().moneyBankItem).getNumber();
+    }
+
+    /**
+     * Returns the experience of this island that is in the Island bank.
+     *
+     * @return The experience in the bank
+     */
+    public long getBankExperience() {
+        return (long) IridiumSkyblock.getInstance().getIslandManager()
+            .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().experienceBankItem).getNumber();
+    }
+
+    /**
+     * Returns the crystals of this island that are in the Island bank.
+     *
+     * @return The crystals in the bank
+     */
+    public int getCrystals() {
+        return (int) IridiumSkyblock.getInstance().getIslandManager()
+            .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem).getNumber();
+    }
+
+    /**
+     * Formatted version of {@link Island#getValue()}.
+     *
+     * @return The formatted value
+     */
+    public String getFormattedValue() {
+        return NumberFormatter.format(getValue());
+    }
+
+    /**
+     * Formatted version of {@link Island#getExperience()}.
+     *
+     * @return The formatted experience
+     */
+    public String getFormattedExperience() {
+        return NumberFormatter.format(getExperience());
+    }
+
+    /**
+     * Formatted version of {@link Island#getMoney()}.
+     *
+     * @return The formatted money in the Island bank
+     */
+    public String getFormattedMoney() {
+        return NumberFormatter.format(getMoney());
+    }
+
+    /**
+     * Formatted version of {@link Island#getBankExperience()}.
+     *
+     * @return The formatted experience in the Island bank
+     */
+    public String getFormattedBankExperience() {
+        return NumberFormatter.format(getBankExperience());
+    }
+
+    /**
+     * Formatted version of {@link Island#getCrystals()}.
+     *
+     * @return The formatted crystals in the Island bank
+     */
+    public String getFormattedCrystals() {
+        return NumberFormatter.format(getCrystals());
     }
 
 }

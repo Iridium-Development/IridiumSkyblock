@@ -3,10 +3,9 @@ package com.iridium.iridiumskyblock.configs;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-
-import java.util.Map;
 
 /**
  * The main configuration of IridiumSkyblock (configuration.yml).
@@ -19,14 +18,20 @@ public class Configuration {
     public String islandCreateTitle = "&b&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
+    public String placeholderDefaultValue = "N/A";
+    public String thousandAbbreviation = "K";
+    public String millionAbbreviation = "M";
+    public String billionAbbreviation = "B";
 
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
+    public boolean displayNumberAbbreviations = true;
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
     public int islandRecalculateInterval = 10;
     public int teleportDelay = 0;
+    public int numberAbbreviationDecimalPlaces = 2;
 
     public GeneratorSettings generatorSettings = new GeneratorSettings();
 
