@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.api.IslandRegenEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
+import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumskyblock.utils.StringUtils;
@@ -196,9 +197,22 @@ public class IslandManager {
         IslandRegenEvent islandRegenEvent = new IslandRegenEvent(island, user, schematicConfig);
         Bukkit.getPluginManager().callEvent(islandRegenEvent);
         if (islandRegenEvent.isCancelled()) return;
-        deleteIslandBlocks(island, getWorld(), 0).join();
-        deleteIslandBlocks(island, getNetherWorld(), 0).join();
-        deleteIslandBlocks(island, getEndWorld(), 0).join();
+
+        if (IridiumSkyblock.getInstance().getChunkGenerator() instanceof OceanGenerator) {
+            OceanGenerator oceanGenerator = (OceanGenerator) IridiumSkyblock.getInstance().getChunkGenerator();
+            for (int x = island.getPos1(getWorld()).getBlockX(); x <= island.getPos2(getWorld()).getBlockX(); x++) {
+                for (int z = island.getPos1(getWorld()).getBlockZ(); z <= island.getPos2(getWorld()).getBlockZ(); z++) {
+                    oceanGenerator.generateWater(getWorld(), x, z);
+                    oceanGenerator.generateWater(getNetherWorld(), x, z);
+                    oceanGenerator.generateWater(getEndWorld(), x, z);
+                }
+            }
+        } else {
+            deleteIslandBlocks(island, getWorld(), 0).join();
+            deleteIslandBlocks(island, getNetherWorld(), 0).join();
+            deleteIslandBlocks(island, getEndWorld(), 0).join();
+        }
+
         pasteSchematic(island, schematicConfig).thenRun(() -> {
 
             island.setHome(island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome));
