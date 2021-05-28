@@ -580,7 +580,12 @@ public class IslandManager {
                 missions.put(key, mission);
             }
         } else {
-            islandMissions.forEach(islandMission -> missions.put(islandMission.getMissionName(), IridiumSkyblock.getInstance().getMissionsList().get(islandMission.getMissionName())));
+            islandMissions.forEach(islandMission -> {
+                Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(islandMission.getMissionName());
+                if (mission != null) {
+                    missions.put(islandMission.getMissionName(), mission);
+                }
+            });
         }
 
         return missions;
