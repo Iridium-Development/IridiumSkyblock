@@ -51,5 +51,6 @@ public class Commands {
     public LogsCommand logsCommand = new LogsCommand();
     public ClearDataCommand clearDataCommand = new ClearDataCommand();
     public ShopCommand shopCommand = new ShopCommand();
+    public RecalculateCommand recalculateCommand = new RecalculateCommand();
 
 }
