@@ -62,7 +62,7 @@ public class EditWarpCommand extends Command {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpIconSet.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().materialDoesntExist.replace("%prefix%",
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchMaterial.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                         break;
@@ -81,7 +81,7 @@ public class EditWarpCommand extends Command {
                         IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
 
     }

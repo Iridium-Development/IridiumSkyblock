@@ -44,14 +44,14 @@ public class SetHomeCommand extends Command {
                     island.get().setHome(player.getLocation());
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%",
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notSafe.replace("%prefix%",
                             IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().onlySetHomeOnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

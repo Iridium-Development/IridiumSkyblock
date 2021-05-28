@@ -41,7 +41,7 @@ public class PermissionsCommand extends Command {
         if (island.isPresent()) {
             player.openInventory(new PermissionsRankGUI(island.get()).getInventory());
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
