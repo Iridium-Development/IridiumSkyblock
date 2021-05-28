@@ -62,51 +62,6 @@ public class DataConverter {
                     e.printStackTrace();
                 }
             });
-
-        String host = "";
-        String database = "";
-        String username = "";
-        String password = "";
-        String port = "";
-
-        Pattern hostPattern = Pattern.compile(".+\"host\":\\s\"(.+)\"(.+)?");
-        Pattern databasePattern = Pattern.compile(".+\"database\":\\s\"(.+)\"(.+)?");
-        Pattern usernamePattern = Pattern.compile(".+\"username\":\\s\"(.+)\"(.+)?");
-        Pattern passwordPattern = Pattern.compile(".+\"password\":\\s(.+),?");
-        Pattern portPattern = Pattern.compile(".+\"port\":\\s(.+),?");
-
-        for (String line : Files.lines(Paths.get(new File(iridiumSkyblock.getDataFolder() + File.separator + "old_data" + File.separator + "sql.json").getAbsolutePath())).collect(Collectors.toList())) {
-            Matcher hostPatternMatcher = hostPattern.matcher(line);
-            Matcher databasePatternMatcher = databasePattern.matcher(line);
-            Matcher usernamePatternMatcher = usernamePattern.matcher(line);
-            Matcher passwordPatternMatcher = passwordPattern.matcher(line);
-            Matcher portPatternMatcher = portPattern.matcher(line);
-
-            if (hostPatternMatcher.find()) host = hostPatternMatcher.group(1);
-            if (databasePatternMatcher.find()) database = databasePatternMatcher.group(1);
-            if (usernamePatternMatcher.find()) username = usernamePatternMatcher.group(1);
-            if (passwordPatternMatcher.find()) password = passwordPatternMatcher.group(1);
-            if (portPatternMatcher.find()) port = portPatternMatcher.group(1);
-        }
-
-        String connectionString;
-        if (username.isEmpty()) {
-            connectionString = "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(),"old_data" + File.separator + "IridiumSkyblock.db");
-        } else {
-            connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database;
-        }
-
-        ConnectionSource connectionSource = new JdbcConnectionSource(
-            connectionString,
-            username,
-            password,
-            DatabaseTypeUtils.createDatabaseType(connectionString)
-        );
-
-        ResultSet resultSet = connectionSource.getReadOnlyConnection("users").getUnderlyingConnection().prepareStatement("SELECT * FROM users").executeQuery();
-        while (resultSet.next()) {
-            System.out.println(resultSet.getString(1) + ":" + resultSet.getString(2));
-        }
     }
 
 }
