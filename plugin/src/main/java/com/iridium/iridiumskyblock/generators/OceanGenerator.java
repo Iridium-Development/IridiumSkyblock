@@ -2,8 +2,10 @@ package com.iridium.iridiumskyblock.generators;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
+import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
@@ -61,14 +63,62 @@ public class OceanGenerator extends ChunkGenerator {
                 );
 
                 // Generate water or lava on top of the floor
+                XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
                 for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
-                    XMaterial material = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
-                    chunkData.setBlock(x, y, z, Objects.requireNonNull(material.parseMaterial()));
+                    chunkData.setBlock(x, y, z, Objects.requireNonNull(oceanMaterial.parseMaterial()));
                 }
             }
         }
 
         return chunkData;
+    }
+
+    public void generateWater(World world, int x, int z) {
+        SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
+        generator.setScale(0.005D);
+
+        XMaterial bottomMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorBottomMaterial;
+        XMaterial topMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorTopMaterial;
+        int waterHeight = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.waterHeight;
+        int maxOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.maxOceanFloorLevel;
+        int minOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.minOceanFloorLevel;
+
+        int currentFloorHeight = (int) ((generator.noise(x, z, 1.5D, 0.5D, true) + 1) * (maxOceanFloorLevel - minOceanFloorLevel) + minOceanFloorLevel);
+
+        // Generate layer of bedrock
+        if (world.getBlockAt(x, 0, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
+            world.getBlockAt(x, 0, z).setType(Material.BEDROCK, false);
+        }
+
+        // Generate gravel layer
+        for (int y = 1; y < currentFloorHeight; y++) {
+            Block block = world.getBlockAt(x, y, z);
+            if (block.getType() != bottomMaterial.parseMaterial() && bottomMaterial.parseMaterial() != null) {
+                block.setType(bottomMaterial.parseMaterial(), false);
+            }
+        }
+
+        // Generate sand on top of gravel
+        if (world.getBlockAt(x, currentFloorHeight, z).getType() != topMaterial.parseMaterial() && topMaterial.parseMaterial() != null) {
+            world.getBlockAt(x, currentFloorHeight, z).setType(topMaterial.parseMaterial(), false);
+        }
+
+        // Generate water or lava on top of the floor
+        XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
+        for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
+            Block block = world.getBlockAt(x, y, z);
+            if (block.getType() != oceanMaterial.parseMaterial() && oceanMaterial.parseMaterial() != null) {
+                block.setType(oceanMaterial.parseMaterial(), false);
+            }
+        }
+
+        // Replace everything else with air
+        for (int y = waterHeight + 1; y < world.getMaxHeight(); y++) {
+            Block block = world.getBlockAt(x, y, z);
+            if (block.getType() != Material.AIR) {
+                block.setType(Material.AIR, false);
+            }
+        }
     }
 
     /**
