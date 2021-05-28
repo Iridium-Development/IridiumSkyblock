@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.cryptomorin.xseries.XSound;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
 import com.iridium.iridiumskyblock.shop.ShopItem;

@@ -9,7 +9,6 @@ import com.iridium.iridiumskyblock.shop.ShopItem;
 import com.iridium.iridiumskyblock.shop.ShopItem.BuyCost;
 import com.iridium.iridiumskyblock.shop.ShopItem.SellReward;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
