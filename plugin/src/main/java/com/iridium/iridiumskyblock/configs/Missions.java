@@ -261,6 +261,191 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
+            .put("killMobs", new Mission(new Item(XMaterial.DIAMOND_SWORD, 1, "&b&lHunter",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Kill 10 Zombies: %progress_1%/10",
+                            "&b&l* &7Kill 10 Skeletons: %progress_2%/10",
+                            "&b&l* &7Kill 10 Creepers: %progress_3%/10",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lHunter Reward",
+                    Arrays.asList(
+                            "&b&l Rewards",
+                            "&b&l* &73 Island Crystals"
+                    )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Hunter mission Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
+            .put("wheat", new Mission(new Item(XMaterial.WHEAT, 1, "&b&lWheat Farmer",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Grow 64 Wheat: %progress_1%/64",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )), Collections.singletonList("GROW:WHEAT:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lWheat Farmer Reward",
+                    Arrays.asList(
+                            "&b&l Rewards",
+                            "&b&l* &73 Island Crystals"
+                    )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Wheat Farmer mission Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
+            .put("carrots", new Mission(new Item(XMaterial.CARROT, 1, "&b&lCarrot Farmer",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Grow 64 Carrots: %progress_1%/64",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )), Collections.singletonList("GROW:CARROTS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCarrot Farmer Reward",
+                    Arrays.asList(
+                            "&b&l Rewards",
+                            "&b&l* &73 Island Crystals"
+                    )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Carrot Farmer mission Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
+            .put("melon", new Mission(new Item(XMaterial.MELON_SLICE, 1, "&b&lMelon Farmer",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Grow 64 Melons: %progress_1%/64",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )), Collections.singletonList("GROW:MELONS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMelon Farmer Reward",
+                    Arrays.asList(
+                            "&b&l Rewards",
+                            "&b&l* &73 Island Crystals"
+                    )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Melon Farmer mission Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
+            .put("sugarcane", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lSugar Cane Farmer",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Grow 64 Sugar Cane: %progress_1%/64",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )), Collections.singletonList("GROW:SUGAR_CANE:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lSugar Cane Farmer Reward",
+                    Arrays.asList(
+                            "&b&l Rewards",
+                            "&b&l* &73 Island Crystals"
+                    )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Sugar Cane Farmer mission Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
+            .put("cactus", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lCactus Farmer",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Grow 64 Cactus: %progress_1%/64",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )), Collections.singletonList("GROW:CACTUS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCactus Farmer Reward",
+                    Arrays.asList(
+                            "&b&l Rewards",
+                            "&b&l* &73 Island Crystals"
+                    )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Cactus Farmer mission Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
+            .put("iron", new Mission(new Item(XMaterial.IRON_ORE, 1, "&b&lMine & Smelt Iron",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Fine and mine 32 Iron Ores: %progress_1%/32",
+                            "&b&l* &7Smelt 32 Iron Ingots: %progress_2%/32",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )
+            ), Arrays.asList("MINE:IRON_ORE:5", "SMELT:IRON_ORE:32"), Mission.MissionType.ONCE,
+                    new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
+                            Arrays.asList(
+                                    "&b&l Rewards",
+                                    "&b&l* &73 Island Crystals",
+                                    "&b&l* &7$1000"
+                            )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Mining and smelting Iron Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
+            .put("diamonds", new Mission(new Item(XMaterial.DIAMOND_ORE, 1, "&b&lMine Diamonds",
+                    Arrays.asList(
+                            "&7Complete Island Missions to gain rewards",
+                            "&7Which can be used to purchase Island Upgrades",
+                            "",
+                            "&b&lObjectives:",
+                            "&b&l* &7Fine and mine 5 diamond ore: %progress_1%/5",
+                            "",
+                            "&b&lRewards",
+                            "&b&l* &72 Island Crystals",
+                            "&b&l* &7$1000"
+                    )
+            ), Collections.singletonList("MINE:DIAMOND_ORE:5"), Mission.MissionType.ONCE,
+                    new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
+                            Arrays.asList(
+                                    "&b&l Rewards",
+                                    "&b&l* &73 Island Crystals",
+                                    "&b&l* &7$1000"
+                            )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
+                    "%prefix% &7Mining Diamonds Completed!",
+                    "&b&l* &7+5 Island Experience",
+                    "&b&l* &7+3 Island Crystals",
+                    "&7/is rewards to redeem rewards"
+            )))
+
             .build();
 
     public List<Integer> dailySlots = Arrays.asList(10, 12, 14, 16);
