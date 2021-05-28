@@ -442,7 +442,15 @@ public class IridiumSkyblock extends JavaPlugin {
         if (!schematicFolder.exists()) {
             schematicFolder.mkdir();
         }
-        saveFile(schematicFolder, "island.iridiumschem");
+        saveFile(schematicFolder, "desert.iridiumschem");
+        saveFile(schematicFolder, "mushroom.iridiumschem");
+        saveFile(schematicFolder, "jungle.iridiumschem");
+        saveFile(schematicFolder, "desert_nether.iridiumschem");
+        saveFile(schematicFolder, "mushroom_nether.iridiumschem");
+        saveFile(schematicFolder, "jungle_nether.iridiumschem");
+        saveFile(schematicFolder, "desert_end.iridiumschem");
+        saveFile(schematicFolder, "mushroom_end.iridiumschem");
+        saveFile(schematicFolder, "jungle_end.iridiumschem");
     }
 
     private void saveFile(File parent, String name) {

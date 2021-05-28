@@ -201,7 +201,9 @@ public class IslandManager {
         deleteIslandBlocks(island, getEndWorld(), 0).join();
         pasteSchematic(island, schematicConfig).thenRun(() -> {
 
-            island.setHome(island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome));
+            Location islandHome = island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
+            islandHome.setYaw(schematicConfig.yawHome);
+            island.setHome(islandHome);
 
             getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entities -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                         for (Entity entity : entities) {
