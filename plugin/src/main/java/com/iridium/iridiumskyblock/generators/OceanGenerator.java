@@ -84,52 +84,75 @@ public class OceanGenerator extends ChunkGenerator {
         int currentFloorHeight = (int) ((generator.noise(x, z, 1.5D, 0.5D, true) + 1) * (maxOceanFloorLevel - minOceanFloorLevel) + minOceanFloorLevel);
 
         // Generate layer of bedrock
-        IridiumSkyblock.getInstance().getNms().setBlockFast(
-            world,
-            x,
-            0,
-            z,
-            XMaterial.BEDROCK.getId(),
-            XMaterial.BEDROCK.getData(),
-            false
-        );
-
-        // Generate gravel layer
-        for (int y = 1; y < currentFloorHeight; y++) {
+        if (world.getBlockAt(x, 0, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
             IridiumSkyblock.getInstance().getNms().setBlockFast(
                 world,
                 x,
-                y,
+                0,
                 z,
-                bottomMaterial.getId(),
-                bottomMaterial.getData(),
+                XMaterial.BEDROCK.getId(),
+                XMaterial.BEDROCK.getData(),
                 false
             );
         }
 
+        // Generate gravel layer
+        for (int y = 1; y < currentFloorHeight; y++) {
+            if (world.getBlockAt(x, y, z).getType() != bottomMaterial.parseMaterial()) {
+                IridiumSkyblock.getInstance().getNms().setBlockFast(
+                    world,
+                    x,
+                    y,
+                    z,
+                    bottomMaterial.getId(),
+                    bottomMaterial.getData(),
+                    false
+                );
+            }
+        }
+
         // Generate sand on top of gravel
-        IridiumSkyblock.getInstance().getNms().setBlockFast(
-            world,
-            x,
-            currentFloorHeight,
-            z,
-            topMaterial.getId(),
-            topMaterial.getData(),
-            false
-        );
+        if (world.getBlockAt(x, currentFloorHeight, z).getType() != topMaterial.parseMaterial()) {
+            IridiumSkyblock.getInstance().getNms().setBlockFast(
+                world,
+                x,
+                currentFloorHeight,
+                z,
+                topMaterial.getId(),
+                topMaterial.getData(),
+                false
+            );
+        }
 
         // Generate water or lava on top of the floor
         XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
         for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
-            IridiumSkyblock.getInstance().getNms().setBlockFast(
-                world,
-                x,
-                y,
-                z,
-                oceanMaterial.getId(),
-                oceanMaterial.getData(),
-                false
-            );
+            if (world.getBlockAt(x, y, z).getType() != oceanMaterial.parseMaterial()) {
+                IridiumSkyblock.getInstance().getNms().setBlockFast(
+                    world,
+                    x,
+                    y,
+                    z,
+                    oceanMaterial.getId(),
+                    oceanMaterial.getData(),
+                    false
+                );
+            }
+        }
+
+        // Replace everything else with air
+        for (int y = waterHeight + 1; y < world.getMaxHeight(); y++) {
+            if (world.getBlockAt(x, y, z).getType() != XMaterial.AIR.parseMaterial()) {
+                IridiumSkyblock.getInstance().getNms().setBlockFast(
+                    world,
+                    x,
+                    y,
+                    z,
+                    XMaterial.AIR.getId(),
+                    XMaterial.AIR.getData(),
+                    true
+                );
+            }
         }
     }
 
