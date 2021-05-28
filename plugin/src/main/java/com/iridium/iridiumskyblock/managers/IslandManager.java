@@ -20,7 +20,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.block.TileState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -461,11 +460,7 @@ public class IslandManager {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
                 Block block = world.getBlockAt(x, y, z);
                 if (block.getType() != Material.AIR) {
-                    if (block.getState() instanceof TileState) {
-                        block.setType(Material.AIR, false);
-                    } else {
-                        IridiumSkyblock.getInstance().getNms().setBlockFast(world, x, y, z, 0, (byte) 0, false);
-                    }
+                    block.setType(Material.AIR, false);
                 }
             }
         }
