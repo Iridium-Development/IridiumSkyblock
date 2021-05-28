@@ -18,7 +18,10 @@ public class SpawnerSpawnListener implements Listener {
         if (island.isPresent()) {
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "spawner");
             if (islandBooster.isActive()) {
-                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> event.getSpawner().setDelay(event.getSpawner().getDelay() / 2));
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    event.getSpawner().setDelay(event.getSpawner().getDelay() / 2);
+                    event.getSpawner().update();
+                });
             }
         }
     }
