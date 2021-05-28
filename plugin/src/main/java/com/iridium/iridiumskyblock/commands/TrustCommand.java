@@ -74,14 +74,14 @@ public class TrustCommand extends Command {
                                 IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerDoesntExist.replace("%prefix%",
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%",
                             IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
                 player.openInventory(new TrustedGUI(island.get()).getInventory());
             }
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

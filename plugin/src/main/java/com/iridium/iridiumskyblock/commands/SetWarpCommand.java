@@ -66,7 +66,7 @@ public class SetWarpCommand extends Command {
                                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                             );
                         } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().isNotSafe.replace("%prefix%",
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notSafe.replace("%prefix%",
                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                     } else {
@@ -79,7 +79,7 @@ public class SetWarpCommand extends Command {
                 }
             }
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
 
     }
