@@ -212,6 +212,14 @@ public class IslandManager {
             deleteIslandBlocks(island, getEndWorld(), 0).join();
         }
 
+        getIslandMembers(island).forEach(u -> {
+            Player player = Bukkit.getPlayer(u.getUuid());
+            if (player != null) {
+                if (IridiumSkyblock.getInstance().getConfiguration().clearInventories) player.getInventory().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChests) player.getEnderChest().clear();
+            }
+        });
+
         pasteSchematic(island, schematicConfig).thenRun(() -> {
 
             Location islandHome = island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
@@ -451,8 +459,7 @@ public class IslandManager {
      * @param completableFuture The completable future to be completed when task is finished
      * @param delay             The delay in ticks between each layer
      */
-    private void deleteIslandBlocks(
-            @NotNull Island island, @NotNull World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    private void deleteIslandBlocks(@NotNull Island island, @NotNull World world, int y, CompletableFuture<Void> completableFuture, int delay) {
         Location pos1 = island.getPos1(world);
         Location pos2 = island.getPos2(world);
 
@@ -488,12 +495,14 @@ public class IslandManager {
         Bukkit.getPluginManager().callEvent(islandDeleteEvent);
         if (islandDeleteEvent.isCancelled()) return;
 
-        deleteIslandBlocks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld(), 3);
+        deleteIslandBlocks(island, getWorld(), 3);
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island));
-        IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).forEach(u -> {
+        getIslandMembers(island).forEach(u -> {
             Player player = Bukkit.getPlayer(u.getUuid());
             if (player != null) {
+                if (IridiumSkyblock.getInstance().getConfiguration().clearInventories) player.getInventory().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChests) player.getEnderChest().clear();
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         });
