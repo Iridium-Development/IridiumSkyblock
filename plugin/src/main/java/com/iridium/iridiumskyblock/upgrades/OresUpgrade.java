@@ -41,30 +41,31 @@ public class OresUpgrade extends UpgradeData {
 
     @JsonIgnore
     private void initialize() {
-        int arraySize = 0;
+        int oreFrequencySum = 0;
         for (Map.Entry<XMaterial, Integer> entries : ores.entrySet()) {
-            arraySize += entries.getValue();
+            oreFrequencySum += entries.getValue();
         }
-        this.oresArray = new Material[arraySize];
+        this.oresArray = new Material[oreFrequencySum];
         int index = 0;
         for (Map.Entry<XMaterial, Integer> entries : ores.entrySet()) {
-            Material m = entries.getKey().parseMaterial();
+            Material material = entries.getKey().parseMaterial();
             for (int i = 0; i < entries.getValue(); i++) {
-                this.oresArray[index++] = m;
+                this.oresArray[index++] = material;
             }
         }
 
-        int arraySizeNether = 0;
+        int netherOreFrequencySum = 0;
         for (Map.Entry<XMaterial, Integer> entries : netherOres.entrySet()) {
-            arraySizeNether += entries.getValue();
+            netherOreFrequencySum += entries.getValue();
         }
-        this.netherOresArray = new Material[arraySizeNether];
+        this.netherOresArray = new Material[netherOreFrequencySum];
         int indexNether = 0;
         for (Map.Entry<XMaterial, Integer> entries : netherOres.entrySet()) {
-            Material m = entries.getKey().parseMaterial();
+            Material material = entries.getKey().parseMaterial();
             for (int i = 0; i < entries.getValue(); i++) {
-                this.netherOresArray[indexNether++] = m;
+                this.netherOresArray[indexNether++] = material;
             }
         }
+        initialized = true;
     }
 }

@@ -72,8 +72,8 @@ public class MissionsGUI implements GUI {
                     IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, entry.getValue(), entry.getKey(), j);
                     placeholders.add(new Placeholder("progress_" + j, String.valueOf(islandMission.getProgress())));
                 }
-                Integer slot = IridiumSkyblock.getInstance().getMissions().dailySlots.get(i);
-                if (slot != null) {
+                if (IridiumSkyblock.getInstance().getMissions().dailySlots.size() > i) {
+                    Integer slot = IridiumSkyblock.getInstance().getMissions().dailySlots.get(i);
                     inventory.setItem(slot, ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
                 }
                 i++;
