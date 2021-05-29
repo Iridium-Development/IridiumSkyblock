@@ -90,6 +90,7 @@ public class UpgradesGUI implements GUI {
             if (event.getSlot() == upgrade.getValue().item.slot) {
                 String command = IridiumSkyblock.getInstance().getCommands().upgradesCommand.aliases.get(0);
                 Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + upgrade.getKey());
+                addContent(event.getInventory());
             }
         }
     }
