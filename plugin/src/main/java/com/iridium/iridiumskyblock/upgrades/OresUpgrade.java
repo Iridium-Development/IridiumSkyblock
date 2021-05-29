@@ -14,17 +14,18 @@ public class OresUpgrade extends UpgradeData {
     private Map<XMaterial, Integer> ores;
     @JsonSerialize
     private Map<XMaterial, Integer> netherOres;
+    @JsonIgnore
+    private Material[] oresArray;
+    @JsonIgnore
+    private Material[] netherOresArray;
+    @JsonIgnore
+    private boolean initialized = false;
 
     public OresUpgrade(int money, int crystals, Map<XMaterial, Integer> ores, Map<XMaterial, Integer> netherOres) {
         super(money, crystals);
         this.ores = ores;
         this.netherOres = netherOres;
     }
-
-    @JsonIgnore
-    private Material[] oresArray;
-    @JsonIgnore
-    private Material[] netherOresArray;
 
     @JsonIgnore
     public Material[] getOres() {
@@ -37,9 +38,6 @@ public class OresUpgrade extends UpgradeData {
         if (!initialized) initialize();
         return netherOresArray;
     }
-
-    @JsonIgnore
-    private boolean initialized = false;
 
     @JsonIgnore
     private void initialize() {
