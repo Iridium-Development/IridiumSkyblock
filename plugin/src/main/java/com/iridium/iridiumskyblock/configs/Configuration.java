@@ -27,6 +27,8 @@ public class Configuration {
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
     public boolean displayNumberAbbreviations = true;
+    public boolean netherIslands = true;
+    public boolean endIslands = true;
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
