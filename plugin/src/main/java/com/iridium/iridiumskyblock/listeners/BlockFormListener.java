@@ -11,9 +11,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
 
-import java.util.*;
+import java.util.Optional;
+import java.util.Random;
 
 public class BlockFormListener implements Listener {
+
+    private Random random = new Random();
 
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
@@ -24,17 +27,8 @@ public class BlockFormListener implements Listener {
             if (island.isPresent()) {
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "generator");
                 OresUpgrade oresUpgrade = IridiumSkyblock.getInstance().getUpgrades().oresUpgrade.upgrades.get(islandUpgrade.getLevel());
-                Map<XMaterial, Integer> ores = newMaterial.equals(XMaterial.BASALT) ? oresUpgrade.netherOres : oresUpgrade.ores;
-                List<XMaterial> materials = new ArrayList<>();
-                Random random = new Random();
-
-                for (Map.Entry<XMaterial, Integer> entries : ores.entrySet()) {
-                    for (int i = 0; i < entries.getValue(); i++) {
-                        materials.add(entries.getKey());
-                    }
-                }
-
-                Material material = materials.get(random.nextInt(materials.size())).parseMaterial();
+                Material[] ores = newMaterial.equals(XMaterial.BASALT) ? oresUpgrade.getNetherOres() : oresUpgrade.getOres();
+                Material material = ores[random.nextInt(ores.length)];
                 if (material != null) event.getNewState().setType(material);
             }
         }
