@@ -115,6 +115,8 @@ public class Messages {
     public String flightDisabled = "%prefix% &7Island flight disabled.";
     public String bankWithdrew = "%prefix% &7You successfully withdrew %amount% %type% from your island bank.";
     public String bankDeposited = "%prefix% &7You successfully deposited %amount% %type% from your island bank.";
+    public String insufficientFundsToWithdrew = "%prefix% &7You do not have enough %type% to withdraw from your island bank.";
+    public String insufficientFundsToDeposit = "%prefix% &7You do not have enough %type% to deposit into your island bank.";
     public String cannotManageWarps = "%prefix% &7You cannot manage warps on this island.";
     public String cannotWithdraw = "%prefix% &7You cannot withdraw from the island bank.";
     public String cannotManageTrusts = "%prefix% &7You cannot manage Island Trusts.";
