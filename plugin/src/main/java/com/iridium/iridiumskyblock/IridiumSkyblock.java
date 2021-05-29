@@ -131,7 +131,7 @@ public class IridiumSkyblock extends JavaPlugin {
             return;
         }
 
-        this.multiversion = setupMultiversion();
+        this.multiversion = setupMultiVersion();
 
         if (!PaperLib.isSpigot()) {
             // isSpigot returns true if the server is using spigot or a fork
@@ -365,7 +365,7 @@ public class IridiumSkyblock extends JavaPlugin {
      *
      * @return The correct Multiversion Version
      */
-    private MultiVersion setupMultiversion() {
+    private @Nullable MultiVersion setupMultiVersion() {
         String version = Bukkit.getServer().getClass().getPackage().getName().toUpperCase().split("\\.")[3];
         try {
             return (MultiVersion) Class.forName("com.iridium.iridiumskyblock.multiversion." + version).newInstance();
