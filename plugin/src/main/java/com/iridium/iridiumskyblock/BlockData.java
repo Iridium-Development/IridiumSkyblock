@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class BlockData {
 
-    private Material material;
+    private XMaterial material;
     private byte data;
     private List<String> inventory;
 
@@ -31,7 +32,7 @@ public class BlockData {
      * @param block The block whose data should be represented by this class
      */
     public BlockData(Block block) {
-        this.material = block.getType();
+        this.material = XMaterial.matchXMaterial(block.getType());
         this.data = block.getData();
 
         if (block.getState() instanceof Container) {
@@ -47,14 +48,17 @@ public class BlockData {
      */
     public void setBlock(Block block) {
         BlockState blockState = block.getState();
-        blockState.setType(material);
-        blockState.setRawData(data);
-        blockState.update(true, true);
+        Material mat = material.parseMaterial();
+        if (mat != null) {
+            blockState.setType(mat);
+            blockState.setRawData(data);
+            blockState.update(true, true);
 
-        // We gotta create a new BlockState because the old one is still air and wont be instance of container
-        if (block.getState() instanceof Container && inventory != null) {
-            Container container = (Container) block.getState();
-            container.getInventory().setContents(inventory.stream().map(item -> item != null ? ItemStackUtils.deserialize(item) : null).toArray(ItemStack[]::new));
+            // We gotta create a new BlockState because the old one is still air and wont be instance of container
+            if (block.getState() instanceof Container && inventory != null) {
+                Container container = (Container) block.getState();
+                container.getInventory().setContents(inventory.stream().map(item -> item != null ? ItemStackUtils.deserialize(item) : null).toArray(ItemStack[]::new));
+            }
         }
     }
 
