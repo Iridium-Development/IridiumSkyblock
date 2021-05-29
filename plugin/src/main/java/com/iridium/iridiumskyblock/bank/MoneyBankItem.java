@@ -50,6 +50,11 @@ public class MoneyBankItem extends BankItem {
                         .replace("%amount%", String.valueOf(money))
                         .replace("%type%", "Money")
                 );
+            } else {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%type%", "Money")
+                );
             }
             return money;
         } else {
@@ -78,6 +83,11 @@ public class MoneyBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(money))
+                        .replace("%type%", "Money")
+                );
+            }else{
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", "Money")
                 );
             }
