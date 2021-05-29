@@ -13,6 +13,7 @@ import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.nms.NMS;
+import com.iridium.iridiumskyblock.multiversion.MinecraftVersion;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.shop.ShopManager;
@@ -50,7 +51,7 @@ public class IridiumSkyblock extends JavaPlugin {
 
     private Persist persist;
     private NMS nms;
-    private MultiVersion multiversion;
+    private MultiVersion multiVersion;
 
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
@@ -125,17 +126,11 @@ public class IridiumSkyblock extends JavaPlugin {
         // Convert old IridiumSkyblock data
         DataConverter.run(this);
 
-        this.nms = setupNMS();
-        if (this.nms == null) {
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        this.multiversion = setupMultiversion();
+        setupMultiVersion();
 
         if (!PaperLib.isSpigot()) {
             // isSpigot returns true if the server is using spigot or a fork
-            getLogger().warning("CraftBukkit isnt supported, please use spigot or one of its forks");
+            getLogger().warning("CraftBukkit isn't supported, please use spigot or one of its forks");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
@@ -344,37 +339,19 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
-     * Automatically gets the correct NMS version from minecraft version
-     *
-     * @return The correct NMS Version
+     * Automatically gets the correct {@link MultiVersion} and {@link NMS} support from the Minecraft server version.
      */
-    private NMS setupNMS() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().toUpperCase().split("\\.")[3];
-        try {
-            return (NMS) Class.forName("com.iridium.iridiumskyblock.nms." + version).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+    private void setupMultiVersion() {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        MinecraftVersion minecraftVersion = MinecraftVersion.byName(version);
+        if (minecraftVersion == null) {
             getLogger().warning("Un-Supported Minecraft Version: " + version);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
         }
-        return null;
-    }
 
-    /**
-     * Automatically gets the correct Multiversion version from minecraft version
-     *
-     * @return The correct Multiversion Version
-     */
-    private MultiVersion setupMultiversion() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().toUpperCase().split("\\.")[3];
-        try {
-            return (MultiVersion) Class.forName("com.iridium.iridiumskyblock.multiversion." + version).newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            getLogger().warning("Un-Supported Minecraft Version: " + version);
-        }
-        return null;
+        this.nms = minecraftVersion.getNms();
+        this.multiVersion = minecraftVersion.getMultiVersion();
     }
 
     /**

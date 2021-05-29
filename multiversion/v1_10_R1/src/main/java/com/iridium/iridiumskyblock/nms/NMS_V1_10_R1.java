@@ -1,12 +1,12 @@
 package com.iridium.iridiumskyblock.nms;
 
 import com.iridium.iridiumskyblock.Color;
-import net.minecraft.server.v1_16_R1.*;
+import net.minecraft.server.v1_10_R1.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_16_R1.CraftChunk;
-import org.bukkit.craftbukkit.v1_16_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_10_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Interface for working with the net.minecraft.server package.
  * Version-specific, so it has to be implemented for every version we support.
- * This is the implementation for V1_16_R1.
+ * This is the implementation for V1_10_R1.
  */
-public class V1_16_R1 implements NMS {
+public class NMS_V1_10_R1 implements NMS {
 
     /**
      * Sets blocks faster than with Spigots implementation.
@@ -39,12 +39,11 @@ public class V1_16_R1 implements NMS {
 
         ChunkSection chunkSection = nmsChunk.getSections()[y >> 4];
         if (chunkSection == null) {
-            chunkSection = new ChunkSection(y >> 4 << 4);
+            chunkSection = new ChunkSection(y >> 4 << 4, true);
             nmsChunk.getSections()[y >> 4] = chunkSection;
         }
 
         chunkSection.setType(x & 15, y & 15, z & 15, ibd);
-        nmsChunk.getWorld().getChunkProvider().getLightEngine().a(new BlockPosition(x, y, z));
     }
 
     /**
@@ -56,7 +55,7 @@ public class V1_16_R1 implements NMS {
      */
     @Override
     public void sendChunk(List<Player> players, org.bukkit.Chunk chunk) {
-        PacketPlayOutMapChunk packetPlayOutMapChunk = new PacketPlayOutMapChunk(((CraftChunk) chunk).getHandle(), 65535, true);
+        PacketPlayOutMapChunk packetPlayOutMapChunk = new PacketPlayOutMapChunk(((CraftChunk) chunk).getHandle(), 65535);
         players.forEach(player ->
                 ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packetPlayOutMapChunk)
         );
@@ -91,6 +90,7 @@ public class V1_16_R1 implements NMS {
         } else if (color == Color.GREEN) {
             worldBorder.transitionSizeBetween(size - 0.1D, size, 20000000L);
         }
+
         ((CraftPlayer) player).getHandle().playerConnection.sendPacket(new PacketPlayOutWorldBorder(worldBorder, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE));
     }
 

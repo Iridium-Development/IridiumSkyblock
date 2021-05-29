@@ -16,7 +16,7 @@ import java.util.List;
  * Version-specific, so it has to be implemented for every version we support.
  * This is the implementation for V1_9_R1.
  */
-public class V1_9_R1 implements NMS {
+public class NMS_V1_9_R1 implements NMS {
 
     /**
      * Sets blocks faster than with Spigots implementation.
