@@ -215,8 +215,8 @@ public class IslandManager {
         getIslandMembers(island).forEach(u -> {
             Player player = Bukkit.getPlayer(u.getUuid());
             if (player != null) {
-                if (IridiumSkyblock.getInstance().getConfiguration().clearInventories) player.getInventory().clear();
-                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChests) player.getEnderChest().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) player.getInventory().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) player.getEnderChest().clear();
             }
         });
 
@@ -501,8 +501,8 @@ public class IslandManager {
         getIslandMembers(island).forEach(u -> {
             Player player = Bukkit.getPlayer(u.getUuid());
             if (player != null) {
-                if (IridiumSkyblock.getInstance().getConfiguration().clearInventories) player.getInventory().clear();
-                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChests) player.getEnderChest().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) player.getInventory().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) player.getEnderChest().clear();
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         });

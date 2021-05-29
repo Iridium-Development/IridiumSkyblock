@@ -24,8 +24,8 @@ public class Configuration {
     public String millionAbbreviation = "M";
     public String billionAbbreviation = "B";
 
-    public boolean clearInventories = true;
-    public boolean clearEnderChests = false;
+    public boolean clearInventoryOnRegen = true;
+    public boolean clearEnderChestOnRegen = false;
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
     public boolean displayNumberAbbreviations = true;
