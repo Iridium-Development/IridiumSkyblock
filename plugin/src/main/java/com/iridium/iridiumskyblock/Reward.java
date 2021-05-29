@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.cryptomorin.xseries.XSound;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
 import lombok.AllArgsConstructor;
@@ -37,9 +38,18 @@ public class Reward {
      */
     public void claim(Player player, Island island) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+
         island.setExperience(island.getExperience() + islandExperience);
         commands.forEach(command -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName())));
         sound.play(player);
+
+        IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        IslandBank islandExperience = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().experienceBankItem);
+        IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        islandCrystals.setNumber(islandCrystals.getNumber() + crystals);
+        islandExperience.setNumber(islandExperience.getNumber() + experience);
+        islandMoney.setNumber(islandMoney.getNumber() + money);
+
         IslandLog islandLog = new IslandLog(island, LogAction.REWARD_REDEEMED, user, null, 0, ChatColor.stripColor(item.displayName));
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
     }
