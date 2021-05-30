@@ -1,12 +1,12 @@
 package com.iridium.iridiumskyblock.nms;
 
 import com.iridium.iridiumskyblock.Color;
-import net.minecraft.server.v1_10_R1.*;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_10_R1.CraftChunk;
-import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R3.CraftChunk;
+import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Interface for working with the net.minecraft.server package.
  * Version-specific, so it has to be implemented for every version we support.
- * This is the implementation for V1_10_R1.
+ * This is the implementation for V1_8_R3.
  */
-public class V1_10_R1 implements NMS {
+public class NMS_V1_8_R3 implements NMS {
 
     /**
      * Sets blocks faster than with Spigots implementation.
@@ -55,7 +55,7 @@ public class V1_10_R1 implements NMS {
      */
     @Override
     public void sendChunk(List<Player> players, org.bukkit.Chunk chunk) {
-        PacketPlayOutMapChunk packetPlayOutMapChunk = new PacketPlayOutMapChunk(((CraftChunk) chunk).getHandle(), 65535);
+        PacketPlayOutMapChunk packetPlayOutMapChunk = new PacketPlayOutMapChunk(((CraftChunk) chunk).getHandle(), true, 65535);
         players.forEach(player ->
                 ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packetPlayOutMapChunk)
         );

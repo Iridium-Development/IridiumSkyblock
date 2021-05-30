@@ -7,7 +7,7 @@ import org.bukkit.Material;
 /**
  * Interface for working with methods that were changed during an update by Spigot.
  */
-public class V1_8_R2 implements MultiVersion {
+public class MultiVersion_V1_9_R1 implements MultiVersion {
 
     /**
      * Returns the material at a position in a chunk.

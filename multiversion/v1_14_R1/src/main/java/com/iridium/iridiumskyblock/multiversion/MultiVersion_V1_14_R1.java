@@ -2,12 +2,17 @@ package com.iridium.iridiumskyblock.multiversion;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.ChunkSnapshot;
-import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftLegacy;
 
 /**
  * Interface for working with methods that were changed during an update by Spigot.
  */
-public class V1_9_R1 implements MultiVersion {
+public class MultiVersion_V1_14_R1 implements MultiVersion {
+
+    @SuppressWarnings("deprecation")
+    public MultiVersion_V1_14_R1(){
+        new CraftLegacy();
+    }
 
     /**
      * Returns the material at a position in a chunk.
@@ -19,9 +24,8 @@ public class V1_9_R1 implements MultiVersion {
      * @return The material at the provided position in the chunk
      */
     @Override
-    @SuppressWarnings("deprecation")
     public XMaterial getMaterialAtPosition(ChunkSnapshot chunk, int x, int y, int z) {
-        return XMaterial.matchXMaterial(Material.getMaterial(chunk.getBlockTypeId(x, y, z)));
+        return XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
     }
 
 }

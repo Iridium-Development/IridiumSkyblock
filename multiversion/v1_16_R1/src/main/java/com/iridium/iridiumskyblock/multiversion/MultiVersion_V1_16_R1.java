@@ -7,10 +7,10 @@ import org.bukkit.craftbukkit.v1_16_R1.legacy.CraftLegacy;
 /**
  * Interface for working with methods that were changed during an update by Spigot.
  */
-public class V1_16_R1 implements MultiVersion {
+public class MultiVersion_V1_16_R1 implements MultiVersion {
 
     @SuppressWarnings("deprecation")
-    public V1_16_R1(){
+    public MultiVersion_V1_16_R1(){
         CraftLegacy.init();
     }
 
