@@ -1,12 +1,12 @@
 package com.iridium.iridiumskyblock.nms;
 
 import com.iridium.iridiumskyblock.Color;
-import net.minecraft.server.v1_16_R2.*;
+import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_16_R2.CraftChunk;
-import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -14,9 +14,9 @@ import java.util.List;
 /**
  * Interface for working with the net.minecraft.server package.
  * Version-specific, so it has to be implemented for every version we support.
- * This is the implementation for v1_16_R2.
+ * This is the implementation for V1_15_R1.
  */
-public class V1_16_R2 implements NMS {
+public class NMS_V1_15_R1 implements NMS {
 
     /**
      * Sets blocks faster than with Spigots implementation.

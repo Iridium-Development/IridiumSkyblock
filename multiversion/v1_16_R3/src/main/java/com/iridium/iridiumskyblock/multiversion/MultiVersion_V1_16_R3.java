@@ -2,15 +2,12 @@ package com.iridium.iridiumskyblock.multiversion;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.ChunkSnapshot;
-import org.bukkit.craftbukkit.v1_16_R2.legacy.CraftLegacy;
+import org.bukkit.craftbukkit.v1_16_R3.legacy.CraftLegacy;
 
-/**
- * Interface for working with methods that were changed during an update by Spigot.
- */
-public class V1_16_R2 implements MultiVersion {
+public class MultiVersion_V1_16_R3 implements MultiVersion {
 
     @SuppressWarnings("deprecation")
-    public V1_16_R2(){
+    public MultiVersion_V1_16_R3(){
         CraftLegacy.init();
     }
 

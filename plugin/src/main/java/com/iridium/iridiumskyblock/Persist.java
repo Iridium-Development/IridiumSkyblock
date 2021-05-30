@@ -204,6 +204,7 @@ public class Persist {
         try {
             return objectMapper.readValue(content, clazz);
         } catch (IOException e) {
+            e.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(javaPlugin);
         }
 
