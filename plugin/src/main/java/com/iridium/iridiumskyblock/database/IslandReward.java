@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumcore.Persist;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Persist;
 import com.iridium.iridiumskyblock.Reward;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;

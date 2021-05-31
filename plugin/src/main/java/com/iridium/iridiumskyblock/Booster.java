@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

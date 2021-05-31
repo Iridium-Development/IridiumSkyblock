@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.upgrades.OresUpgrade;
 import com.iridium.iridiumskyblock.upgrades.SizeUpgrade;

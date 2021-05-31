@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
-import com.iridium.iridiumskyblock.Background;
-import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumcore.Background;
+import com.iridium.iridiumcore.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

@@ -1,10 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.XSound;
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumskyblock.Background;
-import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumcore.Background;
+import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumskyblock.shop.ShopItem;
 import com.iridium.iridiumskyblock.shop.ShopItem.BuyCost;
 import com.iridium.iridiumskyblock.shop.ShopItem.SellReward;

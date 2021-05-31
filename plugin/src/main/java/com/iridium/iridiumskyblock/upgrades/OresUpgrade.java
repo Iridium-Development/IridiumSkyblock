@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.upgrades;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;

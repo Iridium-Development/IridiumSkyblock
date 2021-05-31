@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.bank;
 
-import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumcore.Item;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
 

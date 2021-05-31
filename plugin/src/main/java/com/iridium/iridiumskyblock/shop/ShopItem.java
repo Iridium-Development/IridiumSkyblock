@@ -1,11 +1,12 @@
 package com.iridium.iridiumskyblock.shop;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Collections;
-import java.util.List;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents an item in the shop.

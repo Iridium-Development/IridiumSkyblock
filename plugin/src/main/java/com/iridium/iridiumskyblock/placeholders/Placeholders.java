@@ -1,13 +1,14 @@
 package com.iridium.iridiumskyblock.placeholders;
 
 import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.utils.NumberFormatter;
+import org.bukkit.entity.Player;
+
 import java.util.Map;
 import java.util.Optional;
-import org.bukkit.entity.Player;
 
 public class Placeholders {
 
