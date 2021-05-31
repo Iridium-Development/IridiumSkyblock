@@ -33,6 +33,7 @@ allprojects {
         // Dependencies that we want to shade in
         implementation("org.jetbrains:annotations:16.0.1")
         implementation("com.github.cryptomorin:XSeries:7.8.0")
+        implementation("com.iridium:IridiumCore:1.0.0")
 
         // Other dependencies that are not required or already available at runtime
         compileOnly("org.projectlombok:lombok:1.18.20")

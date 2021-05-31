@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.shop;
 
-import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumcore.Item;
 import lombok.AllArgsConstructor;
 
 import java.util.List;

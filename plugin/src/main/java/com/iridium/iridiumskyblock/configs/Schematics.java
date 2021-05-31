@@ -3,7 +3,7 @@ package com.iridium.iridiumskyblock.configs;
 import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumskyblock.Item;
+import com.iridium.iridiumcore.Item;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

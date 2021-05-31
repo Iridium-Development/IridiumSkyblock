@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumskyblock.IslandRank;
-import com.iridium.iridiumskyblock.Item;
 import com.iridium.iridiumskyblock.Permission;
 
 import java.util.Arrays;

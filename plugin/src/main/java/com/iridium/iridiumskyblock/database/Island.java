@@ -1,13 +1,13 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.iridium.iridiumskyblock.Color;
+import com.iridium.iridiumcore.Color;
+import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import com.iridium.iridiumskyblock.utils.NumberFormatter;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.AccessLevel;
