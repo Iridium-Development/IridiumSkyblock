@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.database;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.Color;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;

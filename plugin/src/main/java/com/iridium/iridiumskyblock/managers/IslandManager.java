@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;

@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
