@@ -19,6 +19,11 @@ import java.util.function.Supplier;
 
 public enum MinecraftVersion {
 
+    /**
+     * IntelliJ will recommend you to replace these with method reference.
+     * However, this would break the plugins on some machines running the HotSpot VM.
+     * Just leave this as it is and add new versions down below in the same way.
+     */
     V1_8_R2(() -> new NMS_V1_8_R2(), MultiVersion_V1_8_R2::new),
     V1_8_R3(() -> new NMS_V1_8_R3(), MultiVersion_V1_8_R3::new),
     V1_9_R1(() -> new NMS_V1_9_R1(), MultiVersion_V1_9_R1::new),
