@@ -1,22 +1,10 @@
 package com.iridium.iridiumskyblock.multiversion;
 
-import com.iridium.iridiumskyblock.nms.NMS;
-import com.iridium.iridiumskyblock.nms.NMS_V1_10_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_11_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_12_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_13_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_13_R2;
-import com.iridium.iridiumskyblock.nms.NMS_V1_14_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_15_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_16_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_16_R2;
-import com.iridium.iridiumskyblock.nms.NMS_V1_16_R3;
-import com.iridium.iridiumskyblock.nms.NMS_V1_8_R2;
-import com.iridium.iridiumskyblock.nms.NMS_V1_8_R3;
-import com.iridium.iridiumskyblock.nms.NMS_V1_9_R1;
-import com.iridium.iridiumskyblock.nms.NMS_V1_9_R2;
+import com.iridium.iridiumskyblock.nms.*;
+
 import java.util.function.Supplier;
 
+@SuppressWarnings("Convert2MethodRef")
 public enum MinecraftVersion {
 
     /**
