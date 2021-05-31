@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.utils.Placeholder;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;

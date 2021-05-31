@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.generators;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import org.bukkit.Material;
 import org.bukkit.World;

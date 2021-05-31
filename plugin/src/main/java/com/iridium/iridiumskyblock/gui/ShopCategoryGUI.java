@@ -1,13 +1,10 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumcore.utils.InventoryUtils;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
 import com.iridium.iridiumskyblock.shop.ShopItem;
-import com.iridium.iridiumskyblock.utils.InventoryUtils;
-import com.iridium.iridiumskyblock.utils.StringUtils;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -15,6 +12,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * GUI which shows all items in a {@link ShopCategory} and allows players to purchase them.

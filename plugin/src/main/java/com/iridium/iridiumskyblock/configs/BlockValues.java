@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.EntityType;

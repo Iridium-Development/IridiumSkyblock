@@ -1,36 +1,29 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.IridiumCore;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
-import com.iridium.iridiumskyblock.multiversion.MultiVersion;
-import com.iridium.iridiumskyblock.nms.NMS;
-import com.iridium.iridiumskyblock.multiversion.MinecraftVersion;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
-import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,13 +38,9 @@ import java.util.stream.Collectors;
  * and shutdown of the plugin.
  */
 @Getter
-public class IridiumSkyblock extends JavaPlugin {
+public class IridiumSkyblock extends IridiumCore {
 
     private static IridiumSkyblock instance;
-
-    private Persist persist;
-    private NMS nms;
-    private MultiVersion multiVersion;
 
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
@@ -106,13 +95,7 @@ public class IridiumSkyblock extends JavaPlugin {
      */
     @Override
     public void onLoad() {
-        // Create the data folder in order to make Jackson work
-        getDataFolder().mkdir();
-
-        // Initialize the configs
-        this.persist = new Persist(Persist.PersistType.YAML, this);
-        loadConfigs();
-        saveConfigs();
+        super.onLoad();
 
         // Initialize the ChunkGenerator
         this.chunkGenerator = configuration.generatorSettings.generatorType.getChunkGenerator();
@@ -125,15 +108,6 @@ public class IridiumSkyblock extends JavaPlugin {
     public void onEnable() {
         // Convert old IridiumSkyblock data
         DataConverter.run(this);
-
-        setupMultiVersion();
-
-        if (!PaperLib.isSpigot()) {
-            // isSpigot returns true if the server is using spigot or a fork
-            getLogger().warning("CraftBukkit isn't supported, please use spigot or one of its forks");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
 
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock");
@@ -163,10 +137,6 @@ public class IridiumSkyblock extends JavaPlugin {
 
         this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
 
-        // Save data regularly
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, this::saveData, 0, 20 * 60 * 5);
-
-        registerListeners();
 
         // Initialize Vault economy support
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
@@ -202,28 +172,16 @@ public class IridiumSkyblock extends JavaPlugin {
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
 
-        // Automatically update all inventories
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
-            if (inventoryHolder instanceof GUI) {
-                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
-            }
-        }), 0, 20);
-
         resetIslandMissions();
 
         new Metrics(this, 5825);
 
-        getLogger().info("----------------------------------------");
-        getLogger().info("");
-        getLogger().info(getDescription().getName() + " Enabled!");
-        getLogger().info("Version: " + getDescription().getVersion());
-        getLogger().info("");
-        getLogger().info("----------------------------------------");
         UpdateChecker.init(this, 62480)
                 .checkEveryXHours(24)
                 .setDownloadLink(62480)
                 .checkNow();
+
+        super.onEnable();
     }
 
     /**
@@ -260,22 +218,9 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
-     * Plugin shutdown logic.
-     */
-    @Override
-    public void onDisable() {
-        saveData();
-        Bukkit.getOnlinePlayers().forEach(HumanEntity::closeInventory);
-        getLogger().info("-------------------------------");
-        getLogger().info("");
-        getLogger().info(getDescription().getName() + " Disabled!");
-        getLogger().info("");
-        getLogger().info("-------------------------------");
-    }
-
-    /**
      * Registers the plugin's listeners.
      */
+    @Override
     public void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
@@ -308,6 +253,7 @@ public class IridiumSkyblock extends JavaPlugin {
     /**
      * Saves islands, users and other data to the database.
      */
+    @Override
     public void saveData() {
         getDatabaseManager().getUserTableManager().save();
         getDatabaseManager().getIslandTableManager().save();
@@ -340,40 +286,23 @@ public class IridiumSkyblock extends JavaPlugin {
     }
 
     /**
-     * Automatically gets the correct {@link MultiVersion} and {@link NMS} support from the Minecraft server version.
-     */
-    private void setupMultiVersion() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        MinecraftVersion minecraftVersion = MinecraftVersion.byName(version);
-        if (minecraftVersion == null) {
-            getLogger().warning("Un-Supported Minecraft Version: " + version);
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-
-        this.nms = minecraftVersion.getNms();
-        this.multiVersion = minecraftVersion.getMultiVersion();
-    }
-
-    /**
      * Loads the configurations required for this plugin.
-     *
-     * @see Persist
      */
+    @Override
     public void loadConfigs() {
-        this.configuration = persist.load(Configuration.class);
-        this.messages = persist.load(Messages.class);
-        this.sql = persist.load(SQL.class);
-        this.schematics = persist.load(Schematics.class);
-        this.inventories = persist.load(Inventories.class);
-        this.permissions = persist.load(Permissions.class);
-        this.blockValues = persist.load(BlockValues.class);
-        this.bankItems = persist.load(BankItems.class);
-        this.missions = persist.load(Missions.class);
-        this.upgrades = persist.load(Upgrades.class);
-        this.boosters = persist.load(Boosters.class);
-        this.commands = persist.load(Commands.class);
-        this.shop = persist.load(Shop.class);
+        this.configuration = getPersist().load(Configuration.class);
+        this.messages = getPersist().load(Messages.class);
+        this.sql = getPersist().load(SQL.class);
+        this.schematics = getPersist().load(Schematics.class);
+        this.inventories = getPersist().load(Inventories.class);
+        this.permissions = getPersist().load(Permissions.class);
+        this.blockValues = getPersist().load(BlockValues.class);
+        this.bankItems = getPersist().load(BankItems.class);
+        this.missions = getPersist().load(Missions.class);
+        this.upgrades = getPersist().load(Upgrades.class);
+        this.boosters = getPersist().load(Boosters.class);
+        this.commands = getPersist().load(Commands.class);
+        this.shop = getPersist().load(Shop.class);
 
         this.permissionList = new HashMap<>();
         this.permissionList.put("redstone", permissions.redstone);
@@ -460,23 +389,22 @@ public class IridiumSkyblock extends JavaPlugin {
 
     /**
      * Saves changes to the configuration files.
-     *
-     * @see Persist
      */
+    @Override
     public void saveConfigs() {
-        this.persist.save(configuration);
-        this.persist.save(messages);
-        this.persist.save(sql);
-        this.persist.save(schematics);
-        this.persist.save(inventories);
-        this.persist.save(permissions);
-        this.persist.save(blockValues);
-        this.persist.save(bankItems);
-        this.persist.save(missions);
-        this.persist.save(upgrades);
-        this.persist.save(boosters);
-        this.persist.save(commands);
-        this.persist.save(shop);
+        getPersist().save(configuration);
+        getPersist().save(messages);
+        getPersist().save(sql);
+        getPersist().save(schematics);
+        getPersist().save(inventories);
+        getPersist().save(permissions);
+        getPersist().save(blockValues);
+        getPersist().save(bankItems);
+        getPersist().save(missions);
+        getPersist().save(upgrades);
+        getPersist().save(boosters);
+        getPersist().save(commands);
+        getPersist().save(shop);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.upgrades;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.iridium.iridiumskyblock.utils.Placeholder;
+import com.iridium.iridiumcore.utils.Placeholder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

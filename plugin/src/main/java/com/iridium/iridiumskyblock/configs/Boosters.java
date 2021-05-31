@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.cryptomorin.xseries.XMaterial;
+import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Booster;
-import com.iridium.iridiumskyblock.Item;
 
 import java.util.Arrays;
 
