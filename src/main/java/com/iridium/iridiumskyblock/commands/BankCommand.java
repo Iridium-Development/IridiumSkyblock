@@ -42,7 +42,9 @@ public class BankCommand extends Command {
         if (args.length == 5) {
             if (args[1].equalsIgnoreCase("give")) {
                 Player player = Bukkit.getPlayer(args[2]);
-                if (player != null) {
+                if (!sender.hasPermission("iridiumskyblock.bank.give")) {
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                } else if (player != null) {
                     User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                     Optional<Island> island = user.getIsland();
                     if (island.isPresent()) {
@@ -104,7 +106,7 @@ public class BankCommand extends Command {
         if (args.length == 3) {
             return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList());
         }
-        if (args.length==4) {
+        if (args.length == 4) {
             return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).collect(Collectors.toList());
         }
         return Collections.emptyList();
