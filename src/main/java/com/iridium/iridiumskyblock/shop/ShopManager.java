@@ -9,6 +9,8 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.shop.ShopItem.BuyCost;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -167,6 +169,14 @@ public class ShopManager {
         IridiumSkyblock.getInstance().getShop().successSound.play(player);
     }
 
+    /**
+     * Called when a player successfully sells an item in the shop.
+     * Gives all rewards for that item to him.
+     *
+     * @param player The player who sold the item
+     * @param item The item that has been sold
+     * @param amount The amount of that item
+     */
     public void giveReward(Player player, ShopItem item, int amount) {
         double vaultReward = calculateCost(amount, item.defaultAmount, item.sellReward.vault);
         int crystalReward = (int) calculateCost(amount, item.defaultAmount, item.sellReward.crystals);
@@ -200,7 +210,20 @@ public class ShopManager {
      */
     public double calculateCost(int amount, int defaultAmount, double defaultPrice) {
         double costPerItem = defaultPrice / defaultAmount;
-        return Double.parseDouble(String.format("%.2f", costPerItem * amount));
+        return round(costPerItem * amount, 2);
+    }
+
+    /**
+     * Rounds a double with the specified amount of decimal places.
+     *
+     * @param value The value of the double that should be rounded
+     * @param places The amount of decimal places
+     * @return The rounded double
+     */
+    private double round(double value, int places) {
+        BigDecimal bigDecimal = BigDecimal.valueOf(value);
+        bigDecimal = bigDecimal.setScale(places, RoundingMode.HALF_UP);
+        return bigDecimal.doubleValue();
     }
 
 }
