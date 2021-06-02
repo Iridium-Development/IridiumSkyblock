@@ -208,7 +208,7 @@ public class ShopManager {
      * @param defaultPrice  The default price of the item
      * @return The price of the item in the given quantity
      */
-    public double calculateCost(int amount, int defaultAmount, double defaultPrice) {
+    private double calculateCost(int amount, int defaultAmount, double defaultPrice) {
         double costPerItem = defaultPrice / defaultAmount;
         return round(costPerItem * amount, 2);
     }
