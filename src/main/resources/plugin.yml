@@ -5,7 +5,11 @@ main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
 author: Peaches_MLG
 depend: [ Vault ]
-softdepend: [ "MVdWPlaceholderAPI","PlaceholderAPI" ]
+softdepend:
+- "MVdWPlaceholderAPI"
+- "PlaceholderAPI"
+- "Essentials"
+- "EssentialsSpawn"
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]
