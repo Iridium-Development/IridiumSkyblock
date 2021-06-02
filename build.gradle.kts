@@ -63,6 +63,8 @@ tasks {
         relocate("com.fasterxml.jackson", "com.iridium.iridiumskyblock.dependencies.fasterxml")
         relocate("com.j256.ormlite", "com.iridium.iridiumskyblock.dependencies.ormlite")
         relocate("org.bstats", "com.iridium.iridiumskyblock.dependencies.bstats")
+
+        minimize()
     }
 
     // Set UTF-8 as the encoding
