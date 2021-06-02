@@ -55,11 +55,6 @@ tasks {
     // Relocate dependencies, remove the archive classifier suffix
     shadowJar {
         archiveClassifier.set("")
-        relocate("de.tr7zw.changeme.nbtapi", "com.iridium.iridiumskyblock.dependencies.nbtapi")
-        relocate("com.iridium.iridiumcolorapi", "com.iridium.iridiumskyblock")
-        relocate("org.yaml.snakeyaml", "com.iridium.iridiumskyblock.dependencies.snakeyaml")
-        relocate("io.papermc.lib", "com.iridium.iridiumskyblock.dependencies.paperlib")
-        relocate("com.cryptomorin.xseries", "com.iridium.iridiumskyblock.dependencies.xseries")
         relocate("com.fasterxml.jackson", "com.iridium.iridiumskyblock.dependencies.fasterxml")
         relocate("com.j256.ormlite", "com.iridium.iridiumskyblock.dependencies.ormlite")
         relocate("org.bstats", "com.iridium.iridiumskyblock.dependencies.bstats")
