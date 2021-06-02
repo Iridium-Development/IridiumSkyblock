@@ -283,7 +283,7 @@ public class IslandManager {
 
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
-                    chunks.add(PaperLib.getChunkAtAsyncUrgently(world, x, z, true));
+                    chunks.add(PaperLib.getChunkAtAsync(world, x, z, true));
                 }
             }
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
