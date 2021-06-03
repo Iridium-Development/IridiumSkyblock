@@ -338,6 +338,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (upgrades.sizeUpgrade.enabled) upgradesList.put("size", upgrades.sizeUpgrade);
         if (upgrades.oresUpgrade.enabled) upgradesList.put("generator", upgrades.oresUpgrade);
         if (upgrades.warpsUpgrade.enabled) upgradesList.put("warp", upgrades.warpsUpgrade);
+        if (upgrades.memberUpgrade.enabled) upgradesList.put("member", upgrades.memberUpgrade);
 
         this.boosterList = new HashMap<>();
         if (boosters.experienceBooster.enabled) boosterList.put("experience", boosters.experienceBooster);

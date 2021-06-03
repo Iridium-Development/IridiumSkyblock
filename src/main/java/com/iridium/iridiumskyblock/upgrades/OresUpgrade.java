@@ -7,6 +7,7 @@ import java.util.Map;
 
 @NoArgsConstructor
 public class OresUpgrade extends UpgradeData {
+
     public Map<XMaterial, Integer> ores;
     public Map<XMaterial, Integer> netherOres;
 
