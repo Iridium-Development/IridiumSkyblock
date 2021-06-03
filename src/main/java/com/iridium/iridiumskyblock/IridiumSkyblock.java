@@ -304,6 +304,11 @@ public class IridiumSkyblock extends IridiumCore {
         this.commands = getPersist().load(Commands.class);
         this.shop = getPersist().load(Shop.class);
 
+        int maxSize = upgrades.sizeUpgrade.upgrades.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).get().size;
+        if (configuration.distance <= maxSize) {
+            configuration.distance = maxSize + 1;
+        }
+
         this.permissionList = new HashMap<>();
         this.permissionList.put("redstone", permissions.redstone);
         this.permissionList.put("blockPlace", permissions.blockPlace);
@@ -350,31 +355,31 @@ public class IridiumSkyblock extends IridiumCore {
             schematicFolder.mkdir();
         }
         saveFile(schematicFolder,
-            "desert.iridiumschem"
+                "desert.iridiumschem"
         );
         saveFile(schematicFolder,
-            "mushroom.iridiumschem"
+                "mushroom.iridiumschem"
         );
         saveFile(schematicFolder,
-            "jungle.iridiumschem"
+                "jungle.iridiumschem"
         );
         saveFile(schematicFolder,
-            "desert_nether.iridiumschem"
+                "desert_nether.iridiumschem"
         );
         saveFile(schematicFolder,
-            "mushroom_nether.iridiumschem"
+                "mushroom_nether.iridiumschem"
         );
         saveFile(schematicFolder,
-            "jungle_nether.iridiumschem"
+                "jungle_nether.iridiumschem"
         );
         saveFile(schematicFolder,
-            "desert_end.iridiumschem"
+                "desert_end.iridiumschem"
         );
         saveFile(schematicFolder,
-            "mushroom_end.iridiumschem"
+                "mushroom_end.iridiumschem"
         );
         saveFile(schematicFolder,
-            "jungle_end.iridiumschem"
+                "jungle_end.iridiumschem"
         );
     }
 
