@@ -39,8 +39,8 @@ public class RecalculateCommand extends Command {
         if (bukkitTask == null) {
             int interval = 5;
             List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
-            int minutes = (int) ((islandList.size() / 20.00 * 5) % 60);
-            int seconds = (int) (islandList.size() / 20.00 * 5) - (minutes * 60);
+            int seconds = (islandList.size() * interval / 20) % 60;
+            int minutes = (islandList.size() * interval / 20) / 60;
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingIslands
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                     .replace("%minutes%", String.valueOf(minutes))
