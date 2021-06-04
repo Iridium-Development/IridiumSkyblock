@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock.utils;
 
+import com.iridium.iridiumcore.multiversion.MultiVersion;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -20,7 +22,8 @@ public class LocationUtils {
         Block block = location.getBlock();
         Block above = location.clone().add(0, 1, 0).getBlock();
         Block below = location.clone().subtract(0, 1, 0).getBlock();
-        return block.isPassable() && !block.isLiquid() && above.isPassable() && !above.isLiquid() && !below.isPassable() && !below.isLiquid();
+        MultiVersion multiVersion = IridiumSkyblock.getInstance().getMultiVersion();
+        return multiVersion.isPassable(block) && !block.isLiquid() && multiVersion.isPassable(above) && !above.isLiquid() && !multiVersion.isPassable(below) && !below.isLiquid();
     }
 
     /**
@@ -61,7 +64,7 @@ public class LocationUtils {
      */
     private static Location getHighestLocation(int x, int z, World world) {
         Block block = world.getHighestBlockAt(x, z);
-        while (!block.isPassable()) {
+        while (!IridiumSkyblock.getInstance().getMultiVersion().isPassable(block)) {
             block = block.getLocation().add(0, 1, 0).getBlock();
         }
         return block.getLocation().add(0.5, 0, 0.5);

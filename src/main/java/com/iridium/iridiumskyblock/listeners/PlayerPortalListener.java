@@ -18,7 +18,6 @@ public class PlayerPortalListener implements Listener {
     public void onPlayerPortal(PlayerPortalEvent event) {
         IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom()).ifPresent(island -> {
-            event.setSearchRadius(island.getSize() / 2);
             if (event.getCause().equals(PlayerTeleportEvent.TeleportCause.NETHER_PORTAL)) {
                 if (IridiumSkyblock.getInstance().getConfiguration().netherIslands) {
                     World world = Objects.equals(event.getFrom().getWorld(), islandManager.getNetherWorld()) ? islandManager.getWorld() : islandManager.getNetherWorld();
