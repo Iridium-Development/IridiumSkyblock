@@ -30,6 +30,7 @@ public class PlayerPortalListener implements Listener {
                 event.setTo(island.get().getCenter(world));
             } else {
                 event.setCancelled(true);
+            }
         } else if (event.getCause().equals(TeleportCause.END_PORTAL) && config.endIslands) {
             if (island.isPresent()) {
                 event.setSearchRadius(island.get().getSize() / 2);
