@@ -631,7 +631,7 @@ public class IslandManager {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () ->
                 chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
                             World world = Bukkit.getWorld(chunk.getWorldName());
-                            int maxHeight = world == null ? 255 : world.getMaxHeight();
+                            int maxHeight = world == null ? 255 : world.getMaxHeight()-1;
                             for (int x = 0; x < 16; x++) {
                                 for (int z = 0; z < 16; z++) {
                                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
