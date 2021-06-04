@@ -53,16 +53,11 @@ public class PlayerInteractListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getRightClicked().getLocation());
 
-        if (!island.isPresent()) {
-            return;
-        }
-
-        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().interactEntities, "interactEntities")) {
-            return;
-        }
-
-        event.setCancelled(true);
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteractEntities.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        island.ifPresent(value -> {
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(value, user, IridiumSkyblock.getInstance().getPermissions().interactEntities, "interactEntities")) {
+                event.setCancelled(true);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteractEntities.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+        });
     }
-
 }

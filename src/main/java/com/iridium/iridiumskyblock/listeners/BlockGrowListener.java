@@ -35,7 +35,9 @@ public class BlockGrowListener implements Listener {
 
         }
 
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:" + material.name(), 1));
+        if (!IridiumSkyblock.getInstance().getMissions().blockedWorlds.contains(event.getBlock().getWorld().getName())) {
+            island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:" + material.name(), 1));
+        }
     }
 
 }

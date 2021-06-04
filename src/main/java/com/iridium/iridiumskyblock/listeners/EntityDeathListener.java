@@ -22,7 +22,9 @@ public class EntityDeathListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         island.ifPresent(value -> {
-            IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "KILL:" + event.getEntityType().name(), 1);
+            if (!IridiumSkyblock.getInstance().getMissions().blockedWorlds.contains(event.getEntity().getWorld().getName())) {
+                IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "KILL:" + event.getEntityType().name(), 1);
+            }
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
             if (islandBooster.isActive()) {
                 event.setDroppedExp(event.getDroppedExp() * 2);

@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class Missions {
 
+    public List<String> blockedWorlds = Collections.emptyList();
+
     public Map<String, Mission> missions = ImmutableMap.<String, Mission>builder()
             //DAILY MISSIONS
             .put("farmer", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lFarmer",

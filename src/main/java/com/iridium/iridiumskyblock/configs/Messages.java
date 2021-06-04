@@ -135,8 +135,6 @@ public class Messages {
     public String calculatingIslands = "%prefix% &7Calculating %amount% Players islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
     public String calculatingFinished = "%prefix% &7Calculating Players islands Finished";
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
-    public String netherIslandsDisabled = "%prefix% &7Nether islands have been disabled";
-    public String endIslandsDisabled = "%prefix% &7End islands have been disabled";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

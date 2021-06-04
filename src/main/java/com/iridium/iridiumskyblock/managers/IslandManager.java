@@ -328,7 +328,7 @@ public class IslandManager {
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
         World world = location.getWorld();
-        if (Objects.equals(world, getWorld()) || Objects.equals(world, getNetherWorld()) || Objects.equals(world, getEndWorld())) {
+        if (isIslandWorld(world)) {
             return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
         }
         return Optional.empty();
@@ -856,6 +856,13 @@ public class IslandManager {
      */
     public World getEndWorld() {
         return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
+    }
+
+    public boolean isIslandWorld(String world) {
+        return isIslandWorld(Bukkit.getWorld(world));
+    }
+    public boolean isIslandWorld(World world) {
+        return Objects.equals(world, getWorld()) || Objects.equals(world, getNetherWorld()) || Objects.equals(world, getEndWorld());
     }
 
 }

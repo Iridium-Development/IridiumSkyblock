@@ -10,10 +10,11 @@ public class PlayerTeleportListener implements Listener {
 
     @EventHandler
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        if (event.getTo() == null) return;
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getTo()).ifPresent(island ->
-                PlayerUtils.sendBorder(event.getPlayer(), island)
-        );
+        if (event.getTo() != null) {
+            IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getTo()).ifPresent(island ->
+                    PlayerUtils.sendBorder(event.getPlayer(), island)
+            );
+        }
     }
 
 }
