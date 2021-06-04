@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Permission;
@@ -12,7 +11,7 @@ import java.util.Arrays;
  * The Island permission configuration used by IridiumSkyblock (permissions.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Permissions {
 
     public String allowed = "&a&lALLOWED";
