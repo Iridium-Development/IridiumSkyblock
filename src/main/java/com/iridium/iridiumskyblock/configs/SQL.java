@@ -1,11 +1,13 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 
 /**
  * The SQL database connection file used by IridiumSkyblock (sql.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SQL {
 
     public Driver driver = Driver.SQLITE;

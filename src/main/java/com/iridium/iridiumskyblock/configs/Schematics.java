@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.Map;
  * The schematic configuration used by IridiumSkyblock (schematics.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Schematics {
 
     public Map<String, SchematicConfig> schematics = ImmutableMap.<String, SchematicConfig>builder()

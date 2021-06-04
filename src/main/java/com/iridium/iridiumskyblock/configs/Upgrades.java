@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.upgrades.OresUpgrade;
@@ -10,6 +11,7 @@ import com.iridium.iridiumskyblock.upgrades.WarpsUpgrade;
 
 import java.util.Arrays;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Upgrades {
     public Upgrade<SizeUpgrade> sizeUpgrade = new Upgrade<>(true,
             new Item(XMaterial.GRASS_BLOCK, 11, 1, "&b&lIsland Size", Arrays.asList(
