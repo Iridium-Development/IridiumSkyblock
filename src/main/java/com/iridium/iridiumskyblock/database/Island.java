@@ -62,6 +62,10 @@ public final class Island {
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
+    // Cache
+    private Location pos1;
+    private Location pos2;
+
     /**
      * The default constructor.
      *
@@ -297,8 +301,11 @@ public final class Island {
      * @return The Location of the first corner point
      */
     public Location getPos1(World world) {
-        double size = getSize() / 2.00;
-        return getCenter(world).subtract(new Location(world, size, 0, size));
+        if (pos1 == null) {
+            double size = getSize() / 2.00;
+            pos1 = getCenter(world).subtract(new Location(world, size, 0, size));
+        }
+        return pos1;
     }
 
     /**
@@ -309,8 +316,11 @@ public final class Island {
      * @return The Location of the second corner point
      */
     public Location getPos2(World world) {
-        double size = getSize() / 2.00;
-        return getCenter(world).add(new Location(world, size, 0, size));
+        if (pos2 == null) {
+            double size = getSize() / 2.00;
+            pos2 = getCenter(world).add(new Location(world, size, 0, size));
+        }
+        return pos2;
     }
 
     /**
@@ -425,6 +435,11 @@ public final class Island {
      */
     public String getFormattedCrystals() {
         return IridiumSkyblock.getInstance().getNumberFormatter().format(getCrystals());
+    }
+
+    public void resetCache() {
+        pos1 = null;
+        pos2 = null;
     }
 
 }
