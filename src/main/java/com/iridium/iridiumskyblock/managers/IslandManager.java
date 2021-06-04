@@ -215,8 +215,10 @@ public class IslandManager {
         getIslandMembers(island).forEach(u -> {
             Player player = Bukkit.getPlayer(u.getUuid());
             if (player != null) {
-                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) player.getInventory().clear();
-                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) player.getEnderChest().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen)
+                    player.getInventory().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen)
+                    player.getEnderChest().clear();
             }
         });
 
@@ -501,8 +503,10 @@ public class IslandManager {
         getIslandMembers(island).forEach(u -> {
             Player player = Bukkit.getPlayer(u.getUuid());
             if (player != null) {
-                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) player.getInventory().clear();
-                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) player.getEnderChest().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen)
+                    player.getInventory().clear();
+                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen)
+                    player.getEnderChest().clear();
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         });
@@ -529,8 +533,10 @@ public class IslandManager {
                         isUpgrade.getUpgrade().equalsIgnoreCase(upgrade)
                 ).findFirst();
         if (islandUpgrade.isPresent()) {
+            IridiumSkyblock.getInstance().getLogger().info("Found upgrade " + upgrade + " for island " + island.getName());
             return islandUpgrade.get();
         } else {
+            IridiumSkyblock.getInstance().getLogger().info("Could not find upgrade " + upgrade + " for island " + island.getName());
             IslandUpgrade isUpgrade = new IslandUpgrade(island, upgrade);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().addEntry(isUpgrade);
             return isUpgrade;
