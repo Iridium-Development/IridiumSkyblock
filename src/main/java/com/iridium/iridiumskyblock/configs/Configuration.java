@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
@@ -13,6 +14,7 @@ import java.util.Map;
  * The main configuration of IridiumSkyblock (configuration.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Configuration {
 
     public String prefix = "<GRADIENT:09C6F9>&lIridiumSkyblock</GRADIENT:045DE9> &8»";
