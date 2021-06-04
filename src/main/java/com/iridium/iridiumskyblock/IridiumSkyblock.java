@@ -180,6 +180,7 @@ public class IridiumSkyblock extends IridiumCore {
         UpdateChecker.init(this, 62480)
                 .checkEveryXHours(24)
                 .setDownloadLink(62480)
+                .setColoredConsoleOutput(true)
                 .checkNow();
 
         super.onEnable();
