@@ -1,7 +1,5 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,7 +7,7 @@ import java.util.List;
  * The message configuration used by IridiumSkyblock (messages.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class Messages {
 
     public String reloaded = "%prefix% &7Configuration has been reloaded.";
