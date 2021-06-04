@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 
 import java.time.format.DateTimeFormatter;
@@ -16,14 +17,18 @@ public class PlaceholderBuilder {
     }
 
     public PlaceholderBuilder applyIslandPlaceholders(Island island) {
+        IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, "member");
+        int memberLimit = IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
         placeholderList.add(new Placeholder("island_name", island.getName()));
         placeholderList.add(new Placeholder("island_owner", island.getOwner().getName()));
-        placeholderList.add(new Placeholder("island_value", String.valueOf(island.getValue())));
-        placeholderList.add(new Placeholder("island_rank", String.valueOf(island.getRank())));
-        placeholderList.add(new Placeholder("island_level", String.valueOf(island.getLevel())));
+        placeholderList.add(new Placeholder("island_value", IridiumSkyblock.getInstance().getNumberFormatter().format(island.getValue())));
+        placeholderList.add(new Placeholder("island_rank", IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())));
+        placeholderList.add(new Placeholder("island_members", IridiumSkyblock.getInstance().getNumberFormatter().format(island.getMembers().size())));
+        placeholderList.add(new Placeholder("island_members_limit", IridiumSkyblock.getInstance().getNumberFormatter().format(memberLimit)));
+        placeholderList.add(new Placeholder("island_level", IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())));
         placeholderList.add(new Placeholder("island_create", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
 
-        IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> new Placeholder(material.name() + "_AMOUNT", String.valueOf(IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material).getAmount()))).forEach(placeholderList::add);
+        IridiumSkyblock.getInstance().getBlockValues().blockValues.keySet().stream().map(material -> new Placeholder(material.name() + "_AMOUNT", IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material).getAmount()))).forEach(placeholderList::add);
         return this;
     }
 
