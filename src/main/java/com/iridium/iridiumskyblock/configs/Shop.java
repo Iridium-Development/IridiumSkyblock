@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.configs;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumskyblock.shop.ShopItem;
@@ -20,7 +21,7 @@ import java.util.Map;
  * The shop configuration used by IridiumSkyblock (shop.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Shop {
 
     public Map<String, ShopCategoryConfig> categories = ImmutableMap.<String, ShopCategoryConfig>builder()
