@@ -533,10 +533,8 @@ public class IslandManager {
                         isUpgrade.getUpgrade().equalsIgnoreCase(upgrade)
                 ).findFirst();
         if (islandUpgrade.isPresent()) {
-            IridiumSkyblock.getInstance().getLogger().info("Found upgrade " + upgrade + " for island " + island.getName());
             return islandUpgrade.get();
         } else {
-            IridiumSkyblock.getInstance().getLogger().info("Could not find upgrade " + upgrade + " for island " + island.getName());
             IslandUpgrade isUpgrade = new IslandUpgrade(island, upgrade);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().addEntry(isUpgrade);
             return isUpgrade;
