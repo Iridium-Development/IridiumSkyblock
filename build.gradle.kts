@@ -28,7 +28,6 @@ dependencies {
     implementation("org.jetbrains", "annotations", "16.0.1")
     implementation("com.github.j256", "ormlite-core", "master-SNAPSHOT")
     implementation("com.j256.ormlite", "ormlite-jdbc", "5.3")
-    implementation("com.fasterxml.jackson.core", "jackson-annotations", "2.12.1")
     implementation("de.jeff_media", "SpigotUpdateChecker", "1.2.0")
 
     // Other dependencies that are not required or already available at runtime
