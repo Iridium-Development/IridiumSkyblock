@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumskyblock.Mission;
@@ -16,6 +17,7 @@ import java.util.Map;
  * The mission configuration used by IridiumSkyblock (missions.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Missions {
 
     public List<String> blockedWorlds = Collections.emptyList();

@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.placeholders;
 
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -24,11 +23,11 @@ public class Placeholders {
             })
             .put("island_rank", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> NumberFormatter.format(island.getRank())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(defaultValue());
             })
             .put("island_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> NumberFormatter.format(island.getLevel())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(defaultValue());
             })
             .put("island_value", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -40,11 +39,11 @@ public class Placeholders {
             })
             .put("island_experience_required", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> NumberFormatter.format(island.getExperienceRequiredToLevelUp())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(defaultValue());
             })
             .put("island_experience_remaining", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> NumberFormatter.format(island.getExperienceRemainingToLevelUp())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(defaultValue());
             })
             .put("island_bank_experience", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -70,11 +69,11 @@ public class Placeholders {
             })
             .put("current_island_rank", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
-                return islandOptional.map(island -> NumberFormatter.format(island.getRank())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(defaultValue());
             })
             .put("current_island_level", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
-                return islandOptional.map(island -> NumberFormatter.format(island.getLevel())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(defaultValue());
             })
             .put("current_island_value", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
@@ -86,11 +85,11 @@ public class Placeholders {
             })
             .put("current_island_experience_required", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
-                return islandOptional.map(island -> NumberFormatter.format(island.getExperienceRequiredToLevelUp())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(defaultValue());
             })
             .put("current_island_experience_remaining", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
-                return islandOptional.map(island -> NumberFormatter.format(island.getExperienceRemainingToLevelUp())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(defaultValue());
             })
             .put("current_island_bank_experience", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());

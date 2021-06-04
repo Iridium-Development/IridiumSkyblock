@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumcore.IridiumCore;
+import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
@@ -428,6 +429,15 @@ public class IridiumSkyblock extends IridiumCore {
         getPersist().save(boosters);
         getPersist().save(commands);
         getPersist().save(shop);
+    }
+
+    /**
+     * Gets the Number Formatter
+     *
+     * @return The Number Formatter
+     */
+    public NumberFormatter getNumberFormatter() {
+        return configuration.numberFormatter;
     }
 
 }

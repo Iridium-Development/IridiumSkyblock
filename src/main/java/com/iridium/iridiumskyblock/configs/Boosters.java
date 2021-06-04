@@ -1,11 +1,13 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Booster;
 
 import java.util.Arrays;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Boosters {
 
     public Booster farmingBooster = new Booster(new Item(XMaterial.WHEAT, 10, 1, "&b&lFarming Booster", Arrays.asList(

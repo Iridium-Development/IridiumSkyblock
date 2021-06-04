@@ -21,6 +21,7 @@ public class PlayerPortalListener implements Listener {
     public void onPlayerPortal(PlayerPortalEvent event) {
         IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
         Configuration config = IridiumSkyblock.getInstance().getConfiguration();
+        if (!IridiumSkyblock.getInstance().getIslandManager().isIslandWorld(event.getFrom().getWorld())) return;
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom());
         if (event.getCause().equals(TeleportCause.NETHER_PORTAL) && config.netherIslands) {
             if (island.isPresent()) {
@@ -29,7 +30,6 @@ public class PlayerPortalListener implements Listener {
                 event.setTo(island.get().getCenter(world));
             } else {
                 event.setCancelled(true);
-            }
         } else if (event.getCause().equals(TeleportCause.END_PORTAL) && config.endIslands) {
             if (island.isPresent()) {
                 event.setSearchRadius(island.get().getSize() / 2);
