@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.configs.BlockValues;
@@ -389,7 +388,7 @@ public final class Island {
      * @return The formatted value
      */
     public String getFormattedValue() {
-        return NumberFormatter.format(getValue());
+        return IridiumSkyblock.getInstance().getNumberFormatter().format(getValue());
     }
 
     /**
@@ -398,7 +397,7 @@ public final class Island {
      * @return The formatted experience
      */
     public String getFormattedExperience() {
-        return NumberFormatter.format(getExperience());
+        return IridiumSkyblock.getInstance().getNumberFormatter().format(getExperience());
     }
 
     /**
@@ -407,7 +406,7 @@ public final class Island {
      * @return The formatted money in the Island bank
      */
     public String getFormattedMoney() {
-        return NumberFormatter.format(getMoney());
+        return IridiumSkyblock.getInstance().getNumberFormatter().format(getMoney());
     }
 
     /**
@@ -416,7 +415,7 @@ public final class Island {
      * @return The formatted experience in the Island bank
      */
     public String getFormattedBankExperience() {
-        return NumberFormatter.format(getBankExperience());
+        return IridiumSkyblock.getInstance().getNumberFormatter().format(getBankExperience());
     }
 
     /**
@@ -425,7 +424,7 @@ public final class Island {
      * @return The formatted crystals in the Island bank
      */
     public String getFormattedCrystals() {
-        return NumberFormatter.format(getCrystals());
+        return IridiumSkyblock.getInstance().getNumberFormatter().format(getCrystals());
     }
 
 }

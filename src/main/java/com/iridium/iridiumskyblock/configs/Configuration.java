@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -20,15 +21,11 @@ public class Configuration {
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
     public String placeholderDefaultValue = "N/A";
-    public String thousandAbbreviation = "K";
-    public String millionAbbreviation = "M";
-    public String billionAbbreviation = "B";
 
     public boolean clearInventoryOnRegen = true;
     public boolean clearEnderChestOnRegen = false;
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
-    public boolean displayNumberAbbreviations = true;
     public boolean netherIslands = true;
     public boolean endIslands = true;
 
@@ -36,7 +33,8 @@ public class Configuration {
     public int schematicPastingDelay = 1;
     public int islandRecalculateInterval = 10;
     public int teleportDelay = 0;
-    public int numberAbbreviationDecimalPlaces = 2;
+
+    public NumberFormatter numberFormatter = new NumberFormatter();
 
     public GeneratorSettings generatorSettings = new GeneratorSettings();
 
