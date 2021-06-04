@@ -27,7 +27,7 @@ dependencies {
     implementation("org.bstats", "bstats-bukkit", "2.2.1")
     implementation("com.github.j256", "ormlite-core", "master-SNAPSHOT")
     implementation("com.j256.ormlite", "ormlite-jdbc", "5.3")
-    implementation("de.jeff_media", "SpigotUpdateChecker", "1.2.0")
+    implementation("de.jeff_media", "SpigotUpdateChecker", "1.2.4")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok", "lombok", "1.18.20")
