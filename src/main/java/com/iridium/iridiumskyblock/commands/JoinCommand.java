@@ -56,7 +56,7 @@ public class JoinCommand extends Command {
                     IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "member");
                     int memberLimit = IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
                     if (!user.isBypass() && island.get().getMembers().size() >= memberLimit) {
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandTeamFull.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberLimitReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         return;
                     }
                     // Send a message to all other members
