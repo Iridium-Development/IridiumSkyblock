@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.shop;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

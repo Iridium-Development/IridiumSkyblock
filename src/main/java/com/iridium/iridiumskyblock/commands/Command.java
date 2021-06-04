@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
