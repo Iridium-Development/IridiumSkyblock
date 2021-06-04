@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Map;
  * The block value configuration used by IridiumSkyblock (blockvalues.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class BlockValues {
 
     public Map<XMaterial, ValuableBlock> blockValues = ImmutableMap.<XMaterial, ValuableBlock>builder()

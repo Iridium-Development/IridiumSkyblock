@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumskyblock.commands.*;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Commands {
 
     public AboutCommand aboutCommand = new AboutCommand();
