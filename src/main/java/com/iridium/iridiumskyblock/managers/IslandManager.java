@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -91,7 +90,7 @@ public class IslandManager {
      */
     private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island));
+        player.teleport(LocationUtils.getSafeLocation(island.getHome(), island));
     }
 
     /**
@@ -125,7 +124,7 @@ public class IslandManager {
      */
     private void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)));
+        player.teleport(LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)));
     }
 
     /**
@@ -152,11 +151,11 @@ public class IslandManager {
         if (islandCreateEvent.isCancelled()) return;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, name, schematicConfig).thenAccept(island ->
-                PaperLib.teleportAsync(player, island.getHome()).thenRun(() -> {
+        createIsland(player, name, schematicConfig).thenAccept(island -> {
+                    player.teleport(island.getHome());
                     IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
                     IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
-                })
+                }
         );
     }
 
@@ -289,7 +288,7 @@ public class IslandManager {
 
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
-                    chunks.add(PaperLib.getChunkAtAsync(world, x, z, true));
+                    chunks.add(IridiumSkyblock.getInstance().getMultiVersion().getChunkAt(world, x, z));
                 }
             }
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
@@ -476,7 +475,7 @@ public class IslandManager {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
                 Block block = world.getBlockAt(x, y, z);
                 if (block.getType() != Material.AIR) {
-                    if(block.getState() instanceof InventoryHolder){
+                    if (block.getState() instanceof InventoryHolder) {
                         ((InventoryHolder) block.getState()).getInventory().clear();
                     }
                     block.setType(Material.AIR, false);
