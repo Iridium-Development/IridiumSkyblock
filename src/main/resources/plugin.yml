@@ -10,6 +10,10 @@ softdepend:
 - "PlaceholderAPI"
 - "Essentials"
 - "EssentialsSpawn"
+- "RoseStacker"
+- "WildStacker"
+- "AdvancedSpawners"
+- "UltimateStacker"
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]

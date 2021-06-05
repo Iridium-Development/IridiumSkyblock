@@ -15,7 +15,7 @@ import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.shop.ShopManager;
-import com.iridium.iridiumskyblock.support.SpawnerSupport;
+import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
 import lombok.Getter;
@@ -296,6 +296,10 @@ public class IridiumSkyblock extends IridiumCore {
      * @return The Spawner Support Object
      */
     private SpawnerSupport setupSpawnerSupport() {
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) return new AdvancedSpawnersSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) return new UltimateStackerSupport();
         return spawner -> 1;
     }
 

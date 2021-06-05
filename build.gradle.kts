@@ -17,6 +17,7 @@ repositories {
     maven("https://jitpack.io")
     maven("https://nexus.savagelabs.net/repository/maven-releases/")
     maven("https://papermc.io/repo/repository/maven-public/")
+    maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.jeff-media.de/maven2/")
 }
 
@@ -38,6 +39,11 @@ dependencies {
     compileOnly("be.maximvdw", "MVdWPlaceholderAPI", "2.1.1-SNAPSHOT") {
         exclude("org.spigotmc")
     }
+    compileOnly("com.gc", "AdvancedSpawners", "1.2.6")
+    compileOnly("dev.rosewood", "rosestacker", "1.2.6")
+    compileOnly("com.github.OmerBenGera", "WildStackerAPI", "master")
+    compileOnly("com.songoda", "EpicSpawners", "12.4.1")
+    compileOnly("com.songoda", "UltimateStacker", "2.1.6")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok", "lombok", "1.18.20")
