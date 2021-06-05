@@ -93,6 +93,8 @@ public class Messages {
     public String notAColor = "%prefix% &7That is not a valid color.";
     public String notANumber = "%prefix% &7That is not a valid number.";
     public String gaveBank = "%prefix% &7You gave %player% %amount% %item%.";
+    public String setBank = "%prefix% &7You set %player%'s %amount% to %item%.";
+    public String removedBank = "%prefix% &7You took %amount% %item%'s from %player%.";
     public String invalidMissionType = "%prefix% &7That is not a valid mission type.";
     public String maxLevelReached = "%prefix% &7Maximum level reached.";
     public String cannotAfford = "%prefix% &7You cannot afford this.";
