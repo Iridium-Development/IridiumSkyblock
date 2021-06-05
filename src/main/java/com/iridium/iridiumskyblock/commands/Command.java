@@ -16,7 +16,7 @@ public abstract class Command {
     public final @NotNull String permission;
     @JsonIgnore
     public final boolean onlyForPlayers;
-    public final boolean enabled = true;
+    public final boolean enabled;
 
     /**
      * The default constructor.
@@ -31,6 +31,7 @@ public abstract class Command {
         this.description = description;
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
+        this.enabled = true;
     }
 
     /**
