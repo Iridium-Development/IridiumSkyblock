@@ -122,10 +122,6 @@ public class IridiumSkyblock extends IridiumCore {
         this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
         this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
 
-        registerMultiverse(islandManager.getWorld());
-        registerMultiverse(islandManager.getNetherWorld());
-        registerMultiverse(islandManager.getEndWorld());
-
         this.databaseManager = new DatabaseManager();
         // Try to connect to the database
         try {
@@ -179,6 +175,12 @@ public class IridiumSkyblock extends IridiumCore {
                 }
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            registerMultiverse(islandManager.getWorld());
+            registerMultiverse(islandManager.getNetherWorld());
+            registerMultiverse(islandManager.getEndWorld());
+        }, 1);
 
         resetIslandMissions();
 

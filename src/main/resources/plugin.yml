@@ -8,7 +8,6 @@ depend: [ Vault ]
 softdepend:
 - "MVdWPlaceholderAPI"
 - "PlaceholderAPI"
-- "Multiverse-Core"
 - "Essentials"
 - "EssentialsSpawn"
 - "RoseStacker"
@@ -16,6 +15,8 @@ softdepend:
 - "AdvancedSpawners"
 - "UltimateStacker"
 - "EpicSpawners"
+loadbefore:
+  - "Multiverse-Core"
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]
