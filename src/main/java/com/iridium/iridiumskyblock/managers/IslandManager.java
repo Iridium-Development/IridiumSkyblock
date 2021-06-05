@@ -23,6 +23,7 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -475,6 +476,9 @@ public class IslandManager {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
                 Block block = world.getBlockAt(x, y, z);
                 if (block.getType() != Material.AIR) {
+                    if(block.getState() instanceof InventoryHolder){
+                        ((InventoryHolder) block.getState()).getInventory().clear();
+                    }
                     block.setType(Material.AIR, false);
                 }
             }

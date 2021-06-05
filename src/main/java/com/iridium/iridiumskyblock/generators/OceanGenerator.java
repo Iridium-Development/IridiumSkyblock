@@ -7,6 +7,7 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
 
@@ -87,6 +88,9 @@ public class OceanGenerator extends ChunkGenerator {
 
         // Generate layer of bedrock
         if (world.getBlockAt(x, 0, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
+            if (world.getBlockAt(x, 0, z).getState() instanceof InventoryHolder) {
+                ((InventoryHolder) world.getBlockAt(x, 0, z).getState()).getInventory().clear();
+            }
             world.getBlockAt(x, 0, z).setType(Material.BEDROCK, false);
         }
 
@@ -94,12 +98,18 @@ public class OceanGenerator extends ChunkGenerator {
         for (int y = 1; y < currentFloorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != bottomMaterial.parseMaterial() && bottomMaterial.parseMaterial() != null) {
+                if (block.getState() instanceof InventoryHolder) {
+                    ((InventoryHolder) block.getState()).getInventory().clear();
+                }
                 block.setType(bottomMaterial.parseMaterial(), false);
             }
         }
 
         // Generate sand on top of gravel
         if (world.getBlockAt(x, currentFloorHeight, z).getType() != topMaterial.parseMaterial() && topMaterial.parseMaterial() != null) {
+            if (world.getBlockAt(x, currentFloorHeight, z).getState() instanceof InventoryHolder) {
+                ((InventoryHolder) world.getBlockAt(x, currentFloorHeight, z).getState()).getInventory().clear();
+            }
             world.getBlockAt(x, currentFloorHeight, z).setType(topMaterial.parseMaterial(), false);
         }
 
@@ -108,6 +118,9 @@ public class OceanGenerator extends ChunkGenerator {
         for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != oceanMaterial.parseMaterial() && oceanMaterial.parseMaterial() != null) {
+                if (block.getState() instanceof InventoryHolder) {
+                    ((InventoryHolder) block.getState()).getInventory().clear();
+                }
                 block.setType(oceanMaterial.parseMaterial(), false);
             }
         }
@@ -116,6 +129,9 @@ public class OceanGenerator extends ChunkGenerator {
         for (int y = waterHeight + 1; y < world.getMaxHeight(); y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != Material.AIR) {
+                if (block.getState() instanceof InventoryHolder) {
+                    ((InventoryHolder) block.getState()).getInventory().clear();
+                }
                 block.setType(Material.AIR, false);
             }
         }
