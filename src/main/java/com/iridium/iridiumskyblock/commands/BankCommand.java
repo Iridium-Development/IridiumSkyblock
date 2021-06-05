@@ -46,27 +46,26 @@ public class BankCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         if (args.length > 1) {
             for (Command command : Arrays.asList(bankGive, bankSet, bankRemove)) {
-                if (!(command.aliases.contains(args[1]))) continue;
-                // Check if this command is only for players
-                if (command.onlyForPlayers && !(sender instanceof Player)) {
-                    // Must be a player
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                if (command.aliases.contains(args[1])) {
+                    // Check if this command is only for players
+                    if (command.onlyForPlayers && !(sender instanceof Player)) {
+                        // Must be a player
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        return;
+                    }
+                    // Check permissions
+                    if (!((sender.hasPermission(command.permission) || command.permission
+                            .equalsIgnoreCase("") || command.permission
+                            .equalsIgnoreCase("iridiumskyblock.")))) {
+                        // No permissions
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        return;
+                    }
+                    command.execute(sender, args);
                     return;
                 }
-
-                // Check permissions
-                if (!((sender.hasPermission(command.permission) || command.permission
-                        .equalsIgnoreCase("") || command.permission
-                        .equalsIgnoreCase("iridiumskyblock.")))) {
-                    // No permissions
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    return;
-                }
-
-                command.execute(sender, args);
-                return;
             }
         } else if (sender instanceof Player) {
             Player player = (Player) sender;
