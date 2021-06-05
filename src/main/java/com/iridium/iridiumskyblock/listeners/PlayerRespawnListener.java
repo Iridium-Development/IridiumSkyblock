@@ -14,8 +14,9 @@ public class PlayerRespawnListener implements Listener {
         if (IridiumSkyblock.getInstance().getConfiguration().respawnOnIsland) {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer());
             user.getIsland().ifPresent(island -> {
-                if (!island.isInIsland(event.getRespawnLocation()))
+                if (!island.isInIsland(event.getRespawnLocation())) {
                     event.setRespawnLocation(LocationUtils.getSafeLocation(island.getHome(), island));
+                }
             });
         }
     }
