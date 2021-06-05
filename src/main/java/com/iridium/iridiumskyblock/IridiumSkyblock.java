@@ -357,33 +357,15 @@ public class IridiumSkyblock extends IridiumCore {
         if (!schematicFolder.exists()) {
             schematicFolder.mkdir();
         }
-        saveFile(schematicFolder,
-                "desert.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "mushroom.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "jungle.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "desert_nether.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "mushroom_nether.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "jungle_nether.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "desert_end.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "mushroom_end.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "jungle_end.iridiumschem"
-        );
+        saveFile(schematicFolder,"desert.iridiumschem");
+        saveFile(schematicFolder,"mushroom.iridiumschem");
+        saveFile(schematicFolder,"jungle.iridiumschem");
+        saveFile(schematicFolder,"desert_nether.iridiumschem");
+        saveFile(schematicFolder,"mushroom_nether.iridiumschem");
+        saveFile(schematicFolder,"jungle_nether.iridiumschem");
+        saveFile(schematicFolder,"desert_end.iridiumschem");
+        saveFile(schematicFolder,"mushroom_end.iridiumschem");
+        saveFile(schematicFolder, "jungle_end.iridiumschem");
     }
 
     private void saveFile(File parent, String name) {
