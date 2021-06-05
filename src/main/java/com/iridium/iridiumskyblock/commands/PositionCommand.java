@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -60,13 +59,7 @@ public class PositionCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (args.length == 2) {
-            return Arrays.asList("1", "2");
-        }
-
-        // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
-        return Collections.emptyList();
+        return Arrays.asList("1", "2");
     }
 
 }

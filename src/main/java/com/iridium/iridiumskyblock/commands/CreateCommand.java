@@ -9,7 +9,11 @@ import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Command which creates a new Island for a user.
@@ -88,7 +92,7 @@ public class CreateCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return new ArrayList<>(IridiumSkyblock.getInstance().getSchematics().schematics.keySet());
+            return IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream().filter(s -> s.contains(args[2])).collect(Collectors.toList());
         }
 
         // We currently don't want to tab-completion here

@@ -60,7 +60,7 @@ public class BlockValueCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
-        return Arrays.stream(BlockValueGUI.BlockValueType.values()).map(Enum::toString).collect(Collectors.toList());
+        return Arrays.stream(BlockValueGUI.BlockValueType.values()).map(Enum::toString).filter(s -> s.contains(args[1])).collect(Collectors.toList());
     }
 
 }

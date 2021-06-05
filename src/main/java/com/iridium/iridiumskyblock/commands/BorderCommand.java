@@ -73,7 +73,7 @@ public class BorderCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Arrays.stream(Color.values()).map(Enum::name).collect(Collectors.toList());
+        return Arrays.stream(Color.values()).map(Enum::name).filter(s -> s.contains(args[1])).collect(Collectors.toList());
     }
 
 }
