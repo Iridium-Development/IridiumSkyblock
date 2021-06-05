@@ -30,6 +30,7 @@ public class Configuration {
     public boolean voidTeleport = true;
     public boolean netherIslands = true;
     public boolean endIslands = true;
+    public boolean islandShop = true;
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
