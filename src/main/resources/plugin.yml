@@ -11,6 +11,11 @@ softdepend:
 - "Multiverse-Core"
 - "Essentials"
 - "EssentialsSpawn"
+- "RoseStacker"
+- "WildStacker"
+- "AdvancedSpawners"
+- "UltimateStacker"
+- "EpicSpawners"
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]

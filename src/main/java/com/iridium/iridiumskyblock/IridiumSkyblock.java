@@ -15,6 +15,7 @@ import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.shop.ShopManager;
+import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
 import lombok.Getter;
@@ -73,6 +74,7 @@ public class IridiumSkyblock extends IridiumCore {
     private HashMap<String, Booster> boosterList;
 
     private Economy economy;
+    private SpawnerSupport spawnerSupport;
 
     /**
      * The default constructor.
@@ -142,6 +144,7 @@ public class IridiumSkyblock extends IridiumCore {
 
         this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
 
+        this.spawnerSupport = setupSpawnerSupport();
 
         // Initialize Vault economy support
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
@@ -292,12 +295,26 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     /**
+     * Gets the SpawnerSupport Object
+     *
+     * @return The Spawner Support Object
+     */
+    private SpawnerSupport setupSpawnerSupport() {
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) return new AdvancedSpawnersSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) return new UltimateStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) return new EpicSpawnersSupport();
+        return spawner -> 1;
+    }
+
+    /**
      * Registers Multiverse Support for this world
      *
      * @param world The specified World
      */
     private void registerMultiverse(World world) {
-        if(Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
         }
