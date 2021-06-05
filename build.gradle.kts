@@ -42,7 +42,6 @@ dependencies {
     compileOnly("com.gc", "AdvancedSpawners", "1.2.6")
     compileOnly("dev.rosewood", "rosestacker", "1.2.6")
     compileOnly("com.github.OmerBenGera", "WildStackerAPI", "master")
-    compileOnly("com.songoda", "EpicSpawners", "12.4.1")
     compileOnly("com.songoda", "UltimateStacker", "2.1.6")
 
     // Enable lombok annotation processing
