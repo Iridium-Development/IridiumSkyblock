@@ -2,6 +2,9 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.commands.subcommands.BankGive;
+import com.iridium.iridiumskyblock.commands.subcommands.BankRemove;
+import com.iridium.iridiumskyblock.commands.subcommands.BankSet;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BankGUI;

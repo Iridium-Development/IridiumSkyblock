@@ -1,8 +1,9 @@
-package com.iridium.iridiumskyblock.commands;
+package com.iridium.iridiumskyblock.commands.subcommands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
@@ -16,12 +17,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class BankSet extends Command {
+public class BankGive extends Command {
     /**
      * The default constructor.
      */
-    public BankSet() {
-        super(Collections.singletonList("set"), "Set a players bank value", "iridiumskyblock.bank.set", false);
+    public BankGive() {
+        super(Collections.singletonList("give"), "Give players money into their island bank", "iridiumskyblock.bank.give", false);
     }
 
     @Override
@@ -36,8 +37,8 @@ public class BankSet extends Command {
                     if (bankItem.isPresent()) {
                         try {
                             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
-                            islandBank.setNumber(Math.max(Double.parseDouble(args[4]), 0));
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            islandBank.setNumber(islandBank.getNumber() + Double.parseDouble(args[4]));
+                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().gaveBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         } catch (NumberFormatException exception) {
                             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
@@ -53,7 +54,7 @@ public class BankSet extends Command {
                         "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage("/is bank set <player> <type> <amount>");
+            sender.sendMessage("/is bank give <player> <type> <amount>");
         }
     }
 
