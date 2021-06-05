@@ -15,6 +15,7 @@ softdepend:
 - "WildStacker"
 - "AdvancedSpawners"
 - "UltimateStacker"
+- "EpicSpawners"
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]

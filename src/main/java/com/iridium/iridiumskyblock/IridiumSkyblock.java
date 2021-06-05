@@ -304,15 +304,17 @@ public class IridiumSkyblock extends IridiumCore {
         if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
         if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) return new AdvancedSpawnersSupport();
         if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) return new UltimateStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) return new EpicSpawnersSupport();
         return spawner -> 1;
     }
-  
+
+    /**
      * Registers Multiverse Support for this world
      *
      * @param world The specified World
      */
     private void registerMultiverse(World world) {
-        if(Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
         }
