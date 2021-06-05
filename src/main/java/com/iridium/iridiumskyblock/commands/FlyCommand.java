@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class FlyCommand extends Command {
 
@@ -81,7 +83,7 @@ public class FlyCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 2) {
-            return Arrays.asList("enable", "disable", "on", "off");
+            return Stream.of("enable", "disable", "on", "off").filter(s -> s.contains(args[1])).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

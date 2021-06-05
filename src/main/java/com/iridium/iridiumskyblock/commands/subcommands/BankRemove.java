@@ -61,10 +61,10 @@ public class BankRemove extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList());
+            return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).filter(s -> s.contains(args[2])).collect(Collectors.toList());
         }
         if (args.length == 4) {
-            return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).collect(Collectors.toList());
+            return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).filter(s -> s.contains(args[3])).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

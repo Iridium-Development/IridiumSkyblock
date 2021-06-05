@@ -77,13 +77,7 @@ public class WithdrawCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (args.length == 2) {
-            return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).collect(Collectors.toList());
-        }
-
-        // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
-        return Collections.emptyList();
+        return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).filter(s -> s.contains(args[1])).collect(Collectors.toList());
     }
 
 }

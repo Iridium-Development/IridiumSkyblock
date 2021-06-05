@@ -82,10 +82,10 @@ public class WarpsCommand extends Command {
         Player player = (Player) commandSender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        if (args.length == 2 && island.isPresent()) {
+        if (island.isPresent()) {
             List<IslandWarp> islandWarps =
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
-            return islandWarps.stream().map(IslandWarp::getName).collect(Collectors.toList());
+            return islandWarps.stream().map(IslandWarp::getName).filter(s -> s.contains(args[1])).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

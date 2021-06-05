@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DeleteWarpCommand extends Command {
 
@@ -78,10 +79,10 @@ public class DeleteWarpCommand extends Command {
                 island.isPresent() ? IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get()) :
                         Collections.emptyList();
         if (args.length == 2) {
-            return islandWarps.stream().map(IslandWarp::getName).collect(Collectors.toList());
+            return islandWarps.stream().map(IslandWarp::getName).filter(s -> s.contains(args[1])).collect(Collectors.toList());
         }
         if (args.length == 3) {
-            return Arrays.asList("icon", "description");
+            return Stream.of("icon", "description").filter(s -> s.contains(args[2])).collect(Collectors.toList());
         }
         if (args.length == 4) {
             if (args[2].equalsIgnoreCase("icon")) {

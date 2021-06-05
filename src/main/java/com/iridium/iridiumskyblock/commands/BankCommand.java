@@ -100,7 +100,7 @@ public class BankCommand extends Command {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
         if (args.length == 2) {
-            return Stream.of(bankGive, bankSet, bankRemove).map(command -> command.aliases.get(0)).collect(Collectors.toList());
+            return Stream.of(bankGive, bankSet, bankRemove).map(command -> command.aliases.get(0)).filter(s -> s.contains(args[1])).collect(Collectors.toList());
         }
         // Let the sub-command handle the tab completion
         for (Command command : Arrays.asList(bankGive, bankSet, bankRemove)) {

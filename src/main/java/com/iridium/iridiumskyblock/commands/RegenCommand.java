@@ -9,7 +9,11 @@ import com.iridium.iridiumskyblock.gui.IslandRegenGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Command which resets the Island of a user.
@@ -68,13 +72,7 @@ public class RegenCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (args.length == 2) {
-            return new ArrayList<>(IridiumSkyblock.getInstance().getSchematics().schematics.keySet());
-        }
-
-        // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
-        return Collections.emptyList();
+        return IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream().filter(s -> s.contains(args[1])).collect(Collectors.toList());
     }
 
 }

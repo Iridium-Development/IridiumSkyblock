@@ -33,7 +33,7 @@ public class ShopCommand extends Command {
      * called when the command execution was invalid (no permission, no player or command
      * disabled).
      *
-     * @param sender The CommandSender which executes this command
+     * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
@@ -44,7 +44,7 @@ public class ShopCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        
+
         if (arguments.length == 1) {
             player.openInventory(new ShopOverviewGUI().getInventory());
         } else {
@@ -65,16 +65,17 @@ public class ShopCommand extends Command {
      * Handles tab-completion for this command.
      *
      * @param commandSender The CommandSender which tries to tab-complete
-     * @param command The command
-     * @param label The label of the command
-     * @param args The arguments already provided by the sender
+     * @param command       The command
+     * @param label         The label of the command
+     * @param args          The arguments already provided by the sender
      * @return The list of tab completions for this command
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return IridiumSkyblock.getInstance().getShopManager().getCategories().stream()
-            .map(shopCategory -> shopCategory.name)
-            .collect(Collectors.toList());
+                .map(shopCategory -> shopCategory.name)
+                .filter(s -> s.contains(args[1]))
+                .collect(Collectors.toList());
     }
 
 }
