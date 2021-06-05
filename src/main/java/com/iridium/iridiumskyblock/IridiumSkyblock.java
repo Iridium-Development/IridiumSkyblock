@@ -15,7 +15,6 @@ import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.shop.ShopManager;
-import com.iridium.iridiumskyblock.support.DefaultSpawnerSupport;
 import com.iridium.iridiumskyblock.support.SpawnerSupport;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
@@ -297,7 +296,7 @@ public class IridiumSkyblock extends IridiumCore {
      * @return The Spawner Support Object
      */
     private SpawnerSupport setupSpawnerSupport() {
-        return new DefaultSpawnerSupport();
+        return spawner -> 1;
     }
 
     /**
