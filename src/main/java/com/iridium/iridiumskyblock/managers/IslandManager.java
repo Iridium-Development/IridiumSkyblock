@@ -292,6 +292,9 @@ public class IslandManager {
                 }
             }
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
         });
     }
 
@@ -798,6 +801,9 @@ public class IslandManager {
                 }
             }
             return entities;
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
         });
     }
 
