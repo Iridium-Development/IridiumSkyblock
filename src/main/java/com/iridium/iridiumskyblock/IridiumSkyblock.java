@@ -246,6 +246,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new ItemCraftListener(), this);
         Bukkit.getPluginManager().registerEvents(new EnchantItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new FurnaceSmeltListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerFishListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockGrowListener(), this);
         Bukkit.getPluginManager().registerEvents(new PotionBrewListener(), this);
