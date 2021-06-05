@@ -278,10 +278,13 @@ public class IslandManager {
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
 
-            int minX = island.getPos1(world).getChunk().getX();
-            int minZ = island.getPos1(world).getChunk().getZ();
-            int maxX = island.getPos2(world).getChunk().getX();
-            int maxZ = island.getPos2(world).getChunk().getZ();
+            Location pos1 = island.getPos1(world);
+            Location pos2 = island.getPos2(world);
+
+            int minX = pos1.getBlockX() >> 4;
+            int minZ = pos1.getBlockZ() >> 4;
+            int maxX = pos2.getBlockX() >> 4;
+            int maxZ = pos2.getBlockZ() >> 4;
 
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
