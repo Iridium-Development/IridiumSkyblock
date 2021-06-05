@@ -8,6 +8,7 @@ depend: [ Vault ]
 softdepend:
 - "MVdWPlaceholderAPI"
 - "PlaceholderAPI"
+- "Multiverse-Core"
 - "Essentials"
 - "EssentialsSpawn"
 - "RoseStacker"

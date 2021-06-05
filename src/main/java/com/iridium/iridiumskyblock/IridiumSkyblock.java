@@ -122,6 +122,10 @@ public class IridiumSkyblock extends IridiumCore {
         this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
         this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
 
+        registerMultiverse(islandManager.getWorld());
+        registerMultiverse(islandManager.getNetherWorld());
+        registerMultiverse(islandManager.getEndWorld());
+
         this.databaseManager = new DatabaseManager();
         // Try to connect to the database
         try {
@@ -302,6 +306,17 @@ public class IridiumSkyblock extends IridiumCore {
         if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) return new UltimateStackerSupport();
         return spawner -> 1;
     }
+  
+     * Registers Multiverse Support for this world
+     *
+     * @param world The specified World
+     */
+    private void registerMultiverse(World world) {
+        if(Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
+        }
+    }
 
     /**
      * Loads the configurations required for this plugin.
@@ -373,33 +388,15 @@ public class IridiumSkyblock extends IridiumCore {
         if (!schematicFolder.exists()) {
             schematicFolder.mkdir();
         }
-        saveFile(schematicFolder,
-                "desert.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "mushroom.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "jungle.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "desert_nether.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "mushroom_nether.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "jungle_nether.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "desert_end.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "mushroom_end.iridiumschem"
-        );
-        saveFile(schematicFolder,
-                "jungle_end.iridiumschem"
-        );
+        saveFile(schematicFolder, "desert.iridiumschem");
+        saveFile(schematicFolder, "mushroom.iridiumschem");
+        saveFile(schematicFolder, "jungle.iridiumschem");
+        saveFile(schematicFolder, "desert_nether.iridiumschem");
+        saveFile(schematicFolder, "mushroom_nether.iridiumschem");
+        saveFile(schematicFolder, "jungle_nether.iridiumschem");
+        saveFile(schematicFolder, "desert_end.iridiumschem");
+        saveFile(schematicFolder, "mushroom_end.iridiumschem");
+        saveFile(schematicFolder, "jungle_end.iridiumschem");
     }
 
     private void saveFile(File parent, String name) {
