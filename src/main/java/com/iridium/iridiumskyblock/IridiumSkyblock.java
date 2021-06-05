@@ -15,6 +15,8 @@ import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.shop.ShopManager;
+import com.iridium.iridiumskyblock.support.DefaultSpawnerSupport;
+import com.iridium.iridiumskyblock.support.SpawnerSupport;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
 import lombok.Getter;
@@ -73,6 +75,7 @@ public class IridiumSkyblock extends IridiumCore {
     private HashMap<String, Booster> boosterList;
 
     private Economy economy;
+    private SpawnerSupport spawnerSupport;
 
     /**
      * The default constructor.
@@ -138,6 +141,7 @@ public class IridiumSkyblock extends IridiumCore {
 
         this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
 
+        this.spawnerSupport = setupSpawnerSupport();
 
         // Initialize Vault economy support
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
@@ -285,6 +289,15 @@ public class IridiumSkyblock extends IridiumCore {
             return null;
         }
         return economyProvider.getProvider();
+    }
+
+    /**
+     * Gets the SpawnerSupport Object
+     *
+     * @return The Spawner Support Object
+     */
+    private SpawnerSupport setupSpawnerSupport() {
+        return new DefaultSpawnerSupport();
     }
 
     /**

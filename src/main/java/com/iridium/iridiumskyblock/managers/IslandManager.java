@@ -631,7 +631,7 @@ public class IslandManager {
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () ->
                 chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
                             World world = Bukkit.getWorld(chunk.getWorldName());
-                            int maxHeight = world == null ? 255 : world.getMaxHeight()-1;
+                            int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
                             for (int x = 0; x < 16; x++) {
                                 for (int z = 0; z < 16; z++) {
                                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
@@ -653,8 +653,9 @@ public class IslandManager {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner)) continue;
                 CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
+                int amount = IridiumSkyblock.getInstance().getSpawnerSupport().getSpawnerAmount(creatureSpawner);
                 IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
-                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
+                islandSpawners.setAmount(islandSpawners.getAmount() + amount);
             }
         });
     }
