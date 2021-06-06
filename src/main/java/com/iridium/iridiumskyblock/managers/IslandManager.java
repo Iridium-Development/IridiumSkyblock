@@ -835,6 +835,9 @@ public class IslandManager {
         if (sortType == SortType.VALUE) {
             return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
         }
+        if(sortType == SortType.LEVEL){
+            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList());
+        }
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
@@ -842,7 +845,7 @@ public class IslandManager {
      * Represents a way of ordering Islands.
      */
     public enum SortType {
-        VALUE
+        VALUE, LEVEL
     }
 
     /**
