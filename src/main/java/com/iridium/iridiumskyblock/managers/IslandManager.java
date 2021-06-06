@@ -2,10 +2,7 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.IslandRank;
-import com.iridium.iridiumskyblock.Mission;
-import com.iridium.iridiumskyblock.Permission;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandRegenEvent;
@@ -809,6 +806,31 @@ public class IslandManager {
             return null;
         });
     }
+
+    public void islandLevelUp(Island island, int newLevel) {
+
+        for (User user : getIslandMembers(island)) {
+            Player player = Bukkit.getPlayer(user.getUuid());
+            if (player != null) {
+                IridiumSkyblock.getInstance().getConfiguration().islandLevelUpSound.play(player);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandLevelUp
+                        .replace("%level%", String.valueOf(newLevel))
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+        }
+
+        Reward reward = null;
+        List<Map.Entry<Integer, Reward>> entries = IridiumSkyblock.getInstance().getConfiguration().islandLevelRewards.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toList());
+        for (Map.Entry<Integer, Reward> entry : entries) {
+            if (newLevel % entry.getKey() == 0) {
+                reward = entry.getValue();
+            }
+        }
+        if (reward != null) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().addEntry(new IslandReward(island, reward));
+        }
+    }
+
 
     /**
      * Sends the island border to all players on the island

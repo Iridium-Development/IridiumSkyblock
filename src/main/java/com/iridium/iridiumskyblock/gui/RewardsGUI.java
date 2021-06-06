@@ -2,10 +2,13 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandReward;
+import com.iridium.iridiumskyblock.placeholders.Placeholders;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -40,9 +43,11 @@ public class RewardsGUI implements GUI {
 
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandReward.background);
 
+        List<Placeholder> placeholders = new PlaceholderBuilder().applyIslandPlaceholders(island).build();
+
         AtomicInteger atomicInteger = new AtomicInteger(0);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island).forEach(islandReward ->
-                inventory.setItem(atomicInteger.getAndIncrement(), ItemStackUtils.makeItem(islandReward.getReward().item))
+                inventory.setItem(atomicInteger.getAndIncrement(), ItemStackUtils.makeItem(islandReward.getReward().item, placeholders))
         );
     }
 
