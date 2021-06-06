@@ -143,6 +143,7 @@ public class Messages {
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players islands already in Process";
     public String netherIslandsDisabled = "%prefix% &7Nether islands have been disabled";
     public String endIslandsDisabled = "%prefix% &7End islands have been disabled";
+    public String islandLevelUp = "%prefix% &7You island has reached level %level%!";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

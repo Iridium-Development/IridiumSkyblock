@@ -1,13 +1,18 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumcore.utils.NumberFormatter;
+import com.iridium.iridiumskyblock.Reward;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -37,6 +42,8 @@ public class Configuration {
     public int islandRecalculateInterval = 10;
     public int teleportDelay = 0;
 
+    public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
+
     public NumberFormatter numberFormatter = new NumberFormatter();
 
     public GeneratorSettings generatorSettings = new GeneratorSettings();
@@ -60,6 +67,32 @@ public class Configuration {
             .put(3, 13)
             .put(4, 15)
             .put(5, 17)
+            .build();
+
+    /**
+     * The Rewards the island gets for leveling up
+     * The integer represents the reward they will get, if the island level is divisible by this number they will get that reward
+     * Higest number takes priority
+     * <p>
+     * e.g. 1 will give the reward to every level since every number is divisible by 1
+     * 5 will give the reward to levels 5 10 15 20 25 ect since they are divisible by 5
+     */
+    public Map<Integer, Reward> islandLevelRewards = ImmutableMap.<Integer, Reward>builder()
+            .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                    "&7Island Level %island_level% Rewards:",
+                    "&b&l* &b5 Island Crystals",
+                    "&b&l* &200 Island Money",
+                    "",
+                    "&b&l[!] &bLeft click to redeem"
+            )), Collections.emptyList(), 0, 5, 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
+
+            .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                    "&7Island Level %island_level% Rewards:",
+                    "&b&l* &b15 Island Crystals",
+                    "&b&l* &2000 Island Money",
+                    "",
+                    "&b&l[!] &bLeft click to redeem"
+            )), Collections.emptyList(), 0, 15, 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
             .build();
 
     /**
