@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.Reward;
 import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -22,10 +23,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -244,6 +244,15 @@ public final class Island {
     public void setColor(@NotNull Color color) {
         this.color = color;
         IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(this);
+    }
+
+    public void setExperience(int experience) {
+        int currentLevel = getLevel();
+        this.experience = experience;
+        int newLevel = getLevel();
+        if (newLevel > currentLevel) {
+            IridiumSkyblock.getInstance().getIslandManager().islandLevelUp(this, newLevel);
+        }
     }
 
     /**
