@@ -33,6 +33,12 @@ public class ShopManager {
      * Loads all categories and items.
      */
     public ShopManager() {
+        reloadCategories();
+    }
+
+    public void reloadCategories() {
+        categories.clear();
+
         for (String categoryName : IridiumSkyblock.getInstance().getShop().items.keySet()) {
             ShopCategoryConfig shopCategoryConfig = IridiumSkyblock.getInstance().getShop().categories.get(categoryName);
             if (shopCategoryConfig == null) {
@@ -41,12 +47,12 @@ public class ShopManager {
             }
 
             categories.add(
-                    new ShopCategory(
-                            categoryName,
-                            shopCategoryConfig.item,
-                            IridiumSkyblock.getInstance().getShop().items.get(categoryName),
-                            shopCategoryConfig.inventoryRows * 9
-                    )
+                new ShopCategory(
+                    categoryName,
+                    shopCategoryConfig.item,
+                    IridiumSkyblock.getInstance().getShop().items.get(categoryName),
+                    shopCategoryConfig.inventoryRows * 9
+                )
             );
         }
     }
