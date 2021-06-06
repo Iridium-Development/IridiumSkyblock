@@ -109,6 +109,8 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void onEnable() {
+        super.onEnable();
+
         // Convert old IridiumSkyblock data
         DataConverter.run(this);
 
@@ -191,8 +193,6 @@ public class IridiumSkyblock extends IridiumCore {
                 .setDownloadLink(62480)
                 .setColoredConsoleOutput(true)
                 .checkNow();
-
-        super.onEnable();
     }
 
     /**
@@ -402,6 +402,8 @@ public class IridiumSkyblock extends IridiumCore {
         saveFile(schematicFolder, "desert_end.iridiumschem");
         saveFile(schematicFolder, "mushroom_end.iridiumschem");
         saveFile(schematicFolder, "jungle_end.iridiumschem");
+
+        shopManager.reloadCategories();
     }
 
     private void saveFile(File parent, String name) {
