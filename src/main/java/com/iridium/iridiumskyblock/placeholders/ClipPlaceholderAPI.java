@@ -5,6 +5,12 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
 public class ClipPlaceholderAPI extends PlaceholderExpansion {
+    
+    @Override
+    public boolean persist() {
+        return true;
+    }
+
     @Override
     public String getIdentifier() {
         return "iridiumskyblock";
