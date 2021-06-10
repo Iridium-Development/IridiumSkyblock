@@ -6,6 +6,7 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -52,7 +53,8 @@ public class PermissionsRankGUI implements GUI {
 
         for (int i = 0; i < 5; i++) {
             IslandRank islandRank = IslandRank.getByLevel(i);
-            String rankName = IridiumSkyblock.getInstance().getConfiguration().islandRanks.get(islandRank);
+            Configuration configuration = IridiumSkyblock.getInstance().getConfiguration();
+            String rankName = configuration.islandRanks.containsKey(islandRank) ? configuration.islandRanks.get(islandRank) : islandRank.name();
             inventory.setItem(i + 11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().permissionsRankGUI.item, Collections.singletonList(new Placeholder("rank", rankName))));
         }
     }
