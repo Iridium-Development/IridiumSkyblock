@@ -6,6 +6,7 @@ import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnorePrope
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumcore.utils.NumberFormatter;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Reward;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
 import lombok.AllArgsConstructor;
@@ -67,6 +68,14 @@ public class Configuration {
             .put(3, 13)
             .put(4, 15)
             .put(5, 17)
+            .build();
+
+    public Map<IslandRank, String> islandRanks = ImmutableMap.<IslandRank, String>builder()
+            .put(IslandRank.OWNER, "&b&lOwner")
+            .put(IslandRank.CO_OWNER, "&b&lCo-Owner")
+            .put(IslandRank.MODERATOR, "&b&lModeratör")
+            .put(IslandRank.MEMBER, "&b&lMember")
+            .put(IslandRank.VISITOR, "&b&lVisitor")
             .build();
 
     /**

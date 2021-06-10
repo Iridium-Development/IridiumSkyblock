@@ -52,7 +52,8 @@ public class PermissionsRankGUI implements GUI {
 
         for (int i = 0; i < 5; i++) {
             IslandRank islandRank = IslandRank.getByLevel(i);
-            inventory.setItem(i + 11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().permissionsRankGUI.item, Collections.singletonList(new Placeholder("rank", islandRank.name()))));
+            String rankName = IridiumSkyblock.getInstance().getConfiguration().islandRanks.get(islandRank);
+            inventory.setItem(i + 11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().permissionsRankGUI.item, Collections.singletonList(new Placeholder("rank", rankName))));
         }
     }
 
