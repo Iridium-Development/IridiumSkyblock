@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.entity.Player;
@@ -34,17 +35,17 @@ public class PlayerInteractListener implements Listener {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
             if (material.name().contains("DOOR")) {
-                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().doors, "doors")) {
+                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.DOORS)) {
                     event.setCancelled(true);
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotOpenDoors.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else if (event.getClickedBlock().getState() instanceof InventoryHolder) {
-                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().openContainers, "openContainers")) {
+                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.OPEN_CONTAINERS)) {
                     event.setCancelled(true);
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotOpenContainers.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else if (material.equals(XMaterial.LEVER) || material.name().contains("BUTTON") || material.name().contains("PRESSURE_PLATE")) {
-                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().redstone, "redstone")) {
+                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.REDSTONE)) {
                     event.setCancelled(true);
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUseRedstone.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -62,7 +63,7 @@ public class PlayerInteractListener implements Listener {
             return;
         }
 
-        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().interactEntities, "interactEntities")) {
+        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.INTERACT_ENTITIES)) {
             return;
         }
 

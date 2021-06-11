@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
@@ -26,10 +27,10 @@ public class BlockBreakListener implements Listener {
         }
 
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
-        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().blockBreak, "blockBreak")) {
+        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
             event.setCancelled(true);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        } else if (material.equals(XMaterial.SPAWNER) && !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().spawners, "spawners")) {
+        } else if (material.equals(XMaterial.SPAWNER) && !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.SPAWNERS)) {
             event.setCancelled(true);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotMineSpawners.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }

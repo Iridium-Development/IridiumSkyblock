@@ -356,27 +356,27 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         this.permissionList = new HashMap<>();
-        this.permissionList.put("redstone", permissions.redstone);
-        this.permissionList.put("blockPlace", permissions.blockPlace);
-        this.permissionList.put("blockBreak", permissions.blockBreak);
-        this.permissionList.put("bucket", permissions.bucket);
-        this.permissionList.put("doors", permissions.doors);
-        this.permissionList.put("killMobs", permissions.killMobs);
-        this.permissionList.put("openContainers", permissions.openContainers);
-        this.permissionList.put("spawners", permissions.spawners);
-        this.permissionList.put("changePermissions", permissions.changePermissions);
-        this.permissionList.put("kick", permissions.kick);
-        this.permissionList.put("invite", permissions.invite);
-        this.permissionList.put("regen", permissions.regen);
-        this.permissionList.put("promote", permissions.promote);
-        this.permissionList.put("demote", permissions.demote);
-        this.permissionList.put("pickupItems", permissions.pickupItems);
-        this.permissionList.put("dropItems", permissions.dropItems);
-        this.permissionList.put("interactEntities", permissions.interactEntities);
-        this.permissionList.put("manageWarps", permissions.manageWarps);
-        this.permissionList.put("withdrawBank", permissions.withdrawBank);
-        this.permissionList.put("trust", permissions.trust);
-        this.permissionList.put("border", permissions.border);
+        this.permissionList.put(PermissionType.REDSTONE.getPermissionKey(), permissions.redstone);
+        this.permissionList.put(PermissionType.BLOCK_PLACE.getPermissionKey(), permissions.blockPlace);
+        this.permissionList.put(PermissionType.BLOCK_BREAK.getPermissionKey(), permissions.blockBreak);
+        this.permissionList.put(PermissionType.BUCKET.getPermissionKey(), permissions.bucket);
+        this.permissionList.put(PermissionType.DOORS.getPermissionKey(), permissions.doors);
+        this.permissionList.put(PermissionType.KILL_MOBS.getPermissionKey(), permissions.killMobs);
+        this.permissionList.put(PermissionType.OPEN_CONTAINERS.getPermissionKey(), permissions.openContainers);
+        this.permissionList.put(PermissionType.SPAWNERS.getPermissionKey(), permissions.spawners);
+        this.permissionList.put(PermissionType.CHANGE_PERMISSIONS.getPermissionKey(), permissions.changePermissions);
+        this.permissionList.put(PermissionType.KICK.getPermissionKey(), permissions.kick);
+        this.permissionList.put(PermissionType.INVITE.getPermissionKey(), permissions.invite);
+        this.permissionList.put(PermissionType.REGEN.getPermissionKey(), permissions.regen);
+        this.permissionList.put(PermissionType.PROMOTE.getPermissionKey(), permissions.promote);
+        this.permissionList.put(PermissionType.DEMOTE.getPermissionKey(), permissions.demote);
+        this.permissionList.put(PermissionType.PICKUP_ITEMS.getPermissionKey(), permissions.pickupItems);
+        this.permissionList.put(PermissionType.DROP_ITEMS.getPermissionKey(), permissions.dropItems);
+        this.permissionList.put(PermissionType.INTERACT_ENTITIES.getPermissionKey(), permissions.interactEntities);
+        this.permissionList.put(PermissionType.MANAGE_WARPS.getPermissionKey(), permissions.manageWarps);
+        this.permissionList.put(PermissionType.WITHDRAW_BANK.getPermissionKey(), permissions.withdrawBank);
+        this.permissionList.put(PermissionType.TRUST.getPermissionKey(), permissions.trust);
+        this.permissionList.put(PermissionType.BORDER.getPermissionKey(), permissions.border);
 
         this.bankItemList = new ArrayList<>();
         this.bankItemList.add(bankItems.crystalsBankItem);
@@ -411,7 +411,7 @@ public class IridiumSkyblock extends IridiumCore {
         saveFile(schematicFolder, "mushroom_end.iridiumschem");
         saveFile(schematicFolder, "jungle_end.iridiumschem");
 
-        if(shopManager != null)shopManager.reloadCategories();
+        if (shopManager != null) shopManager.reloadCategories();
     }
 
     private void saveFile(File parent, String name) {

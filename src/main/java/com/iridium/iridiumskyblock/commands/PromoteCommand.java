@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.UserPromoteEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
@@ -55,7 +56,7 @@ public class PromoteCommand extends Command {
 
             if (island.get().equals(targetUser.getIsland().orElse(null))) {
                 IslandRank nextRank = IslandRank.getByLevel(targetUser.getIslandRank().getLevel() + 1);
-                if (nextRank != null && nextRank.getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), IridiumSkyblock.getInstance().getPermissions().promote, "promote")) {
+                if (nextRank != null && nextRank.getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.PROMOTE)) {
                     UserPromoteEvent userPromoteEvent = new UserPromoteEvent(island.get(), user, nextRank);
                     Bukkit.getPluginManager().callEvent(userPromoteEvent);
                     if (userPromoteEvent.isCancelled()) return;

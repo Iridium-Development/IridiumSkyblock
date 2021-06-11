@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
@@ -42,7 +43,7 @@ public class TrustCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), IridiumSkyblock.getInstance().getPermissions().trust, "trust")) {
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.TRUST)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageTrusts.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return;
             }

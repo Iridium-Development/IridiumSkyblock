@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.entity.Player;
@@ -31,7 +32,7 @@ public class BucketListener implements Listener {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlockClicked().getLocation());
 
         if (!island.isPresent()) return;
-        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().bucket, "bucket")) {
+        if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BUCKET)) {
             return;
         }
 

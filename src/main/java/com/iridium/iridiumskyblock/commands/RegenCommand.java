@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -43,7 +44,7 @@ public class RegenCommand extends Command {
 
         if (island.isPresent()) {
             if (args.length == 1) {
-                if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), IridiumSkyblock.getInstance().getPermissions().regen, "regen")) {
+                if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.REGEN)) {
                     player.openInventory(new IslandRegenGUI(player).getInventory());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

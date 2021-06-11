@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.IslandWarp;
@@ -43,7 +44,7 @@ public class SetWarpCommand extends Command {
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), IridiumSkyblock.getInstance().getPermissions().manageWarps, "manageWarps")) {
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.MANAGE_WARPS)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageWarps.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return;
             }

@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.gui.InvitesGUI;
 import org.bukkit.Bukkit;
@@ -56,7 +57,7 @@ public class InviteCommand extends Command {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 } else if (IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), offlinePlayerUser).isPresent()) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyInvited.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                } else if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().invite, "invite")) {
+                } else if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.INVITE)) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInviteMember.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 } else if (islandMembers.size() >= memberLimit) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberLimitReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
