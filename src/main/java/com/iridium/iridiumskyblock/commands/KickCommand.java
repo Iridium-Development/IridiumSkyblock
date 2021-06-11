@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.UserKickEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
@@ -54,7 +55,7 @@ public class KickCommand extends Command {
             User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
 
             if (island.get().equals(targetUser.getIsland().orElse(null))) {
-                if (targetUser.getIslandRank().getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().kick, "kick")) {
+                if (targetUser.getIslandRank().getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.KICK)) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotKickUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 } else {
                     UserKickEvent userKickEvent = new UserKickEvent(island.get(), targetUser, user);

@@ -7,6 +7,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Permission;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
@@ -75,7 +76,7 @@ public class PermissionsGUI implements GUI {
             if (permission.getValue().getItem().slot != event.getSlot()) continue;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser((Player) event.getWhoClicked());
-            if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, IridiumSkyblock.getInstance().getPermissions().changePermissions, "changePermissions")) {
+            if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.CHANGE_PERMISSIONS)) {
                 event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangePermissions.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
                 boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, islandRank, permission.getValue(), permission.getKey());

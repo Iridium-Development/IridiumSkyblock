@@ -1,9 +1,6 @@
 package com.iridium.iridiumskyblock.api;
 
-import com.iridium.iridiumskyblock.Booster;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Permission;
-import com.iridium.iridiumskyblock.Upgrade;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
@@ -160,6 +157,16 @@ public class IridiumSkyblockAPI {
     }
 
     /**
+     * Gets a permission object from name
+     *
+     * @param permissionKey The permission key
+     * @return The the permission object
+     */
+    public Optional<Permission> getPermissions(@NotNull PermissionType permissionKey) {
+        return getPermissions(permissionKey.getPermissionKey());
+    }
+
+    /**
      * Gets whether a permission is allowed or denied.
      *
      * @param island     The specified Island
@@ -170,6 +177,18 @@ public class IridiumSkyblockAPI {
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission, @NotNull String key) {
         return iridiumSkyblock.getIslandManager().getIslandPermission(island, user, permission, key);
+    }
+
+    /**
+     * Gets whether a permission is allowed or denied.
+     *
+     * @param island     The specified Island
+     * @param user       The Specified User
+     * @param permission The Specified permission type
+     * @return The the permission is allowed
+     */
+    public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull PermissionType permission) {
+        return iridiumSkyblock.getIslandManager().getIslandPermission(island, user, permission);
     }
 
     /**
