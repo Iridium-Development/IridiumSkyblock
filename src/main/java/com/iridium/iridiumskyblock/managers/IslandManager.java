@@ -788,10 +788,14 @@ public class IslandManager {
      * @return A list of all entities on that island
      */
     public CompletableFuture<List<Entity>> getEntities(@NotNull Island island, @NotNull World... worlds) {
-        return CompletableFuture.supplyAsync(() -> {
-            List<Entity> entities = new ArrayList<>();
+        CompletableFuture<List<Entity>> completableFuture = new CompletableFuture<>();
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            List<Chunk> chunks = new ArrayList<>();
             for (World world : worlds) {
-                List<Chunk> chunks = getIslandChunks(island, world).join();
+                chunks.addAll(getIslandChunks(island, world).join());
+            }
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                List<Entity> entities = new ArrayList<>();
                 for (Chunk chunk : chunks) {
                     for (Entity entity : chunk.getEntities()) {
                         if (island.isInIsland(entity.getLocation())) {
@@ -799,12 +803,10 @@ public class IslandManager {
                         }
                     }
                 }
-            }
-            return entities;
-        }).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            return null;
+                completableFuture.complete(entities);
+            });
         });
+        return completableFuture;
     }
 
     public void islandLevelUp(Island island, int newLevel) {
