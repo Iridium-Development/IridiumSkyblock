@@ -361,6 +361,7 @@ public class IslandManager {
      * @param island     The specified Island
      * @param user       The Specified User
      * @param permission The Specified permission
+     * @param key        The permission Key
      * @return The the permission is allowed
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission, @NotNull String key) {
@@ -371,6 +372,18 @@ public class IslandManager {
             islandRank = IslandRank.MEMBER;
         }
         return getIslandPermission(island, islandRank, permission, key) || user.isBypass();
+    }
+
+    /**
+     * Gets weather a permission is allowed or denied.
+     *
+     * @param island         The specified Island
+     * @param user           The Specified User
+     * @param permissionType The Specified permission type
+     * @return The the permission is allowed
+     */
+    public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull PermissionType permissionType) {
+        return getIslandPermission(island, user, IridiumSkyblock.getInstance().getPermissionList().get(permissionType.getPermissionKey()), permissionType.getPermissionKey());
     }
 
     /**
