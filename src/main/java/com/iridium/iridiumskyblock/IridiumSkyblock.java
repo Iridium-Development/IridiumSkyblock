@@ -136,6 +136,7 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         this.shopManager = new ShopManager();
+        shopManager.reloadCategories();
 
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
@@ -193,6 +194,13 @@ public class IridiumSkyblock extends IridiumCore {
                 .setDownloadLink(62480)
                 .setColoredConsoleOutput(true)
                 .checkNow();
+
+        getLogger().info("----------------------------------------");
+        getLogger().info("");
+        getLogger().info(getDescription().getName() + " Enabled!");
+        getLogger().info("Version: " + getDescription().getVersion());
+        getLogger().info("");
+        getLogger().info("----------------------------------------");
     }
 
     /**
@@ -403,7 +411,7 @@ public class IridiumSkyblock extends IridiumCore {
         saveFile(schematicFolder, "mushroom_end.iridiumschem");
         saveFile(schematicFolder, "jungle_end.iridiumschem");
 
-        shopManager.reloadCategories();
+        if(shopManager != null)shopManager.reloadCategories();
     }
 
     private void saveFile(File parent, String name) {

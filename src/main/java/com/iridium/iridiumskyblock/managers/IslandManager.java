@@ -150,8 +150,7 @@ public class IslandManager {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         createIsland(player, name, schematicConfig).thenAccept(island -> {
                     player.teleport(island.getHome());
-                    IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle), 20, 40, 20);
-                    IridiumSkyblock.getInstance().getNms().sendSubTitle(player, StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle), 20, 40, 20);
+                    IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
                 }
         );
     }
@@ -291,7 +290,7 @@ public class IslandManager {
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
         }).exceptionally(throwable -> {
             throwable.printStackTrace();
-            return null;
+            return Collections.emptyList();
         });
     }
 
@@ -788,10 +787,14 @@ public class IslandManager {
      * @return A list of all entities on that island
      */
     public CompletableFuture<List<Entity>> getEntities(@NotNull Island island, @NotNull World... worlds) {
-        return CompletableFuture.supplyAsync(() -> {
-            List<Entity> entities = new ArrayList<>();
+        CompletableFuture<List<Entity>> completableFuture = new CompletableFuture<>();
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            List<Chunk> chunks = new ArrayList<>();
             for (World world : worlds) {
-                List<Chunk> chunks = getIslandChunks(island, world).join();
+                chunks.addAll(getIslandChunks(island, world).join());
+            }
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                List<Entity> entities = new ArrayList<>();
                 for (Chunk chunk : chunks) {
                     for (Entity entity : chunk.getEntities()) {
                         if (island.isInIsland(entity.getLocation())) {
@@ -799,12 +802,10 @@ public class IslandManager {
                         }
                     }
                 }
-            }
-            return entities;
-        }).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            return null;
+                completableFuture.complete(entities);
+            });
         });
+        return completableFuture;
     }
 
     public void islandLevelUp(Island island, int newLevel) {
@@ -857,7 +858,7 @@ public class IslandManager {
         if (sortType == SortType.VALUE) {
             return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
         }
-        if(sortType == SortType.LEVEL){
+        if (sortType == SortType.LEVEL) {
             return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList());
         }
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();

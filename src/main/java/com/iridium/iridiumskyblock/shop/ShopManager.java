@@ -27,15 +27,6 @@ public class ShopManager {
 
     private final List<ShopCategory> categories = new ArrayList<>();
 
-    /**
-     * The default constructor.
-     * <p>
-     * Loads all categories and items.
-     */
-    public ShopManager() {
-        reloadCategories();
-    }
-
     public void reloadCategories() {
         categories.clear();
 
