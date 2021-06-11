@@ -24,7 +24,7 @@ repositories {
 dependencies {
     // Dependencies that we want to shade in
     implementation("org.jetbrains", "annotations", "16.0.1")
-    implementation("com.iridium", "IridiumCore", "1.0.9")
+    implementation("com.iridium", "IridiumCore", "1.1.3")
     implementation("org.bstats", "bstats-bukkit", "2.2.1")
     implementation("com.github.j256", "ormlite-core", "master-SNAPSHOT")
     implementation("com.j256.ormlite", "ormlite-jdbc", "5.3")
@@ -32,7 +32,7 @@ dependencies {
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok", "lombok", "1.18.20")
-    compileOnly("org.spigotmc", "spigot-api", "1.16.5-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc", "spigot-api", "1.17-R0.1-SNAPSHOT")
     compileOnly("net.ess3", "EssentialsXSpawn", "2.16.1")
     compileOnly("com.github.MilkBowl", "VaultAPI", "1.7")
     compileOnly("me.clip", "placeholderapi", "2.9.2")
