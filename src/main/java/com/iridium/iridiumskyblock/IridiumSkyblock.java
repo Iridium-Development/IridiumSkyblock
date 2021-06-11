@@ -136,6 +136,7 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         this.shopManager = new ShopManager();
+        shopManager.reloadCategories();
 
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
