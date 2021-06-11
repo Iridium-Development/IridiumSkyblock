@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -28,6 +29,10 @@ public class PlayerInteractListener implements Listener {
             }
 
             XMaterial material = XMaterial.matchXMaterial(event.getClickedBlock().getType());
+            if (event.getAction() == Action.PHYSICAL && material == XMaterial.FARMLAND) {
+                event.setCancelled(true);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
             if (material.name().contains("DOOR")) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, IridiumSkyblock.getInstance().getPermissions().doors, "doors")) {
                     event.setCancelled(true);
