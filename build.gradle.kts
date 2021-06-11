@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "3.0.3"
+version = "3.0.4"
 description = "IridiumSkyblock"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
