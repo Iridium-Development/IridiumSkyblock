@@ -195,6 +195,8 @@ public class IridiumSkyblock extends IridiumCore {
                 .setColoredConsoleOutput(true)
                 .checkNow();
 
+        DataConverter.deleteDuplicateUpgrades();
+
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
