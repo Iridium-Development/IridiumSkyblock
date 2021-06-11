@@ -98,6 +98,9 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void onLoad() {
+        // Initialize the shop manager because it is already required in the super.onLoad() method
+        this.shopManager = new ShopManager();
+
         super.onLoad();
 
         // Initialize the ChunkGenerator
@@ -109,8 +112,6 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void onEnable() {
-        super.onEnable();
-
         // Convert old IridiumSkyblock data
         DataConverter.run(this);
 
@@ -134,8 +135,6 @@ public class IridiumSkyblock extends IridiumCore {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-
-        this.shopManager = new ShopManager();
 
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
@@ -193,6 +192,8 @@ public class IridiumSkyblock extends IridiumCore {
                 .setDownloadLink(62480)
                 .setColoredConsoleOutput(true)
                 .checkNow();
+
+        super.onEnable();
     }
 
     /**
