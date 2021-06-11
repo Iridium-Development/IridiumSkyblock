@@ -23,8 +23,8 @@ repositories {
 
 dependencies {
     // Dependencies that we want to shade in
+    implementation("com.iridium", "IridiumCore", "1.1.2")
     implementation("org.jetbrains", "annotations", "16.0.1")
-    implementation("com.iridium", "IridiumCore", "1.1.1")
     implementation("org.bstats", "bstats-bukkit", "2.2.1")
     implementation("com.github.j256", "ormlite-core", "master-SNAPSHOT")
     implementation("com.j256.ormlite", "ormlite-jdbc", "5.3")
