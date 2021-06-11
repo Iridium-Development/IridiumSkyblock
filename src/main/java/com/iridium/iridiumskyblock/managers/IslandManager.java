@@ -291,7 +291,7 @@ public class IslandManager {
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
         }).exceptionally(throwable -> {
             throwable.printStackTrace();
-            return null;
+            return Collections.emptyList();
         });
     }
 
@@ -859,7 +859,7 @@ public class IslandManager {
         if (sortType == SortType.VALUE) {
             return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
         }
-        if(sortType == SortType.LEVEL){
+        if (sortType == SortType.LEVEL) {
             return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList());
         }
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
