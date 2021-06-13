@@ -4,7 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.PermissionsRankGUI;
+import com.iridium.iridiumskyblock.gui.IslandRanksGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -39,7 +39,7 @@ public class PermissionsCommand extends Command {
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
-            player.openInventory(new PermissionsRankGUI(island.get()).getInventory());
+            player.openInventory(new IslandRanksGUI(island.get()).getInventory());
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
