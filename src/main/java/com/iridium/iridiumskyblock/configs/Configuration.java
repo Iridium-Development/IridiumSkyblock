@@ -40,6 +40,8 @@ public class Configuration {
     public int distance = 151;
     public int schematicPastingDelay = 1;
     public int islandRecalculateInterval = 10;
+    public int maxIslandName = 16;
+    public int minIslandName = 3;
     public int teleportDelay = 0;
 
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
