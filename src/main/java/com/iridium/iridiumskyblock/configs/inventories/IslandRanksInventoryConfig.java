@@ -28,7 +28,7 @@ public class IslandRanksInventoryConfig {
     /**
      * The item for Co-Owner Rank
      */
-    public Item co_owner;
+    public Item coOwner;
     /**
      * The item for Moderator Rank
      */
