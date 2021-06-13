@@ -32,7 +32,7 @@ public class RenameCommand extends Command {
     public void execute(CommandSender sender, String[] args) {
         Player p = (Player) sender;
         if (args.length != 2) {
-            sender.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getConfiguration()).prefix) + " &b/is setname <Island Name>");
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " &b/is rename <Island Name>"));
             return;
         }
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(p);
