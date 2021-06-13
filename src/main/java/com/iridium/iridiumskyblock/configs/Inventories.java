@@ -160,7 +160,12 @@ public class Inventories {
 
     public NoItemGUI islandPermissionsGUI = new NoItemGUI(45, "&7Island Permissions", background1);
 
-    public SingleItemGUI permissionsRankGUI = new SingleItemGUI(27, "&7Island Permissions", background1, new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l%rank%", Collections.emptyList()));
+    public IslandRanksInventoryConfig islandRanksGUI = new IslandRanksInventoryConfig(27, "&7Island Permissions", background1,
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 11, 1, "&b&lOwner", Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 12, 1, "&b&lCo-Owner", Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 13, 1, "&b&lModerator", Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&b&lMember", Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&b&lVisitor", Collections.emptyList()));
 
     public NoItemGUI islandReward = new NoItemGUI(45, "&7Island Rewards", background1);
 
