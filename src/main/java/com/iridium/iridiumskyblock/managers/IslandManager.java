@@ -637,6 +637,11 @@ public class IslandManager {
         getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getEndWorld()).thenAccept(chunks ->
                 recalculateIsland(island, chunks)
         );
+
+        IridiumSkyblock.getInstance().getBlockStackerSupport().getBlockAmounts(island).forEach(blockAmount -> {
+            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
+            islandBlock.setAmount(islandBlock.getAmount() + blockAmount.getAmount());
+        });
     }
 
     /**
@@ -658,8 +663,8 @@ public class IslandManager {
                                             XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
                                             if (material.equals(XMaterial.AIR)) continue;
 
-                                            IslandBlocks IslandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
-                                            IslandBlocks.setAmount(IslandBlocks.getAmount() + 1);
+                                            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
+                                            islandBlock.setAmount(islandBlock.getAmount() + 1);
                                         }
                                     }
                                 }
@@ -671,7 +676,7 @@ public class IslandManager {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner)) continue;
                 CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
-                int amount = IridiumSkyblock.getInstance().getSpawnerSupport().getSpawnerAmount(creatureSpawner);
+                int amount = IridiumSkyblock.getInstance().getSpawnerStackerSupport().getSpawnerAmount(creatureSpawner);
                 IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
                 islandSpawners.setAmount(islandSpawners.getAmount() + amount);
             }

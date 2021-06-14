@@ -74,7 +74,8 @@ public class IridiumSkyblock extends IridiumCore {
     private HashMap<String, Booster> boosterList;
 
     private Economy economy;
-    private SpawnerSupport spawnerSupport;
+    private SpawnerStackerSupport spawnerStackerSupport;
+    private BlockStackerSupport blockStackerSupport;
 
     /**
      * The default constructor.
@@ -143,7 +144,8 @@ public class IridiumSkyblock extends IridiumCore {
 
         this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
 
-        this.spawnerSupport = setupSpawnerSupport();
+        this.spawnerStackerSupport = setupSpawnerSupport();
+        this.blockStackerSupport = setupBlockStackerSupport();
 
         // Initialize Vault economy support
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
@@ -312,13 +314,23 @@ public class IridiumSkyblock extends IridiumCore {
      *
      * @return The Spawner Support Object
      */
-    private SpawnerSupport setupSpawnerSupport() {
+    private SpawnerStackerSupport setupSpawnerSupport() {
         if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
         if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
         if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) return new AdvancedSpawnersSupport();
         if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) return new UltimateStackerSupport();
         if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) return new EpicSpawnersSupport();
         return spawner -> 1;
+    }
+
+    /**
+     * Gets the BlockStacker Object
+     *
+     * @return The BlockStacker Support Object
+     */
+    private BlockStackerSupport setupBlockStackerSupport() {
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
+        return block -> Collections.emptyList();
     }
 
     /**
