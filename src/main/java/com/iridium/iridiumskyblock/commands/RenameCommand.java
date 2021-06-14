@@ -30,36 +30,36 @@ public class RenameCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
-        if (args.length != 2) {
+        Player player = (Player) sender;
+        if (args.length < 2) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " &b/is rename <Island Name>"));
             return;
         }
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(p);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
             String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
             if (!user.getIslandRank().equals(IslandRank.OWNER)) {
-                p.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName
+                player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName
                         .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
             } else if (name.length() > (IridiumSkyblock.getInstance().getConfiguration()).maxIslandName) {
-                p.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
+                player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
                         .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
                         .replace("%name%", name)
                         .replace("%max_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().maxIslandName))));
             } else if (name.length() < (IridiumSkyblock.getInstance().getConfiguration()).minIslandName) {
-                p.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
+                player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
                         .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
                         .replace("%name%", name)
                         .replace("%min_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().minIslandName))));
             } else {
                 island.get().setName(name);
                 island.get().getMembers().forEach(member -> {
-                    Player player = Bukkit.getPlayer(member.getUuid());
-                    if (player != null)
-                        player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
+                    Player islandMember = Bukkit.getPlayer(member.getUuid());
+                    if (islandMember != null)
+                        islandMember.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
                                 .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
-                                .replace("%player%", p.getName())
+                                .replace("%player%", player.getName())
                                 .replace("%name%", name)));
                 });
             }
@@ -78,7 +78,8 @@ public class RenameCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-
+        // We currently don't want to tab-completion here
+        // Return a new List so it isn't a list of online players
         return Collections.emptyList();
     }
 }

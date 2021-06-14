@@ -66,8 +66,8 @@ public class Messages {
     public String transferredOwnership = "%prefix% &7%oldowner% has transferred Island ownership to %newowner%.";
     public String islandValue = "%prefix% &b&l * &7%rank%: &b%value%";
     public String cannotChangeName = "%prefix% &7You cannot change the island name!";
-    public String islandNameTooLong = "%prefix% %name% is too long for the island name, The maximum size is %max_length%";
-    public String islandNameTooShort = "%prefix% %name% is too short for the island name, The minimum size is %min_length%";
+    public String islandNameTooLong = "%prefix% %name% is too long for the island name, the maximum length is %max_length%";
+    public String islandNameTooShort = "%prefix% %name% is too short for the island name, the minimum length is %min_length%";
     public String islandNameChanged = "%prefix% &7%player% has changed the island name to %name%";
     public String cannotTransferYourself = "%prefix% &7You cannot transfer the island ownership to yourself.";
     public String cannotBreakBlocks = "%prefix% &7You cannot break blocks on this island.";
