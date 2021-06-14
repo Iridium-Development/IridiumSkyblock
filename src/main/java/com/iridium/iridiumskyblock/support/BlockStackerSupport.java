@@ -8,6 +8,7 @@ import lombok.Getter;
 import java.util.List;
 
 public interface BlockStackerSupport {
+
     List<BlockAmount> getBlockAmounts(Island island);
 
     @AllArgsConstructor

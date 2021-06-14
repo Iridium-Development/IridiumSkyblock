@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumcore.IridiumCore;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.bank.BankItem;

@@ -639,8 +639,8 @@ public class IslandManager {
         );
 
         IridiumSkyblock.getInstance().getBlockStackerSupport().getBlockAmounts(island).forEach(blockAmount -> {
-            IslandBlocks IslandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
-            IslandBlocks.setAmount(IslandBlocks.getAmount() + blockAmount.getAmount());
+            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
+            islandBlock.setAmount(islandBlock.getAmount() + blockAmount.getAmount());
         });
     }
 
@@ -663,8 +663,8 @@ public class IslandManager {
                                             XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
                                             if (material.equals(XMaterial.AIR)) continue;
 
-                                            IslandBlocks IslandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
-                                            IslandBlocks.setAmount(IslandBlocks.getAmount() + 1);
+                                            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
+                                            islandBlock.setAmount(islandBlock.getAmount() + 1);
                                         }
                                     }
                                 }
