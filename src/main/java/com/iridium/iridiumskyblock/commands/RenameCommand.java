@@ -17,7 +17,7 @@ import java.util.Optional;
 public class RenameCommand extends Command {
 
     public RenameCommand() {
-        super(Collections.singletonList("rename"), "Change your the island name", "", true);
+        super(Collections.singletonList("rename"), "Change your island name", "", true);
     }
 
     /**
