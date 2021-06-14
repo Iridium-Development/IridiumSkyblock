@@ -56,12 +56,15 @@ tasks {
         enabled = false
     }
 
-    // Relocate dependencies, remove the archive classifier suffix
     shadowJar {
+        // Remove the archive classifier suffix
         archiveClassifier.set("")
+
+        // Relocate dependencies
         relocate("com.fasterxml.jackson", "com.iridium.iridiumskyblock.dependencies.fasterxml")
         relocate("com.j256.ormlite", "com.iridium.iridiumskyblock.dependencies.ormlite")
         relocate("org.bstats", "com.iridium.iridiumskyblock.dependencies.bstats")
+        relocate("de.jeff_media", "com.iridium.iridiumskyblock.dependencies")
 
         // Remove unnecessary files from the jar
         minimize()
