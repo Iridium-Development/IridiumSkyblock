@@ -637,6 +637,11 @@ public class IslandManager {
         getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getEndWorld()).thenAccept(chunks ->
                 recalculateIsland(island, chunks)
         );
+
+        IridiumSkyblock.getInstance().getBlockStackerSupport().getBlockAmounts(island).forEach(blockAmount -> {
+            IslandBlocks IslandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
+            IslandBlocks.setAmount(IslandBlocks.getAmount() + blockAmount.getAmount());
+        });
     }
 
     /**
@@ -671,7 +676,7 @@ public class IslandManager {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner)) continue;
                 CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
-                int amount = IridiumSkyblock.getInstance().getSpawnerSupport().getSpawnerAmount(creatureSpawner);
+                int amount = IridiumSkyblock.getInstance().getSpawnerStackerSupport().getSpawnerAmount(creatureSpawner);
                 IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
                 islandSpawners.setAmount(islandSpawners.getAmount() + amount);
             }
