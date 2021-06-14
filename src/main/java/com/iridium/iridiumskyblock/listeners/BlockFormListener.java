@@ -18,19 +18,12 @@ import java.util.Random;
 public class BlockFormListener implements Listener {
 
     private Random random = new Random();
-    /**
-     * upgradesParsed is a {@link Map} collection that contains {@link Integer}
-     * as key for the upgrade level and a two dimensional
-     * {@link Material} array where dimension one is for choosing
-     * the values for overworld or nether and dimension two are
-     * materials inserted as many times as their chance of forming.
-     */
-    private final Map<Integer, Material[][]> upgradesParsed;
+    private static Map<Integer, Material[]> upgradesParsed, upgradesParsedNether;
 
-    public BlockFormListener() {
+    public static void parseMaterialFrequencies() {
         upgradesParsed = new LinkedTreeMap<>();
+        upgradesParsedNether = new LinkedTreeMap<>();
         for (Map.Entry<Integer, OresUpgrade> upgrades : IridiumSkyblock.getInstance().getUpgrades().oresUpgrade.upgrades.entrySet()) {
-            Material[][] oresArrays;
             int oreFrequencySum = 0;
             for (Map.Entry<XMaterial, Integer> entries : upgrades.getValue().ores.entrySet()) {
                 oreFrequencySum += entries.getValue();
@@ -39,37 +32,41 @@ public class BlockFormListener implements Listener {
             for (Map.Entry<XMaterial, Integer> entries : upgrades.getValue().netherOres.entrySet()) {
                 netherOreFrequencySum += entries.getValue();
             }
-            oresArrays = new Material[][]{new Material[oreFrequencySum], new Material[netherOreFrequencySum]};
-            oresArrays[0] = new Material[oreFrequencySum];
+            Material[] oreFrequency = new Material[oreFrequencySum];
             int index = 0;
             for (Map.Entry<XMaterial, Integer> entries : upgrades.getValue().ores.entrySet()) {
                 Material material = entries.getKey().parseMaterial();
                 for (int i = 0; i < entries.getValue(); i++) {
-                    oresArrays[0][index++] = material;
+                    oreFrequency[index++] = material;
                 }
             }
-            oresArrays[1] = new Material[netherOreFrequencySum];
+            Material[] oreFrequencyNether = new Material[netherOreFrequencySum];
             int indexNether = 0;
             for (Map.Entry<XMaterial, Integer> entries : upgrades.getValue().netherOres.entrySet()) {
                 Material material = entries.getKey().parseMaterial();
                 for (int i = 0; i < entries.getValue(); i++) {
-                    oresArrays[1][indexNether++] = material;
+                    oreFrequencyNether[indexNether++] = material;
                 }
             }
-            upgradesParsed.put(upgrades.getKey(), oresArrays);
+            upgradesParsed.put(upgrades.getKey(), oreFrequency);
+            upgradesParsedNether.put(upgrades.getKey(), oreFrequencyNether);
         }
     }
 
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
         XMaterial newMaterial = XMaterial.matchXMaterial(event.getNewState().getType());
+        boolean nether = event.getBlock().getLocation().getWorld().getEnvironment().equals(World.Environment.NETHER);
         // Custom basalt generators should only work in nether
-        if (newMaterial.equals(XMaterial.COBBLESTONE) || newMaterial.equals(XMaterial.STONE) || (newMaterial.equals(XMaterial.BASALT) && event.getBlock().getLocation().getWorld().getEnvironment().equals(World.Environment.NETHER))) {
+        if (newMaterial.equals(XMaterial.COBBLESTONE) || newMaterial.equals(XMaterial.STONE) ||
+                (newMaterial.equals(XMaterial.BASALT) && nether)) {
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getNewState().getLocation());
             if (island.isPresent()) {
-                Material[] materials = upgradesParsed.get(IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "generator").getLevel())[newMaterial.equals(XMaterial.BASALT) ? 1 : 0];
+                Material[] materials = (nether ? upgradesParsed : upgradesParsedNether).get(IridiumSkyblock.getInstance().getIslandManager()
+                        .getIslandUpgrade(island.get(), "generator").getLevel());
                 Material material = materials[random.nextInt(materials.length)];
-                if (material == Material.COBBLESTONE && event.getBlock().getType() == Material.STONE)
+                //turn cobblestone into stone if the generator is a stone generator
+                if (material == Material.COBBLESTONE && newMaterial == XMaterial.STONE)
                     material = Material.STONE;
                 if (material != null) event.getNewState().setType(material);
             }
