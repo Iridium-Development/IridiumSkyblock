@@ -39,6 +39,7 @@ public class Commands {
     public RecalculateCommand recalculateCommand = new RecalculateCommand();
     public RegenCommand regenCommand = new RegenCommand();
     public ReloadCommand reloadCommand = new ReloadCommand();
+    public RenameCommand renameCommand = new RenameCommand();
     public RewardsCommand rewardsCommand = new RewardsCommand();
     public SaveSchematicCommand saveSchematicCommand = new SaveSchematicCommand();
     public SetHomeCommand setHomeCommand = new SetHomeCommand();
