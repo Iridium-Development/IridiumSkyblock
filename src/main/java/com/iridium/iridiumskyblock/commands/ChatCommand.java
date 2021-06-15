@@ -47,8 +47,6 @@ public class ChatCommand extends Command {
         if (!island.isPresent()) return;
 
         for (User user : island.get().getMembers()) {
-            if (user.getUuid().equals(player.getUniqueId())) continue;
-
             Player recipient = Bukkit.getPlayer(user.getUuid());
 
             if (recipient != null) {
