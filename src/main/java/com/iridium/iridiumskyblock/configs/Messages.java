@@ -60,7 +60,7 @@ public class Messages {
     public String cannotPromoteUser = "%prefix% &7You cannot promote this user.";
     public String promotedPlayer = "%prefix% &7You have promoted %player% to %rank%.";
     public String userPromotedPlayer = "%prefix% &7%promoter% has promoted %player% to %rank%.";
-    public String islandMemberChat = "%prefix% &7%player% &8>> &f%message%";
+    public String islandMemberChat = "%prefix% &7%player% &8» &f%message%";
     public String cannotDemoteUser = "%prefix% &7You cannot demote this user.";
     public String demotedPlayer = "%prefix% &7You have demoted %player% to %rank%.";
     public String userDemotedPlayer = "%prefix% &7%promoter% has demoted %player% to %rank%.";
@@ -149,6 +149,8 @@ public class Messages {
     public String netherIslandsDisabled = "%prefix% &7Nether islands have been disabled";
     public String endIslandsDisabled = "%prefix% &7End islands have been disabled";
     public String islandLevelUp = "%prefix% &7You island has reached level %level%!";
+    public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
+    public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

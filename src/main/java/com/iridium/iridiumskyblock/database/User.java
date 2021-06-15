@@ -47,6 +47,8 @@ public final class User {
 
     private boolean flying = false;
 
+    private boolean islandChat = false;
+
     private Location schematicPos1;
     private Location schematicPos2;
 
