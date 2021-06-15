@@ -7,7 +7,6 @@ plugins {
 group = "com.iridium"
 version = "3.0.4"
 description = "IridiumSkyblock"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     maven("https://repo.mvdw-software.com/content/groups/public/")
@@ -83,6 +82,13 @@ tasks {
 
         // Always re-run this task
         outputs.upToDateWhen { false }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+        vendor.set(JvmVendorSpec.ADOPTOPENJDK)
     }
 }
 
