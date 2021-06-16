@@ -31,6 +31,10 @@ public enum IslandRank {
         this.level = level;
     }
 
+    public String getDisplayName() {
+        return IridiumSkyblock.getInstance().getConfiguration().islandRankDisplayNames.get(level);
+    }
+
     /**
      * Gets an IslandRank by its level
      *
@@ -43,5 +47,4 @@ public enum IslandRank {
                 .findAny()
                 .orElse(null);
     }
-
 }

@@ -70,13 +70,13 @@ public class DemoteCommand extends Command {
                             Player p = Bukkit.getPlayer(member.getUuid());
                             if (p != null) {
                                 if (p.equals(player)) {
-                                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().demotedPlayer.replace("%player%", offlinePlayerUser.getName()).replace("%rank%", nextRank.name()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().demotedPlayer.replace("%player%", offlinePlayerUser.getName()).replace("%rank%", nextRank.getDisplayName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                                 } else {
-                                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userDemotedPlayer.replace("%promoter%", player.getName()).replace("%player%", offlinePlayerUser.getName()).replace("%rank%", nextRank.name()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userDemotedPlayer.replace("%promoter%", player.getName()).replace("%player%", offlinePlayerUser.getName()).replace("%rank%", nextRank.getDisplayName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                                 }
                             }
                         }
-                        IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_DEMOTED, user, offlinePlayerUser, 0, nextRank.name());
+                        IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_DEMOTED, user, offlinePlayerUser, 0, nextRank.getDisplayName());
                         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                     }
                 } else {

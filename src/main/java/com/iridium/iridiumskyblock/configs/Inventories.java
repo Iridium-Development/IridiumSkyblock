@@ -6,6 +6,7 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.configs.inventories.*;
 
 import java.util.Arrays;
@@ -161,11 +162,11 @@ public class Inventories {
     public NoItemGUI islandPermissionsGUI = new NoItemGUI(45, "&7Island Permissions", background1);
 
     public IslandRanksInventoryConfig islandRanksGUI = new IslandRanksInventoryConfig(27, "&7Island Permissions", background1,
-            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 11, 1, "&b&lOwner", Collections.singletonList("&b%members%")),
-            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 12, 1, "&b&lCo-Owner", Collections.singletonList("&b%members%")),
-            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 13, 1, "&b&lModerator", Collections.singletonList("&b%members%")),
-            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&b&lMember", Collections.singletonList("&b%members%")),
-            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&b&lVisitor", Collections.emptyList()));
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 11, 1, "&b&l" + IslandRank.OWNER.getDisplayName(), Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 12, 1, "&b&l" + IslandRank.CO_OWNER.getDisplayName(), Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 13, 1, "&b&l" + IslandRank.MODERATOR.getDisplayName(), Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&b&l" + IslandRank.MEMBER.getDisplayName(), Collections.singletonList("&b%members%")),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&b&l" + IslandRank.VISITOR.getDisplayName(), Collections.emptyList()));
 
     public NoItemGUI islandReward = new NoItemGUI(45, "&7Island Rewards", background1);
 
