@@ -135,8 +135,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     String command = IridiumSkyblock.getInstance().getCommands().createCommand.aliases.get(0);
                     Bukkit.getServer().dispatchCommand(player, "is " + command);
                 }
-                return true;
             }
+            return true;
         }
 
         for (Command command : commands) {
