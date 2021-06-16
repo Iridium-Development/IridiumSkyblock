@@ -54,7 +54,13 @@ public class WithdrawCommand extends Command {
             }
             Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
             if (bankItem.isPresent()) {
-                double amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+                double amount;
+                try {
+                    amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+                } catch (NumberFormatException e) {
+                    player.sendMessage(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
+                    return;
+                }
                 if (amount > 0) {
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_WITHDRAW, user, null, amount, bankItem.get().getName());
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
