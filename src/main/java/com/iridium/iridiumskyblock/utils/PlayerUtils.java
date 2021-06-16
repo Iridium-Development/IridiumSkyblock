@@ -41,7 +41,7 @@ public class PlayerUtils {
      * @param island The specified Island
      */
     public static void sendBorder(@NotNull Player player, @NotNull Island island) {
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + 1, island.getCenter(player.getWorld())));
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + + (island.getSize() % 2 == 0 ? 1 : 0), island.getCenter(player.getWorld())));
     }
 
     /**
