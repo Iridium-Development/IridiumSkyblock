@@ -47,4 +47,5 @@ public enum IslandRank {
                 .findAny()
                 .orElse(null);
     }
+
 }
