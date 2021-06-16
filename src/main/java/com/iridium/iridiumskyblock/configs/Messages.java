@@ -28,6 +28,7 @@ public class Messages {
     public String regeneratingIsland = "%prefix% &7Regenerating Island...";
     public String alreadyHaveIsland = "%prefix% &7You already have an Island.";
     public String noIsland = "%prefix% &7You don't have an Island.";
+    public String noIslandFound = "%prefix% &7No island found for that player.";
     public String islandWithNameAlreadyExists = "%prefix% &7An Island with that name already exists.";
     public String islandSchematicNotFound = "%prefix% &7No schematic with that name exists.";
     public String islandDeleted = "%prefix% &7Your Island has been deleted.";
