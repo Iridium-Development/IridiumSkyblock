@@ -114,8 +114,8 @@ public class Messages {
     public String notTrusted = "%prefix% &7%player% is not trusted in your Island.";
     public String createdWarp = "%prefix% &7Created warp %name%.";
     public String warpAlreadyExists = "%prefix% &7A warp with that name already exists.";
-    public String warpIconSet = "%prefix% &7Warp icon set.";
-    public String warpDescriptionSet = "%prefix% &7Warp description set.";
+    public String warpIconSet = "%prefix% &7warp icon set.";
+    public String warpDescriptionSet = "%prefix% &7warp description set.";
     public String noSuchMaterial = "%prefix% &7Material doesn't exist.";
     public String warpLimitReached = "%prefix% &7The max warp limit has already been reached.";
     public String incorrectPassword = "%prefix% &7Incorrect Password.";
@@ -135,7 +135,7 @@ public class Messages {
     public String cannotManageBorder = "%prefix% &7You cannot change the Island Border.";
     public String teleportCanceled = "%prefix% &7Teleportation Canceled, Please stand still.";
     public String unknownSchematic = "%prefix% &7Unknown Schematic.";
-    public String onlySetWarpOnIsland = "%prefix% &7You can only create an Island Warp on your Island.";
+    public String onlySetWarpOnIsland = "%prefix% &7You can only create an Island warp on your Island.";
     public String onlySetHomeOnIsland = "%prefix% &7You can only set your Island home on your Island.";
     public String islandLevel = "%prefix% &7Island Level %island_level% %island_experience%/%island_experienceRequired% Experience";
     public String dataReset = "%prefix% &7All data has been reset.";
@@ -149,7 +149,7 @@ public class Messages {
     public String calculationAlreadyInProcess = "%prefix% &7Calculating Players Islands already in Process";
     public String netherIslandsDisabled = "%prefix% &7Nether Islands have been disabled";
     public String endIslandsDisabled = "%prefix% &7End Islands have been disabled";
-    public String islandLevelUp = "%prefix% &7You Island has reached level %level%!";
+    public String islandLevelUp = "%prefix% &7Your Island has reached level %level%!";
     public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
     public String yes = "Yes";
