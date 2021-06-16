@@ -32,7 +32,7 @@ public class Messages {
     public String islandSchematicNotFound = "%prefix% &7No schematic with that name exists.";
     public String islandDeleted = "%prefix% &7Your island has been deleted.";
     public String teleportingHome = "%prefix% &7Teleporting to your Island Home.";
-    public String teleportingHomeOther = "%prefix% &7Teleporting to %owner%'s Island.";
+    public String teleportingHomeOther = "%prefix% &7Teleporting to %owner%'s Island Home.";
     public String setHome = "%prefix% &7Your Island home has been set to this location.";
     public String notSafe = "%prefix% &7This location is not safe.";
     public String invitedPlayer = "%prefix% &7You have invited %player% to join your island.";
