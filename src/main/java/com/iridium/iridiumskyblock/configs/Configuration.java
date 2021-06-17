@@ -47,9 +47,11 @@ public class Configuration {
     public int minIslandName = 3;
     public int teleportDelay = 0;
 
-    public Map<Integer, String> islandRankDisplayNames = Arrays.stream(IslandRank.values()).collect(
-            Collectors.toMap(IslandRank::getLevel, rank ->
-                    WordUtils.capitalizeFully(rank.name().replace('_', ' ')).replace(' ', '-')));
+    public Map<Integer, String> islandRankDisplayNames = Arrays.stream(IslandRank.values())
+            .collect(Collectors.toMap(
+                    IslandRank::getLevel,
+                    rank -> WordUtils.capitalizeFully(rank.name().replace('_', ' ')).replace(' ', '-'))
+            );
 
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
 
