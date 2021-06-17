@@ -67,19 +67,30 @@ public class IslandManager {
      * @param delay  How long the player should stand still for before teleporting
      */
     public void teleportHome(@NotNull Player player, @NotNull Island island, int delay) {
-        if (IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland().get().getId() == island.getId())
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        else
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHomeOther.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
-        if (delay < 1) {
-            teleportHome(player, island);
-            return;
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        boolean trusted = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island).stream().anyMatch(islandTrusted ->
+                islandTrusted.getUser().equals(user)
+        );
+        boolean inIsland = user.getIsland().map(Island::getId).orElse(0) == island.getId();
+        // If the island is visitable, the user is in the island, the user is trusted or the user is bypassing teleport them
+        if (island.isVisitable() || inIsland || trusted || user.isBypass()) {
+            if (inIsland){
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }else{
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHomeOther.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
+            }
+            if (delay < 1) {
+                teleportHome(player, island);
+                return;
+            }
+            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
+                teleportHome(player, island);
+                user.setTeleportingTask(null);
+            }, 20L * delay);
+            user.setTeleportingTask(bukkitTask);
+        } else {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
-        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
-            teleportHome(player, island);
-            IridiumSkyblock.getInstance().getUserManager().getUser(player).setTeleportingTask(null);
-        }, 20L * delay);
-        IridiumSkyblock.getInstance().getUserManager().getUser(player).setTeleportingTask(bukkitTask);
     }
 
     /**
