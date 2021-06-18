@@ -167,6 +167,8 @@ public class Inventories {
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&b&lMember", Collections.singletonList("&b%members%")),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&b&lVisitor", Collections.emptyList()));
 
+    public NoItemGUI biomeGUI = new NoItemGUI(45, "&7Island Biomes", background1);
+
     public NoItemGUI islandReward = new NoItemGUI(45, "&7Island Rewards", background1);
 
     public Item nextPage = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", Collections.emptyList());

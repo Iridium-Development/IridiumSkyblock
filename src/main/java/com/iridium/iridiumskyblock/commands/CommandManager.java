@@ -88,6 +88,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(commands.recalculateCommand);
         registerCommand(commands.renameCommand);
         registerCommand(commands.chatCommand);
+        registerCommand(commands.biomeCommand);
     }
 
     /**
@@ -139,7 +140,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 String command = IridiumSkyblock.getInstance().getCommands().helpCommand.aliases.get(0);
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "is " + command);
             }
-            
+
             return true;
         }
 

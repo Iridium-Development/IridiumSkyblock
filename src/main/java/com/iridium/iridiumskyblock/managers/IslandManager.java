@@ -284,7 +284,7 @@ public class IslandManager {
      * @param world  The world
      * @return A list of Chunks the island is in
      */
-    private CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
+    public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
 

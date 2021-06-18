@@ -153,6 +153,8 @@ public class Messages {
     public String islandLevelUp = "%prefix% &7Your Island has reached level %level%!";
     public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
+    public String invalidBiome = "%prefix% &7Biome doesn't exist.";
+    public String changedBiome = "%prefix% &7You have changed your island biome to %biome%! Relog to see changes.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
