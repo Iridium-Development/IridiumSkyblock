@@ -390,7 +390,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("cactus", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lCactus Farmer",
+            .put("cactus", new Mission(new Item(XMaterial.CACTUS, 1, "&b&lCactus Farmer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
