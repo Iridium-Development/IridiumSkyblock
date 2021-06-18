@@ -45,7 +45,7 @@ public class PlayerUtils {
         final Location centre = island.getCenter(player.getWorld()).clone();
         centre.add(0.5, 0.0, 0.5);
 
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + 1, centre));
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
     }
 
     /**
