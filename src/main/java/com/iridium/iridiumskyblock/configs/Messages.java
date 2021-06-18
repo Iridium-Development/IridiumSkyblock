@@ -119,6 +119,7 @@ public class Messages {
     public String warpDescriptionSet = "%prefix% &7warp description set.";
     public String noSuchMaterial = "%prefix% &7Material doesn't exist.";
     public String warpLimitReached = "%prefix% &7The max warp limit has already been reached.";
+    public String noWarpNameSpecified = "%prefix% &7Please specify the name of the warp.";
     public String incorrectPassword = "%prefix% &7Incorrect Password.";
     public String teleportingWarp = "%prefix% &7Teleporting to warp %name%.";
     public String deletingWarp = "%prefix% &7Deleting warp %name%.";

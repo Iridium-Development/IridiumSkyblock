@@ -37,6 +37,11 @@ public class DeleteWarpCommand extends Command {
      */
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if (args.length != 2) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noWarpNameSpecified.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
