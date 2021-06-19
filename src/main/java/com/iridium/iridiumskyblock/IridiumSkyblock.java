@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -355,6 +356,9 @@ public class IridiumSkyblock extends IridiumCore {
         this.sql = getPersist().load(SQL.class);
         this.schematics = getPersist().load(Schematics.class);
         this.inventories = getPersist().load(Inventories.class);
+
+        VisitGUI.invalidateCache();
+
         this.permissions = getPersist().load(Permissions.class);
         this.blockValues = getPersist().load(BlockValues.class);
         this.bankItems = getPersist().load(BankItems.class);

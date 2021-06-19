@@ -39,7 +39,7 @@ public class VisitCommand extends Command {
         Player p = (Player) sender;
 
         if (args.length != 2) {
-            p.openInventory(new VisitGUI(1).getInventory());
+            p.openInventory(VisitGUI.getVisitGui(1).getInventory());
             return;
         }
 

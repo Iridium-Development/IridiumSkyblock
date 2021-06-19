@@ -44,6 +44,8 @@ public class Configuration {
     public int minIslandName = 3;
     public int teleportDelay = 0;
 
+    public String headDataLoadingSkin = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTNhOTZjYzI5MDMxNTJlM2VlNTU4NDJhYmYyMzkxMzc5ODBhZmY3NjEwOTAwNGIzYmQ3YTVjODU0OGNlIn19fQ==";
+
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
 
     public NumberFormatter numberFormatter = new NumberFormatter();
