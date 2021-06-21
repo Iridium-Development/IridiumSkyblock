@@ -24,7 +24,7 @@ public class DeleteWarpCommand extends Command {
      * The default constructor.
      */
     public DeleteWarpCommand() {
-        super(Arrays.asList("delwarp", "deletewarp"), "Deletes an Island warp", "", true);
+        super(Arrays.asList("delwarp", "deletewarp"), "Deletes an Island warp", "%prefix% &7/is deletewarp <name>", "", true);
     }
 
     /**
@@ -38,7 +38,7 @@ public class DeleteWarpCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noWarpNameSpecified.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
 
