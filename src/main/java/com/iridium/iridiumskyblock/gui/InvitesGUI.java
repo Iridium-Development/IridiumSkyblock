@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
@@ -20,7 +19,7 @@ import java.util.List;
 /**
  * GUI which allows users to manage invites.
  */
-public class InvitesGUI implements GUI {
+public class InvitesGUI extends GUI {
 
     private final Island island;
     private final HashMap<Integer, String> invites;
@@ -31,30 +30,16 @@ public class InvitesGUI implements GUI {
      * @param island The Island this GUI belongs to
      */
     public InvitesGUI(@NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI);
         this.island = island;
         invites = new HashMap<>();
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override
     public void addContent(Inventory inventory) {
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island);
         inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.background);
+        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
 
         int i = 0;

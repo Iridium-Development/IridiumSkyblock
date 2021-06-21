@@ -2,24 +2,8 @@ package com.iridium.iridiumskyblock.configs.inventories;
 
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
-public class IslandTopInventoryConfig {
-    /**
-     * The size of the GUI
-     */
-    public int size;
-    /**
-     * The title of the GUI
-     */
-    public String title;
-    /**
-     * The background of the GUI
-     */
-    public Background background;
+public class IslandTopInventoryConfig extends NoItemGUI{
     /**
      * The item for top islands
      */
@@ -28,4 +12,12 @@ public class IslandTopInventoryConfig {
      * The filler item if there isnt a # top island
      */
     public Item filler;
+
+    public IslandTopInventoryConfig(int size, String title, Background background, Item item, Item filler) {
+        this.size = size;
+        this.title = title;
+        this.background = background;
+        this.item = item;
+        this.filler = filler;
+    }
 }
