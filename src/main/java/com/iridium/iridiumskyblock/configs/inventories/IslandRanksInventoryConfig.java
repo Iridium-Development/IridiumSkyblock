@@ -3,7 +3,7 @@ package com.iridium.iridiumskyblock.configs.inventories;
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
 
-public class IslandRanksInventoryConfig extends NoItemGUI{
+public class IslandRanksInventoryConfig extends NoItemGUI {
     /**
      * The item for Owner Rank
      */
@@ -35,4 +35,5 @@ public class IslandRanksInventoryConfig extends NoItemGUI{
         this.member = member;
         this.visitor = visitor;
     }
+
 }
