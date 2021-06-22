@@ -2,7 +2,9 @@ package com.iridium.iridiumskyblock.configs.inventories;
 
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class IslandRanksInventoryConfig extends NoItemGUI {
     /**
      * The item for Owner Rank

@@ -2,7 +2,9 @@ package com.iridium.iridiumskyblock.configs.inventories;
 
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class ConfirmationInventoryConfig extends NoItemGUI{
     /**
      * The yes item

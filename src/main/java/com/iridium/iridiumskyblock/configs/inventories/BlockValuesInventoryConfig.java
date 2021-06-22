@@ -1,9 +1,11 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
 import com.iridium.iridiumcore.Background;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor
 public class BlockValuesInventoryConfig extends NoItemGUI {
     /**
      * The lore of the Items

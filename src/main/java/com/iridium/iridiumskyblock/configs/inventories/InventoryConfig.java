@@ -2,9 +2,11 @@ package com.iridium.iridiumskyblock.configs.inventories;
 
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
+import lombok.NoArgsConstructor;
 
 import java.util.Map;
 
+@NoArgsConstructor
 public class InventoryConfig extends NoItemGUI{
     /**
      * A HashMap of the items in the GUI with the string representing the command to be executed
