@@ -43,8 +43,9 @@ public enum IslandRank {
                 return IridiumSkyblock.getInstance().getMessages().memberRankDisplayName;
             case VISITOR:
                 return IridiumSkyblock.getInstance().getMessages().visitorRankDisplayName;
+            default:
+                return null;
         }
-        return null;
     }
 
     /**
