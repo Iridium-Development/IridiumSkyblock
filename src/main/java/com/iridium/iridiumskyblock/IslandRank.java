@@ -31,6 +31,23 @@ public enum IslandRank {
         this.level = level;
     }
 
+    public String getDisplayName() {
+        switch (this) {
+            case OWNER:
+                return IridiumSkyblock.getInstance().getMessages().ownerRankDisplayName;
+            case CO_OWNER:
+                return IridiumSkyblock.getInstance().getMessages().coOwnerRankDisplayName;
+            case MODERATOR:
+                return IridiumSkyblock.getInstance().getMessages().moderatorRankDisplayName;
+            case MEMBER:
+                return IridiumSkyblock.getInstance().getMessages().memberRankDisplayName;
+            case VISITOR:
+                return IridiumSkyblock.getInstance().getMessages().visitorRankDisplayName;
+            default:
+                return null;
+        }
+    }
+
     /**
      * Gets an IslandRank by its level
      *
