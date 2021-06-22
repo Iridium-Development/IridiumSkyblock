@@ -25,7 +25,7 @@ public class WithdrawCommand extends Command {
      * The default constructor.
      */
     public WithdrawCommand() {
-        super(Collections.singletonList("withdraw"), "%prefix% &7/is withdraw <type> <amount>", "Withdraw from your Island bank", "", true);
+        super(Collections.singletonList("withdraw"), "Withdraw from your Island bank", "%prefix% &7/is withdraw <type> <amount>", "", true);
     }
 
     /**

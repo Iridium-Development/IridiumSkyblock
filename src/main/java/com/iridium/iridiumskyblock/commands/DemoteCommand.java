@@ -29,7 +29,7 @@ public class DemoteCommand extends Command {
      * The default constructor.
      */
     public DemoteCommand() {
-        super(Collections.singletonList("demote"), "%prefix% &7/is demote <name>", "Demote a user", "", true);
+        super(Collections.singletonList("demote"), "Demote a user", "%prefix% &7/is demote <name>", "", true);
     }
 
     /**

@@ -24,7 +24,7 @@ public class EditWarpCommand extends Command {
      * The default constructor.
      */
     public EditWarpCommand() {
-        super(Collections.singletonList("editwarp"), "%prefix% &7/is editwarp <name> <icon/description>", "Edits an Island warp", "", true);
+        super(Collections.singletonList("editwarp"), "Edits an Island warp", "%prefix% &7/is editwarp <name> <icon/description>", "", true);
     }
 
     /**
