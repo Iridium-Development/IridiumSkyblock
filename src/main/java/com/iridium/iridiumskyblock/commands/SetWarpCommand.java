@@ -22,7 +22,7 @@ public class SetWarpCommand extends Command {
      * The default constructor.
      */
     public SetWarpCommand() {
-        super(Arrays.asList("setwarp", "createwarp"), "Creates an Island warp", "", true);
+        super(Arrays.asList("setwarp", "createwarp"), "Creates an Island warp", "%prefix% &7/is setwarp <name>", "", true);
     }
 
     /**
@@ -36,9 +36,10 @@ public class SetWarpCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length < 2) {
-            sender.sendMessage("/is setwarp <name>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();

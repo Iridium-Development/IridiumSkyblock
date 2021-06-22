@@ -22,7 +22,7 @@ public class BankRemove extends Command {
      * The default constructor.
      */
     public BankRemove() {
-        super(Collections.singletonList("remove"), "Remove value from a players bank", "iridiumskyblock.bank.remove", false);
+        super(Collections.singletonList("remove"), "Remove value from a players bank", "%prefix% &7/is bank remove <player> <type> <amount>", "iridiumskyblock.bank.remove", false);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BankRemove extends Command {
                         "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage("/is bank remove <player> <type> <amount>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

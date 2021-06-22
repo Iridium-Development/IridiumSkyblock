@@ -24,7 +24,7 @@ public class EditWarpCommand extends Command {
      * The default constructor.
      */
     public EditWarpCommand() {
-        super(Collections.singletonList("editwarp"), "Edits an Island warp", "", true);
+        super(Collections.singletonList("editwarp"), "%prefix% &7/is editwarp <name> <icon/description>", "Edits an Island warp", "", true);
     }
 
     /**
@@ -38,7 +38,7 @@ public class EditWarpCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length < 3) {
-            sender.sendMessage("/is editwarp <name> <icon/description>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;
@@ -53,6 +53,7 @@ public class EditWarpCommand extends Command {
             List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
             Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
             if (islandWarp.isPresent()) {
+                //TODO use subcommand system
                 switch (args[2]) {
                     case "icon":
                         if (args.length != 4) {

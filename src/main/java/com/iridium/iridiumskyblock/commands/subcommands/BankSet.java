@@ -22,7 +22,7 @@ public class BankSet extends Command {
      * The default constructor.
      */
     public BankSet() {
-        super(Collections.singletonList("set"), "Set a players bank value", "iridiumskyblock.bank.set", false);
+        super(Collections.singletonList("set"), "Set a players bank value", "%prefix% &7/is bank set <player> <type> <amount>","iridiumskyblock.bank.set", false);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BankSet extends Command {
                         "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage("/is bank set <player> <type> <amount>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 

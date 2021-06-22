@@ -29,7 +29,7 @@ public class KickCommand extends Command {
      * The default constructor.
      */
     public KickCommand() {
-        super(Collections.singletonList("kick"), "Kick a player", "", true);
+        super(Collections.singletonList("kick"), "Kick a player", "%prefix% &7/is kick <name>", "",true);
     }
 
     /**
@@ -43,7 +43,7 @@ public class KickCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is kick <name>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;
