@@ -153,6 +153,7 @@ public class Messages {
     public String islandLevelUp = "%prefix% &7Your Island has reached level %level%!";
     public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
+    public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
