@@ -68,6 +68,16 @@ public final class User {
     }
 
     /**
+     * Constructor for binary searching
+     *
+     * @param island The user's island
+     */
+    public User(Island island) {
+        this.island = island.getId();
+    }
+
+
+    /**
      * Returns the Island of this user.
      *
      * @return The user's Island
