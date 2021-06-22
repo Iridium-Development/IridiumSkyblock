@@ -6,17 +6,14 @@ import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnorePrope
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumcore.utils.NumberFormatter;
-import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.Reward;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang.WordUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * The main configuration of IridiumSkyblock (configuration.yml).
@@ -46,12 +43,6 @@ public class Configuration {
     public int maxIslandName = 16;
     public int minIslandName = 3;
     public int teleportDelay = 0;
-
-    public Map<Integer, String> islandRankDisplayNames = Arrays.stream(IslandRank.values())
-            .collect(Collectors.toMap(
-                    IslandRank::getLevel,
-                    rank -> WordUtils.capitalizeFully(rank.name().replace('_', ' ')).replace(' ', '-'))
-            );
 
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
 
