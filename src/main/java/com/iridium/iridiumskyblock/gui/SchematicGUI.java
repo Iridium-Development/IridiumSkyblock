@@ -2,13 +2,10 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,23 +14,12 @@ import java.util.Map;
  * Allows users to select a schematic.
  * Extended by {@link IslandRegenGUI} and {@link IslandCreateGUI}.
  */
-public abstract class SchematicGUI implements GUI {
+public abstract class SchematicGUI extends GUI {
 
     private final HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
 
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
+    public SchematicGUI() {
+        super(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI);
     }
 
     @Override

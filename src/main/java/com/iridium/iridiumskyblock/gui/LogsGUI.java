@@ -10,7 +10,6 @@ import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.LogInventoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * GUI which allows users to manage the Island bank.
  */
-public class LogsGUI implements GUI {
+public class LogsGUI extends GUI {
 
     private final Island island;
 
@@ -46,22 +45,8 @@ public class LogsGUI implements GUI {
      * @param island The Island this GUI belongs to
      */
     public LogsGUI(@NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().logsGUI);
         this.island = island;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().logsGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().logsGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override

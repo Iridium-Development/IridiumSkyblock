@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
@@ -19,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class WarpsGUI implements GUI {
+public class WarpsGUI extends GUI {
 
     private final Island island;
 
@@ -29,23 +28,8 @@ public class WarpsGUI implements GUI {
      * @param island The Island this GUI belongs to
      */
     public WarpsGUI(@NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().warpsGUI);
         this.island = island;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().warpsGUI.size,
-                StringUtils.color(IridiumSkyblock.getInstance().getInventories().warpsGUI.title.replace("%island_name%", island.getName())));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override
