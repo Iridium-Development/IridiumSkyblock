@@ -429,6 +429,7 @@ public class IridiumSkyblock extends IridiumCore {
         saveFile(schematicFolder, "jungle_end.iridiumschem");
 
         if (shopManager != null) shopManager.reloadCategories();
+        if (commandManager != null) commandManager.reloadCommands();
     }
 
     private void saveFile(File parent, String name) {

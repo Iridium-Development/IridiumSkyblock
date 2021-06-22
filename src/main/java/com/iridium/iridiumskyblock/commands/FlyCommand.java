@@ -21,7 +21,7 @@ public class FlyCommand extends Command {
      * The default constructor.
      */
     public FlyCommand() {
-        super(Arrays.asList("fly", "flight"), "Toggle Island Flight", "", true);
+        super(Arrays.asList("fly", "flight"), "Toggle Island Flight", "%prefix% &7/is flight <enable/disable>", "", true);
     }
 
     /**
@@ -43,7 +43,7 @@ public class FlyCommand extends Command {
                 if (args[1].equalsIgnoreCase("enable") || args[1].equalsIgnoreCase("disable") || args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("off")) {
                     flight = args[1].equalsIgnoreCase("enable") || args[1].equalsIgnoreCase("on");
                 } else {
-                    player.sendMessage("/is flight <enable/disable>");
+                    sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     return;
                 }
             }

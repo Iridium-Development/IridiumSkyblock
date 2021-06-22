@@ -14,9 +14,28 @@ public abstract class Command {
     public final @NotNull List<String> aliases;
     public final @NotNull String description;
     public final @NotNull String permission;
+    public final @NotNull String syntax;
     @JsonIgnore
     public final boolean onlyForPlayers;
     public final boolean enabled;
+
+    /**
+     * The default constructor.
+     *
+     * @param aliases        The list of aliases for this command, can be empty. Also contains the command name.
+     * @param description    The description of this command
+     * @param syntax         The specified syntax for this command
+     * @param permission     The permission required for this command. Empty string will mean no permission
+     * @param onlyForPlayers true if this command is only for Players
+     */
+    public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String syntax, @NotNull String permission, boolean onlyForPlayers) {
+        this.aliases = aliases;
+        this.description = description;
+        this.syntax = syntax;
+        this.permission = permission;
+        this.onlyForPlayers = onlyForPlayers;
+        this.enabled = true;
+    }
 
     /**
      * The default constructor.
@@ -29,6 +48,7 @@ public abstract class Command {
     public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers) {
         this.aliases = aliases;
         this.description = description;
+        this.syntax = "";
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = true;

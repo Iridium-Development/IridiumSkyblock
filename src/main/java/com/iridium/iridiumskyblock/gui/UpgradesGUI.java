@@ -4,7 +4,6 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.database.Island;
@@ -21,7 +20,7 @@ import java.util.Map;
 /**
  * GUI which allows users to manage the Island Upgrades.
  */
-public class UpgradesGUI implements GUI {
+public class UpgradesGUI extends GUI {
 
     private final Island island;
 
@@ -31,23 +30,8 @@ public class UpgradesGUI implements GUI {
      * @param island The Island this GUI belongs to
      */
     public UpgradesGUI(@NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().upgradesGUI);
         this.island = island;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().upgradesGUI.size,
-                StringUtils.color(IridiumSkyblock.getInstance().getInventories().upgradesGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override

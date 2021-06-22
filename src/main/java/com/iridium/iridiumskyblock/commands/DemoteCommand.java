@@ -29,7 +29,7 @@ public class DemoteCommand extends Command {
      * The default constructor.
      */
     public DemoteCommand() {
-        super(Collections.singletonList("demote"), "Demote a user", "", true);
+        super(Collections.singletonList("demote"), "Demote a user", "%prefix% &7/is demote <name>", "", true);
     }
 
     /**
@@ -43,7 +43,7 @@ public class DemoteCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is demote <name>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;

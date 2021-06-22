@@ -25,7 +25,7 @@ public class WithdrawCommand extends Command {
      * The default constructor.
      */
     public WithdrawCommand() {
-        super(Collections.singletonList("withdraw"), "Withdraw from your Island bank", "", true);
+        super(Collections.singletonList("withdraw"), "Withdraw from your Island bank", "%prefix% &7/is withdraw <type> <amount>", "", true);
     }
 
     /**
@@ -39,7 +39,7 @@ public class WithdrawCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            sender.sendMessage("/is withdraw <name> <amount>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
 
@@ -54,7 +54,13 @@ public class WithdrawCommand extends Command {
             }
             Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
             if (bankItem.isPresent()) {
-                double amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+                double amount;
+                try {
+                    amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+                } catch (NumberFormatException e) {
+                    player.sendMessage(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
+                    return;
+                }
                 if (amount > 0) {
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_WITHDRAW, user, null, amount, bankItem.get().getName());
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);

@@ -1,28 +1,21 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
 import com.iridium.iridiumcore.Background;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @NoArgsConstructor
-@AllArgsConstructor
-public class BlockValuesInventoryConfig {
-    /**
-     * The size of the GUI
-     */
-    public int size;
-    /**
-     * The title of the GUI
-     */
-    public String title;
-    /**
-     * The background of the GUI
-     */
-    public Background background;
+public class BlockValuesInventoryConfig extends NoItemGUI {
     /**
      * The lore of the Items
      */
     public List<String> lore;
+
+    public BlockValuesInventoryConfig(int size, String title, Background background, List<String> lore) {
+        this.size = size;
+        this.title = title;
+        this.background = background;
+        this.lore = lore;
+    }
 }

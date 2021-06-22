@@ -6,12 +6,10 @@ import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.BlockValues.ValuableBlock;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.stream.Collectors;
  *
  * @see ValuableBlock
  */
-public class BlockValueGUI implements GUI {
+public class BlockValueGUI extends GUI {
 
     private final BlockValueType guiType;
 
@@ -33,29 +31,15 @@ public class BlockValueGUI implements GUI {
      * @param type The type of valuable block shown in this GUI
      */
     public BlockValueGUI(BlockValueType type) {
+        super(IridiumSkyblock.getInstance().getInventories().blockValue);
         this.guiType = type;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().blockValue.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().blockValue.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
 
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().blockValue.background);
+        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         if (guiType == BlockValueType.BLOCK) {
             for (Map.Entry<XMaterial, ValuableBlock> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {

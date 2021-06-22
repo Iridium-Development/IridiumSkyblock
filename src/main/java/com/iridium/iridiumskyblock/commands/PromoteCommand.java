@@ -29,7 +29,7 @@ public class PromoteCommand extends Command {
      * The default constructor.
      */
     public PromoteCommand() {
-        super(Collections.singletonList("promote"), "Promote a user", "", true);
+        super(Collections.singletonList("promote"), "Promote a user", "%prefix% &7/is promote <name>", "", true);
     }
 
     /**
@@ -43,7 +43,7 @@ public class PromoteCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is promote <name>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;
