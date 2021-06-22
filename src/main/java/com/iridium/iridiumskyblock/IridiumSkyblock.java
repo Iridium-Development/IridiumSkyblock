@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
@@ -64,6 +65,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Boosters boosters;
     private Commands commands;
     private Shop shop;
+    private Border border;
 
     private ChunkGenerator chunkGenerator;
 
@@ -363,6 +365,13 @@ public class IridiumSkyblock extends IridiumCore {
         this.boosters = getPersist().load(Boosters.class);
         this.commands = getPersist().load(Commands.class);
         this.shop = getPersist().load(Shop.class);
+        this.border = getPersist().load(Border.class);
+
+        for (Color color : Color.values()) {
+            if (!border.enabled.containsKey(color)) {
+                border.enabled.put(color, true);
+            }
+        }
 
         int maxSize = upgrades.sizeUpgrade.upgrades.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).get().size;
         if (configuration.distance <= maxSize) {
@@ -477,6 +486,7 @@ public class IridiumSkyblock extends IridiumCore {
         getPersist().save(boosters);
         getPersist().save(commands);
         getPersist().save(shop);
+        getPersist().save(border);
     }
 
     /**
