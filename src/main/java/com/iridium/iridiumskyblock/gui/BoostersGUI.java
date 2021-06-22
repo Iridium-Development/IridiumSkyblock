@@ -4,7 +4,6 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -22,7 +21,7 @@ import java.util.Map;
 /**
  * GUI which allows users to manage the Island Boosters.
  */
-public class BoostersGUI implements GUI {
+public class BoostersGUI extends GUI {
 
     private final Island island;
 
@@ -32,29 +31,14 @@ public class BoostersGUI implements GUI {
      * @param island The Island this GUI belongs to
      */
     public BoostersGUI(@NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().boostersGUI);
         this.island = island;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().boostersGUI.size,
-                StringUtils.color(IridiumSkyblock.getInstance().getInventories().boostersGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().boostersGUI.background);
+        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             Item item = entry.getValue().item;

@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
@@ -19,7 +18,7 @@ import java.util.Optional;
 /**
  * GUI which allows users to manage the Island bank.
  */
-public class BankGUI implements GUI {
+public class BankGUI extends GUI {
 
     private final Island island;
 
@@ -29,28 +28,14 @@ public class BankGUI implements GUI {
      * @param island The Island this GUI belongs to
      */
     public BankGUI(@NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().bankGUI);
         this.island = island;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().bankGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().bankGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().bankGUI.background);
+        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, bankItem);

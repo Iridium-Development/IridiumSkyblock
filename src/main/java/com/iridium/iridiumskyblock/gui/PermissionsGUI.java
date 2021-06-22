@@ -10,7 +10,6 @@ import com.iridium.iridiumskyblock.Permission;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -22,7 +21,7 @@ import java.util.Map;
 /**
  * GUI which allows users to alter the Island's permissions.
  */
-public class PermissionsGUI implements GUI {
+public class PermissionsGUI extends GUI {
 
     private final Island island;
     private final IslandRank islandRank;
@@ -34,23 +33,9 @@ public class PermissionsGUI implements GUI {
      * @param islandRank The rank which is being configured
      */
     public PermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank) {
+        super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI);
         this.island = island;
         this.islandRank = islandRank;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override

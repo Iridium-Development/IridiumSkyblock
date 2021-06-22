@@ -2,15 +2,12 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
-import com.iridium.iridiumskyblock.configs.inventories.SingleItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -19,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * GUI which shows a list of all Islands a user can visit.
  */
-public class VisitGUI implements GUI {
+public class VisitGUI extends GUI {
 
     private final List<Island> islands;
     private final int page;
@@ -30,24 +27,9 @@ public class VisitGUI implements GUI {
      * @param page The current page of this GUI
      */
     public VisitGUI(int page) {
+        super(IridiumSkyblock.getInstance().getInventories().visitGUI);
         this.page = page;
         this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(Island::isVisitable).collect(Collectors.toList());
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        SingleItemGUI singleItemGUI = IridiumSkyblock.getInstance().getInventories().visitGUI;
-        Inventory inventory = Bukkit.createInventory(this, singleItemGUI.size, StringUtils.color(singleItemGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override

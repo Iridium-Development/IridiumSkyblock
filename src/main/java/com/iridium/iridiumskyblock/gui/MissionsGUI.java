@@ -3,12 +3,10 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandMission;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MissionsGUI implements GUI {
+public class MissionsGUI extends GUI {
 
     private final Island island;
     private final Mission.MissionType missionType;
@@ -32,28 +30,9 @@ public class MissionsGUI implements GUI {
      * @see com.iridium.iridiumskyblock.Mission.MissionType
      */
     public MissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType) {
+        super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI);
         this.island = island;
         this.missionType = missionType;
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory;
-        if (missionType == Mission.MissionType.DAILY) {
-            inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().dailyMissionGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().dailyMissionGUI.title));
-
-        } else {
-            inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getInventories().missionsGUI.size, StringUtils.color(IridiumSkyblock.getInstance().getInventories().missionsGUI.title));
-
-        }
-        addContent(inventory);
-        return inventory;
     }
 
     @Override
