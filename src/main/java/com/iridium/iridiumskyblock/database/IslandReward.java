@@ -22,7 +22,7 @@ public final class IslandReward extends IslandData {
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
 
-    @DatabaseField(columnName = "reward", canBeNull = false)
+    @DatabaseField(columnName = "reward", canBeNull = false, width = 2048)
     private @NotNull String reward;
 
     /**
