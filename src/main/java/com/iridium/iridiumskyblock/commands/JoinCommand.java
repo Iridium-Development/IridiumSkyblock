@@ -25,7 +25,7 @@ public class JoinCommand extends Command {
      * The default constructor.
      */
     public JoinCommand() {
-        super(Collections.singletonList("join"), "Join an Island", "", true);
+        super(Collections.singletonList("join"), "Join an Island", "%prefix% &7/is join <name>", "", true);
     }
 
     /**
@@ -39,7 +39,7 @@ public class JoinCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is join <name>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;
@@ -73,7 +73,7 @@ public class JoinCommand extends Command {
                     user.setIslandRank(IslandRank.MEMBER);
                     islandInvite.ifPresent(invite -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(invite));
                     IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), 0);
-                    
+
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_JOINED, user, null, 0, "");
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 } else {

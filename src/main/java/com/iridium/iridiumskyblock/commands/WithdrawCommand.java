@@ -25,7 +25,7 @@ public class WithdrawCommand extends Command {
      * The default constructor.
      */
     public WithdrawCommand() {
-        super(Collections.singletonList("withdraw"), "Withdraw from your Island bank", "", true);
+        super(Collections.singletonList("withdraw"), "%prefix% &7/is withdraw <type> <amount>", "Withdraw from your Island bank", "", true);
     }
 
     /**
@@ -39,7 +39,7 @@ public class WithdrawCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            sender.sendMessage("/is withdraw <name> <amount>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
 

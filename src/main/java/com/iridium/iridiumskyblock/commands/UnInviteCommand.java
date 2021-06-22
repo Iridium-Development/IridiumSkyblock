@@ -26,7 +26,7 @@ public class UnInviteCommand extends Command {
      * The default constructor.
      */
     public UnInviteCommand() {
-        super(Collections.singletonList("uninvite"), "Revoke an invitation to your Island", "", true);
+        super(Collections.singletonList("uninvite"), "%prefix% &7/is uninvite <name>", "Revoke an invitation to your Island", "", true);
     }
 
     /**
@@ -40,7 +40,7 @@ public class UnInviteCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is uninvite <name>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;
@@ -53,7 +53,7 @@ public class UnInviteCommand extends Command {
             if (islandInvite.isPresent()) {
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(islandInvite.get());
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_UNINVITED, user, targetUser,0, "");
+                IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_UNINVITED, user, targetUser, 0, "");
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noActiveInvite.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

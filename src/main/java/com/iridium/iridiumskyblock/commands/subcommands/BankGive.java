@@ -22,7 +22,7 @@ public class BankGive extends Command {
      * The default constructor.
      */
     public BankGive() {
-        super(Collections.singletonList("give"), "Give players money into their island bank", "iridiumskyblock.bank.give", false);
+        super(Collections.singletonList("give"), "Give players money into their island bank", "%prefix% &7/is bank <give> <player> <type> <amount>", "iridiumskyblock.bank.give", false);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BankGive extends Command {
                         "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage("/is bank give <player> <type> <amount>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 
