@@ -157,6 +157,11 @@ public class Messages {
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
+    public String ownerRankDisplayName = "Owner";
+    public String coOwnerRankDisplayName = "Co-Owner";
+    public String moderatorRankDisplayName = "Moderator";
+    public String memberRankDisplayName = "Member";
+    public String visitorRankDisplayName = "Visitor";
 
     public List<String> infoCommand = Arrays.asList(
             "&8===== &b&lIsland Info for %player% &r&8=====",
