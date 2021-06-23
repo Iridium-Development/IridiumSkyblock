@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -25,6 +26,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
@@ -183,6 +185,16 @@ public class IridiumSkyblock extends IridiumCore {
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
 
+
+        // Automatically update all inventories
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
+            if (inventoryHolder instanceof GUI) {
+                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
+            }
+        }), 0, 20);
+
+        // Register worlds with multiverse
         Bukkit.getScheduler().runTaskLater(this, () -> {
             registerMultiverse(islandManager.getWorld());
             registerMultiverse(islandManager.getNetherWorld());
