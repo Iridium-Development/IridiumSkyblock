@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.api.UserDemoteEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,7 @@ public class DemoteCommand extends Command {
      * The default constructor.
      */
     public DemoteCommand() {
-        super(Collections.singletonList("demote"), "Demote a user", "%prefix% &7/is demote <name>", "", true);
+        super(Collections.singletonList("demote"), "Demote a user", "%prefix% &7/is demote <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -41,11 +42,12 @@ public class DemoteCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -63,7 +65,7 @@ public class DemoteCommand extends Command {
                     } else {
                         UserDemoteEvent userDemoteEvent = new UserDemoteEvent(island.get(), user, nextRank);
                         Bukkit.getPluginManager().callEvent(userDemoteEvent);
-                        if (userDemoteEvent.isCancelled()) return;
+                        if (userDemoteEvent.isCancelled()) return false;
 
                         offlinePlayerUser.setIslandRank(nextRank);
                         for (User member : island.get().getMembers()) {
@@ -76,9 +78,12 @@ public class DemoteCommand extends Command {
                                 }
                             }
                         }
+
                         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_DEMOTED, user, offlinePlayerUser, 0, nextRank.getDisplayName());
                         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                     }
+
+                    return true;
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotDemoteUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -88,6 +93,8 @@ public class DemoteCommand extends Command {
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

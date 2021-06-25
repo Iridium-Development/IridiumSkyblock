@@ -144,22 +144,23 @@ public class IslandManager {
      * @param player          The owner of the island
      * @param name            The name of  the island
      * @param schematicConfig The schematic of the island
+     * @return                True if the island has been created successfully
      */
-    public void makeIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
+    public boolean makeIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (user.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         if (getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name);
         Bukkit.getPluginManager().callEvent(islandCreateEvent);
-        if (islandCreateEvent.isCancelled()) return;
+        if (islandCreateEvent.isCancelled()) return false;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         createIsland(player, name, schematicConfig).thenAccept(island -> {
@@ -167,6 +168,8 @@ public class IslandManager {
                     IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
                 }
         );
+
+        return true;
     }
 
     /**

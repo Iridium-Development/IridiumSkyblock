@@ -2,10 +2,14 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Commands;
+import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
+import com.iridium.iridiumskyblock.utils.TimeUtils;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -175,7 +179,25 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 return false;
             }
 
-            command.execute(commandSender, args);
+            // Check cooldown
+            CooldownProvider<CommandSender> cooldownProvider = command.cooldownProvider;
+            boolean bypassing = commandSender instanceof Player && IridiumSkyblockAPI.getInstance().getUser((Player) commandSender).isBypass();
+            if (commandSender instanceof Player && !bypassing && cooldownProvider.isOnCooldown(commandSender)) {
+                Duration remainingTime = cooldownProvider.getRemainingTime(commandSender);
+                String formattedTime = TimeUtils.formatDuration(remainingTime);
+
+                commandSender.sendMessage(
+                    StringUtils.color(
+                        IridiumSkyblock.getInstance().getMessages().activeCooldown
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%duration%", formattedTime)
+                    )
+                );
+                return false;
+            }
+
+            boolean success = command.execute(commandSender, args);
+            if (success) cooldownProvider.resetCooldown(commandSender);
             return true;
         }
 

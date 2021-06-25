@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -22,11 +23,11 @@ public class BankRemove extends Command {
      * The default constructor.
      */
     public BankRemove() {
-        super(Collections.singletonList("remove"), "Remove value from a players bank", "%prefix% &7/is bank remove <player> <type> <amount>", "iridiumskyblock.bank.remove", false);
+        super(Collections.singletonList("remove"), "Remove value from a players bank", "%prefix% &7/is bank remove <player> <type> <amount>", "iridiumskyblock.bank.remove", false, Duration.ZERO);
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length == 5) {
             Player player = Bukkit.getPlayer(args[2]);
             if (player != null) {
@@ -39,6 +40,7 @@ public class BankRemove extends Command {
                             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
                             islandBank.setNumber(Math.max(islandBank.getNumber() - Double.parseDouble(args[4]), 0));
                             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().removedBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            return true;
                         } catch (NumberFormatException exception) {
                             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
@@ -46,16 +48,16 @@ public class BankRemove extends Command {
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchBankItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace(
-                            "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace(
-                        "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     @Override

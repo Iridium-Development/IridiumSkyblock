@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,7 +20,7 @@ public class ClearDataCommand extends Command {
      * The default constructor.
      */
     public ClearDataCommand() {
-        super(Collections.singletonList("clearalldata"), "Resets all IridiumSkyblock Data", "iridiumskyblock.clearalldata", false);
+        super(Collections.singletonList("clearalldata"), "Resets all IridiumSkyblock Data", "iridiumskyblock.clearalldata", false, Duration.ZERO);
     }
 
     /**
@@ -31,12 +32,17 @@ public class ClearDataCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            player.openInventory(new ConfirmationGUI(() -> execute(player)).getInventory());
+            player.openInventory(new ConfirmationGUI(() -> execute(player),
+                cooldownProvider
+            ).getInventory());
+            // Return false because the cooldown is set by the ConfirmationGUI
+            return false;
         } else {
             execute(sender);
+            return true;
         }
     }
 

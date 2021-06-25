@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
+import com.iridium.iridiumskyblock.managers.CooldownProvider;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +20,9 @@ public abstract class Command {
     @JsonIgnore
     public final boolean onlyForPlayers;
     public final boolean enabled;
+    public final Duration cooldown;
+    @JsonIgnore
+    public CooldownProvider<CommandSender> cooldownProvider;
 
     /**
      * The default constructor.
@@ -27,14 +32,17 @@ public abstract class Command {
      * @param syntax         The specified syntax for this command
      * @param permission     The permission required for this command. Empty string will mean no permission
      * @param onlyForPlayers true if this command is only for Players
+     * @param cooldown       The cooldown for non-bypassing players
      */
-    public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String syntax, @NotNull String permission, boolean onlyForPlayers) {
+    public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String syntax, @NotNull String permission, boolean onlyForPlayers, Duration cooldown) {
         this.aliases = aliases;
         this.description = description;
         this.syntax = syntax;
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = true;
+        this.cooldown = cooldown;
+        this.cooldownProvider = CooldownProvider.newInstance(cooldown);
     }
 
     /**
@@ -44,14 +52,17 @@ public abstract class Command {
      * @param description    The description of this command
      * @param permission     The permission required for this command. Empty string will mean no permission
      * @param onlyForPlayers true if this command is only for Players
+     * @param cooldown       The cooldown for non-bypassing players
      */
-    public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers) {
+    public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers, Duration cooldown) {
         this.aliases = aliases;
         this.description = description;
         this.syntax = "";
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = true;
+        this.cooldown = cooldown;
+        this.cooldownProvider = CooldownProvider.newInstance(cooldown);
     }
 
     /**
@@ -61,7 +72,7 @@ public abstract class Command {
      * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command
      */
-    public abstract void execute(CommandSender sender, String[] arguments);
+    public abstract boolean execute(CommandSender sender, String[] arguments);
 
     /**
      * Handles tab-completion for this command.

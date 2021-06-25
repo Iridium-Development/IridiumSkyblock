@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,7 +19,7 @@ public class BypassCommand extends Command {
      * The default constructor.
      */
     public BypassCommand() {
-        super(Collections.singletonList("bypass"), "Bypass Island restrictions", "iridiumskyblock.bypass", true);
+        super(Collections.singletonList("bypass"), "Bypass Island restrictions", "iridiumskyblock.bypass", true, Duration.ZERO);
     }
 
     /**
@@ -30,11 +31,12 @@ public class BypassCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         user.setBypass(!user.isBypass());
         player.sendMessage(StringUtils.color((user.isBypass() ? IridiumSkyblock.getInstance().getMessages().nowBypassing : IridiumSkyblock.getInstance().getMessages().noLongerBypassing).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        return true;
     }
 
     /**

@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
@@ -22,7 +23,7 @@ public class AboutCommand extends Command {
      * The default constructor.
      */
     public AboutCommand() {
-        super(Collections.singletonList("about"), "Display plugin info", "", false);
+        super(Collections.singletonList("about"), "Display plugin info", "", false, Duration.ZERO);
     }
 
     /**
@@ -34,12 +35,14 @@ public class AboutCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         sender.sendMessage(StringUtils.color("&7Plugin Name: &bIridiumSkyblock"));
         sender.sendMessage(StringUtils.color("&7Plugin Version: &b" + IridiumSkyblock.getInstance().getDescription().getVersion()));
         sender.sendMessage(StringUtils.color("&7Plugin Author: &bPeaches_MLG"));
         sender.sendMessage(StringUtils.color("&7Plugin Contributors: &b" + String.join(", ", contributors)));
         sender.sendMessage(StringUtils.color("&7Plugin Donations: &bwww.patreon.com/Peaches_MLG"));
+
+        return true;
     }
 
     /**

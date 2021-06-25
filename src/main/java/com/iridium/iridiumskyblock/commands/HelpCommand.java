@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import java.time.Duration;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -23,7 +24,7 @@ public class HelpCommand extends Command {
      * The default constructor.
      */
     public HelpCommand() {
-        super(Collections.singletonList("help"), "Show a list of all commands", "", false);
+        super(Collections.singletonList("help"), "Show a list of all commands", "", false, Duration.ZERO);
     }
 
     /**
@@ -35,7 +36,7 @@ public class HelpCommand extends Command {
      * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] arguments) {
+    public boolean execute(CommandSender sender, String[] arguments) {
         List<Command> availableCommands = IridiumSkyblock.getInstance().getCommandManager().commands.stream()
                 .filter(command -> sender.hasPermission(command.permission) || command.permission.isEmpty())
                 .collect(Collectors.toList());
@@ -82,9 +83,12 @@ public class HelpCommand extends Command {
                         .replace("%command%", command.aliases.get(0))
                         .replace("%description%", command.description)))
                 .forEach(sender::sendMessage);
+
         if (sender instanceof Player) {
             ((Player) sender).spigot().sendMessage(previousButton, footerText, nextButton);
         }
+
+        return true;
     }
 
     /**
