@@ -156,7 +156,7 @@ public class Placeholders {
             // Player Placeholders
             .put("player_rank", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIslandRank().name();
+                return user.getIslandRank().getDisplayName();
             })
             .build();
 

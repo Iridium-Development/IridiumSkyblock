@@ -13,20 +13,20 @@ import org.jetbrains.annotations.NotNull;
 /**
  * GUI which shows all categories of the shop.
  */
-public class ShopOverviewGUI implements GUI {
-
+public class ShopOverviewGUI extends GUI {
     /**
-     * Called when there is a click in this GUI. Cancelled automatically.
+     * Get the object's inventory.
      *
-     * @param event The InventoryClickEvent provided by Bukkit
+     * @return The inventory.
      */
+    @NotNull
     @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory -> {
-            String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
-            Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + shopCategory.name);
+    public Inventory getInventory() {
+        Inventory inventory = Bukkit.createInventory(this, IridiumSkyblock.getInstance().getShop().overviewSize, StringUtils.color(IridiumSkyblock.getInstance().getShop().overviewTitle));
 
-        });
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
+
+        return inventory;
     }
 
     /**
@@ -44,22 +44,17 @@ public class ShopOverviewGUI implements GUI {
     }
 
     /**
-     * Get the object's inventory.
+     * Called when there is a click in this GUI. Cancelled automatically.
      *
-     * @return The inventory.
+     * @param event The InventoryClickEvent provided by Bukkit
      */
-    @NotNull
     @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(
-                this,
-                IridiumSkyblock.getInstance().getShop().overviewSize,
-                StringUtils.color(IridiumSkyblock.getInstance().getShop().overviewTitle)
-        );
+    public void onInventoryClick(InventoryClickEvent event) {
+        IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory -> {
+            String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
+            Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + shopCategory.name);
 
-        addContent(inventory);
-
-        return inventory;
+        });
     }
 
 }

@@ -1,14 +1,35 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumcore.utils.StringUtils;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a clickable GUI.
  * Base for all other classes in this package.
  */
-public interface GUI extends InventoryHolder {
+@AllArgsConstructor
+@NoArgsConstructor
+public abstract class GUI implements InventoryHolder {
+
+    private NoItemGUI noItemGUI;
+
+    @NotNull
+    @Override
+    public Inventory getInventory() {
+        Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
+
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
+
+        return inventory;
+    }
 
     /**
      * Called when there is a click in this GUI.
@@ -16,11 +37,14 @@ public interface GUI extends InventoryHolder {
      *
      * @param event The InventoryClickEvent provided by Bukkit
      */
-    void onInventoryClick(InventoryClickEvent event);
+    public abstract void onInventoryClick(InventoryClickEvent event);
 
     /**
      * Called when updating the Inventories contents
      */
-    void addContent(Inventory inventory);
+    public abstract void addContent(Inventory inventory);
 
+    public NoItemGUI getNoItemGUI() {
+        return noItemGUI;
+    }
 }

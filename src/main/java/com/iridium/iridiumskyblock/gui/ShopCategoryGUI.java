@@ -20,7 +20,7 @@ import java.util.Optional;
 /**
  * GUI which shows all items in a {@link ShopCategory} and allows players to purchase them.
  */
-public class ShopCategoryGUI implements GUI {
+public class ShopCategoryGUI extends GUI {
 
     private final ShopCategory category;
 
@@ -34,38 +34,20 @@ public class ShopCategoryGUI implements GUI {
     }
 
     /**
-     * Called when there is a click in this GUI. Cancelled automatically.
+     * Get the object's inventory.
      *
-     * @param event The InventoryClickEvent provided by Bukkit
+     * @return The inventory.
      */
+    @NotNull
     @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-        Optional<ShopItem> clickedItem = category.items.stream()
-            .filter(item -> item.slot == event.getSlot())
-            .findAny();
+    public Inventory getInventory() {
+        Inventory inventory = Bukkit.createInventory(this, category.size, StringUtils.color(IridiumSkyblock.getInstance().getShop().categoryTitle
+                .replace("%category_name%", category.name)
+        ));
 
-        if (!clickedItem.isPresent()) {
-            return;
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
 
-        // Perform the action corresponding to the click
-        Player player = (Player) event.getWhoClicked();
-        ShopItem shopItem = clickedItem.get();
-        if (event.isLeftClick() && shopItem.isPurchasable()) {
-            if (event.isShiftClick()) {
-                IridiumSkyblock.getInstance().getShopManager().buy(player, shopItem, 64);
-            } else {
-                IridiumSkyblock.getInstance().getShopManager().buy(player, shopItem, shopItem.defaultAmount);
-            }
-        } else if (shopItem.isSellable()) {
-            if (event.isShiftClick()) {
-                IridiumSkyblock.getInstance().getShopManager().sell(player, shopItem, 64);
-            } else {
-                IridiumSkyblock.getInstance().getShopManager().sell(player, shopItem, shopItem.defaultAmount);
-            }
-        } else {
-            IridiumSkyblock.getInstance().getShop().failSound.play(player);
-        }
+        return inventory;
     }
 
     /**
@@ -94,14 +76,49 @@ public class ShopCategoryGUI implements GUI {
         }
     }
 
+    /**
+     * Called when there is a click in this GUI. Cancelled automatically.
+     *
+     * @param event The InventoryClickEvent provided by Bukkit
+     */
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        Optional<ShopItem> clickedItem = category.items.stream()
+                .filter(item -> item.slot == event.getSlot())
+                .findAny();
+
+        if (!clickedItem.isPresent()) {
+            return;
+        }
+
+        // Perform the action corresponding to the click
+        Player player = (Player) event.getWhoClicked();
+        ShopItem shopItem = clickedItem.get();
+        if (event.isLeftClick() && shopItem.isPurchasable()) {
+            if (event.isShiftClick()) {
+                IridiumSkyblock.getInstance().getShopManager().buy(player, shopItem, 64);
+            } else {
+                IridiumSkyblock.getInstance().getShopManager().buy(player, shopItem, shopItem.defaultAmount);
+            }
+        } else if (shopItem.isSellable()) {
+            if (event.isShiftClick()) {
+                IridiumSkyblock.getInstance().getShopManager().sell(player, shopItem, 64);
+            } else {
+                IridiumSkyblock.getInstance().getShopManager().sell(player, shopItem, shopItem.defaultAmount);
+            }
+        } else {
+            IridiumSkyblock.getInstance().getShop().failSound.play(player);
+        }
+    }
+
     private void addShopLore(List<String> lore, ShopItem item) {
         if (item.isPurchasable()) {
             lore.add(
-                StringUtils.color(IridiumSkyblock.getInstance().getShop().buyPriceLore
-                    .replace("%amount%", String.valueOf(item.defaultAmount))
-                    .replace("%buy_price_vault%", String.valueOf(item.buyCost.vault))
-                    .replace("%buy_price_crystals%", String.valueOf(item.buyCost.crystals))
-                )
+                    StringUtils.color(IridiumSkyblock.getInstance().getShop().buyPriceLore
+                            .replace("%amount%", String.valueOf(item.defaultAmount))
+                            .replace("%buy_price_vault%", String.valueOf(item.buyCost.vault))
+                            .replace("%buy_price_crystals%", String.valueOf(item.buyCost.crystals))
+                    )
             );
         } else {
             lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notPurchasableLore));
@@ -109,43 +126,21 @@ public class ShopCategoryGUI implements GUI {
 
         if (item.isSellable()) {
             lore.add(
-                StringUtils.color(IridiumSkyblock.getInstance().getShop().sellRewardLore
-                    .replace("%amount%", String.valueOf(item.defaultAmount))
-                    .replace("%sell_reward_vault%", String.valueOf(item.sellReward.vault))
-                    .replace("%sell_reward_crystals%", String.valueOf(item.sellReward.crystals))
-                )
+                    StringUtils.color(IridiumSkyblock.getInstance().getShop().sellRewardLore
+                            .replace("%amount%", String.valueOf(item.defaultAmount))
+                            .replace("%sell_reward_vault%", String.valueOf(item.sellReward.vault))
+                            .replace("%sell_reward_crystals%", String.valueOf(item.sellReward.crystals))
+                    )
             );
         } else {
             lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notSellableLore));
         }
 
         IridiumSkyblock.getInstance().getShop().shopItemLore.stream()
-            .map(StringUtils::color)
-            .forEach(line -> lore.add(
-                line.replace("%amount%", String.valueOf(item.defaultAmount))
-            ));
-    }
-
-    /**
-     * Get the object's inventory.
-     *
-     * @return The inventory.
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(
-            this,
-            category.size,
-            StringUtils.color(
-                IridiumSkyblock.getInstance().getShop().categoryTitle
-                    .replace("%category_name%", category.name)
-            )
-        );
-
-        addContent(inventory);
-
-        return inventory;
+                .map(StringUtils::color)
+                .forEach(line -> lore.add(
+                        line.replace("%amount%", String.valueOf(item.defaultAmount))
+                ));
     }
 
 }

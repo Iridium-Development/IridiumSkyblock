@@ -2,10 +2,8 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
-import com.iridium.iridiumskyblock.configs.inventories.SingleItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
@@ -18,7 +16,7 @@ import java.util.HashMap;
 /**
  * GUI which displays all members of an Island and allows quick rank management.
  */
-public class MembersGUI implements GUI {
+public class MembersGUI extends GUI {
 
     private final Island island;
     private final HashMap<Integer, User> members;
@@ -29,24 +27,9 @@ public class MembersGUI implements GUI {
      * @param island The Island this GUI belongs to
      */
     public MembersGUI(@NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().membersGUI);
         this.island = island;
         this.members = new HashMap<>();
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        SingleItemGUI singleItemGUI = IridiumSkyblock.getInstance().getInventories().membersGUI;
-        Inventory inventory = Bukkit.createInventory(this, singleItemGUI.size, StringUtils.color(singleItemGUI.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override

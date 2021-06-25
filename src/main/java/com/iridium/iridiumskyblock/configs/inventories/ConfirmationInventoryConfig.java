@@ -2,24 +2,10 @@ package com.iridium.iridiumskyblock.configs.inventories;
 
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-@AllArgsConstructor
-public class ConfirmationInventoryConfig {
-    /**
-     * The size of the GUI
-     */
-    public int size;
-    /**
-     * The title of the GUI
-     */
-    public String title;
-    /**
-     * The background of the GUI
-     */
-    public Background background;
+public class ConfirmationInventoryConfig extends NoItemGUI{
     /**
      * The yes item
      */
@@ -28,4 +14,12 @@ public class ConfirmationInventoryConfig {
      * the no item
      */
     public Item no;
+
+    public ConfirmationInventoryConfig(int size, String title, Background background, Item yes, Item no) {
+        this.size = size;
+        this.title = title;
+        this.background = background;
+        this.yes = yes;
+        this.no = no;
+    }
 }

@@ -24,7 +24,7 @@ public class DepositCommand extends Command {
      * The default constructor.
      */
     public DepositCommand() {
-        super(Collections.singletonList("deposit"), "Deposit into your Island bank", "", true);
+        super(Collections.singletonList("deposit"), "Deposit into your Island bank", "%prefix% &7/is deposit <name> <amount>", "", true);
     }
 
     /**
@@ -38,7 +38,7 @@ public class DepositCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
-            sender.sendMessage("/is deposit <name> <amount>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;

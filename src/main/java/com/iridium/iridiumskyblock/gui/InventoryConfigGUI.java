@@ -2,29 +2,18 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.configs.inventories.InventoryConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
 
-public class InventoryConfigGUI implements GUI {
+public class InventoryConfigGUI extends GUI {
 
     private final InventoryConfig inventoryConfig;
 
     public InventoryConfigGUI(InventoryConfig inventoryConfig) {
+        super(inventoryConfig);
         this.inventoryConfig = inventoryConfig;
-    }
-
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, inventoryConfig.size, StringUtils.color(inventoryConfig.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override

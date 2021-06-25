@@ -43,8 +43,9 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
      * @param island the specified island
      */
     public List<T> getEntries(@NotNull Island island) {
-        int index = getIndex(island);
-        if (index == -1) return Collections.emptyList();
+        int index = Collections.binarySearch(getEntries(), new IslandData(island), Comparator.comparing(islandData -> islandData.getIsland().map(Island::getId).orElse(0)));
+        if (index < 0) return Collections.emptyList();
+
         int currentIndex = index - 1;
         List<T> result = new ArrayList<>();
         result.add(getEntries().get(index));
@@ -73,30 +74,5 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
             }
         }
         return result;
-    }
-
-    /**
-     * Gets the index of the island -1 if not found
-     *
-     * @param island The specified island
-     * @return The index where its located
-     */
-    private int getIndex(@NotNull Island island) {
-        int first = 0;
-        int last = getEntries().size() - 1;
-        int mid = last / 2;
-        while (first <= last) {
-            IslandData islandData = getEntries().get(mid);
-            int islandId = islandData.getIsland().isPresent() ? islandData.getIsland().get().getId() : 0;
-            if (islandId < island.getId()) {
-                first = mid + 1;
-            } else if (islandId == island.getId()) {
-                return mid;
-            } else {
-                last = mid - 1;
-            }
-            mid = (first + last) / 2;
-        }
-        return -1;
     }
 }

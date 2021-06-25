@@ -155,9 +155,15 @@ public class Messages {
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
     public String invalidBiome = "%prefix% &7Biome doesn't exist.";
     public String changedBiome = "%prefix% &7You have changed your island biome to %biome%! Relog to see changes.";
+    public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
+    public String ownerRankDisplayName = "Owner";
+    public String coOwnerRankDisplayName = "Co-Owner";
+    public String moderatorRankDisplayName = "Moderator";
+    public String memberRankDisplayName = "Member";
+    public String visitorRankDisplayName = "Visitor";
 
     public List<String> infoCommand = Arrays.asList(
             "&8===== &b&lIsland Info for %player% &r&8=====",

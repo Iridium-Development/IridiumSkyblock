@@ -2,16 +2,13 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
-import com.iridium.iridiumskyblock.configs.inventories.IslandTopInventoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +18,7 @@ import java.util.List;
  *
  * @see Island#getValue()
  */
-public class IslandTopGUI implements GUI {
+public class IslandTopGUI extends GUI {
 
     private final HashMap<Integer, Island> islandSlots = new HashMap<>();
 
@@ -29,28 +26,13 @@ public class IslandTopGUI implements GUI {
      * The default constructor.
      */
     public IslandTopGUI() {
+        super(IridiumSkyblock.getInstance().getInventories().islandTopGUI);
         List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
 
         for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
             if (islands.size() < rank) continue;
             islandSlots.put(IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank), islands.get(rank - 1));
         }
-    }
-
-    /**
-     * Builds and returns this inventory.
-     *
-     * @return The new inventory
-     */
-    @NotNull
-    @Override
-    public Inventory getInventory() {
-        IslandTopInventoryConfig topInventoryConfig = IridiumSkyblock.getInstance().getInventories().islandTopGUI;
-        Inventory inventory = Bukkit.createInventory(this, topInventoryConfig.size, StringUtils.color(topInventoryConfig.title));
-
-        addContent(inventory);
-
-        return inventory;
     }
 
     @Override

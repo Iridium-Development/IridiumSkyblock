@@ -24,7 +24,7 @@ public class UnTrustCommand extends Command {
      * The default constructor.
      */
     public UnTrustCommand() {
-        super(Collections.singletonList("untrust"), "Revoke a trusted user from your Island", "", true);
+        super(Collections.singletonList("untrust"), "Revoke a trusted user from your Island", "%prefix% &7/is untrust <name>", "", true);
     }
 
     /**
@@ -38,7 +38,7 @@ public class UnTrustCommand extends Command {
     @Override
     public void execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
-            sender.sendMessage("/is untrust <name>");
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
         Player player = (Player) sender;

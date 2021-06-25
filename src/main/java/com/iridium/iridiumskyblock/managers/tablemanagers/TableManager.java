@@ -7,6 +7,7 @@ import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,7 +40,8 @@ public class TableManager<T, S> {
      */
     public void save() {
         try {
-            for (T t : entries) {
+            List<T> entryList = new ArrayList<>(entries);
+            for (T t : entryList) {
                 dao.createOrUpdate(t);
             }
             if (!autoCommit) {

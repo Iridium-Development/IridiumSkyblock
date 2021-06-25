@@ -113,6 +113,14 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     }
 
     /**
+     * Reloads all commands
+     */
+    public void reloadCommands() {
+        commands.clear();
+        registerCommands();
+    }
+
+    /**
      * Method which handles command execution for all sub-commands.
      * Automatically checks if a User can execute the command.
      * All parameters are provided by Bukkit.

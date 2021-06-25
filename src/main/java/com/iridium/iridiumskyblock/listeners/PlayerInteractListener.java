@@ -14,9 +14,21 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 public class PlayerInteractListener implements Listener {
+
+    private final Set<XMaterial> redstoneMaterials = new HashSet<>(Arrays.asList(
+            XMaterial.REPEATER,
+            XMaterial.COMPARATOR,
+            XMaterial.DAYLIGHT_DETECTOR,
+            XMaterial.LEVER,
+            XMaterial.NOTE_BLOCK,
+            XMaterial.TRIPWIRE
+    ));
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -46,7 +58,7 @@ public class PlayerInteractListener implements Listener {
                     event.setCancelled(true);
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotOpenContainers.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
-            } else if (material.equals(XMaterial.LEVER) || material.name().contains("BUTTON") || material.name().contains("PRESSURE_PLATE")) {
+            } else if (redstoneMaterials.contains(material) || material.name().contains("BUTTON") || material.name().contains("PRESSURE_PLATE")) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.REDSTONE)) {
                     event.setCancelled(true);
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUseRedstone.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

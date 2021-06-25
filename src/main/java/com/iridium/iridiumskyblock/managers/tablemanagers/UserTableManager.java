@@ -67,8 +67,9 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param island the specified island
      */
     public List<User> getEntries(@NotNull Island island) {
-        int index = getIndex(island);
-        if (index == -1) return Collections.emptyList();
+        int index = Collections.binarySearch(userIslandIndex, new User(island), Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
+        if (index < 0) return Collections.emptyList();
+
         int currentIndex = index - 1;
         List<User> result = new ArrayList<>();
         result.add(userIslandIndex.get(index));
@@ -97,31 +98,6 @@ public class UserTableManager extends TableManager<User, Integer> {
             }
         }
         return result;
-    }
-
-    /**
-     * Gets the index of the island -1 if not found
-     *
-     * @param island The specified island
-     * @return The index where its located
-     */
-    private int getIndex(@NotNull Island island) {
-        int first = 0;
-        int last = userIslandIndex.size() - 1;
-        int mid = last / 2;
-        while (first <= last) {
-            User user = userIslandIndex.get(mid);
-            int islandId = user.getIsland().isPresent() ? user.getIsland().get().getId() : 0;
-            if (islandId < island.getId()) {
-                first = mid + 1;
-            } else if (islandId == island.getId()) {
-                return mid;
-            } else {
-                last = mid - 1;
-            }
-            mid = (first + last) / 2;
-        }
-        return -1;
     }
 
     @Override

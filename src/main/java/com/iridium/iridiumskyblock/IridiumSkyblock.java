@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
@@ -7,6 +8,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -24,6 +26,7 @@ import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
@@ -64,6 +67,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Boosters boosters;
     private Commands commands;
     private Shop shop;
+    private Border border;
 
     private ChunkGenerator chunkGenerator;
 
@@ -181,6 +185,16 @@ public class IridiumSkyblock extends IridiumCore {
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
 
+
+        // Automatically update all inventories
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
+            if (inventoryHolder instanceof GUI) {
+                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
+            }
+        }), 0, 20);
+
+        // Register worlds with multiverse
         Bukkit.getScheduler().runTaskLater(this, () -> {
             registerMultiverse(islandManager.getWorld());
             registerMultiverse(islandManager.getNetherWorld());
@@ -363,6 +377,13 @@ public class IridiumSkyblock extends IridiumCore {
         this.boosters = getPersist().load(Boosters.class);
         this.commands = getPersist().load(Commands.class);
         this.shop = getPersist().load(Shop.class);
+        this.border = getPersist().load(Border.class);
+
+        for (Color color : Color.values()) {
+            if (!border.enabled.containsKey(color)) {
+                border.enabled.put(color, true);
+            }
+        }
 
         int maxSize = upgrades.sizeUpgrade.upgrades.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).get().size;
         if (configuration.distance <= maxSize) {
@@ -429,6 +450,7 @@ public class IridiumSkyblock extends IridiumCore {
         saveFile(schematicFolder, "jungle_end.iridiumschem");
 
         if (shopManager != null) shopManager.reloadCategories();
+        if (commandManager != null) commandManager.reloadCommands();
     }
 
     private void saveFile(File parent, String name) {
@@ -476,6 +498,7 @@ public class IridiumSkyblock extends IridiumCore {
         getPersist().save(boosters);
         getPersist().save(commands);
         getPersist().save(shop);
+        getPersist().save(border);
     }
 
     /**
