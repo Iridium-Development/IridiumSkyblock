@@ -6,7 +6,9 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.configs.inventories.*;
+import org.apache.commons.lang.WordUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -166,6 +168,8 @@ public class Inventories {
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 13, 1, "&b&lModerator", Collections.singletonList("&b%members%")),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&b&lMember", Collections.singletonList("&b%members%")),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&b&lVisitor", Collections.emptyList()));
+
+    public SingleItemGUI biomeGUI = new SingleItemGUI(45, "&7Island Biomes", background1, new Item(XMaterial.GRASS_BLOCK, 1, "&b&l%biome%", Collections.singletonList("&7Click to change your island biome!")));
 
     public NoItemGUI islandReward = new NoItemGUI(45, "&7Island Rewards", background1);
 
