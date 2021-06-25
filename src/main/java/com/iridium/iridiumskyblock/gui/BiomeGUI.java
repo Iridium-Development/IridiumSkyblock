@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BiomeGUI implements GUI {
+public class BiomeGUI extends GUI {
 
     private final List<XBiome> biomes;
     private final int page;
