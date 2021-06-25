@@ -6,7 +6,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BiomeGUI;
-import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class BiomeCommand extends Command {
 
@@ -36,7 +36,7 @@ public class BiomeCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new BiomeGUI(1, optionalIsland.get()).getInventory());
+            player.openInventory(new BiomeGUI(1, optionalIsland.get(), player.getWorld().getEnvironment()).getInventory());
             return;
         }
 
@@ -45,10 +45,7 @@ public class BiomeCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidBiome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-
-        final IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
-        islandManager.getIslandChunks(optionalIsland.get(), islandManager.getWorld())
-                .thenAccept(chunks -> chunks.forEach(chunk -> biomeOptional.get().setBiome(chunk)));
+        IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(optionalIsland.get(), biomeOptional.get());
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
@@ -57,6 +54,15 @@ public class BiomeCommand extends Command {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return null;
+        if (commandSender instanceof Player) {
+            Player player = (Player) commandSender;
+            return XBiome.VALUES.stream()
+                    .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
+                    .map(Enum::toString)
+                    .filter(s -> s.toUpperCase().contains(args[1].toUpperCase()))
+                    .collect(Collectors.toList());
+        } else {
+            return Collections.emptyList();
+        }
     }
 }

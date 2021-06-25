@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.*;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
  */
 public class IslandManager {
 
+
     /**
      * Creates a new world using the current skyblock generator.
      *
@@ -57,6 +59,39 @@ public class IslandManager {
     public Optional<IslandInvite> getIslandInvite(@NotNull Island island, @NotNull User user) {
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island);
         return islandInvites.stream().filter(islandInvite -> islandInvite.getUser().equals(user)).findFirst();
+    }
+
+    /**
+     * Sets an island's biome
+     *
+     * @param island The specified Island
+     * @param xBiome The specified Biome
+     */
+    public void setIslandBiome(@NotNull Island island, @NotNull XBiome xBiome) {
+        World.Environment environment = xBiome.getEnvironment();
+        World world;
+        switch (environment) {
+            case NETHER:
+                world = getNetherWorld();
+                break;
+            case THE_END:
+                world = getEndWorld();
+                break;
+            default:
+                world = getWorld();
+        }
+
+        getIslandChunks(island, world).thenAccept(chunks -> {
+            Location pos1 = island.getPos1(world);
+            Location pos2 = island.getPos2(world);
+            xBiome.setBiome(pos1, pos2);
+            for (Chunk chunk : chunks) {
+                IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
+            }
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 
     /**

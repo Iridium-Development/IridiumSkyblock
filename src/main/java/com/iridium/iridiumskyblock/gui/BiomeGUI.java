@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -26,51 +27,14 @@ public class BiomeGUI extends GUI {
     private final List<XBiome> biomes;
     private final int page;
     private final Island island;
+    private final World.Environment environment;
 
-    public BiomeGUI(int page, Island island) {
-        this.biomes = XBiome.VALUES;
+    public BiomeGUI(int page, Island island, World.Environment environment) {
+        super(IridiumSkyblock.getInstance().getInventories().biomeGUI);
+        this.biomes = XBiome.VALUES.stream().filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
+        this.environment = environment;
         this.page = page;
         this.island = island;
-    }
-
-    @Override
-    public void onInventoryClick(InventoryClickEvent event) {
-
-        final int size = this.getInventory().getSize();
-
-        if (event.getSlot() == size - 7 && page > 1) {
-            event.getWhoClicked().openInventory(new BiomeGUI(page - 1, this.island).getInventory());
-            return;
-        }
-
-        if (event.getSlot() == size - 3 && (size - 9) * page < biomes.size()) {
-            event.getWhoClicked().openInventory(new BiomeGUI(page + 1, this.island).getInventory());
-            return;
-        }
-
-        if (event.getSlot() + 1 <= biomes.size()) {
-            int index = ((size - 9) * (page - 1)) + event.getSlot();
-
-            if (biomes.size() > index) {
-                IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
-
-                XBiome biome = biomes.get(index);
-                islandManager.getIslandChunks(island, islandManager.getWorld())
-                        .thenAccept(chunks -> chunks.forEach(x -> {
-                            biome.setBiome(x);
-                            IridiumSkyblock.getInstance().getNms().sendChunk(island.getMembers().stream().map(user -> Bukkit.getPlayer(user.getUuid())).collect(Collectors.toList()), x);
-                        }));
-
-
-                event.getWhoClicked().closeInventory();
-                event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                        .replace("%biome%", WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " ")))));
-
-            }
-
-        }
-
     }
 
     @Override
@@ -94,14 +58,31 @@ public class BiomeGUI extends GUI {
 
     }
 
-    @NotNull
     @Override
-    public Inventory getInventory() {
-        final NoItemGUI gui = IridiumSkyblock.getInstance().getInventories().biomeGUI;
-        final Inventory inventory = Bukkit.createInventory(this, gui.size, StringUtils.color(gui.title));
+    public void onInventoryClick(InventoryClickEvent event) {
 
-        this.addContent(inventory);
-        return inventory;
+        final int size = IridiumSkyblock.getInstance().getInventories().biomeGUI.size;
+
+        if (event.getSlot() == size - 7 && page > 1) {
+            event.getWhoClicked().openInventory(new BiomeGUI(page - 1, this.island, environment).getInventory());
+            return;
+        }
+
+        if (event.getSlot() == size - 3 && (size - 9) * page < biomes.size()) {
+            event.getWhoClicked().openInventory(new BiomeGUI(page + 1, this.island, environment).getInventory());
+            return;
+        }
+
+        if (event.getSlot() + 1 <= biomes.size()) {
+            int index = ((size - 9) * (page - 1)) + event.getSlot();
+            if (biomes.size() > index) {
+                XBiome biome = biomes.get(index);
+                String command = IridiumSkyblock.getInstance().getCommands().biomeCommand.aliases.get(0);
+                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + biome.toString());
+                event.getWhoClicked().closeInventory();
+
+            }
+        }
     }
 
 }
