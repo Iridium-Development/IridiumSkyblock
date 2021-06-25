@@ -74,9 +74,9 @@ public class IslandManager {
         boolean inIsland = user.getIsland().map(Island::getId).orElse(0) == island.getId();
         // If the island is visitable, the user is in the island, the user is trusted or the user is bypassing teleport them
         if (island.isVisitable() || inIsland || trusted || user.isBypass()) {
-            if (inIsland){
+            if (inIsland) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }else{
+            } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHomeOther.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
             }
             if (delay < 1) {
@@ -409,9 +409,13 @@ public class IslandManager {
      */
     public IslandBank getIslandBank(@NotNull Island island, @NotNull BankItem bankItem) {
         Optional<IslandBank> optionalIslandBank =
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getEntries(island).stream().filter(islandBank ->
-                        islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())
-                ).findFirst();
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager()
+                        .getEntries(island).stream()
+                        .filter(islandBank ->
+                                islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())
+                        ).findFirst();
+
+
         if (optionalIslandBank.isPresent()) {
             return optionalIslandBank.get();
         } else {
