@@ -56,5 +56,6 @@ public class Commands {
     public WarpsCommand warpsCommand = new WarpsCommand();
     public WithdrawCommand withdrawCommand = new WithdrawCommand();
     public ChatCommand chatCommand = new ChatCommand();
+    public BiomeCommand biomeCommand = new BiomeCommand();
 
 }

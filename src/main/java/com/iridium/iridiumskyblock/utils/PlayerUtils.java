@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +42,10 @@ public class PlayerUtils {
      * @param island The specified Island
      */
     public static void sendBorder(@NotNull Player player, @NotNull Island island) {
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), island.getCenter(player.getWorld())));
+        final Location centre = island.getCenter(player.getWorld()).clone();
+        centre.add(0.5, 0.0, 0.5);
+
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
     }
 
     /**
