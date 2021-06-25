@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -51,10 +53,9 @@ public class BiomeGUI extends GUI {
         biomes.stream()
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(biome -> {
-                    final ItemStack item = ItemStackUtils.makeItem(XMaterial.GRASS_BLOCK, 1, "&b&l" + WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " ")), Arrays.asList("&7Click to change", "&7your island biome!"));
-                    inventory.setItem(index.getAndIncrement(), item);
-                });
+                .forEachOrdered(biome ->
+                        inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().biomeGUI.item, Collections.singletonList(new Placeholder("biome", WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " "))))))
+                );
 
     }
 
