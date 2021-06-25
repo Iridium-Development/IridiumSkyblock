@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class BiomeGUI extends GUI {
 
@@ -55,7 +56,11 @@ public class BiomeGUI extends GUI {
 
                 XBiome biome = biomes.get(index);
                 islandManager.getIslandChunks(island, islandManager.getWorld())
-                        .thenAccept(chunks -> chunks.forEach(biome::setBiome));
+                        .thenAccept(chunks -> chunks.forEach(x -> {
+                            biome.setBiome(x);
+                            IridiumSkyblock.getInstance().getNms().sendChunk(island.getMembers().stream().map(user -> Bukkit.getPlayer(user.getUuid())).collect(Collectors.toList()), x);
+                        }));
+
 
                 event.getWhoClicked().closeInventory();
                 event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome

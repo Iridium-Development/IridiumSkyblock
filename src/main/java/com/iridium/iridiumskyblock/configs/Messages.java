@@ -154,7 +154,7 @@ public class Messages {
     public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
     public String invalidBiome = "%prefix% &7Biome doesn't exist.";
-    public String changedBiome = "%prefix% &7You have changed your island biome to %biome%! Relog to see changes.";
+    public String changedBiome = "%prefix% &7You have changed your island biome to %biome%! You may need to relog to see changes.";
     public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
     public String yes = "Yes";
     public String no = "No";
