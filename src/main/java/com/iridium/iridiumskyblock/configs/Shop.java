@@ -275,7 +275,7 @@ public class Shop {
                             5,
                             20,
                             new BuyCost(130, 0),
-                            new SellReward(40, 0)
+                            new SellReward(5, 0)
                     ),
                     new ShopItem(
                             "&9&lCooked Porkchop",
