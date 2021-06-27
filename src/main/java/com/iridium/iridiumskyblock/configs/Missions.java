@@ -355,7 +355,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &72 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("GROW:MELONS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMelon Farmer Reward",
+                    )), Collections.singletonList("GROW:MELON:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMelon Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
@@ -426,7 +426,7 @@ public class Missions {
                             "&b&l* &72 Island Crystals",
                             "&b&l* &7$1000"
                     )
-            ), Arrays.asList("MINE:IRON_ORE:5", "SMELT:IRON_ORE:32"), Mission.MissionType.ONCE,
+            ), Arrays.asList("MINE:IRON_ORE:32", "SMELT:IRON_ORE:32"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
