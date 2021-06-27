@@ -1,17 +1,30 @@
 package com.iridium.iridiumskyblock.utils;
 
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Various utils which perform operations on {@link org.bukkit.Location}'s.
  */
 public class LocationUtils {
+
+    private static final List<Material> unsafeBlocks = Stream.of(
+            XMaterial.END_PORTAL,
+            XMaterial.WATER,
+            XMaterial.LAVA
+    ).map(XMaterial::parseMaterial).collect(Collectors.toList());
 
     /**
      * Is a location safe to teleport a player to
@@ -23,7 +36,7 @@ public class LocationUtils {
         Block above = location.clone().add(0, 1, 0).getBlock();
         Block below = location.clone().subtract(0, 1, 0).getBlock();
         MultiVersion multiVersion = IridiumSkyblock.getInstance().getMultiVersion();
-        return multiVersion.isPassable(block) && !block.isLiquid() && multiVersion.isPassable(above) && !above.isLiquid() && !multiVersion.isPassable(below) && !below.isLiquid();
+        return multiVersion.isPassable(block) && multiVersion.isPassable(above) && !multiVersion.isPassable(below) && !unsafeBlocks.contains(below.getType()) && !unsafeBlocks.contains(block.getType()) && !unsafeBlocks.contains(above.getType());
     }
 
     /**
