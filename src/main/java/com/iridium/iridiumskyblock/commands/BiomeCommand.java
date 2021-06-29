@@ -31,7 +31,7 @@ public class BiomeCommand extends Command {
         final Optional<Island> optionalIsland = user.getIsland();
 
         if (!optionalIsland.isPresent()) {
-            player.sendMessage(StringUtils.color(this.plugin.getMessages().noIsland.replace("prefix", plugin.getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(this.plugin.getMessages().noIsland.replace("%prefix%", plugin.getConfiguration().prefix)));
             return;
         }
 
