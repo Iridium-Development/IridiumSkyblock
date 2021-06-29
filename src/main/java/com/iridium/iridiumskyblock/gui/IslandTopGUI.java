@@ -27,23 +27,21 @@ public class IslandTopGUI extends GUI {
      */
     public IslandTopGUI() {
         super(IridiumSkyblock.getInstance().getInventories().islandTopGUI);
-        List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
-
-        for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
-            if (islands.size() < rank) continue;
-            islandSlots.put(IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank), islands.get(rank - 1));
-        }
     }
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
+        List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandTopGUI.background);
 
+        islandSlots.clear();
+        inventory.clear();
 
-        for (int slot : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.values()) {
-            if (islandSlots.containsKey(slot)) {
-                Island island = islandSlots.get(slot);
+
+        for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
+            int slot = IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank);
+            if (islands.size() >= rank) {
+                Island island = islands.get(rank - 1);
                 inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
             } else {
                 inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.filler));
