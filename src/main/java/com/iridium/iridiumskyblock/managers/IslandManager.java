@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.*;
@@ -33,6 +34,7 @@ import java.util.stream.Collectors;
  */
 public class IslandManager {
 
+
     /**
      * Creates a new world using the current skyblock generator.
      *
@@ -60,6 +62,39 @@ public class IslandManager {
     }
 
     /**
+     * Sets an island's biome
+     *
+     * @param island The specified Island
+     * @param xBiome The specified Biome
+     */
+    public void setIslandBiome(@NotNull Island island, @NotNull XBiome xBiome) {
+        World.Environment environment = xBiome.getEnvironment();
+        World world;
+        switch (environment) {
+            case NETHER:
+                world = getNetherWorld();
+                break;
+            case THE_END:
+                world = getEndWorld();
+                break;
+            default:
+                world = getWorld();
+        }
+
+        getIslandChunks(island, world).thenAccept(chunks -> {
+            Location pos1 = island.getPos1(world);
+            Location pos2 = island.getPos2(world);
+            xBiome.setBiome(pos1, pos2);
+            for (Chunk chunk : chunks) {
+                IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
+            }
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
+    }
+
+    /**
      * Teleports a player to the Island's home
      *
      * @param player The player we are teleporting
@@ -74,9 +109,9 @@ public class IslandManager {
         boolean inIsland = user.getIsland().map(Island::getId).orElse(0) == island.getId();
         // If the island is visitable, the user is in the island, the user is trusted or the user is bypassing teleport them
         if (island.isVisitable() || inIsland || trusted || user.isBypass()) {
-            if (inIsland){
+            if (inIsland) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }else{
+            } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHomeOther.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
             }
             if (delay < 1) {
@@ -255,6 +290,9 @@ public class IslandManager {
     }
 
     private CompletableFuture<Void> pasteSchematic(@NotNull Island island, @NotNull Schematics.SchematicConfig schematicConfig) {
+        setIslandBiome(island, schematicConfig.overworld.biome);
+        setIslandBiome(island, schematicConfig.nether.biome);
+        setIslandBiome(island, schematicConfig.end.biome);
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
         IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
                 IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
@@ -287,7 +325,7 @@ public class IslandManager {
      * @param world  The world
      * @return A list of Chunks the island is in
      */
-    private CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
+    public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
 
@@ -412,9 +450,13 @@ public class IslandManager {
      */
     public IslandBank getIslandBank(@NotNull Island island, @NotNull BankItem bankItem) {
         Optional<IslandBank> optionalIslandBank =
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getEntries(island).stream().filter(islandBank ->
-                        islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())
-                ).findFirst();
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager()
+                        .getEntries(island).stream()
+                        .filter(islandBank ->
+                                islandBank.getBankItem().equalsIgnoreCase(bankItem.getName())
+                        ).findFirst();
+
+
         if (optionalIslandBank.isPresent()) {
             return optionalIslandBank.get();
         } else {
