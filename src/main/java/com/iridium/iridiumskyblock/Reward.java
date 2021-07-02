@@ -40,7 +40,7 @@ public class Reward {
     public void claim(Player player, Island island) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
 
-        island.setExperience(island.getExperience() + islandExperience);
+        island.setExperience(island.getTotalExperience() + islandExperience);
         commands.forEach(command -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", player.getName())));
         sound.play(player);
 
