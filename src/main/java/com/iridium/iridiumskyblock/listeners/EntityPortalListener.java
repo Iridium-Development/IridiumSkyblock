@@ -18,8 +18,8 @@ public class EntityPortalListener implements Listener {
             IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
             IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom()).ifPresent(island -> {
                 World worldFrom = event.getFrom().getWorld();
-                String worldToName = event.getTo().getWorld().getName();
-                if ((worldToName.equals("world_nether") && Objects.equals(worldFrom, islandManager.getWorld())) || (worldToName.equals("world") && Objects.equals(worldFrom, islandManager.getNetherWorld()))) {
+                World worldTo = event.getTo().getWorld();
+                if ((worldTo.getEnvironment() == World.Environment.NETHER && Objects.equals(worldFrom, islandManager.getWorld())) || (worldTo.getEnvironment() == World.Environment.NORMAL && Objects.equals(worldFrom, islandManager.getNetherWorld()))) {
                     if (IridiumSkyblock.getInstance().getConfiguration().netherIslands) {
                         World world = Objects.equals(worldFrom, islandManager.getNetherWorld()) ? islandManager.getWorld() : islandManager.getNetherWorld();
                         event.setTo(island.getCenter(world));
@@ -27,7 +27,7 @@ public class EntityPortalListener implements Listener {
                         event.setCancelled(true);
                     }
                 }
-                if ((worldToName.equals("world_the_end") && (Objects.equals(worldFrom, islandManager.getWorld()) || Objects.equals(worldFrom, islandManager.getNetherWorld()))) || (worldToName.equals("world") && Objects.equals(worldFrom, islandManager.getEndWorld()))) {
+                if ((worldTo.getEnvironment() == World.Environment.THE_END && (Objects.equals(worldFrom, islandManager.getWorld()) || Objects.equals(worldFrom, islandManager.getNetherWorld()))) || (worldTo.getEnvironment() == World.Environment.NORMAL && Objects.equals(worldFrom, islandManager.getEndWorld()))) {
                     if (IridiumSkyblock.getInstance().getConfiguration().endIslands) {
                         World world = Objects.equals(worldFrom, islandManager.getEndWorld()) ? islandManager.getWorld() : islandManager.getEndWorld();
                         event.setCancelled(true);
