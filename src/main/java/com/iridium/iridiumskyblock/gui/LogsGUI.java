@@ -45,7 +45,7 @@ public class LogsGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public LogsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().logsGUI);
+        super(IridiumSkyblock.getInstance().getInventories().logsGUI, island);
         this.island = island;
     }
 

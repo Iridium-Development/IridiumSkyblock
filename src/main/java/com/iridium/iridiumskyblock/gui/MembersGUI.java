@@ -27,7 +27,7 @@ public class MembersGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public MembersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().membersGUI);
+        super(IridiumSkyblock.getInstance().getInventories().membersGUI, island);
         this.island = island;
         this.members = new HashMap<>();
     }

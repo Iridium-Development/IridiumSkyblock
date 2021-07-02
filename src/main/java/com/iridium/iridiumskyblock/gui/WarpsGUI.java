@@ -28,7 +28,7 @@ public class WarpsGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public WarpsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().warpsGUI);
+        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, island);
         this.island = island;
     }
 
@@ -82,4 +82,5 @@ public class WarpsGUI extends GUI {
             }
         }
     }
+
 }

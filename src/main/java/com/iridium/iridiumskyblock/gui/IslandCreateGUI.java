@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
  * GUI which shows the users all available schematics when creating a new Island.
  */
 public class IslandCreateGUI extends SchematicGUI {
+
     private final @NotNull Player player;
     private final @NotNull String islandName;
 

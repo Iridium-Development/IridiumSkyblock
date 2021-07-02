@@ -32,7 +32,7 @@ public class BiomeGUI extends GUI {
     private final World.Environment environment;
 
     public BiomeGUI(int page, Island island, World.Environment environment) {
-        super(IridiumSkyblock.getInstance().getInventories().biomeGUI);
+        super(IridiumSkyblock.getInstance().getInventories().biomeGUI, island);
         this.biomes = XBiome.VALUES.stream().filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
         this.environment = environment;
         this.page = page;

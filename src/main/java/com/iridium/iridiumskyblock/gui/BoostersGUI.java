@@ -31,7 +31,7 @@ public class BoostersGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public BoostersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().boostersGUI);
+        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, island);
         this.island = island;
     }
 

@@ -19,7 +19,7 @@ public class RewardsGUI extends GUI {
     private final Island island;
 
     public RewardsGUI(Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandReward);
+        super(IridiumSkyblock.getInstance().getInventories().islandReward, island);
         this.island = island;
     }
 

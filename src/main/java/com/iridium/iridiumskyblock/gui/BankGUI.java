@@ -28,7 +28,7 @@ public class BankGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public BankGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bankGUI);
+        super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
         this.island = island;
     }
 

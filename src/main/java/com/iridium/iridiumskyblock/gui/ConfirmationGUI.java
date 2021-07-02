@@ -20,7 +20,7 @@ public class ConfirmationGUI extends GUI {
      * @param runnable The code that should be run when the user confirms his action
      */
     public ConfirmationGUI(@NotNull Runnable runnable) {
-        super(IridiumSkyblock.getInstance().getInventories().confirmationGUI);
+        super(IridiumSkyblock.getInstance().getInventories().confirmationGUI, null);
         this.runnable = runnable;
     }
 

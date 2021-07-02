@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
  * GUI which shows all categories of the shop.
  */
 public class ShopOverviewGUI extends GUI {
+
     /**
      * Get the object's inventory.
      *

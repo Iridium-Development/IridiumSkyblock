@@ -33,7 +33,7 @@ public class PermissionsGUI extends GUI {
      * @param islandRank The rank which is being configured
      */
     public PermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank) {
-        super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI);
+        super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI, island);
         this.island = island;
         this.islandRank = islandRank;
     }

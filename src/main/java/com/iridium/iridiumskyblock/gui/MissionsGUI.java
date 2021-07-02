@@ -30,7 +30,7 @@ public class MissionsGUI extends GUI {
      * @see com.iridium.iridiumskyblock.Mission.MissionType
      */
     public MissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType) {
-        super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI);
+        super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI, island);
         this.island = island;
         this.missionType = missionType;
     }

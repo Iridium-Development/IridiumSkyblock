@@ -31,7 +31,7 @@ public class BlockValueGUI extends GUI {
      * @param type The type of valuable block shown in this GUI
      */
     public BlockValueGUI(BlockValueType type) {
-        super(IridiumSkyblock.getInstance().getInventories().blockValue);
+        super(IridiumSkyblock.getInstance().getInventories().blockValue, null);
         this.guiType = type;
     }
 

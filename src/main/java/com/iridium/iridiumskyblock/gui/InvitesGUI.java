@@ -30,7 +30,7 @@ public class InvitesGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public InvitesGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI);
+        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, island);
         this.island = island;
         invites = new HashMap<>();
     }

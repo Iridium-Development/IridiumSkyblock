@@ -2,24 +2,48 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
-import lombok.AllArgsConstructor;
+import com.iridium.iridiumskyblock.database.Island;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a clickable GUI.
  * Base for all other classes in this package.
  */
-@AllArgsConstructor
 @NoArgsConstructor
 public abstract class GUI implements InventoryHolder {
 
-    private NoItemGUI noItemGUI;
+    private @Nullable NoItemGUI noItemGUI;
+
+    /**
+     * The default constructor.
+     *
+     * @param noItemGUI The NoItemGUI of this GUI
+     * @param island    The island of this GUI. Can be null
+     */
+    public GUI(@NotNull NoItemGUI noItemGUI, @Nullable Island island) {
+        if (island != null) {
+            this.noItemGUI = new NoItemGUI(
+                noItemGUI.size,
+                StringUtils.processMultiplePlaceholders(
+                    IridiumSkyblock.getInstance()
+                        .getInventories().warpsGUI.title,
+                    new PlaceholderBuilder().applyIslandPlaceholders(island)
+                        .build()
+                ),
+                noItemGUI.background
+            );
+        } else {
+            this.noItemGUI = noItemGUI;
+        }
+    }
 
     @NotNull
     @Override
@@ -47,4 +71,5 @@ public abstract class GUI implements InventoryHolder {
     public NoItemGUI getNoItemGUI() {
         return noItemGUI;
     }
+
 }

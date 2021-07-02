@@ -29,7 +29,7 @@ public class IslandRanksGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public IslandRanksGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandRanksGUI);
+        super(IridiumSkyblock.getInstance().getInventories().islandRanksGUI, island);
         this.island = island;
     }
 
