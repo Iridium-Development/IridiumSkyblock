@@ -25,7 +25,7 @@ public class SpawnerSpawnListener implements Listener {
             if (islandBooster.isActive()) {
                 CreatureSpawner spawner = event.getSpawner();
                 if (!cooldownProvider.isOnCooldown(spawner)) {
-                    cooldownProvider.resetCooldown(spawner);
+                    cooldownProvider.applyCooldown(spawner);
                     Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                         spawner.setDelay(spawner.getDelay() / 2);
                         spawner.update();

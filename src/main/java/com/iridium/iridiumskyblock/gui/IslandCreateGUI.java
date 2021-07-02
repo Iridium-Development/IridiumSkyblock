@@ -37,7 +37,7 @@ public class IslandCreateGUI extends SchematicGUI {
     @Override
     public void selectSchematic(Schematics.SchematicConfig schematicConfig) {
         boolean success = IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, islandName, schematicConfig);
-        if (success) cooldownProvider.resetCooldown(player);
+        if (success) cooldownProvider.applyCooldown(player);
     }
 
 }

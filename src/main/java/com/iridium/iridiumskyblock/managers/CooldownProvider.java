@@ -59,7 +59,7 @@ public class CooldownProvider<T> {
      *
      * @param t The entity which should be checked
      */
-    public void resetCooldown(T t) {
+    public void applyCooldown(T t) {
         cooldownTimes.put(t, duration.plusMillis(System.currentTimeMillis()));
     }
 

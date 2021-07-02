@@ -53,7 +53,7 @@ public class ConfirmationGUI extends GUI {
         } else if (event.getSlot() == 15) {
             runnable.run();
             player.closeInventory();
-            cooldownProvider.resetCooldown(player);
+            cooldownProvider.applyCooldown(player);
         }
     }
 }

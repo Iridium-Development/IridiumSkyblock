@@ -192,7 +192,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             }
 
             boolean success = command.execute(commandSender, args);
-            if (success) cooldownProvider.resetCooldown(commandSender);
+            if (success) cooldownProvider.applyCooldown(commandSender);
             return true;
         }
 
