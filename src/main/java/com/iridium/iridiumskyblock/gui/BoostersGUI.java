@@ -23,16 +23,13 @@ import java.util.Map;
  */
 public class BoostersGUI extends GUI {
 
-    private final Island island;
-
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
     public BoostersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().boostersGUI);
-        this.island = island;
+        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, island);
     }
 
     @Override
@@ -42,7 +39,7 @@ public class BoostersGUI extends GUI {
 
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             Item item = entry.getValue().item;
-            IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, entry.getKey());
+            IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(getIsland(), entry.getKey());
             long minutes = LocalDateTime.now().until(islandBooster.getTime(), ChronoUnit.MINUTES);
             long seconds = LocalDateTime.now().until(islandBooster.getTime(), ChronoUnit.SECONDS) - minutes * 60;
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, Arrays.asList(

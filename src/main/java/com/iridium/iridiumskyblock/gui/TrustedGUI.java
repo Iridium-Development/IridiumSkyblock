@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class TrustedGUI extends GUI {
 
-    private final Island island;
     private final HashMap<Integer, User> members;
 
     /**
@@ -30,8 +29,7 @@ public class TrustedGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public TrustedGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().trustedGUI);
-        this.island = island;
+        super(IridiumSkyblock.getInstance().getInventories().trustedGUI, island);
         this.members = new HashMap<>();
     }
 
@@ -41,10 +39,10 @@ public class TrustedGUI extends GUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().trustedGUI.background);
 
         int i = 0;
-        List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island);
+        List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(getIsland());
         for (IslandTrusted islandTrusted : islandTrustedList) {
             List<Placeholder> placeholderList =
-                    new PlaceholderBuilder().applyPlayerPlaceholders(islandTrusted.getUser()).applyIslandPlaceholders(island).build();
+                    new PlaceholderBuilder().applyPlayerPlaceholders(islandTrusted.getUser()).applyIslandPlaceholders(getIsland()).build();
             placeholderList.add(new Placeholder("trustee", islandTrusted.getTruster().getName()));
             inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().trustedGUI.item, placeholderList));
             members.put(i, islandTrusted.getUser());
