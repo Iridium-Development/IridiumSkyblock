@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class InvitesGUI extends GUI {
 
-    private final Island island;
     private final HashMap<Integer, String> invites;
 
     /**
@@ -30,21 +29,20 @@ public class InvitesGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public InvitesGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI);
-        this.island = island;
+        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, island);
         invites = new HashMap<>();
     }
 
     @Override
     public void addContent(Inventory inventory) {
-        List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island);
+        List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(getIsland());
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
 
         int i = 0;
         for (IslandInvite islandInvite : islandInvites) {
-            List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandInvite.getUser()).applyIslandPlaceholders(island).build();
+            List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandInvite.getUser()).applyIslandPlaceholders(getIsland()).build();
             placeholderList.add(new Placeholder("inviter", islandInvite.getInviter().getName()));
             placeholderList.add(new Placeholder("time", islandInvite.getTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
             inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList));

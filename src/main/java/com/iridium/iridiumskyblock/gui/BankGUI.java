@@ -20,16 +20,13 @@ import java.util.Optional;
  */
 public class BankGUI extends GUI {
 
-    private final Island island;
-
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
     public BankGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bankGUI);
-        this.island = island;
+        super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
     }
 
     @Override
@@ -38,7 +35,7 @@ public class BankGUI extends GUI {
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
-            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, bankItem);
+            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(getIsland(), bankItem);
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", bankItem.toString(islandBank.getNumber())))));
         }
     }

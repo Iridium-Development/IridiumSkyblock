@@ -19,7 +19,7 @@ public abstract class SchematicGUI extends GUI {
     private final HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
 
     public SchematicGUI() {
-        super(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI);
+        super(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI, null);
     }
 
     @Override

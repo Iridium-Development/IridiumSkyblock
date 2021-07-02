@@ -26,7 +26,7 @@ public class IslandTopGUI extends GUI {
      * The default constructor.
      */
     public IslandTopGUI() {
-        super(IridiumSkyblock.getInstance().getInventories().islandTopGUI);
+        super(IridiumSkyblock.getInstance().getInventories().islandTopGUI, null);
     }
 
     @Override
