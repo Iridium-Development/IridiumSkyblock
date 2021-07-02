@@ -36,7 +36,7 @@ public class ClearDataCommand extends Command {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             player.openInventory(new ConfirmationGUI(() -> execute(player),
-                cooldownProvider
+                getCooldownProvider()
             ).getInventory());
             // Return false because the cooldown is set by the ConfirmationGUI
             return false;

@@ -20,7 +20,7 @@ public abstract class Command {
     @JsonIgnore
     public final boolean onlyForPlayers;
     public final boolean enabled;
-    public final Duration cooldown;
+    public final long cooldownInSeconds;
     @JsonIgnore
     public CooldownProvider<CommandSender> cooldownProvider;
 
@@ -41,8 +41,7 @@ public abstract class Command {
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = true;
-        this.cooldown = cooldown;
-        this.cooldownProvider = CooldownProvider.newInstance(cooldown);
+        this.cooldownInSeconds = cooldown.getSeconds();
     }
 
     /**
@@ -61,8 +60,15 @@ public abstract class Command {
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = true;
-        this.cooldown = cooldown;
-        this.cooldownProvider = CooldownProvider.newInstance(cooldown);
+        this.cooldownInSeconds = cooldown.getSeconds();
+    }
+
+    public CooldownProvider<CommandSender> getCooldownProvider() {
+        if (cooldownProvider == null) {
+            this.cooldownProvider = CooldownProvider.newInstance(Duration.ofSeconds(cooldownInSeconds));
+        }
+
+        return cooldownProvider;
     }
 
     /**

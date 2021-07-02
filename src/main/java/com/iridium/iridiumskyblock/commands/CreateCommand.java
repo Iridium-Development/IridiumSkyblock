@@ -81,7 +81,7 @@ public class CreateCommand extends Command {
             return;
         }
 
-        player.openInventory(new IslandCreateGUI(player, name, cooldownProvider).getInventory());
+        player.openInventory(new IslandCreateGUI(player, name, getCooldownProvider()).getInventory());
     }
 
     /**

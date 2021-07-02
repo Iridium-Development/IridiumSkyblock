@@ -37,7 +37,7 @@ public class BiomeCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new BiomeGUI(1, optionalIsland.get(), player.getWorld().getEnvironment(), cooldownProvider).getInventory());
+            player.openInventory(new BiomeGUI(1, optionalIsland.get(), player.getWorld().getEnvironment(), getCooldownProvider()).getInventory());
             // The BiomeGUI handles the cooldown
             return false;
         }

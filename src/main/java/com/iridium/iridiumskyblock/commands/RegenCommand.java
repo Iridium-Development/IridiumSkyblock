@@ -47,7 +47,7 @@ public class RegenCommand extends Command {
             if (args.length == 1) {
                 if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.REGEN)) {
                     player.openInventory(new IslandRegenGUI(player,
-                        cooldownProvider
+                        getCooldownProvider()
                     ).getInventory());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

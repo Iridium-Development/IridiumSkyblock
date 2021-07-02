@@ -66,7 +66,7 @@ public class LeaveCommand extends Command {
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_LEFT, user, null, 0, "");
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 },
-                    cooldownProvider
+                    getCooldownProvider()
                 );
 
                 player.openInventory(confirmationGUI.getInventory());
