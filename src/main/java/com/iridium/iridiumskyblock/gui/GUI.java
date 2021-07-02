@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
@@ -20,7 +21,9 @@ import org.jetbrains.annotations.Nullable;
 @NoArgsConstructor
 public abstract class GUI implements InventoryHolder {
 
-    private @Nullable NoItemGUI noItemGUI;
+    private NoItemGUI noItemGUI;
+    @JsonIgnore
+    private @Nullable Island island;
 
     /**
      * The default constructor.
@@ -29,26 +32,15 @@ public abstract class GUI implements InventoryHolder {
      * @param island    The island of this GUI. Can be null
      */
     public GUI(@NotNull NoItemGUI noItemGUI, @Nullable Island island) {
-        if (island != null) {
-            this.noItemGUI = new NoItemGUI(
-                noItemGUI.size,
-                StringUtils.processMultiplePlaceholders(
-                    IridiumSkyblock.getInstance()
-                        .getInventories().warpsGUI.title,
-                    new PlaceholderBuilder().applyIslandPlaceholders(island)
-                        .build()
-                ),
-                noItemGUI.background
-            );
-        } else {
-            this.noItemGUI = noItemGUI;
-        }
+        this.noItemGUI = noItemGUI;
+        this.island = island;
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
+        String title = island == null ? noItemGUI.title : StringUtils.processMultiplePlaceholders(noItemGUI.title, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
+        Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(title));
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
 
