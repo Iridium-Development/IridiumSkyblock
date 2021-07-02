@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.commands.subcommands.BankSet;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BankGUI;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -31,7 +32,7 @@ public class BankCommand extends Command {
      * The default constructor.
      */
     public BankCommand() {
-        super(Collections.singletonList("bank"), "Open your Island bank", "", false);
+        super(Collections.singletonList("bank"), "Open your Island bank", "", false, Duration.ZERO);
         this.bankGive = new BankGive();
         this.bankSet = new BankSet();
         this.bankRemove = new BankRemove();
@@ -46,28 +47,27 @@ public class BankCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length > 1) {
             for (Command command : Arrays.asList(bankGive, bankSet, bankRemove)) {
                 if (command.aliases.contains(args[1])) {
                     // Check if this command is only for players
                     if (command.onlyForPlayers && !(sender instanceof Player)) {
                         // Must be a player
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        return;
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        return false;
                     }
+
                     // Check permissions
                     if (!((sender.hasPermission(command.permission) || command.permission
                             .equalsIgnoreCase("") || command.permission
                             .equalsIgnoreCase("iridiumskyblock.")))) {
                         // No permissions
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        return;
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        return false;
                     }
-                    command.execute(sender, args);
-                    return;
+
+                    return command.execute(sender, args);
                 }
             }
         } else if (sender instanceof Player) {
@@ -77,13 +77,15 @@ public class BankCommand extends Command {
 
             if (island.isPresent()) {
                 player.openInventory(new BankGUI(island.get()).getInventory());
+                return true;
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

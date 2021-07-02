@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +25,7 @@ public class DeleteWarpCommand extends Command {
      * The default constructor.
      */
     public DeleteWarpCommand() {
-        super(Arrays.asList("delwarp", "deletewarp"), "Deletes an Island warp", "%prefix% &7/is deletewarp <name>", "", true);
+        super(Arrays.asList("delwarp", "deletewarp"), "Deletes an Island warp", "%prefix% &7/is deletewarp <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -36,10 +37,10 @@ public class DeleteWarpCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         Player player = (Player) sender;
@@ -49,16 +50,19 @@ public class DeleteWarpCommand extends Command {
         if (island.isPresent()) {
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.MANAGE_WARPS)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageWarps.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return;
+                return false;
             }
+
             List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
             Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
+
             if (islandWarp.isPresent()) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().deletingWarp
                         .replace("%name%", islandWarp.get().getName())
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 );
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().delete(islandWarp.get());
+                return true;
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%",
                         IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -67,6 +71,7 @@ public class DeleteWarpCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
 
+        return false;
     }
 
     /**

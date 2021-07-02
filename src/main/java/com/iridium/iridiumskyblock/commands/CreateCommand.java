@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,7 +25,7 @@ public class CreateCommand extends Command {
      * The default constructor.
      */
     public CreateCommand() {
-        super(Collections.singletonList("create"), "Create an Island", "", true);
+        super(Collections.singletonList("create"), "Create an Island", "", true, Duration.ofSeconds(5));
     }
 
     /**
@@ -36,7 +37,7 @@ public class CreateCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
         switch (args.length) {
@@ -49,12 +50,15 @@ public class CreateCommand extends Command {
             case 3:
                 Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(args[2])).map(Map.Entry::getValue).findFirst();
                 if (schematicConfig.isPresent()) {
-                    IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
+                    return IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
                 break;
         }
+
+        // Always return false because the cooldown is set during Island creation
+        return false;
     }
 
     /**
@@ -77,7 +81,7 @@ public class CreateCommand extends Command {
             return;
         }
 
-        player.openInventory(new IslandCreateGUI(player, name).getInventory());
+        player.openInventory(new IslandCreateGUI(player, name, getCooldownProvider()).getInventory());
     }
 
     /**

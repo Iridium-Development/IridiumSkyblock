@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -24,7 +25,7 @@ public class InfoCommand extends Command {
      * The default constructor.
      */
     public InfoCommand() {
-        super(Collections.singletonList("info"), "Show infos about this Island.", "", false);
+        super(Collections.singletonList("info"), "Show infos about this Island.", "", false, Duration.ZERO);
     }
 
     /**
@@ -36,7 +37,7 @@ public class InfoCommand extends Command {
      * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] arguments) {
+    public boolean execute(CommandSender sender, String[] arguments) {
         if (arguments.length == 1) {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
@@ -44,6 +45,7 @@ public class InfoCommand extends Command {
                 Optional<Island> userIsland = user.getIsland();
                 if (userIsland.isPresent()) {
                     sendInfo(sender, userIsland.get(), user);
+                    return true;
                 } else {
                     sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -56,17 +58,20 @@ public class InfoCommand extends Command {
             // Check if the target user actually exists
             if (!targetPlayer.hasPlayedBefore()) {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return;
+                return false;
             }
 
             User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
             Optional<Island> targetIsland = targetUser.getIsland();
             if (targetIsland.isPresent()) {
                 sendInfo(sender, targetIsland.get(), targetUser);
+                return true;
             } else {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
+
+        return false;
     }
 
     /**

@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitTask;
@@ -24,7 +25,7 @@ public class RecalculateCommand extends Command {
      * The default constructor.
      */
     public RecalculateCommand() {
-        super(Arrays.asList("recalculate", "recalc"), "Recalculate all Island Values", "iridiumskyblock.recalculate", false);
+        super(Arrays.asList("recalculate", "recalc"), "Recalculate all Island Values", "iridiumskyblock.recalculate", false, Duration.ZERO);
     }
 
     /**
@@ -35,7 +36,7 @@ public class RecalculateCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (bukkitTask == null) {
             int interval = 5;
             List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
@@ -67,6 +68,8 @@ public class RecalculateCommand extends Command {
         } else {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return bukkitTask == null;
     }
 
     /**

@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,7 @@ public class KickCommand extends Command {
      * The default constructor.
      */
     public KickCommand() {
-        super(Collections.singletonList("kick"), "Kick a player", "%prefix% &7/is kick <name>", "",true);
+        super(Collections.singletonList("kick"), "Kick a player", "%prefix% &7/is kick <name>", "",true, Duration.ZERO);
     }
 
     /**
@@ -41,11 +42,12 @@ public class KickCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -60,7 +62,7 @@ public class KickCommand extends Command {
                 } else {
                     UserKickEvent userKickEvent = new UserKickEvent(island.get(), targetUser, user);
                     Bukkit.getPluginManager().callEvent(userKickEvent);
-                    if (userKickEvent.isCancelled()) return;
+                    if (userKickEvent.isCancelled()) return false;
 
                     if (targetPlayer instanceof Player) {
                         ((Player) targetPlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -83,6 +85,7 @@ public class KickCommand extends Command {
 
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser, 0, "");
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+                    return true;
                 }
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -90,6 +93,8 @@ public class KickCommand extends Command {
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

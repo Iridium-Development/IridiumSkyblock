@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +23,7 @@ public class SetWarpCommand extends Command {
      * The default constructor.
      */
     public SetWarpCommand() {
-        super(Arrays.asList("setwarp", "createwarp"), "Creates an Island warp", "%prefix% &7/is setwarp <name>", "", true);
+        super(Arrays.asList("setwarp", "createwarp"), "Creates an Island warp", "%prefix% &7/is setwarp <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -34,10 +35,10 @@ public class SetWarpCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         Player player = (Player) sender;
@@ -47,12 +48,12 @@ public class SetWarpCommand extends Command {
         if (island.isPresent()) {
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.MANAGE_WARPS)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageWarps.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return;
+                return false;
             }
+
             List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
             if (islandWarps.stream().anyMatch(islandWarp -> islandWarp.getName().equalsIgnoreCase(args[1]))) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpAlreadyExists.replace("%prefix%",
-                        IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "warp");
                 if (islandWarps.size() < IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandUpgrade.getLevel()).amount) {
@@ -62,28 +63,28 @@ public class SetWarpCommand extends Command {
                             if (args.length == 3) {
                                 islandWarp.setPassword(args[2]);
                             }
+
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().addEntry(islandWarp);
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().createdWarp
                                     .replace("%name%", args[1])
                                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                             );
+                            return true;
                         } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notSafe.replace("%prefix%",
-                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                     } else {
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().onlySetWarpOnIsland.replace("%prefix%",
-                                IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().onlySetWarpOnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpLimitReached.replace("%prefix%",
-                            IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpLimitReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
 
+        return false;
     }
 
     /**

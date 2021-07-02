@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.api.UserPromoteEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,7 @@ public class PromoteCommand extends Command {
      * The default constructor.
      */
     public PromoteCommand() {
-        super(Collections.singletonList("promote"), "Promote a user", "%prefix% &7/is promote <name>", "", true);
+        super(Collections.singletonList("promote"), "Promote a user", "%prefix% &7/is promote <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -41,11 +42,12 @@ public class PromoteCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -59,7 +61,7 @@ public class PromoteCommand extends Command {
                 if (nextRank != null && nextRank.getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.PROMOTE)) {
                     UserPromoteEvent userPromoteEvent = new UserPromoteEvent(island.get(), user, nextRank);
                     Bukkit.getPluginManager().callEvent(userPromoteEvent);
-                    if (userPromoteEvent.isCancelled()) return;
+                    if (userPromoteEvent.isCancelled()) return false;
 
                     targetUser.setIslandRank(nextRank);
                     for (User member : island.get().getMembers()) {
@@ -72,8 +74,10 @@ public class PromoteCommand extends Command {
                             }
                         }
                     }
+
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_PROMOTED, user, targetUser, 0, nextRank.getDisplayName());
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+                    return true;
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPromoteUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -83,6 +87,8 @@ public class PromoteCommand extends Command {
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

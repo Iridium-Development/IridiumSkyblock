@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandRegenGUI;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,7 +26,7 @@ public class RegenCommand extends Command {
      * The default constructor.
      */
     public RegenCommand() {
-        super(Collections.singletonList("regen"), "Regenerate your Island", "", true);
+        super(Collections.singletonList("regen"), "Regenerate your Island", "", true, Duration.ofMinutes(5));
     }
 
     /**
@@ -37,7 +38,7 @@ public class RegenCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -45,7 +46,9 @@ public class RegenCommand extends Command {
         if (island.isPresent()) {
             if (args.length == 1) {
                 if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.REGEN)) {
-                    player.openInventory(new IslandRegenGUI(player).getInventory());
+                    player.openInventory(new IslandRegenGUI(player,
+                        getCooldownProvider()
+                    ).getInventory());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -53,6 +56,7 @@ public class RegenCommand extends Command {
                 Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(args[1])).map(Map.Entry::getValue).findFirst();
                 if (schematicConfig.isPresent()) {
                     IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.get());
+                    return true;
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownSchematic.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -60,6 +64,9 @@ public class RegenCommand extends Command {
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        // Always return false because the cooldown is set by the IslandRegenGUI
+        return false;
     }
 
     /**

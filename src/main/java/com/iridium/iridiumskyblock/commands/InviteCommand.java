@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.gui.InvitesGUI;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -26,7 +27,7 @@ public class InviteCommand extends Command {
      * The default constructor.
      */
     public InviteCommand() {
-        super(Arrays.asList("invite", "invites"), "Invite a user to your Island", "", true);
+        super(Arrays.asList("invite", "invites"), "Invite a user to your Island", "", true, Duration.ZERO);
     }
 
     /**
@@ -38,7 +39,7 @@ public class InviteCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -46,6 +47,7 @@ public class InviteCommand extends Command {
         if (island.isPresent()) {
             if (args.length == 1) {
                 player.openInventory(new InvitesGUI(island.get()).getInventory());
+                return true;
             } else {
                 OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
                 User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
@@ -80,11 +82,15 @@ public class InviteCommand extends Command {
                     if (offlinePlayer instanceof Player) {
                         ((Player) offlinePlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited.replace("%inviter%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
+
+                    return true;
                 }
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**
