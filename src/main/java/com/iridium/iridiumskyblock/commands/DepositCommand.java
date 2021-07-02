@@ -54,7 +54,7 @@ public class DepositCommand extends Command {
                     amount = bankItem.get().deposit(player, Double.parseDouble(args[2]));
                 } catch (NumberFormatException exception) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    return;
+                    return false;
                 }
 
                 if (amount > 0) {
