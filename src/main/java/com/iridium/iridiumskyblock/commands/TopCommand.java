@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.gui.IslandTopGUI;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -16,7 +17,7 @@ public class TopCommand extends Command {
      * The default constructor.
      */
     public TopCommand() {
-        super(Collections.singletonList("top"), "Display the top Islands", "", true);
+        super(Collections.singletonList("top"), "Display the top Islands", "", true, Duration.ZERO);
     }
 
     /**
@@ -28,9 +29,10 @@ public class TopCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
-        Player p = (Player) sender;
-        p.openInventory(new IslandTopGUI().getInventory());
+    public boolean execute(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+        player.openInventory(new IslandTopGUI().getInventory());
+        return true;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.ShopCategoryGUI;
 import com.iridium.iridiumskyblock.gui.ShopOverviewGUI;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,7 +26,7 @@ public class ShopCommand extends Command {
      * The default constructor.
      */
     public ShopCommand() {
-        super(Collections.singletonList("shop"), "Opens the Island shop", "", true);
+        super(Collections.singletonList("shop"), "Opens the Island shop", "", true, Duration.ZERO);
     }
 
     /**
@@ -37,12 +38,12 @@ public class ShopCommand extends Command {
      * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] arguments) {
+    public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
         if (!user.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         if (arguments.length == 1) {
@@ -54,11 +55,13 @@ public class ShopCommand extends Command {
 
             if (!category.isPresent()) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noShopCategory.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return;
+                return false;
             }
 
             player.openInventory(new ShopCategoryGUI(category.get()).getInventory());
         }
+
+        return true;
     }
 
     /**

@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -24,7 +25,7 @@ public class DepositCommand extends Command {
      * The default constructor.
      */
     public DepositCommand() {
-        super(Collections.singletonList("deposit"), "Deposit into your Island bank", "%prefix% &7/is deposit <name> <amount>", "", true);
+        super(Collections.singletonList("deposit"), "Deposit into your Island bank", "%prefix% &7/is deposit <name> <amount>", "", true, Duration.ZERO);
     }
 
     /**
@@ -36,11 +37,12 @@ public class DepositCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 3) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -50,20 +52,25 @@ public class DepositCommand extends Command {
                 double amount;
                 try {
                     amount = bankItem.get().deposit(player, Double.parseDouble(args[2]));
-                } catch (NumberFormatException e) {
-                    player.sendMessage(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
-                    return;
+                } catch (NumberFormatException exception) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    return false;
                 }
+
                 if (amount > 0) {
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, amount, bankItem.get().getName());
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                 }
+
+                return true;
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchBankItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

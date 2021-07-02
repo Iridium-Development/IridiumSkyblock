@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandTopGUI;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Command which opens the {@link IslandTopGUI}.
+ * Command which allows users to chat with their Island members.
  */
 public class ChatCommand extends Command {
 
@@ -23,7 +24,7 @@ public class ChatCommand extends Command {
      * The default constructor.
      */
     public ChatCommand() {
-        super(Collections.singletonList("chat"), "Chat with online Island members", "", true);
+        super(Collections.singletonList("chat"), "Chat with online Island members", "", true, Duration.ZERO);
     }
 
     /**
@@ -35,7 +36,7 @@ public class ChatCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
 
         if (args.length > 1) {
@@ -55,16 +56,23 @@ public class ChatCommand extends Command {
                         );
                     }
                 }
+
+                return true;
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return false;
             }
         } else {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             user.setIslandChat(!user.isIslandChat());
-            player.sendMessage(StringUtils.color(
+            player.sendMessage(
+                StringUtils.color(
                     (user.isIslandChat() ? IridiumSkyblock.getInstance().getMessages().islandChatEnabled : IridiumSkyblock.getInstance().getMessages().islandChatDisabled)
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                )
             );
+
+            return true;
         }
     }
 

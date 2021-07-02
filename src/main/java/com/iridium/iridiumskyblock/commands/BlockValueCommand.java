@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.BlockValueGUI;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +23,7 @@ public class BlockValueCommand extends Command {
      * The default constructor.
      */
     public BlockValueCommand() {
-        super(Collections.singletonList("blockvalues"), "Show the values of blocks", "", true);
+        super(Collections.singletonList("blockvalues"), "Show the values of blocks", "", true, Duration.ZERO);
 
     }
 
@@ -35,16 +36,18 @@ public class BlockValueCommand extends Command {
      * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] arguments) {
+    public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
         if (arguments.length == 2) {
             BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
             if (blockValueType != null) {
                 player.openInventory(new BlockValueGUI(blockValueType).getInventory());
-                return;
+                return true;
             }
         }
+
         player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+        return true;
     }
 
     /**

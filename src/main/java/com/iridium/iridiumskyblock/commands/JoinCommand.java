@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.database.*;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,7 +26,7 @@ public class JoinCommand extends Command {
      * The default constructor.
      */
     public JoinCommand() {
-        super(Collections.singletonList("join"), "Join an Island", "%prefix% &7/is join <name>", "", true);
+        super(Collections.singletonList("join"), "Join an Island", "%prefix% &7/is join <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -37,11 +38,12 @@ public class JoinCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length != 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
 
@@ -59,13 +61,14 @@ public class JoinCommand extends Command {
                     int memberLimit = IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
                     if (!user.isBypass() && island.get().getMembers().size() >= memberLimit) {
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberLimitReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        return;
+                        return false;
                     }
+
                     // Send a message to all other members
                     for (User member : island.get().getMembers()) {
-                        Player pl = Bukkit.getPlayer(member.getName());
-                        if (pl != null) {
-                            pl.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerJoinedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        Player islandMember = Bukkit.getPlayer(member.getName());
+                        if (islandMember != null) {
+                            islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerJoinedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
                     }
 
@@ -76,6 +79,7 @@ public class JoinCommand extends Command {
 
                     IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_JOINED, user, null, 0, "");
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+                    return true;
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noInvite.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -83,6 +87,8 @@ public class JoinCommand extends Command {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
+
+        return false;
     }
 
     /**

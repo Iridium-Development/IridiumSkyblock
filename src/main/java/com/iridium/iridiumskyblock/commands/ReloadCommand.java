@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 
 import java.util.Collections;
@@ -16,7 +17,7 @@ public class ReloadCommand extends Command {
      * The default constructor.
      */
     public ReloadCommand() {
-        super(Collections.singletonList("reload"), "Reload the plugin configurations", "iridiumskyblock.reload", false);
+        super(Collections.singletonList("reload"), "Reload the plugin configurations", "iridiumskyblock.reload", false, Duration.ZERO);
     }
 
     /**
@@ -28,9 +29,10 @@ public class ReloadCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         IridiumSkyblock.getInstance().loadConfigs();
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().reloaded.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        return true;
     }
 
     /**
