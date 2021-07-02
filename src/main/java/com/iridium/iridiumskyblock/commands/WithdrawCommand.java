@@ -60,8 +60,8 @@ public class WithdrawCommand extends Command {
                 try {
                     amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
                 } catch (NumberFormatException exception) {
-                    player.sendMessage(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
-                    return false;
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    return;
                 }
 
                 if (amount > 0) {
