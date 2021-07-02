@@ -27,7 +27,7 @@ public class EntityPortalListener implements Listener {
                         event.setCancelled(true);
                     }
                 }
-                if ((worldToName.equals("world_the_end") && Objects.equals(worldFrom, islandManager.getWorld())) || (worldToName.equals("world") && Objects.equals(worldFrom, islandManager.getEndWorld()))) {
+                if ((worldToName.equals("world_the_end") && (Objects.equals(worldFrom, islandManager.getWorld()) || Objects.equals(worldFrom, islandManager.getNetherWorld()))) || (worldToName.equals("world") && Objects.equals(worldFrom, islandManager.getEndWorld()))) {
                     if (IridiumSkyblock.getInstance().getConfiguration().endIslands) {
                         World world = Objects.equals(worldFrom, islandManager.getEndWorld()) ? islandManager.getWorld() : islandManager.getEndWorld();
                         event.setCancelled(true);
