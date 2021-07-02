@@ -52,8 +52,9 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
 
         while (true) {
             if (currentIndex < 0) break;
-            IslandData t = getEntries().get(currentIndex);
-            if (island.equals(t.getIsland().orElse(null))) {
+            IslandData islandData = getEntries().get(currentIndex);
+            if (islandData == null) continue;
+            if (island.equals(islandData.getIsland().orElse(null))) {
                 result.add(getEntries().get(currentIndex));
                 currentIndex--;
             } else {
@@ -65,8 +66,9 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
 
         while (true) {
             if (currentIndex >= getEntries().size()) break;
-            IslandData t = getEntries().get(currentIndex);
-            if (island.equals(t.getIsland().orElse(null))) {
+            IslandData islandData = getEntries().get(currentIndex);
+            if (islandData == null) continue;
+            if (island.equals(islandData.getIsland().orElse(null))) {
                 result.add(getEntries().get(currentIndex));
                 currentIndex++;
             } else {
