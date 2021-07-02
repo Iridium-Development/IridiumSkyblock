@@ -50,7 +50,7 @@ public class CooldownProvider<T> {
     public Duration getRemainingTime(T t) {
         if (!isOnCooldown(t)) return Duration.ZERO;
 
-        return cooldownTimes.get(t);
+        return cooldownTimes.get(t).minusMillis(System.currentTimeMillis());
     }
 
     /**
