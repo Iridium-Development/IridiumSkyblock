@@ -5,8 +5,7 @@ import java.time.Duration;
 
 public class TimeUtils {
 
-    public static String formatDuration(Duration duration) {
-        String format = IridiumSkyblock.getInstance().getConfiguration().durationFormat;
+    public static String formatDuration(String format, Duration duration) {
         long hours = duration.toHours();
         long minutes = duration.toMinutes() % 60;
         long seconds = duration.getSeconds() % 60;
