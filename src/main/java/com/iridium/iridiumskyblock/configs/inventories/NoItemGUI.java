@@ -7,16 +7,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoItemGUI {
+
     /**
-     * The size of the GUI
+     * The size of the GUI.
      */
     public int size;
+
     /**
-     * The title of the GUI
+     * The title of the GUI.
      */
     public String title;
+
     /**
-     * The background of the GUI
+     * The background of the GUI.
      */
     public Background background;
+
 }
