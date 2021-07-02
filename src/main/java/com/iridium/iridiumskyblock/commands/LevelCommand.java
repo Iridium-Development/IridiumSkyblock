@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -19,7 +20,7 @@ public class LevelCommand extends Command {
      * The default constructor.
      */
     public LevelCommand() {
-        super(Arrays.asList("level", "experience"), "Displays Island Level/Experience", "", true);
+        super(Arrays.asList("level", "experience"), "Displays Island Level/Experience", "", true, Duration.ZERO);
     }
 
     /**
@@ -31,7 +32,7 @@ public class LevelCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -42,9 +43,10 @@ public class LevelCommand extends Command {
                     .replace("%island_experience%", String.valueOf(island.get().getExperience()))
                     .replace("%island_experienceRequired%", String.valueOf(island.get().getExperienceRequiredToLevelUp()))
             ));
+            return true;
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnAnIsland.replace("%prefix%",
-                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnAnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
     }
 

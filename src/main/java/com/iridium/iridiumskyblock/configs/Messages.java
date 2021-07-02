@@ -156,6 +156,7 @@ public class Messages {
     public String invalidBiome = "%prefix% &7That Biome doesn't exist.";
     public String changedBiome = "%prefix% &7You have changed your island biome to %biome%!";
     public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
+    public String activeCooldown = "%prefix% &7You cannot do that due to a running cooldown, please wait %hours% hour(s), %minutes% minute(s), %seconds% second(s)!";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";

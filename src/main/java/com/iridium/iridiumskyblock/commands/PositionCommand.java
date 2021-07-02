@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,7 +19,7 @@ public class PositionCommand extends Command {
      * The default constructor.
      */
     public PositionCommand() {
-        super(Arrays.asList("pos", "position"), "Set the corner position of a schematic", "iridiumskyblock.schematic", true);
+        super(Arrays.asList("pos", "position"), "Set the corner position of a schematic", "iridiumskyblock.schematic", true, Duration.ZERO);
     }
 
     /**
@@ -30,11 +31,11 @@ public class PositionCommand extends Command {
      * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] arguments) {
+    public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
         if (!(arguments.length >= 2 && arguments[1].matches("[1-2]"))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidPositionCommandSyntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -46,6 +47,7 @@ public class PositionCommand extends Command {
         }
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setSchematicPosition.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        return true;
     }
 
     /**

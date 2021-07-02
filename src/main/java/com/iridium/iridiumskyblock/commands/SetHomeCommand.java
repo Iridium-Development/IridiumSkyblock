@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,7 @@ public class SetHomeCommand extends Command {
      * The default constructor.
      */
     public SetHomeCommand() {
-        super(Collections.singletonList("sethome"), "Set your Island home", "", true);
+        super(Collections.singletonList("sethome"), "Set your Island home", "", true, Duration.ZERO);
     }
 
     /**
@@ -33,7 +34,7 @@ public class SetHomeCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -43,9 +44,9 @@ public class SetHomeCommand extends Command {
                 if (LocationUtils.isSafe(player.getLocation())) {
                     island.get().setHome(player.getLocation());
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    return true;
                 } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notSafe.replace("%prefix%",
-                            IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notSafe.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().onlySetHomeOnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -53,6 +54,8 @@ public class SetHomeCommand extends Command {
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

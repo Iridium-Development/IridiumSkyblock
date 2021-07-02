@@ -5,6 +5,8 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.managers.CooldownProvider;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,14 +18,17 @@ import java.util.Optional;
 public class IslandRegenGUI extends SchematicGUI {
 
     private final @NotNull Player player;
+    private final @NotNull CooldownProvider<CommandSender> cooldownProvider;
 
     /**
      * The default constructor.
      *
-     * @param player The player who wants to regen his Island
+     * @param player            The player who wants to regen his Island
+     * @param cooldownProvider  The provider for cooldowns that should be started on success
      */
-    public IslandRegenGUI(@NotNull Player player) {
+    public IslandRegenGUI(@NotNull Player player, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
         this.player = player;
+        this.cooldownProvider = cooldownProvider;
     }
 
     /**
@@ -39,6 +44,7 @@ public class IslandRegenGUI extends SchematicGUI {
         if (island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig);
+            cooldownProvider.applyCooldown(player);
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }

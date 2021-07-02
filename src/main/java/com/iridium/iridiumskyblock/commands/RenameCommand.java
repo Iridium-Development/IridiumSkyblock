@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class RenameCommand extends Command {
 
     public RenameCommand() {
-        super(Collections.singletonList("rename"), "Change your island name", "", true);
+        super(Collections.singletonList("rename"), "Change your island name", "", true, Duration.ofMinutes(1));
     }
 
     /**
@@ -29,12 +30,13 @@ public class RenameCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         if (args.length < 2) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " &b/is rename <Island Name>"));
-            return;
+            return false;
         }
+
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
@@ -62,8 +64,11 @@ public class RenameCommand extends Command {
                                 .replace("%player%", player.getName())
                                 .replace("%name%", name)));
                 });
+                return true;
             }
         }
+
+        return false;
     }
 
 

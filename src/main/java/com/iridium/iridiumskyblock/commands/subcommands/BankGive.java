@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
@@ -18,15 +19,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BankGive extends Command {
+
     /**
      * The default constructor.
      */
     public BankGive() {
-        super(Collections.singletonList("give"), "Give players money into their island bank", "%prefix% &7/is bank <give> <player> <type> <amount>", "iridiumskyblock.bank.give", false);
+        super(Collections.singletonList("give"), "Give players money into their island bank", "%prefix% &7/is bank <give> <player> <type> <amount>", "iridiumskyblock.bank.give", false, Duration.ZERO);
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         if (args.length == 5) {
             Player player = Bukkit.getPlayer(args[2]);
             if (player != null) {
@@ -39,6 +41,7 @@ public class BankGive extends Command {
                             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
                             islandBank.setNumber(islandBank.getNumber() + Double.parseDouble(args[4]));
                             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().gaveBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            return true;
                         } catch (NumberFormatException exception) {
                             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         }
@@ -46,16 +49,16 @@ public class BankGive extends Command {
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchBankItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace(
-                            "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace(
-                        "%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     @Override

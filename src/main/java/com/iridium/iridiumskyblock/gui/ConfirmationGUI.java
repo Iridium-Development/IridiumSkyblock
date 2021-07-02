@@ -3,6 +3,9 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.managers.CooldownProvider;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -13,15 +16,18 @@ import org.jetbrains.annotations.NotNull;
 public class ConfirmationGUI extends GUI {
 
     private final @NotNull Runnable runnable;
+    private final @NotNull CooldownProvider<CommandSender> cooldownProvider;
 
     /**
      * The default constructor.
      *
-     * @param runnable The code that should be run when the user confirms his action
+     * @param runnable          The code that should be run when the user confirms his action
+     * @param cooldownProvider  The provider for cooldowns that should be started on success
      */
-    public ConfirmationGUI(@NotNull Runnable runnable) {
+    public ConfirmationGUI(@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
         super(IridiumSkyblock.getInstance().getInventories().confirmationGUI);
         this.runnable = runnable;
+        this.cooldownProvider = cooldownProvider;
     }
 
     @Override
@@ -41,11 +47,13 @@ public class ConfirmationGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == 11) {
-            event.getWhoClicked().closeInventory();
+            player.closeInventory();
         } else if (event.getSlot() == 15) {
             runnable.run();
-            event.getWhoClicked().closeInventory();
+            player.closeInventory();
+            cooldownProvider.applyCooldown(player);
         }
     }
 }

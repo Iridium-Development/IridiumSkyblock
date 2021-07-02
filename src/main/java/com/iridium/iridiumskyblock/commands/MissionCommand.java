@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.gui.MissionsGUI;
+import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +23,7 @@ public class MissionCommand extends Command {
      * The default constructor.
      */
     public MissionCommand() {
-        super(Collections.singletonList("missions"), "View your Island missions", "", true);
+        super(Collections.singletonList("missions"), "View your Island missions", "", true, Duration.ZERO);
     }
 
     /**
@@ -33,7 +34,7 @@ public class MissionCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -43,15 +44,19 @@ public class MissionCommand extends Command {
                 Mission.MissionType missionType = Mission.MissionType.getMission(args[1]);
                 if (missionType != null) {
                     player.openInventory(new MissionsGUI(island.get(), missionType).getInventory());
+                    return true;
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
                 player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
+                return true;
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

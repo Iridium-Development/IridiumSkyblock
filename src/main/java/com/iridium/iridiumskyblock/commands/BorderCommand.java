@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
+import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class BorderCommand extends Command {
      * The default constructor.
      */
     public BorderCommand() {
-        super(Collections.singletonList("border"), "Change the Island Border", "", true);
+        super(Collections.singletonList("border"), "Change the Island Border", "", true, Duration.ZERO);
     }
 
     /**
@@ -35,7 +36,7 @@ public class BorderCommand extends Command {
      * @param args   The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
@@ -43,10 +44,12 @@ public class BorderCommand extends Command {
         if (island.isPresent()) {
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.BORDER)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageBorder.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return;
+                return false;
             }
+
             if (args.length != 2) {
                 player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandBorder).getInventory());
+                return true;
             } else {
                 Color color = Color.getColor(args[1]);
                 if (color != null) {
@@ -55,6 +58,7 @@ public class BorderCommand extends Command {
                         island.get().getMembers().stream().map(islandUser -> Bukkit.getPlayer(islandUser.getUuid())).filter(Objects::nonNull).forEach(islandPlayer ->
                                 islandPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandBorderChanged.replace("%player%", player.getName()).replace("%color%", color.toString()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)))
                         );
+                        return true;
                     } else {
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().borderColorDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
@@ -65,6 +69,8 @@ public class BorderCommand extends Command {
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
+        return false;
     }
 
     /**

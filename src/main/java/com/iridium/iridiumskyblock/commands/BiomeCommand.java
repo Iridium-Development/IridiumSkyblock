@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BiomeGUI;
+import java.time.Duration;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,11 +21,11 @@ public class BiomeCommand extends Command {
     private final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
 
     public BiomeCommand() {
-        super(Collections.singletonList("biome"), "Change your island biome.", "", true);
+        super(Collections.singletonList("biome"), "Change your island biome.", "", true, Duration.ZERO);
     }
 
     @Override
-    public void execute(CommandSender sender, String[] args) {
+    public boolean execute(CommandSender sender, String[] args) {
         final Player player = (Player) sender;
 
         final User user = this.plugin.getUserManager().getUser(player);
@@ -32,24 +33,26 @@ public class BiomeCommand extends Command {
 
         if (!optionalIsland.isPresent()) {
             player.sendMessage(StringUtils.color(this.plugin.getMessages().noIsland.replace("%prefix%", plugin.getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         if (args.length != 2) {
-            player.openInventory(new BiomeGUI(1, optionalIsland.get(), player.getWorld().getEnvironment()).getInventory());
-            return;
+            player.openInventory(new BiomeGUI(1, optionalIsland.get(), player.getWorld().getEnvironment(), getCooldownProvider()).getInventory());
+            // The BiomeGUI handles the cooldown
+            return false;
         }
 
         final Optional<XBiome> biomeOptional = XBiome.matchXBiome(args[1]);
         if (!biomeOptional.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidBiome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
         IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(optionalIsland.get(), biomeOptional.get());
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 .replace("%biome%", WordUtils.capitalizeFully(biomeOptional.get().name().toLowerCase().replace("_", " ")))));
+        return true;
     }
 
     @Override

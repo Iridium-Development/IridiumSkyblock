@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
+import java.time.Duration;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,7 +17,7 @@ import java.util.List;
 public class SaveSchematicCommand extends Command {
 
     public SaveSchematicCommand() {
-        super(Collections.singletonList("saveschematic"), "Create a schematic out of a selected area", "iridiumskyblock.schematic", true);
+        super(Collections.singletonList("saveschematic"), "Create a schematic out of a selected area", "iridiumskyblock.schematic", true, Duration.ZERO);
     }
 
     /**
@@ -28,11 +29,11 @@ public class SaveSchematicCommand extends Command {
      * @param arguments The arguments used with this command. They contain the sub-command
      */
     @Override
-    public void execute(CommandSender sender, String[] arguments) {
+    public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
         if (arguments.length < 2) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidSaveSchematicCommandSyntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -40,7 +41,7 @@ public class SaveSchematicCommand extends Command {
         Location schematicPos2 = user.getSchematicPos2();
         if (schematicPos1 == null || schematicPos2 == null || schematicPos1.getWorld() != schematicPos2.getWorld()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidSchematicPositions.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         String schematicName = arguments[1];
@@ -48,11 +49,12 @@ public class SaveSchematicCommand extends Command {
 
         if (existsAlready && (arguments.length == 2 || !arguments[2].equalsIgnoreCase("confirm"))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().missingSchematicConfirmation.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         IridiumSkyblock.getInstance().getSchematicManager().addSchematic(schematicName, schematicPos1, schematicPos2);
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().addedSchematic.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        return true;
     }
 
     /**
