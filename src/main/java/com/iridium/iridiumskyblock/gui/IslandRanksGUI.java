@@ -21,8 +21,6 @@ import java.util.stream.Collectors;
  */
 public class IslandRanksGUI extends GUI {
 
-    private final Island island;
-
     /**
      * The default constructor.
      *
@@ -30,7 +28,6 @@ public class IslandRanksGUI extends GUI {
      */
     public IslandRanksGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().islandRanksGUI, island);
-        this.island = island;
     }
 
     @Override
@@ -38,9 +35,9 @@ public class IslandRanksGUI extends GUI {
         inventory.clear();
         IslandRanksInventoryConfig islandRanks = IridiumSkyblock.getInstance().getInventories().islandRanksGUI;
         InventoryUtils.fillInventory(inventory, islandRanks.background);
-        List<User> members = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island);
+        List<User> members = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(getIsland());
         inventory.setItem(islandRanks.owner.slot, ItemStackUtils.makeItem(islandRanks.owner,
-                Collections.singletonList(new Placeholder("members", island.getOwner().getName()))));
+                Collections.singletonList(new Placeholder("members", getIsland().getOwner().getName()))));
         inventory.setItem(islandRanks.coOwner.slot, ItemStackUtils.makeItem(islandRanks.coOwner,
                 Collections.singletonList(new Placeholder("members", members.stream().filter(member -> member.getIslandRank().equals(IslandRank.CO_OWNER)).map(User::getName).collect(Collectors.joining(", "))))));
         inventory.setItem(islandRanks.moderator.slot, ItemStackUtils.makeItem(islandRanks.moderator,
@@ -61,15 +58,15 @@ public class IslandRanksGUI extends GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         IslandRanksInventoryConfig islandRanks = IridiumSkyblock.getInstance().getInventories().islandRanksGUI;
         if (event.getSlot() == islandRanks.owner.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(island, IslandRank.OWNER).getInventory());
+            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.OWNER).getInventory());
         else if (event.getSlot() == islandRanks.coOwner.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(island, IslandRank.CO_OWNER).getInventory());
+            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.CO_OWNER).getInventory());
         else if (event.getSlot() == islandRanks.moderator.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(island, IslandRank.MODERATOR).getInventory());
+            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.MODERATOR).getInventory());
         else if (event.getSlot() == islandRanks.member.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(island, IslandRank.MEMBER).getInventory());
+            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.MEMBER).getInventory());
         else if (event.getSlot() == islandRanks.visitor.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(island, IslandRank.VISITOR).getInventory());
+            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.VISITOR).getInventory());
 
     }
 

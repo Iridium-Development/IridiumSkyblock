@@ -22,8 +22,6 @@ import java.util.Map;
  */
 public class UpgradesGUI extends GUI {
 
-    private final Island island;
-
     /**
      * The default constructor.
      *
@@ -31,7 +29,6 @@ public class UpgradesGUI extends GUI {
      */
     public UpgradesGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().upgradesGUI, island);
-        this.island = island;
     }
 
     @Override
@@ -41,7 +38,7 @@ public class UpgradesGUI extends GUI {
 
         for (Map.Entry<String, Upgrade> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             Item item = upgrade.getValue().item;
-            int level = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, upgrade.getKey()).getLevel();
+            int level = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(getIsland(), upgrade.getKey()).getLevel();
             List<Placeholder> placeholderList = new ArrayList<>();
             placeholderList.add(new Placeholder("level", String.valueOf(level)));
 

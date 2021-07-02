@@ -18,7 +18,6 @@ import java.util.HashMap;
  */
 public class MembersGUI extends GUI {
 
-    private final Island island;
     private final HashMap<Integer, User> members;
 
     /**
@@ -28,7 +27,6 @@ public class MembersGUI extends GUI {
      */
     public MembersGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().membersGUI, island);
-        this.island = island;
         this.members = new HashMap<>();
     }
 
@@ -38,8 +36,8 @@ public class MembersGUI extends GUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
 
         int i = 0;
-        for (User member : island.getMembers()) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(member).applyIslandPlaceholders(island).build()));
+        for (User member : getIsland().getMembers()) {
+            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(member).applyIslandPlaceholders(getIsland()).build()));
             members.put(i, member);
             i++;
         }

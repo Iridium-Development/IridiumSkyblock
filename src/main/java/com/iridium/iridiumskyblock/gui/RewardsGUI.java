@@ -16,11 +16,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class RewardsGUI extends GUI {
 
-    private final Island island;
-
     public RewardsGUI(Island island) {
         super(IridiumSkyblock.getInstance().getInventories().islandReward, island);
-        this.island = island;
     }
 
     @Override
@@ -29,20 +26,20 @@ public class RewardsGUI extends GUI {
 
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandReward.background);
 
-        List<Placeholder> placeholders = new PlaceholderBuilder().applyIslandPlaceholders(island).build();
+        List<Placeholder> placeholders = new PlaceholderBuilder().applyIslandPlaceholders(getIsland()).build();
 
         AtomicInteger atomicInteger = new AtomicInteger(0);
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island).forEach(islandReward ->
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(getIsland()).forEach(islandReward ->
                 inventory.setItem(atomicInteger.getAndIncrement(), ItemStackUtils.makeItem(islandReward.getReward().item, placeholders))
         );
     }
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        List<IslandReward> islandRewards = IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island);
+        List<IslandReward> islandRewards = IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(getIsland());
         if (islandRewards.size() > event.getSlot()) {
             IslandReward islandReward = islandRewards.get(event.getSlot());
-            islandReward.getReward().claim((Player) event.getWhoClicked(), island);
+            islandReward.getReward().claim((Player) event.getWhoClicked(), getIsland());
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().delete(islandReward);
             event.getWhoClicked().closeInventory();
         }

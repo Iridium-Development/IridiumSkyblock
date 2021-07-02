@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
@@ -22,7 +21,6 @@ import org.jetbrains.annotations.Nullable;
 public abstract class GUI implements InventoryHolder {
 
     private NoItemGUI noItemGUI;
-    @JsonIgnore
     private @Nullable Island island;
 
     /**
@@ -64,4 +62,7 @@ public abstract class GUI implements InventoryHolder {
         return noItemGUI;
     }
 
+    public Island getIsland() {
+        return island;
+    }
 }

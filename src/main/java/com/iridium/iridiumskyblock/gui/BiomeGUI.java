@@ -28,7 +28,6 @@ public class BiomeGUI extends GUI {
 
     private final List<XBiome> biomes;
     private final int page;
-    private final Island island;
     private final World.Environment environment;
 
     public BiomeGUI(int page, Island island, World.Environment environment) {
@@ -36,7 +35,6 @@ public class BiomeGUI extends GUI {
         this.biomes = XBiome.VALUES.stream().filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
         this.environment = environment;
         this.page = page;
-        this.island = island;
     }
 
     @Override
@@ -65,12 +63,12 @@ public class BiomeGUI extends GUI {
         final int size = IridiumSkyblock.getInstance().getInventories().biomeGUI.size;
 
         if (event.getSlot() == size - 7 && page > 1) {
-            event.getWhoClicked().openInventory(new BiomeGUI(page - 1, this.island, environment).getInventory());
+            event.getWhoClicked().openInventory(new BiomeGUI(page - 1, getIsland(), environment).getInventory());
             return;
         }
 
         if (event.getSlot() == size - 3 && (size - 9) * page < biomes.size()) {
-            event.getWhoClicked().openInventory(new BiomeGUI(page + 1, this.island, environment).getInventory());
+            event.getWhoClicked().openInventory(new BiomeGUI(page + 1, getIsland(), environment).getInventory());
             return;
         }
 
