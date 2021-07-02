@@ -27,7 +27,7 @@ public class VisitGUI extends GUI {
      * @param page The current page of this GUI
      */
     public VisitGUI(int page) {
-        super(IridiumSkyblock.getInstance().getInventories().visitGUI);
+        super(IridiumSkyblock.getInstance().getInventories().visitGUI, null);
         this.page = page;
         this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(Island::isVisitable).collect(Collectors.toList());
     }

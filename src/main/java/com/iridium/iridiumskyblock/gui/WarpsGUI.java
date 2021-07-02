@@ -20,16 +20,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class WarpsGUI extends GUI {
 
-    private final Island island;
-
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
     public WarpsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().warpsGUI);
-        this.island = island;
+        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, island);
     }
 
     @Override
@@ -39,12 +36,12 @@ public class WarpsGUI extends GUI {
 
         AtomicInteger atomicInteger = new AtomicInteger(1);
 
-        List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island);
+        List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(getIsland());
         Collections.reverse(islandWarps);
         for (IslandWarp islandWarp : islandWarps) {
             int slot = IridiumSkyblock.getInstance().getConfiguration().islandWarpSlots.get(atomicInteger.getAndIncrement());
             ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().warpsGUI.item, Arrays.asList(
-                    new Placeholder("island_name", island.getName()),
+                    new Placeholder("island_name", getIsland().getName()),
                     new Placeholder("warp_name", islandWarp.getName()),
                     new Placeholder("description", islandWarp.getDescription() != null ? islandWarp.getDescription() : "")
             ));
@@ -62,7 +59,7 @@ public class WarpsGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island);
+        List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(getIsland());
         Collections.reverse(islandWarps);
         AtomicInteger atomicInteger = new AtomicInteger(1);
         for (IslandWarp islandWarp : islandWarps) {
@@ -82,4 +79,5 @@ public class WarpsGUI extends GUI {
             }
         }
     }
+
 }

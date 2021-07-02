@@ -12,7 +12,7 @@ public class InventoryConfigGUI extends GUI {
     private final InventoryConfig inventoryConfig;
 
     public InventoryConfigGUI(InventoryConfig inventoryConfig) {
-        super(inventoryConfig);
+        super(inventoryConfig, null);
         this.inventoryConfig = inventoryConfig;
     }
 

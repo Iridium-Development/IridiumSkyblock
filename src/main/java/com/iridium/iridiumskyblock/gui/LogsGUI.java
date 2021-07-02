@@ -29,8 +29,6 @@ import java.util.stream.Collectors;
  */
 public class LogsGUI extends GUI {
 
-    private final Island island;
-
     private int membersPage = 1;
     private int invitesPage = 1;
     private int trustsPage = 1;
@@ -45,8 +43,7 @@ public class LogsGUI extends GUI {
      * @param island The Island this GUI belongs to
      */
     public LogsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().logsGUI);
-        this.island = island;
+        super(IridiumSkyblock.getInstance().getInventories().logsGUI, island);
     }
 
     @Override
@@ -66,11 +63,11 @@ public class LogsGUI extends GUI {
     }
 
     public void setItemStack(Inventory inventory, Item item, int page, LogAction... logActions) {
-        ItemStack itemStack = ItemStackUtils.makeItem(item, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
+        ItemStack itemStack = ItemStackUtils.makeItem(item, new PlaceholderBuilder().applyIslandPlaceholders(getIsland()).build());
         ItemMeta itemMeta = itemStack.getItemMeta();
         List<String> lore = new ArrayList<>();
 
-        List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).stream()
+        List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(getIsland()).stream()
                 .filter(islandLog -> Arrays.stream(logActions).anyMatch(logAction -> logAction.equals(islandLog.getLogAction())))
                 .sorted(Comparator.comparing(IslandLog::getTime).reversed())
                 .collect(Collectors.toList());
@@ -192,7 +189,7 @@ public class LogsGUI extends GUI {
     }
 
     private boolean canChangePage(int page, int change, LogAction... logActions) {
-        List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).stream()
+        List<IslandLog> islandLogs = IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(getIsland()).stream()
                 .filter(islandLog -> Arrays.stream(logActions).anyMatch(logAction -> logAction.equals(islandLog.getLogAction())))
                 .sorted(Comparator.comparing(IslandLog::getTime).reversed())
                 .collect(Collectors.toList());
