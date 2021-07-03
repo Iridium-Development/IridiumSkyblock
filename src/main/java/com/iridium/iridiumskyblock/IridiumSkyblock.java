@@ -190,9 +190,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
             if (inventoryHolder instanceof GUI) {
-                Bukkit.getScheduler().runTaskAsynchronously(this, () ->
-                        ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory())
-                );
+                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
             }
         }), 0, 20);
 

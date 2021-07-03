@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * GUI which allows users to manage invites.
@@ -39,15 +40,16 @@ public class InvitesGUI extends GUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
-
-        int i = 0;
-        for (IslandInvite islandInvite : islandInvites) {
-            List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandInvite.getUser()).applyIslandPlaceholders(getIsland()).build();
-            placeholderList.add(new Placeholder("inviter", islandInvite.getInviter().getName()));
-            placeholderList.add(new Placeholder("time", islandInvite.getTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList));
-            invites.put(i, islandInvite.getUser().getName());
-            i++;
+        AtomicInteger slot = new AtomicInteger(0);
+        for (int i = 0; i < islandInvites.size(); i++) {
+            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+                int itemSlot = slot.getAndIncrement();
+                List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandInvites.get(itemSlot).getUser()).applyIslandPlaceholders(getIsland()).build();
+                placeholderList.add(new Placeholder("inviter", islandInvites.get(itemSlot).getInviter().getName()));
+                placeholderList.add(new Placeholder("time", islandInvites.get(itemSlot).getTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
+                inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList));
+                invites.put(itemSlot, islandInvites.get(itemSlot).getUser().getName());
+            });
         }
     }
 
