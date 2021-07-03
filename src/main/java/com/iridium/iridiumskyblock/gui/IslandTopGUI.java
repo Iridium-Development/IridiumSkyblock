@@ -32,10 +32,9 @@ public class IslandTopGUI extends GUI {
     @Override
     public void addContent(Inventory inventory) {
         List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandTopGUI.background);
-
         islandSlots.clear();
         inventory.clear();
+        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandTopGUI.background);
 
 
         for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
