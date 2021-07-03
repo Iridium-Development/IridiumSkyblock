@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.Cache;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.configs.BlockValues;
@@ -61,6 +62,9 @@ public final class Island {
 
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
+
+    // Cache resets every 5 seconds
+    private Cache<Double> valueCache = new Cache<>(5000);
 
     // Cache
     private Integer size;
@@ -198,17 +202,22 @@ public final class Island {
      * @return The Island value
      */
     public double getValue() {
-        AtomicReference<Double> value = new AtomicReference<>((double) 0);
+        return valueCache.getCache(() -> {
+            double value = 0;
 
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(this).forEach(islandBlocks ->
-                value.updateAndGet(v -> v + getValueOf(islandBlocks.getMaterial()) * islandBlocks.getAmount())
-        );
+            List<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(this);
+            List<IslandSpawners> islandSpawners = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(this);
 
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(this).forEach(islandSpawners ->
-                value.updateAndGet(v -> v + getValueOf(islandSpawners.getSpawnerType()) * islandSpawners.getAmount())
-        );
+            for (IslandBlocks islandBlock : islandBlocks) {
+                value = value + getValueOf(islandBlock.getMaterial()) * islandBlock.getAmount();
+            }
 
-        return value.get();
+            for (IslandSpawners islandSpawner : islandSpawners) {
+                value = value + getValueOf(islandSpawner.getSpawnerType()) * islandSpawner.getAmount();
+            }
+
+            return value;
+        });
     }
 
     /**

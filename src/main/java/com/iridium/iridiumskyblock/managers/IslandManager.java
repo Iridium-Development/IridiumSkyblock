@@ -34,6 +34,14 @@ import java.util.stream.Collectors;
  */
 public class IslandManager {
 
+    public final Cache<List<Island>> islandValueSortCache = new Cache<>(5000);
+    public final Cache<List<Island>> islandLevelSortCache = new Cache<>(5000);
+
+    public void clearIslandCache() {
+        islandLevelSortCache.clearCache();
+        islandValueSortCache.clearCache();
+    }
+
 
     /**
      * Creates a new world using the current skyblock generator.
@@ -179,7 +187,7 @@ public class IslandManager {
      * @param player          The owner of the island
      * @param name            The name of  the island
      * @param schematicConfig The schematic of the island
-     * @return                True if the island has been created successfully
+     * @return True if the island has been created successfully
      */
     public boolean makeIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -216,6 +224,7 @@ public class IslandManager {
      * @return The island being created
      */
     private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
+        clearIslandCache();
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             final User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -573,7 +582,7 @@ public class IslandManager {
         IslandDeleteEvent islandDeleteEvent = new IslandDeleteEvent(island, user);
         Bukkit.getPluginManager().callEvent(islandDeleteEvent);
         if (islandDeleteEvent.isCancelled()) return;
-
+        clearIslandCache();
         deleteIslandBlocks(island, getWorld(), 3);
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island));
@@ -933,10 +942,14 @@ public class IslandManager {
      */
     public List<Island> getIslands(SortType sortType) {
         if (sortType == SortType.VALUE) {
-            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList());
+            return islandValueSortCache.getCache(() ->
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList())
+            );
         }
         if (sortType == SortType.LEVEL) {
-            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList());
+            return islandLevelSortCache.getCache(() ->
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList())
+            );
         }
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
