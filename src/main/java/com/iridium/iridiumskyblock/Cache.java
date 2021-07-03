@@ -13,7 +13,7 @@ public class Cache<T> {
 
     public T getCache(CacheGetter<T> cacheGetter) {
         long currentTime = System.currentTimeMillis();
-        if (lastCache + refreshTimeInMilliseconds > currentTime || cache == null) {
+        if (lastCache + refreshTimeInMilliseconds < currentTime || cache == null) {
             this.cache = cacheGetter.getObject();
             this.lastCache = currentTime;
         }
