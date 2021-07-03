@@ -8,13 +8,12 @@ public class Cache<T> {
 
     public Cache(long refreshTimeInMilliseconds) {
         this.refreshTimeInMilliseconds = refreshTimeInMilliseconds;
-        this.lastCache = 0;
     }
 
-    public T getCache(CacheGetter<T> cacheGetter) {
+    public T getCache(CacheContentProvider<T> cacheContentProvider) {
         long currentTime = System.currentTimeMillis();
         if (lastCache + refreshTimeInMilliseconds < currentTime || cache == null) {
-            this.cache = cacheGetter.getObject();
+            this.cache = cacheContentProvider.getObject();
             this.lastCache = currentTime;
         }
         return cache;
@@ -24,7 +23,7 @@ public class Cache<T> {
         this.cache = null;
     }
 
-    public interface CacheGetter<T> {
+    public interface CacheContentProvider<T> {
         T getObject();
     }
 }
