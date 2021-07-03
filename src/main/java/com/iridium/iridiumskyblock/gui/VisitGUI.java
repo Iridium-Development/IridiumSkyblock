@@ -9,7 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -34,19 +36,28 @@ public class VisitGUI extends GUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
+        CompletableFuture.supplyAsync(() -> {
+            int elementsPerPage = inventory.getSize() - 9;
+            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream()
+                    .filter(Island::isVisitable)
+                    .skip((long) (page - 1) * elementsPerPage)
+                    .limit(elementsPerPage)
+                    .map(island -> ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
+        }).thenAccept(itemStackStream -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().visitGUI.background);
 
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().visitGUI.background);
+                    inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+                    inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
-        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
-        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
-
-        int elementsPerPage = inventory.getSize() - 9;
-        AtomicInteger index = new AtomicInteger(0);
-        islands.stream()
-                .skip((long) (page - 1) * elementsPerPage)
-                .limit(elementsPerPage)
-                .forEachOrdered(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build())));
+                    AtomicInteger index = new AtomicInteger(0);
+                    itemStackStream.forEach(itemStack ->
+                            inventory.setItem(index.getAndIncrement(), itemStack)
+                    );
+                })
+        ).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 
     /**

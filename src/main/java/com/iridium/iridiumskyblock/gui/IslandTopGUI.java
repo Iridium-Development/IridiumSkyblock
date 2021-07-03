@@ -12,6 +12,9 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * GUI which shows the Islands with the highest Island value.
@@ -31,23 +34,32 @@ public class IslandTopGUI extends GUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandTopGUI.background);
+        CompletableFuture.supplyAsync(() -> {
+            List<Island> islands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
+            return IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet().stream()
+                    .filter(rank -> islands.size() >= rank)
+                    .map(rank -> ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(islands.get(rank - 1)).build()))
+                    .collect(Collectors.toList());
+        }).thenAccept(itemStacks -> {
+            islandSlots.clear();
+            inventory.clear();
 
-        islandSlots.clear();
-        inventory.clear();
+            InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandTopGUI.background);
 
-
-        for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
-            int slot = IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank);
-            if (islands.size() >= rank) {
-                Island island = islands.get(rank - 1);
-                islandSlots.put(slot, island);
-                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
-            } else {
-                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.filler));
+            int index = 0;
+            for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
+                int slot = IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank);
+                if (itemStacks.size() > index) {
+                    inventory.setItem(slot, itemStacks.get(index));
+                } else {
+                    inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.filler));
+                }
+                index++;
             }
-        }
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 
     /**

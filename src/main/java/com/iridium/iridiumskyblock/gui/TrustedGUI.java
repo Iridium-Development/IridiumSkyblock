@@ -11,10 +11,14 @@ import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 /**
  * GUI which displays all trusted users of an Island.
@@ -35,19 +39,27 @@ public class TrustedGUI extends GUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().trustedGUI.background);
-
-        int i = 0;
-        List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(getIsland());
-        for (IslandTrusted islandTrusted : islandTrustedList) {
-            List<Placeholder> placeholderList =
-                    new PlaceholderBuilder().applyPlayerPlaceholders(islandTrusted.getUser()).applyIslandPlaceholders(getIsland()).build();
-            placeholderList.add(new Placeholder("trustee", islandTrusted.getTruster().getName()));
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().trustedGUI.item, placeholderList));
-            members.put(i, islandTrusted.getUser());
-            i++;
-        }
+        CompletableFuture.supplyAsync(() -> {
+            List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(getIsland());
+            AtomicInteger atomicInteger = new AtomicInteger(0);
+            return islandTrustedList.stream()
+                    .map(islandTrusted -> {
+                        List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandTrusted.getUser()).applyIslandPlaceholders(getIsland()).build();
+                        placeholderList.add(new Placeholder("trustee", islandTrusted.getTruster().getName()));
+                        members.put(atomicInteger.getAndIncrement(), islandTrusted.getUser());
+                        return ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().trustedGUI.item, placeholderList);
+                    })
+                    .collect(Collectors.toList());
+        }).thenAccept(itemStacks -> {
+            int i = 0;
+            for (ItemStack itemStack : itemStacks) {
+                inventory.setItem(i, itemStack);
+                i++;
+            }
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 
     /**

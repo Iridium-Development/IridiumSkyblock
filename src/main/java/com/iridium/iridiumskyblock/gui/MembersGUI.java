@@ -9,9 +9,12 @@ import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * GUI which displays all members of an Island and allows quick rank management.
@@ -32,15 +35,18 @@ public class MembersGUI extends GUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
-
-        int i = 0;
-        for (User member : getIsland().getMembers()) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(member).applyIslandPlaceholders(getIsland()).build()));
-            members.put(i, member);
-            i++;
-        }
+        CompletableFuture.supplyAsync(() ->
+                getIsland().getMembers().stream()
+                        .map(user -> ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build()))
+                        .collect(Collectors.toList())
+        ).thenAccept(itemStacks -> {
+            InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
+            int i = 0;
+            for (ItemStack itemStack : itemStacks) {
+                inventory.setItem(i, itemStack);
+                i++;
+            }
+        });
     }
 
     /**

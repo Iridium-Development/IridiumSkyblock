@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
@@ -40,7 +39,7 @@ public abstract class GUI implements InventoryHolder {
         String title = island == null ? noItemGUI.title : StringUtils.processMultiplePlaceholders(noItemGUI.title, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
         Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(title));
 
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
+        addContent(inventory);
 
         return inventory;
     }
