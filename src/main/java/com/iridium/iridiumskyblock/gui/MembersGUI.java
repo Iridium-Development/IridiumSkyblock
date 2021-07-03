@@ -12,6 +12,8 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * GUI which displays all members of an Island and allows quick rank management.
@@ -35,11 +37,14 @@ public class MembersGUI extends GUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
 
-        int i = 0;
-        for (User member : getIsland().getMembers()) {
-            inventory.setItem(i, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(member).applyIslandPlaceholders(getIsland()).build()));
-            members.put(i, member);
-            i++;
+        AtomicInteger slot = new AtomicInteger(0);
+        List<User> islandMembers = getIsland().getMembers();
+        for (int i = 0; i < islandMembers.size(); i++) {
+            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+                int itemSlot = slot.getAndIncrement();
+                inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(islandMembers.get(itemSlot)).applyIslandPlaceholders(getIsland()).build()));
+                members.put(itemSlot, islandMembers.get(itemSlot));
+            });
         }
     }
 

@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  */
 public class VisitGUI extends GUI {
 
-    private final List<Island> islands;
     private final int page;
 
     /**
@@ -29,7 +28,6 @@ public class VisitGUI extends GUI {
     public VisitGUI(int page) {
         super(IridiumSkyblock.getInstance().getInventories().visitGUI, null);
         this.page = page;
-        this.islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(Island::isVisitable).collect(Collectors.toList());
     }
 
     @Override
@@ -42,11 +40,19 @@ public class VisitGUI extends GUI {
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         int elementsPerPage = inventory.getSize() - 9;
-        AtomicInteger index = new AtomicInteger(0);
-        islands.stream()
+        List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream()
+                .filter(Island::isVisitable)
                 .skip((long) (page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(island -> inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build())));
+                .collect(Collectors.toList());
+        AtomicInteger slot = new AtomicInteger(0);
+        for (int i = 0; i < islands.size(); i++) {
+            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+                        int itemSlot = slot.getAndIncrement();
+                        inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(islands.get(itemSlot)).build()));
+                    }
+            );
+        }
     }
 
     /**
@@ -57,6 +63,9 @@ public class VisitGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream()
+                .filter(Island::isVisitable)
+                .collect(Collectors.toList());
         if (event.getSlot() == getInventory().getSize() - 7) {
             if (page > 1) {
                 event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
