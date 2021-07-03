@@ -11,7 +11,9 @@ public class InventoryClickListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getClickedInventory() != null && event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof GUI) {
             event.setCancelled(true);
-            ((GUI) event.getInventory().getHolder()).onInventoryClick(event);
+            if(event.getClickedInventory() == event.getInventory()) {
+                ((GUI) event.getInventory().getHolder()).onInventoryClick(event);
+            }
         }
     }
 }
