@@ -2,14 +2,15 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PlaceholderBuilder;
+import com.iridium.iridiumskyblock.api.UserChatToggleEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.IslandTopGUI;
-import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -38,41 +39,42 @@ public class ChatCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        Optional<Island> island = IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland();
 
-        if (args.length > 1) {
-            String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+        if (island.isPresent()) {
 
-            Optional<Island> island = IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland();
+            if (args.length > 1) {
 
-            if (island.isPresent()) {
+                String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+
                 for (User user : island.get().getMembers()) {
                     Player recipient = Bukkit.getPlayer(user.getUuid());
 
                     if (recipient != null) {
-                        recipient.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberChat
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                                .replace("%player%", player.getName())
-                                .replace("%message%", message))
+                        recipient.sendMessage(StringUtils.color(
+                                StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().islandMemberChat, new PlaceholderBuilder().applyIslandPlaceholders(island.get()).build())
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                        .replace("%player%", player.getName())
+                                        .replace("%message%", message))
                         );
                     }
                 }
-
-                return true;
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
+                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+                UserChatToggleEvent userChatToggleEvent = new UserChatToggleEvent(island.get(),user);
+                Bukkit.getPluginManager().callEvent(userChatToggleEvent);
+                if (!userChatToggleEvent.isCancelled()) {
+                    user.setIslandChat(!user.isIslandChat());
+                    player.sendMessage(StringUtils.color(
+                            (user.isIslandChat() ? IridiumSkyblock.getInstance().getMessages().islandChatEnabled : IridiumSkyblock.getInstance().getMessages().islandChatDisabled)
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                    );
+                }
             }
-        } else {
-            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-            user.setIslandChat(!user.isIslandChat());
-            player.sendMessage(
-                StringUtils.color(
-                    (user.isIslandChat() ? IridiumSkyblock.getInstance().getMessages().islandChatEnabled : IridiumSkyblock.getInstance().getMessages().islandChatDisabled)
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                )
-            );
-
             return true;
+        } else {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
     }
 
