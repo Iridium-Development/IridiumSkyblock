@@ -38,16 +38,14 @@ public class IslandTopGUI extends GUI {
 
 
         for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                int slot = IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank);
-                if (islands.size() >= rank) {
-                    Island island = islands.get(rank - 1);
-                    islandSlots.put(slot, island);
-                    inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
-                } else {
-                    inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.filler));
-                }
-            });
+            int slot = IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank);
+            if (islands.size() >= rank) {
+                Island island = islands.get(rank - 1);
+                islandSlots.put(slot, island);
+                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
+            } else {
+                inventory.setItem(slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandTopGUI.filler));
+            }
         }
     }
 

@@ -38,13 +38,10 @@ public class MembersGUI extends GUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
 
         AtomicInteger slot = new AtomicInteger(0);
-        List<User> islandMembers = getIsland().getMembers();
-        for (int i = 0; i < islandMembers.size(); i++) {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                int itemSlot = slot.getAndIncrement();
-                inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(islandMembers.get(itemSlot)).applyIslandPlaceholders(getIsland()).build()));
-                members.put(itemSlot, islandMembers.get(itemSlot));
-            });
+        for (User user : getIsland().getMembers()) {
+            int itemSlot = slot.getAndIncrement();
+            inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build()));
+            members.put(itemSlot, user);
         }
     }
 

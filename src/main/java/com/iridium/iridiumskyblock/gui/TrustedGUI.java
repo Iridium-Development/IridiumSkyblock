@@ -39,16 +39,14 @@ public class TrustedGUI extends GUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().trustedGUI.background);
 
-        AtomicInteger slot = new AtomicInteger(0);
         List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(getIsland());
-        for (int i = 0; i < islandTrustedList.size(); i++) {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                int itemSlot = slot.getAndIncrement();
-                List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandTrustedList.get(itemSlot).getUser()).applyIslandPlaceholders(getIsland()).build();
-                placeholderList.add(new Placeholder("trustee", islandTrustedList.get(itemSlot).getTruster().getName()));
-                inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().trustedGUI.item, placeholderList));
-                members.put(itemSlot, islandTrustedList.get(itemSlot).getUser());
-            });
+        AtomicInteger slot = new AtomicInteger(0);
+        for (IslandTrusted islandTrusted : islandTrustedList) {
+            int itemSlot = slot.getAndIncrement();
+            List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandTrusted.getUser()).applyIslandPlaceholders(getIsland()).build();
+            placeholderList.add(new Placeholder("trustee", islandTrusted.getTruster().getName()));
+            inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().trustedGUI.item, placeholderList));
+            members.put(itemSlot, islandTrusted.getUser());
         }
     }
 
