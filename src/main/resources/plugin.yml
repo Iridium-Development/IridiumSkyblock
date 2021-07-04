@@ -1,6 +1,6 @@
 name: IridiumSkyblock
 version: ${version}
-description: Skyblock Redifined
+description: Skyblock Redefined
 main: com.iridium.iridiumskyblock.IridiumSkyblock
 api-version: '1.13'
 author: Peaches_MLG
