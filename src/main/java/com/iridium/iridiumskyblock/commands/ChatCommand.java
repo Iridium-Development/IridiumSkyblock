@@ -61,7 +61,7 @@ public class ChatCommand extends Command {
                 }
             } else {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                UserChatToggleEvent userChatToggleEvent = new UserChatToggleEvent(island.get(),user);
+                UserChatToggleEvent userChatToggleEvent = new UserChatToggleEvent(user);
                 Bukkit.getPluginManager().callEvent(userChatToggleEvent);
                 if (!userChatToggleEvent.isCancelled()) {
                     user.setIslandChat(!user.isIslandChat());

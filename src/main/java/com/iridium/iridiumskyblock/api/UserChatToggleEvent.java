@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.api;
 
-import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import lombok.Getter;
 import org.bukkit.event.Cancellable;
@@ -13,11 +12,9 @@ public class UserChatToggleEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private final Island island;
     private final User user;
 
-    public UserChatToggleEvent(Island island, User user) {
-        this.island = island;
+    public UserChatToggleEvent(User user) {
         this.user = user;
     }
 
@@ -37,7 +34,7 @@ public class UserChatToggleEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean b) {
-        cancelled = b;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
