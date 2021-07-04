@@ -46,12 +46,8 @@ public class VisitGUI extends GUI {
                 .limit(elementsPerPage)
                 .collect(Collectors.toList());
         AtomicInteger slot = new AtomicInteger(0);
-        for (int i = 0; i < islands.size(); i++) {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                        int itemSlot = slot.getAndIncrement();
-                        inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(islands.get(itemSlot)).build()));
-                    }
-            );
+        for (Island island : islands) {
+            inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
         }
     }
 
