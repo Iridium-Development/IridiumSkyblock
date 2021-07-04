@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.placeholders.Placeholders;
@@ -33,10 +34,11 @@ public class PlayerChatListener implements Listener {
             for (User islandUser : island.get().getMembers()) {
                 Player recipient = Bukkit.getPlayer(islandUser.getUuid());
                 if (recipient != null) {
-                    recipient.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberChat
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                            .replace("%player%", event.getPlayer().getName())
-                            .replace("%message%", event.getMessage()))
+                    recipient.sendMessage(StringUtils.color(
+                            StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().islandMemberChat, new PlaceholderBuilder().applyIslandPlaceholders(island.get()).build())
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                    .replace("%player%", event.getPlayer().getName())
+                                    .replace("%message%", event.getMessage()))
                     );
                 }
             }

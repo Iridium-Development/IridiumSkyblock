@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandTopGUI;
@@ -48,10 +49,11 @@ public class ChatCommand extends Command {
                     Player recipient = Bukkit.getPlayer(user.getUuid());
 
                     if (recipient != null) {
-                        recipient.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberChat
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                                .replace("%player%", player.getName())
-                                .replace("%message%", message))
+                        recipient.sendMessage(StringUtils.color(
+                                StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().islandMemberChat, new PlaceholderBuilder().applyIslandPlaceholders(island.get()).build())
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                        .replace("%player%", player.getName())
+                                        .replace("%message%", message))
                         );
                     }
                 }
