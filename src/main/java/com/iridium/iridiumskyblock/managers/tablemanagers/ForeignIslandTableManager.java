@@ -43,7 +43,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
      * @param island the specified island
      */
     public List<T> getEntries(@NotNull Island island) {
-        int index = Collections.binarySearch(getEntries(), new IslandData(island), Comparator.comparing(islandData -> islandData.getIsland().map(Island::getId).orElse(0)));
+        int index = Collections.binarySearch(getEntries(), new IslandData(island), Comparator.comparing(islandData -> islandData == null ? 0 : islandData.getIsland().map(Island::getId).orElse(0)));
         if (index < 0) return Collections.emptyList();
 
         int currentIndex = index - 1;
