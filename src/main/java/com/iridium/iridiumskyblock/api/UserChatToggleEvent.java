@@ -17,7 +17,7 @@ public class UserChatToggleEvent extends Event implements Cancellable {
 
     public UserChatToggleEvent(User user) {
         this.user = user;
-        this.isIslandChat = user.isIslandChat();
+        this.isIslandChat = !user.isIslandChat();
     }
 
     @NotNull
