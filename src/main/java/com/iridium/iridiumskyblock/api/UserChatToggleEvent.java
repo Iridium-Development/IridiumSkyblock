@@ -39,4 +39,8 @@ public class UserChatToggleEvent extends Event implements Cancellable {
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
+    public boolean isIslandChat() {
+        return isIslandChat;
+    }
 }
