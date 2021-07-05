@@ -12,10 +12,12 @@ public class UserChatToggleEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
+    private final boolean isIslandChat;
     private final User user;
 
     public UserChatToggleEvent(User user) {
         this.user = user;
+        this.isIslandChat = user.isIslandChat();
     }
 
     @NotNull
