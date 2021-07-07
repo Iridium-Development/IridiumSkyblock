@@ -41,11 +41,11 @@ public class BlockPlaceListener implements Listener {
 
         IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
         int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "blocklimit").getLevel();
-        int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material,0);
+        int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, 0);
 
         if (blockLimit > 0 && islandBlocks.getAmount() >= blockLimit) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().blockLimitReached
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%limit%", String.valueOf(blockLimit)).replace("%block%", material.name())));
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%limit%", String.valueOf(blockLimit)).replace("%block%", material.name().replace("_", " "))));
             event.setCancelled(false);
             return;
         }

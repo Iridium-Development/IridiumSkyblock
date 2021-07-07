@@ -56,7 +56,7 @@ public class Upgrades {
     public Upgrade<BlockLimitUpgrade> blockLimitUpgrade = new Upgrade<>(true,
             new Item(XMaterial.HOPPER, 13, 1, "&b&lIsland Block Limits", Arrays.asList(
                     "&7Need to place more blocks? Buy this",
-                    "&7upgrade to increase the blocks you can place.",
+                    "&7upgrade to increase the amount of  blocks you can place.",
                     "",
                     "&b&lInformation:",
                     "&b&l * &7Current Level: &b%level%",
