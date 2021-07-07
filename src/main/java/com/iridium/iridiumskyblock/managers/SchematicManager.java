@@ -17,10 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 import static java.lang.Math.max;
@@ -34,7 +31,7 @@ public class SchematicManager {
     private final Persist persist;
     private final File parent;
 
-    public final HashMap<String, Schematic> schematics;
+    public final Map<String, Schematic> schematics;
 
     public SchematicManager(@NotNull File parent) {
         this.persist = new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance());

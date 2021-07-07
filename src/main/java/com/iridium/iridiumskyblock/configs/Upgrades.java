@@ -5,17 +5,14 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Upgrade;
-import com.iridium.iridiumskyblock.upgrades.MemberUpgrade;
-import com.iridium.iridiumskyblock.upgrades.OresUpgrade;
-import com.iridium.iridiumskyblock.upgrades.SizeUpgrade;
-import com.iridium.iridiumskyblock.upgrades.WarpsUpgrade;
+import com.iridium.iridiumskyblock.upgrades.*;
 
 import java.util.Arrays;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Upgrades {
     public Upgrade<SizeUpgrade> sizeUpgrade = new Upgrade<>(true,
-            new Item(XMaterial.GRASS_BLOCK, 10, 1, "&b&lIsland Size", Arrays.asList(
+            new Item(XMaterial.GRASS_BLOCK, 11, 1, "&b&lIsland Size", Arrays.asList(
                     "&7Need more room to expand? Buy this",
                     "&7upgrade to increase your island size.",
                     "",
@@ -34,6 +31,7 @@ public class Upgrades {
             .put(2, new SizeUpgrade(1000, 15, 100))
             .put(3, new SizeUpgrade(1000, 15, 150))
             .build());
+
     public Upgrade<MemberUpgrade> memberUpgrade = new Upgrade<>(true,
             new Item(XMaterial.ARMOR_STAND, 12, 1, "&b&lIsland Members", Arrays.asList(
                     "&7Need more members? Buy this",
@@ -53,6 +51,44 @@ public class Upgrades {
             .put(1, new MemberUpgrade(1000, 15, 9))
             .put(2, new MemberUpgrade(1000, 15, 18))
             .put(3, new MemberUpgrade(1000, 15, 27))
+            .build());
+
+    public Upgrade<BlockLimitUpgrade> blockLimitUpgrade = new Upgrade<>(true,
+            new Item(XMaterial.HOPPER, 13, 1, "&b&lIsland Block Limits", Arrays.asList(
+                    "&7Need to place more blocks? Buy this",
+                    "&7upgrade to increase the blocks you can place.",
+                    "",
+                    "&b&lInformation:",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
+                    "",
+                    "&b&l[!] &bLeft Click to Purchase this Upgrade"
+            )), ImmutableMap.<Integer, BlockLimitUpgrade>builder()
+            .put(1, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.HOPPER, 15)
+                    .put(XMaterial.PISTON, 10)
+                    .put(XMaterial.SPAWNER, 10)
+                    .build()))
+            .put(2, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.HOPPER, 20)
+                    .put(XMaterial.PISTON, 15)
+                    .put(XMaterial.SPAWNER, 15)
+                    .build()))
+            .put(3, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.HOPPER, 25)
+                    .put(XMaterial.PISTON, 20)
+                    .put(XMaterial.SPAWNER, 20)
+                    .build()))
+            .put(4, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.HOPPER, 30)
+                    .put(XMaterial.PISTON, 25)
+                    .put(XMaterial.SPAWNER, 25)
+                    .build()))
+            .put(5, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.HOPPER, 40)
+                    .put(XMaterial.PISTON, 30)
+                    .put(XMaterial.SPAWNER, 30)
+                    .build()))
             .build());
 
     public Upgrade<WarpsUpgrade> warpsUpgrade = new Upgrade<>(true,
@@ -80,7 +116,7 @@ public class Upgrades {
             .build());
 
     public Upgrade<OresUpgrade> oresUpgrade = new Upgrade<>(true,
-            new Item(XMaterial.DIAMOND_ORE, 16, 1, "&b&lIsland Generator", Arrays.asList(
+            new Item(XMaterial.DIAMOND_ORE, 15, 1, "&b&lIsland Generator", Arrays.asList(
                     "&7Want to improve your generator? Buy this",
                     "&7upgrade to improve your island generator.",
                     "",
@@ -129,4 +165,5 @@ public class Upgrades {
                     .put(XMaterial.ANCIENT_DEBRIS, 1)
                     .build()))
             .build());
+
 }

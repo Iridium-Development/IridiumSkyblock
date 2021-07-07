@@ -72,10 +72,10 @@ public class IridiumSkyblock extends IridiumCore {
     private ChunkGenerator chunkGenerator;
 
     private List<BankItem> bankItemList;
-    private HashMap<String, Permission> permissionList;
-    private HashMap<String, Mission> missionsList;
-    private HashMap<String, Upgrade> upgradesList;
-    private HashMap<String, Booster> boosterList;
+    private Map<String, Permission> permissionList;
+    private Map<String, Mission> missionsList;
+    private Map<String, Upgrade> upgradesList;
+    private Map<String, Booster> boosterList;
 
     private Economy economy;
     private SpawnerStackerSupport spawnerStackerSupport;
@@ -424,6 +424,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (upgrades.sizeUpgrade.enabled) upgradesList.put("size", upgrades.sizeUpgrade);
         if (upgrades.memberUpgrade.enabled) upgradesList.put("member", upgrades.memberUpgrade);
         if (upgrades.warpsUpgrade.enabled) upgradesList.put("warp", upgrades.warpsUpgrade);
+        if (upgrades.blockLimitUpgrade.enabled) upgradesList.put("blocklimit", upgrades.blockLimitUpgrade);
         if (upgrades.oresUpgrade.enabled) {
             upgradesList.put("generator", upgrades.oresUpgrade);
             BlockFormListener.generateOrePossibilities();

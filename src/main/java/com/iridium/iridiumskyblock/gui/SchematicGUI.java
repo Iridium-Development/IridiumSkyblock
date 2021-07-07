@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public abstract class SchematicGUI extends GUI {
 
-    private final HashMap<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
+    private final Map<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
 
     public SchematicGUI() {
         super(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI, null);
