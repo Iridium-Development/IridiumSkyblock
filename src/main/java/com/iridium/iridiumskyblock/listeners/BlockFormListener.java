@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.upgrades.OresUpgrade;
 import com.iridium.iridiumskyblock.utils.RandomAccessList;
@@ -35,6 +36,8 @@ public class BlockFormListener implements Listener {
 
     @EventHandler
     public void onBlockForm(BlockFormEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
+
         XMaterial newMaterial = XMaterial.matchXMaterial(event.getNewState().getType());
         // Custom basalt generators should only work in nether
         if (newMaterial == XMaterial.COBBLESTONE || newMaterial == XMaterial.STONE || (newMaterial == XMaterial.BASALT && event.getBlock().getLocation().getWorld().getEnvironment() == World.Environment.NETHER)) {

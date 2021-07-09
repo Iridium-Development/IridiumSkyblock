@@ -263,4 +263,15 @@ public class IridiumSkyblockAPI {
         return iridiumSkyblock.getIslandManager().getEndWorld();
     }
 
+    /**
+     * Returns whether or not the specified world is from IridiumSkyblock.
+     *
+     * @param world Thw world that should be checked
+     * @return true if it is a world used by IridiumSkyblock
+     * @since 3.0.7
+     */
+    public boolean isIslandWorld(World world) {
+        return getWorld() == world || getNetherWorld() == world || getEndWorld() == world;
+    }
+
 }
