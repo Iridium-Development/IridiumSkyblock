@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import java.util.Objects;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -271,7 +272,7 @@ public class IridiumSkyblockAPI {
      * @since 3.0.7
      */
     public boolean isIslandWorld(World world) {
-        return getWorld() == world || getNetherWorld() == world || getEndWorld() == world;
+        return Objects.equals(getWorld(), world) || Objects.equals(getNetherWorld(), world) || Objects.equals(getEndWorld(), world);
     }
 
 }
