@@ -18,10 +18,6 @@ public class PlayerMoveListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
-        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getFrom().getWorld()) && event.getTo() != null && !IridiumSkyblockAPI.getInstance().isIslandWorld(event.getTo().getWorld())) {
-            return;
-        }
-
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (event.getTo().getBlockX() != event.getFrom().getBlockX() || event.getTo().getBlockZ() != event.getFrom().getBlockZ()) {
@@ -32,6 +28,7 @@ public class PlayerMoveListener implements Listener {
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 );
             }
+
             if (user.isFlying()) {
                 Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
                 if (island.isPresent()) {
@@ -50,6 +47,7 @@ public class PlayerMoveListener implements Listener {
                 }
             }
         }
+
         if (event.getTo().getY() < 0 & IridiumSkyblock.getInstance().getConfiguration().voidTeleport) {
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom());
             island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, value, 0));
