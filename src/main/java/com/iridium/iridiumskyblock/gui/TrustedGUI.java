@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -22,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class TrustedGUI extends GUI {
 
-    private final HashMap<Integer, User> members;
+    private final Map<Integer, User> members;
 
     /**
      * The default constructor.

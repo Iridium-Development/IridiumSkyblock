@@ -12,7 +12,6 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -39,7 +38,7 @@ public class MissionsGUI extends GUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().missionsGUI.background);
 
         if (missionType == Mission.MissionType.DAILY) {
-            HashMap<String, Mission> missions = IridiumSkyblock.getInstance().getIslandManager().getDailyIslandMissions(getIsland());
+            Map<String, Mission> missions = IridiumSkyblock.getInstance().getIslandManager().getDailyIslandMissions(getIsland());
             int i = 0;
 
             for (Map.Entry<String, Mission> entry : missions.entrySet()) {
