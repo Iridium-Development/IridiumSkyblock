@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * GUI which shows the Islands with the highest Island value.
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public class IslandTopGUI extends GUI {
 
-    private final HashMap<Integer, Island> islandSlots = new HashMap<>();
+    private final Map<Integer, Island> islandSlots = new HashMap<>();
 
     /**
      * The default constructor.

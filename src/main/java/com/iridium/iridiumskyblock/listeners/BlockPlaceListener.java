@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBlocks;
 import com.iridium.iridiumskyblock.database.IslandSpawners;
 import com.iridium.iridiumskyblock.database.User;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.World;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
@@ -33,13 +34,22 @@ public class BlockPlaceListener implements Listener {
             }
             return;
         }
-
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_PLACE)) {
             event.setCancelled(true);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPlaceBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
         IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
+        int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "blocklimit").getLevel();
+        int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, 0);
+
+        if (blockLimit > 0 && islandBlocks.getAmount() >= blockLimit) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().blockLimitReached
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%limit%", String.valueOf(blockLimit)).replace("%block%", WordUtils.capitalizeFully(material.name().toLowerCase().replace("_", " ")))));
+            event.setCancelled(false);
+            return;
+        }
         islandBlocks.setAmount(islandBlocks.getAmount() + 1);
 
         if (event.getBlock().getState() instanceof CreatureSpawner) {

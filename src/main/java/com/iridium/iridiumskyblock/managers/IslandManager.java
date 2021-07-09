@@ -654,8 +654,8 @@ public class IslandManager {
      * @param island The specified Island
      * @return The daily missions
      */
-    public HashMap<String, Mission> getDailyIslandMissions(@NotNull Island island) {
-        HashMap<String, Mission> missions = new HashMap<>();
+    public Map<String, Mission> getDailyIslandMissions(@NotNull Island island) {
+        Map<String, Mission> missions = new HashMap<>();
         List<IslandMission> islandMissions =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream().filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
 

@@ -64,6 +64,12 @@ public class Placeholders {
             })
 
             // Island Upgrade Placeholders
+            .put("island_upgrade_blocklimit_level", player -> {
+                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+                if (!user.getIsland().isPresent()) return defaultValue();
+                IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "blocklimit");
+                return IridiumSkyblock.getInstance().getNumberFormatter().format(islandUpgrade.getLevel());
+            })
             .put("island_upgrade_member_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                 if (!user.getIsland().isPresent()) return defaultValue();
