@@ -100,7 +100,7 @@ public class ShopCategoryGUI extends GUI {
             } else {
                 IridiumSkyblock.getInstance().getShopManager().buy(player, shopItem, shopItem.defaultAmount);
             }
-        } else if (shopItem.isSellable()) {
+        } else if (event.isRightClick() && shopItem.isSellable()) {
             if (event.isShiftClick()) {
                 IridiumSkyblock.getInstance().getShopManager().sell(player, shopItem, 64);
             } else {
