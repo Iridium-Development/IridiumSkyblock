@@ -47,12 +47,12 @@ public class BiomeGUI extends GUI {
         AtomicInteger index = new AtomicInteger(0);
 
         biomes.stream()
+                .filter(xBiome -> xBiome.getBiome() != null)
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
                 .forEachOrdered(biome ->
                         inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().biomeGUI.item, Collections.singletonList(new Placeholder("biome", WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " "))))))
                 );
-
     }
 
     @Override
