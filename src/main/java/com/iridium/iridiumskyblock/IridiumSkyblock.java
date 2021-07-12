@@ -453,7 +453,7 @@ public class IridiumSkyblock extends IridiumCore {
 
         if (shopManager != null) shopManager.reloadCategories();
         if (commandManager != null) commandManager.reloadCommands();
-        
+
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);
     }

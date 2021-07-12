@@ -6,9 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class IridiumSkyblockReloadEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
-
-    public IridiumSkyblockReloadEvent() { }
-
+    
     @NotNull
     public HandlerList getHandlers() {
         return handlers;
