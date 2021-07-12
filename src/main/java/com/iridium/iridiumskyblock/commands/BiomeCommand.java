@@ -43,10 +43,12 @@ public class BiomeCommand extends Command {
         }
 
         final Optional<XBiome> biomeOptional = XBiome.matchXBiome(args[1]);
-        if (!biomeOptional.isPresent()) {
+        // Return if the biome doesn't exist or isn't supported by this version
+        if (!biomeOptional.isPresent() || biomeOptional.get().getBiome() == null) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidBiome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(optionalIsland.get(), biomeOptional.get());
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
@@ -60,12 +62,14 @@ public class BiomeCommand extends Command {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
             return XBiome.VALUES.stream()
-                    .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
-                    .map(Enum::toString)
-                    .filter(s -> s.toUpperCase().contains(args[1].toUpperCase()))
-                    .collect(Collectors.toList());
+                .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
+                .filter(biome -> biome.getBiome() != null)
+                .map(Enum::toString)
+                .filter(s -> s.toUpperCase().contains(args[1].toUpperCase()))
+                .collect(Collectors.toList());
         } else {
             return Collections.emptyList();
         }
     }
+
 }
