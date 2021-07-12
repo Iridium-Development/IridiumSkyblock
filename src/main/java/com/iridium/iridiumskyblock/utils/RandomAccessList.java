@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.utils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -44,11 +45,11 @@ public class RandomAccessList<E> {
      * Generates a random element from this list, considering the specified possibilities.
      *
      * @return A random element
-     * @throws IndexOutOfBoundsException If this list is empty
      */
-    public E nextElement() throws IndexOutOfBoundsException {
+    public Optional<E> nextElement() throws IndexOutOfBoundsException {
+        if (underlyingList.isEmpty()) return Optional.empty();
         int randomIndex = ThreadLocalRandom.current().nextInt(underlyingList.size());
-        return underlyingList.get(randomIndex);
+        return Optional.of(underlyingList.get(randomIndex));
     }
 
 }
