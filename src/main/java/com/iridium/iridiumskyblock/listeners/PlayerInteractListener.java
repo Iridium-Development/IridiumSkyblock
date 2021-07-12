@@ -68,7 +68,7 @@ public class PlayerInteractListener implements Listener {
             } else if (materialName.contains("MINECART") || materialName.contains("BOAT") || materialName.contains("EGG") || materialName.contains("BUCKET") || material == XMaterial.END_CRYSTAL) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.BLOCK_PLACE)) {
                     event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotSpawnEntity.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotSpawnEntities.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
         }
