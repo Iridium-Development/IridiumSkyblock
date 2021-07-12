@@ -155,7 +155,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &72 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Arrays.asList("SMELT:IRON_ORE:30", "SMELT:GOLD_ORE:15"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lBlacksmith Reward",
+                    )), Arrays.asList("SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_GOLD.name() : XMaterial.GOLD_ORE.name()) + ":15"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lBlacksmith Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &73 Island Crystals"
@@ -426,7 +426,7 @@ public class Missions {
                             "&b&l* &72 Island Crystals",
                             "&b&l* &7$1000"
                     )
-            ), Arrays.asList("MINE:IRON_ORE:32", "SMELT:IRON_ORE:32"), Mission.MissionType.ONCE,
+            ), Arrays.asList("MINE:IRON_ORE:32", "SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":32"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
