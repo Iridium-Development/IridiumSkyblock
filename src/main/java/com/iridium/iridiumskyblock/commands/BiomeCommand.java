@@ -62,10 +62,11 @@ public class BiomeCommand extends Command {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
             return XBiome.VALUES.stream()
-                    .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
-                    .map(Enum::toString)
-                    .filter(s -> s.toUpperCase().contains(args[1].toUpperCase()))
-                    .collect(Collectors.toList());
+                .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
+                .filter(biome -> biome.getBiome() != null)
+                .map(Enum::toString)
+                .filter(s -> s.toUpperCase().contains(args[1].toUpperCase()))
+                .collect(Collectors.toList());
         } else {
             return Collections.emptyList();
         }
