@@ -278,7 +278,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new BlockGrowListener(), this);
         Bukkit.getPluginManager().registerEvents(new PotionBrewListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDeathListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
+        if (upgrades.oresUpgrade.enabled) Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
         Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
