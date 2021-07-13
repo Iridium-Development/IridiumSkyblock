@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
@@ -452,6 +453,9 @@ public class IridiumSkyblock extends IridiumCore {
 
         if (shopManager != null) shopManager.reloadCategories();
         if (commandManager != null) commandManager.reloadCommands();
+
+        IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
+        Bukkit.getPluginManager().callEvent(reloadEvent);
     }
 
     private void saveFile(File parent, String name) {
