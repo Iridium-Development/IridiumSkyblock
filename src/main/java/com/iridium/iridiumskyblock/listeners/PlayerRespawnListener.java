@@ -1,10 +1,13 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import java.util.Optional;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -18,8 +21,14 @@ public class PlayerRespawnListener implements Listener {
                 if (!island.isInIsland(event.getRespawnLocation())) {
                     event.setRespawnLocation(LocationUtils.getSafeLocation(island.getHome(), island));
                 }
-                PlayerUtils.sendBorder(event.getPlayer(), island);
             });
         }
     }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void monitorRespawn(PlayerRespawnEvent event) {
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getRespawnLocation());
+        island.ifPresent(targetIsland -> PlayerUtils.sendBorder(event.getPlayer(), targetIsland));
+    }
+
 }

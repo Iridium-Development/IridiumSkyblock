@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import java.util.Objects;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -261,6 +262,17 @@ public class IridiumSkyblockAPI {
      */
     public World getEndWorld() {
         return iridiumSkyblock.getIslandManager().getEndWorld();
+    }
+
+    /**
+     * Returns whether or not the specified world is from IridiumSkyblock.
+     *
+     * @param world Thw world that should be checked
+     * @return true if it is a world used by IridiumSkyblock
+     * @since 3.0.7
+     */
+    public boolean isIslandWorld(World world) {
+        return Objects.equals(getWorld(), world) || Objects.equals(getNetherWorld(), world) || Objects.equals(getEndWorld(), world);
     }
 
 }
