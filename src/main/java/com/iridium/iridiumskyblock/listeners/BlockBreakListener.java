@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Player;
@@ -21,10 +22,7 @@ public class BlockBreakListener implements Listener {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
-
-        if (!island.isPresent()) {
-            return;
-        }
+        if (!island.isPresent()) return;
 
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
@@ -49,6 +47,8 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorBlockBreak(BlockBreakEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
+
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();

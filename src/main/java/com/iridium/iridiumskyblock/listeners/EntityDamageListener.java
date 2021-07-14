@@ -18,6 +18,7 @@ public class EntityDamageListener implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
         if (!island.isPresent()) return;
+
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
             if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
@@ -41,4 +42,5 @@ public class EntityDamageListener implements Listener {
             }
         }
     }
+
 }

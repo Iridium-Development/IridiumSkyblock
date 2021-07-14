@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.entity.Player;
@@ -19,6 +20,8 @@ public class ItemCraftListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorItemCraft(CraftItemEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getWhoClicked().getWorld())) return;
+
         int amount = event.isShiftClick() ? Arrays.stream(event.getInventory().getMatrix())
                 .filter(Objects::nonNull)
                 .map(ItemStack::getAmount)
