@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
