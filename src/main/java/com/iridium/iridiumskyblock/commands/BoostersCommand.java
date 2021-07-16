@@ -11,7 +11,6 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BoostersGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -60,7 +59,7 @@ public class BoostersCommand extends Command {
                                 StringUtils.color(
                                     IridiumSkyblock.getInstance().getMessages().successfullyBoughtBooster
                                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                                        .replace("%booster%", WordUtils.capitalizeFully(boosterName))
+                                        .replace("%booster%", IridiumSkyblock.getInstance().getBoosterList().get(islandBooster.getBooster()).item.displayName)
                                         .replace("%vault_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(booster.vaultCost))
                                         .replace("%crystal_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(booster.crystalsCost))
                                 )

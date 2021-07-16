@@ -63,7 +63,7 @@ public class UpgradesCommand extends Command {
                                 StringUtils.color(
                                     IridiumSkyblock.getInstance().getMessages().successfullyBoughtUpgrade
                                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                                        .replace("%upgrade%", WordUtils.capitalizeFully(upgradeName))
+                                        .replace("%upgrade%", upgrade.item.displayName)
                                         .replace("%vault_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.money))
                                         .replace("%crystal_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.crystals))
                                 )
