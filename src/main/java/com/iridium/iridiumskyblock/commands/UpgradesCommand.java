@@ -12,7 +12,6 @@ import com.iridium.iridiumskyblock.gui.UpgradesGUI;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
