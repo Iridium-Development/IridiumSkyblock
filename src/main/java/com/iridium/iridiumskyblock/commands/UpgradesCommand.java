@@ -12,6 +12,7 @@ import com.iridium.iridiumskyblock.gui.UpgradesGUI;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -57,6 +58,16 @@ public class UpgradesCommand extends Command {
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
                             IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(island.get());
                             island.get().resetCache();
+
+                            player.sendMessage(
+                                StringUtils.color(
+                                    IridiumSkyblock.getInstance().getMessages().successfullyBoughtUpgrade
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                        .replace("%upgrade%", WordUtils.capitalizeFully(upgradeName))
+                                        .replace("%vault_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.money))
+                                        .replace("%crystal_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.crystals))
+                                )
+                            );
                             return true;
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

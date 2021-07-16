@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
+import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -11,6 +12,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BoostersGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -54,6 +56,16 @@ public class BoostersCommand extends Command {
                             islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
                             IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, 0, boosterName);
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+
+                            player.sendMessage(
+                                StringUtils.color(
+                                    IridiumSkyblock.getInstance().getMessages().successfullyBoughtBooster
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                        .replace("%booster%", WordUtils.capitalizeFully(boosterName))
+                                        .replace("%vault_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(booster.vaultCost))
+                                        .replace("%crystal_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(booster.crystalsCost))
+                                )
+                            );
                             return true;
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
