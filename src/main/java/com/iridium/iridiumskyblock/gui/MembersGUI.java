@@ -35,8 +35,8 @@ public class MembersGUI extends GUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
+        members.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
-
         AtomicInteger slot = new AtomicInteger(0);
         for (User user : getIsland().getMembers()) {
             int itemSlot = slot.getAndIncrement();
