@@ -82,7 +82,7 @@ public class BucketListener implements Listener {
 
 
         event.getClickedBlock().setType(Material.AIR);
-        // Change item in hand a ticket later to prevent lava duplication
+        // Change item in hand a tick later to prevent lava duplication
         Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> event.getPlayer().getInventory().setItem(event.getHand(), new ItemStack(Material.LAVA_BUCKET)), 1);
 
         event.setCancelled(true);
