@@ -4,12 +4,11 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Commands;
-import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
+import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.utils.TimeUtils;
-import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +16,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -63,6 +63,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(commands.transferCommand);
         registerCommand(commands.permissionsCommand);
         registerCommand(commands.bypassCommand);
+        registerCommand(commands.expelCommand);
         registerCommand(commands.helpCommand);
         registerCommand(commands.valueCommand);
         registerCommand(commands.topCommand);
@@ -74,6 +75,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         registerCommand(commands.infoCommand);
         registerCommand(commands.missionCommand);
         registerCommand(commands.blockValueCommand);
+        registerCommand(commands.banCommand);
+        registerCommand(commands.unBanCommand);
         registerCommand(commands.borderCommand);
         registerCommand(commands.rewardsCommand);
         registerCommand(commands.upgradesCommand);

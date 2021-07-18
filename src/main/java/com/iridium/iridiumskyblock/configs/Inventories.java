@@ -6,9 +6,7 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.configs.inventories.*;
-import org.apache.commons.lang.WordUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -79,6 +77,12 @@ public class Inventories {
             "&b&l[!] &7Right Click to promote",
             "&b&l[!] &7Left click to demote/kick"
     )));
+    public SingleItemGUI bansGUI = new SingleItemGUI(27, "&7Island Bans", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
+            "&7Banned at time: %ban_time%",
+            "&7Banned by: %banned_by%",
+            "",
+            "&b&l[!] &7Left click to unban"
+    )));
 
     public SingleItemGUI trustedGUI = new SingleItemGUI(27, "&7Trusted Members", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
             "%player_name%", Arrays.asList(
@@ -86,6 +90,14 @@ public class Inventories {
             "&7Trusted By: %trustee%",
             "",
             "&b&l [!] &7Left click to untrust"
+    )));
+
+    public SingleItemGUI visitorsGUI = new SingleItemGUI(27, "&7Island Visitors", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
+            "%player_name%", Arrays.asList(
+            "&7Has Island: %has_island%",
+            "",
+            "&b&l [!] &7Left click to expel the visitor",
+            "&b&l[!] &7Right Click to ban the visitor from your island"
     )));
 
     public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", background1, new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(

@@ -3,11 +3,13 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
-import java.time.Duration;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +42,20 @@ public class PrivateCommand extends Command {
 
         if (island.isPresent()) {
             island.get().setVisitable(false);
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            int visitorCount = 0;
+            List<IslandTrusted> islandTrusted = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get());
+            for (Player visitor : island.get().getPlayersOnIsland()) {
+                User visitorUser = IridiumSkyblock.getInstance().getUserManager().getUser(visitor);
+                if (island.get().equals(visitorUser.getIsland().orElse(null)) && islandTrusted.stream().anyMatch(trustedIsland -> trustedIsland.getIsland().isPresent() && trustedIsland.getIsland().get().equals(visitorUser.getIsland().orElse(null)))) {
+                    continue;
+                }
+                PlayerUtils.teleportSpawn(user.toPlayer());
+                user.toPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledIslandLocked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                visitorCount++;
+            }
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%amount%", String.valueOf(visitorCount))));
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
