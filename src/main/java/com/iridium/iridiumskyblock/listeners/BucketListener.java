@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
+import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -67,6 +68,12 @@ public class BucketListener implements Listener {
             return;
 
         if (clickedBlock.getType() != Material.OBSIDIAN)
+            return;
+
+        if (!IridiumSkyblock.getInstance().getConfiguration().obsidianBucket)
+            return;
+
+        if (event.getPlayer().isSneaking())
             return;
 
         final IslandManager manager = IridiumSkyblock.getInstance().getIslandManager();
