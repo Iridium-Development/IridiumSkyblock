@@ -80,10 +80,10 @@ public class BucketListener implements Listener {
         if (!manager.getIslandPermission(islandOptional.get(), user, PermissionType.BUCKET))
             return;
 
-
+        handItem.setAmount(handItem.getAmount() - 1);
         event.getClickedBlock().setType(Material.AIR);
         // Change item in hand a tick later to prevent lava duplication
-        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> event.getPlayer().getInventory().setItem(event.getHand(), new ItemStack(Material.LAVA_BUCKET)), 1);
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> event.getPlayer().getInventory().addItem(new ItemStack(Material.LAVA_BUCKET)), 1);
 
         event.setCancelled(true);
     }
