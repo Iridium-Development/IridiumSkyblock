@@ -78,10 +78,10 @@ public class Inventories {
             "&b&l[!] &7Left click to demote/kick"
     )));
     public SingleItemGUI bansGUI = new SingleItemGUI(27, "&7Island Bans", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
-            "&7Banned at time: %ban_time%",
+            "&7Banned time: %ban_time%",
             "&7Banned by: %banned_by%",
             "",
-            "&b&l[!] &7Left click to unban"
+            "&b&l[!] &7Left Click to unban"
     )));
 
     public SingleItemGUI trustedGUI = new SingleItemGUI(27, "&7Trusted Members", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
@@ -96,8 +96,8 @@ public class Inventories {
             "%player_name%", Arrays.asList(
             "&7Has Island: %has_island%",
             "",
-            "&b&l [!] &7Left click to expel the visitor",
-            "&b&l[!] &7Right Click to ban the visitor from your island"
+            "&b&l [!] &7Left Click to expel the visitor",
+            "&b&l[!] &7Right Click to ban this visitor from your island"
     )));
 
     public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", background1, new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(
