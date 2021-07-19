@@ -6,14 +6,14 @@ import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.BlockValues.ValuableBlock;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -24,14 +24,17 @@ import java.util.stream.Collectors;
 public class BlockValueGUI extends GUI {
 
     private final BlockValueType guiType;
+    private final int page;
+
 
     /**
      * The default constructor.
      *
      * @param type The type of valuable block shown in this GUI
      */
-    public BlockValueGUI(BlockValueType type) {
+    public BlockValueGUI(int page, BlockValueType type) {
         super(IridiumSkyblock.getInstance().getInventories().blockValue, null);
+        this.page = page;
         this.guiType = type;
     }
 
@@ -41,20 +44,31 @@ public class BlockValueGUI extends GUI {
 
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
+        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
+
+        final long elementsPerPage = inventory.getSize() - 9;
+        AtomicInteger index = new AtomicInteger(0);
+
         if (guiType == BlockValueType.BLOCK) {
-            for (Map.Entry<XMaterial, ValuableBlock> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {
-                XMaterial material = valuableBlock.getKey();
-                ValuableBlock blockInfo = valuableBlock.getValue();
-                ItemStack blockItem = ItemStackUtils.makeItem(material, 1, StringUtils.color(blockInfo.name), getColoredValueLore(blockInfo.value));
-                inventory.setItem(blockInfo.slot, blockItem);
-            }
+            IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet().stream()
+                    .skip((page - 1) * elementsPerPage)
+                    .limit(elementsPerPage)
+                    .forEachOrdered(valuableBlock -> {
+                        XMaterial material = valuableBlock.getKey();
+                        ValuableBlock blockInfo = valuableBlock.getValue();
+                        ItemStack blockItem = ItemStackUtils.makeItem(material, 1, StringUtils.color(blockInfo.name), getColoredValueLore(blockInfo.value));
+                        inventory.setItem(blockInfo.slot, blockItem);
+                    });
         } else if (guiType == BlockValueType.SPAWNER) {
-            for (Map.Entry<EntityType, ValuableBlock> valuableSpawner : IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet()) {
-                EntityType spawnerType = valuableSpawner.getKey();
-                ValuableBlock spawnerInfo = valuableSpawner.getValue();
-                ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
-                inventory.setItem(spawnerInfo.slot, spawnerItem);
-            }
+            IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet().stream()
+                    .skip((page - 1) * elementsPerPage)
+                    .limit(elementsPerPage)
+                    .forEachOrdered(valuableSpawner -> {
+                        ValuableBlock spawnerInfo = valuableSpawner.getValue();
+                        ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
+                        inventory.setItem(spawnerInfo.slot, spawnerItem);
+                    });
         }
     }
 
@@ -73,7 +87,16 @@ public class BlockValueGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        // Don't do anything here, it gets cancelled automatically
+        final int size = IridiumSkyblock.getInstance().getInventories().blockValue.size;
+        Player player = (Player) event.getWhoClicked();
+        if (event.getSlot() == size - 7 && page > 1) {
+            player.openInventory(new BlockValueGUI(page - 1, guiType).getInventory());
+            return;
+        }
+        int amount = guiType == BlockValueType.SPAWNER ? IridiumSkyblock.getInstance().getBlockValues().spawnerValues.size() : IridiumSkyblock.getInstance().getBlockValues().blockValues.size();
+        if (event.getSlot() == size - 3 && (size - 9) * page < amount) {
+            player.openInventory(new BlockValueGUI(page + 1, guiType).getInventory());
+        }
     }
 
     /**

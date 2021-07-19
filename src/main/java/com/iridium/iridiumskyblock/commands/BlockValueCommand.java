@@ -3,10 +3,10 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.BlockValueGUI;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +41,7 @@ public class BlockValueCommand extends Command {
         if (arguments.length == 2) {
             BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
             if (blockValueType != null) {
-                player.openInventory(new BlockValueGUI(blockValueType).getInventory());
+                player.openInventory(new BlockValueGUI(1, blockValueType).getInventory());
                 return true;
             }
         }
