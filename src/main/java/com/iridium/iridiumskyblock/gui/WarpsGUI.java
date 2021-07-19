@@ -71,6 +71,7 @@ public class WarpsGUI extends GUI {
                         break;
                     case RIGHT:
                         command = IridiumSkyblock.getInstance().getCommands().deleteWarpCommand.aliases.get(0);
+                        break;
                 }
                 if (command != null)
                     Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandWarp.getName());
