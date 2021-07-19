@@ -111,7 +111,7 @@ public class IslandManager {
      */
     public void teleportHome(@NotNull Player player, @NotNull Island island, int delay) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).stream().anyMatch(islandBan -> islandBan.getRestrictedUser().equals(user) && !islandBan.isRevoked())) {
+        if (isBannedOnIsland(island, user)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
             return;
         }
@@ -612,6 +612,17 @@ public class IslandManager {
                                 .forEach(PlayerUtils::teleportSpawn)
                 )
         );
+    }
+
+    /**
+     * Gets an Island upgrade
+     *
+     * @param island The specified Island
+     * @param user   The specified User
+     * @return The a boolean the user is banned on this island
+     */
+    public boolean isBannedOnIsland(@NotNull Island island, User user) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).stream().anyMatch(islandBan -> islandBan.getRestrictedUser().equals(user));
     }
 
     /**

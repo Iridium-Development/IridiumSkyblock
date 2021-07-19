@@ -52,8 +52,8 @@ public class UnBanCommand extends Command {
             if (targetPlayer != null) {
                 User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
                 Optional<IslandBan> islandBan = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island.get()).stream().filter(ban -> targetUser.equals(ban.getRestrictedUser())).findFirst();
-                if (islandBan.isPresent() && !islandBan.get().isRevoked()) {
-                    islandBan.get().setRevoked(true);
+                if (islandBan.isPresent()) {
+                    Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().delete(islandBan.get()));
                     targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenUnBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerUnBanned.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     return true;
@@ -84,11 +84,10 @@ public class UnBanCommand extends Command {
         Player player = (Player) commandSender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        if (island.isPresent()) {
-            List<IslandBan> islandBans = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island.get());
-            return islandBans.stream().filter(islandBan -> !islandBan.isRevoked()).map(islandBan -> islandBan.getRestrictedUser().getName()).collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        return island.map(value ->
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(value).stream().map(islandBan ->
+                        islandBan.getRestrictedUser().getName()).collect(Collectors.toList())).orElse(Collections.emptyList());
+
     }
 
 }

@@ -5,7 +5,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 
 import java.time.Instant;
@@ -22,15 +21,10 @@ public class IslandBan extends IslandData{
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
 
-    @DatabaseField(columnName = "revoked", canBeNull = false)
-    @Setter
-    private boolean revoked;
-
     @DatabaseField(columnName = "restricted", canBeNull = false)
     private UUID restricted;
 
     @DatabaseField(columnName = "restrictor", canBeNull = false)
-    @Setter
     private UUID restrictor;
 
     @DatabaseField(columnName = "time", canBeNull = false)
@@ -45,7 +39,6 @@ public class IslandBan extends IslandData{
      */
     public IslandBan(Island island,  UUID restrictor, UUID restricted) {
         super(island);
-        this.revoked = false;
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
         this.restrictor = restrictor;
         this.restricted = restricted;

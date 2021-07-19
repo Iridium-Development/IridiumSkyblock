@@ -26,18 +26,18 @@ public class PlayerTeleportListener implements Listener {
         Optional<Island> fromIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom());
         Optional<Island> toIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getTo());
         if ((!fromIsland.isPresent() && toIsland.isPresent()) || (fromIsland.isPresent() && toIsland.isPresent() && !fromIsland.get().equals(toIsland.get()))) {
-            Bukkit.getPluginManager().callEvent(new IslandEnterEvent(toIsland.get(), user));
-            toIsland.get().getPlayersOnIsland().add(player);
-            if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(toIsland.get()).stream().anyMatch(islandBan -> islandBan.getRestrictedUser().equals(IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer())) && !islandBan.isRevoked())) {
+            if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(toIsland.get(), user)) {
                 event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", toIsland.get().getOwner().getName())));
                 event.setCancelled(true);
                 return;
             }
+            Bukkit.getPluginManager().callEvent(new IslandEnterEvent(toIsland.get(), user));
+            toIsland.get().getPlayersOnIsland().add(player);
             //TODO add enter island message if we want, i'll remove below message  when pr finished
             //TODO (i think islands should have a specific welcome message set with /is description or /is welcome etc)
             Bukkit.broadcastMessage("§aWelcome to " + toIsland.get().getOwner().getName() + "'s island");
         } else if ((fromIsland.isPresent() && !fromIsland.get().isInIsland(event.getTo()))) {
-            if (toIsland.isPresent() && IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(toIsland.get()).stream().anyMatch(islandBan -> islandBan.getRestrictedUser().equals(IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer())) && !islandBan.isRevoked())) {
+            if (toIsland.isPresent() && IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(toIsland.get(), user)) {
                 event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", toIsland.get().getOwner().getName())));
                 event.setCancelled(true);
                 return;
