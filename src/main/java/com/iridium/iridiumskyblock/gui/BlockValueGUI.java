@@ -12,6 +12,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -53,21 +54,21 @@ public class BlockValueGUI extends GUI {
         if (guiType == BlockValueType.BLOCK) {
             IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet().stream()
                     .skip((page - 1) * elementsPerPage)
-                    .limit(elementsPerPage)
+                    .limit(elementsPerPage).sorted(Comparator.comparing(valuableBlockEntry -> valuableBlockEntry.getValue().value))
                     .forEachOrdered(valuableBlock -> {
                         XMaterial material = valuableBlock.getKey();
                         ValuableBlock blockInfo = valuableBlock.getValue();
                         ItemStack blockItem = ItemStackUtils.makeItem(material, 1, StringUtils.color(blockInfo.name), getColoredValueLore(blockInfo.value));
-                        inventory.setItem(blockInfo.slot, blockItem);
+                        inventory.setItem(index.getAndIncrement(), blockItem);
                     });
         } else if (guiType == BlockValueType.SPAWNER) {
             IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet().stream()
                     .skip((page - 1) * elementsPerPage)
-                    .limit(elementsPerPage)
+                    .limit(elementsPerPage).sorted(Comparator.comparing(valuableSpawnerEntry -> valuableSpawnerEntry.getValue().value))
                     .forEachOrdered(valuableSpawner -> {
                         ValuableBlock spawnerInfo = valuableSpawner.getValue();
                         ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
-                        inventory.setItem(spawnerInfo.slot, spawnerItem);
+                        inventory.setItem(index.getAndIncrement(), spawnerItem);
                     });
         }
     }
