@@ -35,8 +35,8 @@ public class ConfirmationGUI extends GUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
-        inventory.setItem(11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.no));
-        inventory.setItem(15, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes));
+        inventory.setItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.no.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.no));
+        inventory.setItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes));
     }
 
     /**
