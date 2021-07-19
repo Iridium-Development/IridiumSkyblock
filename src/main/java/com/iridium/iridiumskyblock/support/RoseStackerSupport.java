@@ -3,9 +3,7 @@ package com.iridium.iridiumskyblock.support;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.database.Island;
 import dev.rosewood.rosestacker.api.RoseStackerAPI;
-import dev.rosewood.rosestacker.stack.StackedBlock;
 import dev.rosewood.rosestacker.stack.StackedSpawner;
-import org.bukkit.block.Block;
 import org.bukkit.block.CreatureSpawner;
 
 import java.util.List;

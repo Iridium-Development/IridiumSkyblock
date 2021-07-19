@@ -63,6 +63,7 @@ public class MembersGUI extends GUI {
                     break;
                 case RIGHT:
                     command = IridiumSkyblock.getInstance().getCommands().promoteCommand.aliases.get(0);
+                    break;
             }
             if (command != null)
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + user.getName());
