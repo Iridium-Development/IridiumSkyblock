@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBan;
 import com.iridium.iridiumskyblock.database.User;
@@ -48,20 +49,24 @@ public class UnBanCommand extends Command {
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
-            Player targetPlayer = Bukkit.getPlayer(args[1]);
-            if (targetPlayer != null) {
-                User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-                Optional<IslandBan> islandBan = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island.get()).stream().filter(ban -> targetUser.equals(ban.getRestrictedUser())).findFirst();
-                if (islandBan.isPresent()) {
-                    Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().delete(islandBan.get()));
-                    targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenUnBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerUnBanned.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    return true;
-                } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.UNBAN)) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                Player targetPlayer = Bukkit.getPlayer(args[1]);
+                if (targetPlayer != null) {
+                    User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+                    Optional<IslandBan> islandBan = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island.get()).stream().filter(ban -> targetUser.equals(ban.getRestrictedUser())).findFirst();
+                    if (islandBan.isPresent()) {
+                        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().delete(islandBan.get()));
+                        targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenUnBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerUnBanned.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        return true;
+                    } else {
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
+                } else {
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
             }
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
