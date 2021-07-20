@@ -6,9 +6,7 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.configs.inventories.*;
-import org.apache.commons.lang.WordUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -104,7 +102,7 @@ public class Inventories {
             "&b&l[!] &bLeft Click to Teleport to this Island."
     )), new Item(XMaterial.BARRIER, 1, " ", Collections.emptyList()));
 
-    public ConfirmationInventoryConfig confirmationGUI = new ConfirmationInventoryConfig(27, "&7Are you sure?", background2, new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&a&lYes", Collections.emptyList()), new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lNo", Collections.emptyList()));
+    public ConfirmationInventoryConfig confirmationGUI = new ConfirmationInventoryConfig(27, "&7Are you sure?", background2, new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&a&lYes", Collections.emptyList()), new Item(XMaterial.RED_STAINED_GLASS_PANE, 11, 1, "&c&lNo", Collections.emptyList()));
 
     public NoItemGUI bankGUI = new NoItemGUI(27, "&7Island Bank", background2);
 
