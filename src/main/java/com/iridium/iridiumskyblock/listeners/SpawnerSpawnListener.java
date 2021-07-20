@@ -17,7 +17,7 @@ public class SpawnerSpawnListener implements Listener {
 
     private final CooldownProvider<CreatureSpawner> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(50));
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCreatureSpawn(SpawnerSpawnEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation());
         if (island.isPresent()) {

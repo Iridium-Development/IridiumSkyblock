@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EntityExplodeListener implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityExplode(EntityExplodeEvent event) {
         List<MetadataValue> list = event.getEntity().getMetadata("island_spawned");
         if (list.isEmpty()) return;
