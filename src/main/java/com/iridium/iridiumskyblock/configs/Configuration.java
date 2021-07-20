@@ -36,6 +36,7 @@ public class Configuration {
     public boolean netherIslands = true;
     public boolean endIslands = true;
     public boolean respawnOnIsland = true;
+    public boolean obsidianBucket = true;
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
@@ -50,7 +51,7 @@ public class Configuration {
 
     public GeneratorSettings generatorSettings = new GeneratorSettings();
 
-    public Map<Integer, Integer> islandTopSlots = ImmutableMap.<Integer, Integer>builder()
+    public Map<Integer, Integer> islandTopSlots = ImmutableMap.<Integer, Integer> builder()
             .put(1, 4)
             .put(2, 12)
             .put(3, 14)
@@ -63,7 +64,7 @@ public class Configuration {
             .put(10, 25)
             .build();
 
-    public Map<Integer, Integer> islandWarpSlots = ImmutableMap.<Integer, Integer>builder()
+    public Map<Integer, Integer> islandWarpSlots = ImmutableMap.<Integer, Integer> builder()
             .put(1, 9)
             .put(2, 11)
             .put(3, 13)
@@ -79,7 +80,7 @@ public class Configuration {
      * e.g. 1 will give the reward to every level since every number is divisible by 1
      * 5 will give the reward to levels 5 10 15 20 25 ect since they are divisible by 5
      */
-    public Map<Integer, Reward> islandLevelRewards = ImmutableMap.<Integer, Reward>builder()
+    public Map<Integer, Reward> islandLevelRewards = ImmutableMap.<Integer, Reward> builder()
             .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
                     "&7Island Level %island_level% Rewards:",
                     "&b&l* &b5 Island Crystals",
