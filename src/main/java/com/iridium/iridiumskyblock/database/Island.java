@@ -26,7 +26,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -227,7 +226,7 @@ public final class Island {
      * @return The value of this block on the island, 0 if it isn't valuable
      */
     public double getValueOf(XMaterial material) {
-        return IridiumSkyblock.getInstance().getBlockValues().blockValues.getOrDefault(material, new BlockValues.ValuableBlock(0, "")).value;
+        return IridiumSkyblock.getInstance().getBlockValues().blockValues.getOrDefault(material, new BlockValues.ValuableBlock(0, "", 0, 0)).value;
     }
 
     /**
@@ -237,7 +236,7 @@ public final class Island {
      * @return The value of this block on the island, 0 if it isn't valuable
      */
     public double getValueOf(EntityType spawnerType) {
-        return IridiumSkyblock.getInstance().getBlockValues().spawnerValues.getOrDefault(spawnerType, new BlockValues.ValuableBlock(0, "")).value;
+        return IridiumSkyblock.getInstance().getBlockValues().spawnerValues.getOrDefault(spawnerType, new BlockValues.ValuableBlock(0, "", 0, 0)).value;
     }
 
     /**
