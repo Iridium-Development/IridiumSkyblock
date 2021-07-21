@@ -7,7 +7,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class InventoryClickListener implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getClickedInventory() != null && event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof GUI) {
             event.setCancelled(true);

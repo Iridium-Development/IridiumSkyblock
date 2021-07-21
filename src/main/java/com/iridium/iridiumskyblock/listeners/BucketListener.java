@@ -24,12 +24,12 @@ import java.util.Optional;
 
 public class BucketListener implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBucketEmptyEvent(PlayerBucketEmptyEvent event) {
         onBucketEvent(event);
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBucketFillEvent(PlayerBucketFillEvent event) {
         onBucketEvent(event);
     }
@@ -49,7 +49,7 @@ public class BucketListener implements Listener {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUseBuckets.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent event) {
         // I tested this on 1.17.1 so if it doesnt work on any version lower, they can suck it kekW
 
