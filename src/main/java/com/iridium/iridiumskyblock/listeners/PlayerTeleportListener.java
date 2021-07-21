@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PlayerTeleportListener implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.getTo() == null) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getTo()).ifPresent(island ->
