@@ -45,7 +45,7 @@ public class BlockPlaceListener implements Listener {
 
         IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
         
-        if(IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.enabled){
+        if(IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.enabled) {
             int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "blocklimit").getLevel();
             int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, 0);
 
