@@ -6,6 +6,8 @@ import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -50,7 +52,16 @@ public class PlayerMoveListener implements Listener {
 
         if (event.getTo().getY() < 0 & IridiumSkyblock.getInstance().getConfiguration().voidTeleport) {
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom());
-            island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, value, 0));
+            if (island.isPresent()) {
+                IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), 0);
+            } else {
+                Optional<Island> userIsland = user.getIsland();
+                if (userIsland.isPresent()) {
+                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, userIsland.get(), 0);
+                } else {
+                    PlayerUtils.teleportSpawn(player);
+                }
+            }
         }
     }
 
