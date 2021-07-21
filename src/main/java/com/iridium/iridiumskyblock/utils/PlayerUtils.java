@@ -9,6 +9,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -99,6 +100,16 @@ public class PlayerUtils {
         }
 
         return exp;
+    }
+
+    /**
+     * check an inventory has free slots
+     *
+     * @param inventory The Inventory for check slots
+     * @return boolean The inventory has empty content
+     */
+    public static boolean hasEmptySlot(Inventory inventory) {
+        return inventory.firstEmpty() == -1;
     }
 
     /**
