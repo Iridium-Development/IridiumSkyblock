@@ -48,13 +48,7 @@ public class BlockValueGUI extends GUI {
 
         if (guiType == BlockValueType.BLOCK) {
             IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet().stream()
-                    .filter(valuableBlockEntry -> {
-                        if (this.page == 1) {
-                            return valuableBlockEntry.getValue().page <= 1;
-                        } else {
-                            return valuableBlockEntry.getValue().page == page;
-                        }
-                    })
+                    .filter(valuableBlockEntry -> (page == 1 ? valuableBlockEntry.getValue().page <= 1 : valuableBlockEntry.getValue().page == page))
                     .forEachOrdered(valuableBlock -> {
                         XMaterial material = valuableBlock.getKey();
                         ValuableBlock blockInfo = valuableBlock.getValue();
@@ -64,13 +58,7 @@ public class BlockValueGUI extends GUI {
 
         } else if (guiType == BlockValueType.SPAWNER) {
             IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet().stream()
-                    .filter(valuableSpawnerEntry -> {
-                        if (this.page == 1) {
-                            return valuableSpawnerEntry.getValue().page <= 1;
-                        } else {
-                            return valuableSpawnerEntry.getValue().page == page;
-                        }
-                    })
+                    .filter(valuableSpawnerEntry -> (page == 1 ? valuableSpawnerEntry.getValue().page <= 1 : valuableSpawnerEntry.getValue().page == page))
                     .forEachOrdered(valuableSpawner -> {
                         ValuableBlock spawnerInfo = valuableSpawner.getValue();
                         ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
