@@ -394,6 +394,13 @@ public class IridiumSkyblock extends IridiumCore {
         if (configuration.distance <= maxSize) {
             configuration.distance = maxSize + 1;
         }
+        
+        if (inventories.confirmationGUI.yes.slot == null || inventories.confirmationGUI.yes.slot == 0) {
+            inventories.confirmationGUI.yes.slot = 15;
+        }
+        if (inventories.confirmationGUI.no.slot == null || inventories.confirmationGUI.no.slot == 0) {
+            inventories.confirmationGUI.no.slot = 1;
+        }
 
         this.permissionList = new HashMap<>();
         this.permissionList.put(PermissionType.REDSTONE.getPermissionKey(), permissions.redstone);

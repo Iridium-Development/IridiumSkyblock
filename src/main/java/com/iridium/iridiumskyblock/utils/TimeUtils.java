@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.utils;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
 import java.time.Duration;
 
 public class TimeUtils {

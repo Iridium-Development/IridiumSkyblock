@@ -87,6 +87,7 @@ public class IslandManager {
                 break;
             default:
                 world = getWorld();
+                break;
         }
 
         getIslandChunks(island, world).thenAccept(chunks -> {

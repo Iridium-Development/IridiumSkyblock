@@ -21,8 +21,8 @@ public class ConfirmationGUI extends GUI {
     /**
      * The default constructor.
      *
-     * @param runnable          The code that should be run when the user confirms his action
-     * @param cooldownProvider  The provider for cooldowns that should be started on success
+     * @param runnable         The code that should be run when the user confirms his action
+     * @param cooldownProvider The provider for cooldowns that should be started on success
      */
     public ConfirmationGUI(@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
         super(IridiumSkyblock.getInstance().getInventories().confirmationGUI, null);
@@ -35,8 +35,8 @@ public class ConfirmationGUI extends GUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
-        inventory.setItem(11, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.no));
-        inventory.setItem(15, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes));
+        inventory.setItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.no.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.no));
+        inventory.setItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes));
     }
 
     /**
@@ -48,9 +48,9 @@ public class ConfirmationGUI extends GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (event.getSlot() == 11) {
+        if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().confirmationGUI.no.slot) {
             player.closeInventory();
-        } else if (event.getSlot() == 15) {
+        } else if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes.slot) {
             runnable.run();
             player.closeInventory();
             cooldownProvider.applyCooldown(player);

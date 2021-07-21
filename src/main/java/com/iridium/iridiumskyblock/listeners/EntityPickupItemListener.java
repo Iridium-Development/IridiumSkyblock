@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class EntityPickupItemListener implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     @SuppressWarnings("deprecation")
     public void onEntityPickupItem(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();

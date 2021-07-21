@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class PlayerPortalListener implements Listener {
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerPortal(PlayerPortalEvent event) {
         IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom()).ifPresent(island -> {

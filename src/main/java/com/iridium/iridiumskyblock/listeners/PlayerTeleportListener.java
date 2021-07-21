@@ -18,7 +18,7 @@ import java.util.Optional;
 
 public class PlayerTeleportListener implements Listener {
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         if (event.getTo() == null) return;
         Player player = event.getPlayer();
