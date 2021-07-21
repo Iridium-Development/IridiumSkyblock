@@ -44,15 +44,19 @@ public class BlockPlaceListener implements Listener {
         }
 
         IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
-        int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "blocklimit").getLevel();
-        int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, 0);
+        
+        if(IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.enabled){
+            int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "blocklimit").getLevel();
+            int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, 0);
 
-        if (blockLimit > 0 && islandBlocks.getAmount() >= blockLimit) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().blockLimitReached
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%limit%", String.valueOf(blockLimit)).replace("%block%", WordUtils.capitalizeFully(material.name().toLowerCase().replace("_", " ")))));
-            event.setCancelled(true);
-            return;
+            if (blockLimit > 0 && islandBlocks.getAmount() >= blockLimit) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().blockLimitReached
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%limit%", String.valueOf(blockLimit)).replace("%block%", WordUtils.capitalizeFully(material.name().toLowerCase().replace("_", " ")))));
+                event.setCancelled(true);
+                return;
+            }
         }
+
         islandBlocks.setAmount(islandBlocks.getAmount() + 1);
 
         if (event.getBlock().getState() instanceof CreatureSpawner) {
