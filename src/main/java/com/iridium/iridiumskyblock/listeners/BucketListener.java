@@ -1,11 +1,11 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -51,12 +51,12 @@ public class BucketListener implements Listener {
     @EventHandler
     public void onClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+        ItemStack itemInHand = player.getInventory().getItemInHand();
 
-        if (!IridiumSkyblock.getInstance().getConfiguration().obsidianBucket
-                || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                || !event.getClickedBlock().getType().equals(Material.OBSIDIAN)
-                || !itemInHand.getType().equals(Material.BUCKET)) {
+        if (!(IridiumSkyblock.getInstance().getConfiguration().obsidianBucket
+                && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                && event.getClickedBlock().getType().equals(Material.OBSIDIAN)
+                && itemInHand.getType().equals(Material.BUCKET))) {
             return;
         }
 
@@ -70,7 +70,7 @@ public class BucketListener implements Listener {
                 if (itemInHand.getAmount() > 1) {
                     itemInHand.setAmount(itemInHand.getAmount() - 1);
                     Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
-                        if (PlayerUtils.hasEmptySlot(player.getInventory())) {
+                        if (InventoryUtils.hasEmptySlot(player.getInventory())) {
                             event.getPlayer().getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));
                         } else {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inventoryFull));
