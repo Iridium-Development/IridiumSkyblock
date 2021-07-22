@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class BlockValueGUI extends GUI {
 
     private final BlockValueType guiType;
-    private int page;
+    private int page = 1;
 
 
     /**
@@ -31,9 +31,8 @@ public class BlockValueGUI extends GUI {
      *
      * @param type The type of valuable block shown in this GUI
      */
-    public BlockValueGUI(int page, BlockValueType type) {
+    public BlockValueGUI(BlockValueType type) {
         super(IridiumSkyblock.getInstance().getInventories().blockValue, null);
-        this.page = page;
         this.guiType = type;
     }
 
@@ -84,13 +83,13 @@ public class BlockValueGUI extends GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == getNoItemGUI().size - 7 && page > 1) {
-            page-=1;
+            page--;
             player.openInventory(getInventory());
             return;
         }
         boolean nextPage = (guiType == BlockValueType.SPAWNER ? IridiumSkyblock.getInstance().getBlockValues().spawnerValues : IridiumSkyblock.getInstance().getBlockValues().blockValues).entrySet().stream().anyMatch(valueEntry -> valueEntry.getValue().page == page + 1);
         if (event.getSlot() == getNoItemGUI().size - 3 && nextPage) {
-            page+=1;
+            page++;
             player.openInventory(getInventory());
         }
     }

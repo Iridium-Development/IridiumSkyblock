@@ -41,7 +41,7 @@ public class BlockValueCommand extends Command {
         if (arguments.length == 2) {
             BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
             if (blockValueType != null) {
-                player.openInventory(new BlockValueGUI(1, blockValueType).getInventory());
+                player.openInventory(new BlockValueGUI(blockValueType).getInventory());
                 return true;
             }
         }
