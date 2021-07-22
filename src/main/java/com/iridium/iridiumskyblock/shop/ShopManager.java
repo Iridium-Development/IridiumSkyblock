@@ -116,6 +116,13 @@ public class ShopManager {
 
             ItemStack itemStack = shopItem.type.parseItem();
             itemStack.setAmount(amount);
+            ItemMeta itemMeta   = itemStack.getItemMeta();
+
+            if (shopItem.displayName != null) {
+                itemMeta.setDisplayName(StringUtils.color(shopItem.displayName));
+                itemStack.setItemMeta(itemMeta);
+                player.getInventory().addItem(itemStack);
+            }
 
             player.getInventory().addItem(itemStack);
         } else {

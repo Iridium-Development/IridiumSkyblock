@@ -37,6 +37,7 @@ public class Shop {
             .put("Blocks", Arrays.asList(
                     new ShopItem(
                             "&9&lGrass Block",
+                            "",
                             XMaterial.GRASS_BLOCK,
                             1,
                             10,
@@ -45,6 +46,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lDirt Block",
+                            "",
                             XMaterial.DIRT,
                             10,
                             11,
@@ -53,6 +55,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lGravel",
+                            "",
                             XMaterial.GRAVEL,
                             10,
                             12,
@@ -61,6 +64,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lGranite",
+                            "",
                             XMaterial.GRANITE,
                             10,
                             13,
@@ -69,6 +73,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lDiorite",
+                            "",
                             XMaterial.DIORITE,
                             10,
                             14,
@@ -77,6 +82,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lAndesite",
+                            "",
                             XMaterial.ANDESITE,
                             10,
                             15,
@@ -85,6 +91,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lOak Log",
+                            "",
                             XMaterial.OAK_LOG,
                             16,
                             16,
@@ -93,6 +100,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSpruce Log",
+                            "",
                             XMaterial.SPRUCE_LOG,
                             16,
                             19,
@@ -101,6 +109,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lBirch Log",
+                            "",
                             XMaterial.BIRCH_LOG,
                             16,
                             20,
@@ -109,6 +118,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lJungle Log",
+                            "",
                             XMaterial.JUNGLE_LOG,
                             16,
                             21,
@@ -117,6 +127,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lAcacia Log",
+                            "",
                             XMaterial.ACACIA_LOG,
                             16,
                             22,
@@ -125,6 +136,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lDark Oak Log",
+                            "",
                             XMaterial.DARK_OAK_LOG,
                             16,
                             23,
@@ -133,6 +145,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSnow Block",
+                            "",
                             XMaterial.SNOW_BLOCK,
                             16,
                             24,
@@ -141,6 +154,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lIce",
+                            "",
                             XMaterial.ICE,
                             8,
                             25,
@@ -149,6 +163,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lPacked Ice",
+                            "",
                             XMaterial.PACKED_ICE,
                             8,
                             28,
@@ -157,6 +172,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSponge",
+                            "",
                             XMaterial.SPONGE,
                             4,
                             29,
@@ -165,6 +181,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSand",
+                            "",
                             XMaterial.SAND,
                             8,
                             30,
@@ -173,6 +190,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSandstone",
+                            "",
                             XMaterial.SANDSTONE,
                             16,
                             31,
@@ -181,6 +199,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lClay Ball",
+                            "",
                             XMaterial.CLAY_BALL,
                             32,
                             32,
@@ -189,6 +208,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lObsidian",
+                            "",
                             XMaterial.OBSIDIAN,
                             4,
                             33,
@@ -197,6 +217,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lGlowstone",
+                            "",
                             XMaterial.GLOWSTONE,
                             8,
                             34,
@@ -205,6 +226,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lEnd Stone",
+                            "",
                             XMaterial.END_STONE,
                             4,
                             39,
@@ -213,6 +235,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lPrismarine",
+                            "",
                             XMaterial.PRISMARINE,
                             16,
                             40,
@@ -221,6 +244,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lWool",
+                            "",
                             XMaterial.WHITE_WOOL,
                             8,
                             41,
@@ -231,6 +255,7 @@ public class Shop {
             .put("Food", Arrays.asList(
                     new ShopItem(
                             "&9&lApple",
+                            "",
                             XMaterial.APPLE,
                             10,
                             11,
@@ -239,6 +264,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lEnchanted Golden Apple",
+                            "",
                             XMaterial.ENCHANTED_GOLDEN_APPLE,
                             3,
                             12,
@@ -247,6 +273,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lCarrot",
+                            "",
                             XMaterial.CARROT,
                             10,
                             13,
@@ -255,6 +282,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lBaked Potato",
+                            "",
                             XMaterial.BAKED_POTATO,
                             10,
                             14,
@@ -263,6 +291,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lBread",
+                            "",
                             XMaterial.BREAD,
                             10,
                             15,
@@ -271,6 +300,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lCookie",
+                            "",
                             XMaterial.COOKIE,
                             5,
                             20,
@@ -279,6 +309,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lCooked Porkchop",
+                            "",
                             XMaterial.COOKED_PORKCHOP,
                             10,
                             21,
@@ -287,6 +318,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lCooked Beef",
+                            "",
                             XMaterial.COOKED_BEEF,
                             10,
                             22,
@@ -295,6 +327,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lCooked Mutton",
+                            "",
                             XMaterial.COOKED_MUTTON,
                             10,
                             23,
@@ -303,6 +336,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lCooked Rabbit",
+                            "",
                             XMaterial.COOKED_RABBIT,
                             10,
                             24,
@@ -314,6 +348,7 @@ public class Shop {
             .put("Ores", Arrays.asList(
                     new ShopItem(
                             "&9&lCoal",
+                            "",
                             XMaterial.COAL,
                             16,
                             11,
@@ -322,6 +357,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lRedstone",
+                            "",
                             XMaterial.REDSTONE,
                             16,
                             12,
@@ -330,6 +366,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lLapis Lazuli",
+                            "",
                             XMaterial.LAPIS_LAZULI,
                             16,
                             13,
@@ -338,6 +375,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lIron Ingot",
+                            "",
                             XMaterial.IRON_INGOT,
                             8,
                             14,
@@ -346,6 +384,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lGold Ingot",
+                            "",
                             XMaterial.GOLD_INGOT,
                             8,
                             15,
@@ -354,6 +393,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lDiamond",
+                            "",
                             XMaterial.DIAMOND,
                             8,
                             21,
@@ -362,6 +402,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lEmerald",
+                            "",
                             XMaterial.EMERALD,
                             8,
                             22,
@@ -370,6 +411,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lQuartz",
+                            "",
                             XMaterial.QUARTZ,
                             64,
                             23,
@@ -381,6 +423,7 @@ public class Shop {
             .put("Farming", Arrays.asList(
                     new ShopItem(
                             "&9&lWheat Seeds",
+                            "",
                             XMaterial.WHEAT_SEEDS,
                             16,
                             10,
@@ -389,6 +432,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lPumpkin Seeds",
+                            "",
                             XMaterial.PUMPKIN_SEEDS,
                             16,
                             11,
@@ -397,6 +441,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lMelon Seeds",
+                            "",
                             XMaterial.MELON_SEEDS,
                             16,
                             12,
@@ -405,6 +450,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lNether Wart",
+                            "",
                             XMaterial.NETHER_WART,
                             4,
                             13,
@@ -413,6 +459,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSugar Cane",
+                            "",
                             XMaterial.SUGAR_CANE,
                             16,
                             14,
@@ -421,6 +468,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lWheat",
+                            "",
                             XMaterial.WHEAT,
                             16,
                             15,
@@ -429,6 +477,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lPumpkin",
+                            "",
                             XMaterial.PUMPKIN,
                             16,
                             16,
@@ -437,6 +486,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lMelon Slice",
+                            "",
                             XMaterial.MELON_SLICE,
                             16,
                             19,
@@ -445,6 +495,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lCactus",
+                            "",
                             XMaterial.CACTUS,
                             8,
                             20,
@@ -453,6 +504,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lOak Sapling",
+                            "",
                             XMaterial.OAK_SAPLING,
                             4,
                             21,
@@ -461,6 +513,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSpruce Sapling",
+                            "",
                             XMaterial.SPRUCE_SAPLING,
                             4,
                             22,
@@ -469,6 +522,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lBirch Sapling",
+                            "",
                             XMaterial.BIRCH_SAPLING,
                             4,
                             23,
@@ -477,6 +531,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lJungle Sapling",
+                            "",
                             XMaterial.JUNGLE_SAPLING,
                             4,
                             24,
@@ -485,6 +540,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lAcacia Sapling",
+                            "",
                             XMaterial.ACACIA_SAPLING,
                             4,
                             25,
@@ -493,6 +549,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lDark Oak Sapling",
+                            "",
                             XMaterial.DARK_OAK_SAPLING,
                             4,
                             30,
@@ -501,6 +558,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lBrown Mushroom",
+                            "",
                             XMaterial.BROWN_MUSHROOM,
                             8,
                             31,
@@ -509,6 +567,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lRed Mushroom",
+                            "",
                             XMaterial.RED_MUSHROOM,
                             8,
                             32,
@@ -520,6 +579,7 @@ public class Shop {
             .put("Mob Drops", Arrays.asList(
                     new ShopItem(
                             "&9&lRotten Flesh",
+                            "",
                             XMaterial.ROTTEN_FLESH,
                             16,
                             10,
@@ -528,6 +588,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lBone",
+                            "",
                             XMaterial.BONE,
                             16,
                             11,
@@ -536,6 +597,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lGunpowder",
+                            "",
                             XMaterial.GUNPOWDER,
                             16,
                             12,
@@ -544,6 +606,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lString",
+                            "",
                             XMaterial.STRING,
                             16,
                             13,
@@ -552,6 +615,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lArrow",
+                            "",
                             XMaterial.ARROW,
                             16,
                             14,
@@ -560,6 +624,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSpider Eye",
+                            "",
                             XMaterial.SPIDER_EYE,
                             16,
                             15,
@@ -568,6 +633,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lEnder Pearl",
+                            "",
                             XMaterial.ENDER_PEARL,
                             3,
                             16,
@@ -576,6 +642,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSlime Ball",
+                            "",
                             XMaterial.SLIME_BALL,
                             16,
                             19,
@@ -584,6 +651,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lPrismarine Crystals",
+                            "",
                             XMaterial.PRISMARINE_CRYSTALS,
                             16,
                             20,
@@ -592,6 +660,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lPrismarine Shard",
+                            "",
                             XMaterial.PRISMARINE_SHARD,
                             16,
                             21,
@@ -600,6 +669,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lBlaze Rod",
+                            "",
                             XMaterial.BLAZE_ROD,
                             4,
                             22,
@@ -608,6 +678,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lMagma Cream",
+                            "",
                             XMaterial.MAGMA_CREAM,
                             4,
                             23,
@@ -616,6 +687,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lGhast Tear",
+                            "",
                             XMaterial.GHAST_TEAR,
                             4,
                             24,
@@ -624,6 +696,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lLeather",
+                            "",
                             XMaterial.LEATHER,
                             8,
                             25,
@@ -632,6 +705,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lRabbit Foot",
+                            "",
                             XMaterial.RABBIT_FOOT,
                             4,
                             30,
@@ -640,6 +714,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lInk Sack",
+                            "",
                             XMaterial.INK_SAC,
                             8,
                             31,
@@ -648,6 +723,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lFeather",
+                            "",
                             XMaterial.FEATHER,
                             16,
                             32,
@@ -659,6 +735,7 @@ public class Shop {
             .put("Miscellaneous", Arrays.asList(
                     new ShopItem(
                             "&9&lBucket",
+                            "",
                             XMaterial.BUCKET,
                             1,
                             12,
@@ -667,6 +744,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lWater Bucket",
+                            "",
                             XMaterial.WATER_BUCKET,
                             1,
                             13,
@@ -675,6 +753,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lLava Bucket",
+                            "",
                             XMaterial.LAVA_BUCKET,
                             1,
                             14,
@@ -683,6 +762,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lName Tag",
+                            "",
                             XMaterial.NAME_TAG,
                             1,
                             21,
@@ -691,6 +771,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lSaddle",
+                            "",
                             XMaterial.SADDLE,
                             1,
                             22,
@@ -699,6 +780,7 @@ public class Shop {
                     ),
                     new ShopItem(
                             "&9&lEnd Portal Frame",
+                            "",
                             XMaterial.END_PORTAL_FRAME,
                             Arrays.asList("&5&lVisit the end!", " "),
                             null,
