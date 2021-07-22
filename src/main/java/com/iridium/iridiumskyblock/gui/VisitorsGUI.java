@@ -6,6 +6,7 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -22,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class VisitorsGUI extends GUI {
 
     private final int page;
-    private List<Player> visitors;
+    private List<User> visitors;
 
     /**
      * The default constructor.
@@ -51,6 +52,7 @@ public class VisitorsGUI extends GUI {
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
                 .forEachOrdered(user -> {
+                    visitors.add(user);
                     List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build();
                     inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitorsGUI.item, placeholderList));
                 });
@@ -76,20 +78,16 @@ public class VisitorsGUI extends GUI {
             player.openInventory(new VisitorsGUI(page + 1, getIsland()).getInventory());
             return;
         }
-
-        if (event.getSlot() + 1 <= visitors.size()) {
-            int index = ((size - 9) * (page - 1)) + event.getSlot();
-            if (visitors.size() > index) {
-                Player visitor = visitors.get(event.getSlot());
-                String command = "";
-                if (event.isLeftClick()) {
-                    command = IridiumSkyblock.getInstance().getCommands().expelCommand.aliases.get(0);
-                } else if (event.isRightClick()) {
-                    command = IridiumSkyblock.getInstance().getCommands().banCommand.aliases.get(0);
-                }
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + visitor.getName());
-                addContent(event.getInventory());
+        if (visitors.size() > event.getSlot()) {
+            User visitor = visitors.get(event.getSlot());
+            String command = "";
+            if (event.isLeftClick()) {
+                command = IridiumSkyblock.getInstance().getCommands().expelCommand.aliases.get(0);
+            } else if (event.isRightClick()) {
+                command = IridiumSkyblock.getInstance().getCommands().banCommand.aliases.get(0);
             }
+            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + visitor.getName());
+            addContent(event.getInventory());
         }
     }
 }
