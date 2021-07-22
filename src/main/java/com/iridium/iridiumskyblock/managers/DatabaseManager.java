@@ -3,9 +3,11 @@ package com.iridium.iridiumskyblock.managers;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.*;
+import com.iridium.iridiumskyblock.database.types.XMaterialType;
 import com.iridium.iridiumskyblock.managers.tablemanagers.ForeignIslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
+import com.j256.ormlite.field.DataPersisterManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
 import com.j256.ormlite.logger.LoggerFactory;
@@ -47,6 +49,8 @@ public class DatabaseManager {
 
         SQL sqlConfig = IridiumSkyblock.getInstance().getSql();
         String databaseURL = getDatabaseURL(sqlConfig);
+
+        DataPersisterManager.registerDataPersisters(XMaterialType.getSingleton());
 
         this.connectionSource = new JdbcConnectionSource(
                 databaseURL,
