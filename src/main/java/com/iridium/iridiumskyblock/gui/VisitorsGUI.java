@@ -47,7 +47,7 @@ public class VisitorsGUI extends GUI {
         AtomicInteger slot = new AtomicInteger(0);
 
         IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream()
-                .filter(user -> user.getIsland().map(Island::getId).orElse(0) == getIsland().getId())
+                .filter(user -> user.getIsland().map(Island::getId).orElse(0) != getIsland().getId())
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
                 .forEachOrdered(user -> {
