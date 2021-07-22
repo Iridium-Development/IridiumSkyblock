@@ -387,7 +387,7 @@ public class IslandManager {
      * @return A list of all members on this island
      */
     public @NotNull List<User> getPlayersOnIsland(@NotNull Island island) {
-        return Bukkit.getOnlinePlayers().stream().filter(player -> island.isInIsland(player.getLocation())).map(player -> IridiumSkyblock.getInstance().getUserManager().getUser(player)).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream().filter(player -> island.isInIsland(player.getLocation())).map(IridiumSkyblock.getInstance().getUserManager()::getUser).collect(Collectors.toList());
     }
 
     /**
