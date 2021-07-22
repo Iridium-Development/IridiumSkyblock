@@ -16,6 +16,7 @@ import java.util.List;
 public class ShopItem {
 
     public String name;
+    public String displayName;
     public XMaterial type;
     public List<String> lore;
     public String command;
@@ -27,15 +28,17 @@ public class ShopItem {
     /**
      * A short version of the default constructor.
      *
-     * @param name The name of the item
+     * @param name The name of the item in the shop
+     * @param displayName The name of the item when bought
      * @param type The material of the item
      * @param defaultAmount The amount of the item
      * @param slot The slot this item should be in
      * @param buyCost The cost for buying this item
      * @param sellReward The reward for selling this item
      */
-    public ShopItem(String name, XMaterial type, int defaultAmount, int slot, BuyCost buyCost, SellReward sellReward) {
+    public ShopItem(String name, String displayName, XMaterial type, int defaultAmount, int slot, BuyCost buyCost, SellReward sellReward) {
         this.name = name;
+        this.displayName = displayName;
         this.type = type;
         this.lore = Collections.emptyList();
         this.defaultAmount = defaultAmount;
