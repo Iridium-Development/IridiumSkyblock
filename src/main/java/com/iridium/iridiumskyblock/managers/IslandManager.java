@@ -374,6 +374,17 @@ public class IslandManager {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries(island);
     }
 
+
+    /**
+     * Gets a list of all Members on an island
+     *
+     * @param island The Specified Island
+     * @return A list of all members on this island
+     */
+    public @NotNull List<User> getPlayersOnIsland(@NotNull Island island) {
+        return Bukkit.getOnlinePlayers().stream().filter(player -> island.isInIsland(player.getLocation())).map(player -> IridiumSkyblock.getInstance().getUserManager().getUser(player)).collect(Collectors.toList());
+    }
+
     /**
      * Finds an Island by its id.
      *

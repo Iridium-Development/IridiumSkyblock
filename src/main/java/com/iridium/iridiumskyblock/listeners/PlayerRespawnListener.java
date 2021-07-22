@@ -21,7 +21,6 @@ public class PlayerRespawnListener implements Listener {
             user.getIsland().ifPresent(island -> {
                 if (!island.isInIsland(event.getRespawnLocation())) {
                     event.setRespawnLocation(LocationUtils.getSafeLocation(island.getHome(), island));
-                    island.getPlayersOnIsland().add(event.getPlayer());
                 }
             });
         }

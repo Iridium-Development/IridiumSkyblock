@@ -37,7 +37,7 @@ public class ExpelCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if ( args.length != 1 && args.length != 2) {
+        if (args.length != 1 && args.length != 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -94,8 +94,11 @@ public class ExpelCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         Player player = (Player) commandSender;
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
-        return island.map(value -> value.getPlayersOnIsland().stream().filter(visitor -> !value.equals(IridiumSkyblock.getInstance().getUserManager().getUser(visitor).getIsland().orElse(null))).map(Player::getName).collect(Collectors.toList())).orElse(Collections.emptyList());
+        return IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland().map(island ->
+                IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream()
+                        .filter(user -> user.getIsland().map(Island::getId).orElse(0) == island.getId())
+                        .map(User::getName)
+                        .collect(Collectors.toList())
+        ).orElse(Collections.emptyList());
     }
 }

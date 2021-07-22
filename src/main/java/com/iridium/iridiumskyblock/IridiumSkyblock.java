@@ -181,11 +181,9 @@ public class IridiumSkyblock extends IridiumCore {
                 if (!islands.hasNext()) {
                     islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
                 } else {
-                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> {
-                        getIslandManager().recalculateIsland(island);
-                        island.getPlayersOnIsland().clear();
-                        Bukkit.getOnlinePlayers().stream().filter(player -> island.isInIsland(player.getLocation())).forEach(island.getPlayersOnIsland()::add);
-                    });
+                    getIslandManager().getIslandById(islands.next()).ifPresent(island ->
+                            getIslandManager().recalculateIsland(island)
+                    );
                 }
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);

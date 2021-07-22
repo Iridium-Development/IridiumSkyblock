@@ -6,7 +6,6 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -16,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 /**
  * GUI which displays players on island
@@ -45,17 +43,14 @@ public class VisitorsGUI extends GUI {
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
-        visitors = getIsland().getPlayersOnIsland().stream().filter(player -> !getIsland().equals(IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland().orElse(null))).collect(Collectors.toList());
-
         final long elementsPerPage = inventory.getSize() - 9;
         AtomicInteger slot = new AtomicInteger(0);
 
-
-        visitors.stream()
+        IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream()
+                .filter(user -> user.getIsland().map(Island::getId).orElse(0) == getIsland().getId())
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(visitor -> {
-                    User user = IridiumSkyblock.getInstance().getUserManager().getUser(visitor);
+                .forEachOrdered(user -> {
                     List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build();
                     inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitorsGUI.item, placeholderList));
                 });

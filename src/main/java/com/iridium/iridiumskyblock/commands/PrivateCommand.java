@@ -44,9 +44,8 @@ public class PrivateCommand extends Command {
             island.get().setVisitable(false);
             int visitorCount = 0;
             List<IslandTrusted> islandTrusted = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get());
-            for (Player visitor : island.get().getPlayersOnIsland()) {
-                User visitorUser = IridiumSkyblock.getInstance().getUserManager().getUser(visitor);
-                if (island.get().equals(visitorUser.getIsland().orElse(null)) && islandTrusted.stream().anyMatch(trustedIsland -> trustedIsland.getIsland().isPresent() && trustedIsland.getIsland().get().equals(visitorUser.getIsland().orElse(null)))) {
+            for (User visitor : IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island.get())) {
+                if (visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || islandTrusted.stream().anyMatch(trustedIsland -> trustedIsland.getUser().getUuid() == visitor.getUuid())) {
                     continue;
                 }
                 PlayerUtils.teleportSpawn(user.toPlayer());
