@@ -1,8 +1,11 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -28,6 +31,27 @@ public class UserManager {
             User user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
             IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
             return user;
+        }
+    }
+
+    /**
+     * Disables the user's flight
+     *
+     * @param user Disable for which user
+     */
+    public void disableFlight(User user) {
+        Player player = user.toPlayer();
+        if (user.isFlying()) {
+            user.setFlying(false);
+            if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                player.setFlying(false);
+                player.setAllowFlight(false);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
+                        .replace("%player%", player.getName())
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                );
+            }
+
         }
     }
 
