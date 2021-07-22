@@ -6,7 +6,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -69,14 +68,12 @@ public class BucketListener implements Listener {
                 event.getClickedBlock().setType(Material.AIR);
                 if (itemInHand.getAmount() > 1) {
                     itemInHand.setAmount(itemInHand.getAmount() - 1);
-                    Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
-                        if (InventoryUtils.hasEmptySlot(player.getInventory())) {
-                            event.getPlayer().getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));
-                        } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inventoryFull));
-                            player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.LAVA_BUCKET));
-                        }
-                    }, 2);
+                    if (InventoryUtils.hasEmptySlot(player.getInventory())) {
+                        event.getPlayer().getInventory().addItem(new ItemStack(Material.LAVA_BUCKET));
+                    } else {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inventoryFull));
+                        player.getWorld().dropItem(player.getLocation(), new ItemStack(Material.LAVA_BUCKET));
+                    }
                 } else {
                     itemInHand.setType(Material.LAVA_BUCKET);
                 }
