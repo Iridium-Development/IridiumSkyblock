@@ -172,7 +172,7 @@ public class IridiumSkyblock extends IridiumCore {
         // Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
-        // Auto recalculate value and on players islands
+        // Auto recalculate islands
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
             ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
@@ -181,9 +181,7 @@ public class IridiumSkyblock extends IridiumCore {
                 if (!islands.hasNext()) {
                     islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
                 } else {
-                    getIslandManager().getIslandById(islands.next()).ifPresent(island ->
-                            getIslandManager().recalculateIsland(island)
-                    );
+                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
                 }
             }
         }, 0, getConfiguration().islandRecalculateInterval * 20L);
@@ -311,7 +309,7 @@ public class IridiumSkyblock extends IridiumCore {
         getDatabaseManager().getIslandWarpTableManager().save();
         getDatabaseManager().getIslandLogTableManager().save();
         getDatabaseManager().getIslandBanTableManager().save();
-        
+
     }
 
     /**
@@ -394,7 +392,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (configuration.distance <= maxSize) {
             configuration.distance = maxSize + 1;
         }
-        
+
         if (inventories.confirmationGUI.yes.slot == null || inventories.confirmationGUI.yes.slot == 0) {
             inventories.confirmationGUI.yes.slot = 15;
         }

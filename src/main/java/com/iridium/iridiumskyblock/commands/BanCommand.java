@@ -29,7 +29,7 @@ public class BanCommand extends Command {
      * The default constructor.
      */
     public BanCommand() {
-        super(Arrays.asList("ban", "bans"), "Ban a player visiting from your island", "%prefix% &7/is ban [<name>]", "", true, Duration.ZERO);
+        super(Arrays.asList("ban", "bans"), "Ban a player visiting from your island", "%prefix% &7/is ban <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -42,7 +42,7 @@ public class BanCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 2 && args.length != 1) {
+        if (args.length > 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }

@@ -114,7 +114,11 @@ public class IslandManager {
     public void teleportHome(@NotNull Player player, @NotNull Island island, int delay) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (isBannedOnIsland(island, user)) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%owner%", island.getOwner().getName())
+                    .replace("%name%", island.getName())
+            ));
             return;
         }
 
