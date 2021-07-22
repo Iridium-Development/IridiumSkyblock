@@ -17,15 +17,14 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -64,6 +63,10 @@ public final class Island {
 
     // Cache resets every 5 seconds
     private Cache<Double> valueCache = new Cache<>(5000);
+
+
+    private Set<Player> playersOnIsland = new HashSet<>();
+
 
     // Cache
     private Integer size;
@@ -218,6 +221,7 @@ public final class Island {
             return value;
         });
     }
+
 
     /**
      * Returns the value of the provided material on this Island.
