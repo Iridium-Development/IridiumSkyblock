@@ -37,7 +37,7 @@ public class ExpelCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 1 && args.length != 2) {
+        if (args.length > 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
