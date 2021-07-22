@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
@@ -20,16 +19,15 @@ public class PlayerRespawnListener implements Listener {
 
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer());
 
-        if (IridiumSkyblock.getInstance().getConfiguration().respawnOnIsland) {
-            user.getIsland().ifPresent(island -> {
-                if (!island.isInIsland(event.getRespawnLocation())) {
+        user.getIsland().ifPresent(island -> {
+            if (!island.isInIsland(event.getRespawnLocation())) {
+                if (IridiumSkyblock.getInstance().getConfiguration().respawnOnIsland) {
                     event.setRespawnLocation(LocationUtils.getSafeLocation(island.getHome(), island));
+                } else {
+                    IridiumSkyblock.getInstance().getUserManager().disableFlight(user);
                 }
-            });
-        } else if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getRespawnLocation().getWorld())) {
-                IridiumSkyblock.getInstance().getUserManager().disableFlight(user);
-        }
-
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
