@@ -312,6 +312,8 @@ public class IridiumSkyblock extends IridiumCore {
         getDatabaseManager().getIslandBoosterTableManager().save();
         getDatabaseManager().getIslandWarpTableManager().save();
         getDatabaseManager().getIslandLogTableManager().save();
+        getDatabaseManager().getIslandBanTableManager().save();
+        
     }
 
     /**
