@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandRegenEvent;
@@ -406,18 +407,37 @@ public class IslandManager {
     }
 
     /**
+     * Finds an island by the player's location with cache
+     *
+     * @param player The specified Player
+     * @return An optional of the island the player is in
+     */
+    public @NotNull Optional<Island> getIslandViaPlayerLocation(Player player) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
+            return Optional.empty();
+        }
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        if (user.getCurrentIslandVisiting() != null) {
+            if (user.getCurrentIslandVisiting().isInIsland(player.getLocation())) {
+                return Optional.of(user.getCurrentIslandVisiting());
+            }
+        }
+        Optional<Island> island = getIslandViaLocation(player.getLocation());
+        island.ifPresent(user::setCurrentIslandVisiting);
+        return island;
+    }
+
+    /**
      * Gets an {@link Island} from locations.
      *
-     * @param locations The locations you are looking at
+     * @param location The locations the island is in
      * @return Optional of the island at the locations, empty if there is none
      */
-    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location... locations) {
-        for (Location location : locations) {
-            World world = location.getWorld();
-            if (Objects.equals(world, getWorld()) || Objects.equals(world, getNetherWorld()) || Objects.equals(world, getEndWorld())) {
-                Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
-                if (optionalIsland.isPresent()) return optionalIsland;
-            }
+    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
+        World world = location.getWorld();
+        if (Objects.equals(world, getWorld()) || Objects.equals(world, getNetherWorld()) || Objects.equals(world, getEndWorld())) {
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
+            if (optionalIsland.isPresent()) return optionalIsland;
         }
         return Optional.empty();
     }

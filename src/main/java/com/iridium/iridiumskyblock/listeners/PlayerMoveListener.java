@@ -32,7 +32,7 @@ public class PlayerMoveListener implements Listener {
             }
 
             if (user.isFlying()) {
-                Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 if (island.isPresent()) {
                     IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
                     if (!islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {

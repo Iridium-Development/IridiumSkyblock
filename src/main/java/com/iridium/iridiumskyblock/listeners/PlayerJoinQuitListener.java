@@ -22,9 +22,8 @@ public class PlayerJoinQuitListener implements Listener {
         user.setName(event.getPlayer().getName());
 
         // Send their island border and add player to cache
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> {
-                    PlayerUtils.sendBorder(player, island);
-                }
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player).ifPresent(island ->
+                PlayerUtils.sendBorder(player, island)
         );
 
         if (player.isOp()) {

@@ -51,6 +51,8 @@ public final class User {
 
     private boolean islandChat = false;
 
+    private Island currentIslandVisiting;
+
     private Location schematicPos1;
     private Location schematicPos2;
 
