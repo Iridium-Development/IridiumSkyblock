@@ -123,8 +123,6 @@ public class ShopManager {
             }
             
             player.getInventory().addItem(itemStack);
-
-            player.getInventory().addItem(itemStack);
         } else {
             // Run the command
             String command = shopItem.command
