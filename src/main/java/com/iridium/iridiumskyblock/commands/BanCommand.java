@@ -53,7 +53,7 @@ public class BanCommand extends Command {
         if (island.isPresent()) {
             if (args.length == 1) {
                 player.openInventory(new BansGUI(1, island.get()).getInventory());
-                return true;
+                return false;
             }
 
             Player targetPlayer = Bukkit.getPlayer(args[1]);
