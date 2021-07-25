@@ -48,6 +48,11 @@ public class PlayerInteractListener implements Listener {
             String materialName = material.name();
             Island island = optionalIsland.get();
 
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.INTERACT)) {
+                event.setCancelled(true);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteract.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+
             if (event.getAction() == Action.PHYSICAL && material == XMaterial.FARMLAND) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.TRAMPLE_CROPS)) {
                     event.setCancelled(true);

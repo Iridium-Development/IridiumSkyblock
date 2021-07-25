@@ -31,7 +31,8 @@ public enum PermissionType {
     BAN("ban"),
     UNBAN("unban"),
     DESTROY_VEHICLE("destroyVehicle"),
-    TRAMPLE_CROPS("trampleCrops");
+    TRAMPLE_CROPS("trampleCrops"),
+    INTERACT("interact");
 
     private final String permissionKey;
 }
