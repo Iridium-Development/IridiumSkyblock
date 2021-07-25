@@ -20,10 +20,10 @@ public class IslandBan extends IslandData {
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
 
-    @DatabaseField(columnName = "restricted", canBeNull = false)
+    @DatabaseField(columnName = "banner", canBeNull = false)
     private UUID banner;
 
-    @DatabaseField(columnName = "restrictor", canBeNull = false)
+    @DatabaseField(columnName = "bannedUser", canBeNull = false)
     private UUID bannedUser;
 
     @DatabaseField(columnName = "time", canBeNull = false)

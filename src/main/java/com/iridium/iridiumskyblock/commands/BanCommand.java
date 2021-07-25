@@ -68,7 +68,7 @@ public class BanCommand extends Command {
                     } else if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), targetUser)) {
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     } else {
-                        IslandBan ban = new IslandBan(island.get(), targetUser, user);
+                        IslandBan ban = new IslandBan(island.get(), user, targetUser);
                         IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().addEntry(ban);
                         if (island.get().isInIsland(targetPlayer.getLocation())) {
                             PlayerUtils.teleportSpawn(targetPlayer);
