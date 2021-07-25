@@ -172,7 +172,7 @@ public class Inventories {
 
     public NoItemGUI missionsGUI = new NoItemGUI(45, "&7Island Missions", background1);
 
-    public NoItemGUI islandPermissionsGUI = new NoItemGUI(45, "&7Island Permissions", background1);
+    public NoItemGUI islandPermissionsGUI = new NoItemGUI(54, "&7Island Permissions", background1);
 
     public IslandRanksInventoryConfig islandRanksGUI = new IslandRanksInventoryConfig(27, "&7Island Permissions", background1,
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 11, 1, "&b&lOwner", Collections.singletonList("&b%members%")),
