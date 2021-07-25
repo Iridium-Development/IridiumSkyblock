@@ -663,7 +663,7 @@ public class IslandManager {
      * @return The a boolean the user is banned on this island
      */
     public boolean isBannedOnIsland(@NotNull Island island, User user) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).stream().anyMatch(islandBan -> islandBan.getRestrictedUser().equals(user));
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).stream().anyMatch(islandBan -> islandBan.getBannedUser().equals(user));
     }
 
     /**

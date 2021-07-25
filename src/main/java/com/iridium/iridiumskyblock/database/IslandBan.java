@@ -1,31 +1,28 @@
 package com.iridium.iridiumskyblock.database;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bukkit.Bukkit;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
 @DatabaseTable(tableName = "island_bans")
-public class IslandBan extends IslandData{
+public class IslandBan extends IslandData {
 
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
 
     @DatabaseField(columnName = "restricted", canBeNull = false)
-    private UUID restricted;
+    private User banner;
 
     @DatabaseField(columnName = "restrictor", canBeNull = false)
-    private UUID restrictor;
+    private User bannedUser;
 
     @DatabaseField(columnName = "time", canBeNull = false)
     private long time;
@@ -33,33 +30,15 @@ public class IslandBan extends IslandData{
     /**
      * The default constructor.
      *
-     * @param island   Banned from which island
-     * @param restrictor banned by the user
-     * @param restricted the banned user
+     * @param island     Banned from which island
+     * @param bannedUser the banned user
+     * @param banner     the user who banned the player
      */
-    public IslandBan(Island island,  UUID restrictor, UUID restricted) {
+    public IslandBan(Island island, User banner, User bannedUser) {
         super(island);
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
-        this.restrictor = restrictor;
-        this.restricted = restricted;
-    }
-
-    /**
-     * Returns the trusted user.
-     *
-     * @return The trusted user
-     */
-    public User getRestrictedUser() {
-        return IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getOfflinePlayer(restricted));
-    }
-
-    /**
-     * Returns the user who trusted the player.
-     *
-     * @return The User who trusted the other user.
-     */
-    public User getRestrictorUser() {
-        return IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getOfflinePlayer(restrictor));
+        this.bannedUser = bannedUser;
+        this.banner = banner;
     }
 
     public LocalDateTime getBanTime() {

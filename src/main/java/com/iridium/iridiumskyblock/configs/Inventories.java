@@ -96,7 +96,7 @@ public class Inventories {
             "%player_name%", Arrays.asList(
             "&7Has Island: %has_island%",
             "",
-            "&b&l [!] &7Left Click to expel the visitor",
+            "&b&l[!] &7Left Click to expel this visitor from your island",
             "&b&l[!] &7Right Click to ban this visitor from your island"
     )));
 

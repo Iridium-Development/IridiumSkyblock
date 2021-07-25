@@ -11,7 +11,6 @@ import com.iridium.iridiumskyblock.gui.BansGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
@@ -29,7 +28,7 @@ public class BanCommand extends Command {
      * The default constructor.
      */
     public BanCommand() {
-        super(Arrays.asList("ban", "bans"), "Ban a player visiting from your island", "%prefix% &7/is ban <name>", "", true, Duration.ZERO);
+        super(Arrays.asList("ban", "bans"), "Bans a player from visiting your Island", "%prefix% &7/is ban <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -69,7 +68,7 @@ public class BanCommand extends Command {
                     } else if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), targetUser)) {
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     } else {
-                        IslandBan ban = new IslandBan(island.get(), user.getUuid(), targetUser.getUuid());
+                        IslandBan ban = new IslandBan(island.get(), targetUser, user);
                         IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().addEntry(ban);
                         if (island.get().isInIsland(targetPlayer.getLocation())) {
                             PlayerUtils.teleportSpawn(targetPlayer);
@@ -102,7 +101,10 @@ public class BanCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).filter(s -> s.contains(args[1])).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream()
+                .map(Player::getName)
+                .filter(s -> s.contains(args[1]))
+                .collect(Collectors.toList());
     }
 
 }

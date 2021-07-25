@@ -55,7 +55,7 @@ public class UnBanCommand extends Command {
                 Player targetPlayer = Bukkit.getPlayer(args[1]);
                 if (targetPlayer != null) {
                     User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-                    Optional<IslandBan> islandBan = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island.get()).stream().filter(ban -> targetUser.equals(ban.getRestrictedUser())).findFirst();
+                    Optional<IslandBan> islandBan = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island.get()).stream().filter(ban -> targetUser.equals(ban.getBannedUser())).findFirst();
                     if (islandBan.isPresent()) {
                         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().delete(islandBan.get()));
                         targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenUnBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -91,7 +91,9 @@ public class UnBanCommand extends Command {
         Optional<Island> island = user.getIsland();
         return island.map(value ->
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(value).stream().map(islandBan ->
-                        islandBan.getRestrictedUser().getName()).collect(Collectors.toList())).orElse(Collections.emptyList());
+                        islandBan.getBannedUser().getName()
+                ).collect(Collectors.toList())).orElse(Collections.emptyList()
+        );
 
     }
 

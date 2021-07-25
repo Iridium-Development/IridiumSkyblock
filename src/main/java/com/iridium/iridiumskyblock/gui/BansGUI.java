@@ -53,9 +53,9 @@ public class BansGUI extends GUI {
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
                 .forEachOrdered(islandBan -> {
-                    List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandBan.getRestrictedUser()).applyIslandPlaceholders(getIsland()).build();
+                    List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandBan.getBannedUser()).applyIslandPlaceholders(getIsland()).build();
                     placeholderList.add(new Placeholder("ban_time", islandBan.getBanTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
-                    placeholderList.add(new Placeholder("banned_by", islandBan.getRestrictorUser().getName()));
+                    placeholderList.add(new Placeholder("banned_by", islandBan.getBanner().getName()));
                     inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().bansGUI.item, placeholderList));
                 });
     }
@@ -85,7 +85,7 @@ public class BansGUI extends GUI {
             if (islandBans.size() > index) {
                 IslandBan islandBan = islandBans.get(event.getSlot());
                 String command = IridiumSkyblock.getInstance().getCommands().unBanCommand.aliases.get(0);
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandBan.getRestrictedUser().getName());
+                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandBan.getBannedUser().getName());
                 addContent(event.getInventory());
             }
         }
