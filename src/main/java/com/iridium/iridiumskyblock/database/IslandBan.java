@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
@@ -19,10 +21,10 @@ public class IslandBan extends IslandData {
     private int id;
 
     @DatabaseField(columnName = "restricted", canBeNull = false)
-    private User banner;
+    private UUID banner;
 
     @DatabaseField(columnName = "restrictor", canBeNull = false)
-    private User bannedUser;
+    private UUID bannedUser;
 
     @DatabaseField(columnName = "time", canBeNull = false)
     private long time;
@@ -37,8 +39,16 @@ public class IslandBan extends IslandData {
     public IslandBan(Island island, User banner, User bannedUser) {
         super(island);
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
-        this.bannedUser = bannedUser;
-        this.banner = banner;
+        this.bannedUser = bannedUser.getUuid();
+        this.banner = banner.getUuid();
+    }
+
+    public User getBannedUser() {
+        return IridiumSkyblock.getInstance().getUserManager().getUserByUUID(bannedUser).orElse(null);
+    }
+
+    public User getBanner() {
+        return IridiumSkyblock.getInstance().getUserManager().getUserByUUID(banner).orElse(null);
     }
 
     public LocalDateTime getBanTime() {
