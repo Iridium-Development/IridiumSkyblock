@@ -423,12 +423,14 @@ public class IslandManager {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
             return Optional.empty();
         }
+        
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (user.getCurrentIslandVisiting() != null) {
             if (user.getCurrentIslandVisiting().isInIsland(player.getLocation())) {
                 return Optional.of(user.getCurrentIslandVisiting());
             }
         }
+        
         Optional<Island> island = getIslandViaLocation(player.getLocation());
         island.ifPresent(user::setCurrentIslandVisiting);
         return island;
