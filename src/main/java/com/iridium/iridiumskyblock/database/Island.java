@@ -309,7 +309,7 @@ public final class Island {
                 throw new IllegalStateException("Could not find island location with ID: " + id);
         }
 
-        return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance).add(0.5, 0, 0.5);
+        return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);
     }
 
     /**
