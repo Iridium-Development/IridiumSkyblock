@@ -19,7 +19,7 @@ public class VehicleDamageListener implements Listener {
             Player attacker = (Player) event.getAttacker();
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getVehicle().getLocation());
             if (island.isPresent()) {
-                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(attacker), PermissionType.BLOCK_BREAK)) {
+                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(attacker), PermissionType.DESTROY_VEHICLE)) {
                     event.setCancelled(true);
                     attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
