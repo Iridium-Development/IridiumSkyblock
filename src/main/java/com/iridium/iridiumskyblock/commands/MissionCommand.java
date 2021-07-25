@@ -7,10 +7,10 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.gui.MissionsGUI;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -72,7 +72,7 @@ public class MissionCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
-        return Arrays.stream(Mission.MissionType.values()).map(Enum::name).filter(s -> s.contains(args[1])).collect(Collectors.toList());
+        return Arrays.stream(Mission.MissionType.values()).map(Enum::name).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
     }
 
 }

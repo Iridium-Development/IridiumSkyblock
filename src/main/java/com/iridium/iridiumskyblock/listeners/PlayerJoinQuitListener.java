@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerJoinListener implements Listener {
+public class PlayerJoinQuitListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -22,7 +22,7 @@ public class PlayerJoinListener implements Listener {
         user.setName(event.getPlayer().getName());
 
         // Send their island border
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island ->
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player).ifPresent(island ->
                 PlayerUtils.sendBorder(player, island)
         );
 
@@ -32,5 +32,4 @@ public class PlayerJoinListener implements Listener {
                     , 5);
         }
     }
-
 }

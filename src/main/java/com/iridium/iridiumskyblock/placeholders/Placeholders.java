@@ -115,47 +115,47 @@ public class Placeholders {
 
             // Visiting Island Placeholders
             .put("current_island_name", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(Island::getName).orElse(defaultValue());
             })
             .put("current_island_owner", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(island -> island.getOwner().getName()).orElse(defaultValue());
             })
             .put("current_island_rank", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(defaultValue());
             })
             .put("current_island_level", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(defaultValue());
             })
             .put("current_island_value", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(Island::getFormattedValue).orElse(defaultValue());
             })
             .put("current_island_experience", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(Island::getFormattedExperience).orElse(defaultValue());
             })
             .put("current_island_experience_required", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(defaultValue());
             })
             .put("current_island_experience_remaining", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(defaultValue());
             })
             .put("current_island_bank_experience", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(Island::getFormattedBankExperience).orElse(defaultValue());
             })
             .put("current_island_bank_crystals", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(Island::getFormattedCrystals).orElse(defaultValue());
             })
             .put("current_island_bank_money", player -> {
-                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+                Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 return islandOptional.map(Island::getFormattedMoney).orElse(defaultValue());
             })
 

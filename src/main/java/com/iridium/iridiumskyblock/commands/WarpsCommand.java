@@ -6,10 +6,10 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.WarpsGUI;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -88,7 +88,7 @@ public class WarpsCommand extends Command {
         if (island.isPresent()) {
             List<IslandWarp> islandWarps =
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
-            return islandWarps.stream().map(IslandWarp::getName).filter(s -> s.contains(args[1])).collect(Collectors.toList());
+            return islandWarps.stream().map(IslandWarp::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

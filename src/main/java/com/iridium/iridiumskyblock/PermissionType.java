@@ -26,7 +26,10 @@ public enum PermissionType {
     MANAGE_WARPS("manageWarps"),
     WITHDRAW_BANK("withdrawBank"),
     TRUST("trust"),
-    BORDER("border");
+    BORDER("border"),
+    EXPEL("expel"),
+    BAN("ban"),
+    UNBAN("unban");
 
     private final String permissionKey;
 }

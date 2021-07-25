@@ -9,12 +9,12 @@ import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.TrustedGUI;
-import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -104,7 +104,7 @@ public class TrustCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).filter(s -> s.contains(args[1])).collect(Collectors.toList());
+        return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
     }
 
 }

@@ -113,6 +113,15 @@ public class IslandManager {
      */
     public void teleportHome(@NotNull Player player, @NotNull Island island, int delay) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        if (isBannedOnIsland(island, user)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%owner%", island.getOwner().getName())
+                    .replace("%name%", island.getName())
+            ));
+            return;
+        }
+
         boolean trusted = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island).stream().anyMatch(islandTrusted ->
                 islandTrusted.getUser().equals(user)
         );
@@ -370,6 +379,20 @@ public class IslandManager {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries(island);
     }
 
+
+    /**
+     * Gets a list of all Members on an island
+     *
+     * @param island The Specified Island
+     * @return A list of all members on this island
+     */
+    public @NotNull List<User> getPlayersOnIsland(@NotNull Island island) {
+        return Bukkit.getOnlinePlayers().stream()
+            .filter(player -> island.isInIsland(player.getLocation()))
+            .map(IridiumSkyblock.getInstance().getUserManager()::getUser)
+            .collect(Collectors.toList());
+    }
+
     /**
      * Finds an Island by its id.
      *
@@ -391,14 +414,39 @@ public class IslandManager {
     }
 
     /**
-     * Gets an {@link Island} from a location.
+     * Finds an island by the player's location with cache
      *
-     * @param location The location you are looking at
-     * @return Optional of the island at the location, empty if there is none
+     * @param player The specified Player
+     * @return An optional of the island the player is in
+     */
+    public @NotNull Optional<Island> getIslandViaPlayerLocation(Player player) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
+            return Optional.empty();
+        }
+        
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        if (user.getCurrentIslandVisiting() != null) {
+            if (user.getCurrentIslandVisiting().isInIsland(player.getLocation())) {
+                return Optional.of(user.getCurrentIslandVisiting());
+            }
+        }
+        
+        Optional<Island> island = getIslandViaLocation(player.getLocation());
+        island.ifPresent(user::setCurrentIslandVisiting);
+        return island;
+    }
+
+    /**
+     * Gets an {@link Island} from locations.
+     *
+     * @param location The locations the island is in
+     * @return Optional of the island at the locations, empty if there is none
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        if (IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) {
-            return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
+        World world = location.getWorld();
+        if (Objects.equals(world, getWorld()) || Objects.equals(world, getNetherWorld()) || Objects.equals(world, getEndWorld())) {
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
+            if (optionalIsland.isPresent()) return optionalIsland;
         }
         return Optional.empty();
     }
@@ -605,6 +653,17 @@ public class IslandManager {
                                 .forEach(PlayerUtils::teleportSpawn)
                 )
         );
+    }
+
+    /**
+     * Gets an Island upgrade
+     *
+     * @param island The specified Island
+     * @param user   The specified User
+     * @return The a boolean the user is banned on this island
+     */
+    public boolean isBannedOnIsland(@NotNull Island island, User user) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).stream().anyMatch(islandBan -> islandBan.getBannedUser().equals(user));
     }
 
     /**
