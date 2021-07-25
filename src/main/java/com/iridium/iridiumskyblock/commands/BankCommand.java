@@ -8,10 +8,10 @@ import com.iridium.iridiumskyblock.commands.subcommands.BankSet;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BankGUI;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -102,7 +102,7 @@ public class BankCommand extends Command {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
         if (args.length == 2) {
-            return Stream.of(bankGive, bankSet, bankRemove).map(command -> command.aliases.get(0)).filter(s -> s.contains(args[1])).collect(Collectors.toList());
+            return Stream.of(bankGive, bankSet, bankRemove).map(command -> command.aliases.get(0)).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
         }
         // Let the sub-command handle the tab completion
         for (Command command : Arrays.asList(bankGive, bankSet, bankRemove)) {

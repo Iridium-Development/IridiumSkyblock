@@ -84,7 +84,7 @@ public class FlyCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 2) {
-            return Stream.of("enable", "disable", "on", "off").filter(s -> s.contains(args[1])).collect(Collectors.toList());
+            return Stream.of("enable", "disable", "on", "off").filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

@@ -103,7 +103,7 @@ public class BanCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return Bukkit.getOnlinePlayers().stream()
                 .map(Player::getName)
-                .filter(s -> s.contains(args[1]))
+                .filter(s -> s.toLowerCase().contains(args[1].toLowerCase()))
                 .collect(Collectors.toList());
     }
 
