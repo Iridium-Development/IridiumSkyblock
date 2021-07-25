@@ -21,7 +21,7 @@ public class PlayerJoinQuitListener implements Listener {
         // Update the internal username in case of name change
         user.setName(event.getPlayer().getName());
 
-        // Send their island border and add player to cache
+        // Send their island border
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player).ifPresent(island ->
                 PlayerUtils.sendBorder(player, island)
         );
