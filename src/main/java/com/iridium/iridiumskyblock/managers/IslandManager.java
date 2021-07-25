@@ -346,11 +346,12 @@ public class IslandManager {
      * @return A list of Chunks the island is in
      */
     public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
+        //This seems to cause duplication issues when running this async?
+        Location pos1 = island.getPos1(world);
+        Location pos2 = island.getPos2(world);
+
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
-
-            Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);
 
             int minX = pos1.getBlockX() >> 4;
             int minZ = pos1.getBlockZ() >> 4;
@@ -388,9 +389,9 @@ public class IslandManager {
      */
     public @NotNull List<User> getPlayersOnIsland(@NotNull Island island) {
         return Bukkit.getOnlinePlayers().stream()
-            .filter(player -> island.isInIsland(player.getLocation()))
-            .map(IridiumSkyblock.getInstance().getUserManager()::getUser)
-            .collect(Collectors.toList());
+                .filter(player -> island.isInIsland(player.getLocation()))
+                .map(IridiumSkyblock.getInstance().getUserManager()::getUser)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -423,14 +424,14 @@ public class IslandManager {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
             return Optional.empty();
         }
-        
+
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (user.getCurrentIslandVisiting() != null) {
             if (user.getCurrentIslandVisiting().isInIsland(player.getLocation())) {
                 return Optional.of(user.getCurrentIslandVisiting());
             }
         }
-        
+
         Optional<Island> island = getIslandViaLocation(player.getLocation());
         island.ifPresent(user::setCurrentIslandVisiting);
         return island;
