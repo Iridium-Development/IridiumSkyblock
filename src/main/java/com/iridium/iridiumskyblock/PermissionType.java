@@ -30,7 +30,8 @@ public enum PermissionType {
     EXPEL("expel"),
     BAN("ban"),
     UNBAN("unban"),
-    DESTROY_VEHICLE("destroyVehicle");
+    DESTROY_VEHICLE("destroyVehicle"),
+    TRAMPLE_CROPS("trampleCrops");
 
     private final String permissionKey;
 }

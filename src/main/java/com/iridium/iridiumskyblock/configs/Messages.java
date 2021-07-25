@@ -86,6 +86,8 @@ public class Messages {
     public String islandNameTooShort = "%prefix% %name% is too short for the Island name, the minimum length is %min_length%";
     public String islandNameChanged = "%prefix% &7%player% has changed the Island name to %name%";
     public String cannotTransferYourself = "%prefix% &7You cannot transfer the Island ownership to yourself.";
+    public String cannotTrampleCrops = "%prefix% &7You cannot trample crops on this Island.";
+    public String cannotDestroyVehicles = "%prefix% &7You cannot destroy vehicles on this Island.";
     public String cannotBreakBlocks = "%prefix% &7You cannot break blocks on this Island.";
     public String cannotPlaceBlocks = "%prefix% &7You cannot place blocks on this Island.";
     public String cannotUseBuckets = "%prefix% &7You cannot use buckets on this Island.";
