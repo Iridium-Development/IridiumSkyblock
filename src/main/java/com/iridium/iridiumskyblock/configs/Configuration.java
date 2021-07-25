@@ -84,7 +84,7 @@ public class Configuration {
             .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
                     "&7Island Level %island_level% Rewards:",
                     "&b&l* &b5 Island Crystals",
-                    "&b&l* &200 Island Money",
+                    "&b&l* &b200 Island Money",
                     "",
                     "&b&l[!] &bLeft click to redeem"
             )), Collections.emptyList(), 0, 5, 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
@@ -92,7 +92,7 @@ public class Configuration {
             .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
                     "&7Island Level %island_level% Rewards:",
                     "&b&l* &b15 Island Crystals",
-                    "&b&l* &2000 Island Money",
+                    "&b&l* &b2000 Island Money",
                     "",
                     "&b&l[!] &bLeft click to redeem"
             )), Collections.emptyList(), 0, 15, 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
