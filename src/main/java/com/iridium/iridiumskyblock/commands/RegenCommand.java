@@ -7,10 +7,10 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandRegenGUI;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +80,7 @@ public class RegenCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream().filter(s -> s.contains(args[1])).collect(Collectors.toList());
+        return IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream().filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
     }
 
 }

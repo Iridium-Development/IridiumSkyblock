@@ -7,7 +7,9 @@ import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,6 +50,8 @@ public final class User {
     private boolean flying = false;
 
     private boolean islandChat = false;
+
+    private Island currentIslandVisiting;
 
     private Location schematicPos1;
     private Location schematicPos2;
@@ -113,6 +117,15 @@ public final class User {
      */
     public LocalDateTime getJoinTime() {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(joinTime), ZoneId.systemDefault());
+    }
+
+    /**
+     * Gets the user as Player
+     *
+     * @return The player object if one was found, null otherwise
+     */
+    public Player toPlayer() {
+        return Bukkit.getPlayer(uuid);
     }
 
     /**

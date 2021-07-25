@@ -5,10 +5,10 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,7 +37,7 @@ public class FlyCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
         if (island.isPresent()) {
             boolean flight = !user.isFlying();
             if (args.length == 2) {
@@ -84,7 +84,7 @@ public class FlyCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 2) {
-            return Stream.of("enable", "disable", "on", "off").filter(s -> s.contains(args[1])).collect(Collectors.toList());
+            return Stream.of("enable", "disable", "on", "off").filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
         }
         return Collections.emptyList();
     }

@@ -7,11 +7,14 @@ import com.iridium.iridiumskyblock.commands.*;
 public class Commands {
 
     public AboutCommand aboutCommand = new AboutCommand();
+    public BanCommand banCommand = new BanCommand();
     public BankCommand bankCommand = new BankCommand();
+    public BiomeCommand biomeCommand = new BiomeCommand();
     public BlockValueCommand blockValueCommand = new BlockValueCommand();
     public BoostersCommand boostersCommand = new BoostersCommand();
     public BorderCommand borderCommand = new BorderCommand();
     public BypassCommand bypassCommand = new BypassCommand();
+    public ChatCommand chatCommand = new ChatCommand();
     public ClearDataCommand clearDataCommand = new ClearDataCommand();
     public CreateCommand createCommand = new CreateCommand();
     public DeleteCommand deleteCommand = new DeleteCommand();
@@ -19,6 +22,7 @@ public class Commands {
     public DemoteCommand demoteCommand = new DemoteCommand();
     public DepositCommand depositCommand = new DepositCommand();
     public EditWarpCommand editWarpCommand = new EditWarpCommand();
+    public ExpelCommand expelCommand = new ExpelCommand();
     public FlyCommand flyCommand = new FlyCommand();
     public HelpCommand helpCommand = new HelpCommand();
     public HomeCommand homeCommand = new HomeCommand();
@@ -48,6 +52,7 @@ public class Commands {
     public TopCommand topCommand = new TopCommand();
     public TransferCommand transferCommand = new TransferCommand();
     public TrustCommand trustCommand = new TrustCommand();
+    public UnBanCommand unBanCommand = new UnBanCommand();
     public UnInviteCommand unInviteCommand = new UnInviteCommand();
     public UnTrustCommand unTrustCommand = new UnTrustCommand();
     public UpgradesCommand upgradesCommand = new UpgradesCommand();
@@ -55,7 +60,5 @@ public class Commands {
     public VisitCommand visitCommand = new VisitCommand();
     public WarpsCommand warpsCommand = new WarpsCommand();
     public WithdrawCommand withdrawCommand = new WithdrawCommand();
-    public ChatCommand chatCommand = new ChatCommand();
-    public BiomeCommand biomeCommand = new BiomeCommand();
 
 }

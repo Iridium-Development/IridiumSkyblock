@@ -262,7 +262,7 @@ public class IridiumSkyblock extends IridiumCore {
     public void registerListeners() {
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinQuitListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
         Bukkit.getPluginManager().registerEvents(new BucketListener(), this);
@@ -308,6 +308,8 @@ public class IridiumSkyblock extends IridiumCore {
         getDatabaseManager().getIslandBoosterTableManager().save();
         getDatabaseManager().getIslandWarpTableManager().save();
         getDatabaseManager().getIslandLogTableManager().save();
+        getDatabaseManager().getIslandBanTableManager().save();
+
     }
 
     /**
@@ -390,7 +392,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (configuration.distance <= maxSize) {
             configuration.distance = maxSize + 1;
         }
-        
+
         if (inventories.confirmationGUI.yes.slot == null || inventories.confirmationGUI.yes.slot == 0) {
             inventories.confirmationGUI.yes.slot = 15;
         }
@@ -412,6 +414,9 @@ public class IridiumSkyblock extends IridiumCore {
         this.permissionList.put(PermissionType.INVITE.getPermissionKey(), permissions.invite);
         this.permissionList.put(PermissionType.REGEN.getPermissionKey(), permissions.regen);
         this.permissionList.put(PermissionType.PROMOTE.getPermissionKey(), permissions.promote);
+        this.permissionList.put(PermissionType.EXPEL.getPermissionKey(), permissions.expel);
+        this.permissionList.put(PermissionType.BAN.getPermissionKey(), permissions.ban);
+        this.permissionList.put(PermissionType.UNBAN.getPermissionKey(), permissions.unban);
         this.permissionList.put(PermissionType.DEMOTE.getPermissionKey(), permissions.demote);
         this.permissionList.put(PermissionType.PICKUP_ITEMS.getPermissionKey(), permissions.pickupItems);
         this.permissionList.put(PermissionType.DROP_ITEMS.getPermissionKey(), permissions.dropItems);

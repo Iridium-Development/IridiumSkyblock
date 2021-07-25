@@ -7,7 +7,6 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,9 +30,17 @@ public class PlayerMoveListener implements Listener {
                 );
             }
 
-            if (user.isFlying()) {
-                Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
-                if (island.isPresent()) {
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
+            if (island.isPresent()) {
+                if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), user)) {
+                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%owner%", island.get().getOwner().getName())
+                            .replace("%name%", island.get().getName())
+                    ));
+                    PlayerUtils.teleportSpawn(player);
+                }
+                if (user.isFlying()) {
                     IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
                     if (!islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {
                         user.setFlying(false);
