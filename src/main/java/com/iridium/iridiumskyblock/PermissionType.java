@@ -29,7 +29,8 @@ public enum PermissionType {
     BORDER("border"),
     EXPEL("expel"),
     BAN("ban"),
-    UNBAN("unban");
+    UNBAN("unban"),
+    DESTROY_VEHICLE("destroyVehicle");
 
     private final String permissionKey;
 }

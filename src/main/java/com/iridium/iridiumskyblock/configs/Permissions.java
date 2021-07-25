@@ -41,4 +41,5 @@ public class Permissions {
     public Permission expel = new Permission(new Item(XMaterial.LEATHER_BOOTS, 37, 1, "&bExpel Visitors", Arrays.asList("&7Grant the ability to expel visitors from your Island.", "", "&b&lPermission", "%permission%")), IslandRank.MODERATOR);
     public Permission ban = new Permission(new Item(XMaterial.BARRIER, 38, 1, "&bBan Visitors", Arrays.asList("&7Grant the ability to ban visitors from your Island.", "", "&b&lPermission", "%permission%")), IslandRank.MODERATOR);
     public Permission unban = new Permission(new Item(XMaterial.MAGMA_CREAM, 39, 1, "&bUn-Ban Visitors", Arrays.asList("&7Grant the ability to unban visitors on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MODERATOR);
+    public Permission destroyVehicle = new Permission(new Item(XMaterial.MINECART, 40, 1, "&bDestroy Vehicles", Arrays.asList("&7Grant the ability to destroy vehicles on your island.", "", "&b&lPermission", "%permission%")), IslandRank.MEMBER);
 }
