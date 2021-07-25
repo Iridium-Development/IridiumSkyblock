@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Command which bans a visitor from your island
+ * Command which bans a visitor from your Island.
  */
 public class BanCommand extends Command {
 
