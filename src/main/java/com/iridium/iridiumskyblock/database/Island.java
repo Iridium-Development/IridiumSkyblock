@@ -219,7 +219,6 @@ public final class Island {
         });
     }
 
-
     /**
      * Returns the value of the provided material on this Island.
      *
