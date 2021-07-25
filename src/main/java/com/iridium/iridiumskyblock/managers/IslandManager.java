@@ -346,12 +346,11 @@ public class IslandManager {
      * @return A list of Chunks the island is in
      */
     public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
-        //This seems to cause duplication issues when running this async?
-        Location pos1 = island.getPos1(world);
-        Location pos2 = island.getPos2(world);
-
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
+
+            Location pos1 = island.getPos1(world);
+            Location pos2 = island.getPos2(world);
 
             int minX = pos1.getBlockX() >> 4;
             int minZ = pos1.getBlockZ() >> 4;
@@ -507,7 +506,7 @@ public class IslandManager {
      * @param bankItem The BankItem we are getting
      * @return the IslandBank
      */
-    public IslandBank getIslandBank(@NotNull Island island, @NotNull BankItem bankItem) {
+    public synchronized IslandBank getIslandBank(@NotNull Island island, @NotNull BankItem bankItem) {
         Optional<IslandBank> optionalIslandBank =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager()
                         .getEntries(island).stream()
@@ -532,7 +531,7 @@ public class IslandManager {
      * @param material The specified Material
      * @return The IslandBlock
      */
-    public IslandBlocks getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
+    public synchronized IslandBlocks getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
         Optional<IslandBlocks> islandBlocksOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).stream().filter(islandBlocks ->
                 material.equals(islandBlocks.getMaterial())
         ).findFirst();
@@ -551,7 +550,7 @@ public class IslandManager {
      * @param spawnerType The specified spawner type
      * @return The IslandBlock
      */
-    public IslandSpawners getIslandSpawners(@NotNull Island island, @NotNull EntityType spawnerType) {
+    public synchronized IslandSpawners getIslandSpawners(@NotNull Island island, @NotNull EntityType spawnerType) {
         Optional<IslandSpawners> islandSpawnersOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).stream().filter(islandSpawners ->
                 spawnerType.equals(islandSpawners.getSpawnerType())
         ).findFirst();
@@ -571,7 +570,7 @@ public class IslandManager {
      * @param permission The specified Permission
      * @param allowed    If the permission is allowed
      */
-    public void setIslandPermission(
+    public synchronized void setIslandPermission(
             @NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission, @NotNull String key, boolean allowed) {
         Optional<IslandPermission> islandPermission =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries(island).stream().filter(isPermission ->
@@ -674,7 +673,7 @@ public class IslandManager {
      * @param upgrade The specified Upgrade's name
      * @return The island Upgrade
      */
-    public IslandUpgrade getIslandUpgrade(@NotNull Island island, @NotNull String upgrade) {
+    public synchronized IslandUpgrade getIslandUpgrade(@NotNull Island island, @NotNull String upgrade) {
         Optional<IslandUpgrade> islandUpgrade =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().getEntries(island).stream().filter(isUpgrade ->
                         isUpgrade.getUpgrade().equalsIgnoreCase(upgrade)
@@ -694,7 +693,7 @@ public class IslandManager {
      * @param island The specified Island
      * @return A list of Island Missions
      */
-    public IslandMission getIslandMission(
+    public synchronized IslandMission getIslandMission(
             @NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
         Optional<IslandMission> islandMissionOptional =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream().filter(isMission ->
@@ -715,7 +714,7 @@ public class IslandManager {
      * @param island The specified Island
      * @return The daily missions
      */
-    public Map<String, Mission> getDailyIslandMissions(@NotNull Island island) {
+    public synchronized Map<String, Mission> getDailyIslandMissions(@NotNull Island island) {
         Map<String, Mission> missions = new HashMap<>();
         List<IslandMission> islandMissions =
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream().filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
@@ -819,7 +818,7 @@ public class IslandManager {
      * @param missionData The mission data e.g. BREAK:COBBLESTONE
      * @param increment   The amount we are incrementing by
      */
-    public void incrementMission(@NotNull Island island, @NotNull String missionData, int increment) {
+    public synchronized void incrementMission(@NotNull Island island, @NotNull String missionData, int increment) {
         String[] missionConditions = missionData.toUpperCase().split(":");
 
         for (Map.Entry<String, Mission> entry : IridiumSkyblock.getInstance().getMissionsList().entrySet()) {
@@ -868,7 +867,7 @@ public class IslandManager {
      * @param booster The booster name
      * @return The time remaining
      */
-    public IslandBooster getIslandBooster(@NotNull Island island, @NotNull String booster) {
+    public synchronized IslandBooster getIslandBooster(@NotNull Island island, @NotNull String booster) {
         List<IslandBooster> islandBoosters = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().getEntries(island);
         Optional<IslandBooster> islandBooster =
                 islandBoosters.stream().filter(isBooster -> isBooster.getBooster().equalsIgnoreCase(booster)).findFirst();
@@ -955,7 +954,7 @@ public class IslandManager {
         return completableFuture;
     }
 
-    public void islandLevelUp(Island island, int newLevel) {
+    public synchronized void islandLevelUp(Island island, int newLevel) {
 
         for (User user : getIslandMembers(island)) {
             Player player = Bukkit.getPlayer(user.getUuid());
