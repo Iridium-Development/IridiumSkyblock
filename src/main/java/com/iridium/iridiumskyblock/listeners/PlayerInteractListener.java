@@ -49,9 +49,9 @@ public class PlayerInteractListener implements Listener {
             Island island = optionalIsland.get();
 
             if (event.getAction() == Action.PHYSICAL && material == XMaterial.FARMLAND) {
-                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.BLOCK_BREAK)) {
+                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.TRAMPLE_CROPS)) {
                     event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTrampleCrops.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else if (materialName.contains("DOOR")) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.DOORS)) {
