@@ -12,103 +12,121 @@ import java.util.Optional;
 
 public class Placeholders {
 
-    public static Map<String, Placeholder> placeholders = ImmutableMap.<String, Placeholder>builder()
+    private static final com.iridium.iridiumskyblock.configs.Placeholders config = IridiumSkyblock.getInstance().getPlaceholders();
+
+    public static Map<String, Placeholder> placeholders = ImmutableMap.<String, Placeholder> builder()
             // Island Placeholders
             .put("island_name", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(Island::getName).orElse(defaultValue());
+                return user.getIsland().map(Island::getName).orElse(config.island_name);
             })
             .put("island_owner", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> island.getOwner().getName()).orElse(defaultValue());
+                return user.getIsland().map(island -> island.getOwner().getName()).orElse(config.island_owner);
             })
             .put("island_rank", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(config.island_rank);
             })
             .put("island_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(config.island_level);
             })
             .put("island_value", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(Island::getFormattedValue).orElse(defaultValue());
+                return user.getIsland().map(Island::getFormattedValue).orElse(config.island_value);
             })
             .put("island_members", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getMembers().size())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getMembers().size())).orElse(config.island_members);
             })
             .put("island_experience", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(Island::getFormattedExperience).orElse(defaultValue());
+                return user.getIsland().map(Island::getFormattedExperience).orElse(config.island_experience);
             })
             .put("island_experience_required", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(config.island_experience_required);
             })
             .put("island_experience_remaining", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(defaultValue());
+                return user.getIsland().map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(config.island_experience_remaining);
             })
             .put("island_bank_experience", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(Island::getFormattedBankExperience).orElse(defaultValue());
+                return user.getIsland().map(Island::getFormattedBankExperience).orElse(config.island_bank_experience);
             })
             .put("island_bank_crystals", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(Island::getFormattedCrystals).orElse(defaultValue());
+                return user.getIsland().map(Island::getFormattedCrystals).orElse(config.island_bank_crystals);
             })
             .put("island_bank_money", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                return user.getIsland().map(Island::getFormattedMoney).orElse(defaultValue());
+                return user.getIsland().map(Island::getFormattedMoney).orElse(config.island_bank_money);
             })
 
             // Island Upgrade Placeholders
             .put("island_upgrade_blocklimit_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_blocklimit_level;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "blocklimit");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(islandUpgrade.getLevel());
             })
             .put("island_upgrade_member_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_member_level;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "member");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(islandUpgrade.getLevel());
             })
             .put("island_upgrade_size_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_size_level;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "size");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(islandUpgrade.getLevel());
             })
             .put("island_upgrade_generator_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_generator_level;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "generator");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(islandUpgrade.getLevel());
             })
             .put("island_upgrade_warp_level", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_warp_level;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "warp");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(islandUpgrade.getLevel());
             })
             .put("island_upgrade_member_amount", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_member_amount;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "member");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandUpgrade.getLevel()).amount);
             })
             .put("island_upgrade_size_dimensions", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_size_dimensions;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "size");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(islandUpgrade.getLevel()).size);
             })
             .put("island_upgrade_warp_amount", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                if (!user.getIsland().isPresent()) return defaultValue();
+                if (!user.getIsland().isPresent())
+                    return config.island_upgrade_warp_amount;
+
                 IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(user.getIsland().get(), "warp");
                 return IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandUpgrade.getLevel()).amount);
             })
@@ -116,47 +134,47 @@ public class Placeholders {
             // Visiting Island Placeholders
             .put("current_island_name", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(Island::getName).orElse(defaultValue());
+                return islandOptional.map(Island::getName).orElse(config.current_island_name);
             })
             .put("current_island_owner", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(island -> island.getOwner().getName()).orElse(defaultValue());
+                return islandOptional.map(island -> island.getOwner().getName()).orElse(config.current_island_owner);
             })
             .put("current_island_rank", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(config.current_island_rank);
             })
             .put("current_island_level", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(config.current_island_level);
             })
             .put("current_island_value", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(Island::getFormattedValue).orElse(defaultValue());
+                return islandOptional.map(Island::getFormattedValue).orElse(config.current_island_value);
             })
             .put("current_island_experience", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(Island::getFormattedExperience).orElse(defaultValue());
+                return islandOptional.map(Island::getFormattedExperience).orElse(config.current_island_experience);
             })
             .put("current_island_experience_required", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(config.current_island_experience_required);
             })
             .put("current_island_experience_remaining", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(defaultValue());
+                return islandOptional.map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(config.current_island_experience_remaining);
             })
             .put("current_island_bank_experience", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(Island::getFormattedBankExperience).orElse(defaultValue());
+                return islandOptional.map(Island::getFormattedBankExperience).orElse(config.current_island_bank_experience);
             })
             .put("current_island_bank_crystals", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(Island::getFormattedCrystals).orElse(defaultValue());
+                return islandOptional.map(Island::getFormattedCrystals).orElse(config.current_island_bank_crystals);
             })
             .put("current_island_bank_money", player -> {
                 Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-                return islandOptional.map(Island::getFormattedMoney).orElse(defaultValue());
+                return islandOptional.map(Island::getFormattedMoney).orElse(config.current_island_bank_money);
             })
 
             // Player Placeholders
@@ -166,10 +184,6 @@ public class Placeholders {
             })
             .build();
 
-    private static String defaultValue() {
-        return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
-    }
-    
     public interface Placeholder {
 
         String placeholderProcess(Player player);
