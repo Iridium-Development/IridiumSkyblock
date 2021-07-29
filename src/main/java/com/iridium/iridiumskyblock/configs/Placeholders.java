@@ -11,7 +11,7 @@ public class Placeholders {
     public String island_rank = "0";
     public String island_level = "0";
     public String island_value = "0";
-    public String island_members = "1";
+    public String island_members = "0";
     public String island_experience = "0";
     public String island_experience_required = "0";
     public String island_experience_remaining = "0";
