@@ -6,44 +6,45 @@ import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnorePrope
 public class Placeholders {
 
     // Island Placeholders.
-    public String island_name = "N/A";
-    public String island_owner = "N/A";
-    public String island_rank = "0";
-    public String island_level = "0";
-    public String island_value = "0";
-    public String island_members = "0";
-    public String island_experience = "0";
-    public String island_experience_required = "0";
-    public String island_experience_remaining = "0";
-    public String island_bank_experience = "0";
-    public String island_bank_crystals = "0";
-    public String island_bank_money = "0";
+    public String islandName = "N/A";
+    public String islandOwner = "N/A";
+    public String islandRank = "0";
+    public String islandLevel = "0";
+    public String islandValue = "0";
+    public String islandMembers = "0";
+    public String islandExperience = "0";
+    public String islandExperienceRequired = "0";
+    public String islandExperienceRemaining = "0";
+    public String islandBankExperience = "0";
+    public String islandBankCrystals = "0";
+    public String islandBankMoney = "0";
 
     // Island Upgrade Placeholders
-    public String island_upgrade_blocklimit_level = "0";
-    public String island_upgrade_member_level = "0";
-    public String island_upgrade_size_level = "0";
-    public String island_upgrade_generator_level = "0";
-    public String island_upgrade_warp_level = "0";
-    public String island_upgrade_member_amount = "0";
-    public String island_upgrade_size_dimensions = "0";
-    public String island_upgrade_warp_amount = "0";
+    public String islandUpgradeBlocklimitLevel = "0";
+    public String islandUpgradeMemberLevel = "0";
+    public String islandUpgradeSizeLevel = "0";
+    public String islandUpgradeGeneratorLevel = "0";
+    public String islandUpgradeWarpLevel = "0";
+    public String islandUpgradeMemberAmount = "0";
+    public String islandUpgradeSizeDimensions = "0";
+    public String islandUpgradeWarpAmount = "0";
 
     // Visiting island placeholders
-    public String current_island_name = "N/A";
-    public String current_island_owner = "N/A";
-    public String current_island_rank = "N/A";
-    public String current_island_level = "0";
-    public String current_island_value = "0";
-    public String current_island_experience = "0";
-    public String current_island_experience_required = "0";
-    public String current_island_experience_remaining = "0";
-    public String current_island_bank_experience = "0";
-    public String current_island_bank_crystals = "0";
-    public String current_island_bank_money = "0";
+    public String currentIslandName = "N/A";
+    public String currentIslandOwner = "N/A";
+    public String currentIslandRank = "N/A";
+    public String currentIslandLevel = "0";
+    public String currentIslandValue = "0";
+    public String currentIslandExperience = "0";
+    public String currentIslandExperienceRequired = "0";
+    public String currentIslandExperienceRemaining = "0";
+    public String currentIslandBankExperience = "0";
+    public String currentIslandBankCrystals = "0";
+    public String currentIslandBankMoney = "0";
 
     // Other Placeholders
     public String unknownPlayer = "N/A";
     public String crystalCost = "0";
     public String vaultCost = "0";
+    
 }
