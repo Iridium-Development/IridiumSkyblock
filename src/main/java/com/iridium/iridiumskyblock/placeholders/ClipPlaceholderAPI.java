@@ -29,11 +29,13 @@ public class ClipPlaceholderAPI extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String placeholder) {
         if (player == null) {
-            return IridiumSkyblock.getInstance().getConfiguration().placeholderDefaultValue;
+            return IridiumSkyblock.getInstance().getPlaceholders().unknownPlayer;
         }
+
         if (Placeholders.placeholders.containsKey(placeholder)) {
             return Placeholders.placeholders.get(placeholder).placeholderProcess(player);
         }
+
         return null;
     }
 }

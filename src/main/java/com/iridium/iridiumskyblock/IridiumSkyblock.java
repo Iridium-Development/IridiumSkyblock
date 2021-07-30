@@ -69,6 +69,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Commands commands;
     private Shop shop;
     private Border border;
+    private Placeholders placeholders;
 
     private ChunkGenerator chunkGenerator;
 
@@ -333,11 +334,16 @@ public class IridiumSkyblock extends IridiumCore {
      * @return The Spawner Support Object
      */
     private SpawnerStackerSupport setupSpawnerSupport() {
-        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners")) return new AdvancedSpawnersSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker")) return new UltimateStackerSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners")) return new EpicSpawnersSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker"))
+            return new RoseStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker"))
+            return new WildStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners"))
+            return new AdvancedSpawnersSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker"))
+            return new UltimateStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners"))
+            return new EpicSpawnersSupport();
         return spawner -> 1;
     }
 
@@ -347,7 +353,8 @@ public class IridiumSkyblock extends IridiumCore {
      * @return The BlockStacker Support Object
      */
     private BlockStackerSupport setupBlockStackerSupport() {
-        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker"))
+            return new RoseStackerSupport();
         return block -> Collections.emptyList();
     }
 
@@ -382,6 +389,8 @@ public class IridiumSkyblock extends IridiumCore {
         this.commands = getPersist().load(Commands.class);
         this.shop = getPersist().load(Shop.class);
         this.border = getPersist().load(Border.class);
+        this.placeholders = getPersist().load(Placeholders.class);
+
 
         for (Color color : Color.values()) {
             if (!border.enabled.containsKey(color)) {
@@ -438,20 +447,28 @@ public class IridiumSkyblock extends IridiumCore {
         this.missionsList = new HashMap<>(missions.missions);
 
         this.upgradesList = new HashMap<>();
-        if (upgrades.sizeUpgrade.enabled) upgradesList.put("size", upgrades.sizeUpgrade);
-        if (upgrades.memberUpgrade.enabled) upgradesList.put("member", upgrades.memberUpgrade);
-        if (upgrades.warpsUpgrade.enabled) upgradesList.put("warp", upgrades.warpsUpgrade);
-        if (upgrades.blockLimitUpgrade.enabled) upgradesList.put("blocklimit", upgrades.blockLimitUpgrade);
+        if (upgrades.sizeUpgrade.enabled)
+            upgradesList.put("size", upgrades.sizeUpgrade);
+        if (upgrades.memberUpgrade.enabled)
+            upgradesList.put("member", upgrades.memberUpgrade);
+        if (upgrades.warpsUpgrade.enabled)
+            upgradesList.put("warp", upgrades.warpsUpgrade);
+        if (upgrades.blockLimitUpgrade.enabled)
+            upgradesList.put("blocklimit", upgrades.blockLimitUpgrade);
         if (upgrades.oresUpgrade.enabled) {
             upgradesList.put("generator", upgrades.oresUpgrade);
             BlockFormListener.generateOrePossibilities();
         }
 
         this.boosterList = new HashMap<>();
-        if (boosters.experienceBooster.enabled) boosterList.put("experience", boosters.experienceBooster);
-        if (boosters.flightBooster.enabled) boosterList.put("flight", boosters.flightBooster);
-        if (boosters.farmingBooster.enabled) boosterList.put("farming", boosters.farmingBooster);
-        if (boosters.spawnerBooster.enabled) boosterList.put("spawner", boosters.spawnerBooster);
+        if (boosters.experienceBooster.enabled)
+            boosterList.put("experience", boosters.experienceBooster);
+        if (boosters.flightBooster.enabled)
+            boosterList.put("flight", boosters.flightBooster);
+        if (boosters.farmingBooster.enabled)
+            boosterList.put("farming", boosters.farmingBooster);
+        if (boosters.spawnerBooster.enabled)
+            boosterList.put("spawner", boosters.spawnerBooster);
 
         File schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) {
@@ -467,8 +484,10 @@ public class IridiumSkyblock extends IridiumCore {
         saveFile(schematicFolder, "mushroom_end.iridiumschem");
         saveFile(schematicFolder, "jungle_end.iridiumschem");
 
-        if (shopManager != null) shopManager.reloadCategories();
-        if (commandManager != null) commandManager.reloadCommands();
+        if (shopManager != null)
+            shopManager.reloadCategories();
+        if (commandManager != null)
+            commandManager.reloadCommands();
 
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);
@@ -520,6 +539,7 @@ public class IridiumSkyblock extends IridiumCore {
         getPersist().save(commands);
         getPersist().save(shop);
         getPersist().save(border);
+        getPersist().save(placeholders);
     }
 
     /**
