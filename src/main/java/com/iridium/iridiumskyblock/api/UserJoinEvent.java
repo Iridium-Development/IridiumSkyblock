@@ -25,11 +25,6 @@ public class UserJoinEvent extends Event implements Cancellable {
         this.inviter = inviter;
     }
 
-    // make that Optional because the `inviter` can be null
-    public Optional<User> getInviter() {
-        return Optional.ofNullable(inviter);
-    }
-
     @NotNull
     public HandlerList getHandlers() {
         return handlers;
