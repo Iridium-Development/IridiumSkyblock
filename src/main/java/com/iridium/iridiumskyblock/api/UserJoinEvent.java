@@ -9,8 +9,6 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 @Getter
 public class UserJoinEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
@@ -23,6 +21,10 @@ public class UserJoinEvent extends Event implements Cancellable {
         this.island = island;
         this.user = user;
         this.inviter = inviter;
+    }
+
+    public boolean isJoinedByInvite() {
+        return inviter != null;
     }
 
     @NotNull
