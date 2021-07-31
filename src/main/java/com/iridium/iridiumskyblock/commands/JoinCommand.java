@@ -68,7 +68,7 @@ public class JoinCommand extends Command {
                     Optional<User> inviter = islandInvite.map(IslandInvite::getInviter);
                     UserJoinEvent userJoinEvent = new UserJoinEvent(island.get(), user, inviter.orElse(null));
                     Bukkit.getPluginManager().callEvent(userJoinEvent);
-                    if (userJoinEvent.isCancelled()) return false;
+                    if (userJoinEvent.isCancelled()) return true;
 
                     // Send a message to all other members
                     for (User member : island.get().getMembers()) {
