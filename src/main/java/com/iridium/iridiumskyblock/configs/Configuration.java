@@ -36,6 +36,7 @@ public class Configuration {
     public boolean endIslands = true;
     public boolean respawnOnIsland = true;
     public boolean obsidianBucket = true;
+    public boolean patreonMessage = true;
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
