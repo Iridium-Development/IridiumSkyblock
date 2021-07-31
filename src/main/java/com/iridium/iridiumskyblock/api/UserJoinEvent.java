@@ -7,17 +7,27 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 @Getter
-public class UserLeaveEvent extends Event implements Cancellable {
+public class UserJoinEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     private final Island island;
     private final User user;
+    private final User inviter;
 
-    public UserLeaveEvent(Island island, User user) {
+    public UserJoinEvent(Island island, User user, @Nullable User inviter) {
         this.island = island;
         this.user = user;
+        this.inviter = inviter;
+    }
+
+    // make that Optional because the `inviter` can be null
+    public Optional<User> getInviter() {
+        return Optional.ofNullable(inviter);
     }
 
     @NotNull

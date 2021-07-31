@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.api.UserJoinEvent;
 import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -63,6 +64,12 @@ public class JoinCommand extends Command {
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberLimitReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         return false;
                     }
+
+                    // PR: added UserJoinEvent
+                    Optional<User> inviter = islandInvite.map(IslandInvite::getInviter);
+                    UserJoinEvent userJoinEvent = new UserJoinEvent(island.get(), user, inviter.orElse(null));
+                    Bukkit.getPluginManager().callEvent(userJoinEvent);
+                    if(userJoinEvent.isCancelled()) return false;
 
                     // Send a message to all other members
                     for (User member : island.get().getMembers()) {
