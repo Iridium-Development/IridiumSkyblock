@@ -9,7 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 @Getter
 public class UserChatToggleEvent extends Event implements Cancellable {
-
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     private final boolean newChatState;
