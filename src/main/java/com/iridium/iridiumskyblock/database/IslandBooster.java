@@ -67,4 +67,9 @@ public final class IslandBooster extends IslandData {
     public boolean isActive() {
         return LocalDateTime.now().until(getTime(), ChronoUnit.SECONDS) > 0;
     }
+
+    @Override
+    public @NotNull String getUniqueKey() {
+        return booster + "-" + getIsland().map(Island::getId).orElse(0);
+    }
 }
