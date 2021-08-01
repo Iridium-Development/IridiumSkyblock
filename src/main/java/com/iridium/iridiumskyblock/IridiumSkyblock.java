@@ -213,7 +213,7 @@ public class IridiumSkyblock extends IridiumCore {
                 .setColoredConsoleOutput(true)
                 .checkNow();
 
-        DataConverter.deleteDuplicateUpgrades();
+        DataConverter.deleteDuplicateRecords();
 
         getLogger().info("----------------------------------------");
         getLogger().info("");

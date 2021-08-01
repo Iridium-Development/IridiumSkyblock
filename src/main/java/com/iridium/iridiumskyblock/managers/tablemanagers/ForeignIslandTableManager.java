@@ -6,10 +6,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Used for handling Crud operations on a table + handling cache
@@ -76,5 +73,23 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
             }
         }
         return result;
+    }
+
+    public void deleteDuplicates() {
+        List<String> islandDataList = new ArrayList<>();
+        List<T> remove = new ArrayList<>();
+        for (T islandData : getEntries()) {
+            Optional<Island> island = islandData.getIsland();
+            if (island.isPresent()) {
+                if (islandDataList.contains(islandData.getUniqueKey())) {
+                    remove.add(islandData);
+                } else {
+                    islandDataList.add(islandData.getUniqueKey());
+                }
+            } else {
+                remove.add(islandData);
+            }
+        }
+        delete(remove);
     }
 }
