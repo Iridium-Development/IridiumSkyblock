@@ -36,7 +36,7 @@ public class IslandDeleteEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean b) {
-        cancelled = b;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }
