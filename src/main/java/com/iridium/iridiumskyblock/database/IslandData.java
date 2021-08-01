@@ -29,4 +29,13 @@ public class IslandData {
     public @NotNull Optional<Island> getIsland() {
         return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
+
+    /**
+     * A unique Key that identifies this record, used for deleting duplicate entries which occured due to a bug
+     *
+     * @return A unique key
+     */
+    public @NotNull String getUniqueKey() {
+        return "";
+    }
 }

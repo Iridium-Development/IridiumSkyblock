@@ -37,4 +37,9 @@ public final class IslandUpgrade extends IslandData {
         this.upgrade = upgrade;
     }
 
+    @Override
+    public @NotNull String getUniqueKey() {
+        return upgrade + "-" + getIsland().map(Island::getId).orElse(0);
+    }
+
 }
