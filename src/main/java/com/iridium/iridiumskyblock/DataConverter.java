@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock;
 
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandUpgrade;
+import com.iridium.iridiumskyblock.database.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,6 +35,60 @@ public class DataConverter {
             }
         }
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().delete(remove);
+    }
+
+    public static void deleteDuplicateBank() {
+        List<String> islandBank = new ArrayList<>();
+        List<IslandBank> remove = new ArrayList<>();
+        for (IslandBank bank : IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getEntries()) {
+            Optional<Island> island = bank.getIsland();
+            if (island.isPresent()) {
+                if (islandBank.contains(bank.getBankItem() + " - " + island.get().getId())) {
+                    remove.add(bank);
+                } else {
+                    islandBank.add(bank.getBankItem() + " - " + island.get().getId());
+                }
+            } else {
+                remove.add(bank);
+            }
+        }
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().delete(remove);
+    }
+
+    public static void deleteDuplicateBoosters() {
+        List<String> islandBoosters = new ArrayList<>();
+        List<IslandBooster> remove = new ArrayList<>();
+        for (IslandBooster islandBooster : IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().getEntries()) {
+            Optional<Island> island = islandBooster.getIsland();
+            if (island.isPresent()) {
+                if (islandBoosters.contains(islandBooster.getBooster() + " - " + island.get().getId())) {
+                    remove.add(islandBooster);
+                } else {
+                    islandBoosters.add(islandBooster.getBooster() + " - " + island.get().getId());
+                }
+            } else {
+                remove.add(islandBooster);
+            }
+        }
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().delete(remove);
+    }
+
+    public static void deleteDuplicateMissions() {
+        List<String> islandMissions = new ArrayList<>();
+        List<IslandMission> remove = new ArrayList<>();
+        for (IslandMission islandMission : IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries()) {
+            Optional<Island> island = islandMission.getIsland();
+            if (island.isPresent()) {
+                if (islandMissions.contains(islandMission.getMissionName() + " - " + island.get().getId())) {
+                    remove.add(islandMission);
+                } else {
+                    islandMissions.add(islandMission.getMissionName() + " - " + island.get().getId());
+                }
+            } else {
+                remove.add(islandMission);
+            }
+        }
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().delete(remove);
     }
 
     private static void v3_0_0() {

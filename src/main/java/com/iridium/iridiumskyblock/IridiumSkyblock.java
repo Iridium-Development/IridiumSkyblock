@@ -214,6 +214,9 @@ public class IridiumSkyblock extends IridiumCore {
                 .checkNow();
 
         DataConverter.deleteDuplicateUpgrades();
+        DataConverter.deleteDuplicateBoosters();
+        DataConverter.deleteDuplicateBank();
+        DataConverter.deleteDuplicateMissions();
 
         getLogger().info("----------------------------------------");
         getLogger().info("");
