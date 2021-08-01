@@ -34,4 +34,9 @@ public final class IslandSpawners extends IslandData {
         this.spawnerType = spawnerType;
     }
 
+    @Override
+    public @NotNull String getUniqueKey() {
+        return spawnerType.name() + "-" + getIsland().map(Island::getId).orElse(0);
+    }
+
 }
