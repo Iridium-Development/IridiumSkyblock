@@ -48,4 +48,9 @@ public class IslandMission extends IslandData {
         this.missionIndex = missionIndex;
     }
 
+    @Override
+    public @NotNull String getUniqueKey() {
+        return missionName + "-" + missionIndex + "-" + getIsland().map(Island::getId).orElse(0);
+    }
+
 }

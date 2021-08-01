@@ -38,4 +38,8 @@ public class IslandBank extends IslandData {
         this.number = number;
     }
 
+    @Override
+    public @NotNull String getUniqueKey() {
+        return bankItem + "-" + getIsland().map(Island::getId).orElse(0);
+    }
 }
