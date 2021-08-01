@@ -79,31 +79,31 @@ public class Placeholders {
 
                 .put(startKey + "_upgrade_member_level", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(islandManager.getIslandUpgrade(island, "member").getLevel())
-                ).orElse(placeholdersConfig.islandUpgradeBlocklimitLevel))
+                ).orElse(placeholdersConfig.islandUpgradeMemberLevel))
 
                 .put(startKey + "_upgrade_size_level", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(islandManager.getIslandUpgrade(island, "size").getLevel())
-                ).orElse(placeholdersConfig.islandUpgradeBlocklimitLevel))
+                ).orElse(placeholdersConfig.islandUpgradeSizeLevel))
 
                 .put(startKey + "_upgrade_generator_level", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(islandManager.getIslandUpgrade(island, "generator").getLevel())
-                ).orElse(placeholdersConfig.islandUpgradeBlocklimitLevel))
+                ).orElse(placeholdersConfig.islandUpgradeGeneratorLevel))
 
                 .put(startKey + "_upgrade_warp_level", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(islandManager.getIslandUpgrade(island, "warp").getLevel())
-                ).orElse(placeholdersConfig.islandUpgradeBlocklimitLevel))
+                ).orElse(placeholdersConfig.islandUpgradeWarpLevel))
 
                 .put(startKey + "_upgrade_member_amount", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandManager.getIslandUpgrade(island, "member").getLevel()).amount)
-                ).orElse(placeholdersConfig.islandUpgradeBlocklimitLevel))
+                ).orElse(placeholdersConfig.islandUpgradeMemberAmount))
 
                 .put(startKey + "_upgrade_size_dimensions", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(islandManager.getIslandUpgrade(island, "size").getLevel()).size)
-                ).orElse(placeholdersConfig.islandUpgradeBlocklimitLevel))
+                ).orElse(placeholdersConfig.islandUpgradeSizeDimensions))
 
                 .put(startKey + "_upgrade_warp_amount", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandManager.getIslandUpgrade(island, "warp").getLevel()).amount)
-                ).orElse(placeholdersConfig.islandUpgradeBlocklimitLevel))
+                ).orElse(placeholdersConfig.islandUpgradeWarpAmount))
 
                 .build();
     }
