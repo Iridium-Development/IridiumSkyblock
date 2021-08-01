@@ -160,13 +160,13 @@ public class IridiumSkyblock extends IridiumCore {
         Plugin MVDWPlaceholderAPI = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (MVDWPlaceholderAPI != null && MVDWPlaceholderAPI.isEnabled()) {
             new MVDWPlaceholderAPI();
-            getLogger().info("Successfully registered placeholders with MVDWPlaceholderAPI.");
+            getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with MVDWPlaceholderAPI.");
         }
 
         Plugin PlaceholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (PlaceholderAPI != null && PlaceholderAPI.isEnabled()) {
             if (new ClipPlaceholderAPI().register()) {
-                getLogger().info("Successfully registered placeholders with PlaceholderAPI.");
+                getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
             }
         }
 
