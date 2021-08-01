@@ -24,11 +24,6 @@ public class BlockValues {
             .put(XMaterial.NETHERITE_BLOCK, new ValuableBlock(150.00, "&b&lNetherite Block", 1, 14))
             .put(XMaterial.HOPPER, new ValuableBlock(1.00, "&b&lHopper", 1, 15))
             .put(XMaterial.BEACON, new ValuableBlock(150.00, "&b&lBeacon", 1, 16))
-            .put(XMaterial.LAPIS_BLOCK, new ValuableBlock(4.0, "&b&lLapis Block", 2,11))
-            .put(XMaterial.GLOWSTONE, new ValuableBlock(5.0, "&b&lGlowstone block", 2,12))
-            .put(XMaterial.OBSIDIAN, new ValuableBlock(5.0, "&b&lObsidian", 2,13))
-            .put(XMaterial.QUARTZ_BLOCK, new ValuableBlock(4.0, "&b&lQuartz Block", 2,14))
-            .put(XMaterial.SEA_LANTERN, new ValuableBlock(4.0, "&b&lSea Lantern", 2,15))
             .build();
 
     public Map<EntityType, ValuableBlock> spawnerValues = ImmutableMap.<EntityType, ValuableBlock>builder()
