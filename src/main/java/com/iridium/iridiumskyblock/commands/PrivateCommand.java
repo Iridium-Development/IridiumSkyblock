@@ -45,6 +45,10 @@ public class PrivateCommand extends Command {
             int visitorCount = 0;
             List<IslandTrusted> islandTrusted = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get());
             for (User visitor : IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island.get())) {
+
+                if (island.get().getMembers().contains(visitor))
+                    continue;
+
                 if (visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || islandTrusted.stream().anyMatch(trustedIsland -> trustedIsland.getUser().getUuid() == visitor.getUuid())) {
                     continue;
                 }
