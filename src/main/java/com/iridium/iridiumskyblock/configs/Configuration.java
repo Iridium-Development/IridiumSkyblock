@@ -27,6 +27,8 @@ public class Configuration {
     public String islandCreateTitle = "&b&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
+    public String spawnWorldName = "world";
+
 
     public boolean clearInventoryOnRegen = true;
     public boolean clearEnderChestOnRegen = false;
