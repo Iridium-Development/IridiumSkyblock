@@ -438,6 +438,7 @@ public class IridiumSkyblock extends IridiumCore {
         this.permissionList.put(PermissionType.DESTROY_VEHICLE.getPermissionKey(), permissions.destroyVehicle);
         this.permissionList.put(PermissionType.TRAMPLE_CROPS.getPermissionKey(), permissions.trampleCrops);
         this.permissionList.put(PermissionType.INTERACT.getPermissionKey(), permissions.interact);
+        this.permissionList.put(PermissionType.PORTAL.getPermissionKey(), permissions.portal);
 
         this.bankItemList = new ArrayList<>();
         this.bankItemList.add(bankItems.crystalsBankItem);
