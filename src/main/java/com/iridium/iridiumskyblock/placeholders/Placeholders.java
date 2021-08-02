@@ -5,6 +5,8 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -16,7 +18,7 @@ public class Placeholders {
     private static final com.iridium.iridiumskyblock.configs.Placeholders placeholdersConfig = IridiumSkyblock.getInstance().getPlaceholders();
     private static final IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
 
-    public static Map<String, Placeholder> placeholders = ImmutableMap.<String, Placeholder>builder()
+    public static Map<String, Placeholder> placeholders = ImmutableMap.<String, Placeholder> builder()
             .putAll(getIslandPlaceholders("island", player ->
                     IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland())
             )
@@ -32,7 +34,7 @@ public class Placeholders {
             .build();
 
     private static Map<String, Placeholder> getIslandPlaceholders(String startKey, IslandGetter islandGetter) {
-        return ImmutableMap.<String, Placeholder>builder()
+        return ImmutableMap.<String, Placeholder> builder()
                 .put(startKey + "_name", player ->
                         islandGetter.getIsland(player).map(Island::getName).orElse(placeholdersConfig.islandName)
                 )
@@ -59,6 +61,13 @@ public class Placeholders {
                 )
                 .put(startKey + "_experience_remaining", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(placeholdersConfig.islandExperienceRemaining)
+                )
+                .put(startKey + "_biome", player ->
+                        islandGetter.getIsland(player)
+                                .map(island -> island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).getBlock())
+                                .map(Block::getBiome)
+                                .map(biome -> WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " ")))
+                                .orElse(placeholdersConfig.islandBiome)
                 )
 
                 // Island Bank Placeholders

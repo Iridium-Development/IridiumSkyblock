@@ -18,6 +18,7 @@ public class Placeholders {
     public String islandBankExperience = "0";
     public String islandBankCrystals = "0";
     public String islandBankMoney = "0";
+    public String islandBiome = "N/A";
 
     // Island Upgrade Placeholders
     public String islandUpgradeBlocklimitLevel = "0";
@@ -28,19 +29,6 @@ public class Placeholders {
     public String islandUpgradeMemberAmount = "0";
     public String islandUpgradeSizeDimensions = "0";
     public String islandUpgradeWarpAmount = "0";
-
-    // Visiting island placeholders
-    public String currentIslandName = "N/A";
-    public String currentIslandOwner = "N/A";
-    public String currentIslandRank = "N/A";
-    public String currentIslandLevel = "0";
-    public String currentIslandValue = "0";
-    public String currentIslandExperience = "0";
-    public String currentIslandExperienceRequired = "0";
-    public String currentIslandExperienceRemaining = "0";
-    public String currentIslandBankExperience = "0";
-    public String currentIslandBankCrystals = "0";
-    public String currentIslandBankMoney = "0";
 
     // Other Placeholders
     public String unknownPlayer = "N/A";
