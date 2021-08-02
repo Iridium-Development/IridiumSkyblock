@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.IslandBank;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,12 +55,14 @@ public class PlayerUtils {
      */
 
     public static void teleportSpawn(Player player) {
+        World spawnWorld = Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().spawnWorldName);
+        if (spawnWorld == null) spawnWorld = Bukkit.getWorlds().get(0);
         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
             EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
             player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()));
         } else {
-            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation());
+            player.teleport(spawnWorld.getSpawnLocation());
         }
     }
 
