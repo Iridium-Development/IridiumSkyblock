@@ -36,7 +36,7 @@ public class PlayerPortalListener implements Listener {
             if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
 
                 if (island.get().isVisitable()) {
-                    event.getPlayer().teleport(island.get().getCenter(islandManager.getWorld()));
+                    event.getPlayer().teleport(island.get().getHome());
                 } else {
                     PlayerUtils.teleportSpawn(event.getPlayer());
                 }
