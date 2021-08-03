@@ -35,7 +35,7 @@ public class PlayerPortalListener implements Listener {
             // Teleport them back to the island to prevent constant chat spam.
             if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
 
-                if (island.get().isVisitable()) {
+                if (island.get().isVisitable() || user.getIsland().map(Island::getId).orElse(0) == island.get().getId()) {
                     event.getPlayer().teleport(island.get().getHome());
                 } else {
                     PlayerUtils.teleportSpawn(event.getPlayer());
