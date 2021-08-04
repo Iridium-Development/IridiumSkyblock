@@ -112,7 +112,7 @@ public class Placeholders {
         HashMap<String, Placeholder> hashmap = new HashMap<>();
         for (int i = 1; i <= 20; i++) {
             int finalI = i;
-            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> IridiumSkyblock.getInstance().getIslandManager().getIslandById(finalI)));
+            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> Optional.of(IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE).get(finalI - 1))));
         }
         return hashmap;
     }
