@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: bug
+labels: bug, not confirmed
 assignees: PeachesMLG, dlsf, MertUnverdi
 
 ---
@@ -27,7 +27,7 @@ Copy and paste the results of `/version` and `/is about`
 If applicable, add screenshots to help explain your problem.
 
 **Logs**
-If there are error messages in your console, please send them via [This](https://paste.gg/ )
+If there are error messages in your console, please send them via [this](https://paste.gg/)
 
 **Additional context**
 Add any other context about the problem here.
