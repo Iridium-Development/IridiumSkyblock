@@ -127,8 +127,8 @@ public class Configuration {
 
         public double moneyPrice = 5000.0;
         public int crystalPrice = 100;
-        public boolean clearInventories = true;
-        public boolean clearEnderChests = true;
+        public boolean clearInventories = false;
+        public boolean clearEnderChests = false;
         public boolean resetIslandBank = true;
         public boolean resetVaultBalances = true;
         public boolean resetUpgrades = true;
