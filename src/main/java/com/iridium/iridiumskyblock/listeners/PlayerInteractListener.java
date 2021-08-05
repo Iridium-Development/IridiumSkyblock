@@ -7,6 +7,8 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.managers.CooldownProvider;
+import java.time.Duration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,6 +24,7 @@ import java.util.Set;
 
 public class PlayerInteractListener implements Listener {
 
+    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofSeconds(3));
     private final Set<XMaterial> redstoneMaterials = new HashSet<>(Arrays.asList(
             XMaterial.REPEATER,
             XMaterial.COMPARATOR,
@@ -50,33 +53,45 @@ public class PlayerInteractListener implements Listener {
 
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.INTERACT)) {
                 event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteract.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                if (hasNoCooldown(player)) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteract.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
             }
 
             if (event.getAction() == Action.PHYSICAL && material == XMaterial.FARMLAND) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.TRAMPLE_CROPS)) {
                     event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTrampleCrops.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    if (hasNoCooldown(player)) {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTrampleCrops.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
                 }
             } else if (materialName.contains("DOOR")) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.DOORS)) {
                     event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotOpenDoors.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    if (hasNoCooldown(player)) {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotOpenDoors.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
                 }
             } else if (event.getClickedBlock().getState() instanceof InventoryHolder) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.OPEN_CONTAINERS)) {
                     event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotOpenContainers.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    if (hasNoCooldown(player)) {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotOpenContainers.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
                 }
             } else if (redstoneMaterials.contains(material) || materialName.contains("BUTTON") || materialName.contains("PRESSURE_PLATE")) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.REDSTONE)) {
                     event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUseRedstone.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    if (hasNoCooldown(player)) {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUseRedstone.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
                 }
             } else if (materialName.contains("MINECART") || materialName.contains("BOAT") || materialName.contains("EGG") || materialName.contains("BUCKET") || material == XMaterial.END_CRYSTAL) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.INTERACT_ENTITIES)) {
                     event.setCancelled(true);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotSpawnEntities.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    if (hasNoCooldown(player)) {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotSpawnEntities.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    }
                 }
             }
         }
@@ -95,6 +110,15 @@ public class PlayerInteractListener implements Listener {
 
         event.setCancelled(true);
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteractEntities.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+    }
+
+    private boolean hasNoCooldown(Player player) {
+        if (cooldownProvider.isOnCooldown(player)) {
+            return false;
+        }
+
+        cooldownProvider.applyCooldown(player);
+        return true;
     }
 
 }
