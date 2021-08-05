@@ -9,11 +9,13 @@ import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandRegenEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.configs.Configuration.IslandRegenSettings;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import java.time.LocalDateTime;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -279,16 +281,63 @@ public class IslandManager {
             deleteIslandBlocks(island, getNetherWorld(), 0).join();
             deleteIslandBlocks(island, getEndWorld(), 0).join();
         }
-
-        getIslandMembers(island).forEach(u -> {
-            Player player = Bukkit.getPlayer(u.getUuid());
+        IslandRegenSettings regenSettings = IridiumSkyblock.getInstance().getConfiguration().regenSettings;
+        getIslandMembers(island).stream().map(User::toPlayer).forEach(player -> {
             if (player != null) {
-                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen)
+                if (regenSettings.clearInventories)
                     player.getInventory().clear();
-                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen)
+                if (regenSettings.clearEnderChests)
                     player.getEnderChest().clear();
+                if (regenSettings.resetVaultBalances)
+                    IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, IridiumSkyblock.getInstance().getEconomy().getBalance(player));
+                if (regenSettings.kickMembers) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    IridiumSkyblock.getInstance().getUserManager().getUser(player).setIsland(null);
+                }
             }
         });
+
+        if (regenSettings.resetIslandBank) {
+            getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem).setNumber(0);
+            getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem).setNumber(0);
+            getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().experienceBankItem).setNumber(0);
+        }
+
+        if (regenSettings.resetBoosters) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().getEntries(island).forEach(islandBooster -> islandBooster.setTime(LocalDateTime.now()));
+        }
+
+        if (regenSettings.resetMissions) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).forEach(islandMission -> islandMission.setProgress(0));
+        }
+
+        if (regenSettings.resetUpgrades) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().getEntries(island).forEach(islandUpgrade -> islandUpgrade.setLevel(1));
+        }
+
+        if (regenSettings.clearWarps) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager()::delete);
+        }
+
+        if (regenSettings.resetPermissions) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager()::delete);
+        }
+
+        if (regenSettings.unbanAll) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager()::delete);
+        }
+
+        if (regenSettings.giveUpInvites) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager()::delete);
+        }
+
+        if (regenSettings.resetBorderColour) {
+            island.setColor(IridiumSkyblock.getInstance().getBorder().defaultColor);
+        }
+
+        if (regenSettings.makeIslandPrivate) {
+            island.setVisitable(false);
+        }
 
         pasteSchematic(island, schematicConfig).thenRun(() -> {
 
@@ -635,13 +684,17 @@ public class IslandManager {
         deleteIslandBlocks(island, getWorld(), 3);
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island));
-        getIslandMembers(island).forEach(u -> {
-            Player player = Bukkit.getPlayer(u.getUuid());
+        getIslandMembers(island).stream().map(User::toPlayer).forEach(player -> {
             if (player != null) {
-                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen)
+                if (IridiumSkyblock.getInstance().getConfiguration().deleteSettings.clearInventories) {
                     player.getInventory().clear();
-                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen)
+                }
+                if (IridiumSkyblock.getInstance().getConfiguration().deleteSettings.clearEnderChests) {
                     player.getEnderChest().clear();
+                }
+                if (IridiumSkyblock.getInstance().getConfiguration().deleteSettings.resetVaultBalances) {
+                    IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, IridiumSkyblock.getInstance().getEconomy().getBalance(player));
+                }
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         });
