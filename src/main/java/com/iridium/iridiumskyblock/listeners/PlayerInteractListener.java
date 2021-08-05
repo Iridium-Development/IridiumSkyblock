@@ -97,6 +97,15 @@ public class PlayerInteractListener implements Listener {
         }
     }
 
+    private boolean hasNoCooldown(Player player) {
+        if (cooldownProvider.isOnCooldown(player)) {
+            return false;
+        }
+
+        cooldownProvider.applyCooldown(player);
+        return true;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
         Player player = event.getPlayer();
@@ -110,15 +119,6 @@ public class PlayerInteractListener implements Listener {
 
         event.setCancelled(true);
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteractEntities.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-    }
-
-    private boolean hasNoCooldown(Player player) {
-        if (cooldownProvider.isOnCooldown(player)) {
-            return false;
-        }
-
-        cooldownProvider.applyCooldown(player);
-        return true;
     }
 
 }
