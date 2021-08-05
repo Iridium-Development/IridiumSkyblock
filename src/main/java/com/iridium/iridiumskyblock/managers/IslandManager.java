@@ -282,8 +282,7 @@ public class IslandManager {
             deleteIslandBlocks(island, getEndWorld(), 0).join();
         }
         IslandRegenSettings regenSettings = IridiumSkyblock.getInstance().getConfiguration().regenSettings;
-        getIslandMembers(island).forEach(u -> {
-            Player player = Bukkit.getPlayer(u.getUuid());
+        getIslandMembers(island).stream().map(User::toPlayer).forEach(player -> {
             if (player != null) {
                 if (regenSettings.clearInventories)
                     player.getInventory().clear();
@@ -293,7 +292,7 @@ public class IslandManager {
                     IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, IridiumSkyblock.getInstance().getEconomy().getBalance(player));
                 if (regenSettings.kickMembers) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    u.setIsland(null);
+                    IridiumSkyblock.getInstance().getUserManager().getUser(player).setIsland(null);
                 }
             }
         });
@@ -685,8 +684,7 @@ public class IslandManager {
         deleteIslandBlocks(island, getWorld(), 3);
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island));
-        getIslandMembers(island).forEach(u -> {
-            Player player = Bukkit.getPlayer(u.getUuid());
+        getIslandMembers(island).stream().map(User::toPlayer).forEach(player -> {
             if (player != null) {
                 if (IridiumSkyblock.getInstance().getConfiguration().deleteSettings.clearInventories) {
                     player.getInventory().clear();
