@@ -24,7 +24,7 @@ import java.util.Set;
 
 public class PlayerInteractListener implements Listener {
 
-    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofSeconds(3));
+    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(100));
     private final Set<XMaterial> redstoneMaterials = new HashSet<>(Arrays.asList(
             XMaterial.REPEATER,
             XMaterial.COMPARATOR,
@@ -98,12 +98,9 @@ public class PlayerInteractListener implements Listener {
     }
 
     private boolean hasNoCooldown(Player player) {
-        if (cooldownProvider.isOnCooldown(player)) {
-            return false;
-        }
-
+        boolean cooldown = cooldownProvider.isOnCooldown(player);
         cooldownProvider.applyCooldown(player);
-        return true;
+        return cooldown;
     }
 
     @EventHandler(ignoreCancelled = true)
