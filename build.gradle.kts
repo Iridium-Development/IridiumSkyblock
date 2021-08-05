@@ -56,14 +56,15 @@ tasks {
     }
 
     shadowJar {
+        fun relocate(origin: String) = relocate(origin, "com.iridium.iridiumskyblock.dependencies${origin.substring(origin.lastIndexOf('.'))}")
+
         // Remove the archive classifier suffix
         archiveClassifier.set("")
 
         // Relocate dependencies
-        relocate("com.fasterxml.jackson", "com.iridium.iridiumskyblock.dependencies.fasterxml")
-        relocate("com.j256.ormlite", "com.iridium.iridiumskyblock.dependencies.ormlite")
-        relocate("org.bstats", "com.iridium.iridiumskyblock.dependencies.bstats")
-        relocate("de.jeff_media", "com.iridium.iridiumskyblock.dependencies")
+        relocate("com.j256.ormlite")
+        relocate("org.bstats")
+        relocate("de.jeff_media")
 
         // Remove unnecessary files from the jar
         minimize()
@@ -85,6 +86,7 @@ tasks {
     }
 }
 
+// Set the Java version and vendor
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
