@@ -62,9 +62,23 @@ public class Placeholders {
                 .put(startKey + "_experience_remaining", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRemainingToLevelUp())).orElse(placeholdersConfig.islandExperienceRemaining)
                 )
-                .put(startKey + "_biome", player ->
+                .put(startKey + "_overworld_biome", player ->
                         islandGetter.getIsland(player)
                                 .map(island -> island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).getBlock())
+                                .map(Block::getBiome)
+                                .map(biome -> WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " ")))
+                                .orElse(placeholdersConfig.islandBiome)
+                )
+                .put(startKey + "_nether_biome", player ->
+                        islandGetter.getIsland(player)
+                                .map(island -> island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getNetherWorld()).getBlock())
+                                .map(Block::getBiome)
+                                .map(biome -> WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " ")))
+                                .orElse(placeholdersConfig.islandBiome)
+                )
+                .put(startKey + "_end_biome", player ->
+                        islandGetter.getIsland(player)
+                                .map(island -> island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getEndWorld()).getBlock())
                                 .map(Block::getBiome)
                                 .map(biome -> WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " ")))
                                 .orElse(placeholdersConfig.islandBiome)
