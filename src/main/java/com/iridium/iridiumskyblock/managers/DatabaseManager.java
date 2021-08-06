@@ -28,19 +28,19 @@ public class DatabaseManager {
 
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
-    private ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
-    private ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
-    private ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
-    private ForeignIslandTableManager<IslandSpawners, Integer> islandSpawnersTableManager;
-    private ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
-    private ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
-    private ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
-    private ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
-    private ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
-    private ForeignIslandTableManager<IslandBooster, Integer> islandBoosterTableManager;
-    private ForeignIslandTableManager<IslandWarp, Integer> islandWarpTableManager;
     private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;
+    private ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
+    private ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
+    private ForeignIslandTableManager<IslandBooster, Integer> islandBoosterTableManager;
+    private ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
     private ForeignIslandTableManager<IslandLog, Integer> islandLogTableManager;
+    private ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
+    private ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
+    private ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
+    private ForeignIslandTableManager<IslandSpawners, Integer> islandSpawnersTableManager;
+    private ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
+    private ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
+    private ForeignIslandTableManager<IslandWarp, Integer> islandWarpTableManager;
 
     @Getter(AccessLevel.NONE)
     private ConnectionSource connectionSource;
