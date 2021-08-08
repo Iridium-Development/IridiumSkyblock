@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Location;
@@ -37,8 +38,7 @@ public class BucketListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlockClicked().getLocation());
 
-        if (!island.isPresent())
-            return;
+        if (!island.isPresent()) return;
         if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BUCKET)) {
             return;
         }
@@ -49,6 +49,7 @@ public class BucketListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInHand();
 
@@ -80,8 +81,6 @@ public class BucketListener implements Listener {
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
-        } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
     }
 }
