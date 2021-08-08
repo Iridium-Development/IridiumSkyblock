@@ -31,6 +31,7 @@ public class Configuration {
 
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
+    public int voidHeight = 0;
     public boolean netherIslands = true;
     public boolean endIslands = true;
     public boolean respawnOnIsland = true;
