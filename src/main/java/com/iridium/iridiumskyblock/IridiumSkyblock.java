@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
-import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
@@ -118,9 +117,6 @@ public class IridiumSkyblock extends IridiumCore {
     @Override
     public void onEnable() {
         super.onEnable();
-
-        // Include PaperLib
-        PaperLib.suggestPaper(this);
 
         // Convert old IridiumSkyblock data
         DataConverter.run(this);
