@@ -51,7 +51,7 @@ public class BankGUI extends GUI {
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
-        String command = null;
+        String command;
         switch (event.getClick()) {
             case LEFT:
                 command = IridiumSkyblock.getInstance().getCommands().withdrawCommand.aliases.get(0);
@@ -59,9 +59,13 @@ public class BankGUI extends GUI {
             case RIGHT:
                 command = IridiumSkyblock.getInstance().getCommands().depositCommand.aliases.get(0);
                 break;
+            default:
+                return;
         }
-        if (command != null)
+
+        if (command != null) {
             Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
+        }
 
         event.getWhoClicked().openInventory(getInventory());
     }

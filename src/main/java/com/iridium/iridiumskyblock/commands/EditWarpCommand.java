@@ -81,6 +81,8 @@ public class EditWarpCommand extends Command {
                         islandWarp.get().setDescription(description);
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpDescriptionSet.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         return true;
+                    default:
+                        break;
                 }
 
             } else {

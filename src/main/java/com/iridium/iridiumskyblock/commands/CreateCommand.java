@@ -55,6 +55,8 @@ public class CreateCommand extends Command {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
                 break;
+            default:
+                break;
         }
 
         // Always return false because the cooldown is set during Island creation
