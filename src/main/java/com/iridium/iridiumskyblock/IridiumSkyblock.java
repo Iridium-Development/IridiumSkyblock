@@ -21,6 +21,9 @@ import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -36,7 +39,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -521,29 +523,17 @@ public class IridiumSkyblock extends IridiumCore {
     private void saveFile(File parent, String name) {
         File file = new File(parent, name);
         if (!file.exists()) {
-            if (getResource(name) != null) {
-                InputStream in = this.getResource(name);
-                if (in != null) {
-                    try {
-                        OutputStream out = new FileOutputStream(file);
-                        byte[] buf = new byte[1024];
+            try {
+                InputStream source = getResource(name);
+                Path target = file.toPath();
 
-                        int len;
-                        while ((len = in.read(buf)) > 0) {
-                            out.write(buf, 0, len);
-                        }
-
-                        out.close();
-                        in.close();
-                    } catch (IOException var10) {
-                        getLogger().log(Level.SEVERE, "Could not save " + file.getName() + " to " + file, var10);
-                    }
-
-                }
+                if (source == null) return;
+                Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException exception) {
+                getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
             }
         }
     }
-
 
     /**
      * Saves changes to the configuration files.
