@@ -10,7 +10,6 @@ import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.util.Objects;
 import java.util.Optional;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
