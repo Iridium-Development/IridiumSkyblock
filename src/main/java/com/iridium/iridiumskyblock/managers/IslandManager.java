@@ -199,7 +199,7 @@ public class IslandManager {
     private void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
         player.setFallDistance(0);
         if (PaperLib.isSpigot()) {
-            player.teleport(islandWarp.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+            player.teleport(LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)), PlayerTeleportEvent.TeleportCause.PLUGIN);
         } else {
             PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)), PlayerTeleportEvent.TeleportCause.PLUGIN);
         }
