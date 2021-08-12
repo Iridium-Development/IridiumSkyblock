@@ -62,13 +62,13 @@ public class PlayerUtils {
         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
             EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-            if (PaperLib.isSpigot()) {
+            if (!CheckEnvironment.isPaper()) {
                 player.teleport(essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()), PlayerTeleportEvent.TeleportCause.PLUGIN);
             } else {
                 PaperLib.teleportAsync(player, essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()), PlayerTeleportEvent.TeleportCause.PLUGIN);
             }
         } else {
-            if (PaperLib.isSpigot()) {
+            if (!CheckEnvironment.isPaper()) {
                 player.teleport(spawnWorld.getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
             } else {
                 PaperLib.teleportAsync(player, spawnWorld.getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
