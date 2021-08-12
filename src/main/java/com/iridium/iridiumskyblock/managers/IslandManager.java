@@ -159,7 +159,12 @@ public class IslandManager {
      */
     private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        if (PaperLib.isSpigot()) {
+            player.teleport(island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        } else {
+            PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        }
+
     }
 
     /**
@@ -193,7 +198,11 @@ public class IslandManager {
      */
     private void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
         player.setFallDistance(0);
-        PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        if (PaperLib.isSpigot()) {
+            player.teleport(islandWarp.getLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        } else {
+            PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        }
     }
 
     /**
@@ -222,7 +231,11 @@ public class IslandManager {
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         createIsland(player, name, schematicConfig).thenAccept(island -> {
-                    PaperLib.teleportAsync(player, island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    if (PaperLib.isSpigot()) {
+                        player.teleport(island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    } else {
+                        PaperLib.teleportAsync(player, island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                    }
                     IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
                 }
         );
