@@ -160,7 +160,7 @@ public class IslandManager {
     private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
         if (PaperLib.isSpigot()) {
-            player.teleport(island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+            player.teleport(LocationUtils.getSafeLocation(island.getHome(), island), PlayerTeleportEvent.TeleportCause.PLUGIN);
         } else {
             PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island), PlayerTeleportEvent.TeleportCause.PLUGIN);
         }
