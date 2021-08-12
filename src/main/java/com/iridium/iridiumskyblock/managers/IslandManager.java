@@ -16,7 +16,6 @@ import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import com.iridium.iridiumskyblock.utils.CheckEnvironment;
 import java.time.LocalDateTime;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -160,7 +159,7 @@ public class IslandManager {
      */
     private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
-        if (!CheckEnvironment.isPaper()) {
+        if (!com.iridium.iridiumskyblock.utils.CheckEnvironment.isPaper()) {
             player.teleport(LocationUtils.getSafeLocation(island.getHome(), island), PlayerTeleportEvent.TeleportCause.PLUGIN);
         } else {
             PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island), PlayerTeleportEvent.TeleportCause.PLUGIN);
@@ -199,7 +198,7 @@ public class IslandManager {
      */
     private void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp) {
         player.setFallDistance(0);
-        if (!CheckEnvironment.isPaper()) {
+        if (!com.iridium.iridiumskyblock.utils.CheckEnvironment.isPaper()) {
             player.teleport(LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)), PlayerTeleportEvent.TeleportCause.PLUGIN);
         } else {
             PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(islandWarp.getLocation(), islandWarp.getIsland().orElse(null)), PlayerTeleportEvent.TeleportCause.PLUGIN);
@@ -232,7 +231,7 @@ public class IslandManager {
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         createIsland(player, name, schematicConfig).thenAccept(island -> {
-                    if (CheckEnvironment.isPaper()) {
+                    if (com.iridium.iridiumskyblock.utils.CheckEnvironment.isPaper()) {
                         player.teleport(island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
                     } else {
                         PaperLib.teleportAsync(player, island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
