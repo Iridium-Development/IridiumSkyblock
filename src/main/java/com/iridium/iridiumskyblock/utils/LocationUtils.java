@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.iridium.iridiumcore.dependencies.xseries.XMaterial.getVersion;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 
 /**
  * Various utils which perform operations on {@link org.bukkit.Location}'s.
@@ -92,11 +92,7 @@ public class LocationUtils {
      * @return The lowest AIR location.
      */
     public static int getMinHeight(World world) {
-        if (getVersion() >= 17) {
-            return world.getMinHeight(); // Available only in 1.17 Spigot and 1.16.5 PaperMC
-        } else {
-            return 0;
-        }
+        return XMaterial.getVersion() >= 17 ? world.getMinHeight() : 0;  // getMinHeight() -> Available only in 1.17 Spigot and 1.16.5 PaperMC
     }
 
 }
