@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-
 /**
  * Various utils which perform operations on {@link org.bukkit.Location}'s.
  */
