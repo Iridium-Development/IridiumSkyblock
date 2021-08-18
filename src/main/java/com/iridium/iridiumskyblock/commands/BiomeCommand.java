@@ -11,6 +11,7 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class BiomeCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            return XBiome.VALUES.stream()
+            return Arrays.stream(XBiome.VALUES)
                 .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
                 .filter(biome -> biome.getBiome() != null)
                 .map(Enum::toString)
