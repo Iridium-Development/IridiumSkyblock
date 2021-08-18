@@ -46,15 +46,16 @@ public class UpgradesGUI extends GUI {
                 UpgradeData upgradeData = (UpgradeData) upgrade.getValue().upgrades.get(level);
                 placeholderList.addAll(upgradeData.getPlaceholders());
             }
+
             if (upgrade.getValue().upgrades.get(level + 1) instanceof UpgradeData) {
                 UpgradeData upgradeData = (UpgradeData) upgrade.getValue().upgrades.get(level + 1);
-                placeholderList.add(new Placeholder("crystalscost", String.valueOf(upgradeData.crystals)));
-                placeholderList.add(new Placeholder("vaultcost", String.valueOf(upgradeData.money)));
+                placeholderList.add(new Placeholder("crystalscost", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.crystals)));
+                placeholderList.add(new Placeholder("vaultcost", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.money)));
             } else if (!upgrade.getValue().upgrades.containsKey(level + 1)) {
                 placeholderList.add(new Placeholder("crystalscost", IridiumSkyblock.getInstance().getPlaceholders().crystalCost));
                 placeholderList.add(new Placeholder("vaultcost", IridiumSkyblock.getInstance().getPlaceholders().vaultCost));
-
             }
+
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, placeholderList));
         }
     }
