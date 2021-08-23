@@ -17,7 +17,7 @@ public class TopCommand extends Command {
      * The default constructor.
      */
     public TopCommand() {
-        super(Collections.singletonList("top"), "Display the top Islands", "", true, Duration.ZERO);
+        super(Collections.singletonList("top"), "Display the top Islands", "iridiumskyblock.top", true, Duration.ZERO);
     }
 
     /**

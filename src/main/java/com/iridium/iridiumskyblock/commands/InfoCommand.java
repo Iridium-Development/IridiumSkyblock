@@ -25,7 +25,7 @@ public class InfoCommand extends Command {
      * The default constructor.
      */
     public InfoCommand() {
-        super(Collections.singletonList("info"), "Show infos about this Island.", "", false, Duration.ZERO);
+        super(Collections.singletonList("info"), "Show infos about this Island.", "iridiumskyblock.info", false, Duration.ZERO);
     }
 
     /**

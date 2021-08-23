@@ -23,7 +23,7 @@ public class DeleteCommand extends Command {
      * The default constructor.
      */
     public DeleteCommand() {
-        super(Collections.singletonList("delete"), "Delete your Island", "", true, Duration.ofMinutes(5));
+        super(Collections.singletonList("delete"), "Delete your Island", "iridiumskyblock.delete", true, Duration.ofMinutes(5));
     }
 
     /**

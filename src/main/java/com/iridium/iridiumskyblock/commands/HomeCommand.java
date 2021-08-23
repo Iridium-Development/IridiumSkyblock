@@ -22,7 +22,7 @@ public class HomeCommand extends Command {
      * The default constructor.
      */
     public HomeCommand() {
-        super(Arrays.asList("home", "go"), "Teleport to your Island home", "", true, Duration.ofSeconds(3));
+        super(Arrays.asList("home", "go"), "Teleport to your Island home", "iridiumskyblock.home", true, Duration.ofSeconds(3));
     }
 
     /**

@@ -24,7 +24,7 @@ public class ExpelCommand extends Command {
      * The default constructor.
      */
     public ExpelCommand() {
-        super(Collections.singletonList("expel"), "Kick a visitor", "%prefix% &7/is expel [<name>]", "", true, Duration.ZERO);
+        super(Collections.singletonList("expel"), "Kick a visitor", "%prefix% &7/is expel [<name>]", "iridiumskyblock.expel", true, Duration.ZERO);
     }
 
     /**

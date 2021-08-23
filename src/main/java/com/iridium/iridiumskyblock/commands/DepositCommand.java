@@ -25,7 +25,7 @@ public class DepositCommand extends Command {
      * The default constructor.
      */
     public DepositCommand() {
-        super(Collections.singletonList("deposit"), "Deposit into your Island bank", "%prefix% &7/is deposit <name> <amount>", "", true, Duration.ZERO);
+        super(Collections.singletonList("deposit"), "Deposit into your Island bank", "%prefix% &7/is deposit <name> <amount>", "iridiumskyblock.deposit", true, Duration.ZERO);
     }
 
     /**

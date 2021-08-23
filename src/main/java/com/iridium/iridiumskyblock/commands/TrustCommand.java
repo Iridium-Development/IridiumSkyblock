@@ -27,7 +27,7 @@ public class TrustCommand extends Command {
      * The default constructor.
      */
     public TrustCommand() {
-        super(Arrays.asList("trust", "trusted"), "View your Trusted members", "", true, Duration.ZERO);
+        super(Arrays.asList("trust", "trusted"), "View your Trusted members", "iridiumskyblock.trust", true, Duration.ZERO);
     }
 
     /**

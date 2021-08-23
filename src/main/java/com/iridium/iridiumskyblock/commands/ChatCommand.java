@@ -25,7 +25,7 @@ public class ChatCommand extends Command {
      * The default constructor.
      */
     public ChatCommand() {
-        super(Collections.singletonList("chat"), "Chat with online Island members", "", true, Duration.ZERO);
+        super(Collections.singletonList("chat"), "Chat with online Island members", "iridiumskyblock.chat", true, Duration.ZERO);
     }
 
     /**

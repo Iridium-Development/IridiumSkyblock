@@ -21,7 +21,7 @@ public class ValueCommand extends Command {
      * The default constructor.
      */
     public ValueCommand() {
-        super(Collections.singletonList("value"), "View your Island value", "", true, Duration.ZERO);
+        super(Collections.singletonList("value"), "View your Island value", "iridiumskyblock.value", true, Duration.ZERO);
     }
 
     /**

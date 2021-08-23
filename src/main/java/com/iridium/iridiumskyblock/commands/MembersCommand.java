@@ -22,7 +22,7 @@ public class MembersCommand extends Command {
      * The default constructor.
      */
     public MembersCommand() {
-        super(Collections.singletonList("members"), "View your Island members", "", true, Duration.ZERO);
+        super(Collections.singletonList("members"), "View your Island members", "iridiumskyblock.members", true, Duration.ZERO);
     }
 
     /**

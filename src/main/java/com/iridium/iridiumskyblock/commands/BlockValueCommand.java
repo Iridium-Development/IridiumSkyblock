@@ -23,7 +23,7 @@ public class BlockValueCommand extends Command {
      * The default constructor.
      */
     public BlockValueCommand() {
-        super(Collections.singletonList("blockvalues"), "Show the values of blocks", "", true, Duration.ZERO);
+        super(Collections.singletonList("blockvalues"), "Show the values of blocks", "iridiumskyblock.blockvalues", true, Duration.ZERO);
 
     }
 

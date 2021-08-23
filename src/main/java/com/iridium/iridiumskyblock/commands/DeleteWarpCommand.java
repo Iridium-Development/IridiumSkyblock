@@ -25,7 +25,7 @@ public class DeleteWarpCommand extends Command {
      * The default constructor.
      */
     public DeleteWarpCommand() {
-        super(Arrays.asList("delwarp", "deletewarp"), "Deletes an Island warp", "%prefix% &7/is deletewarp <name>", "", true, Duration.ZERO);
+        super(Arrays.asList("delwarp", "deletewarp"), "Deletes an Island warp", "%prefix% &7/is deletewarp <name>", "iridiumskyblock.delwarp", true, Duration.ZERO);
     }
 
     /**

@@ -24,7 +24,7 @@ public class HelpCommand extends Command {
      * The default constructor.
      */
     public HelpCommand() {
-        super(Collections.singletonList("help"), "Show a list of all commands", "", false, Duration.ZERO);
+        super(Collections.singletonList("help"), "Show a list of all commands", "iridiumskyblock.help", false, Duration.ZERO);
     }
 
     /**

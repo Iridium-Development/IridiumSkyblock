@@ -18,7 +18,7 @@ import java.util.Optional;
 public class RenameCommand extends Command {
 
     public RenameCommand() {
-        super(Collections.singletonList("rename"), "Change your island name", "", true, Duration.ofMinutes(1));
+        super(Collections.singletonList("rename"), "Change your island name", "iridiumskyblock.rename", true, Duration.ofMinutes(1));
     }
 
     /**

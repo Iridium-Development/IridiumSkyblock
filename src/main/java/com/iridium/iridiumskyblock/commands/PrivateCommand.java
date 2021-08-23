@@ -23,7 +23,7 @@ public class PrivateCommand extends Command {
      * The default constructor.
      */
     public PrivateCommand() {
-        super(Collections.singletonList("private"), "Make your Island private", "", true, Duration.ZERO);
+        super(Collections.singletonList("private"), "Make your Island private", "iridiumskyblock.private", true, Duration.ZERO);
     }
 
     /**

@@ -23,7 +23,7 @@ public class MissionCommand extends Command {
      * The default constructor.
      */
     public MissionCommand() {
-        super(Collections.singletonList("missions"), "View your Island missions", "", true, Duration.ZERO);
+        super(Collections.singletonList("missions"), "View your Island missions", "iridiumskyblock.missions", true, Duration.ZERO);
     }
 
     /**

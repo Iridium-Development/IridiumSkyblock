@@ -21,7 +21,7 @@ public class PublicCommand extends Command {
      * The default constructor.
      */
     public PublicCommand() {
-        super(Collections.singletonList("public"), "Make your Island public", "", true, Duration.ZERO);
+        super(Collections.singletonList("public"), "Make your Island public", "iridiumskyblock.public", true, Duration.ZERO);
     }
 
     /**

@@ -26,7 +26,7 @@ public class UpgradesCommand extends Command {
      * The default constructor.
      */
     public UpgradesCommand() {
-        super(Arrays.asList("upgrades", "upgrade"), "Open the Island Upgrades Menu", "", true, Duration.ZERO);
+        super(Arrays.asList("upgrades", "upgrade"), "Open the Island Upgrades Menu", "iridiumskyblock.upgrades", true, Duration.ZERO);
     }
 
     /**

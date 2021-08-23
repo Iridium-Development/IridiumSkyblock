@@ -26,7 +26,7 @@ public class UnBanCommand extends Command {
      * The default constructor.
      */
     public UnBanCommand() {
-        super(Collections.singletonList("unban"), "Un-ban a player visiting from your island", "%prefix% &7/is unban <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("unban"), "Un-ban a player visiting from your island", "%prefix% &7/is unban <name>", "iridiumskyblock.unban", true, Duration.ZERO);
     }
 
     /**

@@ -23,7 +23,7 @@ public class AboutCommand extends Command {
      * The default constructor.
      */
     public AboutCommand() {
-        super(Collections.singletonList("about"), "Display plugin info", "", false, Duration.ZERO);
+        super(Collections.singletonList("about"), "Display plugin info", "iridiumskyblock.about", false, Duration.ZERO);
     }
 
     /**

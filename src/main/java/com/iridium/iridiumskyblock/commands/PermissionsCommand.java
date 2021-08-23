@@ -23,7 +23,7 @@ public class PermissionsCommand extends Command {
      * The default constructor.
      */
     public PermissionsCommand() {
-        super(Arrays.asList("permissions", "perms"), "Edit your Island permissions", "", true, Duration.ZERO);
+        super(Arrays.asList("permissions", "perms"), "Edit your Island permissions", "iridiumskyblock.permissions", true, Duration.ZERO);
     }
 
     /**

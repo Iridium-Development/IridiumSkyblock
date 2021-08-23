@@ -26,7 +26,7 @@ public class TransferCommand extends Command {
      * The default constructor.
      */
     public TransferCommand() {
-        super(Collections.singletonList("transfer"), "Transfer Island ownership to another player", "", true, Duration.ZERO);
+        super(Collections.singletonList("transfer"), "Transfer Island ownership to another player", "iridiumskyblock.transfer", true, Duration.ZERO);
     }
 
     /**

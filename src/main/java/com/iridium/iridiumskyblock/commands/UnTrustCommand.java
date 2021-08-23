@@ -25,7 +25,7 @@ public class UnTrustCommand extends Command {
      * The default constructor.
      */
     public UnTrustCommand() {
-        super(Collections.singletonList("untrust"), "Revoke a trusted user from your Island", "%prefix% &7/is untrust <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("untrust"), "Revoke a trusted user from your Island", "%prefix% &7/is untrust <name>", "iridiumskyblock.untrust", true, Duration.ZERO);
     }
 
     /**

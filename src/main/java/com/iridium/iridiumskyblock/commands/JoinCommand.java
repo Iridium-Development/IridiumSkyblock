@@ -27,7 +27,7 @@ public class JoinCommand extends Command {
      * The default constructor.
      */
     public JoinCommand() {
-        super(Collections.singletonList("join"), "Join an Island", "%prefix% &7/is join <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("join"), "Join an Island", "%prefix% &7/is join <name>", "iridiumskyblock.join", true, Duration.ZERO);
     }
 
     /**
