@@ -18,7 +18,6 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.jeff-media.de/maven2/")
-    mavenCentral()
 }
 
 dependencies {
