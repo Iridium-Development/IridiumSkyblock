@@ -121,18 +121,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 continue;
             }
 
-            if (executionBlocked(
-                command,
-                commandSender
-            )) {
+            if (executionBlocked(command, commandSender)) {
                 return false;
             }
 
             Command executingCommand = findExecutingCommand(command, args);
-            if (executingCommand != command && executionBlocked(
-                executingCommand,
-                commandSender
-            )) {
+            if (executingCommand != command && executionBlocked(executingCommand, commandSender)) {
                 return false;
             }
 
