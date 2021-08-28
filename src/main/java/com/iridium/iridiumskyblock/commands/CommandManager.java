@@ -44,6 +44,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     public void registerCommands() {
         Commands commands = IridiumSkyblock.getInstance().getCommands();
 
+        // This code registers all commands from the Commands config automatically
         for (Field field : commands.getClass().getFields()) {
             try {
                 Command command = (Command) field.get(commands);
