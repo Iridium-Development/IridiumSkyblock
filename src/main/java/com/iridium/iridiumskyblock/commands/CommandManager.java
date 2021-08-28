@@ -220,9 +220,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         Command executingCommand = baseCommand;
         int currentArgument = 1;
 
-        while (true) {
-            if (args.length <= currentArgument) break;
-
+        while (args.length > currentArgument) {
             Optional<Command> child = executingCommand.getChildByName(args[currentArgument]);
             if (!child.isPresent()) break;
 
