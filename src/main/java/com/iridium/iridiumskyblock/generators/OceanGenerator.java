@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.generators;
 
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
@@ -47,7 +48,7 @@ public class OceanGenerator extends ChunkGenerator {
                 int currentFloorHeight = (int) ((generator.noise(chunkX * 16 + x, chunkZ * 16 + z, 1.5D, 0.5D, true) + 1) * (maxOceanFloorLevel - minOceanFloorLevel) + minOceanFloorLevel);
 
                 // Generate layer of bedrock
-                chunkData.setBlock(x, 0, z,
+                chunkData.setBlock(x, LocationUtils.getMinHeight(world), z,
                         Objects.requireNonNull(XMaterial.BEDROCK.parseMaterial())
                 );
 
@@ -85,17 +86,18 @@ public class OceanGenerator extends ChunkGenerator {
         int minOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.minOceanFloorLevel;
 
         int currentFloorHeight = (int) ((generator.noise(x, z, 1.5D, 0.5D, true) + 1) * (maxOceanFloorLevel - minOceanFloorLevel) + minOceanFloorLevel);
+        int minHeightWorld = LocationUtils.getMinHeight(world);
 
         // Generate layer of bedrock
-        if (world.getBlockAt(x, 0, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
-            if (world.getBlockAt(x, 0, z).getState() instanceof InventoryHolder) {
-                ((InventoryHolder) world.getBlockAt(x, 0, z).getState()).getInventory().clear();
+        if (world.getBlockAt(x, minHeightWorld, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
+            if (world.getBlockAt(x, minHeightWorld, z).getState() instanceof InventoryHolder) {
+                ((InventoryHolder) world.getBlockAt(x, minHeightWorld, z).getState()).getInventory().clear();
             }
-            world.getBlockAt(x, 0, z).setType(Material.BEDROCK, false);
+            world.getBlockAt(x, minHeightWorld, z).setType(Material.BEDROCK, false);
         }
 
         // Generate gravel layer
-        for (int y = 1; y < currentFloorHeight; y++) {
+        for (int y = minHeightWorld + 1; y < currentFloorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != bottomMaterial.parseMaterial() && bottomMaterial.parseMaterial() != null) {
                 if (block.getState() instanceof InventoryHolder) {
