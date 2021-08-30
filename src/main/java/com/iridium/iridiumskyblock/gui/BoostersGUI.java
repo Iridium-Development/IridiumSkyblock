@@ -45,8 +45,8 @@ public class BoostersGUI extends GUI {
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, Arrays.asList(
                     new Placeholder("timeremaining_minutes", String.valueOf(Math.max(minutes, 0))),
                     new Placeholder("timeremaining_seconds", String.valueOf(Math.max(seconds, 0))),
-                    new Placeholder("crystalcost", String.valueOf(entry.getValue().crystalsCost)),
-                    new Placeholder("vaultcost", String.valueOf(entry.getValue().vaultCost))
+                    new Placeholder("crystalcost", IridiumSkyblock.getInstance().getNumberFormatter().format(entry.getValue().crystalsCost)),
+                    new Placeholder("vaultcost", IridiumSkyblock.getInstance().getNumberFormatter().format(entry.getValue().vaultCost))
             )));
         }
     }

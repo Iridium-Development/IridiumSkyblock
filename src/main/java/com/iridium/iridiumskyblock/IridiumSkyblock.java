@@ -289,6 +289,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new EntitySpawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockFromToListener(), this);
     }
 
     /**

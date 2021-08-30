@@ -53,8 +53,8 @@ public class UpgradesGUI extends GUI {
             } else if (!upgrade.getValue().upgrades.containsKey(level + 1)) {
                 placeholderList.add(new Placeholder("crystalscost", IridiumSkyblock.getInstance().getPlaceholders().crystalCost));
                 placeholderList.add(new Placeholder("vaultcost", IridiumSkyblock.getInstance().getPlaceholders().vaultCost));
-
             }
+
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, placeholderList));
         }
     }

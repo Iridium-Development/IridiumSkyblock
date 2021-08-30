@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -29,7 +30,7 @@ public class BiomeGUI extends GUI {
 
     public BiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider) {
         super(IridiumSkyblock.getInstance().getInventories().biomeGUI, island);
-        this.biomes = XBiome.VALUES.stream().filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
+        this.biomes = Arrays.stream(XBiome.VALUES).filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
         this.environment = environment;
         this.page = page;
         this.cooldownProvider = cooldownProvider;
