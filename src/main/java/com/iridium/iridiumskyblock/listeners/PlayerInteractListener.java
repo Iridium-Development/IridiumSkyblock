@@ -6,9 +6,9 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
-import java.time.Duration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
@@ -40,6 +41,21 @@ public class PlayerInteractListener implements Listener {
 
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        user.getIsland().ifPresent(island -> {
+            if (event.getAction() != Action.PHYSICAL) {
+                int islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(event.getPlayer().getItemInHand());
+                if (islandCrystals > 0) {
+                    int amount = event.getPlayer().getItemInHand().getAmount();
+                    if (amount == 1) {
+                        event.getPlayer().setItemInHand(null);
+                    } else {
+                        event.getPlayer().getItemInHand().setAmount(amount - 1);
+                    }
+                    IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+                    islandBank.setNumber(islandBank.getNumber() + islandCrystals);
+                }
+            }
+        });
 
         if (event.getClickedBlock() != null) {
             Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation());
