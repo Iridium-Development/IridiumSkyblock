@@ -76,7 +76,7 @@ public class IridiumSkyblock extends IridiumCore {
     private List<BankItem> bankItemList;
     private Map<String, Permission> permissionList;
     private Map<String, Mission> missionsList;
-    private Map<String, Upgrade> upgradesList;
+    private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
 
     private Economy economy;
