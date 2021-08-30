@@ -3,6 +3,12 @@ package com.iridium.iridiumskyblock.configs;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumskyblock.commands.*;
 
+/**
+ * The command configuration of IridiumSkyblock (commands.yml).
+ * Is deserialized automatically on plugin startup and reload.
+ * <p>
+ * <b>Commands that are added to this config will be registered automatically.</b>
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Commands {
 

@@ -1,4 +1,4 @@
-package com.iridium.iridiumskyblock.commands.subcommands;
+package com.iridium.iridiumskyblock.commands.bank;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -18,13 +18,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class BankGive extends Command {
-
+public class SetCommand extends Command {
     /**
      * The default constructor.
      */
-    public BankGive() {
-        super(Collections.singletonList("give"), "Give players money into their island bank", "%prefix% &7/is bank <give> <player> <type> <amount>", "iridiumskyblock.bank.give", false, Duration.ZERO);
+    public SetCommand() {
+        super(Collections.singletonList("set"), "Set a players bank value", "%prefix% &7/is bank set <player> <type> <amount>","iridiumskyblock.bank.set", false, Duration.ZERO);
     }
 
     @Override
@@ -39,8 +38,8 @@ public class BankGive extends Command {
                     if (bankItem.isPresent()) {
                         try {
                             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
-                            islandBank.setNumber(islandBank.getNumber() + Double.parseDouble(args[4]));
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().gaveBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                            islandBank.setNumber(Math.max(Double.parseDouble(args[4]), 0));
+                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                             return true;
                         } catch (NumberFormatException exception) {
                             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
