@@ -1,8 +1,15 @@
 package com.iridium.iridiumskyblock.bank;
 
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.utils.StringUtils;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBank;
+import com.iridium.iridiumskyblock.database.User;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 /**
  * Represents the crystals in the island bank.
@@ -29,7 +36,33 @@ public class CrystalsBankItem extends BankItem {
      */
     @Override
     public double withdraw(Player player, Number amount) {
-        // TODO cba to do this atm
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        Optional<Island> island = user.getIsland();
+
+        if (island.isPresent()) {
+            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
+            int crystals = Math.min(amount.intValue(), (int) islandBank.getNumber());
+
+            if (crystals > 0) {
+                islandBank.setNumber(islandBank.getNumber() - crystals);
+                player.getInventory().addItem(IridiumSkyblock.getInstance().getIslandManager().getIslandCrystal(crystals)).values().forEach(itemStack ->
+                        player.getWorld().dropItem(player.getLocation(), itemStack)
+                );
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%amount%", String.valueOf(crystals))
+                        .replace("%type%", "Experience")
+                );
+            } else {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%type%", "Experience")
+                );
+            }
+            return crystals;
+        } else {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        }
         return 0;
     }
 
@@ -41,7 +74,6 @@ public class CrystalsBankItem extends BankItem {
      */
     @Override
     public double deposit(Player player, Number amount) {
-        // TODO cba to do this atm
         return 0;
     }
 

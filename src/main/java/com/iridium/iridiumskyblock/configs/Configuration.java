@@ -48,6 +48,8 @@ public class Configuration {
     public int minIslandName = 3;
     public int teleportDelay = 0;
 
+    public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
+
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
 
     public NumberFormatter numberFormatter = new NumberFormatter();
