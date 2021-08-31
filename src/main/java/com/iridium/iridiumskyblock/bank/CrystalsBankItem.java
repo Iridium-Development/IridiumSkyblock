@@ -51,12 +51,12 @@ public class CrystalsBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(crystals))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", "Crystals")
                 );
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", "Crystals")
                 );
             }
             return crystals;
