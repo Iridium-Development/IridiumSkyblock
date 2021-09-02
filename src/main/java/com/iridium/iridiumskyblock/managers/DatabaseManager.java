@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.database.types.XMaterialType;
 import com.iridium.iridiumskyblock.managers.tablemanagers.ForeignIslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
-import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
 import com.j256.ormlite.field.DataPersisterManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
@@ -16,19 +15,15 @@ import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.logger.NullLogBackend;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
-import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Collections;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
 import java.sql.SQLException;
+import java.util.Collections;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -71,21 +66,21 @@ public class DatabaseManager {
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
-        this.islandTableManager = new IslandTableManager(connectionSource, false);
-        this.userTableManager = new UserTableManager(connectionSource, false);
-        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
-        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, false);
-        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, false);
-        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class, false);
-        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, false);
-        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, false);
-        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, false);
-        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class, false);
-        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, false);
-        this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class, false);
-        this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, false);
-        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, false);
-        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, false);
+        this.islandTableManager = new IslandTableManager(connectionSource);
+        this.userTableManager = new UserTableManager(connectionSource);
+        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class);
+        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class);
+        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class);
+        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class);
+        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class);
+        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class);
+        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class);
+        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class);
+        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class);
+        this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class);
+        this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class);
+        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class);
+        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class);
 
         convertDatabaseData();
     }

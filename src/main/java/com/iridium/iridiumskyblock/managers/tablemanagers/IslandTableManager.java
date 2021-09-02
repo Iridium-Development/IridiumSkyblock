@@ -13,8 +13,8 @@ import java.util.Optional;
  */
 public class IslandTableManager extends TableManager<Island, Integer> {
 
-    public IslandTableManager(ConnectionSource connectionSource, boolean autoCommit) throws SQLException {
-        super(connectionSource, Island.class, autoCommit);
+    public IslandTableManager(ConnectionSource connectionSource) throws SQLException {
+        super(connectionSource, Island.class);
         sort();
     }
 

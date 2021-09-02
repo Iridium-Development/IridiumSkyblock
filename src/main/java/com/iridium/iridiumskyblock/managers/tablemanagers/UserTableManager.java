@@ -16,8 +16,8 @@ public class UserTableManager extends TableManager<User, Integer> {
     // A list of users sorted by island id for binary search
     private final List<User> userIslandIndex;
 
-    public UserTableManager(ConnectionSource connectionSource, boolean autoCommit) throws SQLException {
-        super(connectionSource, User.class, autoCommit);
+    public UserTableManager(ConnectionSource connectionSource) throws SQLException {
+        super(connectionSource, User.class);
         this.userIslandIndex = new ArrayList<>(getEntries());
         sort();
     }

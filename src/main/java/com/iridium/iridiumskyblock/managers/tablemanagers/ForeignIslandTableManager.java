@@ -16,8 +16,8 @@ import java.util.*;
  */
 public class ForeignIslandTableManager<T extends IslandData, S> extends TableManager<T, S> {
 
-    public ForeignIslandTableManager(ConnectionSource connectionSource, Class<T> clazz, boolean autoCommit) throws SQLException {
-        super(connectionSource, clazz, autoCommit);
+    public ForeignIslandTableManager(ConnectionSource connectionSource, Class<T> clazz) throws SQLException {
+        super(connectionSource, clazz);
         sort();
     }
 
