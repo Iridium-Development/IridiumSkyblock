@@ -63,7 +63,7 @@ public class DataConverter {
     }
 
     public static void updateDatabaseData(int oldVersion, int newVersion, ConnectionSource connectionSource) {
-        System.out.println("Updating database from " + oldVersion + " to " + newVersion);
+        System.out.println("Updating database from version " + oldVersion + " to " + newVersion);
 
         try {
             DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
