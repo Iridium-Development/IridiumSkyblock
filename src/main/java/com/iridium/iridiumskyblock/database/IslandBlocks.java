@@ -41,7 +41,7 @@ public final class IslandBlocks extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return material.name() + "-" + getIsland().map(Island::getId).orElse(0);
+        return material.name() + "-" + getIslandID();
     }
 
 }

@@ -54,7 +54,7 @@ public class TrustCommand extends Command {
                 if (targetPlayer != null) {
                     User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
                     if (targetUser.getIsland().map(Island::getId).orElse(0) != island.get().getId()) {
-                        if (IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().noneMatch(it -> it.getUser().getUuid().equals(targetPlayer.getUniqueId()))) {
+                        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser).isPresent()) {
                             IslandTrusted islandTrusted = new IslandTrusted(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer),
                                     IridiumSkyblock.getInstance().getUserManager().getUser(player));
                             IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().addEntry(islandTrusted);

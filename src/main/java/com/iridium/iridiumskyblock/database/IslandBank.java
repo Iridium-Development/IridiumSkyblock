@@ -40,6 +40,6 @@ public class IslandBank extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return bankItem + "-" + getIsland().map(Island::getId).orElse(0);
+        return bankItem + "-" + getIslandID();
     }
 }

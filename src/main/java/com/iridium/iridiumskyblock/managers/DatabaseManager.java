@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -68,19 +69,19 @@ public class DatabaseManager {
 
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.userTableManager = new UserTableManager(connectionSource);
-        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class);
-        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class);
-        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class);
-        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class);
-        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class);
-        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class);
-        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class);
-        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class);
-        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class);
-        this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class);
-        this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class);
-        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class);
-        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class);
+        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, Comparator.comparing(IslandInvite::getIslandID).thenComparing(islandInvite -> islandInvite.getUser().getUuid()));
+        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, Comparator.comparing(IslandPermission::getIslandID).thenComparing(IslandPermission::getRank).thenComparing(IslandPermission::getPermission));
+        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, Comparator.comparing(IslandBlocks::getIslandID).thenComparing(IslandBlocks::getMaterial));
+        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class, Comparator.comparing(IslandSpawners::getIslandID).thenComparing(IslandSpawners::getSpawnerType));
+        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, Comparator.comparing(IslandBank::getIslandID).thenComparing(IslandBank::getBankItem));
+        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, Comparator.comparing(IslandMission::getIslandID).thenComparing(IslandMission::getMissionName).thenComparing(IslandMission::getMissionIndex));
+        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, Comparator.comparing(IslandReward::getIslandID));
+        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class, Comparator.comparing(IslandUpgrade::getIslandID).thenComparing(IslandUpgrade::getUpgrade));
+        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, Comparator.comparing(IslandTrusted::getIslandID).thenComparing(islandTrusted -> islandTrusted.getUser().getUuid()));
+        this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class, Comparator.comparing(IslandBooster::getIslandID).thenComparing(IslandBooster::getBooster));
+        this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, Comparator.comparing(IslandWarp::getIslandID));
+        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandID));
+        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandID).thenComparing(islandBan -> islandBan.getBannedUser().getUuid()));
 
         convertDatabaseData();
     }

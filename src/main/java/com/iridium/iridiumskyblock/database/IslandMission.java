@@ -50,7 +50,7 @@ public class IslandMission extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return missionName + "-" + missionIndex + "-" + getIsland().map(Island::getId).orElse(0);
+        return missionName + "-" + missionIndex + "-" + getIslandID();
     }
 
 }
