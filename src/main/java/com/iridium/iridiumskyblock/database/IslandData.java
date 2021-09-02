@@ -16,7 +16,7 @@ import java.util.Optional;
 @Getter
 public class IslandData {
 
-    @DatabaseField(columnName = "island_id", unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "island_id", uniqueCombo = true)
     private int islandID;
 
     public IslandData(Island island) {

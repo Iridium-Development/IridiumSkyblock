@@ -15,14 +15,14 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_upgrade")
 public final class IslandUpgrade extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
     @DatabaseField(columnName = "level", canBeNull = false)
     @Setter
     private int level;
 
-    @DatabaseField(columnName = "upgrade", canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "upgrade", canBeNull = false, uniqueCombo = true)
     private String upgrade;
 
     /**

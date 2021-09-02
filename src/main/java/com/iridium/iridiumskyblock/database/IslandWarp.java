@@ -17,13 +17,13 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_warps")
 public final class IslandWarp extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
     @DatabaseField(columnName = "location")
     private @NotNull String location;
 
-    @DatabaseField(columnName = "name", unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "name", uniqueCombo = true)
     private @NotNull String name;
 
     @DatabaseField(columnName = "password")

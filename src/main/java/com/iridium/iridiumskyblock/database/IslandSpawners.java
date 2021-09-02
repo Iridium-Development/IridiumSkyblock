@@ -13,10 +13,10 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_spawners")
 public final class IslandSpawners extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "spawner_type", canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "spawner_type", canBeNull = false, uniqueCombo = true)
     private @NotNull EntityType spawnerType;
 
     @DatabaseField(columnName = "amount", canBeNull = false)

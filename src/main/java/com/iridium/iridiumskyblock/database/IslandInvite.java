@@ -20,12 +20,12 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @DatabaseTable(tableName = "island_invites")
-public final class IslandInvite extends IslandData{
+public final class IslandInvite extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "user", canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "user", canBeNull = false, uniqueCombo = true)
     private @NotNull UUID user;
 
     @DatabaseField(columnName = "inviter", canBeNull = false)

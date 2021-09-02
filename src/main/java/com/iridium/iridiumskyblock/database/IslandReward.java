@@ -19,7 +19,7 @@ public final class IslandReward extends IslandData {
 
     private final static Persist persist = new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance());
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
     @DatabaseField(columnName = "reward", canBeNull = false, width = 2048)
