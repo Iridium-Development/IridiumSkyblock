@@ -66,7 +66,7 @@ public class Messages {
     public String playerUnBanned = "%prefix% &7You have un-banned %player% from visiting your Island.";
     public String userNotVisitingYourIsland = "%prefix% &7That user is not visiting your Island.";
     public String expelledIslandLocked = "%prefix% &7%player%'s Island is now private.";
-    public String youHaveBeenExpelled = "%prefix% &7You were expelled from %kicker%'s Island!";
+    public String youHaveBeenExpelled = "%prefix% &7You were expelled from %player%'s Island!";
     public String expelledVisitor = "%prefix% &7%player% has been expelled from your Island.";
     public String cannotExpelPlayer = "%prefix% &7%player% cannot be expelled!";
     public String inYourTeam = "%prefix% &7%player% is a member of your Island.";
