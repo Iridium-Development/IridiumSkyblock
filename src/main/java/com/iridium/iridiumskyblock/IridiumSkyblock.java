@@ -119,7 +119,7 @@ public class IridiumSkyblock extends IridiumCore {
         super.onEnable();
 
         // Convert old IridiumSkyblock data
-        DataConverter.run(this);
+        DataConverter.copyLegacyData();
 
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock");
@@ -520,7 +520,6 @@ public class IridiumSkyblock extends IridiumCore {
             }
         }
     }
-
 
     /**
      * Saves changes to the configuration files.

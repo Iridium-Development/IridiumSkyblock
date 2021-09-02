@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_permissions")
 public final class IslandPermission extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
     private int id;
 
     @DatabaseField(columnName = "permission", canBeNull = false)

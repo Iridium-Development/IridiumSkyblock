@@ -6,6 +6,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -45,10 +46,12 @@ public class TableManager<T, S> {
                 dao.createOrUpdate(t);
             }
             if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
+                try (DatabaseConnection connection = getDatabaseConnection()) {
+                    dao.commit(connection);
+                }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -80,10 +83,12 @@ public class TableManager<T, S> {
             dao.delete(t);
             entries.remove(t);
             if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
+                try (DatabaseConnection connection = getDatabaseConnection()) {
+                    dao.commit(connection);
+                }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -97,10 +102,12 @@ public class TableManager<T, S> {
             dao.delete(t);
             entries.removeAll(t);
             if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
+                try (DatabaseConnection connection = getDatabaseConnection()) {
+                    dao.commit(connection);
+                }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -121,11 +128,13 @@ public class TableManager<T, S> {
         try {
             TableUtils.clearTable(connectionSource, clazz);
             if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
+                try (DatabaseConnection connection = getDatabaseConnection()) {
+                    dao.commit(connection);
+                }
             }
             entries.clear();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException | IOException exception) {
+            exception.printStackTrace();
         }
     }
 

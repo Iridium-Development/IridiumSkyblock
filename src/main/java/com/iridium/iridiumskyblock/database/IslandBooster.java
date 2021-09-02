@@ -20,10 +20,10 @@ import java.time.temporal.ChronoUnit;
 @DatabaseTable(tableName = "island_booster")
 public final class IslandBooster extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "booster", canBeNull = false)
+    @DatabaseField(columnName = "booster", canBeNull = false, unique = true, uniqueCombo = true)
     private String booster;
 
     @DatabaseField(columnName = "start_time", canBeNull = false)

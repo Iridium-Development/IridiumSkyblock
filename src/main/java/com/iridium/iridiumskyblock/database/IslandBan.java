@@ -17,13 +17,13 @@ import java.util.UUID;
 @DatabaseTable(tableName = "island_bans")
 public class IslandBan extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
     private int id;
 
     @DatabaseField(columnName = "banner", canBeNull = false)
     private UUID banner;
 
-    @DatabaseField(columnName = "bannedUser", canBeNull = false)
+    @DatabaseField(columnName = "bannedUser", canBeNull = false, unique = true, uniqueCombo = true)
     private UUID bannedUser;
 
     @DatabaseField(columnName = "time", canBeNull = false)

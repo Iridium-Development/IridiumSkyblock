@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumskyblock.DataConverter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.*;
@@ -7,12 +8,21 @@ import com.iridium.iridiumskyblock.database.types.XMaterialType;
 import com.iridium.iridiumskyblock.managers.tablemanagers.ForeignIslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
 import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
+import com.j256.ormlite.dao.Dao.CreateOrUpdateStatus;
 import com.j256.ormlite.field.DataPersisterManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.logger.NullLogBackend;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.support.DatabaseConnection;
+import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +36,7 @@ import java.sql.SQLException;
 @Getter
 public class DatabaseManager {
 
+    private final int version = 1;
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
     private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;
@@ -75,6 +86,8 @@ public class DatabaseManager {
         this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, false);
         this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, false);
         this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, false);
+
+        convertDatabaseData();
     }
 
     /**
@@ -99,6 +112,27 @@ public class DatabaseManager {
         }
     }
 
+    private void convertDatabaseData() {
+        Path versionFile = Paths.get("plugins", "IridiumSkyblock", "sql_version.txt");
+        try {
+            Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE_NEW);
+            DataConverter.updateDatabaseData(1, 1, connectionSource);
+        } catch (FileAlreadyExistsException exception) {
+            try {
+                int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
+                if (oldVersion != version) {
+                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource);
+                    Files.delete(versionFile);
+                    Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE);
+                }
+            } catch (IOException | IndexOutOfBoundsException | NumberFormatException updateException) {
+                updateException.printStackTrace();
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     /**
      * Saves an island to the database and initializes variables like ID
      * ik this is really dumb but I cant think of a better way to do this
@@ -109,9 +143,11 @@ public class DatabaseManager {
     public Island registerIsland(Island island) {
         try {
             islandTableManager.getDao().createOrUpdate(island);
-            islandTableManager.getDao().commit(connectionSource.getReadOnlyConnection(null));
+            DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
+            islandTableManager.getDao().commit(connection);
             Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
             islandTableManager.addEntry(is);
+            connectionSource.releaseConnection(connection);
             return is;
         } catch (SQLException exception) {
             exception.printStackTrace();

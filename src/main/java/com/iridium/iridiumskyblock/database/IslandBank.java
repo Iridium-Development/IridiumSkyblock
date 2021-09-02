@@ -15,10 +15,10 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_bank")
 public class IslandBank extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "bank_item")
+    @DatabaseField(columnName = "bank_item", unique = true, uniqueCombo = true)
     private String bankItem;
 
     @DatabaseField(columnName = "number")

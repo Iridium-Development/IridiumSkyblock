@@ -17,9 +17,9 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_rewards")
 public final class IslandReward extends IslandData {
 
-    private static Persist persist = new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance());
+    private final static Persist persist = new Persist(Persist.PersistType.JSON, IridiumSkyblock.getInstance());
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
     private int id;
 
     @DatabaseField(columnName = "reward", canBeNull = false, width = 2048)

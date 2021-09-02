@@ -22,10 +22,10 @@ import java.util.UUID;
 @DatabaseTable(tableName = "island_invites")
 public final class IslandInvite extends IslandData{
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, unique = true, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "user", canBeNull = false)
+    @DatabaseField(columnName = "user", canBeNull = false, unique = true, uniqueCombo = true)
     private @NotNull UUID user;
 
     @DatabaseField(columnName = "inviter", canBeNull = false)

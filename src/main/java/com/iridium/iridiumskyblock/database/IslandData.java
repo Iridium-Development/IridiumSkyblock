@@ -14,7 +14,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class IslandData {
 
-    @DatabaseField(columnName = "island_id")
+    @DatabaseField(columnName = "island_id", unique = true, uniqueCombo = true)
     private int island;
 
     public IslandData(Island island) {
