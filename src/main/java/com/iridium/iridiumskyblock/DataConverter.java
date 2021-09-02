@@ -73,7 +73,6 @@ public class DataConverter {
                 if (inputStream == null) continue;
 
                 for (String statement : CharStreams.toString(new InputStreamReader(inputStream)).split("\n")) {
-                    System.out.println("Executed statement: '" + statement + "'");
                     connection.executeStatement(statement, DatabaseConnection.DEFAULT_RESULT_FLAGS);
                 }
             }
