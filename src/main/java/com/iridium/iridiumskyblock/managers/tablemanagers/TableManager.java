@@ -46,11 +46,9 @@ public class TableManager<T, S> {
                 dao.createOrUpdate(t);
             }
             if (!autoCommit) {
-                try (DatabaseConnection connection = getDatabaseConnection()) {
-                    dao.commit(connection);
-                }
+                dao.commit(getDatabaseConnection());
             }
-        } catch (SQLException | IOException exception) {
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
@@ -83,11 +81,9 @@ public class TableManager<T, S> {
             dao.delete(t);
             entries.remove(t);
             if (!autoCommit) {
-                try (DatabaseConnection connection = getDatabaseConnection()) {
-                    dao.commit(connection);
-                }
+                dao.commit(getDatabaseConnection());
             }
-        } catch (SQLException | IOException exception) {
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
@@ -102,11 +98,9 @@ public class TableManager<T, S> {
             dao.delete(t);
             entries.removeAll(t);
             if (!autoCommit) {
-                try (DatabaseConnection connection = getDatabaseConnection()) {
-                    dao.commit(connection);
-                }
+                dao.commit(getDatabaseConnection());
             }
-        } catch (SQLException | IOException exception) {
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
@@ -128,12 +122,10 @@ public class TableManager<T, S> {
         try {
             TableUtils.clearTable(connectionSource, clazz);
             if (!autoCommit) {
-                try (DatabaseConnection connection = getDatabaseConnection()) {
-                    dao.commit(connection);
-                }
+                dao.commit(getDatabaseConnection());
             }
             entries.clear();
-        } catch (SQLException | IOException exception) {
+        } catch (SQLException exception) {
             exception.printStackTrace();
         }
     }
