@@ -48,8 +48,8 @@ public class PrivateCommand extends Command {
                 if (visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || islandTrusted.stream().anyMatch(trustedIsland -> trustedIsland.getUser().getUuid() == visitor.getUuid())) {
                     continue;
                 }
-                PlayerUtils.teleportSpawn(user.toPlayer());
-                user.toPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledIslandLocked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                PlayerUtils.teleportSpawn(visitor.toPlayer());
+                visitor.toPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledIslandLocked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 visitorCount++;
             }
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate
