@@ -18,10 +18,10 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_blocks")
 public final class IslandBlocks extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "block", canBeNull = false)
+    @DatabaseField(columnName = "block", canBeNull = false, uniqueCombo = true)
     private @NotNull XMaterial material;
 
     @DatabaseField(columnName = "amount", canBeNull = false)
@@ -41,7 +41,7 @@ public final class IslandBlocks extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return material.name() + "-" + getIsland().map(Island::getId).orElse(0);
+        return material.name() + "-" + getIslandId();
     }
 
 }

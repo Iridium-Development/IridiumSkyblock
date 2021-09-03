@@ -16,10 +16,10 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_mission")
 public class IslandMission extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "mission_name")
+    @DatabaseField(columnName = "mission_name", uniqueCombo = true)
     private String missionName;
 
     @DatabaseField(columnName = "mission_index")
@@ -50,7 +50,7 @@ public class IslandMission extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return missionName + "-" + missionIndex + "-" + getIsland().map(Island::getId).orElse(0);
+        return missionName + "-" + missionIndex + "-" + getIslandId();
     }
 
 }

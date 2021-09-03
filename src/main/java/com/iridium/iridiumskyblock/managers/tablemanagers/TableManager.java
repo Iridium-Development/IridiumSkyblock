@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
+import com.iridium.iridiumcore.utils.SortedList;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -9,6 +10,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -18,20 +20,20 @@ import java.util.List;
  * @param <S> The Table Primary Id Class
  */
 public class TableManager<T, S> {
-    private final List<T> entries;
+    private final SortedList<T> entries;
     private final Dao<T, S> dao;
     private final Class<T> clazz;
 
-    private final boolean autoCommit;
     private final ConnectionSource connectionSource;
 
-    public TableManager(ConnectionSource connectionSource, Class<T> clazz, boolean autoCommit) throws SQLException {
+    public TableManager(ConnectionSource connectionSource, Class<T> clazz, Comparator<T> comparator) throws SQLException {
         this.connectionSource = connectionSource;
-        this.autoCommit = autoCommit;
         TableUtils.createTableIfNotExists(connectionSource, clazz);
         this.dao = DaoManager.createDao(connectionSource, clazz);
-        this.dao.setAutoCommit(getDatabaseConnection(), autoCommit);
-        this.entries = dao.queryForAll();
+        this.dao.setAutoCommit(getDatabaseConnection(), false);
+        this.entries = new SortedList<>(comparator);
+        this.entries.addAll(dao.queryForAll());
+        this.entries.sort(comparator);
         this.clazz = clazz;
     }
 
@@ -44,11 +46,9 @@ public class TableManager<T, S> {
             for (T t : entryList) {
                 dao.createOrUpdate(t);
             }
-            if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -79,11 +79,9 @@ public class TableManager<T, S> {
         try {
             dao.delete(t);
             entries.remove(t);
-            if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -96,11 +94,9 @@ public class TableManager<T, S> {
         try {
             dao.delete(t);
             entries.removeAll(t);
-            if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -120,12 +116,10 @@ public class TableManager<T, S> {
     public void clear() {
         try {
             TableUtils.clearTable(connectionSource, clazz);
-            if (!autoCommit) {
-                dao.commit(getDatabaseConnection());
-            }
+            dao.commit(getDatabaseConnection());
             entries.clear();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
     }
 
