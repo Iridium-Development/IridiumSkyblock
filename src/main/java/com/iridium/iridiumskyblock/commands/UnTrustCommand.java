@@ -54,10 +54,7 @@ public class UnTrustCommand extends Command {
                 return false;
             }
 
-            Optional<IslandTrusted> islandTrusted =
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get()).stream().filter(islandTrusted1 ->
-                            islandTrusted1.getUser().getUuid().equals(targetUser.getUuid())
-                    ).findFirst();
+            Optional<IslandTrusted> islandTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
             if (islandTrusted.isPresent()) {
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(islandTrusted.get());
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().trustRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

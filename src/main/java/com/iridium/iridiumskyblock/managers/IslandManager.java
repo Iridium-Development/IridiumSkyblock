@@ -517,6 +517,17 @@ public class IslandManager {
     }
 
     /**
+     * Gets an IslandBan object from island and user
+     *
+     * @param island The specified island
+     * @param user   The banned user
+     * @return an optional IslandBan object
+     */
+    public Optional<IslandBan> getIslandBan(Island island, User user) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntry(new IslandBan(island, user, user));
+    }
+
+    /**
      * Gets whether an IslandRank has the permission on the provided island.
      *
      * @param island     The specified Island
