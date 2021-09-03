@@ -70,6 +70,6 @@ public final class IslandBooster extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return booster + "-" + getIslandID();
+        return booster + "-" + getIslandId();
     }
 }

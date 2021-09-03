@@ -17,10 +17,10 @@ import java.util.Optional;
 public class IslandData {
 
     @DatabaseField(columnName = "island_id", uniqueCombo = true)
-    private int islandID;
+    private int islandId;
 
     public IslandData(Island island) {
-        this.islandID = island.getId();
+        this.islandId = island.getId();
     }
 
     /**
@@ -29,7 +29,7 @@ public class IslandData {
      * @return The Island of this block
      */
     public @NotNull Optional<Island> getIsland() {
-        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandID);
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandId);
     }
 
     /**

@@ -36,7 +36,7 @@ public final class IslandSpawners extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return spawnerType.name() + "-" + getIslandID();
+        return spawnerType.name() + "-" + getIslandId();
     }
 
 }
