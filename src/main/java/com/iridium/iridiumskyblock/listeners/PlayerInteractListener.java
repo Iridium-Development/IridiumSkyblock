@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -117,6 +118,13 @@ public class PlayerInteractListener implements Listener {
         boolean cooldown = cooldownProvider.isOnCooldown(player);
         cooldownProvider.applyCooldown(player);
         return cooldown;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onArmorStand(PlayerArmorStandManipulateEvent event) {
+        // Not sure why this isn't included in PlayerInteractEntity but meh
+        // Ry probably coded it cuz hes dum like that
+        onPlayerInteractEntity(event);
     }
 
     @EventHandler(ignoreCancelled = true)
