@@ -20,10 +20,10 @@ import java.time.temporal.ChronoUnit;
 @DatabaseTable(tableName = "island_booster")
 public final class IslandBooster extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "booster", canBeNull = false)
+    @DatabaseField(columnName = "booster", canBeNull = false, uniqueCombo = true)
     private String booster;
 
     @DatabaseField(columnName = "start_time", canBeNull = false)
@@ -70,6 +70,6 @@ public final class IslandBooster extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return booster + "-" + getIsland().map(Island::getId).orElse(0);
+        return booster + "-" + getIslandId();
     }
 }

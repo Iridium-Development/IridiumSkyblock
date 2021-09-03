@@ -4,7 +4,6 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.VisitorsGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -53,8 +52,7 @@ public class ExpelCommand extends Command {
             Player targetPlayer = Bukkit.getPlayer(args[1]);
             if (targetPlayer != null) {
                 User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-                List<IslandTrusted> islandTrusted = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island.get());
-                if (!island.get().equals(targetUser.getIsland().orElse(null)) && islandTrusted.stream().noneMatch(trustedIsland -> trustedIsland.getIsland().isPresent() && trustedIsland.getIsland().get().equals(targetUser.getIsland().orElse(null)))) {
+                if (!island.get().equals(targetUser.getIsland().orElse(null)) && !IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser).isPresent()) {
                     if (island.get().isInIsland(targetPlayer.getLocation())) {
                         if (targetUser.isBypass() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
                             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotExpelPlayer.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
