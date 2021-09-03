@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.google.common.io.CharStreams;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,7 +64,7 @@ public class DataConverter {
     }
 
     public static void updateDatabaseData(int oldVersion, int newVersion, ConnectionSource connectionSource) {
-        System.out.println("Updating database from version " + oldVersion + " to " + newVersion);
+        IridiumSkyblock.getInstance().getLogger().info("Updating database from version " + oldVersion + " to " + newVersion);
 
         try {
             DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
@@ -78,7 +79,7 @@ public class DataConverter {
             }
 
             connectionSource.releaseConnection(connection);
-            System.out.println("Update successful!");
+            IridiumSkyblock.getInstance().getLogger().info("Update successful!");
         } catch (SQLException | IOException exception) {
             exception.printStackTrace();
         }
