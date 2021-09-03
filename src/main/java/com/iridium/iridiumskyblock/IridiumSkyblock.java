@@ -442,9 +442,15 @@ public class IridiumSkyblock extends IridiumCore {
         this.permissionList.put(PermissionType.PORTAL.getPermissionKey(), permissions.portal);
 
         this.bankItemList = new ArrayList<>();
-        this.bankItemList.add(bankItems.crystalsBankItem);
-        this.bankItemList.add(bankItems.experienceBankItem);
-        this.bankItemList.add(bankItems.moneyBankItem);
+        if (bankItems.crystalsBankItem.isEnabled()) {
+            this.bankItemList.add(bankItems.crystalsBankItem);
+        }
+        if (bankItems.experienceBankItem.isEnabled()) {
+            this.bankItemList.add(bankItems.experienceBankItem);
+        }
+        if (bankItems.moneyBankItem.isEnabled()) {
+            this.bankItemList.add(bankItems.moneyBankItem);
+        }
 
         this.missionsList = new HashMap<>(missions.missions);
 
