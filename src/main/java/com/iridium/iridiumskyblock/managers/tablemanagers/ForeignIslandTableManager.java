@@ -62,7 +62,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
                 currentIndex--;
                 continue;
             }
-            if (island.getId()== islandData.getIslandID()){
+            if (island.getId() == islandData.getIslandID()){
                 result.add(getEntries().get(currentIndex));
                 currentIndex--;
             } else {
@@ -79,7 +79,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
                 currentIndex++;
                 continue;
             }
-            if (island.getId()== islandData.getIslandID()){
+            if (island.getId() == islandData.getIslandID()){
                 result.add(getEntries().get(currentIndex));
                 currentIndex++;
             } else {
