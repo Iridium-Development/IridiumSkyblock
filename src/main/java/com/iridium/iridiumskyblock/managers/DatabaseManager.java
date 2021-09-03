@@ -112,7 +112,7 @@ public class DatabaseManager {
         Path versionFile = Paths.get("plugins", "IridiumSkyblock", "sql_version.txt");
         try {
             Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE_NEW);
-            DataConverter.updateDatabaseData(1, 1, connectionSource);
+            DataConverter.updateDatabaseData(1, version, connectionSource);
         } catch (FileAlreadyExistsException exception) {
             try {
                 int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
