@@ -18,7 +18,7 @@ import java.util.Optional;
 public class RenameCommand extends Command {
 
     public RenameCommand() {
-        super(Collections.singletonList("rename"), "Change your island name", "%prefix% &7/is rename <name>","", true, Duration.ofMinutes(1));
+        super(Collections.singletonList("rename"), "Change your island name", "%prefix% &7/is rename <name>", "", true, Duration.ofMinutes(1));
     }
 
     /**
@@ -39,36 +39,43 @@ public class RenameCommand extends Command {
 
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        if (island.isPresent()) {
-            String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
-            if (!user.getIslandRank().equals(IslandRank.OWNER)) {
-                player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName
-                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
-            } else if (name.length() > (IridiumSkyblock.getInstance().getConfiguration()).maxIslandName) {
-                player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
-                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
-                        .replace("%name%", name)
-                        .replace("%max_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().maxIslandName))));
-            } else if (name.length() < (IridiumSkyblock.getInstance().getConfiguration()).minIslandName) {
-                player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
-                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
-                        .replace("%name%", name)
-                        .replace("%min_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().minIslandName))));
-            } else {
-                island.get().setName(name);
-                island.get().getMembers().forEach(member -> {
-                    Player islandMember = Bukkit.getPlayer(member.getUuid());
-                    if (islandMember != null)
-                        islandMember.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
-                                .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
-                                .replace("%player%", player.getName())
-                                .replace("%name%", name)));
-                });
-                return true;
-            }
+        if (!island.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return false;
+        String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
+        if (!user.getIslandRank().equals(IslandRank.OWNER)) {
+            player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
+            return false;
+        }
+        if (name.length() > (IridiumSkyblock.getInstance().getConfiguration()).maxIslandName) {
+            player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
+                    .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
+                    .replace("%name%", name)
+                    .replace("%max_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().maxIslandName))
+            ));
+            return false;
+        }
+        if (name.length() < (IridiumSkyblock.getInstance().getConfiguration()).minIslandName) {
+            player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
+                    .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
+                    .replace("%name%", name)
+                    .replace("%min_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().minIslandName))
+            ));
+            return false;
+        }
+        island.get().setName(name);
+        island.get().getMembers().forEach(member -> {
+            Player islandMember = Bukkit.getPlayer(member.getUuid());
+            if (islandMember != null) {
+                islandMember.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
+                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
+                        .replace("%player%", player.getName())
+                        .replace("%name%", name)
+                ));
+            }
+        });
+        return true;
     }
 
 

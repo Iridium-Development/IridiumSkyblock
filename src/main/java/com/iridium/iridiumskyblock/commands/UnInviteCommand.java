@@ -50,22 +50,20 @@ public class UnInviteCommand extends Command {
         Optional<Island> island = user.getIsland();
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getServer().getOfflinePlayer(args[1]));
 
-        if (island.isPresent()) {
-            Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), targetUser);
-            if (islandInvite.isPresent()) {
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(islandInvite.get());
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_UNINVITED, user, targetUser, 0, "");
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                return true;
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noActiveInvite.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return false;
+        Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), targetUser);
+        if (!islandInvite.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noActiveInvite.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(islandInvite.get());
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inviteRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_UNINVITED, user, targetUser, 0, "");
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        return true;
     }
 
     /**

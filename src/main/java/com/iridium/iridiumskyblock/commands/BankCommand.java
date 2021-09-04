@@ -12,12 +12,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Command which opens the Island bank GUI.
@@ -32,7 +29,7 @@ public class BankCommand extends Command {
      * The default constructor.
      */
     public BankCommand() {
-        super(Collections.singletonList("bank"), "Open your Island bank", "", false, Duration.ZERO);
+        super(Collections.singletonList("bank"), "Open your Island bank", "", true, Duration.ZERO);
 
         this.bankGive = new GiveCommand();
         this.bankSet = new SetCommand();
@@ -50,22 +47,16 @@ public class BankCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-            Optional<Island> island = user.getIsland();
+        Player player = (Player) sender;
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        Optional<Island> island = user.getIsland();
 
-            if (island.isPresent()) {
-                player.openInventory(new BankGUI(island.get()).getInventory());
-                return true;
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        if (!island.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return false;
+        player.openInventory(new BankGUI(island.get()).getInventory());
+        return true;
     }
 
     /**

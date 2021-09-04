@@ -9,10 +9,9 @@ import org.bukkit.entity.Player;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class LevelCommand extends Command {
 
@@ -36,18 +35,17 @@ public class LevelCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        if (island.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandLevel
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%island_level%", String.valueOf(island.get().getLevel()))
-                    .replace("%island_experience%", String.valueOf(island.get().getExperience()))
-                    .replace("%island_experienceRequired%", String.valueOf(island.get().getExperienceRequiredToLevelUp()))
-            ));
-            return true;
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnAnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandLevel
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                .replace("%island_level%", String.valueOf(island.get().getLevel()))
+                .replace("%island_experience%", String.valueOf(island.get().getExperience()))
+                .replace("%island_experienceRequired%", String.valueOf(island.get().getExperienceRequiredToLevelUp()))
+        ));
+        return true;
     }
 
     /**
@@ -61,7 +59,7 @@ public class LevelCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Stream.of("enable", "disable", "on", "off").filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+        return Collections.emptyList();
     }
 
 }

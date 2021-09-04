@@ -48,27 +48,25 @@ public class UnTrustCommand extends Command {
         Optional<Island> island = user.getIsland();
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(Bukkit.getServer().getOfflinePlayer(args[1]));
 
-        if (island.isPresent()) {
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.TRUST)) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageTrusts.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-
-            Optional<IslandTrusted> islandTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
-            if (islandTrusted.isPresent()) {
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(islandTrusted.get());
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().trustRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_UNTRUSTED, user, targetUser, 0, "");
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                return true;
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notTrusted.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.TRUST)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageTrusts.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        Optional<IslandTrusted> islandTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
+        if (!islandTrusted.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notTrusted.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(islandTrusted.get());
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().trustRevoked.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_UNTRUSTED, user, targetUser, 0, "");
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        return true;
     }
 
     /**

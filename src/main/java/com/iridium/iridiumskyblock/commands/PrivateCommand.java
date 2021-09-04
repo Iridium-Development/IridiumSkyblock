@@ -39,25 +39,27 @@ public class PrivateCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            island.get().setVisitable(false);
-            int visitorCount = 0;
-            for (User visitor : IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island.get())) {
-                if (visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), visitor).isPresent()) {
-                    continue;
-                }
-                PlayerUtils.teleportSpawn(visitor.toPlayer());
-                visitor.toPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledIslandLocked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                visitorCount++;
-            }
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%amount%", String.valueOf(visitorCount))));
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return island.isPresent();
+        island.get().setVisitable(false);
+        int visitorCount = 0;
+        for (User visitor : IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island.get())) {
+            if (visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), visitor).isPresent()) {
+                continue;
+            }
+            PlayerUtils.teleportSpawn(visitor.toPlayer());
+            visitor.toPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledIslandLocked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            visitorCount++;
+        }
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandNowPrivate
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                .replace("%amount%", String.valueOf(visitorCount)))
+        );
+
+        return true;
     }
 
     /**

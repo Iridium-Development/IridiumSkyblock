@@ -6,10 +6,10 @@ import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -40,17 +40,16 @@ public class DeleteCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            if (user.getIslandRank().equals(IslandRank.OWNER)) {
-                player.openInventory(new ConfirmationGUI(() -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get(), user),
-                    getCooldownProvider()
-                ).getInventory());
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotDeleteIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
+
+        if (!user.getIslandRank().equals(IslandRank.OWNER)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotDeleteIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        player.openInventory(new ConfirmationGUI(() -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get(), user), getCooldownProvider()).getInventory());
 
         // Always return false because the cooldown is set by the ConfirmationGUI
         return false;

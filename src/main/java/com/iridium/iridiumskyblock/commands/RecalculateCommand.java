@@ -3,11 +3,11 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
-import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,39 +37,38 @@ public class RecalculateCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (bukkitTask == null) {
-            int interval = 5;
-            List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
-            int seconds = (islandList.size() * interval / 20) % 60;
-            int minutes = (islandList.size() * interval / 20) / 60;
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingIslands
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                    .replace("%minutes%", String.valueOf(minutes))
-                    .replace("%seconds%", String.valueOf(seconds))
-                    .replace("%amount%", String.valueOf(islandList.size()))
-            );
-
-            bukkitTask = Bukkit.getScheduler().runTaskTimer(IridiumSkyblock.getInstance(), new Runnable() {
-                final ListIterator<Integer> islands = islandList.stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-
-                @Override
-                public void run() {
-                    if (islands.hasNext()) {
-                        IridiumSkyblock.getInstance().getIslandManager().getIslandById(islands.next()).ifPresent(island ->
-                                IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island)
-                        );
-                    } else {
-                        bukkitTask.cancel();
-                        bukkitTask = null;
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingFinished.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    }
-                }
-            }, 0, interval);
-        } else {
+        if (bukkitTask != null) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
+        int interval = 5;
+        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
+        int seconds = (islandList.size() * interval / 20) % 60;
+        int minutes = (islandList.size() * interval / 20) / 60;
+        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingIslands
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                .replace("%minutes%", String.valueOf(minutes))
+                .replace("%seconds%", String.valueOf(seconds))
+                .replace("%amount%", String.valueOf(islandList.size()))
+        );
 
-        return bukkitTask == null;
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(IridiumSkyblock.getInstance(), new Runnable() {
+            final ListIterator<Integer> islands = islandList.stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+
+            @Override
+            public void run() {
+                if (islands.hasNext()) {
+                    IridiumSkyblock.getInstance().getIslandManager().getIslandById(islands.next()).ifPresent(island ->
+                            IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island)
+                    );
+                } else {
+                    bukkitTask.cancel();
+                    bukkitTask = null;
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingFinished.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
+            }
+        }, 0, interval);
+        return true;
     }
 
     /**

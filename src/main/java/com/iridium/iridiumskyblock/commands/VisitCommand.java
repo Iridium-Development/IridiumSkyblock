@@ -46,18 +46,16 @@ public class VisitCommand extends Command {
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[1]);
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
 
-        if (targetUser.getIsland().isPresent()) {
-            if ((targetUser.getIsland()).get().isVisitable() || player.hasPermission("iridiumskyblock.visitbypass")) {
-                IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, targetUser.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
-                return true;
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!targetUser.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIslandFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return false;
+        if (!targetUser.getIsland().get().isVisitable() && !player.hasPermission("iridiumskyblock.visitbypass")) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, targetUser.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
+        return true;
     }
 
     /**

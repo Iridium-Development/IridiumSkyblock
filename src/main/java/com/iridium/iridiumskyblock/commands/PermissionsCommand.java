@@ -40,13 +40,13 @@ public class PermissionsCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            player.openInventory(new IslandRanksGUI(island.get()).getInventory());
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return island.isPresent();
+        player.openInventory(new IslandRanksGUI(island.get()).getInventory());
+        return true;
     }
 
     /**

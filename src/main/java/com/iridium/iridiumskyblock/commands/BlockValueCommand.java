@@ -38,15 +38,16 @@ public class BlockValueCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
-        if (arguments.length == 2) {
-            BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
-            if (blockValueType != null) {
-                player.openInventory(new BlockValueGUI(blockValueType).getInventory());
-                return true;
-            }
+        if (arguments.length != 2) {
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+            return true;
         }
-
-        player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+        BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
+        if (blockValueType == null) {
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+            return true;
+        }
+        player.openInventory(new BlockValueGUI(blockValueType).getInventory());
         return true;
     }
 
