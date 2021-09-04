@@ -4,10 +4,10 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,17 +33,15 @@ public class ClearDataCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            player.openInventory(new ConfirmationGUI(() -> execute(player),
-                getCooldownProvider()
-            ).getInventory());
-            // Return false because the cooldown is set by the ConfirmationGUI
-            return false;
-        } else {
+        if (!(sender instanceof Player)) {
             execute(sender);
             return true;
         }
+        Player player = (Player) sender;
+        player.openInventory(new ConfirmationGUI(() -> execute(player), getCooldownProvider()
+        ).getInventory());
+        // Return false because the cooldown is set by the ConfirmationGUI
+        return false;
     }
 
     private void execute(CommandSender commandSender) {

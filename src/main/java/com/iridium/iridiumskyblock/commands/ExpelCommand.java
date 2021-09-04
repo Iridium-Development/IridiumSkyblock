@@ -43,41 +43,43 @@ public class ExpelCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
-        if (island.isPresent()) {
-            if (args.length == 1) {
-                player.openInventory(new VisitorsGUI(1, island.get()).getInventory());
-                return true;
-            }
-            Player targetPlayer = Bukkit.getPlayer(args[1]);
-            if (targetPlayer != null) {
-                User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-                if (!island.get().equals(targetUser.getIsland().orElse(null)) && !IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser).isPresent()) {
-                    if (island.get().isInIsland(targetPlayer.getLocation())) {
-                        if (targetUser.isBypass() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotExpelPlayer.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        } else if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.EXPEL)) {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        } else {
-                            targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenExpelled.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledVisitor.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            PlayerUtils.teleportSpawn(targetPlayer);
-                            return true;
-                        }
-                    } else {
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotVisitingYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    }
-                } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inYourTeam.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        if (args.length == 1) {
+            player.openInventory(new VisitorsGUI(1, island.get()).getInventory());
+            return true;
+        }
+        Player targetPlayer = Bukkit.getPlayer(args[1]);
+        if (targetPlayer == null) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        if (island.get().equals(targetUser.getIsland().orElse(null)) || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser).isPresent()) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inYourTeam.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        if (!island.get().isInIsland(targetPlayer.getLocation())) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotVisitingYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        if (targetUser.isBypass() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotExpelPlayer.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.EXPEL)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenExpelled.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledVisitor.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        PlayerUtils.teleportSpawn(targetPlayer);
+        return true;
+
     }
 
     /**

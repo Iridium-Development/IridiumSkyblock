@@ -4,10 +4,10 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import java.time.Duration;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -38,13 +38,16 @@ public class ValueCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandValue.replace("%rank%", String.valueOf(island.get().getRank())).replace("%value%", String.valueOf(island.get().getValue())).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return island.isPresent();
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandValue
+                .replace("%rank%", String.valueOf(island.get().getRank()))
+                .replace("%value%", String.valueOf(island.get().getValue()))
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+        ));
+        return true;
     }
 
     /**

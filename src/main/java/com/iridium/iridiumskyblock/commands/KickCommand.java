@@ -30,7 +30,7 @@ public class KickCommand extends Command {
      * The default constructor.
      */
     public KickCommand() {
-        super(Collections.singletonList("kick"), "Kick a player", "%prefix% &7/is kick <name>", "",true, Duration.ZERO);
+        super(Collections.singletonList("kick"), "Kick a player", "%prefix% &7/is kick <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -52,49 +52,48 @@ public class KickCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[1]);
-            User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-
-            if (island.get().equals(targetUser.getIsland().orElse(null))) {
-                if (targetUser.getIslandRank().getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.KICK)) {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotKickUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                } else {
-                    UserKickEvent userKickEvent = new UserKickEvent(island.get(), targetUser, user);
-                    Bukkit.getPluginManager().callEvent(userKickEvent);
-                    if (userKickEvent.isCancelled()) return false;
-
-                    if (targetPlayer instanceof Player) {
-                        ((Player) targetPlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        PlayerUtils.teleportSpawn((Player) targetPlayer);
-                    }
-
-                    targetUser.setIsland(null);
-
-                    // Send a message to all other members
-                    for (User member : island.get().getMembers()) {
-                        Player p = Bukkit.getPlayer(member.getUuid());
-                        if (p != null) {
-                            if (!p.equals(player)) {
-                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().kickedPlayer.replace("%kicker%", player.getName()).replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            } else {
-                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youKickedPlayer.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            }
-                        }
-                    }
-
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser, 0, "");
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                    return true;
-                }
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[1]);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+
+        if (!island.get().equals(targetUser.getIsland().orElse(null))) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        if (targetUser.getIslandRank().getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.KICK)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotKickUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        UserKickEvent userKickEvent = new UserKickEvent(island.get(), targetUser, user);
+        Bukkit.getPluginManager().callEvent(userKickEvent);
+        if (userKickEvent.isCancelled()) return false;
+
+        if (targetPlayer instanceof Player) {
+            ((Player) targetPlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            PlayerUtils.teleportSpawn((Player) targetPlayer);
+        }
+
+        targetUser.setIsland(null);
+
+        // Send a message to all other members
+        for (User member : island.get().getMembers()) {
+            Player p = Bukkit.getPlayer(member.getUuid());
+            if (p != null) {
+                if (!p.equals(player)) {
+                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().kickedPlayer.replace("%kicker%", player.getName()).replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                } else {
+                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youKickedPlayer.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
+            }
+        }
+
+        IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser, 0, "");
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        return true;
     }
 
     /**

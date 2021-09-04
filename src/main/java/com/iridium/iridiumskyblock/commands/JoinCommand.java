@@ -50,51 +50,49 @@ public class JoinCommand extends Command {
 
         if (user.getIsland().isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        } else {
-            OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-            User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
-            Optional<Island> island = offlinePlayerUser.getIsland();
+            return false;
+        }
+        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
+        Optional<Island> island = offlinePlayerUser.getIsland();
 
-            if (island.isPresent()) {
-                Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), user);
-                if (islandInvite.isPresent() || user.isBypass()) {
-                    IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "member");
-                    int memberLimit = IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
-                    if (!user.isBypass() && island.get().getMembers().size() >= memberLimit) {
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberLimitReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        return false;
-                    }
+        if (!island.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        Optional<IslandInvite> islandInvite = IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island.get(), user);
+        if (!islandInvite.isPresent() && !user.isBypass()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noInvite.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "member");
+        int memberLimit = IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
+        if (!user.isBypass() && island.get().getMembers().size() >= memberLimit) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandMemberLimitReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
 
-                    Optional<User> inviter = islandInvite.map(IslandInvite::getInviter);
-                    UserJoinEvent userJoinEvent = new UserJoinEvent(island.get(), user, inviter.orElse(null));
-                    Bukkit.getPluginManager().callEvent(userJoinEvent);
-                    if (userJoinEvent.isCancelled()) return false;
+        Optional<User> inviter = islandInvite.map(IslandInvite::getInviter);
+        UserJoinEvent userJoinEvent = new UserJoinEvent(island.get(), user, inviter.orElse(null));
+        Bukkit.getPluginManager().callEvent(userJoinEvent);
+        if (userJoinEvent.isCancelled()) return false;
 
-                    // Send a message to all other members
-                    for (User member : island.get().getMembers()) {
-                        Player islandMember = Bukkit.getPlayer(member.getName());
-                        if (islandMember != null) {
-                            islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerJoinedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        }
-                    }
-
-                    user.setIsland(island.get());
-                    user.setIslandRank(IslandRank.MEMBER);
-                    islandInvite.ifPresent(invite -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(invite));
-                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), 0);
-
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_JOINED, user, null, 0, "");
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                    return true;
-                } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noInvite.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        // Send a message to all other members
+        for (User member : island.get().getMembers()) {
+            Player islandMember = Bukkit.getPlayer(member.getName());
+            if (islandMember != null) {
+                islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerJoinedYourIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
 
-        return false;
+        user.setIsland(island.get());
+        user.setIslandRank(IslandRank.MEMBER);
+        islandInvite.ifPresent(invite -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(invite));
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), 0);
+
+        IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_JOINED, user, null, 0, "");
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        return true;
     }
 
     /**

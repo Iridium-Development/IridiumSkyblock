@@ -39,24 +39,21 @@ public class MissionCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            if (args.length == 2) {
-                Mission.MissionType missionType = Mission.MissionType.getMission(args[1]);
-                if (missionType != null) {
-                    player.openInventory(new MissionsGUI(island.get(), missionType).getInventory());
-                    return true;
-                } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
-                player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
-                return true;
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return false;
+        if (args.length != 2) {
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
+            return true;
+        }
+        Mission.MissionType missionType = Mission.MissionType.getMission(args[1]);
+        if (missionType == null) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        player.openInventory(new MissionsGUI(island.get(), missionType).getInventory());
+        return true;
     }
 
     /**

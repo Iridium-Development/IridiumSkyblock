@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -31,6 +32,7 @@ public enum IslandRank {
         this.level = level;
     }
 
+    @NotNull
     public String getDisplayName() {
         switch (this) {
             case OWNER:
@@ -44,7 +46,7 @@ public enum IslandRank {
             case VISITOR:
                 return IridiumSkyblock.getInstance().getMessages().visitorRankDisplayName;
             default:
-                return null;
+                return "";
         }
     }
 

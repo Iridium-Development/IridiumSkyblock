@@ -9,7 +9,6 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.utils.TimeUtils;
-import java.lang.reflect.Field;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +16,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.*;
 
@@ -122,17 +122,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 continue;
             }
 
-            if (executionBlocked(command, commandSender)) {
-                return false;
-            }
-
             Command executingCommand = findExecutingCommand(command, args);
-            if (executingCommand != command && executionBlocked(executingCommand, commandSender)) {
+            if (executionBlocked(executingCommand, commandSender)) {
                 return false;
             }
 
             boolean success = executingCommand.execute(commandSender, args);
-            if (success) executingCommand.cooldownProvider.applyCooldown(commandSender);
+            if (success) executingCommand.getCooldownProvider().applyCooldown(commandSender);
             return true;
         }
 
@@ -141,6 +137,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         return false;
     }
 
+    /**
+     * Checks if a commandSender can execute a command or not
+     *
+     * @param command       The specified Command
+     * @param commandSender The command sender
+     * @return a true/false boolean
+     */
     private boolean executionBlocked(Command command, CommandSender commandSender) {
         // Check if this command is only for players
         if (command.onlyForPlayers && !(commandSender instanceof Player)) {
@@ -212,8 +215,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     private boolean hasPermissions(@NotNull CommandSender commandSender, Command command) {
         return commandSender.hasPermission(command.permission)
-            || command.permission.equalsIgnoreCase("")
-            || command.permission.equalsIgnoreCase("iridiumskyblock.");
+                || command.permission.equalsIgnoreCase("")
+                || command.permission.equalsIgnoreCase("iridiumskyblock.");
     }
 
     private Command findExecutingCommand(Command baseCommand, String[] args) {
