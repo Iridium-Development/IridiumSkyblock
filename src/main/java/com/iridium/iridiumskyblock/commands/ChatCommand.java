@@ -41,41 +41,37 @@ public class ChatCommand extends Command {
         Player player = (Player) sender;
         Optional<Island> island = IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland();
 
-        if (island.isPresent()) {
-
-            if (args.length > 1) {
-
-                String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-
-                for (User user : island.get().getMembers()) {
-                    Player recipient = Bukkit.getPlayer(user.getUuid());
-
-                    if (recipient != null) {
-                        recipient.sendMessage(StringUtils.color(
-                                StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().islandMemberChat, new PlaceholderBuilder().applyIslandPlaceholders(island.get()).build())
-                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                                        .replace("%player%", player.getName())
-                                        .replace("%message%", message))
-                        );
-                    }
-                }
-            } else {
-                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                UserChatToggleEvent userChatToggleEvent = new UserChatToggleEvent(user, !user.isIslandChat());
-                Bukkit.getPluginManager().callEvent(userChatToggleEvent);
-                if (!userChatToggleEvent.isCancelled()) {
-                    user.setIslandChat(!user.isIslandChat());
-                    player.sendMessage(StringUtils.color(
-                            (user.isIslandChat() ? IridiumSkyblock.getInstance().getMessages().islandChatEnabled : IridiumSkyblock.getInstance().getMessages().islandChatDisabled)
-                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                    );
-                }
-            }
-            return true;
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
+        if (args.length > 1) {
+            String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
+            for (User user : island.get().getMembers()) {
+                Player recipient = Bukkit.getPlayer(user.getUuid());
+                if (recipient != null) {
+                    recipient.sendMessage(StringUtils.color(
+                            StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().islandMemberChat, new PlaceholderBuilder().applyIslandPlaceholders(island.get()).build())
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                    .replace("%player%", player.getName())
+                                    .replace("%message%", message))
+                    );
+                }
+            }
+        } else {
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            UserChatToggleEvent userChatToggleEvent = new UserChatToggleEvent(user, !user.isIslandChat());
+            Bukkit.getPluginManager().callEvent(userChatToggleEvent);
+            if (userChatToggleEvent.isCancelled()) {
+                return false;
+            }
+            user.setIslandChat(!user.isIslandChat());
+            player.sendMessage(StringUtils.color((user.isIslandChat() ? IridiumSkyblock.getInstance().getMessages().islandChatEnabled : IridiumSkyblock.getInstance().getMessages().islandChatDisabled)
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+            );
+        }
+        return true;
     }
 
     /**

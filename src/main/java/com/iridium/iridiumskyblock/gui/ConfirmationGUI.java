@@ -24,7 +24,7 @@ public class ConfirmationGUI extends GUI {
      * @param runnable         The code that should be run when the user confirms his action
      * @param cooldownProvider The provider for cooldowns that should be started on success
      */
-    public ConfirmationGUI(@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
+    public  ConfirmationGUI(@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
         super(IridiumSkyblock.getInstance().getInventories().confirmationGUI, null);
         this.runnable = runnable;
         this.cooldownProvider = cooldownProvider;

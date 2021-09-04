@@ -47,47 +47,47 @@ public class EditWarpCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.MANAGE_WARPS)) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageWarps.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
+        if (!island.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
 
-            List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
-            Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
-            if (islandWarp.isPresent()) {
-                //TODO use subcommand system
-                switch (args[2]) {
-                    case "icon":
-                        if (args.length != 4) {
-                            sender.sendMessage("/is editwarp <name> icon <icon>");
-                        }
-                        Optional<XMaterial> xMaterial = XMaterial.matchXMaterial(args[3]);
-                        if (xMaterial.isPresent()) {
-                            islandWarp.get().setIcon(xMaterial.get());
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpIconSet.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            return true;
-                        } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchMaterial.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            return false;
-                        }
-                    case "description":
-                        if (args.length < 4) {
-                            sender.sendMessage("/is editwarp <name> description <description>");
-                            return false;
-                        }
+        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.MANAGE_WARPS)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageWarps.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
 
-                        String description = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
-                        islandWarp.get().setDescription(description);
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpDescriptionSet.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        return true;
+        List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
+        Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
+        if (!islandWarp.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        //TODO use subcommand system
+        switch (args[2]) {
+            case "icon":
+                if (args.length != 4) {
+                    sender.sendMessage("/is editwarp <name> icon <icon>");
+                }
+                Optional<XMaterial> xMaterial = XMaterial.matchXMaterial(args[3]);
+                if (xMaterial.isPresent()) {
+                    islandWarp.get().setIcon(xMaterial.get());
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpIconSet.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    return true;
+                } else {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchMaterial.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    return false;
+                }
+            case "description":
+                if (args.length < 4) {
+                    sender.sendMessage("/is editwarp <name> description <description>");
+                    return false;
                 }
 
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                String description = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
+                islandWarp.get().setDescription(description);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpDescriptionSet.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return true;
         }
 
         return false;

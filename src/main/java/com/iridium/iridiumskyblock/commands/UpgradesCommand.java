@@ -43,39 +43,36 @@ public class UpgradesCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            if (args.length == 2) {
-                String upgradeName = args[1];
-                Upgrade<?> upgrade = IridiumSkyblock.getInstance().getUpgradesList().get(upgradeName);
-                if (upgrade != null) {
-                    IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), upgradeName);
-                    if (upgrade.upgrades.containsKey(islandUpgrade.getLevel() + 1)) {
-                        UpgradeData upgradeData = upgrade.upgrades.get(islandUpgrade.getLevel() + 1);
-                        if (PlayerUtils.pay(player, island.get(), upgradeData.crystals, upgradeData.money)) {
-                            islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
-                            IslandLog islandLog = new IslandLog(island.get(), LogAction.UPGRADE_PURCHASE, user, null, 0, upgradeName);
-                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                            IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(island.get());
-                            island.get().resetCache();
-                            return true;
-                        } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        }
-                    } else {
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().maxLevelReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    }
-                } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownUpgrade.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
-                player.openInventory(new UpgradesGUI(island.get()).getInventory());
-                return true;
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return false;
+        if (args.length != 2) {
+            player.openInventory(new UpgradesGUI(island.get()).getInventory());
+            return true;
+        }
+        String upgradeName = args[1];
+        Upgrade<?> upgrade = IridiumSkyblock.getInstance().getUpgradesList().get(upgradeName);
+        if (upgrade == null) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownUpgrade.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), upgradeName);
+        UpgradeData upgradeData = upgrade.upgrades.get(islandUpgrade.getLevel() + 1);
+        if (upgradeData == null) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().maxLevelReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        if (!PlayerUtils.pay(player, island.get(), upgradeData.crystals, upgradeData.money)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
+        IslandLog islandLog = new IslandLog(island.get(), LogAction.UPGRADE_PURCHASE, user, null, 0, upgradeName);
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(island.get());
+        island.get().resetCache();
+        return true;
     }
 
     /**

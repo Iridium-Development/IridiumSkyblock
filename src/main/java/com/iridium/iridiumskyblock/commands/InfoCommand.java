@@ -39,39 +39,36 @@ public class InfoCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] arguments) {
         if (arguments.length == 1) {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                Optional<Island> userIsland = user.getIsland();
-                if (userIsland.isPresent()) {
-                    sendInfo(sender, userIsland.get(), user);
-                    return true;
-                } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
+            if (!(sender instanceof Player)) {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
-            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(arguments[1]);
-
-            // Check if the target user actually exists
-            if (!targetPlayer.hasPlayedBefore()) {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
-
-            User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-            Optional<Island> targetIsland = targetUser.getIsland();
-            if (targetIsland.isPresent()) {
-                sendInfo(sender, targetIsland.get(), targetUser);
-                return true;
-            } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            Player player = (Player) sender;
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            Optional<Island> userIsland = user.getIsland();
+            if (!userIsland.isPresent()) {
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return false;
             }
+            sendInfo(sender, userIsland.get(), user);
+            return true;
+        }
+        OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(arguments[1]);
+
+        // Check if the target user actually exists
+        if (!targetPlayer.hasPlayedBefore()) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        Optional<Island> targetIsland = targetUser.getIsland();
+        if (!targetIsland.isPresent()) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        sendInfo(sender, targetIsland.get(), targetUser);
+        return true;
     }
 
     /**
