@@ -64,6 +64,10 @@ public class RenameCommand extends Command {
             ));
             return false;
         }
+        if (IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
+            player.sendMessage(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
+            return false;
+        }
         island.get().setName(name);
         island.get().getMembers().forEach(member -> {
             Player islandMember = Bukkit.getPlayer(member.getUuid());
