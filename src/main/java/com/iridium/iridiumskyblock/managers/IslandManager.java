@@ -214,7 +214,7 @@ public class IslandManager {
             return false;
         }
 
-        if (getIslandByName(name).isPresent()) {
+        if (name != null && getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -241,12 +241,12 @@ public class IslandManager {
      * @param schematic The schematic of the Island
      * @return The island being created
      */
-    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
+    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, String name, @NotNull Schematics.SchematicConfig schematic) {
         clearIslandCache();
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             final User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-            final Island island = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic));
+            final Island island = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic)).join();
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
 

@@ -25,6 +25,7 @@ import java.nio.file.*;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -32,7 +33,7 @@ import java.util.Comparator;
 @Getter
 public class DatabaseManager {
 
-    private final int version = 1;
+    private final int version = 2;
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
     private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;
@@ -136,19 +137,21 @@ public class DatabaseManager {
      * @param island The island we are saving
      * @return The island with variables like id added
      */
-    public Island registerIsland(Island island) {
-        try {
-            islandTableManager.getDao().createOrUpdate(island);
-            DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
-            islandTableManager.getDao().commit(connection);
-            Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
-            islandTableManager.addEntry(is);
-            connectionSource.releaseConnection(connection);
-            return is;
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
-        return island;
+    public synchronized CompletableFuture<Island> registerIsland(Island island) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                islandTableManager.getDao().createOrUpdate(island);
+                DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
+                islandTableManager.getDao().commit(connection);
+                Island is = islandTableManager.getDao().queryForAll().stream().max(Comparator.comparing(Island::getId)).orElse(island);
+                islandTableManager.addEntry(is);
+                connectionSource.releaseConnection(connection);
+                return is;
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+            return island;
+        });
     }
 
 }
