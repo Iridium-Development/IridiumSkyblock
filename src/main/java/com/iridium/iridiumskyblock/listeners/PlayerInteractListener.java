@@ -36,7 +36,6 @@ public class PlayerInteractListener implements Listener {
             XMaterial.TRIPWIRE
     ));
 
-    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
 
