@@ -52,7 +52,6 @@ public class IslandManager {
         islandValueSortCache.clearCache();
     }
 
-
     /**
      * Creates a new world using the current skyblock generator.
      *
