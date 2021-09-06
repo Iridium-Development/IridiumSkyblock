@@ -4,19 +4,21 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.PermissionType;
-import com.iridium.iridiumskyblock.database.*;
+import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandInvite;
+import com.iridium.iridiumskyblock.database.IslandLog;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
+import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InvitesGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which invites a user to the Island.

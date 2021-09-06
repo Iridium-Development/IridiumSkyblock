@@ -7,15 +7,14 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BiomeGUI;
 import java.time.Duration;
-import org.apache.commons.lang.WordUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class BiomeCommand extends Command {
 

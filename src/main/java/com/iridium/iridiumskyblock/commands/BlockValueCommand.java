@@ -4,14 +4,13 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.BlockValueGUI;
 import com.iridium.iridiumskyblock.gui.BlockValueGUI.BlockValueType;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which shows all the valuable blocks and spawners.
