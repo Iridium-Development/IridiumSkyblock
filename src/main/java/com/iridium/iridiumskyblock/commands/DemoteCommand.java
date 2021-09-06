@@ -9,16 +9,15 @@ import com.iridium.iridiumskyblock.api.UserDemoteEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which demotes a user in the Island rank system.
@@ -104,10 +103,7 @@ public class DemoteCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream()
-            .map(Player::getName)
-            .filter(playerName -> playerName.toLowerCase().contains(args[1].toLowerCase()))
-            .collect(Collectors.toList());
+        return PlayerUtils.getOnlinePlayerNames();
     }
 
 }

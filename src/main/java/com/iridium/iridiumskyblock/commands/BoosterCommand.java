@@ -20,12 +20,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class BoostersCommand extends Command {
+public class BoosterCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public BoostersCommand() {
+    public BoosterCommand() {
         super(Arrays.asList("booster", "boosters"), "Open the Island Boosters Menu", "", true, Duration.ZERO);
     }
 

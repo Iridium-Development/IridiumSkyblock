@@ -87,13 +87,11 @@ public class DeleteWarpCommand extends Command {
         if (args.length == 2) {
             return islandWarps.stream()
                 .map(IslandWarp::getName)
-                .filter(islandWarp -> islandWarp.toLowerCase().contains(args[1].toLowerCase()))
                 .collect(Collectors.toList());
         }
 
         if (args.length == 3) {
             return Stream.of("icon", "description")
-                .filter(subCommand -> subCommand.contains(args[2]))
                 .collect(Collectors.toList());
         }
 
@@ -101,7 +99,6 @@ public class DeleteWarpCommand extends Command {
             if (args[2].equalsIgnoreCase("icon")) {
                 return Arrays.stream(XMaterial.values())
                     .map(XMaterial::name)
-                    .filter(material -> material.toLowerCase().contains(args[3].toLowerCase()))
                     .collect(Collectors.toList());
             }
         }

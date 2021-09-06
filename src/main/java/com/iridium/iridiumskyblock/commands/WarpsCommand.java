@@ -89,7 +89,6 @@ public class WarpsCommand extends Command {
             List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
             return islandWarps.stream()
                 .map(IslandWarp::getName)
-                .filter(warpName -> warpName.toLowerCase().contains(args[1].toLowerCase()))
                 .collect(Collectors.toList());
         }
 

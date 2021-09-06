@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -77,10 +78,7 @@ public class UnInviteCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream()
-            .map(Player::getName)
-            .filter(playerName -> playerName.toLowerCase().contains(args[1].toLowerCase()))
-            .collect(Collectors.toList());
+        return PlayerUtils.getOnlinePlayerNames();
     }
 
 }

@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.UpgradesGUI;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -90,9 +91,7 @@ public class UpgradesCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return IridiumSkyblock.getInstance().getUpgradesList().keySet().stream()
-            .filter(upgradeName -> upgradeName.toLowerCase().contains(args[1].toLowerCase()))
-            .collect(Collectors.toList());
+        return new ArrayList<>(IridiumSkyblock.getInstance().getUpgradesList().keySet());
     }
 
 }

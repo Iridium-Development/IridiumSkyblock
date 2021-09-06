@@ -6,6 +6,8 @@ import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
+import java.util.List;
+import java.util.stream.Collectors;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -135,6 +137,17 @@ public class PlayerUtils {
                 amount = 0;
             }
         }
+    }
+
+    /**
+     * Returns a list of the names of all online players.
+     *
+     * @return The names of all players.
+     */
+    public static List<String> getOnlinePlayerNames() {
+        return Bukkit.getOnlinePlayers().stream()
+            .map(Player::getName)
+            .collect(Collectors.toList());
     }
 
 }

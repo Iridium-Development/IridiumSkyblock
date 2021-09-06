@@ -106,10 +106,7 @@ public class KickCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream()
-            .map(Player::getName)
-            .filter(playerName -> playerName.toLowerCase().contains(args[1].toLowerCase()))
-            .collect(Collectors.toList());
+        return PlayerUtils.getOnlinePlayerNames();
     }
 
 }

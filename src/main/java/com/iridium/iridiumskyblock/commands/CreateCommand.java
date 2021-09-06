@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
 import java.time.Duration;
+import java.util.ArrayList;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -96,13 +97,11 @@ public class CreateCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
-                .filter(schematicName -> schematicName.contains(args[2]))
-                .collect(Collectors.toList());
+            return new ArrayList<>(IridiumSkyblock.getInstance().getSchematics().schematics.keySet());
         }
 
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 

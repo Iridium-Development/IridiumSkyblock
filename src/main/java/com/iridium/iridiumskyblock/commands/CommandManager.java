@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.utils.TimeUtils;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -187,6 +188,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         // Handle the tab completion if it's the sub-command selection
         if (args.length == 1) {
             ArrayList<String> result = new ArrayList<>();
+
             for (Command command : commands) {
                 for (String alias : command.aliases) {
                     if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && hasPermissions(commandSender, command)) {
@@ -194,6 +196,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     }
                 }
             }
+
             return result;
         }
 
@@ -204,12 +207,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 if (hasPermissions(commandSender, executingCommand)) {
                     List<String> tabCompletion = new ArrayList<>(executingCommand.onTabComplete(commandSender, cmd, label, args));
                     tabCompletion.addAll(executingCommand.getChildNames());
-                    return tabCompletion;
+                    return filterTabCompletionResults(tabCompletion, args);
                 }
             }
         }
 
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 
@@ -231,6 +234,16 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         }
 
         return executingCommand;
+    }
+
+    private List<String> filterTabCompletionResults(List<String> tabCompletion, String[] arguments) {
+        return tabCompletion.stream()
+            .filter(completion -> {
+                String unifiedCompletion = completion.toLowerCase();
+                String lastArgument = arguments[arguments.length - 1].toLowerCase();
+                return unifiedCompletion.startsWith(lastArgument) || unifiedCompletion.contains(lastArgument);
+            })
+            .collect(Collectors.toList());
     }
 
 }

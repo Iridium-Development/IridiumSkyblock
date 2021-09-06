@@ -69,10 +69,9 @@ public class MissionCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Arrays.stream(Mission.MissionType.values())
             .map(MissionType::name)
-            .filter(missionType -> missionType.toLowerCase().contains(args[1].toLowerCase()))
             .collect(Collectors.toList());
     }
 

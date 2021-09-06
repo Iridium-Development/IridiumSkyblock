@@ -83,7 +83,6 @@ public class DepositCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return IridiumSkyblock.getInstance().getBankItemList().stream()
             .map(BankItem::getName)
-            .filter(bankItemName -> bankItemName.toLowerCase().contains(args[1].toLowerCase()))
             .collect(Collectors.toList());
     }
 

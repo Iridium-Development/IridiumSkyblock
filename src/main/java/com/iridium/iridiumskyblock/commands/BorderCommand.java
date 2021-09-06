@@ -88,7 +88,6 @@ public class BorderCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return Arrays.stream(Color.values())
             .map(Color::name)
-            .filter(color -> color.toLowerCase().contains(args[1].toLowerCase()))
             .collect(Collectors.toList());
     }
 

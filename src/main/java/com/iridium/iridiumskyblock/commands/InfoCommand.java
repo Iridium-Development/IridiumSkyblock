@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -114,10 +115,7 @@ public class InfoCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream()
-            .map(Player::getName)
-            .filter(playerName -> playerName.toLowerCase().contains(args[1].toLowerCase()))
-            .collect(Collectors.toList());
+        return PlayerUtils.getOnlinePlayerNames();
     }
 
 }

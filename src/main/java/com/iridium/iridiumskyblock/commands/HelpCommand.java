@@ -117,7 +117,7 @@ public class HelpCommand extends Command {
         }
 
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 

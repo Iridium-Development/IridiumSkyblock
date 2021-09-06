@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -63,16 +64,12 @@ public class GiveCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return Bukkit.getOnlinePlayers().stream()
-                .map(Player::getName)
-                .filter(playerName -> playerName.contains(args[2]))
-                .collect(Collectors.toList());
+            return PlayerUtils.getOnlinePlayerNames();
         }
 
         if (args.length == 4) {
             return IridiumSkyblock.getInstance().getBankItemList().stream()
                 .map(BankItem::getName)
-                .filter(bankItem -> bankItem.contains(args[3]))
                 .collect(Collectors.toList());
         }
 

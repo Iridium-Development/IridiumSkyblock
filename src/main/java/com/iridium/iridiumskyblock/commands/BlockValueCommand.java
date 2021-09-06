@@ -65,10 +65,9 @@ public class BlockValueCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Arrays.stream(BlockValueGUI.BlockValueType.values())
             .map(BlockValueType::name)
-            .filter(blockValueType -> blockValueType.toLowerCase().contains(args[1].toLowerCase()))
             .collect(Collectors.toList());
     }
 

@@ -67,7 +67,6 @@ public class BiomeCommand extends Command {
             .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
             .filter(biome -> biome.getBiome() != null)
             .map(XBiome::name)
-            .filter(biomeName -> biomeName.toUpperCase().contains(args[1].toUpperCase()))
             .collect(Collectors.toList());
     }
 
