@@ -3,10 +3,9 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import java.time.Duration;
-import org.bukkit.command.CommandSender;
-
 import java.util.Collections;
 import java.util.List;
+import org.bukkit.command.CommandSender;
 
 /**
  * Command which reloads all configuration files.
@@ -47,7 +46,7 @@ public class ReloadCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 

@@ -5,15 +5,14 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class RenameCommand extends Command {
 
@@ -43,11 +42,13 @@ public class RenameCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
         if (!user.getIslandRank().equals(IslandRank.OWNER)) {
             player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
             return false;
         }
+
         if (name.length() > (IridiumSkyblock.getInstance().getConfiguration()).maxIslandName) {
             player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
                     .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
@@ -56,6 +57,7 @@ public class RenameCommand extends Command {
             ));
             return false;
         }
+
         if (name.length() < (IridiumSkyblock.getInstance().getConfiguration()).minIslandName) {
             player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
                     .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
@@ -64,6 +66,7 @@ public class RenameCommand extends Command {
             ));
             return false;
         }
+
         island.get().setName(name);
         island.get().getMembers().forEach(member -> {
             Player islandMember = Bukkit.getPlayer(member.getUuid());
@@ -91,7 +94,7 @@ public class RenameCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 }

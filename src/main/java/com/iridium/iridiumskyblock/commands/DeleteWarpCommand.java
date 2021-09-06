@@ -7,17 +7,15 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class DeleteWarpCommand extends Command {
 
@@ -49,7 +47,6 @@ public class DeleteWarpCommand extends Command {
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
-
         }
 
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.MANAGE_WARPS)) {
@@ -86,16 +83,23 @@ public class DeleteWarpCommand extends Command {
         Optional<Island> island = IridiumSkyblock.getInstance().getUserManager().getUser((OfflinePlayer) commandSender).getIsland();
         List<IslandWarp> islandWarps = island.isPresent() ? IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get()) : Collections.emptyList();
         if (args.length == 2) {
-            return islandWarps.stream().map(IslandWarp::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+            return islandWarps.stream()
+                .map(IslandWarp::getName)
+                .collect(Collectors.toList());
         }
+
         if (args.length == 3) {
-            return Stream.of("icon", "description").filter(s -> s.contains(args[2])).collect(Collectors.toList());
+            return Arrays.asList("icon", "description");
         }
+
         if (args.length == 4) {
             if (args[2].equalsIgnoreCase("icon")) {
-                return Arrays.stream(XMaterial.values()).map(XMaterial::name).filter(s -> s.toLowerCase().contains(args[3].toLowerCase())).collect(Collectors.toList());
+                return Arrays.stream(XMaterial.values())
+                    .map(XMaterial::name)
+                    .collect(Collectors.toList());
             }
         }
+
         return Collections.emptyList();
     }
 
