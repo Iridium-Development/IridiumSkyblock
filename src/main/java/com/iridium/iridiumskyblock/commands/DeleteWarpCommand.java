@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -90,8 +89,7 @@ public class DeleteWarpCommand extends Command {
         }
 
         if (args.length == 3) {
-            return Stream.of("icon", "description")
-                .collect(Collectors.toList());
+            return Arrays.asList("icon", "description");
         }
 
         if (args.length == 4) {
