@@ -17,7 +17,7 @@ public class Commands {
     public BankCommand bankCommand = new BankCommand();
     public BiomeCommand biomeCommand = new BiomeCommand();
     public BlockValueCommand blockValueCommand = new BlockValueCommand();
-    public BoostersCommand boostersCommand = new BoostersCommand();
+    public BoosterCommand boostersCommand = new BoosterCommand();
     public BorderCommand borderCommand = new BorderCommand();
     public BypassCommand bypassCommand = new BypassCommand();
     public ChatCommand chatCommand = new ChatCommand();

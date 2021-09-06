@@ -7,15 +7,14 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.ShopCategoryGUI;
 import com.iridium.iridiumskyblock.gui.ShopOverviewGUI;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which opens the island shop.
@@ -77,7 +76,6 @@ public class ShopCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return IridiumSkyblock.getInstance().getShopManager().getCategories().stream()
                 .map(shopCategory -> shopCategory.name)
-                .filter(s -> s.toLowerCase().contains(args[1].toLowerCase()))
                 .collect(Collectors.toList());
     }
 

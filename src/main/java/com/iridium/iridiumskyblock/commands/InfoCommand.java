@@ -4,17 +4,16 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which shows infos about an Island.
@@ -43,6 +42,7 @@ public class InfoCommand extends Command {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
+
             Player player = (Player) sender;
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Optional<Island> userIsland = user.getIsland();
@@ -50,6 +50,7 @@ public class InfoCommand extends Command {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
+
             sendInfo(sender, userIsland.get(), user);
             return true;
         }
@@ -67,6 +68,7 @@ public class InfoCommand extends Command {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         sendInfo(sender, targetIsland.get(), targetUser);
         return true;
     }
@@ -83,6 +85,7 @@ public class InfoCommand extends Command {
                 .filter(user -> user != island.getOwner())
                 .map(User::getName)
                 .collect(Collectors.joining(", "));
+
         if (members.isEmpty()) {
             members = IridiumSkyblock.getInstance().getMessages().none;
         }
@@ -111,7 +114,7 @@ public class InfoCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+        return PlayerUtils.getOnlinePlayerNames();
     }
 
 }

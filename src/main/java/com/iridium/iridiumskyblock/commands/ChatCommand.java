@@ -6,15 +6,14 @@ import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.api.UserChatToggleEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which allows users to chat with their Island members.
@@ -40,7 +39,6 @@ public class ChatCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         Optional<Island> island = IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland();
-
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
@@ -63,9 +61,8 @@ public class ChatCommand extends Command {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             UserChatToggleEvent userChatToggleEvent = new UserChatToggleEvent(user, !user.isIslandChat());
             Bukkit.getPluginManager().callEvent(userChatToggleEvent);
-            if (userChatToggleEvent.isCancelled()) {
-                return false;
-            }
+            if (userChatToggleEvent.isCancelled()) return false;
+
             user.setIslandChat(!user.isIslandChat());
             player.sendMessage(StringUtils.color((user.isIslandChat() ? IridiumSkyblock.getInstance().getMessages().islandChatEnabled : IridiumSkyblock.getInstance().getMessages().islandChatDisabled)
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
@@ -86,7 +83,7 @@ public class ChatCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 
