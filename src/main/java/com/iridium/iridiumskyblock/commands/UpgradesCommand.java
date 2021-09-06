@@ -42,31 +42,35 @@ public class UpgradesCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         if (args.length != 2) {
             player.openInventory(new UpgradesGUI(island.get()).getInventory());
             return true;
         }
+
         String upgradeName = args[1];
         Upgrade<?> upgrade = IridiumSkyblock.getInstance().getUpgradesList().get(upgradeName);
         if (upgrade == null) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownUpgrade.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), upgradeName);
         UpgradeData upgradeData = upgrade.upgrades.get(islandUpgrade.getLevel() + 1);
         if (upgradeData == null) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().maxLevelReached.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         if (!PlayerUtils.pay(player, island.get(), upgradeData.crystals, upgradeData.money)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         islandUpgrade.setLevel(islandUpgrade.getLevel() + 1);
         IslandLog islandLog = new IslandLog(island.get(), LogAction.UPGRADE_PURCHASE, user, null, 0, upgradeName);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
@@ -86,7 +90,9 @@ public class UpgradesCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return IridiumSkyblock.getInstance().getUpgradesList().keySet().stream().filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+        return IridiumSkyblock.getInstance().getUpgradesList().keySet().stream()
+            .filter(upgradeName -> upgradeName.toLowerCase().contains(args[1].toLowerCase()))
+            .collect(Collectors.toList());
     }
 
 }

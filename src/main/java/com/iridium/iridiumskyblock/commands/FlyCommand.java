@@ -42,12 +42,14 @@ public class FlyCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnAnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         boolean flight = !user.isFlying();
         if (args.length == 2) {
             if (!args[1].equalsIgnoreCase("enable") && !args[1].equalsIgnoreCase("disable") && !args[1].equalsIgnoreCase("on") && !args[1].equalsIgnoreCase("off")) {
                 sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
+
             flight = args[1].equalsIgnoreCase("enable") || args[1].equalsIgnoreCase("on");
         }
 
@@ -56,15 +58,16 @@ public class FlyCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightBoosterNotActive.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         user.setFlying(flight);
         player.setAllowFlight(flight);
         player.setFlying(flight);
+
         if (flight) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightEnabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
-
         return true;
     }
 
@@ -80,8 +83,11 @@ public class FlyCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 2) {
-            return Stream.of("enable", "disable", "on", "off").filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+            return Stream.of("enable", "disable", "on", "off")
+                .filter(subCommand -> subCommand.toLowerCase().contains(args[1].toLowerCase()))
+                .collect(Collectors.toList());
         }
+
         return Collections.emptyList();
     }
 

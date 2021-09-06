@@ -41,6 +41,7 @@ public class RecalculateCommand extends Command {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         int interval = 5;
         List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
         int seconds = (islandList.size() * interval / 20) % 60;
@@ -67,6 +68,7 @@ public class RecalculateCommand extends Command {
                     sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingFinished.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
+
         }, 0, interval);
         return true;
     }

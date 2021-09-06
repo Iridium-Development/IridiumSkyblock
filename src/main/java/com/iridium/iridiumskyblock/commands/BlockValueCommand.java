@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.BlockValueGUI;
+import com.iridium.iridiumskyblock.gui.BlockValueGUI.BlockValueType;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -24,7 +25,6 @@ public class BlockValueCommand extends Command {
      */
     public BlockValueCommand() {
         super(Collections.singletonList("blockvalues"), "Show the values of blocks", "", true, Duration.ZERO);
-
     }
 
     /**
@@ -42,11 +42,13 @@ public class BlockValueCommand extends Command {
             player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
             return true;
         }
+
         BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
         if (blockValueType == null) {
             player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
             return true;
         }
+
         player.openInventory(new BlockValueGUI(blockValueType).getInventory());
         return true;
     }
@@ -64,7 +66,10 @@ public class BlockValueCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
         // Return a new List so it isn't a list of online players
-        return Arrays.stream(BlockValueGUI.BlockValueType.values()).map(Enum::toString).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+        return Arrays.stream(BlockValueGUI.BlockValueType.values())
+            .map(BlockValueType::name)
+            .filter(blockValueType -> blockValueType.toLowerCase().contains(args[1].toLowerCase()))
+            .collect(Collectors.toList());
     }
 
 }

@@ -39,6 +39,7 @@ public class LevelCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnAnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandLevel
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 .replace("%island_level%", String.valueOf(island.get().getLevel()))

@@ -77,7 +77,7 @@ public class ShopCommand extends Command {
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         return IridiumSkyblock.getInstance().getShopManager().getCategories().stream()
                 .map(shopCategory -> shopCategory.name)
-                .filter(s -> s.toLowerCase().contains(args[1].toLowerCase()))
+                .filter(shopCategoryName -> shopCategoryName.toLowerCase().contains(args[1].toLowerCase()))
                 .collect(Collectors.toList());
     }
 

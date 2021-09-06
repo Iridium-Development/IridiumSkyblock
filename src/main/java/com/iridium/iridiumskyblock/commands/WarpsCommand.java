@@ -42,21 +42,25 @@ public class WarpsCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         if (args.length != 2 && args.length != 3) {
             player.openInventory(new WarpsGUI(island.get()).getInventory());
             return true;
         }
+
         List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
         Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
         if (!islandWarp.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         if (islandWarp.get().getPassword() != null) {
             if (args.length != 3) {
                 sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%warp%", args[1])));
                 return false;
             }
+
             if (!islandWarp.get().getPassword().equals(args[2])) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().incorrectPassword.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
@@ -82,10 +86,13 @@ public class WarpsCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isPresent()) {
-            List<IslandWarp> islandWarps =
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
-            return islandWarps.stream().map(IslandWarp::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+            List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
+            return islandWarps.stream()
+                .map(IslandWarp::getName)
+                .filter(warpName -> warpName.toLowerCase().contains(args[1].toLowerCase()))
+                .collect(Collectors.toList());
         }
+
         return Collections.emptyList();
     }
 

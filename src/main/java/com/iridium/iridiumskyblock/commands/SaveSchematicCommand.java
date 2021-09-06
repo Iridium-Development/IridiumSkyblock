@@ -16,6 +16,9 @@ import java.util.List;
  */
 public class SaveSchematicCommand extends Command {
 
+    /**
+     * The default constructor.
+     */
     public SaveSchematicCommand() {
         super(Collections.singletonList("saveschematic"), "Create a schematic out of a selected area", "iridiumskyblock.schematic", true, Duration.ZERO);
     }

@@ -96,7 +96,9 @@ public class CreateCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream().filter(s -> s.contains(args[2])).collect(Collectors.toList());
+            return IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
+                .filter(schematicName -> schematicName.contains(args[2]))
+                .collect(Collectors.toList());
         }
 
         // We currently don't want to tab-completion here

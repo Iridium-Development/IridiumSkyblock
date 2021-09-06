@@ -43,6 +43,7 @@ public class MembersCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         player.openInventory(new MembersGUI(island.get()).getInventory());
         return true;
     }

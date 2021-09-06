@@ -40,7 +40,6 @@ public class ChatCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         Optional<Island> island = IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland();
-
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
@@ -63,9 +62,8 @@ public class ChatCommand extends Command {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             UserChatToggleEvent userChatToggleEvent = new UserChatToggleEvent(user, !user.isIslandChat());
             Bukkit.getPluginManager().callEvent(userChatToggleEvent);
-            if (userChatToggleEvent.isCancelled()) {
-                return false;
-            }
+            if (userChatToggleEvent.isCancelled()) return false;
+
             user.setIslandChat(!user.isIslandChat());
             player.sendMessage(StringUtils.color((user.isIslandChat() ? IridiumSkyblock.getInstance().getMessages().islandChatEnabled : IridiumSkyblock.getInstance().getMessages().islandChatDisabled)
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))

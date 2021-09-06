@@ -44,15 +44,16 @@ public class LeaveCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         if (user.getIslandRank().equals(IslandRank.OWNER)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotLeaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         player.openInventory(new ConfirmationGUI(() -> {
             UserLeaveEvent userLeaveEvent = new UserLeaveEvent(island.get(), user);
             Bukkit.getPluginManager().callEvent(userLeaveEvent);
@@ -60,12 +61,14 @@ public class LeaveCommand extends Command {
 
             user.setIsland(null);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+
             for (User member : island.get().getMembers()) {
-                Player p = Bukkit.getPlayer(member.getUuid());
-                if (p != null) {
-                    p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerLeftIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                Player islandMember = Bukkit.getPlayer(member.getUuid());
+                if (islandMember != null) {
+                    islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerLeftIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
+
             PlayerUtils.teleportSpawn(player);
             IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_LEFT, user, null, 0, "");
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);

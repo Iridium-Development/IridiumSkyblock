@@ -43,11 +43,13 @@ public class RenameCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
         if (!user.getIslandRank().equals(IslandRank.OWNER)) {
             player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
             return false;
         }
+
         if (name.length() > (IridiumSkyblock.getInstance().getConfiguration()).maxIslandName) {
             player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
                     .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
@@ -56,6 +58,7 @@ public class RenameCommand extends Command {
             ));
             return false;
         }
+
         if (name.length() < (IridiumSkyblock.getInstance().getConfiguration()).minIslandName) {
             player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
                     .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
@@ -64,6 +67,7 @@ public class RenameCommand extends Command {
             ));
             return false;
         }
+
         island.get().setName(name);
         island.get().getMembers().forEach(member -> {
             Player islandMember = Bukkit.getPlayer(member.getUuid());

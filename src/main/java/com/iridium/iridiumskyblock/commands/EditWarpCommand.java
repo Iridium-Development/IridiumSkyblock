@@ -46,7 +46,6 @@ public class EditWarpCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
@@ -63,12 +62,14 @@ public class EditWarpCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
-        //TODO use subcommand system
+
+        //TODO: Use subcommand system
         switch (args[2]) {
             case "icon":
                 if (args.length != 4) {
                     sender.sendMessage("/is editwarp <name> icon <icon>");
                 }
+
                 Optional<XMaterial> xMaterial = XMaterial.matchXMaterial(args[3]);
                 if (xMaterial.isPresent()) {
                     islandWarp.get().setIcon(xMaterial.get());
@@ -105,20 +106,27 @@ public class EditWarpCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         Optional<Island> island = IridiumSkyblock.getInstance().getUserManager().getUser((OfflinePlayer) commandSender).getIsland();
-        List<IslandWarp> islandWarps =
-                island.isPresent() ? IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get()) :
-                        Collections.emptyList();
+        List<IslandWarp> islandWarps = island.isPresent() ? IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get()) : Collections.emptyList();
+
         if (args.length == 2) {
-            return islandWarps.stream().map(IslandWarp::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+            return islandWarps.stream()
+                .map(IslandWarp::getName)
+                .filter(islandWarp -> islandWarp.toLowerCase().contains(args[1].toLowerCase()))
+                .collect(Collectors.toList());
         }
+
         if (args.length == 3) {
-            return Stream.of("icon", "description").filter(s -> s.contains(args[2])).collect(Collectors.toList());
+            return Stream.of("icon", "description")
+                .filter(subCommand -> subCommand.contains(args[2]))
+                .collect(Collectors.toList());
         }
+
         if (args.length == 4) {
             if (args[2].equalsIgnoreCase("icon")) {
-                return Arrays.stream(XMaterial.values()).map(XMaterial::name).filter(s -> s.toLowerCase().contains(args[3].toLowerCase())).collect(Collectors.toList());
+                return Arrays.stream(XMaterial.values()).map(XMaterial::name).filter(material -> material.toLowerCase().contains(args[3].toLowerCase())).collect(Collectors.toList());
             }
         }
+
         return Collections.emptyList();
     }
 

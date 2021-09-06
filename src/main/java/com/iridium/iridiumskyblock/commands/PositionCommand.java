@@ -40,6 +40,7 @@ public class PositionCommand extends Command {
 
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         int positionType = Integer.parseInt(arguments[1]);
+
         if (positionType == 1) {
             user.setSchematicPos1(player.getLocation());
         } else if (positionType == 2) {
