@@ -241,11 +241,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     private List<String> filterTabCompletionResults(List<String> tabCompletion, String[] arguments) {
         return tabCompletion.stream()
-            .filter(completion -> {
-                String unifiedCompletion = completion.toLowerCase();
-                String lastArgument = arguments[arguments.length - 1].toLowerCase();
-                return unifiedCompletion.startsWith(lastArgument) || unifiedCompletion.contains(lastArgument);
-            })
+            .filter(completion -> completion.toLowerCase().contains(arguments[arguments.length - 1].toLowerCase()))
             .collect(Collectors.toList());
     }
 
