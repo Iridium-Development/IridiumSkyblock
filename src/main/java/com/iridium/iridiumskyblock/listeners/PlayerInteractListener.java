@@ -35,6 +35,7 @@ public class PlayerInteractListener implements Listener {
             XMaterial.TRIPWIRE
     ));
 
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
