@@ -496,12 +496,8 @@ public class IslandManager {
      * @return Optional of the island at the locations, empty if there is none
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        World world = location.getWorld();
-        if (Objects.equals(world, getWorld()) || Objects.equals(world, getNetherWorld()) || Objects.equals(world, getEndWorld())) {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
-            if (optionalIsland.isPresent()) return optionalIsland;
-        }
-        return Optional.empty();
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return Optional.empty();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
     }
 
     /**
