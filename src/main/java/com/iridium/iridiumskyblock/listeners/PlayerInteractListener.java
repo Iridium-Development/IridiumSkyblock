@@ -41,17 +41,20 @@ public class PlayerInteractListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         user.getIsland().ifPresent(island -> {
             if (event.getAction() != Action.PHYSICAL) {
-                int islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(event.getPlayer().getItemInHand());
+                int islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(event.getPlayer().getInventory().getItemInMainHand());
                 if (islandCrystals > 0) {
-                    int amount = event.getPlayer().getItemInHand().getAmount();
+                    int amount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
                     if (amount == 1) {
-                        event.getPlayer().setItemInHand(null);
+                        event.getPlayer().getInventory().setItemInMainHand(null);
                     } else {
-                        event.getPlayer().getItemInHand().setAmount(amount - 1);
+                        event.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
                     }
                     IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
                     islandBank.setNumber(islandBank.getNumber() + islandCrystals);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%type%",IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())));
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())
+                            .replace("%amount%", String.valueOf(islandCrystals))));
                 }
             }
         });
