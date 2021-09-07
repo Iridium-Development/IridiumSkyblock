@@ -4,7 +4,6 @@ import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
@@ -37,8 +36,6 @@ public class PlayerInteractListener implements Listener {
     ));
 
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
-
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         user.getIsland().ifPresent(island -> {
@@ -56,16 +53,11 @@ public class PlayerInteractListener implements Listener {
                 }
             }
         });
-
-        if (event.getClickedBlock() != null) {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation());
-            if (!optionalIsland.isPresent()) {
-                return;
-            }
+        if (event.getClickedBlock() == null) return;
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation()).ifPresent(island -> {
 
             XMaterial material = XMaterial.matchXMaterial(event.getClickedBlock().getType());
             String materialName = material.name();
-            Island island = optionalIsland.get();
 
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.INTERACT)) {
                 event.setCancelled(true);
@@ -110,7 +102,7 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
             }
-        }
+        });
     }
 
     private boolean hasNoCooldown(Player player) {
