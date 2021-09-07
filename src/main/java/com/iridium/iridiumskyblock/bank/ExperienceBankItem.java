@@ -50,12 +50,12 @@ public class ExperienceBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(experience))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getName())
                 );
             }else{
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getName())
                 );
             }
             return experience;
@@ -85,12 +85,12 @@ public class ExperienceBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(experience))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getName())
                 );
             }else{
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getName())
                 );
             }
             return experience;

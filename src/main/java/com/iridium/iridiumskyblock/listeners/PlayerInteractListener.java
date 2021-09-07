@@ -51,6 +51,7 @@ public class PlayerInteractListener implements Listener {
                     }
                     IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
                     islandBank.setNumber(islandBank.getNumber() + islandCrystals);
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%type%",IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())));
                 }
             }
         });
