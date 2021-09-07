@@ -6,19 +6,18 @@ import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import java.time.Duration;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class RenameCommand extends Command {
 
     public RenameCommand() {
-        super(Collections.singletonList("rename"), "Change your island name", "", true, Duration.ofMinutes(1));
+        super(Collections.singletonList("rename"), "Change your island name", "%prefix% &7/is rename <name>", "", true, Duration.ofMinutes(1));
     }
 
     /**
@@ -33,42 +32,53 @@ public class RenameCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         if (args.length < 2) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " &b/is rename <Island Name>"));
+            sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        if (island.isPresent()) {
-            String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
-            if (!user.getIslandRank().equals(IslandRank.OWNER)) {
-                player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName
-                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
-            } else if (name.length() > (IridiumSkyblock.getInstance().getConfiguration()).maxIslandName) {
-                player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
-                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
-                        .replace("%name%", name)
-                        .replace("%max_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().maxIslandName))));
-            } else if (name.length() < (IridiumSkyblock.getInstance().getConfiguration()).minIslandName) {
-                player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
-                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
-                        .replace("%name%", name)
-                        .replace("%min_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().minIslandName))));
-            } else {
-                island.get().setName(name);
-                island.get().getMembers().forEach(member -> {
-                    Player islandMember = Bukkit.getPlayer(member.getUuid());
-                    if (islandMember != null)
-                        islandMember.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
-                                .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
-                                .replace("%player%", player.getName())
-                                .replace("%name%", name)));
-                });
-                return true;
-            }
+        if (!island.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
+        if (!user.getIslandRank().equals(IslandRank.OWNER)) {
+            player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
+            return false;
+        }
+
+        if (name.length() > (IridiumSkyblock.getInstance().getConfiguration()).maxIslandName) {
+            player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooLong
+                    .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
+                    .replace("%name%", name)
+                    .replace("%max_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().maxIslandName))
+            ));
+            return false;
+        }
+
+        if (name.length() < (IridiumSkyblock.getInstance().getConfiguration()).minIslandName) {
+            player.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameTooShort
+                    .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
+                    .replace("%name%", name)
+                    .replace("%min_length%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().minIslandName))
+            ));
+            return false;
+        }
+
+        island.get().setName(name);
+        island.get().getMembers().forEach(member -> {
+            Player islandMember = Bukkit.getPlayer(member.getUuid());
+            if (islandMember != null) {
+                islandMember.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
+                        .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
+                        .replace("%player%", player.getName())
+                        .replace("%name%", name)
+                ));
+            }
+        });
+        return true;
     }
 
 
@@ -84,7 +94,7 @@ public class RenameCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 }

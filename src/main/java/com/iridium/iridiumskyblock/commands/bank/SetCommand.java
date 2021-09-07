@@ -7,16 +7,15 @@ import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class SetCommand extends Command {
     /**
@@ -63,11 +62,15 @@ public class SetCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         if (args.length == 3) {
-            return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).filter(s -> s.contains(args[2])).collect(Collectors.toList());
+            return PlayerUtils.getOnlinePlayerNames();
         }
+
         if (args.length == 4) {
-            return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).filter(s -> s.contains(args[3])).collect(Collectors.toList());
+            return IridiumSkyblock.getInstance().getBankItemList().stream()
+                .map(BankItem::getName)
+                .collect(Collectors.toList());
         }
+
         return Collections.emptyList();
     }
 }

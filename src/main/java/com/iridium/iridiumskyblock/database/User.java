@@ -101,9 +101,7 @@ public final class User {
         this.island = island == null ? null : island.getId();
         setJoinTime(LocalDateTime.now());
         if (island != null) {
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island).stream().filter(islandTrusted ->
-                    islandTrusted.getUser().equals(this)
-            ).findFirst().ifPresent(trusted ->
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntry(new IslandTrusted(island, this, this)).ifPresent(trusted ->
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(trusted)
             );
         }

@@ -9,17 +9,15 @@ import com.iridium.iridiumskyblock.api.UserPromoteEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Player;
-
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which promotes a user in the Island rank system.
@@ -51,44 +49,45 @@ public class PromoteCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
-        if (island.isPresent()) {
-            OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-            User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-
-            if (island.get().equals(targetUser.getIsland().orElse(null))) {
-                IslandRank nextRank = IslandRank.getByLevel(targetUser.getIslandRank().getLevel() + 1);
-                if (nextRank != null && nextRank.getLevel() < user.getIslandRank().getLevel() && IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.PROMOTE)) {
-                    UserPromoteEvent userPromoteEvent = new UserPromoteEvent(island.get(), user, nextRank);
-                    Bukkit.getPluginManager().callEvent(userPromoteEvent);
-                    if (userPromoteEvent.isCancelled()) return false;
-
-                    targetUser.setIslandRank(nextRank);
-                    for (User member : island.get().getMembers()) {
-                        Player p = Bukkit.getPlayer(member.getUuid());
-                        if (p != null) {
-                            if (p.equals(player)) {
-                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().promotedPlayer.replace("%player%", targetUser.getName()).replace("%rank%", nextRank.getDisplayName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            } else {
-                                p.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userPromotedPlayer.replace("%promoter%", player.getName()).replace("%player%", targetUser.getName()).replace("%rank%", nextRank.getDisplayName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            }
-                        }
-                    }
-
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_PROMOTED, user, targetUser, 0, nextRank.getDisplayName());
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                    return true;
-                } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPromoteUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+
+        if (!island.get().equals(targetUser.getIsland().orElse(null))) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        IslandRank nextRank = IslandRank.getByLevel(targetUser.getIslandRank().getLevel() + 1);
+        if (nextRank == null || nextRank.getLevel() >= user.getIslandRank().getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.PROMOTE)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPromoteUser.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        UserPromoteEvent userPromoteEvent = new UserPromoteEvent(island.get(), user, nextRank);
+        Bukkit.getPluginManager().callEvent(userPromoteEvent);
+        if (userPromoteEvent.isCancelled()) return false;
+
+        targetUser.setIslandRank(nextRank);
+
+        for (User member : island.get().getMembers()) {
+            Player islandMember = Bukkit.getPlayer(member.getUuid());
+            if (islandMember != null) {
+                if (islandMember.equals(player)) {
+                    islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().promotedPlayer.replace("%player%", targetUser.getName()).replace("%rank%", nextRank.getDisplayName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                } else {
+                    islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userPromotedPlayer.replace("%promoter%", player.getName()).replace("%player%", targetUser.getName()).replace("%rank%", nextRank.getDisplayName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
+            }
+        }
+
+        IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_PROMOTED, user, targetUser, 0, nextRank.getDisplayName());
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        return true;
     }
 
     /**
@@ -102,7 +101,7 @@ public class PromoteCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+        return PlayerUtils.getOnlinePlayerNames();
     }
 
 }

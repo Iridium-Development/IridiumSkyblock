@@ -5,12 +5,11 @@ import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * Abstract commands used to easily create subcommands.
@@ -28,7 +27,7 @@ public abstract class Command {
     public final boolean enabled;
     public final long cooldownInSeconds;
     @JsonIgnore
-    public CooldownProvider<CommandSender> cooldownProvider;
+    private CooldownProvider<CommandSender> cooldownProvider;
 
     /**
      * The default constructor.
@@ -71,7 +70,7 @@ public abstract class Command {
         this.cooldownInSeconds = cooldown.getSeconds();
     }
 
-    CooldownProvider<CommandSender> getCooldownProvider() {
+    public CooldownProvider<CommandSender> getCooldownProvider() {
         if (cooldownProvider == null) {
             this.cooldownProvider = CooldownProvider.newInstance(Duration.ofSeconds(cooldownInSeconds));
         }

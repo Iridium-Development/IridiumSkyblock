@@ -6,12 +6,11 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.LogsGUI;
 import java.time.Duration;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which opens the Island bank GUI.
@@ -37,14 +36,13 @@ public class LogsCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
-        if (island.isPresent()) {
-            player.openInventory(new LogsGUI(island.get()).getInventory());
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return island.isPresent();
+        player.openInventory(new LogsGUI(island.get()).getInventory());
+        return true;
     }
 
     /**
@@ -58,6 +56,8 @@ public class LogsCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
+        // We currently don't want to tab-completion here
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 

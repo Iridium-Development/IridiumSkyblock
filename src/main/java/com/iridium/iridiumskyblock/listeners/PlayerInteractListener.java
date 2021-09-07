@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
@@ -35,7 +36,6 @@ public class PlayerInteractListener implements Listener {
             XMaterial.TRIPWIRE
     ));
 
-    @EventHandler(ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
 
@@ -102,7 +102,7 @@ public class PlayerInteractListener implements Listener {
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUseRedstone.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 }
-            } else if (materialName.contains("MINECART") || materialName.contains("BOAT") || materialName.contains("EGG") || materialName.contains("BUCKET") || material == XMaterial.END_CRYSTAL) {
+            } else if (materialName.contains("MINECART") || materialName.contains("BOAT") || materialName.contains("EGG") || materialName.contains("BUCKET") || material == XMaterial.END_CRYSTAL || material == XMaterial.ARMOR_STAND) {
                 if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.INTERACT_ENTITIES)) {
                     event.setCancelled(true);
                     if (hasNoCooldown(player)) {
@@ -117,6 +117,13 @@ public class PlayerInteractListener implements Listener {
         boolean cooldown = cooldownProvider.isOnCooldown(player);
         cooldownProvider.applyCooldown(player);
         return cooldown;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onArmorStand(PlayerArmorStandManipulateEvent event) {
+        // Not sure why this isn't included in PlayerInteractEntity but meh
+        // Ry probably coded it cuz hes dum like that
+        onPlayerInteractEntity(event);
     }
 
     @EventHandler(ignoreCancelled = true)

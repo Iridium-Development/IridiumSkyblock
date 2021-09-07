@@ -5,19 +5,22 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
-import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.Optional;
 
 public class PlayerPortalListener implements Listener {
+    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(100));
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPortal(PlayerPortalEvent event) {
@@ -29,19 +32,10 @@ public class PlayerPortalListener implements Listener {
 
         final User user = IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer());
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.PORTAL)) {
-            event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUsePortal.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            event.setCancelled(true);
-
-            // Teleport them back to the island to prevent constant chat spam.
-            if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
-
-                if (island.get().isVisitable() || user.getIsland().map(Island::getId).orElse(0) == island.get().getId()) {
-                    event.getPlayer().teleport(island.get().getHome());
-                } else {
-                    PlayerUtils.teleportSpawn(event.getPlayer());
-                }
-
+            if (hasNoCooldown(event.getPlayer())) {
+                event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUsePortal.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
+            event.setCancelled(true);
             return;
         }
 
@@ -68,6 +62,12 @@ public class PlayerPortalListener implements Listener {
 
             event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().endIslandsDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+    }
+
+    private boolean hasNoCooldown(Player player) {
+        boolean cooldown = cooldownProvider.isOnCooldown(player);
+        cooldownProvider.applyCooldown(player);
+        return cooldown;
     }
 
 }

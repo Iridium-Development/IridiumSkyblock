@@ -11,21 +11,20 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BoostersGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import java.time.Duration;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
-public class BoostersCommand extends Command {
+public class BoosterCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public BoostersCommand() {
+    public BoosterCommand() {
         super(Arrays.asList("booster", "boosters"), "Open the Island Boosters Menu", "", true, Duration.ZERO);
     }
 
@@ -42,36 +41,37 @@ public class BoostersCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
-        if (island.isPresent()) {
-            if (args.length == 2) {
-                String boosterName = args[1];
-                Booster booster = IridiumSkyblock.getInstance().getBoosterList().get(boosterName);
-                if (booster != null) {
-                    IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), boosterName);
-                    if (!islandBooster.isActive()) {
-                        if (PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost)) {
-                            islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
-                            IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, 0, boosterName);
-                            IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                            return true;
-                        } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        }
-                    }
-
-                } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownBooster.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
-                player.openInventory(new BoostersGUI(island.get()).getInventory());
-                return true;
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        if (args.length != 2) {
+            player.openInventory(new BoostersGUI(island.get()).getInventory());
+            return true;
+        }
+
+        String boosterName = args[1];
+        Booster booster = IridiumSkyblock.getInstance().getBoosterList().get(boosterName);
+        if (booster == null) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownBooster.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), boosterName);
+        if (islandBooster.isActive()) {
+            return false;
+        }
+
+        if (!PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
+        IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, 0, boosterName);
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        return true;
     }
 
     /**

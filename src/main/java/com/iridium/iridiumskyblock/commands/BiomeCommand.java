@@ -7,15 +7,14 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BiomeGUI;
 import java.time.Duration;
-import org.apache.commons.lang.WordUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class BiomeCommand extends Command {
 
@@ -30,15 +29,14 @@ public class BiomeCommand extends Command {
         final Player player = (Player) sender;
 
         final User user = this.plugin.getUserManager().getUser(player);
-        final Optional<Island> optionalIsland = user.getIsland();
-
-        if (!optionalIsland.isPresent()) {
+        final Optional<Island> islandOptional = user.getIsland();
+        if (!islandOptional.isPresent()) {
             player.sendMessage(StringUtils.color(this.plugin.getMessages().noIsland.replace("%prefix%", plugin.getConfiguration().prefix)));
             return false;
         }
 
         if (args.length != 2) {
-            player.openInventory(new BiomeGUI(1, optionalIsland.get(), player.getWorld().getEnvironment(), getCooldownProvider()).getInventory());
+            player.openInventory(new BiomeGUI(1, islandOptional.get(), player.getWorld().getEnvironment(), getCooldownProvider()).getInventory());
             // The BiomeGUI handles the cooldown
             return false;
         }
@@ -50,8 +48,7 @@ public class BiomeCommand extends Command {
             return false;
         }
 
-        IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(optionalIsland.get(), biomeOptional.get());
-
+        IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(islandOptional.get(), biomeOptional.get());
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 .replace("%biome%", WordUtils.capitalizeFully(biomeOptional.get().name().toLowerCase().replace("_", " ")))));
@@ -60,17 +57,16 @@ public class BiomeCommand extends Command {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (commandSender instanceof Player) {
-            Player player = (Player) commandSender;
-            return Arrays.stream(XBiome.VALUES)
-                .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
-                .filter(biome -> biome.getBiome() != null)
-                .map(Enum::toString)
-                .filter(s -> s.toUpperCase().contains(args[1].toUpperCase()))
-                .collect(Collectors.toList());
-        } else {
+        if (!(commandSender instanceof Player)) {
             return Collections.emptyList();
         }
+
+        Player player = (Player) commandSender;
+        return Arrays.stream(XBiome.VALUES)
+            .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
+            .filter(biome -> biome.getBiome() != null)
+            .map(XBiome::name)
+            .collect(Collectors.toList());
     }
 
 }

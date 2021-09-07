@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
+import com.iridium.iridiumcore.utils.SortedList;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.support.ConnectionSource;
@@ -14,11 +15,12 @@ import java.util.*;
 public class UserTableManager extends TableManager<User, Integer> {
 
     // A list of users sorted by island id for binary search
-    private final List<User> userIslandIndex;
+    private final SortedList<User> userIslandIndex;
 
-    public UserTableManager(ConnectionSource connectionSource, boolean autoCommit) throws SQLException {
-        super(connectionSource, User.class, autoCommit);
-        this.userIslandIndex = new ArrayList<>(getEntries());
+    public UserTableManager(ConnectionSource connectionSource) throws SQLException {
+        super(connectionSource, User.class, Comparator.comparing(User::getUuid));
+        this.userIslandIndex = new SortedList<>(Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
+        this.userIslandIndex.addAll(getDao().queryForAll());
         sort();
     }
 
@@ -36,11 +38,8 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The item we are adding
      */
     public void addEntry(User user) {
-        int index = Collections.binarySearch(getEntries(), user, Comparator.comparing(User::getUuid));
-        getEntries().add(index < 0 ? -(index + 1) : index, user);
-
-        int islandIndex = Collections.binarySearch(userIslandIndex, user, Comparator.comparing(u -> u.getIsland().map(Island::getId).orElse(0)));
-        userIslandIndex.add(islandIndex < 0 ? -(islandIndex + 1) : islandIndex, user);
+        getEntries().add(user);
+        userIslandIndex.add(user);
     }
 
     /**

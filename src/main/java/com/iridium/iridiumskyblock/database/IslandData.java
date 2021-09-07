@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.field.DatabaseField;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,13 +13,14 @@ import java.util.Optional;
  * Used for binary searching
  */
 @NoArgsConstructor
+@Getter
 public class IslandData {
 
-    @DatabaseField(columnName = "island_id")
-    private int island;
+    @DatabaseField(columnName = "island_id", uniqueCombo = true)
+    private int islandId;
 
     public IslandData(Island island) {
-        this.island = island.getId();
+        this.islandId = island.getId();
     }
 
     /**
@@ -27,7 +29,7 @@ public class IslandData {
      * @return The Island of this block
      */
     public @NotNull Optional<Island> getIsland() {
-        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
+        return IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandId);
     }
 
     /**
