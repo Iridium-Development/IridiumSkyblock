@@ -100,8 +100,8 @@ public class IslandManager {
 
         getIslandChunks(island, world).thenAccept(chunks -> {
             Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);
-            xBiome.setBiome(pos1, pos2).thenAccept(unused -> {
+            Location pos2 = island.getPos2(world);      
+            xBiome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
                 }
