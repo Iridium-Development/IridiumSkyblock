@@ -224,7 +224,7 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     /**
-     * Automatically resets the Island missions in a defined time intervall.
+     * Automatically resets the Island missions in a defined time interval.
      */
     private void resetIslandMissions() {
         Calendar c = Calendar.getInstance();
