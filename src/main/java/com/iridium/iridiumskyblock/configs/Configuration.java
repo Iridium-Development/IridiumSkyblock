@@ -10,10 +10,13 @@ import com.iridium.iridiumskyblock.Reward;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The main configuration of IridiumSkyblock (configuration.yml).
@@ -40,6 +43,8 @@ public class Configuration {
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
     public IslandDeleteSettings deleteSettings = new IslandDeleteSettings();
+
+    public IslandDamageSettings pvpSettings = new IslandDamageSettings();
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
@@ -156,6 +161,37 @@ public class Configuration {
         public boolean clearInventories = true;
         public boolean clearEnderChests = true;
         public boolean resetVaultBalances = true;
+
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IslandDamageSettings {
+
+        public boolean pvpOnIslands = true;
+        public boolean pvpBetweenMembers = false;
+        public boolean mobsVisitorTargeting = false;
+
+        public List<String> membersPreventedDamages = new ArrayList<String>() {{
+            add(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name());
+            add(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
+        }};
+
+        public List<String> visitorsPreventedDamages = new ArrayList<String>() {{
+            add(EntityDamageEvent.DamageCause.PROJECTILE.name());
+            add(EntityDamageEvent.DamageCause.FIRE.name());
+            add(EntityDamageEvent.DamageCause.FALL.name());
+            add(EntityDamageEvent.DamageCause.MAGIC.name());
+            add(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name());
+            add(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
+            add(EntityDamageEvent.DamageCause.FLY_INTO_WALL.name());
+            add(EntityDamageEvent.DamageCause.FALLING_BLOCK.name());
+            add(EntityDamageEvent.DamageCause.THORNS.name());
+            add(EntityDamageEvent.DamageCause.ENTITY_ATTACK.name());
+            add(EntityDamageEvent.DamageCause.HOT_FLOOR.name());
+            add(EntityDamageEvent.DamageCause.LAVA.name());
+            add(EntityDamageEvent.DamageCause.CONTACT.name());
+        }};
 
     }
 

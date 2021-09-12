@@ -97,6 +97,8 @@ public class Messages {
     public String cannotOpenContainers = "%prefix% &7You cannot open containers on this Island.";
     public String cannotChangePermissions = "%prefix% &7You cannot change this permission.";
     public String cannotUseRedstone = "%prefix% &7You cannot use redstone on this Island.";
+    public String cannotHurtPlayer = "%prefix% &7You cannot hurt players on islands.";
+    public String cannotHurtMember = "%prefix% &7You cannot hurt your island member.";
     public String cannotHurtMobs = "%prefix% &7You cannot hurt mobs on this Island.";
     public String cannotInviteMember = "%prefix% &7You cannot invite members to this Island.";
     public String cannotRegenIsland = "%prefix% &7You cannot regenerate your Island.";
