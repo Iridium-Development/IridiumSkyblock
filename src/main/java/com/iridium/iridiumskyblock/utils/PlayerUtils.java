@@ -28,11 +28,9 @@ public class PlayerUtils {
         if (!canPurchase(player, island, crystals, money))
             return false;
 
-        final IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
-                IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        final IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
 
-        final IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
-                IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        final IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
 
         final Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
@@ -56,11 +54,8 @@ public class PlayerUtils {
      * @return if they can purchase the item.
      */
     public static boolean canPurchase(@NotNull Player player, @NotNull Island island, int crystals, double money) {
-        final IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
-                IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
-
-        final IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
-                IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        final IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        final IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
 
         final Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
@@ -87,8 +82,11 @@ public class PlayerUtils {
 
     public static void teleportSpawn(Player player) {
         World spawnWorld = Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().spawnWorldName);
-        if (spawnWorld == null)
+
+        if (spawnWorld == null) {
             spawnWorld = Bukkit.getWorlds().get(0);
+        }
+        
         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
             EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
