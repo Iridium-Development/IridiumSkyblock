@@ -110,7 +110,6 @@ public class ShopManager {
         }
 
         if (shopItem.command == null) {
-
             // Add item to the player Inventory
             if (!InventoryUtils.hasEmptySlot(player.getInventory())) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inventoryFull.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
