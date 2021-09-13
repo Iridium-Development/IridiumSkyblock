@@ -19,6 +19,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Handles the shop.
@@ -93,9 +94,14 @@ public class ShopManager {
         BuyCost buyCost = shopItem.buyCost;
         double vaultCost = calculateCost(amount, shopItem.defaultAmount, buyCost.vault);
         int crystalCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.crystals);
-        final Island island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland().get();
+        final Optional<Island> island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland();
 
-        boolean canPurchase = PlayerUtils.canPurchase(player, island, crystalCost, vaultCost);
+        if (!island.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+
+        boolean canPurchase = PlayerUtils.canPurchase(player, island.get(), crystalCost, vaultCost);
 
         if (!canPurchase) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -131,7 +137,7 @@ public class ShopManager {
         }
 
         // Only run the withdrawing function when the user can buy it.
-        PlayerUtils.pay(player, island, crystalCost, vaultCost);
+        PlayerUtils.pay(player, island.get(), crystalCost, vaultCost);
 
         IridiumSkyblock.getInstance().getShop().successSound.play(player);
 
