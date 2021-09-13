@@ -25,8 +25,9 @@ public class PlayerUtils {
     public static boolean pay(@NotNull Player player, @NotNull Island island, int crystals, double money) {
 
         // Don't withdraw stuff if they can't purchase it.
-        if (!canPurchase(player, island, crystals, money))
+        if (!canPurchase(player, island, crystals, money)) {
             return false;
+        }
 
         final IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
 
@@ -86,7 +87,7 @@ public class PlayerUtils {
         if (spawnWorld == null) {
             spawnWorld = Bukkit.getWorlds().get(0);
         }
-        
+
         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
             EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
