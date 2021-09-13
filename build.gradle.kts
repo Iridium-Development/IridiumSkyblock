@@ -9,7 +9,6 @@ version = "3.1.1"
 description = "IridiumSkyblock"
 
 repositories {
-    mavenCentral()
     maven("https://repo.mvdw-software.com/content/groups/public/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
