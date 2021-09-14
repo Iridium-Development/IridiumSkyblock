@@ -84,7 +84,7 @@ public class SchematicManager {
 
     /**
      * Pastes the schematic one layer at a time starting at the specified y level
-     *  @param island            The island the schematic is being pasted at
+     * @param island            The island the schematic is being pasted at
      * @param world             The world the schematic is being pasted at
      * @param schematic         The schematic being pasted
      * @param yHeightIsland     Height Island Schematic
