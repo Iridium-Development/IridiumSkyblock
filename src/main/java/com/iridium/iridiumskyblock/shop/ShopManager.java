@@ -95,14 +95,12 @@ public class ShopManager {
         double vaultCost = calculateCost(amount, shopItem.defaultAmount, buyCost.vault);
         int crystalCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.crystals);
         final Optional<Island> island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland();
-
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
 
         boolean canPurchase = PlayerUtils.canPurchase(player, island.get(), crystalCost, vaultCost);
-
         if (!canPurchase) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             IridiumSkyblock.getInstance().getShop().failSound.play(player);
@@ -126,7 +124,6 @@ public class ShopManager {
 
             player.getInventory().addItem(itemStack);
         } else {
-
             // Run the command
             String command = shopItem.command
                     .replace("%player%", player.getName())

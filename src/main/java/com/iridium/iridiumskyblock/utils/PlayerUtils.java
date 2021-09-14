@@ -22,18 +22,25 @@ import java.util.stream.Collectors;
  */
 public class PlayerUtils {
 
+    /**
+     * Removes the specified amount of crystals and money from the island bank and from
+     * the player's purse if there is not enough in the bank.
+     *
+     * @param player    The Player
+     * @param island    The Player's Island
+     * @param crystals  The amount of crystals
+     * @param money     The amount of money
+     * @return If the purchase was successful. {@link PlayerUtils#canPurchase(Player, Island, int, double)} should be preferred.
+     */
     public static boolean pay(@NotNull Player player, @NotNull Island island, int crystals, double money) {
-
         // Don't withdraw stuff if they can't purchase it.
         if (!canPurchase(player, island, crystals, money)) {
             return false;
         }
 
-        final IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
-
-        final IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
-
-        final Economy economy = IridiumSkyblock.getInstance().getEconomy();
+        IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
         islandCrystals.setNumber(islandCrystals.getNumber() - crystals);
         if (islandMoney.getNumber() >= money) {
@@ -46,19 +53,18 @@ public class PlayerUtils {
     }
 
     /**
-     * Check if the PLayer can purchase whatever they are buying.
+     * Check if the player has enough money and crystals to buy something.
      *
-     * @param player   The Player.
+     * @param player   The Player
      * @param island   The Player's Island
      * @param crystals The crystals being spent
-     * @param money    The cash being spent.
-     * @return if they can purchase the item.
+     * @param money    The money being spent.
+     * @return If they can purchase the item
      */
     public static boolean canPurchase(@NotNull Player player, @NotNull Island island, int crystals, double money) {
-        final IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
-        final IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
-
-        final Economy economy = IridiumSkyblock.getInstance().getEconomy();
+        IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
         return islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money));
     }
@@ -80,10 +86,8 @@ public class PlayerUtils {
      *
      * @param player The player we are teleporting
      */
-
     public static void teleportSpawn(Player player) {
         World spawnWorld = Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().spawnWorldName);
-
         if (spawnWorld == null) {
             spawnWorld = Bukkit.getWorlds().get(0);
         }
