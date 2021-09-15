@@ -14,9 +14,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Map;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * The main configuration of IridiumSkyblock (configuration.yml).
