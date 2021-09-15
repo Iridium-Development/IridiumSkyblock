@@ -172,26 +172,24 @@ public class Configuration {
         public boolean pvpBetweenMembers = false;
         public boolean mobsVisitorTargeting = false;
 
-        public List<String> membersPreventedDamages = new ArrayList<String>() {{
-            add(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name());
-            add(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
-        }};
+        public List<String> membersPreventedDamages = Arrays.asList(
+            EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name(),
+            EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
 
-        public List<String> visitorsPreventedDamages = new ArrayList<String>() {{
-            add(EntityDamageEvent.DamageCause.PROJECTILE.name());
-            add(EntityDamageEvent.DamageCause.FIRE.name());
-            add(EntityDamageEvent.DamageCause.FALL.name());
-            add(EntityDamageEvent.DamageCause.MAGIC.name());
-            add(EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name());
-            add(EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
-            add(EntityDamageEvent.DamageCause.FLY_INTO_WALL.name());
-            add(EntityDamageEvent.DamageCause.FALLING_BLOCK.name());
-            add(EntityDamageEvent.DamageCause.THORNS.name());
-            add(EntityDamageEvent.DamageCause.ENTITY_ATTACK.name());
-            add(EntityDamageEvent.DamageCause.HOT_FLOOR.name());
-            add(EntityDamageEvent.DamageCause.LAVA.name());
-            add(EntityDamageEvent.DamageCause.CONTACT.name());
-        }};
+        public List<String> visitorsPreventedDamages = Arrays.asList(
+                EntityDamageEvent.DamageCause.PROJECTILE.name(),
+                EntityDamageEvent.DamageCause.FIRE.name(),
+                EntityDamageEvent.DamageCause.FALL.name(),
+                EntityDamageEvent.DamageCause.MAGIC.name(),
+                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name(),
+                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name(),
+                EntityDamageEvent.DamageCause.FLY_INTO_WALL.name(),
+                EntityDamageEvent.DamageCause.FALLING_BLOCK.name(),
+                EntityDamageEvent.DamageCause.THORNS.name(),
+                EntityDamageEvent.DamageCause.ENTITY_ATTACK.name(),
+                EntityDamageEvent.DamageCause.HOT_FLOOR.name(),
+                EntityDamageEvent.DamageCause.LAVA.name(),
+                EntityDamageEvent.DamageCause.CONTACT.name());
 
     }
 
