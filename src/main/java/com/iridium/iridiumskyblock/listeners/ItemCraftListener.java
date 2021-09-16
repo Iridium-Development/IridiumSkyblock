@@ -45,15 +45,10 @@ public class ItemCraftListener implements Listener {
     @EventHandler(priority = EventPriority.LOW)
     public void noUseCrystalCraft(CraftItemEvent event) {
         if (event.isCancelled()) return;
-        Configuration configuration = IridiumSkyblock.getInstance().getConfiguration();
-        for (ItemStack stack : event.getInventory().getMatrix()) {
-            if (stack != null && stack.getType().equals(configuration.islandCrystal.material.parseMaterial())) {
-                ItemMeta itemMeta = stack.getItemMeta();
-                if (itemMeta != null && itemMeta.getDisplayName().contains("Island Crystal")) {
+        for (ItemStack itemStack : event.getInventory().getMatrix()) {
+            if (itemStack != null && IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack) > 0) {
                     event.setCancelled(true);
-                    event.getInventory().setResult(air);
-                    return;
-                }
+                    event.getInventory().setResult(new ItemStack(Material.AIR));
             }
         }
     }
