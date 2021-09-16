@@ -64,10 +64,10 @@ public class Schematics {
         public String schematicID;
         public double yHeightIsland;
 
-        public SchematicWorld(XBiome biome, String schematicID, double yheightisland) {
+        public SchematicWorld(XBiome biome, String schematicID, double islandHeight) {
             this.biome = biome;
             this.schematicID = schematicID;
-            this.yHeightIsland = yheightisland;
+            this.yHeightIsland = islandHeight;
         }
     }
 
