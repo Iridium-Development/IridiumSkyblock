@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
-import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Material;
@@ -12,8 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -43,17 +42,10 @@ public class ItemCraftListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void noUseCrystalCraft(CraftItemEvent event) {
-        if (event.isCancelled()) return;
-        Configuration configuration = IridiumSkyblock.getInstance().getConfiguration();
-        for (ItemStack stack : event.getInventory().getMatrix()) {
-            if (stack != null && stack.getType().equals(configuration.islandCrystal.material.parseMaterial())) {
-                ItemMeta itemMeta = stack.getItemMeta();
-                if (itemMeta != null && itemMeta.getDisplayName().contains("Island Crystal")) {
-                    event.setCancelled(true);
-                    event.getInventory().setResult(air);
-                    return;
-                }
+    public void noUseCrystalCraft(PrepareItemCraftEvent event) {
+        for (ItemStack itemStack : event.getInventory().getMatrix()) {
+            if (itemStack != null && IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack) > 0) {
+                event.getInventory().setResult(new ItemStack(Material.AIR));
             }
         }
     }
