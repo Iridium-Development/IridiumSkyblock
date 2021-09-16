@@ -101,7 +101,7 @@ public class SchematicManager {
         // Loop all blocks in the schematics layer at the current y level
         for (int x = 0; x < schematic.getLength(); x++) {
             for (int z = 0; z < schematic.getWidth(); z++) {
-                Block block = island.getCenter(world).subtract(schematic.getLength()/2.00, 0, schematic.getWidth()/2.00).add(x, yHeightIsland + y, z).getBlock();
+                Block block = island.getCenter(world).subtract(schematic.getLength() / 2.0, 0, schematic.getWidth() / 2.0).add(x, yHeightIsland + y, z).getBlock();
                 BlockData blockData = schematic.getBlockData()[x][y][z];
                 if (blockData != null) blockData.setBlock(block);
             }
