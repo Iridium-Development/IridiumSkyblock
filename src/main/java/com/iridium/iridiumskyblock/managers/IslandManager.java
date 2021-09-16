@@ -1112,9 +1112,9 @@ public class IslandManager {
     }
 
     /**
-     * Returns the NetherWorld
+     * Returns the EndWorld
      *
-     * @return The nether skyblock {@link World}, might be null if some third-party plugin deleted it
+     * @return The end skyblock {@link World}, might be null if some third-party plugin deleted it
      * @since 3.0.0
      */
     public World getEndWorld() {
