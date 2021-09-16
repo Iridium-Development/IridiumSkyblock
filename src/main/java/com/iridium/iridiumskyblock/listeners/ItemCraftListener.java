@@ -20,8 +20,6 @@ import java.util.Optional;
 
 public class ItemCraftListener implements Listener {
 
-    ItemStack air = new ItemStack(Material.AIR);
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorItemCraft(CraftItemEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getWhoClicked().getWorld())) return;
