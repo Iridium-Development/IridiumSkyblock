@@ -53,7 +53,7 @@ public class PlayerInteractListener implements Listener {
                     islandBank.setNumber(islandBank.getNumber() + islandCrystals);
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                            .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())
+                            .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getDisplayName())
                             .replace("%amount%", String.valueOf(islandCrystals))));
                 }
             }

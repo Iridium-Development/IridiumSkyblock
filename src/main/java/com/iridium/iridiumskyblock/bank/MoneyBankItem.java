@@ -25,7 +25,7 @@ public class MoneyBankItem extends BankItem {
      * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public MoneyBankItem(double defaultAmount, Item item) {
-        super("money", defaultAmount, true, item);
+        super("money", "money", defaultAmount, true, item);
     }
 
     /**
@@ -48,12 +48,12 @@ public class MoneyBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(money))
-                        .replace("%type%", getName())
+                        .replace("%type%", getDisplayName())
                 );
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", getName())
+                        .replace("%type%", getDisplayName())
                 );
             }
             return money;
@@ -83,12 +83,12 @@ public class MoneyBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(money))
-                        .replace("%type%", getName())
+                        .replace("%type%", getDisplayName())
                 );
             }else{
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", getName())
+                        .replace("%type%", getDisplayName())
                 );
             }
             return money;
