@@ -40,7 +40,7 @@ public class ItemCraftListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOW)
-    public void noUseCrystalCraft(PrepareItemCraftEvent event) {
+    public void onItemCraft(PrepareItemCraftEvent event) {
         for (ItemStack itemStack : event.getInventory().getMatrix()) {
             if (itemStack != null && IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack) > 0) {
                 event.getInventory().setResult(new ItemStack(Material.AIR));
