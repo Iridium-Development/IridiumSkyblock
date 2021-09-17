@@ -26,7 +26,7 @@ public class ExperienceBankItem extends BankItem {
      * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public ExperienceBankItem(double defaultAmount, Item item) {
-        super("experience", "experience", defaultAmount, true, item);
+        super("experience", "Experience", defaultAmount, true, item);
     }
 
     /**
