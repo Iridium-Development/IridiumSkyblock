@@ -90,7 +90,7 @@ public class ExperienceBankItem extends BankItem {
             }else{
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", getName())
+                        .replace("%type%", getDisplayName())
                 );
             }
             return experience;
