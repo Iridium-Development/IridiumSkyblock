@@ -77,7 +77,7 @@ public class SchematicManager {
             }
         }
 
-        pasteSchematic(island, world, schematic, schematicWorld.yHeightIsland, completableFuture, 0, delay);
+        pasteSchematic(island, world, schematic, schematicWorld.islandHeight, completableFuture, 0, delay);
 
         return completableFuture;
     }
@@ -87,11 +87,11 @@ public class SchematicManager {
      * @param island            The island the schematic is being pasted at
      * @param world             The world the schematic is being pasted at
      * @param schematic         The schematic being pasted
-     * @param yHeightIsland     Height Island Schematic
+     * @param islandHeight      Height Island Schematic
      * @param completableFuture The completable future that's being returned
      * @param y                 The starting layer of the schematic that's being pasted
      */
-    private void pasteSchematic(final Island island, final World world, final Schematic schematic, double yHeightIsland, final CompletableFuture<Void> completableFuture, final int y, final int delay) {
+    private void pasteSchematic(final Island island, final World world, final Schematic schematic, double islandHeight, final CompletableFuture<Void> completableFuture, final int y, final int delay) {
         // If y is equal to Schematic#getHeight then theres nothing else to paste so we should return and complete the completable future
         if (y == schematic.getHeight()) {
             completableFuture.complete(null);
@@ -101,7 +101,7 @@ public class SchematicManager {
         // Loop all blocks in the schematics layer at the current y level
         for (int x = 0; x < schematic.getLength(); x++) {
             for (int z = 0; z < schematic.getWidth(); z++) {
-                Block block = island.getCenter(world).subtract(schematic.getLength() / 2.0, 0, schematic.getWidth() / 2.0).add(x, yHeightIsland + y, z).getBlock();
+                Block block = island.getCenter(world).subtract(schematic.getLength() / 2.0, 0, schematic.getWidth() / 2.0).add(x, islandHeight + y, z).getBlock();
                 BlockData blockData = schematic.getBlockData()[x][y][z];
                 if (blockData != null) blockData.setBlock(block);
             }
@@ -109,9 +109,9 @@ public class SchematicManager {
 
         // If schematicPastingDelay is 0 then we want it to execute immediately
         if (delay == 0) {
-            pasteSchematic(island, world, schematic, yHeightIsland, completableFuture, y + 1, delay);
+            pasteSchematic(island, world, schematic, islandHeight, completableFuture, y + 1, delay);
         } else {
-            Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, world, schematic, yHeightIsland, completableFuture, y + 1, delay), delay);
+            Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, world, schematic, islandHeight, completableFuture, y + 1, delay), delay);
         }
     }
 
