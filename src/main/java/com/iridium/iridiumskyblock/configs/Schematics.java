@@ -62,12 +62,12 @@ public class Schematics {
     public static class SchematicWorld {
         public XBiome biome;
         public String schematicID;
-        public double yHeightIsland;
+        public double islandHeight;
 
         public SchematicWorld(XBiome biome, String schematicID, double islandHeight) {
             this.biome = biome;
             this.schematicID = schematicID;
-            this.yHeightIsland = islandHeight;
+            this.islandHeight = islandHeight;
         }
     }
 
