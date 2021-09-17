@@ -23,7 +23,6 @@ public class EntityTargetListener implements Listener {
 
     @EventHandler
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
-
         if (IridiumSkyblock.getInstance().getConfiguration().pvpSettings.mobsVisitorTargeting) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
@@ -41,7 +40,7 @@ public class EntityTargetListener implements Listener {
             event.setCancelled(true);
 
             //if is not cooldown get next target
-            if (isOnCooldown(event.getEntity())) {
+            if (!canNextTarget(event.getEntity())) {
                 return;
             }
 
@@ -64,10 +63,10 @@ public class EntityTargetListener implements Listener {
 
     }
 
-    private boolean isOnCooldown(Entity entity) {
+    private boolean canNextTarget(Entity entity) {
         boolean cooldown = cooldownProvider.isOnCooldown(entity);
         cooldownProvider.applyCooldown(entity);
-        return cooldown;
+        return !cooldown;
     }
 
 }

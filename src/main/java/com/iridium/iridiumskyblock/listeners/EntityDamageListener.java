@@ -34,31 +34,26 @@ public class EntityDamageListener implements Listener {
         visitorsExcludedDamages.clear();
 
         configuration.pvpSettings.membersPreventedDamages.forEach(cause -> {
-
             try {
                 EntityDamageEvent.DamageCause damageCause = EntityDamageEvent.DamageCause.valueOf(cause);
                 membersExcludedDamages.add(damageCause);
             } catch (IllegalArgumentException e) {
                 IridiumSkyblock.getInstance().getLogger().warning("No any DamageCause named " + cause + " was found");
             }
-
         });
 
         configuration.pvpSettings.visitorsPreventedDamages.forEach(cause -> {
-
             try {
                 EntityDamageEvent.DamageCause damageCause = EntityDamageEvent.DamageCause.valueOf(cause);
                 visitorsExcludedDamages.add(damageCause);
             } catch (IllegalArgumentException e) {
                 IridiumSkyblock.getInstance().getLogger().warning("No any DamageCause named " + cause + " was found");
             }
-
         });
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityDamage(EntityDamageEvent event) {
-
         if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) ||
                 event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) ||
                 event.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)) {
@@ -75,7 +70,6 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-
         if (event.getEntity().equals(event.getDamager())) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
@@ -101,7 +95,7 @@ public class EntityDamageListener implements Listener {
                 return;
             }
             event.setCancelled(true);
-            if (hasNoCooldown(player)) {
+            if (!canGetResponse(player)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else if (event.getDamager() instanceof Projectile) {
@@ -113,7 +107,7 @@ public class EntityDamageListener implements Listener {
                 }
                 event.setCancelled(true);
                 projectile.remove();
-                if (hasNoCooldown(player)) {
+                if (!canGetResponse(player)) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
@@ -124,8 +118,7 @@ public class EntityDamageListener implements Listener {
         Configuration configuration = IridiumSkyblock.getInstance().getConfiguration();
 
         if (!configuration.pvpSettings.pvpOnIslands) {
-
-            if (hasNoCooldown(attacker)) {
+            if (!canGetResponse(attacker)) {
                 attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtPlayer.replace("%prefix%", configuration.prefix)));
             }
 
@@ -142,11 +135,9 @@ public class EntityDamageListener implements Listener {
         boolean victimIsMember = island.equals(victimUser.getIsland().orElse(null)) || victimTrusted.isPresent();
 
         if (!configuration.pvpSettings.pvpBetweenMembers && attackerIsMember && victimIsMember) {
-
-            if (hasNoCooldown(attacker)) {
+            if (!canGetResponse(attacker)) {
                 attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMember.replace("%prefix%", configuration.prefix)));
             }
-
             if (event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) event.getDamager().remove();
             event.setCancelled(true);
         }
@@ -160,16 +151,14 @@ public class EntityDamageListener implements Listener {
 
         if ((isMember && membersExcludedDamages.contains(event.getCause())) ||
                 (!isMember && visitorsExcludedDamages.contains(event.getCause()))) {
-
             event.setCancelled(true);
         }
-
     }
 
-    private boolean hasNoCooldown(Player player) {
+    private boolean canGetResponse(Player player) {
         boolean cooldown = cooldownProvider.isOnCooldown(player);
         cooldownProvider.applyCooldown(player);
-        return !cooldown;
+        return cooldown;
     }
 
 }

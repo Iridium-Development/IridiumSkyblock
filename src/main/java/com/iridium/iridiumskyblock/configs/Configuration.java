@@ -167,13 +167,13 @@ public class Configuration {
     @NoArgsConstructor
     public static class IslandDamageSettings {
 
-        public boolean pvpOnIslands = true;
+        public boolean pvpOnIslands = false;
         public boolean pvpBetweenMembers = false;
         public boolean mobsVisitorTargeting = false;
 
         public List<String> membersPreventedDamages = Arrays.asList(
-            EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name(),
-            EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
+                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name(),
+                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
 
         public List<String> visitorsPreventedDamages = Arrays.asList(
                 EntityDamageEvent.DamageCause.PROJECTILE.name(),
