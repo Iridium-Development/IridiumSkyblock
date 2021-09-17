@@ -56,7 +56,7 @@ public class CrystalsBankItem extends BankItem {
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", getName())
+                        .replace("%type%", getDisplayName())
                 );
             }
             return crystals;
