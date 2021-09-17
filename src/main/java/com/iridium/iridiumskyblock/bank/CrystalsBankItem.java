@@ -25,7 +25,7 @@ public class CrystalsBankItem extends BankItem {
      * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public CrystalsBankItem(double defaultAmount, Item item) {
-        super("crystals", "crystals", defaultAmount, true, item);
+        super("crystals", "Crystals", defaultAmount, true, item);
     }
 
     /**
