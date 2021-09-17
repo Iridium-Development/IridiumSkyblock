@@ -25,7 +25,7 @@ public class MoneyBankItem extends BankItem {
      * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public MoneyBankItem(double defaultAmount, Item item) {
-        super("money", "money", defaultAmount, true, item);
+        super("money", "Money", defaultAmount, true, item);
     }
 
     /**
