@@ -143,7 +143,7 @@ public class EntityDamageListener implements Listener {
         }
     }
 
-    public void handPlayerDamage(EntityDamageEvent event, Island island) {
+    private void handlePlayerDamage(EntityDamageEvent event, Island island) {
         Player player = (Player) event.getEntity();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<IslandTrusted> trusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island, user);
