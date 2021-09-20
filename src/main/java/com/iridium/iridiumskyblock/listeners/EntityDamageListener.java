@@ -64,7 +64,7 @@ public class EntityDamageListener implements Listener {
         if (!island.isPresent()) return;
 
         if (event.getEntity() instanceof Player) {
-            handPlayerDamage(event, island.get());
+            handlePlayerDamage(event, island.get());
         }
     }
 
@@ -84,10 +84,10 @@ public class EntityDamageListener implements Listener {
                 if (attacker.getShooter() instanceof Player) {
                     handleDamageBetweenPlayers(event, (Player) attacker.getShooter(), victim, island.get());
                 } else {
-                    handPlayerDamage(event, island.get());
+                    handlePlayerDamage(event, island.get());
                 }
             } else {
-                handPlayerDamage(event, island.get());
+                handlePlayerDamage(event, island.get());
             }
         } else if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
@@ -95,7 +95,7 @@ public class EntityDamageListener implements Listener {
                 return;
             }
             event.setCancelled(true);
-            if (!canGetResponse(player)) {
+            if (!messageIsOnCooldown(player)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else if (event.getDamager() instanceof Projectile) {
@@ -107,7 +107,7 @@ public class EntityDamageListener implements Listener {
                 }
                 event.setCancelled(true);
                 projectile.remove();
-                if (!canGetResponse(player)) {
+                if (!messageIsOnCooldown(player)) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
@@ -118,7 +118,7 @@ public class EntityDamageListener implements Listener {
         Configuration configuration = IridiumSkyblock.getInstance().getConfiguration();
 
         if (!configuration.pvpSettings.pvpOnIslands) {
-            if (!canGetResponse(attacker)) {
+            if (!messageIsOnCooldown(attacker)) {
                 attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtPlayer.replace("%prefix%", configuration.prefix)));
             }
 
@@ -135,7 +135,7 @@ public class EntityDamageListener implements Listener {
         boolean victimIsMember = island.equals(victimUser.getIsland().orElse(null)) || victimTrusted.isPresent();
 
         if (!configuration.pvpSettings.pvpBetweenMembers && attackerIsMember && victimIsMember) {
-            if (!canGetResponse(attacker)) {
+            if (!messageIsOnCooldown(attacker)) {
                 attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMember.replace("%prefix%", configuration.prefix)));
             }
             if (event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) event.getDamager().remove();
@@ -155,7 +155,7 @@ public class EntityDamageListener implements Listener {
         }
     }
 
-    private boolean canGetResponse(Player player) {
+    private boolean messageIsOnCooldown(Player player) {
         boolean cooldown = cooldownProvider.isOnCooldown(player);
         cooldownProvider.applyCooldown(player);
         return cooldown;
