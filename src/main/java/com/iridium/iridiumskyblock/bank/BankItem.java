@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.bank;
 import com.iridium.iridiumcore.Item;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 
 /**
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 public abstract class BankItem {
 
     private String name;
+    @Setter
     private String displayName;
     private double defaultAmount;
     private boolean enabled;
