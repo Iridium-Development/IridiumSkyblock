@@ -26,6 +26,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
@@ -405,7 +406,21 @@ public class IridiumSkyblock extends IridiumCore {
             configuration.distance = maxSize + 1;
         }
 
-        EntityDamageListener.refreshDamageCauses();
+        configuration.pvpSettings.membersPreventedDamages.forEach(cause -> {
+            try {
+                EntityDamageEvent.DamageCause.valueOf(cause);
+            } catch (IllegalArgumentException e) {
+                getLogger().warning("No any DamageCause named " + cause + " was found");
+            }
+        });
+
+        configuration.pvpSettings.visitorsPreventedDamages.forEach(cause -> {
+            try {
+                EntityDamageEvent.DamageCause.valueOf(cause);
+            } catch (IllegalArgumentException e) {
+                getLogger().warning("No any DamageCause named " + cause + " was found");
+            }
+        });
 
         if (inventories.confirmationGUI.yes.slot == null || inventories.confirmationGUI.yes.slot == 0) {
             inventories.confirmationGUI.yes.slot = 15;

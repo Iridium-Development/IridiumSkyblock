@@ -23,34 +23,7 @@ import java.util.Optional;
 
 public class EntityDamageListener implements Listener {
 
-    private static final List<EntityDamageEvent.DamageCause> membersExcludedDamages = new ArrayList<>();
-    private static final List<EntityDamageEvent.DamageCause> visitorsExcludedDamages = new ArrayList<>();
     private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(500));
-
-    //Refresh cause damages
-    public static void refreshDamageCauses() {
-        Configuration configuration = IridiumSkyblock.getInstance().getConfiguration();
-        membersExcludedDamages.clear();
-        visitorsExcludedDamages.clear();
-
-        configuration.pvpSettings.membersPreventedDamages.forEach(cause -> {
-            try {
-                EntityDamageEvent.DamageCause damageCause = EntityDamageEvent.DamageCause.valueOf(cause);
-                membersExcludedDamages.add(damageCause);
-            } catch (IllegalArgumentException e) {
-                IridiumSkyblock.getInstance().getLogger().warning("No any DamageCause named " + cause + " was found");
-            }
-        });
-
-        configuration.pvpSettings.visitorsPreventedDamages.forEach(cause -> {
-            try {
-                EntityDamageEvent.DamageCause damageCause = EntityDamageEvent.DamageCause.valueOf(cause);
-                visitorsExcludedDamages.add(damageCause);
-            } catch (IllegalArgumentException e) {
-                IridiumSkyblock.getInstance().getLogger().warning("No any DamageCause named " + cause + " was found");
-            }
-        });
-    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityDamage(EntityDamageEvent event) {
@@ -149,8 +122,8 @@ public class EntityDamageListener implements Listener {
         Optional<IslandTrusted> trusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island, user);
         boolean isMember = island.equals(user.getIsland().orElse(null)) || trusted.isPresent();
 
-        if ((isMember && membersExcludedDamages.contains(event.getCause())) ||
-                (!isMember && visitorsExcludedDamages.contains(event.getCause()))) {
+        if ((isMember && IridiumSkyblock.getInstance().getConfiguration().pvpSettings.membersPreventedDamages.contains(event.getCause().name())) ||
+                (!isMember && IridiumSkyblock.getInstance().getConfiguration().pvpSettings.visitorsPreventedDamages.contains(event.getCause().name()))) {
             event.setCancelled(true);
         }
     }
