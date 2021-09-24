@@ -9,16 +9,17 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.shop.ShopItem.BuyCost;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Handles the shop.
@@ -38,12 +39,12 @@ public class ShopManager {
             }
 
             categories.add(
-                new ShopCategory(
-                    categoryName,
-                    shopCategoryConfig.item,
-                    IridiumSkyblock.getInstance().getShop().items.get(categoryName),
-                    shopCategoryConfig.inventoryRows * 9
-                )
+                    new ShopCategory(
+                            categoryName,
+                            shopCategoryConfig.item,
+                            IridiumSkyblock.getInstance().getShop().items.get(categoryName),
+                            shopCategoryConfig.inventoryRows * 9
+                    )
             );
         }
     }
@@ -93,14 +94,13 @@ public class ShopManager {
         BuyCost buyCost = shopItem.buyCost;
         double vaultCost = calculateCost(amount, shopItem.defaultAmount, buyCost.vault);
         int crystalCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.crystals);
+        final Optional<Island> island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland();
+        if (!island.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
 
-        boolean canPurchase = PlayerUtils.pay(
-                player,
-                IridiumSkyblockAPI.getInstance().getUser(player).getIsland().get(),
-                crystalCost,
-                vaultCost
-        );
-
+        boolean canPurchase = PlayerUtils.canPurchase(player, island.get(), crystalCost, vaultCost);
         if (!canPurchase) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             IridiumSkyblock.getInstance().getShop().failSound.play(player);
@@ -121,7 +121,7 @@ public class ShopManager {
                 itemMeta.setDisplayName(StringUtils.color(shopItem.displayName));
                 itemStack.setItemMeta(itemMeta);
             }
-            
+
             player.getInventory().addItem(itemStack);
         } else {
             // Run the command
@@ -131,6 +131,9 @@ public class ShopManager {
 
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
         }
+
+        // Only run the withdrawing function when the user can buy it.
+        PlayerUtils.pay(player, island.get(), crystalCost, vaultCost);
 
         IridiumSkyblock.getInstance().getShop().successSound.play(player);
 
@@ -173,7 +176,7 @@ public class ShopManager {
      * Gives all rewards for that item to him.
      *
      * @param player The player who sold the item
-     * @param item The item that has been sold
+     * @param item   The item that has been sold
      * @param amount The amount of that item
      */
     public void giveReward(Player player, ShopItem item, int amount) {
@@ -215,7 +218,7 @@ public class ShopManager {
     /**
      * Rounds a double with the specified amount of decimal places.
      *
-     * @param value The value of the double that should be rounded
+     * @param value  The value of the double that should be rounded
      * @param places The amount of decimal places
      * @return The rounded double
      */

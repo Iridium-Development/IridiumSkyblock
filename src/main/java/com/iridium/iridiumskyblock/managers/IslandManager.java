@@ -52,7 +52,6 @@ public class IslandManager {
         islandValueSortCache.clearCache();
     }
 
-
     /**
      * Creates a new world using the current skyblock generator.
      *
@@ -101,11 +100,12 @@ public class IslandManager {
 
         getIslandChunks(island, world).thenAccept(chunks -> {
             Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);
-            xBiome.setBiome(pos1, pos2);
-            for (Chunk chunk : chunks) {
-                IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
-            }
+            Location pos2 = island.getPos2(world);      
+            xBiome.setBiome(pos1, pos2).thenRun(() -> {
+                for (Chunk chunk : chunks) {
+                    IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
+                }
+            });
         }).exceptionally(throwable -> {
             throwable.printStackTrace();
             return null;
@@ -368,9 +368,9 @@ public class IslandManager {
         setIslandBiome(island, schematicConfig.nether.biome);
         setIslandBiome(island, schematicConfig.end.biome);
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
                                 completableFuture.complete(null)
                         )
                 )
@@ -497,12 +497,8 @@ public class IslandManager {
      * @return Optional of the island at the locations, empty if there is none
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        World world = location.getWorld();
-        if (Objects.equals(world, getWorld()) || Objects.equals(world, getNetherWorld()) || Objects.equals(world, getEndWorld())) {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
-            if (optionalIsland.isPresent()) return optionalIsland;
-        }
-        return Optional.empty();
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return Optional.empty();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.isInIsland(location)).findFirst();
     }
 
     /**
@@ -856,27 +852,24 @@ public class IslandManager {
      * @param chunks The Island's Chunks
      */
     private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () ->
-                chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
-                            World world = Bukkit.getWorld(chunk.getWorldName());
-                            int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
-                            for (int x = 0; x < 16; x++) {
-                                for (int z = 0; z < 16; z++) {
-                                    if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
-                                        final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
-                                        for (int y = 0; y <= maxy; y++) {
-                                            XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
-                                            if (material.equals(XMaterial.AIR)) continue;
+        chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
+            World world = Bukkit.getWorld(chunk.getWorldName());
+            int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
+            for (int x = 0; x < 16; x++) {
+                for (int z = 0; z < 16; z++) {
+                    if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
+                        final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
+                        for (int y = 0; y <= maxy; y++) {
+                            XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
+                            if (material.equals(XMaterial.AIR)) continue;
 
-                                            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
-                                            islandBlock.setAmount(islandBlock.getAmount() + 1);
-                                        }
-                                    }
-                                }
-                            }
+                            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
+                            islandBlock.setAmount(islandBlock.getAmount() + 1);
                         }
-                )
-        );
+                    }
+                }
+            }
+        });
         chunks.forEach(chunk -> {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner)) continue;
@@ -1117,9 +1110,9 @@ public class IslandManager {
     }
 
     /**
-     * Returns the NetherWorld
+     * Returns the EndWorld
      *
-     * @return The nether skyblock {@link World}, might be null if some third-party plugin deleted it
+     * @return The end skyblock {@link World}, might be null if some third-party plugin deleted it
      * @since 3.0.0
      */
     public World getEndWorld() {

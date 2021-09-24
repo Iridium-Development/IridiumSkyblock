@@ -8,15 +8,13 @@ import com.iridium.iridiumskyblock.database.IslandBan;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BansGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which bans a visitor from your Island.
@@ -44,10 +42,10 @@ public class BanCommand extends Command {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
@@ -84,11 +82,13 @@ public class BanCommand extends Command {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().addEntry(new IslandBan(island.get(), user, targetUser));
         if (island.get().isInIsland(targetPlayer.getLocation())) {
             PlayerUtils.teleportSpawn(targetPlayer);
             targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
+
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerBanned.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return true;
     }
@@ -104,10 +104,7 @@ public class BanCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Bukkit.getOnlinePlayers().stream()
-                .map(Player::getName)
-                .filter(s -> s.toLowerCase().contains(args[1].toLowerCase()))
-                .collect(Collectors.toList());
+        return PlayerUtils.getOnlinePlayerNames();
     }
 
 }

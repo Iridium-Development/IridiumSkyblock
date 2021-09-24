@@ -3,16 +3,15 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.scheduler.BukkitTask;
 
 /**
  * Command which display plugin information to the user.
@@ -41,6 +40,7 @@ public class RecalculateCommand extends Command {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculationAlreadyInProcess.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         int interval = 5;
         List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
         int seconds = (islandList.size() * interval / 20) % 60;
@@ -67,6 +67,7 @@ public class RecalculateCommand extends Command {
                     sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingFinished.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
+
         }, 0, interval);
         return true;
     }
@@ -83,7 +84,7 @@ public class RecalculateCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 

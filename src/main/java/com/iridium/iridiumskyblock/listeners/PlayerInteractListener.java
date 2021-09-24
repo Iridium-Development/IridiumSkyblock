@@ -4,7 +4,6 @@ import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
@@ -36,37 +35,34 @@ public class PlayerInteractListener implements Listener {
             XMaterial.TRIPWIRE
     ));
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
-
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         user.getIsland().ifPresent(island -> {
             if (event.getAction() != Action.PHYSICAL) {
-                int islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(event.getPlayer().getItemInHand());
+                int islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(event.getPlayer().getInventory().getItemInMainHand());
                 if (islandCrystals > 0) {
-                    int amount = event.getPlayer().getItemInHand().getAmount();
+                    int amount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
                     if (amount == 1) {
-                        event.getPlayer().setItemInHand(null);
+                        event.getPlayer().getInventory().setItemInMainHand(null);
                     } else {
-                        event.getPlayer().getItemInHand().setAmount(amount - 1);
+                        event.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
                     }
                     IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
                     islandBank.setNumber(islandBank.getNumber() + islandCrystals);
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getDisplayName())
+                            .replace("%amount%", String.valueOf(islandCrystals))));
                 }
             }
         });
-
-        if (event.getClickedBlock() != null) {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation());
-            if (!optionalIsland.isPresent()) {
-                return;
-            }
+        if (event.getClickedBlock() == null) return;
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation()).ifPresent(island -> {
 
             XMaterial material = XMaterial.matchXMaterial(event.getClickedBlock().getType());
             String materialName = material.name();
-            Island island = optionalIsland.get();
 
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island, user, PermissionType.INTERACT)) {
                 event.setCancelled(true);
@@ -111,7 +107,7 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
             }
-        }
+        });
     }
 
     private boolean hasNoCooldown(Player player) {

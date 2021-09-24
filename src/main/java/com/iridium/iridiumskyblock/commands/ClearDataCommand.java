@@ -4,12 +4,11 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which allows admins to bypass Island restrictions.
@@ -37,9 +36,9 @@ public class ClearDataCommand extends Command {
             execute(sender);
             return true;
         }
+
         Player player = (Player) sender;
-        player.openInventory(new ConfirmationGUI(() -> execute(player), getCooldownProvider()
-        ).getInventory());
+        player.openInventory(new ConfirmationGUI(() -> execute(player), getCooldownProvider()).getInventory());
         // Return false because the cooldown is set by the ConfirmationGUI
         return false;
     }
@@ -76,7 +75,7 @@ public class ClearDataCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 
