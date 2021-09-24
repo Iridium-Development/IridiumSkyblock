@@ -26,7 +26,7 @@ public class ExperienceBankItem extends BankItem {
      * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public ExperienceBankItem(double defaultAmount, Item item) {
-        super("experience", defaultAmount, true, item);
+        super("experience", "Experience", defaultAmount, true, item);
     }
 
     /**
@@ -50,12 +50,12 @@ public class ExperienceBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(experience))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getDisplayName())
                 );
             }else{
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getDisplayName())
                 );
             }
             return experience;
@@ -85,12 +85,12 @@ public class ExperienceBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(experience))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getDisplayName())
                 );
             }else{
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", "Experience")
+                        .replace("%type%", getDisplayName())
                 );
             }
             return experience;
