@@ -100,11 +100,12 @@ public class IslandManager {
 
         getIslandChunks(island, world).thenAccept(chunks -> {
             Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);
-            xBiome.setBiome(pos1, pos2);
-            for (Chunk chunk : chunks) {
-                IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
-            }
+            Location pos2 = island.getPos2(world);      
+            xBiome.setBiome(pos1, pos2).thenRun(() -> {
+                for (Chunk chunk : chunks) {
+                    IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
+                }
+            });
         }).exceptionally(throwable -> {
             throwable.printStackTrace();
             return null;
@@ -367,9 +368,9 @@ public class IslandManager {
         setIslandBiome(island, schematicConfig.nether.biome);
         setIslandBiome(island, schematicConfig.end.biome);
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end.schematicID, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
+                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
                                 completableFuture.complete(null)
                         )
                 )
@@ -1109,9 +1110,9 @@ public class IslandManager {
     }
 
     /**
-     * Returns the NetherWorld
+     * Returns the EndWorld
      *
-     * @return The nether skyblock {@link World}, might be null if some third-party plugin deleted it
+     * @return The end skyblock {@link World}, might be null if some third-party plugin deleted it
      * @since 3.0.0
      */
     public World getEndWorld() {

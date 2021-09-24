@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 public abstract class BankItem {
 
     private String name;
+    private String displayName;
     private double defaultAmount;
     private boolean enabled;
     private Item item;
@@ -26,8 +27,9 @@ public abstract class BankItem {
      * @param enabled       Whether or not this item is usable
      * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
-    public BankItem(String name, double defaultAmount, boolean enabled, Item item) {
+    public BankItem(String name, String displayName, double defaultAmount, boolean enabled, Item item) {
         this.name = name;
+        this.displayName = displayName;
         this.defaultAmount = defaultAmount;
         this.enabled = enabled;
         this.item = item;

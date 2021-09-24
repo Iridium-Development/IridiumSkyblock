@@ -25,7 +25,7 @@ public class CrystalsBankItem extends BankItem {
      * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
      */
     public CrystalsBankItem(double defaultAmount, Item item) {
-        super("crystals", defaultAmount, true, item);
+        super("crystals", "Crystals", defaultAmount, true, item);
     }
 
     /**
@@ -51,12 +51,12 @@ public class CrystalsBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(crystals))
-                        .replace("%type%", "Crystals")
+                        .replace("%type%", getDisplayName())
                 );
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", "Crystals")
+                        .replace("%type%", getDisplayName())
                 );
             }
             return crystals;
