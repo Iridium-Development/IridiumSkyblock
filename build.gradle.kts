@@ -14,7 +14,7 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://ci.ender.zone/plugin/repository/everything/")
     maven("https://jitpack.io")
-    maven("https://nexus.savagelabs.net/repository/maven-releases/")
+    maven("https://nexus.iridiumdevelopment.net/repository/maven-releases/")
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.jeff-media.de/maven2/")
@@ -23,7 +23,7 @@ repositories {
 dependencies {
     // Dependencies that we want to shade in
     implementation("org.jetbrains:annotations:22.0.0")
-    implementation("com.iridium:IridiumCore:1.2.7")
+    implementation("com.iridium:IridiumCore:1.3.1")
     implementation("org.bstats:bstats-bukkit:2.2.1")
     implementation("com.github.j256:ormlite-core:master-SNAPSHOT")
     implementation("com.j256.ormlite:ormlite-jdbc:5.6")
@@ -41,8 +41,8 @@ dependencies {
     compileOnly("com.gc:AdvancedSpawners:1.2.6")
     compileOnly("dev.rosewood:rosestacker:1.2.6")
     compileOnly("com.github.OmerBenGera:WildStackerAPI:master")
-    compileOnly("com.songoda:UltimateStacker:2.1.6")
-    compileOnly("com.songoda:EpicSpawners:7.1")
+    compileOnly("com.songoda:UltimateStacker:2.1.7")
+    compileOnly("com.songoda:EpicSpawners:7.0.8")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.20")
