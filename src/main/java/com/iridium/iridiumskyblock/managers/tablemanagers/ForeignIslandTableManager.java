@@ -26,7 +26,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
 
     @Override
     public void addEntry(T t) {
-        int index = Collections.binarySearch(getEntries(), t, comparator);
+        int index = Collections.binarySearch(getEntries(), t, Comparator.comparing(t1 -> t1.getIsland().map(Island::getId).orElse(0)));
         getEntries().add(index < 0 ? -(index + 1) : index, t);
     }
 
@@ -38,7 +38,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
     }
 
     public Optional<T> getEntry(T t) {
-        int index = Collections.binarySearch(getEntries(), t, comparator);
+        int index = Collections.binarySearch(getEntries(), t,  Comparator.comparing(t1 -> t1.getIsland().map(Island::getId).orElse(0)));
         if (index < 0) return Optional.empty();
         return Optional.ofNullable(getEntries().get(index));
     }
