@@ -38,8 +38,11 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The item we are adding
      */
     public void addEntry(User user) {
-        getEntries().add(user);
-        userIslandIndex.add(user);
+        int index = Collections.binarySearch(getEntries(), user, Comparator.comparing(User::getUuid));
+        getEntries().add(index < 0 ? -(index + 1) : index, user);
+
+        int islandIndex = Collections.binarySearch(userIslandIndex, user, Comparator.comparing(u -> u.getIsland().map(Island::getId).orElse(0)));
+        userIslandIndex.add(islandIndex < 0 ? -(islandIndex + 1) : islandIndex, user);
     }
 
     /**
