@@ -396,24 +396,26 @@ public class IslandManager {
      * Gets all chunks the island is in.
      *
      * @param island The specified Island
-     * @param world  The world
+     * @param worlds  The worlds
      * @return A list of Chunks the island is in
      */
-    public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World world) {
+    public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World... worlds) {
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
+            for(World world : worlds){
 
-            Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);
+                Location pos1 = island.getPos1(world);
+                Location pos2 = island.getPos2(world);
 
-            int minX = pos1.getBlockX() >> 4;
-            int minZ = pos1.getBlockZ() >> 4;
-            int maxX = pos2.getBlockX() >> 4;
-            int maxZ = pos2.getBlockZ() >> 4;
+                int minX = pos1.getBlockX() >> 4;
+                int minZ = pos1.getBlockZ() >> 4;
+                int maxX = pos2.getBlockX() >> 4;
+                int maxZ = pos2.getBlockZ() >> 4;
 
-            for (int x = minX; x <= maxX; x++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    chunks.add(IridiumSkyblock.getInstance().getMultiVersion().getChunkAt(world, x, z));
+                for (int x = minX; x <= maxX; x++) {
+                    for (int z = minZ; z <= maxZ; z++) {
+                        chunks.add(IridiumSkyblock.getInstance().getMultiVersion().getChunkAt(world, x, z));
+                    }
                 }
             }
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
@@ -824,24 +826,16 @@ public class IslandManager {
      * @param island The specified Island
      */
     public void recalculateIsland(@NotNull Island island) {
-        // Reset their value
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).forEach(islandBlocks -> islandBlocks.setAmount(0));
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(islandSpawners -> islandSpawners.setAmount(0));
+        getIslandChunks(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(chunks -> {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).forEach(islandBlocks -> islandBlocks.setAmount(0));
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(islandSpawners -> islandSpawners.setAmount(0));
 
-        // Calculate and set their new value
-        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getWorld()).thenAccept(chunks ->
-                recalculateIsland(island, chunks)
-        );
-        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getNetherWorld()).thenAccept(chunks ->
-                recalculateIsland(island, chunks)
-        );
-        getIslandChunks(island, IridiumSkyblock.getInstance().getIslandManager().getEndWorld()).thenAccept(chunks ->
-                recalculateIsland(island, chunks)
-        );
+            recalculateIsland(island, chunks);
 
-        IridiumSkyblock.getInstance().getBlockStackerSupport().getBlockAmounts(island).forEach(blockAmount -> {
-            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
-            islandBlock.setAmount(islandBlock.getAmount() + blockAmount.getAmount());
+            IridiumSkyblock.getInstance().getBlockStackerSupport().getBlockAmounts(island).forEach(blockAmount -> {
+                IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
+                islandBlock.setAmount(islandBlock.getAmount() + blockAmount.getAmount());
+            });
         });
     }
 
