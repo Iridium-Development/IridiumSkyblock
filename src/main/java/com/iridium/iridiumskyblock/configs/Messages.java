@@ -38,7 +38,7 @@ public class Messages {
     public String notSafe = "%prefix% &7This location is not safe.";
     public String invitedPlayer = "%prefix% &7You have invited %player% to join your Island.";
     public String userInvitedPlayer = "%prefix% &7%inviter% has invited %player% to join your Island.";
-    public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their Island.";
+    public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their Island. Click here to join the Island!";
     public String alreadyInYourIsland = "%prefix% &7This player is already a member of your Island.";
     public String inviteRevoked = "%prefix% &7Island invite for %player% has been revoked.";
     public String noActiveInvite = "%prefix% &7%player% has no active invite for your Island.";
@@ -180,6 +180,7 @@ public class Messages {
     public String changedBiome = "%prefix% &7You have changed your island biome to %biome%!";
     public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
     public String activeCooldown = "%prefix% &7You cannot do that due to a running cooldown, please wait %hours% hour(s), %minutes% minute(s), %seconds% second(s)!";
+    public String clickToJoinHover = "&7Click to join this Island!";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
