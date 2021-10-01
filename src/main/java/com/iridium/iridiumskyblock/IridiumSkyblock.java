@@ -21,9 +21,6 @@ import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -36,7 +33,12 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -163,7 +165,35 @@ public class IridiumSkyblock extends IridiumCore {
         // Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
-        runTasks();
+        // Auto recalculate islands
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+
+            @Override
+            public void run() {
+                if (!islands.hasNext()) {
+                    islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                } else {
+                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
+                }
+            }
+
+        }, 0, getConfiguration().islandRecalculateInterval * 20L);
+
+        // Automatically update all inventories
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
+            if (inventoryHolder instanceof GUI) {
+                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
+            }
+        }), 0, 20);
+
+        // Register worlds with multiverse
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            registerMultiverse(islandManager.getWorld());
+            registerMultiverse(islandManager.getNetherWorld());
+            registerMultiverse(islandManager.getEndWorld());
+        }, 1);
 
         resetIslandMissions();
 
@@ -198,38 +228,6 @@ public class IridiumSkyblock extends IridiumCore {
                 getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
             }
         }
-    }
-
-    private void runTasks() {
-        // Auto recalculate islands
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-
-            @Override
-            public void run() {
-                if (!islands.hasNext()) {
-                    islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-                } else {
-                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
-                }
-            }
-
-        }, 0, getConfiguration().islandRecalculateInterval * 20L);
-
-        // Automatically update all inventories
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
-            if (inventoryHolder instanceof GUI) {
-                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
-            }
-        }), 0, 20);
-
-        // Register worlds with multiverse
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            registerMultiverse(islandManager.getWorld());
-            registerMultiverse(islandManager.getNetherWorld());
-            registerMultiverse(islandManager.getEndWorld());
-        }, 1);
     }
 
     /**
