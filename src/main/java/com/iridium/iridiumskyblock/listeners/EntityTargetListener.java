@@ -34,12 +34,10 @@ public class EntityTargetListener implements Listener {
         Optional<IslandTrusted> targetTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
         if (island.get().equals(targetUser.getIsland().orElse(null)) || targetTrusted.isPresent()) return;
 
-        //if is not cooldown get next target
-        if (!canNextTarget(event.getEntity())) {
+        if (!canSearchTarget(event.getEntity())) {
             return;
         }
 
-        //get next targetPlayer
         List<Player> nextTargets = event.getEntity().getNearbyEntities(8, 8, 8).stream()
                 .filter(entity -> entity instanceof Player)
                 .filter(entity -> island.get().isInIsland(entity.getLocation()))
@@ -49,18 +47,15 @@ public class EntityTargetListener implements Listener {
                 .filter(player -> player.hasLineOfSight(event.getEntity()))
                 .collect(Collectors.toList());
 
-        //return if empty
         if (nextTargets.isEmpty()) {
             return;
         }
 
-        //Set target of Living Entity to next target if present
         Player nextTarget = nextTargets.get(ThreadLocalRandom.current().nextInt(nextTargets.size()));
         event.setTarget(nextTarget);
-
     }
 
-    private boolean canNextTarget(Entity entity) {
+    private boolean canSearchTarget(Entity entity) {
         boolean cooldown = cooldownProvider.isOnCooldown(entity);
         cooldownProvider.applyCooldown(entity);
         return !cooldown;
