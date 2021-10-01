@@ -100,11 +100,11 @@ public class LogsGUI extends GUI {
 
         int maxPage = (int) Math.ceil(islandLogs.size() / 10.00);
 
-        itemMeta.setLore(lore.stream().map(s -> s
+        itemMeta.setLore(lore.stream()
+            .map(loreLine -> loreLine
                         .replace("%current_page%", String.valueOf(page))
                         .replace("%max_page%", String.valueOf(maxPage > 0 ? maxPage : 1))
-                ).collect(Collectors.toList())
-        );
+            ).collect(Collectors.toList()));
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(item.slot, itemStack);
     }

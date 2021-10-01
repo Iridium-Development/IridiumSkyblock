@@ -78,7 +78,7 @@ public class IridiumSkyblock extends IridiumCore {
     private List<BankItem> bankItemList;
     private Map<String, Permission> permissionList;
     private Map<String, Mission> missionsList;
-    private Map<String, Upgrade> upgradesList;
+    private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
 
     private Economy economy;
@@ -121,7 +121,7 @@ public class IridiumSkyblock extends IridiumCore {
         super.onEnable();
 
         // Convert old IridiumSkyblock data
-        DataConverter.run(this);
+        DataConverter.copyLegacyData();
 
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock");
@@ -233,7 +233,7 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     /**
-     * Automatically resets the Island missions in a defined time intervall.
+     * Automatically resets the Island missions in a defined time interval.
      */
     private void resetIslandMissions() {
         Calendar c = Calendar.getInstance();
@@ -298,6 +298,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new EntitySpawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockFromToListener(), this);
     }
 
     /**
@@ -406,10 +407,20 @@ public class IridiumSkyblock extends IridiumCore {
 
         initializePermissionList();
 
+        if (bankItems.crystalsBankItem.getDisplayName() == null) bankItems.crystalsBankItem.setDisplayName("Crystal");
+        if (bankItems.experienceBankItem.getDisplayName() == null) bankItems.experienceBankItem.setDisplayName("Experience");
+        if (bankItems.moneyBankItem.getDisplayName() == null) bankItems.moneyBankItem.setDisplayName("Money");
+
         this.bankItemList = new ArrayList<>();
-        this.bankItemList.add(bankItems.crystalsBankItem);
-        this.bankItemList.add(bankItems.experienceBankItem);
-        this.bankItemList.add(bankItems.moneyBankItem);
+        if (bankItems.crystalsBankItem.isEnabled()) {
+            this.bankItemList.add(bankItems.crystalsBankItem);
+        }
+        if (bankItems.experienceBankItem.isEnabled()) {
+            this.bankItemList.add(bankItems.experienceBankItem);
+        }
+        if (bankItems.moneyBankItem.isEnabled()) {
+            this.bankItemList.add(bankItems.moneyBankItem);
+        }
 
         this.missionsList = new HashMap<>(missions.missions);
 

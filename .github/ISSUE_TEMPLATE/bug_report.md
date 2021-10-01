@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a report to help us improve
 title: ''
-labels: bug, not confirmed
-assignees: PeachesMLG, dlsf, MertUnverdi
+labels: bug, unconfirmed
+assignees: PeachesMLG, dlsf, Oribuin, MertUnverdi
 
 ---
 
@@ -27,7 +27,6 @@ Copy and paste the results of `/version` and `/is about`
 If applicable, add screenshots to help explain your problem.
 
 **Logs**
-If there are error messages in your console, please send them via [this](https://paste.gg/)
-
+If there are error messages in your console, please send them via [this](https://mclo.gs)
 **Additional context**
 Add any other context about the problem here.

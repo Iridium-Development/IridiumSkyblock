@@ -36,25 +36,25 @@ public class UpgradesGUI extends GUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().upgradesGUI.background);
 
-        for (Map.Entry<String, Upgrade> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
+        for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             Item item = upgrade.getValue().item;
             int level = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(getIsland(), upgrade.getKey()).getLevel();
             List<Placeholder> placeholderList = new ArrayList<>();
             placeholderList.add(new Placeholder("level", String.valueOf(level)));
 
-            if (upgrade.getValue().upgrades.get(level) instanceof UpgradeData) {
-                UpgradeData upgradeData = (UpgradeData) upgrade.getValue().upgrades.get(level);
+            if (upgrade.getValue().upgrades.get(level) != null) {
+                UpgradeData upgradeData = upgrade.getValue().upgrades.get(level);
                 placeholderList.addAll(upgradeData.getPlaceholders());
             }
-            if (upgrade.getValue().upgrades.get(level + 1) instanceof UpgradeData) {
-                UpgradeData upgradeData = (UpgradeData) upgrade.getValue().upgrades.get(level + 1);
+            if (upgrade.getValue().upgrades.get(level + 1) != null) {
+                UpgradeData upgradeData = upgrade.getValue().upgrades.get(level + 1);
                 placeholderList.add(new Placeholder("crystalscost", String.valueOf(upgradeData.crystals)));
                 placeholderList.add(new Placeholder("vaultcost", String.valueOf(upgradeData.money)));
             } else if (!upgrade.getValue().upgrades.containsKey(level + 1)) {
                 placeholderList.add(new Placeholder("crystalscost", IridiumSkyblock.getInstance().getPlaceholders().crystalCost));
                 placeholderList.add(new Placeholder("vaultcost", IridiumSkyblock.getInstance().getPlaceholders().vaultCost));
-
             }
+
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, placeholderList));
         }
     }
@@ -67,7 +67,7 @@ public class UpgradesGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        for (Map.Entry<String, Upgrade> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
+        for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             if (event.getSlot() == upgrade.getValue().item.slot) {
                 String command = IridiumSkyblock.getInstance().getCommands().upgradesCommand.aliases.get(0);
                 Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + upgrade.getKey());

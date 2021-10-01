@@ -3,6 +3,12 @@ package com.iridium.iridiumskyblock.configs;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 import com.iridium.iridiumskyblock.commands.*;
 
+/**
+ * The command configuration of IridiumSkyblock (commands.yml).
+ * Is deserialized automatically on plugin startup and reload.
+ * <p>
+ * <b>Commands that are added to this config will be registered automatically.</b>
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Commands {
 
@@ -11,7 +17,7 @@ public class Commands {
     public BankCommand bankCommand = new BankCommand();
     public BiomeCommand biomeCommand = new BiomeCommand();
     public BlockValueCommand blockValueCommand = new BlockValueCommand();
-    public BoostersCommand boostersCommand = new BoostersCommand();
+    public BoosterCommand boostersCommand = new BoosterCommand();
     public BorderCommand borderCommand = new BorderCommand();
     public BypassCommand bypassCommand = new BypassCommand();
     public ChatCommand chatCommand = new ChatCommand();

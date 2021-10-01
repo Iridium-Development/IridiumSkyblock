@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumskyblock.DataConverter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.*;
@@ -13,12 +14,17 @@ import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.logger.NullLogBackend;
 import com.j256.ormlite.support.ConnectionSource;
+import com.j256.ormlite.support.DatabaseConnection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Class which handles the database connection and acts as a DAO.
@@ -26,6 +32,7 @@ import java.sql.SQLException;
 @Getter
 public class DatabaseManager {
 
+    private final int version = 1;
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
     private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;
@@ -60,21 +67,23 @@ public class DatabaseManager {
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
-        this.islandTableManager = new IslandTableManager(connectionSource, false);
-        this.userTableManager = new UserTableManager(connectionSource, false);
-        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, false);
-        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, false);
-        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, false);
-        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class, false);
-        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, false);
-        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, false);
-        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, false);
-        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class, false);
-        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, false);
-        this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class, false);
-        this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, false);
-        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, false);
-        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, false);
+        this.islandTableManager = new IslandTableManager(connectionSource);
+        this.userTableManager = new UserTableManager(connectionSource);
+        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, Comparator.comparing(IslandInvite::getIslandId).thenComparing(islandInvite -> islandInvite.getUser().getUuid()));
+        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, Comparator.comparing(IslandPermission::getIslandId).thenComparing(IslandPermission::getRank).thenComparing(IslandPermission::getPermission));
+        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, Comparator.comparing(IslandBlocks::getIslandId).thenComparing(IslandBlocks::getMaterial));
+        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class, Comparator.comparing(IslandSpawners::getIslandId).thenComparing(IslandSpawners::getSpawnerType));
+        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, Comparator.comparing(IslandBank::getIslandId).thenComparing(IslandBank::getBankItem));
+        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, Comparator.comparing(IslandMission::getIslandId).thenComparing(IslandMission::getMissionName).thenComparing(IslandMission::getMissionIndex));
+        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, Comparator.comparing(IslandReward::getIslandId));
+        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class, Comparator.comparing(IslandUpgrade::getIslandId).thenComparing(IslandUpgrade::getUpgrade));
+        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, Comparator.comparing(IslandTrusted::getIslandId).thenComparing(islandTrusted -> islandTrusted.getUser().getUuid()));
+        this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class, Comparator.comparing(IslandBooster::getIslandId).thenComparing(IslandBooster::getBooster));
+        this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, Comparator.comparing(IslandWarp::getIslandId));
+        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandId));
+        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser().getUuid()));
+
+        convertDatabaseData();
     }
 
     /**
@@ -99,6 +108,27 @@ public class DatabaseManager {
         }
     }
 
+    private void convertDatabaseData() {
+        Path versionFile = Paths.get("plugins", "IridiumSkyblock", "sql_version.txt");
+        try {
+            Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE_NEW);
+            DataConverter.updateDatabaseData(1, version, connectionSource);
+        } catch (FileAlreadyExistsException exception) {
+            try {
+                int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
+                if (oldVersion != version) {
+                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource);
+                    Files.delete(versionFile);
+                    Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE);
+                }
+            } catch (IOException | IndexOutOfBoundsException | NumberFormatException updateException) {
+                updateException.printStackTrace();
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     /**
      * Saves an island to the database and initializes variables like ID
      * ik this is really dumb but I cant think of a better way to do this
@@ -109,9 +139,11 @@ public class DatabaseManager {
     public Island registerIsland(Island island) {
         try {
             islandTableManager.getDao().createOrUpdate(island);
-            islandTableManager.getDao().commit(connectionSource.getReadOnlyConnection(null));
+            DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
+            islandTableManager.getDao().commit(connection);
             Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
             islandTableManager.addEntry(is);
+            connectionSource.releaseConnection(connection);
             return is;
         } catch (SQLException exception) {
             exception.printStackTrace();

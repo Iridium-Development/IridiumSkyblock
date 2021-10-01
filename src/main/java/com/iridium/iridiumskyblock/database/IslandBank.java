@@ -15,10 +15,10 @@ import org.jetbrains.annotations.NotNull;
 @DatabaseTable(tableName = "island_bank")
 public class IslandBank extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "bank_item")
+    @DatabaseField(columnName = "bank_item", uniqueCombo = true)
     private String bankItem;
 
     @DatabaseField(columnName = "number")
@@ -40,6 +40,6 @@ public class IslandBank extends IslandData {
 
     @Override
     public @NotNull String getUniqueKey() {
-        return bankItem + "-" + getIsland().map(Island::getId).orElse(0);
+        return bankItem + "-" + getIslandId();
     }
 }

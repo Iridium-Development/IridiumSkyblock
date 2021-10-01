@@ -8,14 +8,13 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which withdraws a currency from the Island bank.
@@ -47,37 +46,33 @@ public class WithdrawCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
-        if (island.isPresent()) {
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.WITHDRAW_BANK)) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotWithdraw.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-
-            Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
-            if (bankItem.isPresent()) {
-                double amount;
-                try {
-                    amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
-                } catch (NumberFormatException exception) {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    return false;
-                }
-
-                if (amount > 0) {
-                    IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_WITHDRAW, user, null, amount, bankItem.get().getName());
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-                }
-
-                return true;
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchBankItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return false;
+        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.WITHDRAW_BANK)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotWithdraw.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[1])).findFirst();
+        if (!bankItem.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchBankItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        try {
+            double amount = bankItem.get().withdraw(player, Double.parseDouble(args[2]));
+            if (amount > 0) {
+                IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_WITHDRAW, user, null, amount, bankItem.get().getName());
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+            }
+            return true;
+        } catch (NumberFormatException exception) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
     }
 
     /**
@@ -91,7 +86,9 @@ public class WithdrawCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return IridiumSkyblock.getInstance().getBankItemList().stream().map(BankItem::getName).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+        return IridiumSkyblock.getInstance().getBankItemList().stream()
+            .map(BankItem::getName)
+            .collect(Collectors.toList());
     }
 
 }

@@ -3,17 +3,16 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * Command which shows users a list of all IridiumSkyblock commands.
@@ -65,10 +64,12 @@ public class HelpCommand extends Command {
                 .replace("%max_page%", String.valueOf(maxPage))));
         TextComponent previousButton = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandPreviousPage));
         TextComponent nextButton = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandNextPage));
+
         if (page != 1) {
             previousButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page - 1)));
             previousButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandPreviousPageHover)).create()));
         }
+
         if (page != maxPage) {
             nextButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page + 1)));
             nextButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandNextPageHover)).create()));
@@ -115,7 +116,7 @@ public class HelpCommand extends Command {
         }
 
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 

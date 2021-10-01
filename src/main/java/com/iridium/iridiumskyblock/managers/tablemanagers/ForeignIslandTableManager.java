@@ -16,22 +16,30 @@ import java.util.*;
  */
 public class ForeignIslandTableManager<T extends IslandData, S> extends TableManager<T, S> {
 
-    public ForeignIslandTableManager(ConnectionSource connectionSource, Class<T> clazz, boolean autoCommit) throws SQLException {
-        super(connectionSource, clazz, autoCommit);
+    private final Comparator<T> comparator;
+
+    public ForeignIslandTableManager(ConnectionSource connectionSource, Class<T> clazz, Comparator<T> comparator) throws SQLException {
+        super(connectionSource, clazz, comparator);
+        this.comparator = comparator;
         sort();
     }
 
     @Override
     public void addEntry(T t) {
-        int index = Collections.binarySearch(getEntries(), t, Comparator.comparing(t1 -> t1.getIsland().map(Island::getId).orElse(0)));
-        getEntries().add(index < 0 ? -(index + 1) : index, t);
+        getEntries().add(t);
     }
 
     /**
      * Sort the list of entries by island id
      */
     private void sort() {
-        getEntries().sort(Comparator.comparing(t1 -> t1.getIsland().map(Island::getId).orElse(0)));
+        getEntries().sort(comparator);
+    }
+
+    public Optional<T> getEntry(T t) {
+        int index = Collections.binarySearch(getEntries(), t, comparator);
+        if (index < 0) return Optional.empty();
+        return Optional.ofNullable(getEntries().get(index));
     }
 
     /**
@@ -40,7 +48,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
      * @param island the specified island
      */
     public List<T> getEntries(@NotNull Island island) {
-        int index = Collections.binarySearch(getEntries(), new IslandData(island), Comparator.comparing(islandData -> islandData == null ? 0 : islandData.getIsland().map(Island::getId).orElse(0)));
+        int index = Collections.binarySearch(getEntries(), new IslandData(island), Comparator.comparing(IslandData::getIslandId));
         if (index < 0) return Collections.emptyList();
 
         int currentIndex = index - 1;
@@ -54,7 +62,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
                 currentIndex--;
                 continue;
             }
-            if (island.equals(islandData.getIsland().orElse(null))) {
+            if (island.getId() == islandData.getIslandId()){
                 result.add(getEntries().get(currentIndex));
                 currentIndex--;
             } else {
@@ -71,7 +79,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
                 currentIndex++;
                 continue;
             }
-            if (island.equals(islandData.getIsland().orElse(null))) {
+            if (island.getId() == islandData.getIslandId()){
                 result.add(getEntries().get(currentIndex));
                 currentIndex++;
             } else {

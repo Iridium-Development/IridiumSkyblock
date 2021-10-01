@@ -5,11 +5,13 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -35,6 +37,15 @@ public class ItemCraftListener implements Listener {
         XMaterial material = XMaterial.matchXMaterial(event.getRecipe().getResult().getType());
 
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "CRAFT:" + material.name(), amount));
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onItemCraft(PrepareItemCraftEvent event) {
+        for (ItemStack itemStack : event.getInventory().getMatrix()) {
+            if (IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack) > 0) {
+                event.getInventory().setResult(new ItemStack(Material.AIR));
+            }
+        }
     }
 
 }

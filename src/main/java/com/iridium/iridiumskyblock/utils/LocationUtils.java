@@ -82,4 +82,15 @@ public class LocationUtils {
         return block.getLocation().add(0.5, 0, 0.5);
     }
 
+    /**
+     * With the data pack, you can modify the height limits and in the Spigot API.
+     * It exists since 1.17 on Spigot and 1.16 at PaperMC.
+     *
+     * @param world The world
+     * @return The lowest AIR location.
+     */
+    public static int getMinHeight(World world) {
+        return XMaterial.getVersion() >= 17 ? world.getMinHeight() : 0;  // World#getMinHeight() -> Available only in 1.17 Spigot and 1.16.5 PaperMC
+    }
+
 }

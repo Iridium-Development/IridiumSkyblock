@@ -9,15 +9,20 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.utils.TimeUtils;
+import java.lang.reflect.Field;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import java.time.Duration;
-import java.util.*;
 
 /**
  * Handles command executions and tab-completions for all commands of this plugin.
@@ -42,60 +47,16 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      */
     public void registerCommands() {
         Commands commands = IridiumSkyblock.getInstance().getCommands();
-        registerCommand(commands.reloadCommand);
-        registerCommand(commands.createCommand);
-        registerCommand(commands.deleteCommand);
-        registerCommand(commands.regenCommand);
-        registerCommand(commands.homeCommand);
-        registerCommand(commands.aboutCommand);
-        registerCommand(commands.setHomeCommand);
-        registerCommand(commands.inviteCommand);
-        registerCommand(commands.unInviteCommand);
-        registerCommand(commands.joinCommand);
-        registerCommand(commands.leaveCommand);
-        registerCommand(commands.membersCommand);
-        registerCommand(commands.kickCommand);
-        registerCommand(commands.visitCommand);
-        registerCommand(commands.publicCommand);
-        registerCommand(commands.privateCommand);
-        registerCommand(commands.promoteCommand);
-        registerCommand(commands.demoteCommand);
-        registerCommand(commands.transferCommand);
-        registerCommand(commands.permissionsCommand);
-        registerCommand(commands.bypassCommand);
-        registerCommand(commands.expelCommand);
-        registerCommand(commands.helpCommand);
-        registerCommand(commands.valueCommand);
-        registerCommand(commands.topCommand);
-        registerCommand(commands.bankCommand);
-        registerCommand(commands.withdrawCommand);
-        registerCommand(commands.depositCommand);
-        registerCommand(commands.positionCommand);
-        registerCommand(commands.saveSchematicCommand);
-        registerCommand(commands.infoCommand);
-        registerCommand(commands.missionCommand);
-        registerCommand(commands.blockValueCommand);
-        registerCommand(commands.banCommand);
-        registerCommand(commands.unBanCommand);
-        registerCommand(commands.borderCommand);
-        registerCommand(commands.rewardsCommand);
-        registerCommand(commands.upgradesCommand);
-        registerCommand(commands.trustCommand);
-        registerCommand(commands.unTrustCommand);
-        registerCommand(commands.boostersCommand);
-        registerCommand(commands.warpsCommand);
-        registerCommand(commands.setWarpCommand);
-        registerCommand(commands.editWarpCommand);
-        registerCommand(commands.deleteWarpCommand);
-        registerCommand(commands.flyCommand);
-        registerCommand(commands.levelCommand);
-        registerCommand(commands.logsCommand);
-        registerCommand(commands.clearDataCommand);
-        registerCommand(commands.shopCommand);
-        registerCommand(commands.recalculateCommand);
-        registerCommand(commands.renameCommand);
-        registerCommand(commands.chatCommand);
-        registerCommand(commands.biomeCommand);
+
+        // This code registers all commands from the Commands config automatically
+        for (Field field : commands.getClass().getFields()) {
+            try {
+                Command command = (Command) field.get(commands);
+                registerCommand(command);
+            } catch (IllegalAccessException exception) {
+                exception.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -165,42 +126,54 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 continue;
             }
 
-            // Check if this command is only for players
-            if (command.onlyForPlayers && !(commandSender instanceof Player)) {
-                // Must be a player
-                commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            Command executingCommand = findExecutingCommand(command, args);
+            if (executionBlocked(executingCommand, commandSender)) {
                 return false;
             }
 
-            // Check permissions
-            if (!((commandSender.hasPermission(command.permission) || command.permission
-                    .equalsIgnoreCase("") || command.permission
-                    .equalsIgnoreCase("iridiumskyblock.")))) {
-                // No permissions
-                commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-
-            // Check cooldown
-            CooldownProvider<CommandSender> cooldownProvider = command.getCooldownProvider();
-            boolean bypassing = commandSender instanceof Player && IridiumSkyblockAPI.getInstance().getUser((Player) commandSender).isBypass();
-            if (commandSender instanceof Player && !bypassing && cooldownProvider.isOnCooldown(commandSender)) {
-                Duration remainingTime = cooldownProvider.getRemainingTime(commandSender);
-                String formattedTime = TimeUtils.formatDuration(IridiumSkyblock.getInstance().getMessages().activeCooldown, remainingTime);
-
-                commandSender.sendMessage(StringUtils.color(formattedTime.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-
-            boolean success = command.execute(commandSender, args);
-            if (success) cooldownProvider.applyCooldown(commandSender);
+            boolean success = executingCommand.execute(commandSender, args);
+            if (success) executingCommand.getCooldownProvider().applyCooldown(commandSender);
             return true;
         }
 
         // Unknown command message
         commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownCommand.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        return false;
+    }
+
+    /**
+     * Checks if a commandSender can execute a command or not
+     *
+     * @param command       The specified Command
+     * @param commandSender The command sender
+     * @return a true/false boolean
+     */
+    private boolean executionBlocked(Command command, CommandSender commandSender) {
+        // Check if this command is only for players
+        if (command.onlyForPlayers && !(commandSender instanceof Player)) {
+            // Must be a player
+            commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return true;
+        }
+
+        // Check permissions
+        if (!hasPermissions(commandSender, command)) {
+            // No permissions
+            commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return true;
+        }
+
+        // Check cooldown
+        CooldownProvider<CommandSender> cooldownProvider = command.getCooldownProvider();
+        boolean bypassing = commandSender instanceof Player && IridiumSkyblockAPI.getInstance().getUser((Player) commandSender).isBypass();
+        if (commandSender instanceof Player && !bypassing && cooldownProvider.isOnCooldown(commandSender)) {
+            Duration remainingTime = cooldownProvider.getRemainingTime(commandSender);
+            String formattedTime = TimeUtils.formatDuration(IridiumSkyblock.getInstance().getMessages().activeCooldown, remainingTime);
+
+            commandSender.sendMessage(StringUtils.color(formattedTime.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return true;
+        }
+
         return false;
     }
 
@@ -218,31 +191,58 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         // Handle the tab completion if it's the sub-command selection
         if (args.length == 1) {
             ArrayList<String> result = new ArrayList<>();
+
             for (Command command : commands) {
                 for (String alias : command.aliases) {
-                    if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && (
-                            (commandSender.hasPermission(command.permission)
-                                    || command.permission.equalsIgnoreCase("") || command.permission
-                                    .equalsIgnoreCase("iridiumskyblock.")))) {
+                    if (alias.toLowerCase().startsWith(args[0].toLowerCase()) && hasPermissions(commandSender, command)) {
                         result.add(alias);
                     }
                 }
             }
+
             return result;
         }
 
         // Let the sub-command handle the tab completion
         for (Command command : commands) {
-            if (command.aliases.contains(args[0]) && (
-                    commandSender.hasPermission(command.permission) || command.permission.equalsIgnoreCase("")
-                            || command.permission.equalsIgnoreCase("iridiumskyblock."))) {
-                return command.onTabComplete(commandSender, cmd, label, args);
+            if (command.aliases.contains(args[0])) {
+                Command executingCommand = findExecutingCommand(command, args);
+                if (hasPermissions(commandSender, executingCommand)) {
+                    List<String> tabCompletion = new ArrayList<>(executingCommand.onTabComplete(commandSender, cmd, label, args));
+                    tabCompletion.addAll(executingCommand.getChildNames());
+                    return filterTabCompletionResults(tabCompletion, args);
+                }
             }
         }
 
-        // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
+    }
+
+    private boolean hasPermissions(@NotNull CommandSender commandSender, Command command) {
+        return commandSender.hasPermission(command.permission)
+                || command.permission.equalsIgnoreCase("")
+                || command.permission.equalsIgnoreCase("iridiumskyblock.");
+    }
+
+    private Command findExecutingCommand(Command baseCommand, String[] args) {
+        Command executingCommand = baseCommand;
+
+        // Check for each argument if it's a child of the previous command
+        for (int currentArgument = 1; currentArgument < args.length; currentArgument++) {
+            Optional<Command> child = executingCommand.getChildByName(args[currentArgument]);
+            if (!child.isPresent()) break;
+
+            executingCommand = child.get();
+        }
+
+        return executingCommand;
+    }
+
+    private List<String> filterTabCompletionResults(List<String> tabCompletion, String[] arguments) {
+        return tabCompletion.stream()
+            .filter(completion -> completion.toLowerCase().contains(arguments[arguments.length - 1].toLowerCase()))
+            .collect(Collectors.toList());
     }
 
 }

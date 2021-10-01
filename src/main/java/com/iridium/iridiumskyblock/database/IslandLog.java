@@ -16,7 +16,7 @@ import java.util.UUID;
 @DatabaseTable(tableName = "island_logs")
 public final class IslandLog extends IslandData {
 
-    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
+    @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
     @DatabaseField(columnName = "time", canBeNull = false)

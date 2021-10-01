@@ -13,15 +13,14 @@ import java.util.Optional;
  */
 public class IslandTableManager extends TableManager<Island, Integer> {
 
-    public IslandTableManager(ConnectionSource connectionSource, boolean autoCommit) throws SQLException {
-        super(connectionSource, Island.class, autoCommit);
+    public IslandTableManager(ConnectionSource connectionSource) throws SQLException {
+        super(connectionSource, Island.class, Comparator.comparing(Island::getId));
         sort();
     }
 
     @Override
     public void addEntry(Island island) {
-        int index = Collections.binarySearch(getEntries(), island, Comparator.comparing(Island::getId));
-        getEntries().add(index < 0 ? -(index + 1) : index, island);
+        getEntries().add(island);
     }
 
     /**

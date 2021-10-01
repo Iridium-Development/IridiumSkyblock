@@ -3,19 +3,19 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Mission;
+import com.iridium.iridiumskyblock.Mission.MissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.gui.MissionsGUI;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class MissionCommand extends Command {
 
@@ -39,24 +39,21 @@ public class MissionCommand extends Command {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 
-        if (island.isPresent()) {
-            if (args.length == 2) {
-                Mission.MissionType missionType = Mission.MissionType.getMission(args[1]);
-                if (missionType != null) {
-                    player.openInventory(new MissionsGUI(island.get(), missionType).getInventory());
-                    return true;
-                } else {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            } else {
-                player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
-                return true;
-            }
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
-
-        return false;
+        if (args.length != 2) {
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
+            return true;
+        }
+        Mission.MissionType missionType = Mission.MissionType.getMission(args[1]);
+        if (missionType == null) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        player.openInventory(new MissionsGUI(island.get(), missionType).getInventory());
+        return true;
     }
 
     /**
@@ -71,8 +68,10 @@ public class MissionCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
-        return Arrays.stream(Mission.MissionType.values()).map(Enum::name).filter(s -> s.toLowerCase().contains(args[1].toLowerCase())).collect(Collectors.toList());
+        // Return a new List, so it isn't a list of online players
+        return Arrays.stream(Mission.MissionType.values())
+            .map(MissionType::name)
+            .collect(Collectors.toList());
     }
 
 }

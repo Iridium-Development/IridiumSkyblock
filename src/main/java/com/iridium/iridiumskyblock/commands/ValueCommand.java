@@ -5,12 +5,11 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import java.time.Duration;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Command which shows the Island's value.
@@ -37,14 +36,17 @@ public class ValueCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-
-        if (island.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandValue.replace("%rank%", String.valueOf(island.get().getRank())).replace("%value%", String.valueOf(island.get().getValue())).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        } else {
+        if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
-        return island.isPresent();
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandValue
+                .replace("%rank%", String.valueOf(island.get().getRank()))
+                .replace("%value%", String.valueOf(island.get().getValue()))
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+        ));
+        return true;
     }
 
     /**
@@ -59,7 +61,7 @@ public class ValueCommand extends Command {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
         // We currently don't want to tab-completion here
-        // Return a new List so it isn't a list of online players
+        // Return a new List, so it isn't a list of online players
         return Collections.emptyList();
     }
 

@@ -3,10 +3,13 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 /**
  * Abstract commands used to easily create subcommands.
@@ -14,6 +17,8 @@ import java.util.List;
 public abstract class Command {
 
     public final @NotNull List<String> aliases;
+    @JsonIgnore
+    public final @NotNull List<Command> childs;
     public final @NotNull String description;
     public final @NotNull String permission;
     public final @NotNull String syntax;
@@ -22,7 +27,7 @@ public abstract class Command {
     public final boolean enabled;
     public final long cooldownInSeconds;
     @JsonIgnore
-    public CooldownProvider<CommandSender> cooldownProvider;
+    private CooldownProvider<CommandSender> cooldownProvider;
 
     /**
      * The default constructor.
@@ -36,6 +41,7 @@ public abstract class Command {
      */
     public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String syntax, @NotNull String permission, boolean onlyForPlayers, Duration cooldown) {
         this.aliases = aliases;
+        this.childs = new ArrayList<>();
         this.description = description;
         this.syntax = syntax;
         this.permission = permission;
@@ -55,6 +61,7 @@ public abstract class Command {
      */
     public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String permission, boolean onlyForPlayers, Duration cooldown) {
         this.aliases = aliases;
+        this.childs = new ArrayList<>();
         this.description = description;
         this.syntax = "";
         this.permission = permission;
@@ -69,6 +76,22 @@ public abstract class Command {
         }
 
         return cooldownProvider;
+    }
+
+    public void addChilds(Command... newChilds) {
+        childs.addAll(Arrays.asList(newChilds));
+    }
+
+    Optional<Command> getChildByName(String name) {
+        return childs.stream()
+            .filter(command -> command.aliases.contains(name.toLowerCase()))
+            .findAny();
+    }
+
+    public List<String> getChildNames() {
+        return childs.stream()
+            .map(command -> command.aliases.get(0))
+            .collect(Collectors.toList());
     }
 
     /**
