@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import java.util.stream.Collectors;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -52,6 +53,21 @@ public class Placeholders {
                 )
                 .put(startKey + "_members", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getMembers().size())).orElse(placeholdersConfig.islandMembers)
+                )
+                .put(startKey + "_member_names", player ->
+                    islandGetter.getIsland(player).map(island -> island.getMembers().stream().map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandMemberNames)
+                )
+                .put(startKey + "_visitors", player ->
+                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().filter(user -> !island.equals(user.getIsland().orElse(null))).count())).orElse(placeholdersConfig.islandVisitors)
+                )
+                .put(startKey + "_visitor_names", player ->
+                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().filter(user -> !island.equals(user.getIsland().orElse(null))).map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandVisitorNames)
+                )
+                .put(startKey + "_players", player ->
+                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).size())).orElse(placeholdersConfig.islandPlayers)
+                )
+                .put(startKey + "_player_names", player ->
+                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandPlayerNames)
                 )
                 .put(startKey + "_experience", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedExperience).orElse(placeholdersConfig.islandExperience)
