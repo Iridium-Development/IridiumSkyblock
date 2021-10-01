@@ -44,9 +44,9 @@ public class MissionsGUI extends GUI {
             for (Map.Entry<String, Mission> entry : missions.entrySet()) {
                 List<Placeholder> placeholders = new ArrayList<>();
 
-                for (int j = 1; j <= entry.getValue().getMissions().size(); j++) {
+                for (int j = 0; j < entry.getValue().getMissions().size(); j++) {
                     IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(getIsland(), entry.getValue(), entry.getKey(), j);
-                    placeholders.add(new Placeholder("progress_" + j, String.valueOf(islandMission.getProgress())));
+                    placeholders.add(new Placeholder("progress_" + (j + 1), String.valueOf(islandMission.getProgress())));
                 }
                 if (IridiumSkyblock.getInstance().getMissions().dailySlots.size() > i) {
                     Integer slot = IridiumSkyblock.getInstance().getMissions().dailySlots.get(i);
@@ -60,9 +60,9 @@ public class MissionsGUI extends GUI {
                 if (entry.getValue().getMissionType() != Mission.MissionType.ONCE) continue;
                 List<Placeholder> placeholders = new ArrayList<>();
 
-                for (int j = 1; j <= entry.getValue().getMissions().size(); j++) {
+                for (int j = 0; j < entry.getValue().getMissions().size(); j++) {
                     IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(getIsland(), entry.getValue(), entry.getKey(), j);
-                    placeholders.add(new Placeholder("progress_" + j, String.valueOf(islandMission.getProgress())));
+                    placeholders.add(new Placeholder("progress_" + (j + 1), String.valueOf(islandMission.getProgress())));
                 }
 
                 inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));

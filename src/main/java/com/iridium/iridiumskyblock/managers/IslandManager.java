@@ -100,7 +100,7 @@ public class IslandManager {
 
         getIslandChunks(island, world).thenAccept(chunks -> {
             Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);      
+            Location pos2 = island.getPos2(world);
             xBiome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
@@ -396,13 +396,13 @@ public class IslandManager {
      * Gets all chunks the island is in.
      *
      * @param island The specified Island
-     * @param worlds  The worlds
+     * @param worlds The worlds
      * @return A list of Chunks the island is in
      */
     public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World... worlds) {
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
-            for(World world : worlds){
+            for (World world : worlds) {
 
                 Location pos1 = island.getPos1(world);
                 Location pos2 = island.getPos2(world);
@@ -771,13 +771,12 @@ public class IslandManager {
      * @param island The specified Island
      * @return A list of Island Missions
      */
-    public synchronized IslandMission getIslandMission(
-            @NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
+    public synchronized IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
         Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntry(new IslandMission(island, mission, missionKey, missionIndex));
         if (islandMissionOptional.isPresent()) {
             return islandMissionOptional.get();
         } else {
-            IslandMission islandMission = new IslandMission(island, mission, missionKey, missionIndex - 1);
+            IslandMission islandMission = new IslandMission(island, mission, missionKey, missionIndex);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().addEntry(islandMission);
             return islandMission;
         }
@@ -887,9 +886,10 @@ public class IslandManager {
 
         for (Map.Entry<String, Mission> entry : IridiumSkyblock.getInstance().getMissionsList().entrySet()) {
             boolean completedBefore = true;
-
-            for (int i = 1; i <= entry.getValue().getMissions().size(); i++) {
-                String[] conditions = entry.getValue().getMissions().get(i - 1).toUpperCase().split(":");
+            List<String> missions = entry.getValue().getMissions();
+            for (int i = 0; i < entry.getValue().getMissions().size(); i++) {
+                String missionRequirement = missions.get(i).toUpperCase();
+                String[] conditions = missionRequirement.split(":");
                 // If the conditions are the same length (+1 because missionConditions doesn't include amount)
                 if (missionConditions.length + 1 != conditions.length) break;
 
@@ -897,8 +897,7 @@ public class IslandManager {
                 boolean matches = matchesMission(missionConditions, conditions);
                 if (!matches) continue;
 
-                IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, entry.getValue(),
-                        entry.getKey(), i);
+                IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, entry.getValue(), entry.getKey(), i);
                 String number = conditions[missionData.split(":").length];
 
                 // Validate the required number for this condition
@@ -908,7 +907,7 @@ public class IslandManager {
                     completedBefore = false;
                     islandMission.setProgress(Math.min(islandMission.getProgress() + increment, amount));
                 } else {
-                    IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + entry.getValue().getMissions().get(i - 1));
+                    IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + missionRequirement);
                     IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
                 }
             }
@@ -969,10 +968,12 @@ public class IslandManager {
      * @return Whether or not this mission has been completed
      */
     private boolean hasCompletedMission(@NotNull Island island, @NotNull Mission mission, @NotNull String key) {
-        for (int i = 1; i <= mission.getMissions().size(); i++) {
+        List<String> missions = mission.getMissions();
+        for (int i = 0; i < mission.getMissions().size(); i++) {
+            String missionRequirement = missions.get(i).toUpperCase();
             IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, mission, key, i);
-            String[] data = mission.getMissions().get(i - 1).toUpperCase().split(":");
-            String number = data[data.length - 1];
+            String[] conditions = missionRequirement.split(":");
+            String number = conditions[conditions.length - 1];
 
             // Validate the required number for this condition
             if (number.matches("^[0-9]+$")) {
@@ -981,8 +982,8 @@ public class IslandManager {
                     return false;
                 }
             } else {
-                IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + mission.getMissions().get(i - 1));
-                IridiumSkyblock.getInstance().getLogger().warning(number + " is not a number");
+                IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + missionRequirement);
+                IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
             }
         }
         return true;
