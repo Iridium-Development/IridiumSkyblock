@@ -10,9 +10,11 @@ import com.iridium.iridiumskyblock.Reward;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +42,8 @@ public class Configuration {
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
     public IslandDeleteSettings deleteSettings = new IslandDeleteSettings();
+
+    public IslandDamageSettings pvpSettings = new IslandDamageSettings();
 
     public int distance = 151;
     public int schematicPastingDelay = 1;
@@ -156,6 +160,37 @@ public class Configuration {
         public boolean clearInventories = true;
         public boolean clearEnderChests = true;
         public boolean resetVaultBalances = true;
+
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class IslandDamageSettings {
+
+        public boolean pvpOnIslands = false;
+        public boolean pvpBetweenMembers = false;
+        public boolean mobsVisitorTargeting = false;
+
+        public List<EntityDamageEvent.DamageCause> membersPreventedDamages = Arrays.asList(
+                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION,
+                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
+        );
+
+        public List<EntityDamageEvent.DamageCause> visitorsPreventedDamages = Arrays.asList(
+                EntityDamageEvent.DamageCause.PROJECTILE,
+                EntityDamageEvent.DamageCause.FIRE,
+                EntityDamageEvent.DamageCause.FALL,
+                EntityDamageEvent.DamageCause.MAGIC,
+                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION,
+                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION,
+                EntityDamageEvent.DamageCause.FLY_INTO_WALL,
+                EntityDamageEvent.DamageCause.FALLING_BLOCK,
+                EntityDamageEvent.DamageCause.THORNS,
+                EntityDamageEvent.DamageCause.ENTITY_ATTACK,
+                EntityDamageEvent.DamageCause.HOT_FLOOR,
+                EntityDamageEvent.DamageCause.LAVA,
+                EntityDamageEvent.DamageCause.CONTACT
+        );
 
     }
 
