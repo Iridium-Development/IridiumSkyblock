@@ -51,37 +51,35 @@ public class EntityDamageListener implements Listener {
             Player victim = (Player) event.getEntity();
             if (event.getDamager() instanceof Player) {
                 handleDamageBetweenPlayers(event, (Player) event.getDamager(), victim, island.get());
-            } else if (event.getDamager() instanceof Projectile) {
-                Projectile attacker = (Projectile) event.getDamager();
-                if (attacker.getShooter() instanceof Player) {
-                    handleDamageBetweenPlayers(event, (Player) attacker.getShooter(), victim, island.get());
-                } else {
-                    handlePlayerDamage(event, island.get());
-                }
-            } else {
-                handlePlayerDamage(event, island.get());
-            }
-        } else if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
-            if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
                 return;
             }
-            event.setCancelled(true);
-            if (!messageIsOnCooldown(player)) {
+            if (event.getDamager() instanceof Projectile) {
+                Projectile projectile = (Projectile) event.getDamager();
+                if (!(projectile.getShooter() instanceof Player)) return;
+                handleDamageBetweenPlayers(event, (Player) projectile.getShooter(), victim, island.get());
+                return;
+            }
+            handlePlayerDamage(event, island.get());
+            return;
+        }
+
+        if (event.getDamager() instanceof Player) {
+            Player player = (Player) event.getDamager();
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
+                event.setCancelled(true);
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
-        } else if (event.getDamager() instanceof Projectile) {
+            return;
+        }
+
+        if (event.getDamager() instanceof Projectile) {
             Projectile projectile = (Projectile) event.getDamager();
-            if (projectile.getShooter() instanceof Player) {
-                Player player = (Player) projectile.getShooter();
-                if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
-                    return;
-                }
-                event.setCancelled(true);
+            if (projectile.getShooter() instanceof Player || projectile.getShooter() == null) return;
+            Player player = (Player) projectile.getShooter();
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
                 projectile.remove();
-                if (!messageIsOnCooldown(player)) {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
+                event.setCancelled(true);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         }
     }
