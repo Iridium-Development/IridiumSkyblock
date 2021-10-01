@@ -10,14 +10,15 @@ import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.BoostersGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class BoosterCommand extends Command {
 
@@ -71,6 +72,12 @@ public class BoosterCommand extends Command {
         islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
         IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, 0, boosterName);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().successfullyBoughtBooster
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                .replace("%booster%", IridiumSkyblock.getInstance().getBoosterList().get(islandBooster.getBooster()).name)
+                .replace("%vault_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(booster.vaultCost))
+                .replace("%crystal_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(booster.crystalsCost))
+        ));
         return true;
     }
 
