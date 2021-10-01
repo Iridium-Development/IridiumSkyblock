@@ -6,8 +6,6 @@ import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
-import java.util.List;
-import java.util.stream.Collectors;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -16,28 +14,59 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Various utils for working with {@link Player}'s.
  */
 public class PlayerUtils {
 
+    /**
+     * Removes the specified amount of crystals and money from the island bank and from
+     * the player's purse if there is not enough in the bank.
+     *
+     * @param player    The Player
+     * @param island    The Player's Island
+     * @param crystals  The amount of crystals
+     * @param money     The amount of money
+     * @return If the purchase was successful. {@link PlayerUtils#canPurchase(Player, Island, int, double)} should be preferred.
+     */
     public static boolean pay(@NotNull Player player, @NotNull Island island, int crystals, double money) {
-        IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
-                IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
-        IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island,
-                IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        // Don't withdraw stuff if they can't purchase it.
+        if (!canPurchase(player, island, crystals, money)) {
+            return false;
+        }
+
+        IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
-        if (islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money))) {
-            islandCrystals.setNumber(islandCrystals.getNumber() - crystals);
-            if (islandMoney.getNumber() >= money) {
-                islandMoney.setNumber(islandMoney.getNumber() - money);
-            } else {
-                economy.withdrawPlayer(player, money);
-            }
-            return true;
+        islandCrystals.setNumber(islandCrystals.getNumber() - crystals);
+        if (islandMoney.getNumber() >= money) {
+            islandMoney.setNumber(islandMoney.getNumber() - money);
+        } else {
+            economy.withdrawPlayer(player, money);
         }
-        return false;
+
+        return true;
+    }
+
+    /**
+     * Check if the player has enough money and crystals to buy something.
+     *
+     * @param player   The Player
+     * @param island   The Player's Island
+     * @param crystals The crystals being spent
+     * @param money    The money being spent.
+     * @return If they can purchase the item
+     */
+    public static boolean canPurchase(@NotNull Player player, @NotNull Island island, int crystals, double money) {
+        IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        Economy economy = IridiumSkyblock.getInstance().getEconomy();
+
+        return islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money));
     }
 
     /**
@@ -57,10 +86,12 @@ public class PlayerUtils {
      *
      * @param player The player we are teleporting
      */
-
     public static void teleportSpawn(Player player) {
         World spawnWorld = Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().spawnWorldName);
-        if (spawnWorld == null) spawnWorld = Bukkit.getWorlds().get(0);
+        if (spawnWorld == null) {
+            spawnWorld = Bukkit.getWorlds().get(0);
+        }
+
         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
             EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
@@ -146,8 +177,8 @@ public class PlayerUtils {
      */
     public static List<String> getOnlinePlayerNames() {
         return Bukkit.getOnlinePlayers().stream()
-            .map(Player::getName)
-            .collect(Collectors.toList());
+                .map(Player::getName)
+                .collect(Collectors.toList());
     }
 
 }
