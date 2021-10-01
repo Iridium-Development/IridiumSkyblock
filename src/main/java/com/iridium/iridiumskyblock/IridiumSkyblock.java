@@ -409,6 +409,17 @@ public class IridiumSkyblock extends IridiumCore {
         if (bankItems.experienceBankItem.getDisplayName() == null) bankItems.experienceBankItem.setDisplayName("Experience");
         if (bankItems.moneyBankItem.getDisplayName() == null) bankItems.moneyBankItem.setDisplayName("Money");
 
+        if (boosters.experienceBooster.name == null) boosters.experienceBooster.name = "Experience";
+        if (boosters.farmingBooster.name == null) boosters.experienceBooster.name = "Farming";
+        if (boosters.flightBooster.name == null) boosters.experienceBooster.name = "Flight";
+        if (boosters.spawnerBooster.name == null) boosters.experienceBooster.name = "Spawner";
+
+        if (upgrades.warpsUpgrade.name == null) upgrades.warpsUpgrade.name = "Warps";
+        if (upgrades.sizeUpgrade.name == null) upgrades.sizeUpgrade.name = "Size";
+        if (upgrades.blockLimitUpgrade.name == null) upgrades.blockLimitUpgrade.name = "Block Limit";
+        if (upgrades.memberUpgrade.name == null) upgrades.memberUpgrade.name = "Members";
+        if (upgrades.oresUpgrade.name == null) upgrades.oresUpgrade.name = "Ore Generator";
+
         this.bankItemList = new ArrayList<>();
         if (bankItems.crystalsBankItem.isEnabled()) {
             this.bankItemList.add(bankItems.crystalsBankItem);

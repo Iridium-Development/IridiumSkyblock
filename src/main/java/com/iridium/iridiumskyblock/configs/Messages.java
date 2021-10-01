@@ -125,6 +125,8 @@ public class Messages {
     public String cannotAfford = "%prefix% &7You cannot afford this.";
     public String unknownUpgrade = "%prefix% &7Unknown Island upgrade.";
     public String unknownBooster = "%prefix% &7Unknown Island booster.";
+    public String successfullyBoughtBooster = "%prefix% &7You have successfully bought the %booster% Booster &r&7for $%vault_cost% and %crystal_cost% Crystals.";
+    public String successfullyBoughtUpgrade = "%prefix% &7You have successfully bought the %upgrade% Upgrade &r&7for $%vault_cost% and %crystal_cost% Crystals.";
     public String unknownWarp = "%prefix% &7Unknown Island warp.";
     public String alreadyTrusted = "%prefix% &7This player is already trusted.";
     public String trustedPlayer = "%prefix% &7%truster% has trusted %player% to your Island.";
