@@ -45,7 +45,7 @@ public class PrivateCommand extends Command {
         island.get().setVisitable(false);
         int visitorCount = 0;
         for (User visitor : IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island.get())) {
-            if (visitor.isBypass() || visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), visitor).isPresent()) {
+            if (visitor.isBypassing() || visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), visitor).isPresent()) {
                 continue;
             }
 

@@ -45,7 +45,7 @@ public final class User {
     @DatabaseField(columnName = "island_rank")
     private @NotNull IslandRank islandRank;
 
-    private boolean bypass = false;
+    private boolean bypassing = false;
 
     private boolean flying = false;
 

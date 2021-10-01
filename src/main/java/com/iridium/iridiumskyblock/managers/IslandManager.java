@@ -133,7 +133,7 @@ public class IslandManager {
         boolean trusted = getIslandTrusted(island, user).isPresent();
         boolean inIsland = user.getIsland().map(Island::getId).orElse(0) == island.getId();
         // If the island is visitable, the user is in the island, the user is trusted or the user is bypassing teleport them
-        if (island.isVisitable() || inIsland || trusted || user.isBypass()) {
+        if (island.isVisitable() || inIsland || trusted || user.isBypassing()) {
             if (inIsland) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
@@ -552,7 +552,7 @@ public class IslandManager {
         if (getIslandTrusted(island, user).isPresent()) {
             islandRank = IslandRank.MEMBER;
         }
-        return getIslandPermission(island, islandRank, permission, key) || user.isBypass();
+        return getIslandPermission(island, islandRank, permission, key) || user.isBypassing();
     }
 
     /**

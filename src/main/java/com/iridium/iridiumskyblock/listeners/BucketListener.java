@@ -40,7 +40,7 @@ public class BucketListener implements Listener {
 
         if (!island.isPresent()) {
             if (IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlockClicked().getWorld())) {
-                if (!user.isBypass()) event.setCancelled(true);
+                if (!user.isBypassing()) event.setCancelled(true);
             }
             return;
         }

@@ -73,7 +73,7 @@ public class BanCommand extends Command {
             return false;
         }
 
-        if (targetUser.isBypass() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
+        if (targetUser.isBypassing() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
