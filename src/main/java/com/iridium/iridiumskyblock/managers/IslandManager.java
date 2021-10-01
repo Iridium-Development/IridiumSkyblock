@@ -100,7 +100,7 @@ public class IslandManager {
 
         getIslandChunks(island, world).thenAccept(chunks -> {
             Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);      
+            Location pos2 = island.getPos2(world);
             xBiome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
@@ -396,13 +396,13 @@ public class IslandManager {
      * Gets all chunks the island is in.
      *
      * @param island The specified Island
-     * @param worlds  The worlds
+     * @param worlds The worlds
      * @return A list of Chunks the island is in
      */
     public CompletableFuture<List<Chunk>> getIslandChunks(@NotNull Island island, @NotNull World... worlds) {
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
-            for(World world : worlds){
+            for (World world : worlds) {
 
                 Location pos1 = island.getPos1(world);
                 Location pos2 = island.getPos2(world);
@@ -771,9 +771,8 @@ public class IslandManager {
      * @param island The specified Island
      * @return A list of Island Missions
      */
-    public synchronized IslandMission getIslandMission(
-            @NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
-        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntry(new IslandMission(island, mission, missionKey, missionIndex));
+    public synchronized IslandMission getIslandMission(@NotNull Island island, @NotNull Mission mission, @NotNull String missionKey, int missionIndex) {
+        Optional<IslandMission> islandMissionOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntry(new IslandMission(island, mission, missionKey, missionIndex - 1));
         if (islandMissionOptional.isPresent()) {
             return islandMissionOptional.get();
         } else {
