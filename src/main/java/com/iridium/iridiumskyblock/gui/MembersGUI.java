@@ -38,6 +38,7 @@ public class MembersGUI extends GUI {
         members.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
         AtomicInteger slot = new AtomicInteger(0);
+
         for (User user : getIsland().getMembers()) {
             int itemSlot = slot.getAndIncrement();
             inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build()));
@@ -56,7 +57,7 @@ public class MembersGUI extends GUI {
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
 
-            String command = null;
+            String command;
             switch (event.getClick()) {
                 case LEFT:
                     command = IridiumSkyblock.getInstance().getCommands().demoteCommand.aliases.get(0);
@@ -64,9 +65,14 @@ public class MembersGUI extends GUI {
                 case RIGHT:
                     command = IridiumSkyblock.getInstance().getCommands().promoteCommand.aliases.get(0);
                     break;
+                default:
+                    return;
             }
-            if (command != null)
+
+            if (command != null) {
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + user.getName());
+            }
+
             addContent(event.getInventory());
         }
     }

@@ -21,6 +21,9 @@ import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
@@ -36,7 +39,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 /**
@@ -156,52 +158,12 @@ public class IridiumSkyblock extends IridiumCore {
         // Initialize Vault economy support
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
 
-        // Register Placeholders Support
-        Plugin MVDWPlaceholderAPI = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
-        if (MVDWPlaceholderAPI != null && MVDWPlaceholderAPI.isEnabled()) {
-            new MVDWPlaceholderAPI();
-            getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with MVDWPlaceholderAPI.");
-        }
-
-        Plugin PlaceholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
-        if (PlaceholderAPI != null && PlaceholderAPI.isEnabled()) {
-            if (new ClipPlaceholderAPI().register()) {
-                getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
-            }
-        }
+        registerPlaceholderSupport();
 
         // Send island border to all players
         Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
-        // Auto recalculate islands
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-
-            @Override
-            public void run() {
-                if (!islands.hasNext()) {
-                    islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-                } else {
-                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
-                }
-            }
-        }, 0, getConfiguration().islandRecalculateInterval * 20L);
-
-
-        // Automatically update all inventories
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
-            if (inventoryHolder instanceof GUI) {
-                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
-            }
-        }), 0, 20);
-
-        // Register worlds with multiverse
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            registerMultiverse(islandManager.getWorld());
-            registerMultiverse(islandManager.getNetherWorld());
-            registerMultiverse(islandManager.getEndWorld());
-        }, 1);
+        runTasks();
 
         resetIslandMissions();
 
@@ -221,6 +183,53 @@ public class IridiumSkyblock extends IridiumCore {
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("");
         getLogger().info("----------------------------------------");
+    }
+
+    private void registerPlaceholderSupport() {
+        Plugin MVDWPlaceholderAPI = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
+        if (MVDWPlaceholderAPI != null && MVDWPlaceholderAPI.isEnabled()) {
+            new MVDWPlaceholderAPI();
+            getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with MVDWPlaceholderAPI.");
+        }
+
+        Plugin PlaceholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        if (PlaceholderAPI != null && PlaceholderAPI.isEnabled()) {
+            if (new ClipPlaceholderAPI().register()) {
+                getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
+            }
+        }
+    }
+
+    private void runTasks() {
+        // Auto recalculate islands
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+
+            @Override
+            public void run() {
+                if (!islands.hasNext()) {
+                    islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                } else {
+                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
+                }
+            }
+
+        }, 0, getConfiguration().islandRecalculateInterval * 20L);
+
+        // Automatically update all inventories
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
+            if (inventoryHolder instanceof GUI) {
+                ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
+            }
+        }), 0, 20);
+
+        // Register worlds with multiverse
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            registerMultiverse(islandManager.getWorld());
+            registerMultiverse(islandManager.getNetherWorld());
+            registerMultiverse(islandManager.getEndWorld());
+        }, 1);
     }
 
     /**
@@ -376,22 +385,7 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void loadConfigs() {
-        this.configuration = getPersist().load(Configuration.class);
-        this.messages = getPersist().load(Messages.class);
-        this.sql = getPersist().load(SQL.class);
-        this.schematics = getPersist().load(Schematics.class);
-        this.inventories = getPersist().load(Inventories.class);
-        this.permissions = getPersist().load(Permissions.class);
-        this.blockValues = getPersist().load(BlockValues.class);
-        this.bankItems = getPersist().load(BankItems.class);
-        this.missions = getPersist().load(Missions.class);
-        this.upgrades = getPersist().load(Upgrades.class);
-        this.boosters = getPersist().load(Boosters.class);
-        this.commands = getPersist().load(Commands.class);
-        this.shop = getPersist().load(Shop.class);
-        this.border = getPersist().load(Border.class);
-        this.placeholders = getPersist().load(Placeholders.class);
-
+        loadConfigFiles();
 
         for (Color color : Color.values()) {
             if (!border.enabled.containsKey(color)) {
@@ -411,35 +405,7 @@ public class IridiumSkyblock extends IridiumCore {
             inventories.confirmationGUI.no.slot = 1;
         }
 
-        this.permissionList = new HashMap<>();
-        this.permissionList.put(PermissionType.REDSTONE.getPermissionKey(), permissions.redstone);
-        this.permissionList.put(PermissionType.BLOCK_PLACE.getPermissionKey(), permissions.blockPlace);
-        this.permissionList.put(PermissionType.BLOCK_BREAK.getPermissionKey(), permissions.blockBreak);
-        this.permissionList.put(PermissionType.BUCKET.getPermissionKey(), permissions.bucket);
-        this.permissionList.put(PermissionType.DOORS.getPermissionKey(), permissions.doors);
-        this.permissionList.put(PermissionType.KILL_MOBS.getPermissionKey(), permissions.killMobs);
-        this.permissionList.put(PermissionType.OPEN_CONTAINERS.getPermissionKey(), permissions.openContainers);
-        this.permissionList.put(PermissionType.SPAWNERS.getPermissionKey(), permissions.spawners);
-        this.permissionList.put(PermissionType.CHANGE_PERMISSIONS.getPermissionKey(), permissions.changePermissions);
-        this.permissionList.put(PermissionType.KICK.getPermissionKey(), permissions.kick);
-        this.permissionList.put(PermissionType.INVITE.getPermissionKey(), permissions.invite);
-        this.permissionList.put(PermissionType.REGEN.getPermissionKey(), permissions.regen);
-        this.permissionList.put(PermissionType.PROMOTE.getPermissionKey(), permissions.promote);
-        this.permissionList.put(PermissionType.EXPEL.getPermissionKey(), permissions.expel);
-        this.permissionList.put(PermissionType.BAN.getPermissionKey(), permissions.ban);
-        this.permissionList.put(PermissionType.UNBAN.getPermissionKey(), permissions.unban);
-        this.permissionList.put(PermissionType.DEMOTE.getPermissionKey(), permissions.demote);
-        this.permissionList.put(PermissionType.PICKUP_ITEMS.getPermissionKey(), permissions.pickupItems);
-        this.permissionList.put(PermissionType.DROP_ITEMS.getPermissionKey(), permissions.dropItems);
-        this.permissionList.put(PermissionType.INTERACT_ENTITIES.getPermissionKey(), permissions.interactEntities);
-        this.permissionList.put(PermissionType.MANAGE_WARPS.getPermissionKey(), permissions.manageWarps);
-        this.permissionList.put(PermissionType.WITHDRAW_BANK.getPermissionKey(), permissions.withdrawBank);
-        this.permissionList.put(PermissionType.TRUST.getPermissionKey(), permissions.trust);
-        this.permissionList.put(PermissionType.BORDER.getPermissionKey(), permissions.border);
-        this.permissionList.put(PermissionType.DESTROY_VEHICLE.getPermissionKey(), permissions.destroyVehicle);
-        this.permissionList.put(PermissionType.TRAMPLE_CROPS.getPermissionKey(), permissions.trampleCrops);
-        this.permissionList.put(PermissionType.INTERACT.getPermissionKey(), permissions.interact);
-        this.permissionList.put(PermissionType.PORTAL.getPermissionKey(), permissions.portal);
+        initializePermissionList();
 
         if (bankItems.crystalsBankItem.getDisplayName() == null) bankItems.crystalsBankItem.setDisplayName("Crystal");
         if (bankItems.experienceBankItem.getDisplayName() == null) bankItems.experienceBankItem.setDisplayName("Experience");
@@ -482,19 +448,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (boosters.spawnerBooster.enabled)
             boosterList.put("spawner", boosters.spawnerBooster);
 
-        File schematicFolder = new File(getDataFolder(), "schematics");
-        if (!schematicFolder.exists()) {
-            schematicFolder.mkdir();
-        }
-        saveFile(schematicFolder, "desert.iridiumschem");
-        saveFile(schematicFolder, "mushroom.iridiumschem");
-        saveFile(schematicFolder, "jungle.iridiumschem");
-        saveFile(schematicFolder, "desert_nether.iridiumschem");
-        saveFile(schematicFolder, "mushroom_nether.iridiumschem");
-        saveFile(schematicFolder, "jungle_nether.iridiumschem");
-        saveFile(schematicFolder, "desert_end.iridiumschem");
-        saveFile(schematicFolder, "mushroom_end.iridiumschem");
-        saveFile(schematicFolder, "jungle_end.iridiumschem");
+        saveSchematics();
 
         if (shopManager != null)
             shopManager.reloadCategories();
@@ -505,28 +459,89 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().callEvent(reloadEvent);
     }
 
+    private void loadConfigFiles() {
+        this.configuration = getPersist().load(Configuration.class);
+        this.messages = getPersist().load(Messages.class);
+        this.sql = getPersist().load(SQL.class);
+        this.schematics = getPersist().load(Schematics.class);
+        this.inventories = getPersist().load(Inventories.class);
+        this.permissions = getPersist().load(Permissions.class);
+        this.blockValues = getPersist().load(BlockValues.class);
+        this.bankItems = getPersist().load(BankItems.class);
+        this.missions = getPersist().load(Missions.class);
+        this.upgrades = getPersist().load(Upgrades.class);
+        this.boosters = getPersist().load(Boosters.class);
+        this.commands = getPersist().load(Commands.class);
+        this.shop = getPersist().load(Shop.class);
+        this.border = getPersist().load(Border.class);
+        this.placeholders = getPersist().load(Placeholders.class);
+    }
+
+    private void initializePermissionList() {
+        this.permissionList = new HashMap<>();
+        this.permissionList.put(PermissionType.REDSTONE.getPermissionKey(), permissions.redstone);
+        this.permissionList.put(PermissionType.BLOCK_PLACE.getPermissionKey(), permissions.blockPlace);
+        this.permissionList.put(PermissionType.BLOCK_BREAK.getPermissionKey(), permissions.blockBreak);
+        this.permissionList.put(PermissionType.BUCKET.getPermissionKey(), permissions.bucket);
+        this.permissionList.put(PermissionType.DOORS.getPermissionKey(), permissions.doors);
+        this.permissionList.put(PermissionType.KILL_MOBS.getPermissionKey(), permissions.killMobs);
+        this.permissionList.put(PermissionType.OPEN_CONTAINERS.getPermissionKey(), permissions.openContainers);
+        this.permissionList.put(PermissionType.SPAWNERS.getPermissionKey(), permissions.spawners);
+        this.permissionList.put(PermissionType.CHANGE_PERMISSIONS.getPermissionKey(), permissions.changePermissions);
+        this.permissionList.put(PermissionType.KICK.getPermissionKey(), permissions.kick);
+        this.permissionList.put(PermissionType.INVITE.getPermissionKey(), permissions.invite);
+        this.permissionList.put(PermissionType.REGEN.getPermissionKey(), permissions.regen);
+        this.permissionList.put(PermissionType.PROMOTE.getPermissionKey(), permissions.promote);
+        this.permissionList.put(PermissionType.EXPEL.getPermissionKey(), permissions.expel);
+        this.permissionList.put(PermissionType.BAN.getPermissionKey(), permissions.ban);
+        this.permissionList.put(PermissionType.UNBAN.getPermissionKey(), permissions.unban);
+        this.permissionList.put(PermissionType.DEMOTE.getPermissionKey(), permissions.demote);
+        this.permissionList.put(PermissionType.PICKUP_ITEMS.getPermissionKey(), permissions.pickupItems);
+        this.permissionList.put(PermissionType.DROP_ITEMS.getPermissionKey(), permissions.dropItems);
+        this.permissionList.put(PermissionType.INTERACT_ENTITIES.getPermissionKey(), permissions.interactEntities);
+        this.permissionList.put(PermissionType.MANAGE_WARPS.getPermissionKey(), permissions.manageWarps);
+        this.permissionList.put(PermissionType.WITHDRAW_BANK.getPermissionKey(), permissions.withdrawBank);
+        this.permissionList.put(PermissionType.TRUST.getPermissionKey(), permissions.trust);
+        this.permissionList.put(PermissionType.BORDER.getPermissionKey(), permissions.border);
+        this.permissionList.put(PermissionType.DESTROY_VEHICLE.getPermissionKey(), permissions.destroyVehicle);
+        this.permissionList.put(PermissionType.TRAMPLE_CROPS.getPermissionKey(), permissions.trampleCrops);
+        this.permissionList.put(PermissionType.INTERACT.getPermissionKey(), permissions.interact);
+        this.permissionList.put(PermissionType.PORTAL.getPermissionKey(), permissions.portal);
+    }
+
+    private void saveSchematics() {
+        File schematicFolder = new File(getDataFolder(), "schematics");
+        if (!schematicFolder.exists()) {
+            schematicFolder.mkdir();
+        }
+
+        // Return if there are already schematics in the schematics folder
+        if (Objects.requireNonNull(schematicFolder.list()).length != 0) {
+            return;
+        }
+
+        saveFile(schematicFolder, "desert.iridiumschem");
+        saveFile(schematicFolder, "mushroom.iridiumschem");
+        saveFile(schematicFolder, "jungle.iridiumschem");
+        saveFile(schematicFolder, "desert_nether.iridiumschem");
+        saveFile(schematicFolder, "mushroom_nether.iridiumschem");
+        saveFile(schematicFolder, "jungle_nether.iridiumschem");
+        saveFile(schematicFolder, "desert_end.iridiumschem");
+        saveFile(schematicFolder, "mushroom_end.iridiumschem");
+        saveFile(schematicFolder, "jungle_end.iridiumschem");
+    }
+
     private void saveFile(File parent, String name) {
         File file = new File(parent, name);
         if (!file.exists()) {
-            if (getResource(name) != null) {
-                InputStream in = this.getResource(name);
-                if (in != null) {
-                    try {
-                        OutputStream out = new FileOutputStream(file);
-                        byte[] buf = new byte[1024];
+            try {
+                InputStream source = getResource(name);
+                Path target = file.toPath();
 
-                        int len;
-                        while ((len = in.read(buf)) > 0) {
-                            out.write(buf, 0, len);
-                        }
-
-                        out.close();
-                        in.close();
-                    } catch (IOException var10) {
-                        getLogger().log(Level.SEVERE, "Could not save " + file.getName() + " to " + file, var10);
-                    }
-
-                }
+                if (source == null) return;
+                Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException exception) {
+                getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
             }
         }
     }
