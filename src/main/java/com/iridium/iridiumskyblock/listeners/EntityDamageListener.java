@@ -17,7 +17,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,7 +94,9 @@ public class EntityDamageListener implements Listener {
                 attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtPlayer.replace("%prefix%", configuration.prefix)));
             }
 
-            if (event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) event.getDamager().remove();
+            if (event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) {
+                event.getDamager().remove();
+            }
             event.setCancelled(true);
             return;
         }
@@ -107,23 +108,26 @@ public class EntityDamageListener implements Listener {
         boolean attackerIsMember = island.equals(attackerUser.getIsland().orElse(null)) || attackerTrusted.isPresent();
         boolean victimIsMember = island.equals(victimUser.getIsland().orElse(null)) || victimTrusted.isPresent();
 
-        if (!configuration.pvpSettings.pvpBetweenMembers && attackerIsMember && victimIsMember) {
-            if (!messageIsOnCooldown(attacker)) {
-                attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMember.replace("%prefix%", configuration.prefix)));
-            }
-            if (event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) event.getDamager().remove();
-            event.setCancelled(true);
+        //If pvp between members is allowed or neither attacker or victim is a member, return
+        if (configuration.pvpSettings.pvpBetweenMembers || !(attackerIsMember || victimIsMember)) return;
+
+        if (!messageIsOnCooldown(attacker)) {
+            attacker.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMember.replace("%prefix%", configuration.prefix)));
         }
+        if (event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE)) event.getDamager().remove();
+        event.setCancelled(true);
     }
 
     private void handlePlayerDamage(EntityDamageEvent event, Island island) {
+        Configuration.IslandDamageSettings pvpSettings = IridiumSkyblock.getInstance().getConfiguration().pvpSettings;
         Player player = (Player) event.getEntity();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<IslandTrusted> trusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island, user);
         boolean isMember = island.equals(user.getIsland().orElse(null)) || trusted.isPresent();
 
-        if ((isMember && IridiumSkyblock.getInstance().getConfiguration().pvpSettings.membersPreventedDamages.contains(event.getCause().name())) ||
-                (!isMember && IridiumSkyblock.getInstance().getConfiguration().pvpSettings.visitorsPreventedDamages.contains(event.getCause().name()))) {
+        List<EntityDamageEvent.DamageCause> preventCauses = isMember ? pvpSettings.membersPreventedDamages : pvpSettings.visitorsPreventedDamages;
+
+        if (preventCauses.contains(event.getCause())) {
             event.setCancelled(true);
         }
     }

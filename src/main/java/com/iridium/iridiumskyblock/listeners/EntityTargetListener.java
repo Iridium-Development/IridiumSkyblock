@@ -27,39 +27,36 @@ public class EntityTargetListener implements Listener {
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
         if (!island.isPresent()) return;
+        if (event.getTarget() == null || !(event.getTarget() instanceof Player)) return;
 
-        if (event.getTarget() != null && event.getTarget() instanceof Player) {
-            Player targetPlayer = (Player) event.getTarget();
-            User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-            Optional<IslandTrusted> targetTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
-            boolean targetIsMember = island.get().equals(targetUser.getIsland().orElse(null)) || targetTrusted.isPresent();
+        Player targetPlayer = (Player) event.getTarget();
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        Optional<IslandTrusted> targetTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
+        if (island.get().equals(targetUser.getIsland().orElse(null)) || targetTrusted.isPresent()) return;
 
-            if (targetIsMember) return;
-
-            //Cancel event the player is not island member
-            event.setCancelled(true);
-
-            //if is not cooldown get next target
-            if (!canNextTarget(event.getEntity())) {
-                return;
-            }
-
-            //get next targetPlayer
-            List<Player> nextTargets = IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island.get()).stream()
-                    .filter(user -> island.get().equals(user.getIsland().orElse(null)) || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), user).isPresent())
-                    .map(User::toPlayer)
-                    .filter(player -> player.hasLineOfSight(event.getEntity()))
-                    .collect(Collectors.toList());
-
-            //return if empty
-            if (nextTargets.isEmpty()) {
-                return;
-            }
-
-            //Set target of Living Entity to next target if present
-            Player nextTarget = nextTargets.get(ThreadLocalRandom.current().nextInt(nextTargets.size()));
-            event.setTarget(nextTarget);
+        //if is not cooldown get next target
+        if (!canNextTarget(event.getEntity())) {
+            return;
         }
+
+        //get next targetPlayer
+        List<Player> nextTargets = event.getEntity().getNearbyEntities(8, 8, 8).stream()
+                .filter(entity -> entity instanceof Player)
+                .filter(entity -> island.get().isInIsland(entity.getLocation()))
+                .map(entity -> (Player) entity)
+                .filter(player -> island.get().equals(IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland().orElse(null)))
+                .filter(player -> IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player)).isPresent())
+                .filter(player -> player.hasLineOfSight(event.getEntity()))
+                .collect(Collectors.toList());
+
+        //return if empty
+        if (nextTargets.isEmpty()) {
+            return;
+        }
+
+        //Set target of Living Entity to next target if present
+        Player nextTarget = nextTargets.get(ThreadLocalRandom.current().nextInt(nextTargets.size()));
+        event.setTarget(nextTarget);
 
     }
 

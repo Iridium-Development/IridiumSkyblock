@@ -171,24 +171,26 @@ public class Configuration {
         public boolean pvpBetweenMembers = false;
         public boolean mobsVisitorTargeting = false;
 
-        public List<String> membersPreventedDamages = Arrays.asList(
-                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name(),
-                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name());
+        public List<EntityDamageEvent.DamageCause> membersPreventedDamages = Arrays.asList(
+                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION,
+                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
+        );
 
-        public List<String> visitorsPreventedDamages = Arrays.asList(
-                EntityDamageEvent.DamageCause.PROJECTILE.name(),
-                EntityDamageEvent.DamageCause.FIRE.name(),
-                EntityDamageEvent.DamageCause.FALL.name(),
-                EntityDamageEvent.DamageCause.MAGIC.name(),
-                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION.name(),
-                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION.name(),
-                EntityDamageEvent.DamageCause.FLY_INTO_WALL.name(),
-                EntityDamageEvent.DamageCause.FALLING_BLOCK.name(),
-                EntityDamageEvent.DamageCause.THORNS.name(),
-                EntityDamageEvent.DamageCause.ENTITY_ATTACK.name(),
-                EntityDamageEvent.DamageCause.HOT_FLOOR.name(),
-                EntityDamageEvent.DamageCause.LAVA.name(),
-                EntityDamageEvent.DamageCause.CONTACT.name());
+        public List<EntityDamageEvent.DamageCause> visitorsPreventedDamages = Arrays.asList(
+                EntityDamageEvent.DamageCause.PROJECTILE,
+                EntityDamageEvent.DamageCause.FIRE,
+                EntityDamageEvent.DamageCause.FALL,
+                EntityDamageEvent.DamageCause.MAGIC,
+                EntityDamageEvent.DamageCause.ENTITY_EXPLOSION,
+                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION,
+                EntityDamageEvent.DamageCause.FLY_INTO_WALL,
+                EntityDamageEvent.DamageCause.FALLING_BLOCK,
+                EntityDamageEvent.DamageCause.THORNS,
+                EntityDamageEvent.DamageCause.ENTITY_ATTACK,
+                EntityDamageEvent.DamageCause.HOT_FLOOR,
+                EntityDamageEvent.DamageCause.LAVA,
+                EntityDamageEvent.DamageCause.CONTACT
+        );
 
     }
 
