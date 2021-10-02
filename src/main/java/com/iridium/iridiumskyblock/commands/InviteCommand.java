@@ -106,7 +106,7 @@ public class InviteCommand extends Command {
         if (offlinePlayer instanceof Player) {
             Player targetPlayer = (Player) offlinePlayer;
             TextComponent message = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited));
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is join " + player.getName()));
+            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
             message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
             targetPlayer.spigot().sendMessage(message);
         }
