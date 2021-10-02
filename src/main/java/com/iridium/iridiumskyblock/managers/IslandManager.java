@@ -624,17 +624,45 @@ public class IslandManager {
      *
      * @param island     The specified Island
      * @param islandRank The specified Rank
-     * @param permission The specified Permission
      * @param allowed    If the permission is allowed
      */
-    public synchronized void setIslandPermission(
-            @NotNull Island island, @NotNull IslandRank islandRank, @NotNull Permission permission, @NotNull String key, boolean allowed) {
+    public synchronized void setIslandPermission(@NotNull Island island, @NotNull IslandRank islandRank, @NotNull String key, boolean allowed) {
         Optional<IslandPermission> islandPermission = IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().getEntry(new IslandPermission(island, key, islandRank, true));
         if (islandPermission.isPresent()) {
             islandPermission.get().setAllowed(allowed);
         } else {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandPermissionTableManager().addEntry(new IslandPermission(island, key, islandRank, allowed));
         }
+    }
+
+    /**
+     * Gets an IslandSetting from a specific Island
+     *
+     * @param island       The specified Island
+     * @param settingName  The Setting Name
+     * @param defaultValue The default value for this setting
+     * @return The IslandSetting object
+     */
+    public synchronized IslandSetting getIslandSetting(@NotNull Island island, @NotNull String settingName, @NotNull String defaultValue) {
+        IslandSetting islandSetting = new IslandSetting(island, settingName, defaultValue);
+        Optional<IslandSetting> islandSettingOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSettingTableManager().getEntry(islandSetting);
+        if (islandSettingOptional.isPresent()) {
+            return islandSettingOptional.get();
+        } else {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandSettingTableManager().addEntry(islandSetting);
+            return islandSetting;
+        }
+    }
+
+    /**
+     * Gets an IslandSetting from a specific Island
+     *
+     * @param island      The specified Island
+     * @param settingType The specified Setting Type
+     * @return The IslandSetting object
+     */
+    public synchronized IslandSetting getIslandSetting(@NotNull Island island, @NotNull SettingType settingType) {
+        return getIslandSetting(island, settingType.getSettingName(), settingType.getDefaultValue());
     }
 
     /**

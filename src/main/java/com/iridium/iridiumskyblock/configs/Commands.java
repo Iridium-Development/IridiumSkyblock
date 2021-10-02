@@ -66,5 +66,6 @@ public class Commands {
     public VisitCommand visitCommand = new VisitCommand();
     public WarpsCommand warpsCommand = new WarpsCommand();
     public WithdrawCommand withdrawCommand = new WithdrawCommand();
+    public SettingsCommand settingsCommand = new SettingsCommand();
 
 }

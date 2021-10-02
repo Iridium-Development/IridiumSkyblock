@@ -48,6 +48,7 @@ public class DatabaseManager {
     private ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
     private ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
     private ForeignIslandTableManager<IslandWarp, Integer> islandWarpTableManager;
+    private ForeignIslandTableManager<IslandSetting, Integer> islandSettingTableManager;
 
     @Getter(AccessLevel.NONE)
     private ConnectionSource connectionSource;
@@ -82,6 +83,7 @@ public class DatabaseManager {
         this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, Comparator.comparing(IslandWarp::getIslandId));
         this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandId));
         this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser().getUuid()));
+        this.islandSettingTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
 
         convertDatabaseData();
     }
