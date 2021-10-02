@@ -24,6 +24,7 @@ import de.jeff_media.updatechecker.UpdateChecker;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
@@ -197,7 +198,8 @@ public class IridiumSkyblock extends IridiumCore {
 
         resetIslandMissions();
 
-        new Metrics(this, 5825);
+        Metrics metrics = new Metrics(this, 5825);
+        metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
 
         UpdateChecker.init(this, 62480)
                 .checkEveryXHours(24)
