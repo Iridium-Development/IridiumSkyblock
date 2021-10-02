@@ -5,9 +5,11 @@ import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Setting;
+import com.iridium.iridiumskyblock.SettingType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -48,6 +50,14 @@ public class SettingsGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
+            if (event.getSlot() != setting.getValue().getItem().slot) continue;
+            SettingType settingType = SettingType.getByName(setting.getKey());
+            IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), settingType);
+            String newValue = (event.getClick() == ClickType.RIGHT ? settingType.getNext() : settingType.getPrevious()).getNew(islandSetting.getValue());
+            islandSetting.setValue(newValue);
+            addContent(event.getInventory());
+        }
     }
 
 }
