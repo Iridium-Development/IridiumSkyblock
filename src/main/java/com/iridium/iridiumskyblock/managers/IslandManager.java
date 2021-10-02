@@ -287,7 +287,7 @@ public class IslandManager {
             deleteIslandBlocks(island, getEndWorld(), 0).join();
         }
         IslandRegenSettings regenSettings = IridiumSkyblock.getInstance().getConfiguration().regenSettings;
-        getIslandMembers(island).stream().map(User::toPlayer).forEach(player -> {
+        getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
             if (player != null) {
                 if (regenSettings.clearInventories)
                     player.getInventory().clear();
@@ -717,7 +717,7 @@ public class IslandManager {
         deleteIslandBlocks(island, getWorld(), 3);
         deleteIslanDatabasedEntries(island);
 
-        getIslandMembers(island).stream().map(User::toPlayer).forEach(player -> {
+        getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
             if (player != null) {
                 if (IridiumSkyblock.getInstance().getConfiguration().deleteSettings.clearInventories) {
                     player.getInventory().clear();

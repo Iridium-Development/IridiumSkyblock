@@ -1,7 +1,15 @@
 package com.iridium.iridiumskyblock;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
 public enum IslandTime {
-    UNSET, DAY, NOON, MIDNIGHT, NIGHT;
+    UNSET(0, true), DAY(1000, false), NOON(6000, false), MIDNIGHT(18000, false), NIGHT(13000, false);
+
+    private int time;
+    private boolean relative;
 
     public static String getNext(String current) {
         boolean isCurrent = false;

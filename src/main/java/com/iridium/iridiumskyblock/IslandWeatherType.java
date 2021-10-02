@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 public enum IslandWeatherType {
-    DEFAULT, RAINING, CLEAR, THUNDERSTORM;
+    DEFAULT, RAINING, CLEAR;
 
     public static String getNext(String current) {
         boolean isCurrent = false;

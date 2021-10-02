@@ -2,13 +2,18 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandTime;
+import com.iridium.iridiumskyblock.IslandWeatherType;
+import com.iridium.iridiumskyblock.SettingType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
+import com.iridium.iridiumskyblock.database.IslandSetting;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.GameMode;
+import org.bukkit.WeatherType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,6 +45,19 @@ public class PlayerMoveListener implements Listener {
                             .replace("%name%", island.get().getName())
                     ));
                     PlayerUtils.teleportSpawn(player);
+                } else {
+                    IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.TIME);
+                    IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.WEATHER);
+                    IslandTime islandTime = IslandTime.valueOf(islandTimeSetting.getValue());
+                    IslandWeatherType islandWeatherType = IslandWeatherType.valueOf(islandWeatherSetting.getValue());
+                    if (islandWeatherType == IslandWeatherType.DEFAULT) {
+                        player.resetPlayerWeather();
+                    } else {
+                        player.setPlayerWeather(islandWeatherType == IslandWeatherType.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL);
+                    }
+                    if ((islandTime == IslandTime.UNSET && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTime.getTime()) {
+                        player.setPlayerTime(islandTime.getTime(), islandTime.isRelative());
+                    }
                 }
             }
             if (user.isFlying()) {
