@@ -165,7 +165,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         // Check cooldown
         CooldownProvider<CommandSender> cooldownProvider = command.getCooldownProvider();
-        boolean bypassing = commandSender instanceof Player && IridiumSkyblockAPI.getInstance().getUser((Player) commandSender).isBypass();
+        boolean bypassing = commandSender instanceof Player && IridiumSkyblockAPI.getInstance().getUser((Player) commandSender).isBypassing();
         if (commandSender instanceof Player && !bypassing && cooldownProvider.isOnCooldown(commandSender)) {
             Duration remainingTime = cooldownProvider.getRemainingTime(commandSender);
             String formattedTime = TimeUtils.formatDuration(IridiumSkyblock.getInstance().getMessages().activeCooldown, remainingTime);

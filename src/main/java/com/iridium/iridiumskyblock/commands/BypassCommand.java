@@ -33,8 +33,8 @@ public class BypassCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        user.setBypass(!user.isBypass());
-        player.sendMessage(StringUtils.color((user.isBypass() ? IridiumSkyblock.getInstance().getMessages().nowBypassing : IridiumSkyblock.getInstance().getMessages().noLongerBypassing).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        user.setBypassing(!user.isBypassing());
+        player.sendMessage(StringUtils.color((user.isBypassing() ? IridiumSkyblock.getInstance().getMessages().nowBypassing : IridiumSkyblock.getInstance().getMessages().noLongerBypassing).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return true;
     }
 
