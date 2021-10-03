@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MissionsGUI extends GUI {
+public class IslandMissionsGUI extends IslandGUI {
 
     private final Mission.MissionType missionType;
 
@@ -27,7 +27,7 @@ public class MissionsGUI extends GUI {
      * @param missionType The amount of times the containing missions can be claimed
      * @see com.iridium.iridiumskyblock.Mission.MissionType
      */
-    public MissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType) {
+    public IslandMissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType) {
         super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI, island);
         this.missionType = missionType;
     }

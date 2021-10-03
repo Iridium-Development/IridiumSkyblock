@@ -6,34 +6,34 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandBan;
+import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Gui which displays all banned users of an Island
+ * GUI which displays players on island
  */
-public class BansGUI extends GUI {
+public class IslandVisitorsGUI extends IslandGUI {
 
     private final int page;
-    private List<IslandBan> islandBans;
+    private final List<User> visitors;
 
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
-    public BansGUI(int page, @NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bansGUI, island);
+    public IslandVisitorsGUI(int page, @NotNull Island island) {
+        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, island);
         this.page = page;
+        this.visitors = new ArrayList<>();
     }
 
     @Override
@@ -44,20 +44,19 @@ public class BansGUI extends GUI {
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
-        islandBans = new ArrayList<>(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(getIsland()));
-
         final long elementsPerPage = inventory.getSize() - 9;
         AtomicInteger slot = new AtomicInteger(0);
 
-        islandBans.stream()
+        IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream()
+                .filter(user -> user.getIsland().map(Island::getId).orElse(0) != getIsland().getId())
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(islandBan -> {
-                    List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandBan.getBannedUser()).applyIslandPlaceholders(getIsland()).build();
-                    placeholderList.add(new Placeholder("ban_time", islandBan.getBanTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
-                    placeholderList.add(new Placeholder("banned_by", islandBan.getBanner().getName()));
-                    inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().bansGUI.item, placeholderList));
+                .forEachOrdered(user -> {
+                    visitors.add(user);
+                    List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build();
+                    inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitorsGUI.item, placeholderList));
                 });
+
     }
 
     /**
@@ -71,23 +70,24 @@ public class BansGUI extends GUI {
         final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == size - 7 && page > 1) {
-            player.openInventory(new BansGUI(page - 1, getIsland()).getInventory());
+            player.openInventory(new IslandVisitorsGUI(page - 1, getIsland()).getInventory());
             return;
         }
 
-        if (event.getSlot() == size - 3 && (size - 9) * page < islandBans.size()) {
-            player.openInventory(new BansGUI(page + 1, getIsland()).getInventory());
+        if (event.getSlot() == size - 3 && (size - 9) * page < visitors.size()) {
+            player.openInventory(new IslandVisitorsGUI(page + 1, getIsland()).getInventory());
             return;
         }
-
-        if (event.isLeftClick() && event.getSlot() + 1 <= islandBans.size()) {
-            int index = ((size - 9) * (page - 1)) + event.getSlot();
-            if (islandBans.size() > index) {
-                IslandBan islandBan = islandBans.get(event.getSlot());
-                String command = IridiumSkyblock.getInstance().getCommands().unBanCommand.aliases.get(0);
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandBan.getBannedUser().getName());
-                addContent(event.getInventory());
+        if (visitors.size() > event.getSlot()) {
+            User visitor = visitors.get(event.getSlot());
+            String command = "";
+            if (event.isLeftClick()) {
+                command = IridiumSkyblock.getInstance().getCommands().expelCommand.aliases.get(0);
+            } else if (event.isRightClick()) {
+                command = IridiumSkyblock.getInstance().getCommands().banCommand.aliases.get(0);
             }
+            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + visitor.getName());
+            addContent(event.getInventory());
         }
     }
 }

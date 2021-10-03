@@ -25,7 +25,7 @@ public class ConfirmationGUI extends GUI {
      * @param cooldownProvider The provider for cooldowns that should be started on success
      */
     public  ConfirmationGUI(@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
-        super(IridiumSkyblock.getInstance().getInventories().confirmationGUI, null);
+        super(IridiumSkyblock.getInstance().getInventories().confirmationGUI);
         this.runnable = runnable;
         this.cooldownProvider = cooldownProvider;
     }

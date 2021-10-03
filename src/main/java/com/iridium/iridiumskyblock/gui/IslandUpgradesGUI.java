@@ -20,14 +20,14 @@ import java.util.Map;
 /**
  * GUI which allows users to manage the Island Upgrades.
  */
-public class UpgradesGUI extends GUI {
+public class IslandUpgradesGUI extends IslandGUI {
 
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
-    public UpgradesGUI(@NotNull Island island) {
+    public IslandUpgradesGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().upgradesGUI, island);
     }
 

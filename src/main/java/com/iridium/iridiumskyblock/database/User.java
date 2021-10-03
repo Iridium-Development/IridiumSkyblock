@@ -122,7 +122,7 @@ public final class User {
      *
      * @return The player object if one was found, null otherwise
      */
-    public Player toPlayer() {
+    public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
 

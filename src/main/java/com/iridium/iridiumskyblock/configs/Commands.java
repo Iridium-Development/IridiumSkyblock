@@ -54,6 +54,7 @@ public class Commands {
     public SaveSchematicCommand saveSchematicCommand = new SaveSchematicCommand();
     public SetHomeCommand setHomeCommand = new SetHomeCommand();
     public SetWarpCommand setWarpCommand = new SetWarpCommand();
+    public SettingsCommand settingsCommand = new SettingsCommand();
     public ShopCommand shopCommand = new ShopCommand();
     public TopCommand topCommand = new TopCommand();
     public TransferCommand transferCommand = new TransferCommand();

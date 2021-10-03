@@ -33,7 +33,8 @@ public enum PermissionType {
     DESTROY_VEHICLE("destroyVehicle"),
     TRAMPLE_CROPS("trampleCrops"),
     INTERACT("interact"),
-    PORTAL("portal");
+    PORTAL("portal"),
+    ISLAND_SETTINGS("island_settings");
 
     private final String permissionKey;
 }

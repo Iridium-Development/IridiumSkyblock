@@ -26,7 +26,7 @@ public class VisitGUI extends GUI {
      * @param page The current page of this GUI
      */
     public VisitGUI(int page) {
-        super(IridiumSkyblock.getInstance().getInventories().visitGUI, null);
+        super(IridiumSkyblock.getInstance().getInventories().visitGUI);
         this.page = page;
     }
 
