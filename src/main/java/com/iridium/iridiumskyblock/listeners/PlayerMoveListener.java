@@ -58,6 +58,7 @@ public class PlayerMoveListener implements Listener {
                             player.setPlayerWeather(newWeatherType);
                         }
                     }
+                    
                     if ((islandTime == IslandTime.DEFAULT && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTime.getTime()) {
                         player.setPlayerTime(islandTime.getTime(), islandTime.isRelative());
                     }
