@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.configs.Schematics.SchematicConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
@@ -79,6 +80,12 @@ public class CreateCommand extends Command {
 
         if (IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+
+        if (IridiumSkyblock.getInstance().getSchematics().schematics.size() == 1) {
+            SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.values().stream().findFirst().get();
+            IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, name, schematicConfig);
             return;
         }
 
