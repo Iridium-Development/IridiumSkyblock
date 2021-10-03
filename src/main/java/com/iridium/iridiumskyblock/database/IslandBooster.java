@@ -68,6 +68,15 @@ public final class IslandBooster extends IslandData {
         return LocalDateTime.now().until(getTime(), ChronoUnit.SECONDS) > 0;
     }
 
+    /**
+     * Returns the remaining time of this booster
+     *
+     * @return Returns the remaining time of this booster
+     */
+    public long getRemainingTime() {
+        return LocalDateTime.now().until(getTime(), ChronoUnit.SECONDS);
+    }
+
     @Override
     public @NotNull String getUniqueKey() {
         return booster + "-" + getIslandId();

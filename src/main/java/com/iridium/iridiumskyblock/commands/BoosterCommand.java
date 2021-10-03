@@ -60,7 +60,7 @@ public class BoosterCommand extends Command {
         }
 
         IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), boosterName);
-        if (islandBooster.isActive()) {
+        if (islandBooster.isActive() && !booster.stackable) {
             return false;
         }
 
@@ -68,8 +68,7 @@ public class BoosterCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
-
-        islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time));
+        islandBooster.setTime(LocalDateTime.now().plusSeconds(booster.time + (islandBooster.isActive() && booster.stackable ? islandBooster.getRemainingTime() : 0)));
         IslandLog islandLog = new IslandLog(island.get(), LogAction.BOOSTER_PURCHASE, user, null, 0, boosterName);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().successfullyBoughtBooster
