@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumcore.utils.SortedList;
+import com.iridium.iridiumskyblock.database.Island;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -30,6 +31,12 @@ public class TableManager<T, S> {
         this.connectionSource = connectionSource;
         TableUtils.createTableIfNotExists(connectionSource, clazz);
         this.dao = DaoManager.createDao(connectionSource, clazz);
+        if (clazz.equals(Island.class)) {
+            try {
+                dao.executeRaw("ALTER TABLE `islands` ADD COLUMN `extra_value` DOUBLE PRECISION;");
+            } catch (SQLException ignored) { //Ignored if the columns is already exist
+            }
+        }
         this.dao.setAutoCommit(getDatabaseConnection(), false);
         this.entries = new SortedList<>(comparator);
         this.entries.addAll(dao.queryForAll());

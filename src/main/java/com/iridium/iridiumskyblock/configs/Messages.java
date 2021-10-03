@@ -123,6 +123,7 @@ public class Messages {
     public String gaveBank = "%prefix% &7You gave %player% %amount% %item%.";
     public String setBank = "%prefix% &7You set %player%'s %amount% to %item%.";
     public String removedBank = "%prefix% &7You took %amount% %item%'s from %player%.";
+    public String setExtraValue = "%prefix% &7You have set %player%'s island extra value to %amount%.";
     public String invalidMissionType = "%prefix% &7That is not a valid mission type.";
     public String maxLevelReached = "%prefix% &7Maximum level reached.";
     public String cannotAfford = "%prefix% &7You cannot afford this.";

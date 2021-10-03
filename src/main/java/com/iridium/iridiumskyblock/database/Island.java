@@ -59,6 +59,9 @@ public final class Island {
     @DatabaseField(columnName = "experience")
     private int experience;
 
+    @DatabaseField(columnName = "extra_value")
+    private double extraValue;
+
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
@@ -202,7 +205,7 @@ public final class Island {
      */
     public double getValue() {
         return valueCache.getCache(() -> {
-            double value = 0;
+            double value = extraValue;
 
             List<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(this);
             List<IslandSpawners> islandSpawners = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(this);

@@ -29,6 +29,7 @@ public class Commands {
     public DepositCommand depositCommand = new DepositCommand();
     public EditWarpCommand editWarpCommand = new EditWarpCommand();
     public ExpelCommand expelCommand = new ExpelCommand();
+    public ExtraValueCommand extraValueCommand = new ExtraValueCommand();
     public FlyCommand flyCommand = new FlyCommand();
     public HelpCommand helpCommand = new HelpCommand();
     public HomeCommand homeCommand = new HomeCommand();
