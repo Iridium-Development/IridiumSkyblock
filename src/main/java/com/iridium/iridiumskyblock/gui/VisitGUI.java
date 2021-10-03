@@ -5,6 +5,7 @@ import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -19,15 +20,18 @@ import java.util.stream.Collectors;
 public class VisitGUI extends GUI {
 
     private final int page;
+    private final User viewer;
 
     /**
      * The default constructor.
      *
-     * @param page The current page of this GUI
+     * @param page   The current page of this GUI
+     * @param viewer The viewer of this GUI
      */
-    public VisitGUI(int page) {
+    public VisitGUI(int page, User viewer) {
         super(IridiumSkyblock.getInstance().getInventories().visitGUI);
         this.page = page;
+        this.viewer = viewer;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class VisitGUI extends GUI {
 
         int elementsPerPage = inventory.getSize() - 9;
         List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream()
-                .filter(Island::isVisitable)
+                .filter(island -> viewer.isBypassing() || island.isVisitable())
                 .skip((long) (page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
                 .collect(Collectors.toList());
@@ -64,11 +68,11 @@ public class VisitGUI extends GUI {
                 .collect(Collectors.toList());
         if (event.getSlot() == getInventory().getSize() - 7) {
             if (page > 1) {
-                event.getWhoClicked().openInventory(new VisitGUI(page - 1).getInventory());
+                event.getWhoClicked().openInventory(new VisitGUI(page - 1, viewer).getInventory());
             }
         } else if (event.getSlot() == getInventory().getSize() - 3) {
             if ((event.getInventory().getSize() - 9) * page < islands.size()) {
-                event.getWhoClicked().openInventory(new VisitGUI(page + 1).getInventory());
+                event.getWhoClicked().openInventory(new VisitGUI(page + 1, viewer).getInventory());
             }
         } else if (event.getSlot() + 1 <= islands.size()) {
             int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
