@@ -6,10 +6,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum IslandTime {
-    UNSET(0, true), DAY(1000, false), NOON(6000, false), MIDNIGHT(18000, false), NIGHT(13000, false);
+    DEFAULT(0, true), DAY(1000, false), NOON(6000, false), MIDNIGHT(18000, false), NIGHT(13000, false);
 
-    private int time;
-    private boolean relative;
+    private final int time;
+    private final boolean relative;
 
     public static String getNext(String current) {
         boolean isCurrent = false;

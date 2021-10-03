@@ -53,9 +53,12 @@ public class PlayerMoveListener implements Listener {
                     if (islandWeatherType == IslandWeatherType.DEFAULT) {
                         player.resetPlayerWeather();
                     } else {
-                        player.setPlayerWeather(islandWeatherType == IslandWeatherType.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL);
+                        WeatherType newWeatherType = islandWeatherType == IslandWeatherType.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL;
+                        if (player.getPlayerWeather() != newWeatherType) {
+                            player.setPlayerWeather(newWeatherType);
+                        }
                     }
-                    if ((islandTime == IslandTime.UNSET && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTime.getTime()) {
+                    if ((islandTime == IslandTime.DEFAULT && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTime.getTime()) {
                         player.setPlayerTime(islandTime.getTime(), islandTime.isRelative());
                     }
                 }

@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +21,5 @@ public class Setting {
      * The default value of this Setting
      */
     private String defaultValue;
-
-    @JsonIgnore
-    private SettingValueChange onChange;
 
 }

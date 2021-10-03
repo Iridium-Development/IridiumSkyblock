@@ -4,7 +4,10 @@ import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PermissionType;
+import com.iridium.iridiumskyblock.Setting;
+import com.iridium.iridiumskyblock.SettingType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import com.iridium.iridiumskyblock.database.User;
@@ -62,10 +65,7 @@ public class IslandSettingsGUI extends IslandGUI {
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), settingType);
             String newValue = (event.getClick() == ClickType.RIGHT ? settingType.getNext() : settingType.getPrevious()).getNew(islandSetting.getValue());
             islandSetting.setValue(newValue);
-            SettingValueChange runnable = setting.getValue().getOnChange();
-            if (runnable != null) {
-                runnable.run(getIsland(), newValue);
-            }
+            settingType.getOnChange().run(getIsland(), newValue);
             addContent(event.getInventory());
         }
     }
