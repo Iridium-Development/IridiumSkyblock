@@ -2,12 +2,13 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
+import com.iridium.iridiumskyblock.database.Island;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -15,22 +16,26 @@ import org.jetbrains.annotations.NotNull;
  * Base for all other classes in this package.
  */
 @NoArgsConstructor
-public abstract class GUI implements InventoryHolder {
+public abstract class IslandGUI extends GUI {
 
-    private NoItemGUI noItemGUI;
+    private @NotNull Island island;
 
     /**
      * The default constructor.
      *
      * @param noItemGUI The NoItemGUI of this GUI
+     * @param island    The island of this GUI. Can be null
      */
-    public GUI(@NotNull NoItemGUI noItemGUI) {
-        this.noItemGUI = noItemGUI;
+    public IslandGUI(@NotNull NoItemGUI noItemGUI, @NotNull Island island) {
+        super(noItemGUI);
+        this.island = island;
     }
 
     @NotNull
     @Override
-    public Inventory getInventory() {Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
+    public Inventory getInventory() {
+        String title = StringUtils.processMultiplePlaceholders(getNoItemGUI().title, new PlaceholderBuilder().applyIslandPlaceholders(island).build());
+        Inventory inventory = Bukkit.createInventory(this, getNoItemGUI().size, StringUtils.color(title));
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
 
@@ -50,7 +55,8 @@ public abstract class GUI implements InventoryHolder {
      */
     public abstract void addContent(Inventory inventory);
 
-    public NoItemGUI getNoItemGUI() {
-        return noItemGUI;
+    @NotNull
+    public Island getIsland() {
+        return island;
     }
 }

@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * GUI which allows users to select ranks to edit in the {@link PermissionsGUI}.
+ * GUI which allows users to select ranks to edit in the {@link IslandPermissionsGUI}.
  */
-public class IslandRanksGUI extends GUI {
+public class IslandRanksGUI extends IslandGUI {
 
     /**
      * The default constructor.
@@ -58,15 +58,15 @@ public class IslandRanksGUI extends GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         IslandRanksInventoryConfig islandRanks = IridiumSkyblock.getInstance().getInventories().islandRanksGUI;
         if (event.getSlot() == islandRanks.owner.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.OWNER).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.OWNER).getInventory());
         else if (event.getSlot() == islandRanks.coOwner.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.CO_OWNER).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.CO_OWNER).getInventory());
         else if (event.getSlot() == islandRanks.moderator.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.MODERATOR).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.MODERATOR).getInventory());
         else if (event.getSlot() == islandRanks.member.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.MEMBER).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.MEMBER).getInventory());
         else if (event.getSlot() == islandRanks.visitor.slot)
-            event.getWhoClicked().openInventory(new PermissionsGUI(getIsland(), IslandRank.VISITOR).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.VISITOR).getInventory());
 
     }
 

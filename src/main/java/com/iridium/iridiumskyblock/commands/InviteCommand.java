@@ -4,17 +4,9 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.PermissionType;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandInvite;
-import com.iridium.iridiumskyblock.database.IslandLog;
-import com.iridium.iridiumskyblock.database.IslandUpgrade;
-import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.InvitesGUI;
+import com.iridium.iridiumskyblock.database.*;
+import com.iridium.iridiumskyblock.gui.IslandInvitesGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -23,6 +15,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Command which invites a user to the Island.
@@ -55,7 +52,7 @@ public class InviteCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new InvitesGUI(island.get()).getInventory());
+            player.openInventory(new IslandInvitesGUI(island.get()).getInventory());
             return true;
         }
 

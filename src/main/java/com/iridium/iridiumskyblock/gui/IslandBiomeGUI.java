@@ -21,14 +21,14 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class BiomeGUI extends GUI {
+public class IslandBiomeGUI extends IslandGUI {
 
     private final List<XBiome> biomes;
     private final int page;
     private final World.Environment environment;
     private final CooldownProvider<CommandSender> cooldownProvider;
 
-    public BiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider) {
+    public IslandBiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider) {
         super(IridiumSkyblock.getInstance().getInventories().biomeGUI, island);
         this.biomes = Arrays.stream(XBiome.VALUES).filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
         this.environment = environment;
@@ -63,12 +63,12 @@ public class BiomeGUI extends GUI {
 
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == size - 7 && page > 1) {
-            player.openInventory(new BiomeGUI(page - 1, getIsland(), environment, cooldownProvider).getInventory());
+            player.openInventory(new IslandBiomeGUI(page - 1, getIsland(), environment, cooldownProvider).getInventory());
             return;
         }
 
         if (event.getSlot() == size - 3 && (size - 9) * page < biomes.size()) {
-            player.openInventory(new BiomeGUI(page + 1, getIsland(), environment, cooldownProvider).getInventory());
+            player.openInventory(new IslandBiomeGUI(page + 1, getIsland(), environment, cooldownProvider).getInventory());
             return;
         }
 

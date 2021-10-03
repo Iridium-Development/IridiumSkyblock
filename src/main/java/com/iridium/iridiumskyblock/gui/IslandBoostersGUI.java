@@ -21,14 +21,14 @@ import java.util.Map;
 /**
  * GUI which allows users to manage the Island Boosters.
  */
-public class BoostersGUI extends GUI {
+public class IslandBoostersGUI extends IslandGUI {
 
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
-    public BoostersGUI(@NotNull Island island) {
+    public IslandBoostersGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().boostersGUI, island);
     }
 

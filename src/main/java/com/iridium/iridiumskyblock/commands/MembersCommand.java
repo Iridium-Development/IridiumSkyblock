@@ -4,13 +4,14 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.MembersGUI;
+import com.iridium.iridiumskyblock.gui.IslandMembersGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which shows an overview over the members of the Island and allows quick rank management.
@@ -43,7 +44,7 @@ public class MembersCommand extends Command {
             return false;
         }
 
-        player.openInventory(new MembersGUI(island.get()).getInventory());
+        player.openInventory(new IslandMembersGUI(island.get()).getInventory());
         return true;
     }
 

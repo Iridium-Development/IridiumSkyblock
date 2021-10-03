@@ -4,13 +4,14 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.RewardsGUI;
+import com.iridium.iridiumskyblock.gui.IslandRewardsGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which opens the Island rewards GUI.
@@ -42,7 +43,7 @@ public class RewardsCommand extends Command {
             return false;
         }
 
-        player.openInventory(new RewardsGUI(island.get()).getInventory());
+        player.openInventory(new IslandRewardsGUI(island.get()).getInventory());
         return true;
     }
 

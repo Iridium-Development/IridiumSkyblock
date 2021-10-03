@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * GUI which allows users to alter the Island's permissions.
  */
-public class PermissionsGUI extends GUI {
+public class IslandPermissionsGUI extends IslandGUI {
 
     private final IslandRank islandRank;
 
@@ -31,7 +31,7 @@ public class PermissionsGUI extends GUI {
      * @param island     The Island this GUI belongs to
      * @param islandRank The rank which is being configured
      */
-    public PermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank) {
+    public IslandPermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank) {
         super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI, island);
         this.islandRank = islandRank;
     }

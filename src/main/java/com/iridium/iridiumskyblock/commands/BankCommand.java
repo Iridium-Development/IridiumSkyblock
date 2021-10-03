@@ -7,13 +7,14 @@ import com.iridium.iridiumskyblock.commands.bank.RemoveCommand;
 import com.iridium.iridiumskyblock.commands.bank.SetCommand;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.BankGUI;
+import com.iridium.iridiumskyblock.gui.IslandBankGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which opens the Island bank GUI.
@@ -54,7 +55,7 @@ public class BankCommand extends Command {
             return false;
         }
 
-        player.openInventory(new BankGUI(island.get()).getInventory());
+        player.openInventory(new IslandBankGUI(island.get()).getInventory());
         return true;
     }
 

@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * GUI which allows users to manage invites.
  */
-public class InvitesGUI extends GUI {
+public class IslandInvitesGUI extends IslandGUI {
 
     private final Map<Integer, String> invites;
 
@@ -30,7 +30,7 @@ public class InvitesGUI extends GUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public InvitesGUI(@NotNull Island island) {
+    public IslandInvitesGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, island);
         invites = new HashMap<>();
     }

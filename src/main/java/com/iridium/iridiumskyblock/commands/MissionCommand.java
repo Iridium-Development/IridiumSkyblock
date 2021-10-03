@@ -7,15 +7,16 @@ import com.iridium.iridiumskyblock.Mission.MissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
-import com.iridium.iridiumskyblock.gui.MissionsGUI;
+import com.iridium.iridiumskyblock.gui.IslandMissionsGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class MissionCommand extends Command {
 
@@ -52,7 +53,7 @@ public class MissionCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
-        player.openInventory(new MissionsGUI(island.get(), missionType).getInventory());
+        player.openInventory(new IslandMissionsGUI(island.get(), missionType).getInventory());
         return true;
     }
 

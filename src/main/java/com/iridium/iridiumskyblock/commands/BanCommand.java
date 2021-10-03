@@ -6,15 +6,16 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBan;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.BansGUI;
+import com.iridium.iridiumskyblock.gui.IslandBansGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which bans a visitor from your Island.
@@ -52,7 +53,7 @@ public class BanCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new BansGUI(1, island.get()).getInventory());
+            player.openInventory(new IslandBansGUI(1, island.get()).getInventory());
             return false;
         }
 

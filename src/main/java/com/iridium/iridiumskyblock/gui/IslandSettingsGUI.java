@@ -20,14 +20,14 @@ import java.util.Map;
 /**
  * GUI which allows users to alter the Island's permissions.
  */
-public class SettingsGUI extends GUI {
+public class IslandSettingsGUI extends IslandGUI {
 
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
-    public SettingsGUI(@NotNull Island island) {
+    public IslandSettingsGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().islandSettingsGUI, island);
     }
 

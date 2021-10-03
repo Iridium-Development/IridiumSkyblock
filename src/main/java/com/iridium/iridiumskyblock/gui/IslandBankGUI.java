@@ -18,14 +18,14 @@ import java.util.Optional;
 /**
  * GUI which allows users to manage the Island bank.
  */
-public class BankGUI extends GUI {
+public class IslandBankGUI extends IslandGUI {
 
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
-    public BankGUI(@NotNull Island island) {
+    public IslandBankGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
     }
 

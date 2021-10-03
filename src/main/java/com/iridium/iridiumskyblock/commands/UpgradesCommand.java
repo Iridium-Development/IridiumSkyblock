@@ -8,7 +8,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.UpgradesGUI;
+import com.iridium.iridiumskyblock.gui.IslandUpgradesGUI;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.command.CommandSender;
@@ -48,7 +48,7 @@ public class UpgradesCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new UpgradesGUI(island.get()).getInventory());
+            player.openInventory(new IslandUpgradesGUI(island.get()).getInventory());
             return true;
         }
 

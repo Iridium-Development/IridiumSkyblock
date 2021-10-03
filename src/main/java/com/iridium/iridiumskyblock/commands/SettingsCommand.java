@@ -4,7 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.SettingsGUI;
+import com.iridium.iridiumskyblock.gui.IslandSettingsGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -43,7 +43,7 @@ public class SettingsCommand extends Command {
             return false;
         }
 
-        player.openInventory(new SettingsGUI(island.get()).getInventory());
+        player.openInventory(new IslandSettingsGUI(island.get()).getInventory());
         return true;
     }
 

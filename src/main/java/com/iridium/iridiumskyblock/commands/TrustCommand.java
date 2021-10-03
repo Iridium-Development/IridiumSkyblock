@@ -8,16 +8,17 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.TrustedGUI;
+import com.iridium.iridiumskyblock.gui.IslandTrustedGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class TrustCommand extends Command {
 
@@ -52,7 +53,7 @@ public class TrustCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new TrustedGUI(island.get()).getInventory());
+            player.openInventory(new IslandTrustedGUI(island.get()).getInventory());
             return true;
         }
 
