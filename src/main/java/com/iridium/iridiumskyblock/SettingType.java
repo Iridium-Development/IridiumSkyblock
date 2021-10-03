@@ -43,8 +43,7 @@ public enum SettingType {
         this.defaultValue = defaultValue;
         this.next = current -> current.equalsIgnoreCase("true") ? "false" : "true";
         this.previous = current -> current.equalsIgnoreCase("true") ? "false" : "true";
-        this.onChange = (island, newValue) -> {
-        };
+        this.onChange = (island, newValue) -> {};
     }
 
     public static SettingType getByName(String name) {
