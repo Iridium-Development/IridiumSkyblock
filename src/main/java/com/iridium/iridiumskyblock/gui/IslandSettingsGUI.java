@@ -95,7 +95,6 @@ public class IslandSettingsGUI extends IslandGUI {
                     break;
             }
             addContent(event.getInventory());
-            break;
         }
     }
 
