@@ -62,6 +62,7 @@ public class IslandSettingsGUI extends IslandGUI {
         
         for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
             if (event.getSlot() != setting.getValue().getItem().slot) continue;
+            
             SettingType settingType = SettingType.getByName(setting.getKey());
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), settingType);
             String newValue = (event.getClick() == ClickType.RIGHT ? settingType.getNext() : settingType.getPrevious()).getNew(islandSetting.getValue());
