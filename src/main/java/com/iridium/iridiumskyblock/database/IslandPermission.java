@@ -16,7 +16,7 @@ public final class IslandPermission extends IslandData {
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false, uniqueCombo = true)
     private int id;
 
-    @DatabaseField(columnName = "permission", canBeNull = false, unique = true)
+    @DatabaseField(columnName = "permission", canBeNull = false, uniqueCombo = true)
     private @NotNull String permission;
 
     @DatabaseField(columnName = "rank", canBeNull = false)

@@ -279,8 +279,10 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new BlockGrowListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPistonListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockSpreadListener(), this);
         Bukkit.getPluginManager().registerEvents(new BucketListener(), this);
         Bukkit.getPluginManager().registerEvents(new EnchantItemListener(), this);
+        Bukkit.getPluginManager().registerEvents(new EntityChangeBlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityExplodeListener(), this);
@@ -290,6 +292,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new FurnaceSmeltListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new ItemCraftListener(), this);
+        Bukkit.getPluginManager().registerEvents(new LeavesDecayListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDropItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerFishListener(), this);
@@ -302,9 +305,6 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new PotionBrewListener(), this);
         Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleDamageListener(), this);
-        Bukkit.getPluginManager().registerEvents(new LeavesDecayListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityChangeBlockListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockSpreadListener(), this);
     }
 
     /**
