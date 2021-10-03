@@ -122,6 +122,16 @@ public final class User {
      *
      * @return The player object if one was found, null otherwise
      */
+    @Deprecated
+    public Player toPlayer() {
+        return getPlayer();
+    }
+
+    /**
+     * Gets the user as Player
+     *
+     * @return The player object if one was found, null otherwise
+     */
     public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
