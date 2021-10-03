@@ -38,6 +38,7 @@ public class Configuration {
     public boolean respawnOnIsland = true;
     public boolean obsidianBucket = true;
     public boolean patreonMessage = true;
+    public boolean disableIslandMenu = false;
 
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
