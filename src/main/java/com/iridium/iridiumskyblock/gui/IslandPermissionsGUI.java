@@ -21,8 +21,9 @@ import java.util.Map;
 /**
  * GUI which allows users to alter the Island's permissions.
  */
-public class PermissionsGUI extends GUI {
+public class IslandPermissionsGUI extends IslandGUI {
 
+    private int page;
     private final IslandRank islandRank;
 
     /**
@@ -31,17 +32,21 @@ public class PermissionsGUI extends GUI {
      * @param island     The Island this GUI belongs to
      * @param islandRank The rank which is being configured
      */
-    public PermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank) {
+    public IslandPermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank, int page) {
         super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI, island);
         this.islandRank = islandRank;
+        this.page = page;
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.background);
+        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
+            if (permission.getValue().getPage() != page) continue;
             boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), islandRank, permission.getValue(), permission.getKey());
             inventory.setItem(permission.getValue().getItem().slot, ItemStackUtils.makeItem(permission.getValue().getItem(), Collections.singletonList(new Placeholder("permission", allowed ? IridiumSkyblock.getInstance().getPermissions().allowed : IridiumSkyblock.getInstance().getPermissions().denied))));
         }
@@ -57,17 +62,29 @@ public class PermissionsGUI extends GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
             if (permission.getValue().getItem().slot != event.getSlot()) continue;
+            if (permission.getValue().getPage() != page) continue;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser((Player) event.getWhoClicked());
             if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), user, PermissionType.CHANGE_PERMISSIONS)) {
                 event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangePermissions.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             } else {
                 boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), islandRank, permission.getValue(), permission.getKey());
-                IridiumSkyblock.getInstance().getIslandManager().setIslandPermission(getIsland(), islandRank, permission.getValue(), permission.getKey(), !allowed);
+                IridiumSkyblock.getInstance().getIslandManager().setIslandPermission(getIsland(), islandRank, permission.getKey(), !allowed);
                 event.getWhoClicked().openInventory(getInventory());
             }
             return;
         }
+
+       if (event.getSlot() == getNoItemGUI().size - 7 && page > 1) {
+           page--;
+           event.getWhoClicked().openInventory(getInventory());
+           return;
+       }
+       
+       if (event.getSlot() == getNoItemGUI().size - 3) {
+           page++;
+           event.getWhoClicked().openInventory(getInventory());
+       }
     }
 
 }

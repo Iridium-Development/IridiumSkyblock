@@ -5,7 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.*;
-import com.iridium.iridiumskyblock.gui.InvitesGUI;
+import com.iridium.iridiumskyblock.gui.IslandInvitesGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -52,7 +52,7 @@ public class InviteCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new InvitesGUI(island.get()).getInventory());
+            player.openInventory(new IslandInvitesGUI(island.get()).getInventory());
             return true;
         }
 

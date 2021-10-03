@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 /**
  * GUI which allows users to manage the Island bank.
  */
-public class LogsGUI extends GUI {
+public class IslandLogsGUI extends IslandGUI {
 
     private int membersPage = 1;
     private int invitesPage = 1;
@@ -42,7 +42,7 @@ public class LogsGUI extends GUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public LogsGUI(@NotNull Island island) {
+    public IslandLogsGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().logsGUI, island);
     }
 

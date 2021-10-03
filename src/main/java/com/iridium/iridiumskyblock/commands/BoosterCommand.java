@@ -8,7 +8,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.BoostersGUI;
+import com.iridium.iridiumskyblock.gui.IslandBoostersGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -48,7 +48,7 @@ public class BoosterCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new BoostersGUI(island.get()).getInventory());
+            player.openInventory(new IslandBoostersGUI(island.get()).getInventory());
             return true;
         }
 

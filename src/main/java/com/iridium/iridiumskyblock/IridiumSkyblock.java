@@ -75,11 +75,13 @@ public class IridiumSkyblock extends IridiumCore {
     private Shop shop;
     private Border border;
     private Placeholders placeholders;
+    private IslandSettings islandSettings;
 
     private ChunkGenerator chunkGenerator;
 
     private List<BankItem> bankItemList;
     private Map<String, Permission> permissionList;
+    private Map<String, Setting> settingsList;
     private Map<String, Mission> missionsList;
     private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
@@ -277,8 +279,10 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new BlockGrowListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPistonListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockSpreadListener(), this);
         Bukkit.getPluginManager().registerEvents(new BucketListener(), this);
         Bukkit.getPluginManager().registerEvents(new EnchantItemListener(), this);
+        Bukkit.getPluginManager().registerEvents(new EntityChangeBlockListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDeathListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityExplodeListener(), this);
@@ -288,6 +292,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getPluginManager().registerEvents(new FurnaceSmeltListener(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new ItemCraftListener(), this);
+        Bukkit.getPluginManager().registerEvents(new LeavesDecayListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerDropItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerFishListener(), this);
@@ -322,7 +327,7 @@ public class IridiumSkyblock extends IridiumCore {
         getDatabaseManager().getIslandWarpTableManager().save();
         getDatabaseManager().getIslandLogTableManager().save();
         getDatabaseManager().getIslandBanTableManager().save();
-
+        getDatabaseManager().getIslandSettingTableManager().save();
     }
 
     /**
@@ -407,6 +412,11 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         initializePermissionList();
+        initializeSettingsList();
+
+        for (Permission permission : permissionList.values()) {
+            if (permission.getPage() == 0) permission.setPage(1);
+        }
 
         if (bankItems.crystalsBankItem.getDisplayName() == null) bankItems.crystalsBankItem.setDisplayName("Crystal");
         if (bankItems.experienceBankItem.getDisplayName() == null)
@@ -495,6 +505,7 @@ public class IridiumSkyblock extends IridiumCore {
         this.shop = getPersist().load(Shop.class);
         this.border = getPersist().load(Border.class);
         this.placeholders = getPersist().load(Placeholders.class);
+        this.islandSettings = getPersist().load(IslandSettings.class);
     }
 
     private void initializePermissionList() {
@@ -527,6 +538,19 @@ public class IridiumSkyblock extends IridiumCore {
         this.permissionList.put(PermissionType.TRAMPLE_CROPS.getPermissionKey(), permissions.trampleCrops);
         this.permissionList.put(PermissionType.INTERACT.getPermissionKey(), permissions.interact);
         this.permissionList.put(PermissionType.PORTAL.getPermissionKey(), permissions.portal);
+        this.permissionList.put(PermissionType.ISLAND_SETTINGS.getPermissionKey(), permissions.islandSettings);
+    }
+
+    private void initializeSettingsList() {
+        this.settingsList = new HashMap<>();
+        this.settingsList.put(SettingType.MOB_SPAWN.getSettingName(), islandSettings.mobSpawn);
+        this.settingsList.put(SettingType.LEAF_DECAY.getSettingName(), islandSettings.leafDecay);
+        this.settingsList.put(SettingType.WEATHER.getSettingName(), islandSettings.weather);
+        this.settingsList.put(SettingType.TIME.getSettingName(), islandSettings.time);
+        this.settingsList.put(SettingType.ENDERMAN_GRIEF.getSettingName(), islandSettings.endermanGrief);
+        this.settingsList.put(SettingType.LIQUID_FLOW.getSettingName(), islandSettings.liquidFlow);
+        this.settingsList.put(SettingType.TNT_DAMAGE.getSettingName(), islandSettings.tntDamage);
+        this.settingsList.put(SettingType.FIRE_SPREAD.getSettingName(), islandSettings.fireSpread);
     }
 
     private void saveSchematics() {
@@ -586,6 +610,7 @@ public class IridiumSkyblock extends IridiumCore {
         getPersist().save(shop);
         getPersist().save(border);
         getPersist().save(placeholders);
+        getPersist().save(islandSettings);
     }
 
     /**

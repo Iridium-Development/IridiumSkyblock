@@ -14,9 +14,9 @@ import org.bukkit.inventory.Inventory;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RewardsGUI extends GUI {
+public class IslandRewardsGUI extends IslandGUI {
 
-    public RewardsGUI(Island island) {
+    public IslandRewardsGUI(Island island) {
         super(IridiumSkyblock.getInstance().getInventories().islandReward, island);
     }
 

@@ -18,14 +18,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class WarpsGUI extends GUI {
+public class IslandWarpsGUI extends IslandGUI {
 
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
-    public WarpsGUI(@NotNull Island island) {
+    public IslandWarpsGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().warpsGUI, island);
     }
 

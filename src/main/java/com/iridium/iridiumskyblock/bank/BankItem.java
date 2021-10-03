@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.bank;
 
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +28,7 @@ public abstract class BankItem {
      * @param name          The name of this
      * @param defaultAmount The default withdrawal amount of this item
      * @param enabled       Whether or not this item is usable
-     * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
+     * @param item          The Item which represents this bank item in the {@link IslandBankGUI}
      */
     public BankItem(String name, String displayName, double defaultAmount, boolean enabled, Item item) {
         this.name = name;

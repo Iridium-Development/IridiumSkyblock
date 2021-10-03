@@ -5,21 +5,18 @@ import com.iridium.iridiumskyblock.SettingType;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 
-public class BlockExplodeListener implements Listener {
+public class LeavesDecayListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
-    public void onBlockExplode(BlockExplodeEvent event) {
+    public void onLeavesDecay(LeavesDecayEvent event) {
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
-            IslandSetting tntExplosion = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.TNT_DAMAGE);
-            if (!tntExplosion.getBooleanValue()) {
+            IslandSetting leafDecaySettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.LEAF_DECAY);
+            if (!leafDecaySettings.getBooleanValue()) {
                 event.setCancelled(true);
-                return;
             }
-            event.blockList().removeIf(block -> !island.isInIsland(block.getLocation()));
         });
     }
-
 
 }
