@@ -1,4 +1,4 @@
-package com.iridium.iridiumskyblock;
+package com.iridium.iridiumskyblock.settings;
 
 import com.iridium.iridiumcore.Item;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Setting {
+public class IslandSettingConfig {
 
     /**
      * The Item used to display the item

@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.SettingType;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,8 +18,8 @@ public class EntityExplodeListener implements Listener {
         if (list.isEmpty()) return;
         int islandId = list.get(0).asInt();
         IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandId).ifPresent(island -> {
-            IslandSetting tntExplosion = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.TNT_DAMAGE);
-            if (!tntExplosion.getBooleanValue()) {
+            IslandSetting tntExplosion = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, IslandSettingType.TNT_DAMAGE);
+            if (!tntExplosion.isAllowed()) {
                 event.setCancelled(true);
             }
             event.blockList().removeIf(block -> !island.isInIsland(block.getLocation()));

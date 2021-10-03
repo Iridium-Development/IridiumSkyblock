@@ -17,6 +17,8 @@ import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
+import com.iridium.iridiumskyblock.settings.IslandSettingConfig;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -81,7 +83,7 @@ public class IridiumSkyblock extends IridiumCore {
 
     private List<BankItem> bankItemList;
     private Map<String, Permission> permissionList;
-    private Map<String, Setting> settingsList;
+    private Map<String, IslandSettingConfig> settingsList;
     private Map<String, Mission> missionsList;
     private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
@@ -543,14 +545,14 @@ public class IridiumSkyblock extends IridiumCore {
 
     private void initializeSettingsList() {
         this.settingsList = new HashMap<>();
-        this.settingsList.put(SettingType.MOB_SPAWN.getSettingName(), islandSettings.mobSpawn);
-        this.settingsList.put(SettingType.LEAF_DECAY.getSettingName(), islandSettings.leafDecay);
-        this.settingsList.put(SettingType.WEATHER.getSettingName(), islandSettings.weather);
-        this.settingsList.put(SettingType.TIME.getSettingName(), islandSettings.time);
-        this.settingsList.put(SettingType.ENDERMAN_GRIEF.getSettingName(), islandSettings.endermanGrief);
-        this.settingsList.put(SettingType.LIQUID_FLOW.getSettingName(), islandSettings.liquidFlow);
-        this.settingsList.put(SettingType.TNT_DAMAGE.getSettingName(), islandSettings.tntDamage);
-        this.settingsList.put(SettingType.FIRE_SPREAD.getSettingName(), islandSettings.fireSpread);
+        this.settingsList.put(IslandSettingType.MOB_SPAWN.getSettingName(), islandSettings.mobSpawn);
+        this.settingsList.put(IslandSettingType.LEAF_DECAY.getSettingName(), islandSettings.leafDecay);
+        this.settingsList.put(IslandSettingType.WEATHER.getSettingName(), islandSettings.weather);
+        this.settingsList.put(IslandSettingType.TIME.getSettingName(), islandSettings.time);
+        this.settingsList.put(IslandSettingType.ENDERMAN_GRIEF.getSettingName(), islandSettings.endermanGrief);
+        this.settingsList.put(IslandSettingType.LIQUID_FLOW.getSettingName(), islandSettings.liquidFlow);
+        this.settingsList.put(IslandSettingType.TNT_DAMAGE.getSettingName(), islandSettings.tntDamage);
+        this.settingsList.put(IslandSettingType.FIRE_SPREAD.getSettingName(), islandSettings.fireSpread);
     }
 
     private void saveSchematics() {

@@ -2,9 +2,9 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.IslandTime;
-import com.iridium.iridiumskyblock.IslandWeatherType;
-import com.iridium.iridiumskyblock.SettingType;
+import com.iridium.iridiumskyblock.settings.IslandTime;
+import com.iridium.iridiumskyblock.settings.IslandWeather;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
@@ -46,14 +46,14 @@ public class PlayerMoveListener implements Listener {
                     ));
                     PlayerUtils.teleportSpawn(player);
                 } else {
-                    IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.TIME);
-                    IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.WEATHER);
+                    IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), IslandSettingType.TIME);
+                    IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), IslandSettingType.WEATHER);
                     IslandTime islandTime = IslandTime.valueOf(islandTimeSetting.getValue());
-                    IslandWeatherType islandWeatherType = IslandWeatherType.valueOf(islandWeatherSetting.getValue());
-                    if (islandWeatherType == IslandWeatherType.DEFAULT) {
+                    IslandWeather islandWeather = IslandWeather.valueOf(islandWeatherSetting.getValue());
+                    if (islandWeather == IslandWeather.DEFAULT) {
                         player.resetPlayerWeather();
                     } else {
-                        WeatherType newWeatherType = islandWeatherType == IslandWeatherType.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL;
+                        WeatherType newWeatherType = islandWeather == IslandWeather.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL;
                         if (player.getPlayerWeather() != newWeatherType) {
                             player.setPlayerWeather(newWeatherType);
                         }

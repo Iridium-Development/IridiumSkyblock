@@ -18,6 +18,7 @@ import com.iridium.iridiumskyblock.configs.Configuration.IslandRegenSettings;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.generators.OceanGenerator;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.*;
@@ -658,11 +659,11 @@ public class IslandManager {
      * Gets an IslandSetting from a specific Island
      *
      * @param island      The specified Island
-     * @param settingType The specified Setting Type
+     * @param islandSettingType The specified Setting Type
      * @return The IslandSetting object
      */
-    public synchronized IslandSetting getIslandSetting(@NotNull Island island, @NotNull SettingType settingType) {
-        return getIslandSetting(island, settingType.getSettingName(), settingType.getDefaultValue());
+    public synchronized IslandSetting getIslandSetting(@NotNull Island island, @NotNull IslandSettingType islandSettingType) {
+        return getIslandSetting(island, islandSettingType.getSettingName(), islandSettingType.getDefaultValue());
     }
 
     /**

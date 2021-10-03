@@ -22,8 +22,8 @@ public final class IslandSetting extends IslandData {
     @Setter
     private String value;
 
-    public boolean getBooleanValue() {
-        return value.equalsIgnoreCase("true");
+    public boolean isAllowed() {
+        return value.equalsIgnoreCase("ALLOWED");
     }
 
     /**
