@@ -445,6 +445,13 @@ public class IridiumSkyblock extends IridiumCore {
             this.bankItemList.add(bankItems.moneyBankItem);
         }
 
+        for (Map.Entry<String, Schematics.SchematicConfig> schematics : schematics.schematics.entrySet()) {
+            Schematics.SchematicConfig schematic = schematics.getValue();
+            if (schematic.overworld.islandHeight == null) schematic.overworld.islandHeight = 90.0;
+            if (schematic.nether.islandHeight == null) schematic.nether.islandHeight = 90.0;
+            if (schematic.end.islandHeight == null) schematic.end.islandHeight = 90.0;
+        }
+
         this.missionsList = new HashMap<>(missions.missions);
 
         this.upgradesList = new HashMap<>();

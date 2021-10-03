@@ -102,7 +102,10 @@ public class InviteCommand extends Command {
         // Send a message to the user if he is online
         if (offlinePlayer instanceof Player) {
             Player targetPlayer = (Player) offlinePlayer;
-            TextComponent message = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited));
+            TextComponent message = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited
+                    .replace("%inviter%", player.getName())
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
             message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
             message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
             targetPlayer.spigot().sendMessage(message);
