@@ -75,15 +75,16 @@ public class IslandPermissionsGUI extends IslandGUI {
             return;
         }
 
-        if (event.getSlot() == getNoItemGUI().size - 7 && page > 1) {
-            page--;
-            event.getWhoClicked().openInventory(getInventory());
-            return;
-        }
-        if (event.getSlot() == getNoItemGUI().size - 3) {
-            page++;
-            event.getWhoClicked().openInventory(getInventory());
-        }
+       if (event.getSlot() == getNoItemGUI().size - 7 && page > 1) {
+           page--;
+           event.getWhoClicked().openInventory(getInventory());
+           return;
+       }
+       
+       if (event.getSlot() == getNoItemGUI().size - 3) {
+           page++;
+           event.getWhoClicked().openInventory(getInventory());
+       }
     }
 
 }
