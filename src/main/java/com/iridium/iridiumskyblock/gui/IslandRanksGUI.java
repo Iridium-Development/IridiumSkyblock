@@ -58,15 +58,15 @@ public class IslandRanksGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         IslandRanksInventoryConfig islandRanks = IridiumSkyblock.getInstance().getInventories().islandRanksGUI;
         if (event.getSlot() == islandRanks.owner.slot)
-            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.OWNER).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.OWNER, 1).getInventory());
         else if (event.getSlot() == islandRanks.coOwner.slot)
-            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.CO_OWNER).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.CO_OWNER, 1).getInventory());
         else if (event.getSlot() == islandRanks.moderator.slot)
-            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.MODERATOR).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.MODERATOR, 1).getInventory());
         else if (event.getSlot() == islandRanks.member.slot)
-            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.MEMBER).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.MEMBER, 1).getInventory());
         else if (event.getSlot() == islandRanks.visitor.slot)
-            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.VISITOR).getInventory());
+            event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.VISITOR, 1).getInventory());
 
     }
 

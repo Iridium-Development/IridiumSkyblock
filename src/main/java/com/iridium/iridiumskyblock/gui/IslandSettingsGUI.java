@@ -3,13 +3,13 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.Setting;
-import com.iridium.iridiumskyblock.SettingType;
-import com.iridium.iridiumskyblock.SettingValueChange;
+import com.iridium.iridiumcore.utils.StringUtils;
+import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandSetting;
+import com.iridium.iridiumskyblock.database.User;
 import org.apache.commons.lang.WordUtils;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -51,6 +51,11 @@ public class IslandSettingsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser((OfflinePlayer) event.getWhoClicked());
+        if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), user, PermissionType.ISLAND_SETTINGS)) {
+            event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangeSettings.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
         for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
             if (event.getSlot() != setting.getValue().getItem().slot) continue;
             SettingType settingType = SettingType.getByName(setting.getKey());

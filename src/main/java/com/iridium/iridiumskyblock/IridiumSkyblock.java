@@ -414,6 +414,10 @@ public class IridiumSkyblock extends IridiumCore {
         initializePermissionList();
         initializeSettingsList();
 
+        for (Permission permission : permissionList.values()) {
+            if (permission.getPage() == 0) permission.setPage(1);
+        }
+
         if (bankItems.crystalsBankItem.getDisplayName() == null) bankItems.crystalsBankItem.setDisplayName("Crystal");
         if (bankItems.experienceBankItem.getDisplayName() == null)
             bankItems.experienceBankItem.setDisplayName("Experience");
@@ -527,6 +531,7 @@ public class IridiumSkyblock extends IridiumCore {
         this.permissionList.put(PermissionType.TRAMPLE_CROPS.getPermissionKey(), permissions.trampleCrops);
         this.permissionList.put(PermissionType.INTERACT.getPermissionKey(), permissions.interact);
         this.permissionList.put(PermissionType.PORTAL.getPermissionKey(), permissions.portal);
+        this.permissionList.put(PermissionType.ISLAND_SETTINGS.getPermissionKey(), permissions.islandSettings);
     }
 
     private void initializeSettingsList() {

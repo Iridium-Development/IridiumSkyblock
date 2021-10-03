@@ -107,6 +107,7 @@ public class Messages {
     public String cannotTransferOwnership = "%prefix% &7Only the Island owner can transfer ownership.";
     public String cannotSpawnEntities = "%prefix% &7You cannot spawn entities on this Island.";
     public String cannotUsePortal = "%prefix% &7You cannot use a portal on this Island.";
+    public String cannotChangeSettings = "%prefix% &7You cannot change the Island Settings.";
     public String nowBypassing = "%prefix% &7You are now bypassing Island restrictions.";
     public String noLongerBypassing = "%prefix% &7You are no longer bypassing Island restrictions.";
     public String setSchematicPosition = "%prefix% &7The position has been set.";
