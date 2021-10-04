@@ -276,15 +276,15 @@ public class IridiumSkyblockAPI {
     }
 
     public boolean isIslandOverWorld(World world) {
-        return Objects.equals(getWorld(), world);
+        return iridiumSkyblock.getIslandManager().isIslandOverWorld(world);
     }
 
     public boolean isIslandNether(World world) {
-        return Objects.equals(getNetherWorld(), world);
+        return iridiumSkyblock.getIslandManager().isIslandNether(world);
     }
 
     public boolean isIslandEnd(World world) {
-        return Objects.equals(getEndWorld(), world);
+        return iridiumSkyblock.getIslandManager().isIslandEnd(world);
     }
 
 }
