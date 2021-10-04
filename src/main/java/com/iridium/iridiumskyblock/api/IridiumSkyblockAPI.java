@@ -265,7 +265,7 @@ public class IridiumSkyblockAPI {
     }
 
     /**
-     * Returns whether or not the specified world is from IridiumSkyblock.
+     * Returns whether the specified world is from IridiumSkyblock.
      *
      * @param world Thw world that should be checked
      * @return true if it is a world used by IridiumSkyblock
@@ -273,6 +273,18 @@ public class IridiumSkyblockAPI {
      */
     public boolean isIslandWorld(World world) {
         return Objects.equals(getWorld(), world) || Objects.equals(getNetherWorld(), world) || Objects.equals(getEndWorld(), world);
+    }
+
+    public boolean isIslandOverWorld(World world) {
+        return Objects.equals(getWorld(), world);
+    }
+
+    public boolean isIslandNether(World world) {
+        return Objects.equals(getNetherWorld(), world);
+    }
+
+    public boolean isIslandEnd(World world) {
+        return Objects.equals(getEndWorld(), world);
     }
 
 }
