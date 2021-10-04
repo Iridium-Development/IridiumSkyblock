@@ -42,7 +42,6 @@ public class Commands {
     public MembersCommand membersCommand = new MembersCommand();
     public MissionCommand missionCommand = new MissionCommand();
     public PermissionsCommand permissionsCommand = new PermissionsCommand();
-    public PositionCommand positionCommand = new PositionCommand();
     public PrivateCommand privateCommand = new PrivateCommand();
     public PromoteCommand promoteCommand = new PromoteCommand();
     public PublicCommand publicCommand = new PublicCommand();
@@ -51,7 +50,6 @@ public class Commands {
     public ReloadCommand reloadCommand = new ReloadCommand();
     public RenameCommand renameCommand = new RenameCommand();
     public RewardsCommand rewardsCommand = new RewardsCommand();
-    public SaveSchematicCommand saveSchematicCommand = new SaveSchematicCommand();
     public SetHomeCommand setHomeCommand = new SetHomeCommand();
     public SetWarpCommand setWarpCommand = new SetWarpCommand();
     public SettingsCommand settingsCommand = new SettingsCommand();

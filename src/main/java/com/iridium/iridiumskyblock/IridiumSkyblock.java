@@ -155,7 +155,7 @@ public class IridiumSkyblock extends IridiumCore {
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
 
-        this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
+        this.schematicManager = new SchematicManager();
 
         this.spawnerStackerSupport = setupSpawnerSupport();
         this.blockStackerSupport = setupBlockStackerSupport();
