@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.Reward;
 import com.iridium.iridiumskyblock.generators.GeneratorType;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.Arrays;
@@ -106,6 +107,13 @@ public class Configuration {
                     "",
                     "&b&l[!] &bLeft click to redeem"
             )), Collections.emptyList(), 0, 15, 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
+            .build();
+
+    public Map<EntityType, Integer> islandMobLimits = ImmutableMap.<EntityType, Integer>builder()
+            .put(EntityType.COW, 50)
+            .put(EntityType.PIG, 50)
+            .put(EntityType.SHEEP, 60)
+            .put(EntityType.BLAZE, 50)
             .build();
 
     /**
