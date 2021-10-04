@@ -24,9 +24,8 @@ public class EntitySpawnListener implements Listener {
         });
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (event.isCancelled()) return;
         if (IridiumSkyblock.getInstance().getIslandManager().isIslandEnd(event.getEntity().getWorld())) {
             if (event.getEntityType().equals(EntityType.ENDER_DRAGON) && event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.DEFAULT)) {
                 event.setCancelled(true);
