@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.commands;
 
-import com.iridium.iridiumcore.dependencies.iridiumcolorapi.IridiumColorAPI;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import java.time.Duration;
@@ -14,6 +13,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,12 +21,6 @@ import org.bukkit.entity.Player;
  * Command which shows users a list of all IridiumSkyblock commands.
  */
 public class HelpCommand extends Command {
-
-    public String defaultCommandSyntax = "&7/is %command%";
-    public List<String> commandHelpMessage = Arrays.asList(
-        "&7Description: &b%description%",
-        "&7Syntax: &b%syntax%");
-    public String availableSubcommands = "&7Available subcommands: &b%commands%";
 
     /**
      * The default constructor.
@@ -117,26 +111,25 @@ public class HelpCommand extends Command {
             return false;
         }
 
-        String syntax = executingCommand.syntax.replaceAll("%prefix%\\s*", "");
+        String syntax = ChatColor.stripColor(executingCommand.syntax.replaceAll("%prefix%\\s*", "").replace("&", "§"));
+        System.out.println(syntax);
         if (syntax.isEmpty()) {
-            syntax = defaultCommandSyntax.replace("%command%", executingCommand.aliases.get(0));
+            syntax = IridiumSkyblock.getInstance().getConfiguration().defaultCommandSyntax.replace("%command%", executingCommand.aliases.get(0));
         }
 
-        String finalSyntax = IridiumColorAPI.stripColorFormatting(syntax);
+        String finalSyntax = syntax;
         String subCommands = executingCommand.childs.stream()
             .filter(command -> commandSender.hasPermission(command.permission) || command.permission.isEmpty())
             .map(command -> command.aliases.get(0))
-            .collect(Collectors.joining(", "));
+            .collect(Collectors.joining("/", "<", ">"));
 
-        commandHelpMessage.stream()
+        IridiumSkyblock.getInstance().getMessages().commandHelpMessage.stream()
             .map(line -> line.replace("%description%", executingCommand.description))
             .map(line -> line.replace("%syntax%", finalSyntax))
+            .map(line -> line.replace("%subcommands%", executingCommand.childs.isEmpty() ? "" : subCommands))
             .map(StringUtils::color)
             .forEach(commandSender::sendMessage);
 
-        if (subCommands.length() != 0) {
-            commandSender.sendMessage(StringUtils.color(availableSubcommands.replace("%commands%", subCommands)));
-        }
         return true;
     }
 
