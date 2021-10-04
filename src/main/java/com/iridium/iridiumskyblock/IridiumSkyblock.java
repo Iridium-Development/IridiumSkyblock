@@ -155,7 +155,7 @@ public class IridiumSkyblock extends IridiumCore {
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
 
-        this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
+        this.schematicManager = new SchematicManager();
 
         this.spawnerStackerSupport = setupSpawnerSupport();
         this.blockStackerSupport = setupBlockStackerSupport();
@@ -564,15 +564,15 @@ public class IridiumSkyblock extends IridiumCore {
             return;
         }
 
-        saveFile(schematicFolder, "desert.iridiumschem");
-        saveFile(schematicFolder, "mushroom.iridiumschem");
-        saveFile(schematicFolder, "jungle.iridiumschem");
-        saveFile(schematicFolder, "desert_nether.iridiumschem");
-        saveFile(schematicFolder, "mushroom_nether.iridiumschem");
-        saveFile(schematicFolder, "jungle_nether.iridiumschem");
-        saveFile(schematicFolder, "desert_end.iridiumschem");
-        saveFile(schematicFolder, "mushroom_end.iridiumschem");
-        saveFile(schematicFolder, "jungle_end.iridiumschem");
+        saveFile(schematicFolder, "desert.schem");
+        saveFile(schematicFolder, "mushroom.schem");
+        saveFile(schematicFolder, "jungle.schem");
+        saveFile(schematicFolder, "desert_nether.schem");
+        saveFile(schematicFolder, "mushroom_nether.schem");
+        saveFile(schematicFolder, "jungle_nether.schem");
+        saveFile(schematicFolder, "desert_end.schem");
+        saveFile(schematicFolder, "mushroom_end.schem");
+        saveFile(schematicFolder, "jungle_end.schem");
     }
 
     private void saveFile(File parent, String name) {

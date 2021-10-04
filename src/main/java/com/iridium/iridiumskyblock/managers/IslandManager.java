@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
@@ -174,7 +175,7 @@ public class IslandManager {
      */
     public void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp, int delay) {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 .replace("%name%", islandWarp.getName())
         );
         if (delay < 1) {
@@ -251,12 +252,11 @@ public class IslandManager {
             user.setIslandRank(IslandRank.OWNER);
 
             // Paste schematic and then teleport the player (this needs to be done sync)
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
-                    pasteSchematic(island, schematic).thenRun(() -> {
-                        teleportHome(player, island);
-                        completableFuture.complete(island);
-                    })
-            );
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                pasteSchematic(island, schematic);
+                teleportHome(player, island);
+                completableFuture.complete(island);
+            });
         });
         return completableFuture;
     }
@@ -344,38 +344,34 @@ public class IslandManager {
             island.setVisitable(false);
         }
 
-        pasteSchematic(island, schematicConfig).thenRun(() -> {
+        pasteSchematic(island, schematicConfig);
 
-            Location islandHome = island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
-            islandHome.setYaw(schematicConfig.yawHome);
-            island.setHome(islandHome);
+        Location islandHome = island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
+        islandHome.setYaw(schematicConfig.yawHome);
+        island.setHome(islandHome);
 
-            getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entities -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                        for (Entity entity : entities) {
-                            if (entity instanceof Player) {
-                                teleportHome((Player) entity, island, 0);
-                            } else {
-                                entity.remove();
-                            }
+        getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entities -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    for (Entity entity : entities) {
+                        if (entity instanceof Player) {
+                            teleportHome((Player) entity, island, 0);
+                        } else {
+                            entity.remove();
                         }
-                    })
-            );
-        });
+                    }
+                })
+        );
     }
 
-    private CompletableFuture<Void> pasteSchematic(@NotNull Island island, @NotNull Schematics.SchematicConfig schematicConfig) {
+    private void pasteSchematic(@NotNull Island island, @NotNull Schematics.SchematicConfig schematicConfig) {
         setIslandBiome(island, schematicConfig.overworld.biome);
         setIslandBiome(island, schematicConfig.nether.biome);
         setIslandBiome(island, schematicConfig.end.biome);
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                                completableFuture.complete(null)
-                        )
-                )
+        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, ImmutableMap.<World, Schematics.SchematicWorld>builder()
+                .put(getWorld(), schematicConfig.overworld)
+                .put(getNetherWorld(), schematicConfig.nether)
+                .put(getEndWorld(), schematicConfig.end)
+                .build()
         );
-        return completableFuture;
     }
 
     /**
