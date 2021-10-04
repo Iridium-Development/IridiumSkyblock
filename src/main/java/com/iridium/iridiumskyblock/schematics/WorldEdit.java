@@ -24,6 +24,10 @@ public class WorldEdit implements SchematicPaster {
             ClipboardFormat format = ClipboardFormats.findByFile(file);
             ClipboardReader reader = format.getReader(new FileInputStream(file));
             Clipboard clipboard = reader.read();
+            int width = clipboard.getDimensions().getBlockX();
+            int height = clipboard.getDimensions().getBlockY();
+            int length = clipboard.getDimensions().getBlockZ();
+            location.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
             try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), -1)) {
                 Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
