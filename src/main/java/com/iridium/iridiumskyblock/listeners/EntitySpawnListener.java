@@ -8,7 +8,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.world.WorldEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public class EntitySpawnListener implements Listener {
