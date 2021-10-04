@@ -57,7 +57,7 @@ public class Placeholders {
                         islandGetter.getIsland(player).map(Island::getFormattedValue).orElse(placeholdersConfig.islandValue)
                 )
                 .put(startKey + "_visitable", player ->
-                        islandGetter.getIsland(player).map(island -> island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().islandVisitable : IridiumSkyblock.getInstance().getMessages().islandNotVisitable).orElse(placeholdersConfig.islandValue)
+                        islandGetter.getIsland(player).map(island -> island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().visitable : IridiumSkyblock.getInstance().getMessages().notVisitable).orElse(placeholdersConfig.islandValue)
                 )
                 .put(startKey + "_members", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getMembers().size())).orElse(placeholdersConfig.islandMembers)
