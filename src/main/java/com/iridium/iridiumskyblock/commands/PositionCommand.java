@@ -18,7 +18,7 @@ public class PositionCommand extends Command {
      * The default constructor.
      */
     public PositionCommand() {
-        super(Arrays.asList("pos", "position"), "Set the corner position of a schematic", "iridiumskyblock.schematic", true, Duration.ZERO);
+        super(Arrays.asList("pos", "position"), "Set the corner position of a schematic", "%prefix% &7/is pos <1/2>", "iridiumskyblock.schematic", true, Duration.ZERO);
     }
 
     /**

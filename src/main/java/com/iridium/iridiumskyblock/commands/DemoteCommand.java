@@ -28,7 +28,7 @@ public class DemoteCommand extends Command {
      * The default constructor.
      */
     public DemoteCommand() {
-        super(Collections.singletonList("demote"), "Demote a user", "%prefix% &7/is demote <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("demote"), "Demote a user", "%prefix% &7/is demote <player>", "", true, Duration.ZERO);
     }
 
     /**

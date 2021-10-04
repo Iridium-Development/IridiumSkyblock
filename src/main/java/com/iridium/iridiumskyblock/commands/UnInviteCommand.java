@@ -25,7 +25,7 @@ public class UnInviteCommand extends Command {
      * The default constructor.
      */
     public UnInviteCommand() {
-        super(Collections.singletonList("uninvite"), "Revoke an invitation to your Island", "%prefix% &7/is uninvite <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("uninvite"), "Revoke an invitation to your Island", "%prefix% &7/is uninvite <player>", "", true, Duration.ZERO);
     }
 
     /**

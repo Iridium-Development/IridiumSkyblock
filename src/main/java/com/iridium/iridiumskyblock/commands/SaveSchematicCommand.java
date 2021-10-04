@@ -19,7 +19,7 @@ public class SaveSchematicCommand extends Command {
      * The default constructor.
      */
     public SaveSchematicCommand() {
-        super(Collections.singletonList("saveschematic"), "Create a schematic out of a selected area", "iridiumskyblock.schematic", true, Duration.ZERO);
+        super(Collections.singletonList("saveschematic"), "Create a schematic out of a selected area", "%prefix% &7/is saveschematic <name> <confirm>", "iridiumskyblock.schematic", true, Duration.ZERO);
     }
 
     /**
@@ -48,7 +48,6 @@ public class SaveSchematicCommand extends Command {
 
         String schematicName = arguments[1];
         boolean existsAlready = IridiumSkyblock.getInstance().getSchematicManager().schematics.containsKey(schematicName+".iridiumschem");
-
         if (existsAlready && (arguments.length == 2 || !arguments[2].equalsIgnoreCase("confirm"))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().missingSchematicConfirmation.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;

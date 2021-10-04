@@ -12,6 +12,7 @@ import com.iridium.iridiumskyblock.utils.TimeUtils;
 import java.lang.reflect.Field;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -228,6 +229,21 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         return commandSender.hasPermission(command.permission)
                 || command.permission.equalsIgnoreCase("")
                 || command.permission.equalsIgnoreCase("iridiumskyblock.");
+    }
+
+    public Optional<Command> findExecutingCommand(String[] arguments) {
+        if (arguments.length == 0) {
+            return Optional.empty();
+        }
+
+        for (Command command : commands) {
+            if (command.aliases.contains(arguments[0].toLowerCase())) {
+                String[] newArguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+                return Optional.of(findExecutingCommand(command, newArguments));
+            }
+        }
+
+        return Optional.empty();
     }
 
     private Command findExecutingCommand(Command baseCommand, String[] args) {

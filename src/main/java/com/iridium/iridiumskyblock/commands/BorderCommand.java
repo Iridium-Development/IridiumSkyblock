@@ -27,7 +27,7 @@ public class BorderCommand extends Command {
      * The default constructor.
      */
     public BorderCommand() {
-        super(Collections.singletonList("border"), "Change the Island Border", "", true, Duration.ZERO);
+        super(Collections.singletonList("border"), "Change the Island Border", "%prefix% &7/is border <color>", "", true, Duration.ZERO);
     }
 
     /**
