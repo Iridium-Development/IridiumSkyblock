@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.configs.Shop;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
 import com.iridium.iridiumskyblock.shop.ShopItem;
 import org.bukkit.Bukkit;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * GUI which shows all items in a {@link ShopCategory} and allows players to purchase them.
@@ -112,35 +114,36 @@ public class ShopCategoryGUI extends GUI {
     }
 
     private void addShopLore(List<String> lore, ShopItem item) {
+        Shop shopConfig = IridiumSkyblock.getInstance().getShop();
         if (item.isPurchasable()) {
             lore.add(
-                    StringUtils.color(IridiumSkyblock.getInstance().getShop().buyPriceLore
+                    StringUtils.color(shopConfig.buyPriceLore
                             .replace("%amount%", String.valueOf(item.defaultAmount))
                             .replace("%buy_price_vault%", String.valueOf(item.buyCost.vault))
                             .replace("%buy_price_crystals%", String.valueOf(item.buyCost.crystals))
                     )
             );
         } else {
-            lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notPurchasableLore));
+            lore.add(StringUtils.color(shopConfig.notPurchasableLore));
         }
 
         if (item.isSellable()) {
             lore.add(
-                    StringUtils.color(IridiumSkyblock.getInstance().getShop().sellRewardLore
+                    StringUtils.color(shopConfig.sellRewardLore
                             .replace("%amount%", String.valueOf(item.defaultAmount))
                             .replace("%sell_reward_vault%", String.valueOf(item.sellReward.vault))
                             .replace("%sell_reward_crystals%", String.valueOf(item.sellReward.crystals))
                     )
             );
         } else {
-            lore.add(StringUtils.color(IridiumSkyblock.getInstance().getShop().notSellableLore));
+            lore.add(StringUtils.color(shopConfig.notSellableLore));
         }
 
-        IridiumSkyblock.getInstance().getShop().shopItemLore.stream()
+        lore.addAll(shopConfig.shopItemLore.stream()
                 .map(StringUtils::color)
-                .forEach(line -> lore.add(
-                        line.replace("%amount%", String.valueOf(item.defaultAmount))
-                ));
+                .map(line -> line.replace("%buylore%", item.isPurchasable() ? shopConfig.shopItemLoreBuy : ""))
+                .map(line -> line.replace("%selllore%", item.isSellable() ? shopConfig.shopItemLoreSell : ""))
+                .map(line -> line.replace("%amount%", String.valueOf(item.defaultAmount))).collect(Collectors.toList()));
     }
 
 }

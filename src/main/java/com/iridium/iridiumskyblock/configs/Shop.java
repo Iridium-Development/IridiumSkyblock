@@ -799,6 +799,8 @@ public class Shop {
     public String sellRewardLore = "&cSelling Reward: $%sell_reward_vault%, %sell_reward_crystals% Crystals";
     public String notPurchasableLore = "&cThis item cannot be purchased!";
     public String notSellableLore = "&cThis item cannot be sold!";
+    public String shopItemLoreSell = "&b&l[!] &bRight Click to Sell %amount%, Shift for 64";
+    public String shopItemLoreBuy = "&b&l[!] &bLeft-Click to Purchase %amount%, Shift for 64";
 
     public int overviewSize = 4 * 9;
 
@@ -808,7 +810,7 @@ public class Shop {
     public Background overviewBackground = new Background(ImmutableMap.<Integer, Item>builder().build());
     public Background categoryBackground = new Background(ImmutableMap.<Integer, Item>builder().build());
 
-    public List<String> shopItemLore = Arrays.asList(" ", "&b&l[!] &bLeft-Click to Purchase %amount%, Shift for 64", "&b&l[!] &bRight Click to Sell %amount%, Shift for 64");
+    public List<String> shopItemLore = Arrays.asList(" ", "%buylore%", "%selllore%");
 
     /**
      * Represents configurable options of a {@link com.iridium.iridiumskyblock.shop.ShopCategory}.
