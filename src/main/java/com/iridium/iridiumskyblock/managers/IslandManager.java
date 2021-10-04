@@ -252,17 +252,27 @@ public class IslandManager {
             user.setIslandRank(IslandRank.OWNER);
 
             // Paste schematic and then teleport the player (this needs to be done sync)
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                pasteSchematic(island, schematic);
-                teleportHome(player, island);
-                completableFuture.complete(island);
-            });
+            if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit")) {
+                Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+                    pasteSchematic(island, schematic);
+                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                        teleportHome(player, island);
+                        completableFuture.complete(island);
+                    });
+                });
+            } else {
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    pasteSchematic(island, schematic);
+                    teleportHome(player, island);
+                    completableFuture.complete(island);
+                });
+            }
         });
         return completableFuture;
     }
 
     /**
-     * Deletes all blocks in the island and re-pastes the schematic.
+     * Deletes all blocks on the island and re-pastes the schematic.
      *
      * @param island          The specified Island
      * @param schematicConfig The schematic we are pasting
@@ -344,7 +354,11 @@ public class IslandManager {
             island.setVisitable(false);
         }
 
-        pasteSchematic(island, schematicConfig);
+        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit")) {
+            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematicConfig));
+        } else {
+            pasteSchematic(island, schematicConfig);
+        }
 
         Location islandHome = island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
         islandHome.setYaw(schematicConfig.yawHome);
