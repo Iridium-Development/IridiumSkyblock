@@ -252,21 +252,11 @@ public class IslandManager {
             user.setIslandRank(IslandRank.OWNER);
 
             // Paste schematic and then teleport the player (this needs to be done sync)
-            if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit")) {
-                Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                    pasteSchematic(island, schematic);
-                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                        teleportHome(player, island);
-                        completableFuture.complete(island);
-                    });
-                });
-            } else {
-                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                    pasteSchematic(island, schematic);
-                    teleportHome(player, island);
-                    completableFuture.complete(island);
-                });
-            }
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                pasteSchematic(island, schematic);
+                teleportHome(player, island);
+                completableFuture.complete(island);
+            });
         });
         return completableFuture;
     }
@@ -354,11 +344,7 @@ public class IslandManager {
             island.setVisitable(false);
         }
 
-        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit")) {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematicConfig));
-        } else {
-            pasteSchematic(island, schematicConfig);
-        }
+        pasteSchematic(island, schematicConfig);
 
         Location islandHome = island.getCenter(IridiumSkyblock.getInstance().getIslandManager().getWorld()).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
         islandHome.setYaw(schematicConfig.yawHome);
@@ -380,12 +366,24 @@ public class IslandManager {
         setIslandBiome(island, schematicConfig.overworld.biome);
         setIslandBiome(island, schematicConfig.nether.biome);
         setIslandBiome(island, schematicConfig.end.biome);
-        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, ImmutableMap.<World, Schematics.SchematicWorld>builder()
-                .put(getWorld(), schematicConfig.overworld)
-                .put(getNetherWorld(), schematicConfig.nether)
-                .put(getEndWorld(), schematicConfig.end)
-                .build()
-        );
+        if (Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit")) {
+            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, ImmutableMap.<World, Schematics.SchematicWorld>builder()
+                        .put(getWorld(), schematicConfig.overworld)
+                        .put(getNetherWorld(), schematicConfig.nether)
+                        .put(getEndWorld(), schematicConfig.end)
+                        .build()
+                );
+            });
+        } else {
+            IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, ImmutableMap.<World, Schematics.SchematicWorld>builder()
+                    .put(getWorld(), schematicConfig.overworld)
+                    .put(getNetherWorld(), schematicConfig.nether)
+                    .put(getEndWorld(), schematicConfig.end)
+                    .build()
+            );
+        }
+
     }
 
     /**
