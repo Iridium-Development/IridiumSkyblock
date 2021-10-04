@@ -132,22 +132,22 @@ public class Configuration {
     @NoArgsConstructor
     public static class IslandRegenSettings {
 
-        public double moneyPrice = 5000.0;
-        public int crystalPrice = 100;
+        public double moneyPrice = 0;
+        public int crystalPrice = 0;
         public boolean clearInventories = false;
         public boolean clearEnderChests = false;
-        public boolean resetIslandBank = true;
-        public boolean resetVaultBalances = true;
+        public boolean resetIslandBank = false;
+        public boolean resetVaultBalances = false;
         public boolean resetUpgrades = true;
         public boolean resetMissions = true;
         public boolean resetBoosters = true;
         public boolean clearWarps = true;
         public boolean resetBorderColour = true;
-        public boolean resetPermissions = false;
+        public boolean resetPermissions = true;
         public boolean unbanAll = false;
-        public boolean giveUpInvites = false;
+        public boolean giveUpInvites = true;
         public boolean kickMembers = false;
-        public boolean makeIslandPrivate = true;
+        public boolean makeIslandPrivate = false;
 
     }
 
@@ -158,9 +158,9 @@ public class Configuration {
     @NoArgsConstructor
     public static class IslandDeleteSettings {
 
-        public boolean clearInventories = true;
-        public boolean clearEnderChests = true;
-        public boolean resetVaultBalances = true;
+        public boolean clearInventories = false;
+        public boolean clearEnderChests = false;
+        public boolean resetVaultBalances = false;
 
     }
 
