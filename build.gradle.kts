@@ -43,6 +43,7 @@ dependencies {
     compileOnly("com.github.OmerBenGera:WildStackerAPI:master")
     compileOnly("com.songoda:UltimateStacker:2.1.7")
     compileOnly("com.songoda:EpicSpawners:7.0.8")
+    compileOnly("com.sk89q:WorldEdit:7.2.6")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.20")

@@ -6,15 +6,16 @@ api-version: '1.13'
 author: Peaches_MLG
 depend: [ Vault ]
 softdepend:
-- "MVdWPlaceholderAPI"
-- "PlaceholderAPI"
-- "Essentials"
-- "EssentialsSpawn"
-- "RoseStacker"
-- "WildStacker"
-- "AdvancedSpawners"
-- "UltimateStacker"
-- "EpicSpawners"
+  - "MVdWPlaceholderAPI"
+  - "PlaceholderAPI"
+  - "Essentials"
+  - "EssentialsSpawn"
+  - "RoseStacker"
+  - "WildStacker"
+  - "AdvancedSpawners"
+  - "UltimateStacker"
+  - "EpicSpawners"
+  - "WorldEdit"
 loadbefore:
   - "Multiverse-Core"
 commands:

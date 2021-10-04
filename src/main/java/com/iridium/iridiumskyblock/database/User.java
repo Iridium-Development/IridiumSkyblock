@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -52,9 +51,6 @@ public final class User {
     private boolean islandChat = false;
 
     private Island currentIslandVisiting;
-
-    private Location schematicPos1;
-    private Location schematicPos2;
 
     private BukkitTask teleportingTask;
 
