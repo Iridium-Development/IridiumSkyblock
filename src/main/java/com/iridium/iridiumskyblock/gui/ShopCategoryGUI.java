@@ -143,7 +143,8 @@ public class ShopCategoryGUI extends GUI {
                 .map(StringUtils::color)
                 .map(line -> line.replace("%buylore%", item.isPurchasable() ? shopConfig.shopItemLoreBuy : ""))
                 .map(line -> line.replace("%selllore%", item.isSellable() ? shopConfig.shopItemLoreSell : ""))
-                .map(line -> line.replace("%amount%", String.valueOf(item.defaultAmount))).collect(Collectors.toList()));
+                .map(line -> line.replace("%amount%", String.valueOf(item.defaultAmount)))
+                .collect(Collectors.toList()));
     }
 
 }
