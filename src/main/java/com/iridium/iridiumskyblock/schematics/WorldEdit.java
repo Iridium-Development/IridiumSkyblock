@@ -16,12 +16,16 @@ import org.bukkit.Location;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class WorldEdit implements SchematicPaster {
+
+    private static final HashMap<File, ClipboardFormat> cachedClipboardFormat = new HashMap<>();
+
     @Override
     public void paste(File file, Location location) {
         try {
-            ClipboardFormat format = ClipboardFormats.findByFile(file);
+            ClipboardFormat format = (cachedClipboardFormat.get(file) != null) ? cachedClipboardFormat.get(file) : ClipboardFormats.findByFile(file);
             ClipboardReader reader = format.getReader(new FileInputStream(file));
             Clipboard clipboard = reader.read();
             int width = clipboard.getDimensions().getBlockX();
@@ -37,9 +41,14 @@ public class WorldEdit implements SchematicPaster {
                         .ignoreAirBlocks(true)
                         .build();
                 Operations.complete(operation);
+                cachedClipboardFormat.putIfAbsent(file, format);
             }
         } catch (IOException | WorldEditException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void clearClipBoardCache() {
+        cachedClipboardFormat.clear();
     }
 }
