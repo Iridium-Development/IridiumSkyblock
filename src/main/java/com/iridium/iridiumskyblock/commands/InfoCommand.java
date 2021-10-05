@@ -24,7 +24,7 @@ public class InfoCommand extends Command {
      * The default constructor.
      */
     public InfoCommand() {
-        super(Collections.singletonList("info"), "Show infos about this Island.", "", false, Duration.ZERO);
+        super(Collections.singletonList("info"), "Show infos about this Island.", "%prefix% &7/is info <player>", "", false, Duration.ZERO);
     }
 
     /**
@@ -54,14 +54,8 @@ public class InfoCommand extends Command {
             sendInfo(sender, userIsland.get(), user);
             return true;
         }
+
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(arguments[1]);
-
-        // Check if the target user actually exists
-        if (!targetPlayer.hasPlayedBefore()) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
-        }
-
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
         Optional<Island> targetIsland = targetUser.getIsland();
         if (!targetIsland.isPresent()) {

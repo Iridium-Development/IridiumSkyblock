@@ -24,7 +24,7 @@ public class ChatCommand extends Command {
      * The default constructor.
      */
     public ChatCommand() {
-        super(Collections.singletonList("chat"), "Chat with online Island members", "", true, Duration.ZERO);
+        super(Collections.singletonList("chat"), "Chat with online Island members", "%prefix% &7/is chat <message>", "", true, Duration.ZERO);
     }
 
     /**
