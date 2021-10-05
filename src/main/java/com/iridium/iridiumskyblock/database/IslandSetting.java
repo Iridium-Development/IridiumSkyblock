@@ -23,7 +23,7 @@ public final class IslandSetting extends IslandData {
     private String value;
 
     public boolean isAllowed() {
-        return value.equalsIgnoreCase("ALLOWED") || value.equalsIgnoreCase("true");
+        return value.equalsIgnoreCase("allowed") || value.equalsIgnoreCase("true");
     }
 
     /**

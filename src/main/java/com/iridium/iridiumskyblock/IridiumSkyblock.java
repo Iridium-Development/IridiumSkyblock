@@ -17,6 +17,7 @@ import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
+import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.settings.IslandSettingConfig;
 import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.shop.ShopManager;
@@ -157,7 +158,7 @@ public class IridiumSkyblock extends IridiumCore {
         // Initialize the API
         IridiumSkyblockAPI.initializeAPI(this);
 
-        this.schematicManager = new SchematicManager(new File(getDataFolder(), "schematics"));
+        this.schematicManager = new SchematicManager();
 
         this.spawnerStackerSupport = setupSpawnerSupport();
         this.blockStackerSupport = setupBlockStackerSupport();
@@ -487,6 +488,8 @@ public class IridiumSkyblock extends IridiumCore {
         if (commandManager != null)
             commandManager.reloadCommands();
 
+        WorldEdit.clearClipBoardCache();
+
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);
     }
@@ -566,15 +569,15 @@ public class IridiumSkyblock extends IridiumCore {
             return;
         }
 
-        saveFile(schematicFolder, "desert.iridiumschem");
-        saveFile(schematicFolder, "mushroom.iridiumschem");
-        saveFile(schematicFolder, "jungle.iridiumschem");
-        saveFile(schematicFolder, "desert_nether.iridiumschem");
-        saveFile(schematicFolder, "mushroom_nether.iridiumschem");
-        saveFile(schematicFolder, "jungle_nether.iridiumschem");
-        saveFile(schematicFolder, "desert_end.iridiumschem");
-        saveFile(schematicFolder, "mushroom_end.iridiumschem");
-        saveFile(schematicFolder, "jungle_end.iridiumschem");
+        saveFile(schematicFolder, "desert.schem");
+        saveFile(schematicFolder, "mushroom.schem");
+        saveFile(schematicFolder, "jungle.schem");
+        saveFile(schematicFolder, "desert_nether.schem");
+        saveFile(schematicFolder, "mushroom_nether.schem");
+        saveFile(schematicFolder, "jungle_nether.schem");
+        saveFile(schematicFolder, "desert_end.schem");
+        saveFile(schematicFolder, "mushroom_end.schem");
+        saveFile(schematicFolder, "jungle_end.schem");
     }
 
     private void saveFile(File parent, String name) {

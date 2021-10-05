@@ -5,9 +5,11 @@ import com.iridium.iridiumskyblock.settings.IslandMobSpawn;
 import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -26,6 +28,15 @@ public class EntitySpawnListener implements Listener {
                 event.getEntity().setMetadata("island_spawned", new FixedMetadataValue(IridiumSkyblock.getInstance(), island.getId()));
             }
         });
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (IridiumSkyblock.getInstance().getIslandManager().isIslandEnd(event.getEntity().getWorld())) {
+            if (event.getEntityType().equals(EntityType.ENDER_DRAGON) && event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.DEFAULT)) {
+                event.setCancelled(true);
+            }
+        }
     }
 
 }
