@@ -17,7 +17,7 @@ import java.util.Arrays;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IslandSettings {
 
-    public IslandSettingConfig mobSpawn = new IslandSettingConfig(new Item(XMaterial.ZOMBIE_HEAD, 10, 1, "&b&lMob Spawn", Arrays.asList("&7Change the which mobs can spawn on your Island.", "", "&b&lValue", "&7%value%")), IslandMobSpawn.ALL.name());
+    public IslandSettingConfig mobSpawn = new IslandSettingConfig(new Item(XMaterial.ZOMBIE_HEAD, 10, 1, "&b&lMob Spawn", Arrays.asList("&7Change which mobs can spawn on your Island.", "", "&b&lValue", "&7%value%")), IslandMobSpawn.ALL.name());
     public IslandSettingConfig leafDecay = new IslandSettingConfig(new Item(XMaterial.OAK_LEAVES, 11, 1, "&b&lLeaf Decay", Arrays.asList("&7Allow leaves to decay on your Island.", "", "&b&lValue", "&7%value%")), "ALLOWED");
     public IslandSettingConfig weather = new IslandSettingConfig(new Item(XMaterial.SNOWBALL, 12, 1, "&b&lIsland Weather", Arrays.asList("&7Change the weather of your Island.", "", "&b&lValue", "&7%value%")), IslandWeather.DEFAULT.name());
     public IslandSettingConfig time = new IslandSettingConfig(new Item(XMaterial.CLOCK, 13, 1, "&b&lIsland Time", Arrays.asList("&7Change your Island time.", "", "&b&lValue", "&7%value%")), IslandTime.DEFAULT.name());
