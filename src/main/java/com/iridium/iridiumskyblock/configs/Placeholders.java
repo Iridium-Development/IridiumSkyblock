@@ -26,7 +26,11 @@ public class Placeholders {
     public String islandBiome = "N/A";
 
     // Island Upgrade Placeholders
-    public String islandUpgradeLevel = "0";
+    public String islandUpgradeBlocklimitLevel = "0";
+    public String islandUpgradeMemberLevel = "0";
+    public String islandUpgradeSizeLevel = "0";
+    public String islandUpgradeGeneratorLevel = "0";
+    public String islandUpgradeWarpLevel = "0";
     public String islandUpgradeMemberAmount = "0";
     public String islandUpgradeSizeDimensions = "0";
     public String islandUpgradeWarpAmount = "0";
