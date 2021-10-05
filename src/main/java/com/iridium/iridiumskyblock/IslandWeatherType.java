@@ -9,7 +9,7 @@ public enum IslandWeatherType {
     public static String getNext(String current) {
         int nextOrdinal = valueOf(current.toUpperCase()).ordinal() + 1;
         int availableValues = values().length;
-        if (availableValues < nextOrdinal) return values()[0].name();
+        if (nextOrdinal >= availableValues) return values()[0].name();
         return values()[nextOrdinal].name();
     }
 
