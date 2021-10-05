@@ -17,13 +17,14 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
 
 public class WorldEdit implements SchematicPaster {
 
     private static final HashMap<File, ClipboardFormat> cachedClipboardFormat = new HashMap<>();
 
     @Override
-    public void paste(File file, Location location) {
+    public void paste(File file, Location location, CompletableFuture<Void> completableFuture) {
         try {
             ClipboardFormat format = (cachedClipboardFormat.get(file) != null) ? cachedClipboardFormat.get(file) : ClipboardFormats.findByFile(file);
             ClipboardReader reader = format.getReader(new FileInputStream(file));
@@ -42,6 +43,7 @@ public class WorldEdit implements SchematicPaster {
                         .build();
                 Operations.complete(operation);
                 cachedClipboardFormat.putIfAbsent(file, format);
+                completableFuture.complete(null);
             }
         } catch (IOException | WorldEditException e) {
             e.printStackTrace();

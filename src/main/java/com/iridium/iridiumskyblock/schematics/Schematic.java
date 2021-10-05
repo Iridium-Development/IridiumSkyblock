@@ -14,13 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class Schematic implements SchematicPaster {
 
     private static final Map<File, SchematicData> schematicData = new HashMap<>();
 
     @Override
-    public void paste(File file, Location location) {
+    public void paste(File file, Location location, CompletableFuture<Void> completableFuture) {
         SchematicData schematicData;
         try {
             schematicData = getSchematicData(file);
@@ -86,6 +87,7 @@ public class Schematic implements SchematicPaster {
                 }
             }
         }
+        completableFuture.complete(null);
     }
 
     private static SchematicData getSchematicData(File file) throws IOException {

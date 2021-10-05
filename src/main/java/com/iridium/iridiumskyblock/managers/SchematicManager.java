@@ -23,9 +23,12 @@ public class SchematicManager {
     private final SchematicPaster schematicPaster;
     public final Map<String, File> schematicFiles;
 
+    private final boolean worldEdit = Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
+    private final boolean fawe = Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
+
     public SchematicManager() {
         File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
-        this.schematicPaster = Bukkit.getPluginManager().isPluginEnabled("WorldEdit") ? new WorldEdit() : new Schematic();
+        this.schematicPaster = worldEdit || fawe ? new WorldEdit() : new Schematic();
         this.schematicFiles = new HashMap<>();
         for (File file : parent.listFiles()) {
             schematicFiles.put(file.getName(), file);
@@ -45,7 +48,11 @@ public class SchematicManager {
             Location location = island.getCenter(schematic.getKey());
             location.add(0, schematic.getValue().islandHeight, 0);
             File file = schematicFiles.getOrDefault(schematic.getValue().schematicID, schematicFiles.values().stream().findFirst().get());
-            schematicPaster.paste(file, location);
+            if (fawe) {
+                Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> schematicPaster.paste(file, location, completableFuture));
+            } else {
+                schematicPaster.paste(file, location, completableFuture);
+            }
         }
         return completableFuture;
     }
