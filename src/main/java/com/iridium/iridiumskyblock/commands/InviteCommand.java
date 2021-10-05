@@ -30,7 +30,7 @@ public class InviteCommand extends Command {
      * The default constructor.
      */
     public InviteCommand() {
-        super(Arrays.asList("invite", "invites"), "Invite a user to your Island", "", true, Duration.ZERO);
+        super(Arrays.asList("invite", "invites"), "Invite a user to your Island", "%prefix% &7/is invite <player>", "", true, Duration.ZERO);
     }
 
     /**

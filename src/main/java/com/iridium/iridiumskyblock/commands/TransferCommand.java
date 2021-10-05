@@ -24,7 +24,7 @@ public class TransferCommand extends Command {
      * The default constructor.
      */
     public TransferCommand() {
-        super(Collections.singletonList("transfer"), "Transfer Island ownership to another player", "%prefix% &7/is transfer <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("transfer"), "Transfer Island ownership to another player", "%prefix% &7/is transfer <player>", "", true, Duration.ZERO);
     }
 
     /**

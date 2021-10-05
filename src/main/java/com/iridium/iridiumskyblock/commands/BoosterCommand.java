@@ -26,7 +26,7 @@ public class BoosterCommand extends Command {
      * The default constructor.
      */
     public BoosterCommand() {
-        super(Arrays.asList("booster", "boosters"), "Open the Island Boosters Menu", "", true, Duration.ZERO);
+        super(Arrays.asList("booster", "boosters"), "Open the Island Boosters Menu", "%prefix% &7/is booster <name>", "", true, Duration.ZERO);
     }
 
     /**

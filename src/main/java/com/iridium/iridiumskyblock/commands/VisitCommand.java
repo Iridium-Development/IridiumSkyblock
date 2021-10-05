@@ -24,7 +24,7 @@ public class VisitCommand extends Command {
      * The default constructor.
      */
     public VisitCommand() {
-        super(Collections.singletonList("visit"), "Visit another players Island", "", true, Duration.ZERO);
+        super(Collections.singletonList("visit"), "Visit another players Island", "%prefix% &7/is visit <player>", "", true, Duration.ZERO);
     }
 
     /**
