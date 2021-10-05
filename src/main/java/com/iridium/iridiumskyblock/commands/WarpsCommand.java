@@ -22,7 +22,7 @@ public class WarpsCommand extends Command {
      * The default constructor.
      */
     public WarpsCommand() {
-        super(Arrays.asList("warp", "warps"), "Open the Island Warps Menu", "%prefix% &7/is warp %warp% <password>", "", true, Duration.ZERO);
+        super(Arrays.asList("warp", "warps"), "Open the Island Warps Menu", "%prefix% &7/is warp <name> <password>", "", true, Duration.ZERO);
     }
 
     /**

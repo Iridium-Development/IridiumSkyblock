@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -52,9 +51,6 @@ public final class User {
     private boolean islandChat = false;
 
     private Island currentIslandVisiting;
-
-    private Location schematicPos1;
-    private Location schematicPos2;
 
     private BukkitTask teleportingTask;
 
@@ -115,6 +111,16 @@ public final class User {
      */
     public LocalDateTime getJoinTime() {
         return LocalDateTime.ofInstant(Instant.ofEpochMilli(joinTime), ZoneId.systemDefault());
+    }
+
+    /**
+     * Gets the user as Player
+     *
+     * @return The player object if one was found, null otherwise
+     */
+    @Deprecated
+    public Player toPlayer() {
+        return getPlayer();
     }
 
     /**

@@ -5,9 +5,11 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -22,7 +24,7 @@ public class VisitCommand extends Command {
      * The default constructor.
      */
     public VisitCommand() {
-        super(Collections.singletonList("visit"), "Visit another players Island", "", true, Duration.ZERO);
+        super(Collections.singletonList("visit"), "Visit another players Island", "%prefix% &7/is visit <player>", "", true, Duration.ZERO);
     }
 
     /**
@@ -36,8 +38,9 @@ public class VisitCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (args.length != 2) {
-            player.openInventory(new VisitGUI(1).getInventory());
+            player.openInventory(new VisitGUI(1, user).getInventory());
             return true;
         }
 

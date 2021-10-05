@@ -201,4 +201,8 @@ public class Messages {
             "<GRADIENT:09C6F9>Island Visitable</GRADIENT:045DE9>&r: &7%visitable%"
     );
 
+    public List<String> commandHelpMessage = Arrays.asList(
+        "&7Description: &b%description%",
+        "&7Syntax: &b%syntax% %subcommands%");
+
 }

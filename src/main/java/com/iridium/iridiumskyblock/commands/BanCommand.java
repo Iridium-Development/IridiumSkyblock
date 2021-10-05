@@ -26,7 +26,7 @@ public class BanCommand extends Command {
      * The default constructor.
      */
     public BanCommand() {
-        super(Arrays.asList("ban", "bans"), "Bans a player from visiting your Island", "%prefix% &7/is ban <name>", "", true, Duration.ZERO);
+        super(Arrays.asList("ban", "bans"), "Bans a player from visiting your Island", "%prefix% &7/is ban <player>", "", true, Duration.ZERO);
     }
 
     /**
