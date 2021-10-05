@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
@@ -174,7 +175,7 @@ public class IslandManager {
      */
     public void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp, int delay) {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 .replace("%name%", islandWarp.getName())
         );
         if (delay < 1) {
@@ -250,13 +251,13 @@ public class IslandManager {
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
 
-            // Paste schematic and then teleport the player (this needs to be done sync)
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
-                    pasteSchematic(island, schematic).thenRun(() -> {
-                        teleportHome(player, island);
-                        completableFuture.complete(island);
-                    })
-            );
+            pasteSchematic(island, schematic).thenRun(() -> {
+                // Paste schematic and then teleport the player (this needs to be done sync)
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    teleportHome(player, island);
+                    completableFuture.complete(island);
+                });
+            });
         });
         return completableFuture;
     }
@@ -367,15 +368,12 @@ public class IslandManager {
         setIslandBiome(island, schematicConfig.overworld.biome);
         setIslandBiome(island, schematicConfig.nether.biome);
         setIslandBiome(island, schematicConfig.end.biome);
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                                completableFuture.complete(null)
-                        )
-                )
+        return IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, ImmutableMap.<World, Schematics.SchematicWorld>builder()
+                .put(getWorld(), schematicConfig.overworld)
+                .put(getNetherWorld(), schematicConfig.nether)
+                .put(getEndWorld(), schematicConfig.end)
+                .build()
         );
-        return completableFuture;
     }
 
     /**
@@ -1140,6 +1138,18 @@ public class IslandManager {
      */
     public World getEndWorld() {
         return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
+    }
+
+    public boolean isIslandOverWorld(World world) {
+        return world.equals(getWorld());
+    }
+
+    public boolean isIslandNether(World world) {
+        return world.equals(getNetherWorld());
+    }
+
+    public boolean isIslandEnd(World world) {
+        return world.equals(getEndWorld());
     }
 
     public ItemStack getIslandCrystal(int amount) {

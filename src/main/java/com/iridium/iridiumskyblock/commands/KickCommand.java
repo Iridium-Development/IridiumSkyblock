@@ -27,7 +27,7 @@ public class KickCommand extends Command {
      * The default constructor.
      */
     public KickCommand() {
-        super(Collections.singletonList("kick"), "Kick a player", "%prefix% &7/is kick <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("kick"), "Kick a player", "%prefix% &7/is kick <player>", "", true, Duration.ZERO);
     }
 
     /**
