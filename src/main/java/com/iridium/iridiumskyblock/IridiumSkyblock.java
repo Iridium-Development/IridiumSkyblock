@@ -136,8 +136,8 @@ public class IridiumSkyblock extends IridiumCore {
         this.islandManager = new IslandManager();
         this.userManager = new UserManager();
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
-        this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
-        this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
+        if (configuration.netherIslands) islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
+        if (configuration.endIslands) islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
 
         this.databaseManager = new DatabaseManager();
         // Try to connect to the database
