@@ -202,10 +202,8 @@ public class IridiumSkyblock extends IridiumCore {
 
         resetIslandMissions();
 
-        if (getConfiguration().enableMetrics) {
-            Metrics metrics = new Metrics(this, 5825);
-            metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
-        }
+        Metrics metrics = new Metrics(this, 5825);
+        metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
 
         if (getConfiguration().enableCheckVersion) {
             UpdateChecker.init(this, 62480)
