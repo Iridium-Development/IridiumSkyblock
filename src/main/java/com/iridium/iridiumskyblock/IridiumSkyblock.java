@@ -31,6 +31,7 @@ import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -201,14 +202,18 @@ public class IridiumSkyblock extends IridiumCore {
 
         resetIslandMissions();
 
-        Metrics metrics = new Metrics(this, 5825);
-        metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
+        if (getConfiguration().enableMetrics) {
+            Metrics metrics = new Metrics(this, 5825);
+            metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
+        }
 
-        UpdateChecker.init(this, 62480)
-                .checkEveryXHours(24)
-                .setDownloadLink(62480)
-                .setColoredConsoleOutput(true)
-                .checkNow();
+        if (getConfiguration().enableCheckVersion) {
+            UpdateChecker.init(this, 62480)
+                    .checkEveryXHours(24)
+                    .setDownloadLink(62480)
+                    .setColoredConsoleOutput(true)
+                    .checkNow();
+        }
 
         DataConverter.deleteDuplicateRecords();
 
@@ -273,39 +278,40 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockExplodeListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockFromToListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockGrowListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockPistonListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockSpreadListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BucketListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EnchantItemListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityChangeBlockListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityDeathListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityExplodeListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityPickupItemListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntitySpawnListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityTargetListener(), this);
-        Bukkit.getPluginManager().registerEvents(new FurnaceSmeltListener(), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ItemCraftListener(), this);
-        Bukkit.getPluginManager().registerEvents(new LeavesDecayListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerDropItemListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerFishListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinQuitListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PotionBrewListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
-        Bukkit.getPluginManager().registerEvents(new VehicleDamageListener(), this);
+        PluginManager manager = Bukkit.getPluginManager();
+        manager.registerEvents(new BlockBreakListener(), this);
+        manager.registerEvents(new BlockExplodeListener(), this);
+        manager.registerEvents(new BlockFormListener(), this);
+        manager.registerEvents(new BlockFromToListener(), this);
+        manager.registerEvents(new BlockGrowListener(), this);
+        manager.registerEvents(new BlockPistonListener(), this);
+        manager.registerEvents(new BlockPlaceListener(), this);
+        manager.registerEvents(new BlockSpreadListener(), this);
+        manager.registerEvents(new BucketListener(), this);
+        manager.registerEvents(new EnchantItemListener(), this);
+        manager.registerEvents(new EntityChangeBlockListener(), this);
+        manager.registerEvents(new EntityDamageListener(), this);
+        manager.registerEvents(new EntityDeathListener(), this);
+        manager.registerEvents(new EntityExplodeListener(), this);
+        manager.registerEvents(new EntityPickupItemListener(), this);
+        manager.registerEvents(new EntitySpawnListener(), this);
+        manager.registerEvents(new EntityTargetListener(), this);
+        manager.registerEvents(new FurnaceSmeltListener(), this);
+        manager.registerEvents(new InventoryClickListener(), this);
+        manager.registerEvents(new ItemCraftListener(), this);
+        manager.registerEvents(new LeavesDecayListener(), this);
+        manager.registerEvents(new PlayerChatListener(), this);
+        manager.registerEvents(new PlayerDropItemListener(), this);
+        manager.registerEvents(new PlayerFishListener(), this);
+        manager.registerEvents(new PlayerInteractListener(), this);
+        manager.registerEvents(new PlayerJoinQuitListener(), this);
+        manager.registerEvents(new PlayerMoveListener(), this);
+        manager.registerEvents(new PlayerPortalListener(), this);
+        manager.registerEvents(new PlayerRespawnListener(), this);
+        manager.registerEvents(new PlayerTeleportListener(), this);
+        manager.registerEvents(new PotionBrewListener(), this);
+        manager.registerEvents(new SpawnerSpawnListener(), this);
+        manager.registerEvents(new VehicleDamageListener(), this);
     }
 
     /**
