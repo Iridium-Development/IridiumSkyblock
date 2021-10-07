@@ -22,7 +22,7 @@ public class SetWarpCommand extends Command {
      * The default constructor.
      */
     public SetWarpCommand() {
-        super(Arrays.asList("setwarp", "createwarp"), "Creates an Island warp", "%prefix% &7/is setwarp <name>", "", true, Duration.ZERO);
+        super(Arrays.asList("setwarp", "createwarp"), "Creates an Island warp", "%prefix% &7/is setwarp <name> <password>", "", true, Duration.ZERO);
     }
 
     /**

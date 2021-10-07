@@ -23,7 +23,7 @@ public class GiveCommand extends Command {
      * The default constructor.
      */
     public GiveCommand() {
-        super(Collections.singletonList("give"), "Give players money into their island bank", "%prefix% &7/is bank <give> <player> <type> <amount>", "iridiumskyblock.bank.give", false, Duration.ZERO);
+        super(Collections.singletonList("give"), "Give players money into their island bank", "%prefix% &7/is bank give <player> <type> <amount>", "iridiumskyblock.bank.give", false, Duration.ZERO);
     }
 
     @Override
