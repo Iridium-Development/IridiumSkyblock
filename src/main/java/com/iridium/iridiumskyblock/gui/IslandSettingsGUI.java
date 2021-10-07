@@ -9,7 +9,9 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.settings.*;
+import com.iridium.iridiumskyblock.settings.IslandSettingImpl;
+import com.iridium.iridiumskyblock.settings.IslandTime;
+import com.iridium.iridiumskyblock.settings.IslandWeather;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.WeatherType;
@@ -39,7 +41,8 @@ public class IslandSettingsGUI extends IslandGUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandSettingsGUI.background);
 
-        for (Map.Entry<String, IslandSettingConfig> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
+        for (Map.Entry<String, IslandSettingImpl> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
+            if (!setting.getValue().isEnabled()) return;
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), setting.getKey(), setting.getValue().getDefaultValue());
             inventory.setItem(setting.getValue().getItem().slot, ItemStackUtils.makeItem(setting.getValue().getItem(), Collections.singletonList(new Placeholder("value", WordUtils.capitalize(islandSetting.getValue().toLowerCase().replace("_", " "))))));
         }
@@ -58,43 +61,24 @@ public class IslandSettingsGUI extends IslandGUI {
             event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangeSettings.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-
-        for (Map.Entry<String, IslandSettingConfig> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
-            if (event.getSlot() != setting.getValue().getItem().slot) continue;
-
-            IslandSettingType islandSettingType = IslandSettingType.getByName(setting.getKey());
-            IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), islandSettingType);
-            switch (islandSettingType) {
-                case TIME:
-                    IslandTime currentTime = IslandTime.valueOf(islandSetting.getValue());
-                    IslandTime nextTime = event.isRightClick() ? currentTime.getNext() : currentTime.getPrevious();
-                    IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream().map(User::getPlayer).forEach(player -> {
-                        player.setPlayerTime(nextTime.getTime(), nextTime.isRelative());
-                    });
-                    islandSetting.setValue(nextTime.name());
-                    break;
-                case WEATHER:
-                    IslandWeather currentWeather = IslandWeather.valueOf(islandSetting.getValue());
-                    IslandWeather nextWeather = event.isRightClick() ? currentWeather.getNext() : currentWeather.getPrevious();
-                    IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream().map(User::getPlayer).forEach(player -> {
-                        if (nextWeather.equals(IslandWeather.DEFAULT)) {
-                            player.resetPlayerWeather();
-                        } else {
-                            player.setPlayerWeather(nextWeather == IslandWeather.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL);
-                        }
-                    });
-                    islandSetting.setValue(nextWeather.name());
-                    break;
-                case MOB_SPAWN:
-                    IslandMobSpawn currentMobSpawn = IslandMobSpawn.valueOf(islandSetting.getValue());
-                    IslandMobSpawn nextMobSpawn = event.isRightClick() ? currentMobSpawn.getNext() : currentMobSpawn.getPrevious();
-                    islandSetting.setValue(nextMobSpawn.name());
-                    break;
-                default:
-                    islandSetting.setValue((islandSetting.getValue().equalsIgnoreCase("ALLOWED") ? IslandSwitchSetting.DISALLOWED : IslandSwitchSetting.ALLOWED).name());
-                    break;
+        for (Map.Entry<String, IslandSettingImpl> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
+            if (!setting.getValue().isEnabled() || !setting.getValue().isChangeable() || event.getSlot() != setting.getValue().getItem().slot) continue;
+            IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), setting.getKey(), setting.getValue().getDefaultValue());
+            Enum<?> newValue = event.isRightClick() ? setting.getValue().getNext(islandSetting.getValue()) : setting.getValue().getPrevious(islandSetting.getValue());
+            islandSetting.setValue(newValue.name());
+            if (setting.getValue() instanceof IslandWeather) {
+                IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream().map(User::getPlayer).forEach(player -> {
+                    if (newValue.equals(IslandWeather.IslandWeatherTypes.DEFAULT)) {
+                        player.resetPlayerWeather();
+                    } else {
+                        player.setPlayerWeather(newValue.equals(IslandWeather.IslandWeatherTypes.CLEAR) ? WeatherType.CLEAR : WeatherType.DOWNFALL);
+                    }
+                });
+            } else if (setting.getValue() instanceof IslandTime) {
+                IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream().map(User::getPlayer).forEach(player -> {
+                    player.setPlayerTime(((IslandTime.IslandTimeTypes) newValue).getTime(), ((IslandTime.IslandTimeTypes) newValue).isRelative());
+                });
             }
-            addContent(event.getInventory());
         }
     }
 

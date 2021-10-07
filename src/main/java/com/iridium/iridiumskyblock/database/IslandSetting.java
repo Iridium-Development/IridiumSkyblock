@@ -22,9 +22,6 @@ public final class IslandSetting extends IslandData {
     @Setter
     private String value;
 
-    public boolean isAllowed() {
-        return value.equalsIgnoreCase("allowed") || value.equalsIgnoreCase("true");
-    }
 
     /**
      * The default constructor.

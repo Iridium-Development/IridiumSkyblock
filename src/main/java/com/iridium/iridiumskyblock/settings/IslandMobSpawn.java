@@ -1,14 +1,33 @@
 package com.iridium.iridiumskyblock.settings;
 
-public enum IslandMobSpawn {
+import com.iridium.iridiumcore.Item;
 
-    ALL, ANIMALS, MONSTERS, NOTHING;
+public class IslandMobSpawn extends IslandSettingImpl {
 
-    public IslandMobSpawn getNext() {
-        return values().length > ordinal() + 1 ? values()[ordinal() + 1] : values()[0];
+    public IslandMobSpawn(String defaultValue, boolean enabled, boolean changeable, Item item) {
+        super(defaultValue, enabled, changeable, item);
     }
 
-    public IslandMobSpawn getPrevious() {
-        return ordinal() - 1 != -1 ? values()[ordinal() - 1] : values()[3];
+    public enum MobSpawnTypes {ALL, ANIMALS, MONSTERS, NOTHING}
+
+    @Override
+    public MobSpawnTypes getNext(String type) {
+        MobSpawnTypes mobSpawnType = getByName(type);
+        return MobSpawnTypes.values().length > mobSpawnType.ordinal() + 1 ? MobSpawnTypes.values()[mobSpawnType.ordinal() + 1] : MobSpawnTypes.values()[0];
+    }
+
+    @Override
+    public MobSpawnTypes getPrevious(String type) {
+        MobSpawnTypes mobSpawnType = getByName(type);
+        return mobSpawnType.ordinal() - 1 != -1 ? MobSpawnTypes.values()[mobSpawnType.ordinal() - 1] : MobSpawnTypes.values()[3];
+    }
+
+    @Override
+    public MobSpawnTypes getByName(String name) {
+        try {
+            return MobSpawnTypes.valueOf(name);
+        } catch (UnsupportedOperationException ignored) {
+            return MobSpawnTypes.ALL;
+        }
     }
 }

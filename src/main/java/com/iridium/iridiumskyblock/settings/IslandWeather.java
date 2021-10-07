@@ -1,17 +1,33 @@
 package com.iridium.iridiumskyblock.settings;
 
-public enum IslandWeather {
+import com.iridium.iridiumcore.Item;
 
-    DEFAULT,
-    RAINING,
-    CLEAR;
+public class IslandWeather extends IslandSettingImpl {
 
-    public IslandWeather getNext() {
-        return values().length > ordinal() + 1 ? values()[ordinal() + 1] : values()[0];
+    public IslandWeather(String defaultValue, boolean enabled, boolean changeable, Item item) {
+        super(defaultValue, enabled, changeable, item);
     }
 
-    public IslandWeather getPrevious() {
-        return ordinal() - 1 != -1 ? values()[ordinal() - 1] : values()[2];
+    public enum IslandWeatherTypes {DEFAULT, RAINING, CLEAR}
+
+    @Override
+    public IslandWeatherTypes getNext(String type) {
+        IslandWeatherTypes mobSpawnType = getByName(type);
+        return IslandWeatherTypes.values().length > mobSpawnType.ordinal() + 1 ? IslandWeatherTypes.values()[mobSpawnType.ordinal() + 1] : IslandWeatherTypes.values()[0];
     }
 
+    @Override
+    public IslandWeatherTypes getPrevious(String type) {
+        IslandWeatherTypes mobSpawnType = getByName(type);
+        return mobSpawnType.ordinal() - 1 != -1 ? IslandWeatherTypes.values()[mobSpawnType.ordinal() - 1] : IslandWeatherTypes.values()[3];
+    }
+
+    @Override
+    public IslandWeatherTypes getByName(String name) {
+        try {
+            return IslandWeatherTypes.valueOf(name);
+        } catch (UnsupportedOperationException ignored) {
+            return IslandWeatherTypes.DEFAULT;
+        }
+    }
 }

@@ -18,8 +18,7 @@ import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
-import com.iridium.iridiumskyblock.settings.IslandSettingConfig;
-import com.iridium.iridiumskyblock.settings.IslandSettingType;
+import com.iridium.iridiumskyblock.settings.IslandSettingImpl;
 import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -78,13 +77,13 @@ public class IridiumSkyblock extends IridiumCore {
     private Shop shop;
     private Border border;
     private Placeholders placeholders;
-    private IslandSettings islandSettings;
+    private Settings settings;
 
     private ChunkGenerator chunkGenerator;
 
     private List<BankItem> bankItemList;
     private Map<String, Permission> permissionList;
-    private Map<String, IslandSettingConfig> settingsList;
+    private Map<String, IslandSettingImpl> settingsList;
     private Map<String, Mission> missionsList;
     private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
@@ -130,6 +129,14 @@ public class IridiumSkyblock extends IridiumCore {
 
         // Convert old IridiumSkyblock data
         DataConverter.copyLegacyData();
+
+        // Delete the old islandsettings.yml
+        try {
+            File file = new File(getDataFolder(), "islandsetting.yml");
+            if (file.exists()) file.delete();
+        } catch (SecurityException ignored) {
+            getLogger().warning("Couldn't be deleted old island settings file (islandsetting.yml), please remove it manually");
+        }
 
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock");
@@ -510,7 +517,7 @@ public class IridiumSkyblock extends IridiumCore {
         this.shop = getPersist().load(Shop.class);
         this.border = getPersist().load(Border.class);
         this.placeholders = getPersist().load(Placeholders.class);
-        this.islandSettings = getPersist().load(IslandSettings.class);
+        this.settings = getPersist().load(Settings.class);
     }
 
     private void initializePermissionList() {
@@ -548,14 +555,14 @@ public class IridiumSkyblock extends IridiumCore {
 
     private void initializeSettingsList() {
         this.settingsList = new HashMap<>();
-        this.settingsList.put(IslandSettingType.MOB_SPAWN.getSettingName(), islandSettings.mobSpawn);
-        this.settingsList.put(IslandSettingType.LEAF_DECAY.getSettingName(), islandSettings.leafDecay);
-        this.settingsList.put(IslandSettingType.WEATHER.getSettingName(), islandSettings.weather);
-        this.settingsList.put(IslandSettingType.TIME.getSettingName(), islandSettings.time);
-        this.settingsList.put(IslandSettingType.ENDERMAN_GRIEF.getSettingName(), islandSettings.endermanGrief);
-        this.settingsList.put(IslandSettingType.LIQUID_FLOW.getSettingName(), islandSettings.liquidFlow);
-        this.settingsList.put(IslandSettingType.TNT_DAMAGE.getSettingName(), islandSettings.tntDamage);
-        this.settingsList.put(IslandSettingType.FIRE_SPREAD.getSettingName(), islandSettings.fireSpread);
+        this.settingsList.put("mob_spawn", settings.mobSpawn);
+        this.settingsList.put("time", settings.time);
+        this.settingsList.put("weather", settings.weather);
+        this.settingsList.put("leaf_decay", settings.leafDecay);
+        this.settingsList.put("enderman_grief", settings.endermanGrief);
+        this.settingsList.put("liquid_flow", settings.liquidFlow);
+        this.settingsList.put("tnt_damage", settings.tntDamage);
+        this.settingsList.put("fire_spread", settings.fireSpread);
     }
 
     private void saveSchematics() {
@@ -615,7 +622,7 @@ public class IridiumSkyblock extends IridiumCore {
         getPersist().save(shop);
         getPersist().save(border);
         getPersist().save(placeholders);
-        getPersist().save(islandSettings);
+        getPersist().save(settings);
     }
 
     /**

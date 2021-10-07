@@ -1,8 +1,9 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.database.IslandSetting;
+import com.iridium.iridiumskyblock.settings.IslandSettingImpl;
+import com.iridium.iridiumskyblock.settings.IslandSwitchSetting;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,8 +15,9 @@ public class EntityChangeBlockListener implements Listener {
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             if (event.getEntityType() == EntityType.ENDERMAN) {
-                IslandSetting endermanGriefSettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, IslandSettingType.ENDERMAN_GRIEF);
-                if (!endermanGriefSettings.isAllowed()) {
+                IslandSettingImpl switchSetting = IridiumSkyblock.getInstance().getSettingsList().get("enderman_grief");
+                IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, "enderman_grief", switchSetting.getDefaultValue());
+                if (switchSetting.isEnabled() && switchSetting.getByName(islandSetting.getValue()).equals(IslandSwitchSetting.SwitchTypes.DISALLOWED)) {
                     event.setCancelled(true);
                 }
             }
