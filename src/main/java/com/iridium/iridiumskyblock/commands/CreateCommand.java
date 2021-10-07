@@ -25,7 +25,7 @@ public class CreateCommand extends Command {
      * The default constructor.
      */
     public CreateCommand() {
-        super(Collections.singletonList("create"), "Create an Island", "", true, Duration.ofSeconds(5));
+        super(Collections.singletonList("create"), "Create an Island", "%prefix% &7/is create <name> <schematic>", "", true, Duration.ofSeconds(5));
     }
 
     /**

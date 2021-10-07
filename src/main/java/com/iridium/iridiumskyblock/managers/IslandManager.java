@@ -1140,6 +1140,18 @@ public class IslandManager {
         return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
     }
 
+    public boolean isIslandOverWorld(World world) {
+        return world.equals(getWorld());
+    }
+
+    public boolean isIslandNether(World world) {
+        return world.equals(getNetherWorld());
+    }
+
+    public boolean isIslandEnd(World world) {
+        return world.equals(getEndWorld());
+    }
+
     public ItemStack getIslandCrystal(int amount) {
         ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
                 new Placeholder("amount", String.valueOf(amount))

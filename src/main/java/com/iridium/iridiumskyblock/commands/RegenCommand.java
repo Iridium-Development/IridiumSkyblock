@@ -25,7 +25,7 @@ public class RegenCommand extends Command {
      * The default constructor.
      */
     public RegenCommand() {
-        super(Collections.singletonList("regen"), "Regenerate your Island", "", true, Duration.ofMinutes(5));
+        super(Collections.singletonList("regen"), "Regenerate your Island", "%prefix% &7/is regen <schematic>", "", true, Duration.ofMinutes(5));
     }
 
     /**

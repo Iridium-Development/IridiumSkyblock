@@ -24,7 +24,7 @@ public class SchematicManager {
     public final Map<String, File> schematicFiles;
 
     private final boolean worldEdit = Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
-    private final boolean fawe = Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit");
+    private final boolean fawe = Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit");
 
     public SchematicManager() {
         File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
