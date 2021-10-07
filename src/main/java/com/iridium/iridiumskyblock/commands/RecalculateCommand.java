@@ -52,7 +52,7 @@ public class RecalculateCommand extends Command {
                 .replace("%amount%", String.valueOf(islandList.size()))
         );
 
-        bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(IridiumSkyblock.getInstance(), new Runnable() {
+        bukkitTask = Bukkit.getScheduler().runTaskTimer(IridiumSkyblock.getInstance(), new Runnable() {
             final ListIterator<Integer> islands = islandList.stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
             @Override
