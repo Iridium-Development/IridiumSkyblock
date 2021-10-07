@@ -278,40 +278,40 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void registerListeners() {
-        PluginManager manager = Bukkit.getPluginManager();
-        manager.registerEvents(new BlockBreakListener(), this);
-        manager.registerEvents(new BlockExplodeListener(), this);
-        manager.registerEvents(new BlockFormListener(), this);
-        manager.registerEvents(new BlockFromToListener(), this);
-        manager.registerEvents(new BlockGrowListener(), this);
-        manager.registerEvents(new BlockPistonListener(), this);
-        manager.registerEvents(new BlockPlaceListener(), this);
-        manager.registerEvents(new BlockSpreadListener(), this);
-        manager.registerEvents(new BucketListener(), this);
-        manager.registerEvents(new EnchantItemListener(), this);
-        manager.registerEvents(new EntityChangeBlockListener(), this);
-        manager.registerEvents(new EntityDamageListener(), this);
-        manager.registerEvents(new EntityDeathListener(), this);
-        manager.registerEvents(new EntityExplodeListener(), this);
-        manager.registerEvents(new EntityPickupItemListener(), this);
-        manager.registerEvents(new EntitySpawnListener(), this);
-        manager.registerEvents(new EntityTargetListener(), this);
-        manager.registerEvents(new FurnaceSmeltListener(), this);
-        manager.registerEvents(new InventoryClickListener(), this);
-        manager.registerEvents(new ItemCraftListener(), this);
-        manager.registerEvents(new LeavesDecayListener(), this);
-        manager.registerEvents(new PlayerChatListener(), this);
-        manager.registerEvents(new PlayerDropItemListener(), this);
-        manager.registerEvents(new PlayerFishListener(), this);
-        manager.registerEvents(new PlayerInteractListener(), this);
-        manager.registerEvents(new PlayerJoinQuitListener(), this);
-        manager.registerEvents(new PlayerMoveListener(), this);
-        manager.registerEvents(new PlayerPortalListener(), this);
-        manager.registerEvents(new PlayerRespawnListener(), this);
-        manager.registerEvents(new PlayerTeleportListener(), this);
-        manager.registerEvents(new PotionBrewListener(), this);
-        manager.registerEvents(new SpawnerSpawnListener(), this);
-        manager.registerEvents(new VehicleDamageListener(), this);
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new BlockBreakListener(), this);
+        pluginManager.registerEvents(new BlockExplodeListener(), this);
+        pluginManager.registerEvents(new BlockFormListener(), this);
+        pluginManager.registerEvents(new BlockFromToListener(), this);
+        pluginManager.registerEvents(new BlockGrowListener(), this);
+        pluginManager.registerEvents(new BlockPistonListener(), this);
+        pluginManager.registerEvents(new BlockPlaceListener(), this);
+        pluginManager.registerEvents(new BlockSpreadListener(), this);
+        pluginManager.registerEvents(new BucketListener(), this);
+        pluginManager.registerEvents(new EnchantItemListener(), this);
+        pluginManager.registerEvents(new EntityChangeBlockListener(), this);
+        pluginManager.registerEvents(new EntityDamageListener(), this);
+        pluginManager.registerEvents(new EntityDeathListener(), this);
+        pluginManager.registerEvents(new EntityExplodeListener(), this);
+        pluginManager.registerEvents(new EntityPickupItemListener(), this);
+        pluginManager.registerEvents(new EntitySpawnListener(), this);
+        pluginManager.registerEvents(new EntityTargetListener(), this);
+        pluginManager.registerEvents(new FurnaceSmeltListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new ItemCraftListener(), this);
+        pluginManager.registerEvents(new LeavesDecayListener(), this);
+        pluginManager.registerEvents(new PlayerChatListener(), this);
+        pluginManager.registerEvents(new PlayerDropItemListener(), this);
+        pluginManager.registerEvents(new PlayerFishListener(), this);
+        pluginManager.registerEvents(new PlayerInteractListener(), this);
+        pluginManager.registerEvents(new PlayerJoinQuitListener(), this);
+        pluginManager.registerEvents(new PlayerMoveListener(), this);
+        pluginManager.registerEvents(new PlayerPortalListener(), this);
+        pluginManager.registerEvents(new PlayerRespawnListener(), this);
+        pluginManager.registerEvents(new PlayerTeleportListener(), this);
+        pluginManager.registerEvents(new PotionBrewListener(), this);
+        pluginManager.registerEvents(new SpawnerSpawnListener(), this);
+        pluginManager.registerEvents(new VehicleDamageListener(), this);
     }
 
     /**
