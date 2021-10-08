@@ -1,11 +1,8 @@
 package com.iridium.iridiumskyblock.settings;
 
 import com.iridium.iridiumcore.Item;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
+
 public class IslandSwitchSetting extends IslandSettingImpl {
 
     public IslandSwitchSetting(Item item, String defaultValue, boolean enabled, boolean changeable) {

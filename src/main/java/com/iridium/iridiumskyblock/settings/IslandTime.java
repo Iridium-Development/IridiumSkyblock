@@ -3,10 +3,7 @@ package com.iridium.iridiumskyblock.settings;
 import com.iridium.iridiumcore.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 public class IslandTime extends IslandSettingImpl {
 
     public IslandTime(Item item, String defaultValue, boolean enabled, boolean changeable) {

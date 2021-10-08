@@ -1,11 +1,7 @@
 package com.iridium.iridiumskyblock.settings;
 
 import com.iridium.iridiumcore.Item;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
-@AllArgsConstructor
 public class IslandMobSpawn extends IslandSettingImpl {
 
     public IslandMobSpawn(Item item, String defaultValue, boolean enabled, boolean changeable) {
