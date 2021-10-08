@@ -29,4 +29,10 @@ public class Permission {
      */
     private IslandRank defaultRank;
 
+    public Permission(Item item, IslandRank defaultRank) {
+        this.item = item;
+        this.defaultRank = defaultRank;
+        this.page = 1;
+    }
+
 }
