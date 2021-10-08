@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import com.iridium.iridiumskyblock.settings.IslandSettingImpl;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.settings.IslandSwitchSetting;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -18,8 +19,8 @@ public class BlockFromToListener implements Listener {
                 if(!island.isInIsland(event.getToBlock().getLocation())){
                     event.setCancelled(true);
                 }
-                IslandSettingImpl switchSetting = IridiumSkyblock.getInstance().getSettingsList().get("liquid_flow");
-                IslandSetting liquidFlowSettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, "liquid_flow", switchSetting.getDefaultValue());
+                IslandSettingImpl switchSetting = IridiumSkyblock.getInstance().getSettingsList().get(IslandSettingType.LIQUID_FLOW.getSettingKey());
+                IslandSetting liquidFlowSettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, IslandSettingType.LIQUID_FLOW.getSettingKey(), switchSetting.getDefaultValue());
                 if (switchSetting.isEnabled() && switchSetting.getByName(liquidFlowSettings.getValue()).equals(IslandSwitchSetting.SwitchTypes.DISALLOWED)) {
                     event.setCancelled(true);
                 }

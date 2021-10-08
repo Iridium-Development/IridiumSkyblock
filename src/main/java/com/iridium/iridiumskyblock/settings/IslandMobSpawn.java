@@ -1,11 +1,15 @@
 package com.iridium.iridiumskyblock.settings;
 
 import com.iridium.iridiumcore.Item;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class IslandMobSpawn extends IslandSettingImpl {
 
-    public IslandMobSpawn(String defaultValue, boolean enabled, boolean changeable, Item item) {
-        super(defaultValue, enabled, changeable, item);
+    public IslandMobSpawn(Item item, String defaultValue, boolean enabled, boolean changeable) {
+        super(item, defaultValue, enabled, changeable);
     }
 
     public enum MobSpawnTypes {ALL, ANIMALS, MONSTERS, NOTHING}

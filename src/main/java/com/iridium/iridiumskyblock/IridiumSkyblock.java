@@ -19,6 +19,7 @@ import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.settings.IslandSettingImpl;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -77,7 +78,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Shop shop;
     private Border border;
     private Placeholders placeholders;
-    private Settings settings;
+    private IslandSettings islandSettings;
 
     private ChunkGenerator chunkGenerator;
 
@@ -129,14 +130,6 @@ public class IridiumSkyblock extends IridiumCore {
 
         // Convert old IridiumSkyblock data
         DataConverter.copyLegacyData();
-
-        // Delete the old islandsettings.yml
-        try {
-            File file = new File(getDataFolder(), "islandsetting.yml");
-            if (file.exists()) file.delete();
-        } catch (SecurityException ignored) {
-            getLogger().warning("Couldn't be deleted old island settings file (islandsetting.yml), please remove it manually");
-        }
 
         // Initialize the commands
         this.commandManager = new CommandManager("iridiumskyblock");
@@ -517,7 +510,7 @@ public class IridiumSkyblock extends IridiumCore {
         this.shop = getPersist().load(Shop.class);
         this.border = getPersist().load(Border.class);
         this.placeholders = getPersist().load(Placeholders.class);
-        this.settings = getPersist().load(Settings.class);
+        this.islandSettings = getPersist().load(IslandSettings.class);
     }
 
     private void initializePermissionList() {
@@ -555,14 +548,14 @@ public class IridiumSkyblock extends IridiumCore {
 
     private void initializeSettingsList() {
         this.settingsList = new HashMap<>();
-        this.settingsList.put("mob_spawn", settings.mobSpawn);
-        this.settingsList.put("time", settings.time);
-        this.settingsList.put("weather", settings.weather);
-        this.settingsList.put("leaf_decay", settings.leafDecay);
-        this.settingsList.put("enderman_grief", settings.endermanGrief);
-        this.settingsList.put("liquid_flow", settings.liquidFlow);
-        this.settingsList.put("tnt_damage", settings.tntDamage);
-        this.settingsList.put("fire_spread", settings.fireSpread);
+        this.settingsList.put(IslandSettingType.MOB_SPAWN.getSettingKey(), islandSettings.mobSpawn);
+        this.settingsList.put(IslandSettingType.ISLAND_TIME.getSettingKey(), islandSettings.time);
+        this.settingsList.put(IslandSettingType.ISLAND_WEATHER.getSettingKey(), islandSettings.weather);
+        this.settingsList.put(IslandSettingType.LEAF_DECAY.getSettingKey(), islandSettings.leafDecay);
+        this.settingsList.put(IslandSettingType.ENDERMAN_GRIEF.getSettingKey(), islandSettings.endermanGrief);
+        this.settingsList.put(IslandSettingType.LIQUID_FLOW.getSettingKey(), islandSettings.liquidFlow);
+        this.settingsList.put(IslandSettingType.TNT_DAMAGE.getSettingKey(), islandSettings.tntDamage);
+        this.settingsList.put(IslandSettingType.FIRE_SPREAD.getSettingKey(), islandSettings.fireSpread);
     }
 
     private void saveSchematics() {
@@ -622,7 +615,7 @@ public class IridiumSkyblock extends IridiumCore {
         getPersist().save(shop);
         getPersist().save(border);
         getPersist().save(placeholders);
-        getPersist().save(settings);
+        getPersist().save(islandSettings);
     }
 
     /**

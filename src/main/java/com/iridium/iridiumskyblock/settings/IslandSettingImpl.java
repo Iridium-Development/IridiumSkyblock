@@ -13,7 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class IslandSettingImpl {
-
+    /**
+     * The Item used to display the item
+     */
+    private Item item;
     /**
      * The default value of this Setting
      */
@@ -26,10 +29,6 @@ public abstract class IslandSettingImpl {
      * The setting is changeable on gui or not
      */
     private boolean changeable;
-    /**
-     * The Item used to display the item
-     */
-    private Item item;
 
     public abstract Enum<?> getNext(String value);
 

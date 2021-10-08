@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import com.iridium.iridiumskyblock.settings.IslandMobSpawn;
 import com.iridium.iridiumskyblock.settings.IslandSettingImpl;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -21,8 +22,8 @@ public class EntitySpawnListener implements Listener {
     public void onEntitySpawn(EntitySpawnEvent event) {
         if (!(event.getEntity() instanceof LivingEntity) || event.getEntity() instanceof Player) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation()).ifPresent(island -> {
-            IslandSettingImpl mobSpawnSetting = IridiumSkyblock.getInstance().getSettingsList().get("mob_spawn");
-            IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, "mob_spawn", mobSpawnSetting.getDefaultValue());
+            IslandSettingImpl mobSpawnSetting = IridiumSkyblock.getInstance().getSettingsList().get(IslandSettingType.MOB_SPAWN.getSettingKey());
+            IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, IslandSettingType.MOB_SPAWN.getSettingKey(), mobSpawnSetting.getDefaultValue());
             Enum<?> mobSpawnType = mobSpawnSetting.getByName(islandSetting.getValue());
             if (mobSpawnSetting.isEnabled() && mobSpawnType.equals(IslandMobSpawn.MobSpawnTypes.NOTHING) ||
                     (mobSpawnType.equals(IslandMobSpawn.MobSpawnTypes.ANIMALS) && event.getEntity() instanceof Monster) ||

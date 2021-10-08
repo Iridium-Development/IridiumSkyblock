@@ -3,8 +3,15 @@ package com.iridium.iridiumskyblock.settings;
 import com.iridium.iridiumcore.Item;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public class IslandTime extends IslandSettingImpl {
+
+    public IslandTime(Item item, String defaultValue, boolean enabled, boolean changeable) {
+        super(item, defaultValue, enabled, changeable);
+    }
 
     @Getter
     @AllArgsConstructor
@@ -20,20 +27,16 @@ public class IslandTime extends IslandSettingImpl {
         private final boolean relative;
     }
 
-    public IslandTime(String defaultValue, boolean enabled, boolean changeable, Item item) {
-        super(defaultValue, enabled, changeable, item);
-    }
-
     @Override
     public IslandTimeTypes getNext(String type) {
-        IslandTimeTypes mobSpawnType = getByName(type);
-        return IslandTimeTypes.values().length > mobSpawnType.ordinal() + 1 ? IslandTimeTypes.values()[mobSpawnType.ordinal() + 1] : IslandTimeTypes.values()[0];
+        IslandTimeTypes timeType = getByName(type);
+        return IslandTimeTypes.values().length > timeType.ordinal() + 1 ? IslandTimeTypes.values()[timeType.ordinal() + 1] : IslandTimeTypes.values()[0];
     }
 
     @Override
     public IslandTimeTypes getPrevious(String type) {
-        IslandTimeTypes mobSpawnType = getByName(type);
-        return mobSpawnType.ordinal() - 1 != -1 ? IslandTimeTypes.values()[mobSpawnType.ordinal() - 1] : IslandTimeTypes.values()[3];
+        IslandTimeTypes timeType = getByName(type);
+        return timeType.ordinal() - 1 != -1 ? IslandTimeTypes.values()[timeType.ordinal() - 1] : IslandTimeTypes.values()[3];
     }
 
     @Override

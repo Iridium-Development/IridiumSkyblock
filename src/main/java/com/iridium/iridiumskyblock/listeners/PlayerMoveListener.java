@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.settings.IslandSettingImpl;
+import com.iridium.iridiumskyblock.settings.IslandSettingType;
 import com.iridium.iridiumskyblock.settings.IslandTime;
 import com.iridium.iridiumskyblock.settings.IslandWeather;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
@@ -46,9 +47,9 @@ public class PlayerMoveListener implements Listener {
                     ));
                     PlayerUtils.teleportSpawn(player);
                 } else {
-                    IslandSettingImpl islandWeather = IridiumSkyblock.getInstance().getSettingsList().get("weather");
+                    IslandSettingImpl islandWeather = IridiumSkyblock.getInstance().getSettingsList().get(IslandSettingType.ISLAND_WEATHER.getSettingKey());
                     if (islandWeather.isEnabled()) {
-                        IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), "weather", islandWeather.getDefaultValue());
+                        IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), IslandSettingType.ISLAND_WEATHER.getSettingKey(), islandWeather.getDefaultValue());
                         IslandWeather.IslandWeatherTypes islandWeatherType = (IslandWeather.IslandWeatherTypes) islandWeather.getByName(islandWeatherSetting.getValue());
                         if (islandWeatherType == IslandWeather.IslandWeatherTypes.DEFAULT) {
                             player.resetPlayerWeather();
@@ -59,9 +60,9 @@ public class PlayerMoveListener implements Listener {
                             }
                         }
                     }
-                    IslandSettingImpl islandTime = IridiumSkyblock.getInstance().getSettingsList().get("time");
+                    IslandSettingImpl islandTime = IridiumSkyblock.getInstance().getSettingsList().get(IslandSettingType.ISLAND_TIME.getSettingKey());
                     if (islandTime.isEnabled()) {
-                        IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), "time", islandTime.getDefaultValue());
+                        IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), IslandSettingType.ISLAND_TIME.getSettingKey(), islandTime.getDefaultValue());
                         IslandTime.IslandTimeTypes islandTimeType = (IslandTime.IslandTimeTypes) islandTime.getByName(islandTimeSetting.getValue());
                         if ((islandTimeType == IslandTime.IslandTimeTypes.DEFAULT && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTimeType.getTime()) {
                             player.setPlayerTime(islandTimeType.getTime(), islandTimeType.isRelative());
