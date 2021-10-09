@@ -24,7 +24,7 @@ public class WorldEdit implements SchematicPaster {
     private static final HashMap<File, ClipboardFormat> cachedClipboardFormat = new HashMap<>();
 
     @Override
-    public void paste(File file, Location location, CompletableFuture<Void> completableFuture) {
+    public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         try {
             ClipboardFormat format = (cachedClipboardFormat.get(file) != null) ? cachedClipboardFormat.get(file) : ClipboardFormats.findByFile(file);
             ClipboardReader reader = format.getReader(new FileInputStream(file));
@@ -39,7 +39,7 @@ public class WorldEdit implements SchematicPaster {
                         .createPaste(editSession)
                         .to(BlockVector3.at(location.getX(), location.getY(), location.getZ()))
                         .copyEntities(true)
-                        .ignoreAirBlocks(true)
+                        .ignoreAirBlocks(ignoreAirBlock)
                         .build();
                 Operations.complete(operation);
                 cachedClipboardFormat.putIfAbsent(file, format);
