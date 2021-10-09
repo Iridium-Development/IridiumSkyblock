@@ -49,9 +49,9 @@ public class SchematicManager {
             location.add(0, schematic.getValue().islandHeight, 0);
             File file = schematicFiles.getOrDefault(schematic.getValue().schematicID, schematicFiles.values().stream().findFirst().get());
             if (fawe) {
-                Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> schematicPaster.paste(file, location, completableFuture));
+                Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> schematicPaster.paste(file, location, schematic.getValue().ignoreAirBlocks, completableFuture));
             } else {
-                schematicPaster.paste(file, location, completableFuture);
+                schematicPaster.paste(file, location, schematic.getValue().ignoreAirBlocks, completableFuture);
             }
         }
         return completableFuture;

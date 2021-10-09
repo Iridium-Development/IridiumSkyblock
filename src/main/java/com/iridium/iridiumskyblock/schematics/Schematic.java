@@ -21,7 +21,7 @@ public class Schematic implements SchematicPaster {
     private static final Map<File, SchematicData> schematicData = new HashMap<>();
 
     @Override
-    public void paste(File file, Location location, CompletableFuture<Void> completableFuture) {
+    public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         SchematicData schematicData;
         try {
             schematicData = getSchematicData(file);
