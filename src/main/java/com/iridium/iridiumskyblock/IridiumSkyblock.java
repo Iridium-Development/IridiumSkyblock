@@ -31,6 +31,7 @@ import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -204,11 +205,13 @@ public class IridiumSkyblock extends IridiumCore {
         Metrics metrics = new Metrics(this, 5825);
         metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
 
-        UpdateChecker.init(this, 62480)
-                .checkEveryXHours(24)
-                .setDownloadLink(62480)
-                .setColoredConsoleOutput(true)
-                .checkNow();
+        if (getConfiguration().enableCheckVersion) {
+            UpdateChecker.init(this, 62480)
+                    .checkEveryXHours(24)
+                    .setDownloadLink(62480)
+                    .setColoredConsoleOutput(true)
+                    .checkNow();
+        }
 
         DataConverter.deleteDuplicateRecords();
 
@@ -273,39 +276,40 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new BlockBreakListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockExplodeListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockFromToListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockGrowListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockPistonListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockPlaceListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockSpreadListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BucketListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EnchantItemListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityChangeBlockListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityDeathListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityExplodeListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityPickupItemListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntitySpawnListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityTargetListener(), this);
-        Bukkit.getPluginManager().registerEvents(new FurnaceSmeltListener(), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryClickListener(), this);
-        Bukkit.getPluginManager().registerEvents(new ItemCraftListener(), this);
-        Bukkit.getPluginManager().registerEvents(new LeavesDecayListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerChatListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerDropItemListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerFishListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinQuitListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PotionBrewListener(), this);
-        Bukkit.getPluginManager().registerEvents(new SpawnerSpawnListener(), this);
-        Bukkit.getPluginManager().registerEvents(new VehicleDamageListener(), this);
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new BlockBreakListener(), this);
+        pluginManager.registerEvents(new BlockExplodeListener(), this);
+        pluginManager.registerEvents(new BlockFormListener(), this);
+        pluginManager.registerEvents(new BlockFromToListener(), this);
+        pluginManager.registerEvents(new BlockGrowListener(), this);
+        pluginManager.registerEvents(new BlockPistonListener(), this);
+        pluginManager.registerEvents(new BlockPlaceListener(), this);
+        pluginManager.registerEvents(new BlockSpreadListener(), this);
+        pluginManager.registerEvents(new BucketListener(), this);
+        pluginManager.registerEvents(new EnchantItemListener(), this);
+        pluginManager.registerEvents(new EntityChangeBlockListener(), this);
+        pluginManager.registerEvents(new EntityDamageListener(), this);
+        pluginManager.registerEvents(new EntityDeathListener(), this);
+        pluginManager.registerEvents(new EntityExplodeListener(), this);
+        pluginManager.registerEvents(new EntityPickupItemListener(), this);
+        pluginManager.registerEvents(new EntitySpawnListener(), this);
+        pluginManager.registerEvents(new EntityTargetListener(), this);
+        pluginManager.registerEvents(new FurnaceSmeltListener(), this);
+        pluginManager.registerEvents(new InventoryClickListener(), this);
+        pluginManager.registerEvents(new ItemCraftListener(), this);
+        pluginManager.registerEvents(new LeavesDecayListener(), this);
+        pluginManager.registerEvents(new PlayerChatListener(), this);
+        pluginManager.registerEvents(new PlayerDropItemListener(), this);
+        pluginManager.registerEvents(new PlayerFishListener(), this);
+        pluginManager.registerEvents(new PlayerInteractListener(), this);
+        pluginManager.registerEvents(new PlayerJoinQuitListener(), this);
+        pluginManager.registerEvents(new PlayerMoveListener(), this);
+        pluginManager.registerEvents(new PlayerPortalListener(), this);
+        pluginManager.registerEvents(new PlayerRespawnListener(), this);
+        pluginManager.registerEvents(new PlayerTeleportListener(), this);
+        pluginManager.registerEvents(new PotionBrewListener(), this);
+        pluginManager.registerEvents(new SpawnerSpawnListener(), this);
+        pluginManager.registerEvents(new VehicleDamageListener(), this);
     }
 
     /**
@@ -449,8 +453,11 @@ public class IridiumSkyblock extends IridiumCore {
         for (Map.Entry<String, Schematics.SchematicConfig> schematics : schematics.schematics.entrySet()) {
             Schematics.SchematicConfig schematic = schematics.getValue();
             if (schematic.overworld.islandHeight == null) schematic.overworld.islandHeight = 90.0;
+            if (schematic.overworld.ignoreAirBlocks == null) schematic.overworld.ignoreAirBlocks = true;
             if (schematic.nether.islandHeight == null) schematic.nether.islandHeight = 90.0;
+            if (schematic.nether.ignoreAirBlocks == null) schematic.nether.ignoreAirBlocks = true;
             if (schematic.end.islandHeight == null) schematic.end.islandHeight = 90.0;
+            if (schematic.end.ignoreAirBlocks == null) schematic.end.ignoreAirBlocks = true;
         }
 
         this.missionsList = new HashMap<>(missions.missions);
