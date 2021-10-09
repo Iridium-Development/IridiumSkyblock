@@ -8,7 +8,7 @@ import com.iridium.iridiumskyblock.settings.*;
 import java.util.Arrays;
 
 /**
- * The Island setting configuration used by IridiumSkyblock (settings.yml).
+ * The Island setting configuration used by IridiumSkyblock (islandsettings.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
