@@ -45,5 +45,5 @@ public class Permissions {
     public Permission trampleCrops = new Permission(new Item(XMaterial.WHEAT_SEEDS, 41, 1, "&bTrample Crops", Arrays.asList("&7Grant the ability to trample crops on your island.", "", "&b&lPermission", "%permission%")), 1, IslandRank.MEMBER);
     public Permission interact = new Permission(new Item(XMaterial.STONE_BUTTON, 42, 1, "&bInteract", Arrays.asList("&7Grant the ability to interact with blocks on your island.", "", "&b&lPermission", "%permission%")), 1, IslandRank.MEMBER);
     public Permission portal = new Permission(new Item(XMaterial.OBSIDIAN, 43, 1, "&bPortal", Arrays.asList("&7Grants the ability to use a portal on the island.", "", "&b&lPermission", "%permission%")), 1, IslandRank.MEMBER);
-    public Permission islandSettings = new Permission(new Item(XMaterial.BOOKSHELF, 10, 1, "&bIsland IslandSettings", Arrays.asList("&7Grant the ability to change the settings of your Island.", "", "&b&lPermission", "%permission%")), 2, IslandRank.MODERATOR);
+    public Permission islandSettings = new Permission(new Item(XMaterial.BOOKSHELF, 10, 1, "&bIsland Settings", Arrays.asList("&7Grant the ability to change the settings of your Island.", "", "&b&lPermission", "%permission%")), 2, IslandRank.MODERATOR);
 }

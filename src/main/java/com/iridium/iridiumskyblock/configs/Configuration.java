@@ -110,7 +110,7 @@ public class Configuration {
             .build();
 
     /**
-     * IslandSettings for the {@link org.bukkit.generator.ChunkGenerator} of IridiumSkyblock.
+     * Settings for the {@link org.bukkit.generator.ChunkGenerator} of IridiumSkyblock.
      * Allows fine-tuning of the {@link com.iridium.iridiumskyblock.generators.OceanGenerator}.
      */
     @AllArgsConstructor
