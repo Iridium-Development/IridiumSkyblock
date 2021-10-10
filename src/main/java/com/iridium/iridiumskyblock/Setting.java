@@ -22,5 +22,8 @@ public class Setting {
      * The default value of this Setting
      */
     private String defaultValue;
-
+    /**
+     * This feactures is enable of this Setting
+     */
+    private String feactureEnabled;
 }
