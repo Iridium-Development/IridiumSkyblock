@@ -11,6 +11,7 @@ public class BlockExplodeListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent event) {
+        if (SettingType.TNT_DAMAGE.getFeactureValue().equalsIgnoreCase("false")) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             IslandSetting tntExplosion = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.TNT_DAMAGE);
             if (!tntExplosion.getBooleanValue()) {
