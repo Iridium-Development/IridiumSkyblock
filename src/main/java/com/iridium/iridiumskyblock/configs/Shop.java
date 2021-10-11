@@ -799,6 +799,7 @@ public class Shop {
     public String sellRewardLore = "&cSelling Reward: $%sell_reward_vault%, %sell_reward_crystals% Crystals";
     public String notPurchasableLore = "&cThis item cannot be purchased!";
     public String notSellableLore = "&cThis item cannot be sold!";
+    public boolean dropItemWhenFull = false;
 
     public int overviewSize = 4 * 9;
 
