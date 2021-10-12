@@ -92,7 +92,7 @@ public class InfoCommand extends Command {
                     .replace("%members%", members)
                     .replace("%level%", String.valueOf(island.getLevel()))
                     .replace("%value%", String.valueOf(island.getValue()))
-                    .replace("%visitable%", island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().yes : IridiumSkyblock.getInstance().getMessages().no)
+                    .replace("%visitable%", island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().visitable : IridiumSkyblock.getInstance().getMessages().notVisitable)
             ));
         }
     }
