@@ -34,7 +34,7 @@ public class WorldEdit implements SchematicPaster {
             int length = clipboard.getDimensions().getBlockZ();
             location.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
             clipboard.setOrigin(clipboard.getRegion().getMinimumPoint()); // Change the //copy point to the minimum corner
-            try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), -1)) {
+            try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().newEditSession(new BukkitWorld(location.getWorld()))) {
                 Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
                         .to(BlockVector3.at(location.getX(), location.getY(), location.getZ()))
@@ -42,6 +42,7 @@ public class WorldEdit implements SchematicPaster {
                         .ignoreAirBlocks(ignoreAirBlock)
                         .build();
                 Operations.complete(operation);
+                Operations.complete(editSession.commit());
                 cachedClipboardFormat.putIfAbsent(file, format);
                 completableFuture.complete(null);
             }
