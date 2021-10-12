@@ -26,7 +26,7 @@ public class WorldEdit implements SchematicPaster {
     @Override
     public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         try {
-            ClipboardFormat format = (cachedClipboardFormat.get(file) != null) ? cachedClipboardFormat.get(file) : ClipboardFormats.findByFile(file);
+            ClipboardFormat format = cachedClipboardFormat.getOrDefault(file, ClipboardFormats.findByFile(file));
             ClipboardReader reader = format.getReader(new FileInputStream(file));
             Clipboard clipboard = reader.read();
             int width = clipboard.getDimensions().getBlockX();
