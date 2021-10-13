@@ -12,7 +12,8 @@ import com.iridium.iridiumskyblock.commands.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Commands {
 
-    public AboutCommand aboutCommand = new AboutCommand();
+    //public AboutCommand aboutCommand = new AboutCommand();
+    public AdminCommand adminCommand = new AdminCommand();
     public BanCommand banCommand = new BanCommand();
     public BankCommand bankCommand = new BankCommand();
     public BiomeCommand biomeCommand = new BiomeCommand();

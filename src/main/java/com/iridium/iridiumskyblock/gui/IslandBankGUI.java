@@ -7,7 +7,9 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
+import com.opblocks.utils.SignContainer;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -49,31 +51,37 @@ public class IslandBankGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == 22) {
-            event.getWhoClicked().openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
             return;
         }
 
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
-        String command;
         switch (event.getClick()) {
             case LEFT:
-                command = IridiumSkyblock.getInstance().getCommands().withdrawCommand.aliases.get(0);
+                player.closeInventory();
+                SignContainer.openGUIFor(player, "", "^^^^^^^^^^^^^^^^", "Enter the", "withdraw amount", new SignContainer.SignGUIListener() {
+                    @Override
+                    public void onSignDone(Player player, String[] lines) {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + IridiumSkyblock.getInstance().getCommands().withdrawCommand.aliases.get(0) + " " + bankItem.get().getName() + " " + lines[0]));
+                    }
+                });
                 break;
             case RIGHT:
-                command = IridiumSkyblock.getInstance().getCommands().depositCommand.aliases.get(0);
+                player.closeInventory();
+                SignContainer.openGUIFor(player, "", "^^^^^^^^^^^^^^^^", "Enter the", "deposit amount", new SignContainer.SignGUIListener() {
+                    @Override
+                    public void onSignDone(Player player, String[] lines) {
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + IridiumSkyblock.getInstance().getCommands().depositCommand.aliases.get(0) + " " + bankItem.get().getName() + " " + lines[0]));
+                    }
+                });
                 break;
             default:
                 return;
         }
-
-        if (command != null) {
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
-        }
-
-        event.getWhoClicked().openInventory(getInventory());
     }
 
 

@@ -464,6 +464,8 @@ public class IridiumSkyblock extends IridiumCore {
         if (upgrades.waterBreathingUpgrade.name == null) upgrades.waterBreathingUpgrade.name = "Water Breathing";
         if (upgrades.infusedSkullUpgrade.name == null) upgrades.infusedSkullUpgrade.name = "Infused Skull Rate";
         if (upgrades.autoSellChestUpgrade.name == null) upgrades.autoSellChestUpgrade.name = "AutoSell Chest";
+        if (upgrades.enchantSuccessChanceUpgrade.name == null) upgrades.enchantSuccessChanceUpgrade.name = "Enchant Success Chance";
+        if (upgrades.enchantFailureChanceUpgrade.name == null) upgrades.enchantFailureChanceUpgrade.name = "Enchant Failure chance";
 
         this.bankItemList = new ArrayList<>();
         if (bankItems.crystalsBankItem.isEnabled()) {
@@ -521,6 +523,12 @@ public class IridiumSkyblock extends IridiumCore {
         }
         if (upgrades.infusedSkullUpgrade.enabled) {
             upgradesList.put("infusedSkull", upgrades.infusedSkullUpgrade);
+        }
+        if (upgrades.enchantSuccessChanceUpgrade.enabled) {
+            upgradesList.put("enchantSuccessChance", upgrades.enchantSuccessChanceUpgrade);
+        }
+        if (upgrades.enchantFailureChanceUpgrade.enabled) {
+            upgradesList.put("enchantFailureChance", upgrades.enchantFailureChanceUpgrade);
         }
 
         this.boosterList = new HashMap<>();

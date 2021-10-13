@@ -450,4 +450,80 @@ public class Upgrades {
             .put(5, new InfusedSkullUpgrade(0, 0, 180000, 0, 0.25))
             .put(6, new InfusedSkullUpgrade(0, 0, 400000, 0, 0.3))
             .build());
+
+    public Upgrade<EnchantSuccessChanceUpgrade> enchantSuccessChanceUpgrade = new Upgrade<>(true, "Enchant Success Chance",
+            new Item(XMaterial.GLOWSTONE_DUST, 30, 1, "&b&lIsland Enchant Success Chance", Arrays.asList(
+                    "",
+                    "&7Want to enchant more items? Buy this",
+                    "&7upgrade to increase success chance on books",
+                    "",
+                    "&b&lInformation:",
+                    "&b&l • &7Current Level: &b%level%",
+                    "&b&l • &7Upgrade Cost: &e%mobcoinscost% Mob Coins",
+                    "",
+                    "&b&lLevels:",
+                    "&b&l • &7Level 1: &b0%",
+                    "&b&l • &7Level 2: &b1%",
+                    "&b&l • &7Level 3: &b2%",
+                    "&b&l • &7Level 4: &b3%",
+                    "&b&l • &7Level 5: &b4%",
+                    "&b&l • &7Level 6: &b5%",
+                    "&b&l • &7Level 6: &b6%",
+                    "&b&l • &7Level 6: &b7%",
+                    "&b&l • &7Level 6: &b8%",
+                    "&b&l • &7Level 6: &b9%",
+                    "&b&l • &7Level 6: &b10%",
+                    "",
+                    "&b&l[!] &bClick to Purchase this Upgrade"
+            )), ImmutableMap.<Integer, EnchantSuccessChanceUpgrade>builder()
+            .put(1, new EnchantSuccessChanceUpgrade(0, 0, 0, 0, 0))
+            .put(2, new EnchantSuccessChanceUpgrade(0, 0, 1200, 0, 1))
+            .put(3, new EnchantSuccessChanceUpgrade(0, 0, 14000, 0, 2))
+            .put(4, new EnchantSuccessChanceUpgrade(0, 0, 48000, 0, 3))
+            .put(5, new EnchantSuccessChanceUpgrade(0, 0, 180000, 0, 4))
+            .put(6, new EnchantSuccessChanceUpgrade(0, 0, 400000, 0, 5))
+            .put(7, new EnchantSuccessChanceUpgrade(0, 0, 600000, 0, 6))
+            .put(8, new EnchantSuccessChanceUpgrade(0, 0, 800000, 0, 7))
+            .put(9, new EnchantSuccessChanceUpgrade(0, 0, 1000000, 0, 8))
+            .put(10, new EnchantSuccessChanceUpgrade(0, 0, 1250000, 0, 9))
+            .put(11, new EnchantSuccessChanceUpgrade(0, 0, 1500000, 0, 10))
+            .build());
+
+    public Upgrade<EnchantSuccessChanceUpgrade> enchantFailureChanceUpgrade = new Upgrade<>(true, "Enchant Failure Chance",
+            new Item(XMaterial.REDSTONE, 31, 1, "&b&lIsland Enchant Failure Chance", Arrays.asList(
+                    "",
+                    "&7Want to stop your items destroying? Buy this",
+                    "&7upgrade to decrease failure chance on books",
+                    "",
+                    "&b&lInformation:",
+                    "&b&l • &7Current Level: &b%level%",
+                    "&b&l • &7Upgrade Cost: &e%mobcoinscost% Mob Coins",
+                    "",
+                    "&b&lLevels:",
+                    "&b&l • &7Level 1: &b0%",
+                    "&b&l • &7Level 2: &b1%",
+                    "&b&l • &7Level 3: &b2%",
+                    "&b&l • &7Level 4: &b3%",
+                    "&b&l • &7Level 5: &b4%",
+                    "&b&l • &7Level 6: &b5%",
+                    "&b&l • &7Level 6: &b6%",
+                    "&b&l • &7Level 6: &b7%",
+                    "&b&l • &7Level 6: &b8%",
+                    "&b&l • &7Level 6: &b9%",
+                    "&b&l • &7Level 6: &b10%",
+                    "",
+                    "&b&l[!] &bClick to Purchase this Upgrade"
+            )), ImmutableMap.<Integer, EnchantSuccessChanceUpgrade>builder()
+            .put(1, new EnchantSuccessChanceUpgrade(0, 0, 0, 0, 0))
+            .put(2, new EnchantSuccessChanceUpgrade(0, 0, 1200, 0, 1))
+            .put(3, new EnchantSuccessChanceUpgrade(0, 0, 14000, 0, 2))
+            .put(4, new EnchantSuccessChanceUpgrade(0, 0, 48000, 0, 3))
+            .put(5, new EnchantSuccessChanceUpgrade(0, 0, 180000, 0, 4))
+            .put(6, new EnchantSuccessChanceUpgrade(0, 0, 400000, 0, 5))
+            .put(7, new EnchantSuccessChanceUpgrade(0, 0, 600000, 0, 6))
+            .put(8, new EnchantSuccessChanceUpgrade(0, 0, 800000, 0, 7))
+            .put(9, new EnchantSuccessChanceUpgrade(0, 0, 1000000, 0, 8))
+            .put(10, new EnchantSuccessChanceUpgrade(0, 0, 1250000, 0, 9))
+            .put(11, new EnchantSuccessChanceUpgrade(0, 0, 1500000, 0, 10))
+            .build());
 }

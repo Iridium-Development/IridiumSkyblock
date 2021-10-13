@@ -50,6 +50,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.20")
 
     compileOnly(files("../OPBlocks/lib/CurrenciesAPI.jar"))
+    compileOnly(files("../OPBlocks/lib/OPCore-v1.16.jar"))
 }
 
 tasks {

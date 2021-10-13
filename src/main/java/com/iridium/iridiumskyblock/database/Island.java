@@ -65,6 +65,9 @@ public final class Island {
     // Cache resets every 5 seconds
     private Cache<Double> valueCache = new Cache<>(5000);
 
+    @DatabaseField(columnName = "size")
+    private int sizeAddon;
+
     // Cache
     private Integer size;
 
@@ -246,7 +249,7 @@ public final class Island {
     public int getSize() {
         if (size == null) {
             int sizeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(this, "size").getLevel();
-            size = IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size;
+            size = IridiumSkyblock.getInstance().getUpgrades().sizeUpgrade.upgrades.get(sizeLevel).size + sizeAddon;
         }
         return size;
     }
@@ -263,6 +266,11 @@ public final class Island {
         if (newLevel > currentLevel) {
             IridiumSkyblock.getInstance().getIslandManager().islandLevelUp(this, newLevel);
         }
+    }
+
+    public void setSizeAddon(int size) {
+        this.sizeAddon = size;
+        resetCache();
     }
 
     /**
