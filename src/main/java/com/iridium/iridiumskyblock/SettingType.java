@@ -10,11 +10,11 @@ import org.bukkit.WeatherType;
 public enum SettingType {
 
     MOB_SPAWN("mob_spawn", IridiumSkyblock.getInstance().getIslandSettings().mobSpawn.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().mobSpawn.getFeactureEnabled()),
+            IridiumSkyblock.getInstance().getIslandSettings().mobSpawn.isFeactureEnabled()),
     LEAF_DECAY("leaf_decay", IridiumSkyblock.getInstance().getIslandSettings().leafDecay.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().leafDecay.getFeactureEnabled()),
+            IridiumSkyblock.getInstance().getIslandSettings().leafDecay.isFeactureEnabled()),
     WEATHER("weather", IridiumSkyblock.getInstance().getIslandSettings().weather.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().weather.getDefaultValue(),
+            IridiumSkyblock.getInstance().getIslandSettings().weather.isFeactureEnabled(),
             IslandWeatherType::getNext, IslandWeatherType::getPrevious, (island, newValue) -> {
         IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().map(User::getPlayer).forEach(player -> {
             IslandWeatherType islandWeatherType = IslandWeatherType.valueOf(newValue);
@@ -26,7 +26,7 @@ public enum SettingType {
         });
     }),
     TIME("time", IridiumSkyblock.getInstance().getIslandSettings().time.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().time.getFeactureEnabled(),
+            IridiumSkyblock.getInstance().getIslandSettings().time.isFeactureEnabled(),
             IslandTime::getNext, IslandTime::getPrevious, (island, newValue) -> {
         IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().map(User::getPlayer).forEach(player -> {
             IslandTime islandTime = IslandTime.valueOf(newValue);
@@ -34,22 +34,22 @@ public enum SettingType {
         });
     }),
     ENDERMAN_GRIEF("enderman_grief", IridiumSkyblock.getInstance().getIslandSettings().endermanGrief.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().endermanGrief.getFeactureEnabled()),
+            IridiumSkyblock.getInstance().getIslandSettings().endermanGrief.isFeactureEnabled()),
     LIQUID_FLOW("liquid_flow", IridiumSkyblock.getInstance().getIslandSettings().liquidFlow.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().liquidFlow.getFeactureEnabled()),
+            IridiumSkyblock.getInstance().getIslandSettings().liquidFlow.isFeactureEnabled()),
     TNT_DAMAGE("tnt_damage", IridiumSkyblock.getInstance().getIslandSettings().tntDamage.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().tntDamage.getFeactureEnabled()),
+            IridiumSkyblock.getInstance().getIslandSettings().tntDamage.isFeactureEnabled()),
     FIRE_SPREAD("fire_spread", IridiumSkyblock.getInstance().getIslandSettings().fireSpread.getDefaultValue(),
-            IridiumSkyblock.getInstance().getIslandSettings().fireSpread.getFeactureEnabled());
+            IridiumSkyblock.getInstance().getIslandSettings().fireSpread.isFeactureEnabled());
 
     private final String settingName;
     private final String defaultValue;
-    private final String feactureValue;
+    private final boolean feactureValue;
     private final NewValue next;
     private final NewValue previous;
     private final SettingValueChange onChange;
 
-    SettingType(String settingName, String defaultValue, String feactureEnabled) {
+    SettingType(String settingName, String defaultValue, boolean feactureEnabled) {
         this.settingName = settingName;
         this.defaultValue = defaultValue;
         this.feactureValue = feactureEnabled;

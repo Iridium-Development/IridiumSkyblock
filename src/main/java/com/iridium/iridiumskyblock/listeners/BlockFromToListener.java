@@ -18,7 +18,7 @@ public class BlockFromToListener implements Listener {
                     event.setCancelled(true);
                 }
                 IslandSetting liquidFlowSettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.LIQUID_FLOW);
-                if (SettingType.LIQUID_FLOW.getFeactureValue().equalsIgnoreCase("true") && !liquidFlowSettings.getBooleanValue()) {
+                if (SettingType.LIQUID_FLOW.isFeactureValue() && !liquidFlowSettings.getBooleanValue()) {
                     event.setCancelled(true);
                 }
             }

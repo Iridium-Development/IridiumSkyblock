@@ -19,7 +19,7 @@ public class EntityExplodeListener implements Listener {
         int islandId = list.get(0).asInt();
         IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandId).ifPresent(island -> {
             IslandSetting tntExplosion = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.TNT_DAMAGE);
-            if (SettingType.TNT_DAMAGE.getFeactureValue().equalsIgnoreCase("true") && !tntExplosion.getBooleanValue()) {
+            if (SettingType.TNT_DAMAGE.isFeactureValue() && !tntExplosion.getBooleanValue()) {
                 event.setCancelled(true);
             }
             event.blockList().removeIf(block -> !island.isInIsland(block.getLocation()));

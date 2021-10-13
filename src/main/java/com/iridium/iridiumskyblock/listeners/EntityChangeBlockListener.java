@@ -12,7 +12,7 @@ public class EntityChangeBlockListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
-        if (SettingType.ENDERMAN_GRIEF.getFeactureValue().equalsIgnoreCase("false")) return;
+        if (!SettingType.ENDERMAN_GRIEF.isFeactureValue()) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             if (event.getEntityType() == EntityType.ENDERMAN) {
                 IslandSetting endermanGriefSettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.ENDERMAN_GRIEF);

@@ -25,5 +25,5 @@ public class Setting {
     /**
      * This feactures is enable of this Setting
      */
-    private String feactureEnabled;
+    private boolean feactureEnabled;
 }
