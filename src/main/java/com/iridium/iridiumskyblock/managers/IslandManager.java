@@ -225,10 +225,11 @@ public class IslandManager {
         if (islandCreateEvent.isCancelled()) return false;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, name, schematicConfig).thenAccept(island -> {
-                    PaperLib.teleportAsync(player, island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        createIsland(player, name, schematicConfig).thenAccept(island ->
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    teleportHome(player, island);
                     IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
-                }
+                })
         );
 
         return true;
@@ -252,7 +253,6 @@ public class IslandManager {
                     user.setIslandRank(IslandRank.OWNER);
 
                     pasteSchematic(island, schematic).thenRun(() -> {
-                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> teleportHome(player, island));
                         completableFuture.complete(island);
                     });
                 })
