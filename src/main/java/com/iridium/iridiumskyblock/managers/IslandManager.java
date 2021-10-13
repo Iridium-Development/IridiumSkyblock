@@ -225,10 +225,11 @@ public class IslandManager {
         if (islandCreateEvent.isCancelled()) return false;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, name, schematicConfig).thenAccept(island -> {
-                    PaperLib.teleportAsync(player, island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        createIsland(player, name, schematicConfig).thenAccept(island ->
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    teleportHome(player, island);
                     IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
-                }
+                })
         );
 
         return true;
@@ -245,20 +246,17 @@ public class IslandManager {
     private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
         clearIslandCache();
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            final User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-            final Island island = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic));
-            user.setIsland(island);
-            user.setIslandRank(IslandRank.OWNER);
-
-            pasteSchematic(island, schematic).thenRun(() -> {
-                // Paste schematic and then teleport the player (this needs to be done sync)
+        final User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic)).thenAccept((island) ->
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                    teleportHome(player, island);
-                    completableFuture.complete(island);
-                });
-            });
-        });
+                    user.setIsland(island);
+                    user.setIslandRank(IslandRank.OWNER);
+
+                    pasteSchematic(island, schematic).thenRun(() -> {
+                        completableFuture.complete(island);
+                    });
+                })
+        );
         return completableFuture;
     }
 
