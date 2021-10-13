@@ -8,17 +8,17 @@ import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor
-public class WarpsUpgrade extends UpgradeData {
-    public int amount;
+public class InfusedSkullUpgrade extends UpgradeData {
+    public double chance;
 
-    public WarpsUpgrade(int money, int crystals, int mobcoins, int prestigeRequired, int amount) {
+    public InfusedSkullUpgrade(int money, int crystals, int mobcoins, int prestigeRequired, double chance) {
         super(money, crystals, mobcoins, prestigeRequired);
-        this.amount = amount;
+        this.chance = chance;
     }
 
     @JsonIgnore
     @Override
     public List<Placeholder> getPlaceholders() {
-        return Collections.singletonList(new Placeholder("amount", String.valueOf(amount)));
+        return Collections.singletonList(new Placeholder("chance", String.valueOf(chance)));
     }
 }

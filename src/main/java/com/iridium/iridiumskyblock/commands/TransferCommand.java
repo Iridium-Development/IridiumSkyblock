@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.api.IslandChangeOwnershipEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -80,7 +81,7 @@ public class TransferCommand extends Command {
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
         }
-
+        Bukkit.getPluginManager().callEvent(new IslandChangeOwnershipEvent(island.get(), islandOwner, targetUser));
         return true;
     }
 

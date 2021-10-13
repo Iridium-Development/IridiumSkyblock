@@ -10,8 +10,8 @@ public class OresUpgrade extends UpgradeData {
     public Map<XMaterial, Integer> ores;
     public Map<XMaterial, Integer> netherOres;
 
-    public OresUpgrade(int money, int crystals, Map<XMaterial, Integer> ores, Map<XMaterial, Integer> netherOres) {
-        super(money, crystals);
+    public OresUpgrade(int money, int crystals, int mobcoins, int prestigeRequired, Map<XMaterial, Integer> ores, Map<XMaterial, Integer> netherOres) {
+        super(money, crystals, mobcoins, prestigeRequired);
         this.ores = ores;
         this.netherOres = netherOres;
     }

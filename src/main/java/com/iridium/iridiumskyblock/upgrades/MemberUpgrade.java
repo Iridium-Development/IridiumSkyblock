@@ -12,8 +12,8 @@ public class MemberUpgrade extends UpgradeData{
 
     public int amount;
 
-    public MemberUpgrade(int money, int crystals, int amount) {
-        super(money, crystals);
+    public MemberUpgrade(int money, int crystals, int mobcoins, int prestigeRequired, int amount) {
+        super(money, crystals, mobcoins, prestigeRequired);
         this.amount = amount;
     }
 

@@ -54,7 +54,7 @@ public class ShopItem {
      */
     @JsonIgnore
     public boolean isPurchasable() {
-        return buyCost.vault > 0 || buyCost.crystals > 0;
+        return buyCost.vault > 0 || buyCost.crystals > 0 || buyCost.mobcoins > 0;
     }
 
     /**
@@ -64,7 +64,7 @@ public class ShopItem {
      */
     @JsonIgnore
     public boolean isSellable() {
-        return sellReward.vault > 0 || sellReward.crystals > 0;
+        return sellReward.vault > 0 || sellReward.crystals > 0 || sellReward.mobcoins > 0;
     }
 
     /**
@@ -76,6 +76,7 @@ public class ShopItem {
 
         public double vault;
         public int crystals;
+        public int mobcoins;
 
     }
 
@@ -88,6 +89,7 @@ public class ShopItem {
 
         public double vault;
         public int crystals;
+        public int mobcoins;
 
     }
 

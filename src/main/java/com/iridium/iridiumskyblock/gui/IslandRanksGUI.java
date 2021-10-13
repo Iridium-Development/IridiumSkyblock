@@ -45,6 +45,8 @@ public class IslandRanksGUI extends IslandGUI {
         inventory.setItem(islandRanks.member.slot, ItemStackUtils.makeItem(islandRanks.member,
                 Collections.singletonList(new Placeholder("members", members.stream().filter(member -> member.getIslandRank().equals(IslandRank.MEMBER)).map(User::getName).collect(Collectors.joining(", "))))));
         inventory.setItem(islandRanks.visitor.slot, ItemStackUtils.makeItem(islandRanks.visitor));
+
+        inventory.setItem(22, backItem);
     }
 
     /**
@@ -56,6 +58,11 @@ public class IslandRanksGUI extends IslandGUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getSlot() == 22) {
+            event.getWhoClicked().openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
+            return;
+        }
+
         IslandRanksInventoryConfig islandRanks = IridiumSkyblock.getInstance().getInventories().islandRanksGUI;
         if (event.getSlot() == islandRanks.owner.slot)
             event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.OWNER, 1).getInventory());

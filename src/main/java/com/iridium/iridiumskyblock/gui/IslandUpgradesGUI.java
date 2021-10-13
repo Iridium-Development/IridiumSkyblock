@@ -29,6 +29,7 @@ public class IslandUpgradesGUI extends IslandGUI {
      */
     public IslandUpgradesGUI(@NotNull Island island) {
         super(IridiumSkyblock.getInstance().getInventories().upgradesGUI, island);
+
     }
 
     @Override
@@ -50,13 +51,17 @@ public class IslandUpgradesGUI extends IslandGUI {
                 UpgradeData upgradeData = upgrade.getValue().upgrades.get(level + 1);
                 placeholderList.add(new Placeholder("crystalscost", String.valueOf(upgradeData.crystals)));
                 placeholderList.add(new Placeholder("vaultcost", String.valueOf(upgradeData.money)));
+                placeholderList.add(new Placeholder("mobcoinscost", String.valueOf(upgradeData.mobcoins)));
             } else if (!upgrade.getValue().upgrades.containsKey(level + 1)) {
                 placeholderList.add(new Placeholder("crystalscost", IridiumSkyblock.getInstance().getPlaceholders().crystalCost));
                 placeholderList.add(new Placeholder("vaultcost", IridiumSkyblock.getInstance().getPlaceholders().vaultCost));
+                placeholderList.add(new Placeholder("mobcoinscost", IridiumSkyblock.getInstance().getPlaceholders().mobcoinsCost));
             }
 
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, placeholderList));
         }
+
+        inventory.setItem(40, backItem);
     }
 
     /**
@@ -67,6 +72,11 @@ public class IslandUpgradesGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getSlot() == 40) {
+            event.getWhoClicked().openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
+            return;
+        }
+
         for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             if (event.getSlot() == upgrade.getValue().item.slot) {
                 String command = IridiumSkyblock.getInstance().getCommands().upgradesCommand.aliases.get(0);

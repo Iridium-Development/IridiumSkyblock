@@ -40,7 +40,7 @@ public class ShopOverviewGUI extends GUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getShop().overviewBackground);
 
         for (ShopCategory category : IridiumSkyblock.getInstance().getShopManager().getCategories()) {
-            inventory.setItem(category.item.slot, ItemStackUtils.makeItem(category.item));
+            //inventory.setItem(category.item.slot, ItemStackUtils.makeItem(category.item));
         }
     }
 
@@ -52,8 +52,8 @@ public class ShopOverviewGUI extends GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory -> {
-            String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
-            Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + shopCategory.name);
+            //String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
+           // Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + shopCategory.name);
 
         });
     }

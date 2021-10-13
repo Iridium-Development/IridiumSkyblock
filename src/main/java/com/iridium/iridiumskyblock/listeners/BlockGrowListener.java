@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import org.bukkit.CropState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,6 +14,7 @@ import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.material.Crops;
 
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BlockGrowListener implements Listener {
 
@@ -28,6 +30,14 @@ public class BlockGrowListener implements Listener {
             if (island.isPresent()) {
                 IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "farming");
                 if (islandBooster.isActive()) {
+                    CropState newState = CropState.getByData((byte) (crops.getState().getData() + 1));
+                    if (newState != null) {
+                        crops.setState(newState);
+                    }
+                }
+                IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "cropSpeed");
+                int cropSpeedGrowthChance = IridiumSkyblock.getInstance().getUpgrades().cropSpeedUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
+                if(ThreadLocalRandom.current().nextInt(0, 100) < cropSpeedGrowthChance) {
                     CropState newState = CropState.getByData((byte) (crops.getState().getData() + 1));
                     if (newState != null) {
                         crops.setState(newState);

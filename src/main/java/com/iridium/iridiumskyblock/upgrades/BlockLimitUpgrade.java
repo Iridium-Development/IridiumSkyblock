@@ -9,8 +9,8 @@ import java.util.Map;
 public class BlockLimitUpgrade extends UpgradeData {
     public Map<XMaterial, Integer> limits;
 
-    public BlockLimitUpgrade(int money, int crystals, Map<XMaterial, Integer> limits) {
-        super(money, crystals);
+    public BlockLimitUpgrade(int money, int crystals, int mobcoins, int prestigeRequired, Map<XMaterial, Integer> limits) {
+        super(money, crystals, mobcoins, prestigeRequired);
         this.limits = limits;
     }
 }

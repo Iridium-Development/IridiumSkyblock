@@ -110,6 +110,9 @@ public class Placeholders {
                 .put(startKey + "_bank_money", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedMoney).orElse(placeholdersConfig.islandBankMoney)
                 )
+                .put(startKey + "_bank_mobcoins", player ->
+                        islandGetter.getIsland(player).map(Island::getFormattedMoney).orElse(placeholdersConfig.islandBankMobCoins)
+                )
 
                 // Island Upgrade Placeholders
                 .put(startKey + "_upgrade_blocklimit_level", player -> islandGetter.getIsland(player).map(island ->

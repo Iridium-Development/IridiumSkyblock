@@ -10,6 +10,7 @@ public class Booster {
     public Item item;
     public int crystalsCost;
     public int vaultCost;
+    public int mobCoinCost;
     public int time;
     public String name;
     public boolean stackable;

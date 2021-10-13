@@ -40,7 +40,7 @@ public class Commands {
     public LevelCommand levelCommand = new LevelCommand();
     public LogsCommand logsCommand = new LogsCommand();
     public MembersCommand membersCommand = new MembersCommand();
-    public MissionCommand missionCommand = new MissionCommand();
+    //public MissionCommand missionCommand = new MissionCommand();
     public PermissionsCommand permissionsCommand = new PermissionsCommand();
     public PrivateCommand privateCommand = new PrivateCommand();
     public PromoteCommand promoteCommand = new PromoteCommand();
@@ -53,7 +53,7 @@ public class Commands {
     public SetHomeCommand setHomeCommand = new SetHomeCommand();
     public SetWarpCommand setWarpCommand = new SetWarpCommand();
     public SettingsCommand settingsCommand = new SettingsCommand();
-    public ShopCommand shopCommand = new ShopCommand();
+    //public ShopCommand shopCommand = new ShopCommand();
     public TopCommand topCommand = new TopCommand();
     public TransferCommand transferCommand = new TransferCommand();
     public TrustCommand trustCommand = new TrustCommand();

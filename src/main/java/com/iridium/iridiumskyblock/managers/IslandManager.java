@@ -307,6 +307,7 @@ public class IslandManager {
             getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem).setNumber(0);
             getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem).setNumber(0);
             getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().experienceBankItem).setNumber(0);
+            getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem).setNumber(0);
         }
 
         if (regenSettings.resetBoosters) {

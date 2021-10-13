@@ -8,10 +8,10 @@ import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor
-public class WarpsUpgrade extends UpgradeData {
+public class CropSpeedUpgrade extends UpgradeData {
     public int amount;
 
-    public WarpsUpgrade(int money, int crystals, int mobcoins, int prestigeRequired, int amount) {
+    public CropSpeedUpgrade(int money, int crystals, int mobcoins, int prestigeRequired, int amount) {
         super(money, crystals, mobcoins, prestigeRequired);
         this.amount = amount;
     }

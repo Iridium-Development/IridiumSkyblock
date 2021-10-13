@@ -125,6 +125,14 @@ public class CommandManager implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        if(args[0].equalsIgnoreCase("missions") || args[0].equalsIgnoreCase("mission") || args[0].equalsIgnoreCase("challenges")) {
+            if (commandSender instanceof Player) {
+                Player player = (Player) commandSender;
+                player.chat("/island missions");
+            }
+            return true;
+        }
+
         for (Command command : commands) {
             // We don't want to execute other commands or ones that are disabled
             if (!(command.aliases.contains(args[0]))) {

@@ -4,21 +4,25 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.Upgrade;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.api.IslandUpgradeEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandUpgradesGUI;
+import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class UpgradesCommand extends Command {
 
@@ -26,7 +30,7 @@ public class UpgradesCommand extends Command {
      * The default constructor.
      */
     public UpgradesCommand() {
-        super(Arrays.asList("upgrades", "upgrade"), "Open the Island Upgrades Menu", "%prefix% &7/is upgrade <name>", "", true, Duration.ZERO);
+        super(Arrays.asList("upgrades", "upgrade"), "Open the Island Upgrades Menu", "", true, Duration.ZERO);
     }
 
     /**
@@ -66,7 +70,7 @@ public class UpgradesCommand extends Command {
             return false;
         }
 
-        if (!PlayerUtils.pay(player, island.get(), upgradeData.crystals, upgradeData.money)) {
+        if (!PlayerUtils.pay(player, island.get(), upgradeData.crystals, upgradeData.money, upgradeData.mobcoins)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -75,12 +79,14 @@ public class UpgradesCommand extends Command {
         IslandLog islandLog = new IslandLog(island.get(), LogAction.UPGRADE_PURCHASE, user, null, 0, upgradeName);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
         IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(island.get());
+        Bukkit.getPluginManager().callEvent(new IslandUpgradeEvent(island.get(), user, islandUpgrade));
         island.get().resetCache();
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().successfullyBoughtUpgrade
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 .replace("%upgrade%", upgrade.name)
                 .replace("%vault_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.money))
                 .replace("%crystal_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.crystals))
+                .replace("%mobcoins_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.mobcoins))
         ));
         return true;
     }

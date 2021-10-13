@@ -41,8 +41,8 @@ public class Shop {
                             XMaterial.GRASS_BLOCK,
                             1,
                             10,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lDirt Block",
@@ -50,8 +50,8 @@ public class Shop {
                             XMaterial.DIRT,
                             10,
                             11,
-                            new BuyCost(50, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lGravel",
@@ -59,8 +59,8 @@ public class Shop {
                             XMaterial.GRAVEL,
                             10,
                             12,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lGranite",
@@ -68,8 +68,8 @@ public class Shop {
                             XMaterial.GRANITE,
                             10,
                             13,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lDiorite",
@@ -77,8 +77,8 @@ public class Shop {
                             XMaterial.DIORITE,
                             10,
                             14,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lAndesite",
@@ -86,8 +86,8 @@ public class Shop {
                             XMaterial.ANDESITE,
                             10,
                             15,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lOak Log",
@@ -95,8 +95,8 @@ public class Shop {
                             XMaterial.OAK_LOG,
                             16,
                             16,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSpruce Log",
@@ -104,8 +104,8 @@ public class Shop {
                             XMaterial.SPRUCE_LOG,
                             16,
                             19,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lBirch Log",
@@ -113,8 +113,8 @@ public class Shop {
                             XMaterial.BIRCH_LOG,
                             16,
                             20,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lJungle Log",
@@ -122,8 +122,8 @@ public class Shop {
                             XMaterial.JUNGLE_LOG,
                             16,
                             21,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lAcacia Log",
@@ -131,8 +131,8 @@ public class Shop {
                             XMaterial.ACACIA_LOG,
                             16,
                             22,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lDark Oak Log",
@@ -140,8 +140,8 @@ public class Shop {
                             XMaterial.DARK_OAK_LOG,
                             16,
                             23,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSnow Block",
@@ -149,8 +149,8 @@ public class Shop {
                             XMaterial.SNOW_BLOCK,
                             16,
                             24,
-                            new BuyCost(200, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lIce",
@@ -158,8 +158,8 @@ public class Shop {
                             XMaterial.ICE,
                             8,
                             25,
-                            new BuyCost(300, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(300, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lPacked Ice",
@@ -167,8 +167,8 @@ public class Shop {
                             XMaterial.PACKED_ICE,
                             8,
                             28,
-                            new BuyCost(300, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(300, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSponge",
@@ -176,8 +176,8 @@ public class Shop {
                             XMaterial.SPONGE,
                             4,
                             29,
-                            new BuyCost(1000, 0),
-                            new SellReward(200, 0)
+                            new BuyCost(1000, 0, 0),
+                            new SellReward(200, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSand",
@@ -185,8 +185,8 @@ public class Shop {
                             XMaterial.SAND,
                             8,
                             30,
-                            new BuyCost(100, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSandstone",
@@ -194,8 +194,8 @@ public class Shop {
                             XMaterial.SANDSTONE,
                             16,
                             31,
-                            new BuyCost(80, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(80, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lClay Ball",
@@ -203,8 +203,8 @@ public class Shop {
                             XMaterial.CLAY_BALL,
                             32,
                             32,
-                            new BuyCost(70, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(70, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lObsidian",
@@ -212,8 +212,8 @@ public class Shop {
                             XMaterial.OBSIDIAN,
                             4,
                             33,
-                            new BuyCost(250, 0),
-                            new SellReward(25, 0)
+                            new BuyCost(250, 0, 0),
+                            new SellReward(25, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lGlowstone",
@@ -221,8 +221,8 @@ public class Shop {
                             XMaterial.GLOWSTONE,
                             8,
                             34,
-                            new BuyCost(125, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(125, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lEnd Stone",
@@ -230,8 +230,8 @@ public class Shop {
                             XMaterial.END_STONE,
                             4,
                             39,
-                            new BuyCost(250, 0),
-                            new SellReward(25, 0)
+                            new BuyCost(250, 0, 0),
+                            new SellReward(25, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lPrismarine",
@@ -239,8 +239,8 @@ public class Shop {
                             XMaterial.PRISMARINE,
                             16,
                             40,
-                            new BuyCost(200, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lWool",
@@ -248,8 +248,8 @@ public class Shop {
                             XMaterial.WHITE_WOOL,
                             8,
                             41,
-                            new BuyCost(50, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(5, 0, 0)
                     )
             ))
             .put("Food", Arrays.asList(
@@ -259,8 +259,8 @@ public class Shop {
                             XMaterial.APPLE,
                             10,
                             11,
-                            new BuyCost(50, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lEnchanted Golden Apple",
@@ -268,8 +268,8 @@ public class Shop {
                             XMaterial.ENCHANTED_GOLDEN_APPLE,
                             3,
                             12,
-                            new BuyCost(1000, 0),
-                            new SellReward(100, 0)
+                            new BuyCost(1000, 0, 0),
+                            new SellReward(100, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lCarrot",
@@ -277,8 +277,8 @@ public class Shop {
                             XMaterial.CARROT,
                             10,
                             13,
-                            new BuyCost(100, 0),
-                            new SellReward(25, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(25, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lBaked Potato",
@@ -286,8 +286,8 @@ public class Shop {
                             XMaterial.BAKED_POTATO,
                             10,
                             14,
-                            new BuyCost(150, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lBread",
@@ -295,8 +295,8 @@ public class Shop {
                             XMaterial.BREAD,
                             10,
                             15,
-                            new BuyCost(50, 0),
-                            new SellReward(30, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(30, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lCookie",
@@ -304,8 +304,8 @@ public class Shop {
                             XMaterial.COOKIE,
                             5,
                             20,
-                            new BuyCost(130, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(130, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lCooked Porkchop",
@@ -313,8 +313,8 @@ public class Shop {
                             XMaterial.COOKED_PORKCHOP,
                             10,
                             21,
-                            new BuyCost(100, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lCooked Beef",
@@ -322,8 +322,8 @@ public class Shop {
                             XMaterial.COOKED_BEEF,
                             10,
                             22,
-                            new BuyCost(100, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lCooked Mutton",
@@ -331,8 +331,8 @@ public class Shop {
                             XMaterial.COOKED_MUTTON,
                             10,
                             23,
-                            new BuyCost(100, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lCooked Rabbit",
@@ -340,8 +340,8 @@ public class Shop {
                             XMaterial.COOKED_RABBIT,
                             10,
                             24,
-                            new BuyCost(100, 0),
-                            new SellReward(25, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(25, 0, 0)
                     )
                     )
             )
@@ -352,8 +352,8 @@ public class Shop {
                             XMaterial.COAL,
                             16,
                             11,
-                            new BuyCost(100, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lRedstone",
@@ -361,8 +361,8 @@ public class Shop {
                             XMaterial.REDSTONE,
                             16,
                             12,
-                            new BuyCost(150, 0),
-                            new SellReward(7, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(7, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lLapis Lazuli",
@@ -370,8 +370,8 @@ public class Shop {
                             XMaterial.LAPIS_LAZULI,
                             16,
                             13,
-                            new BuyCost(150, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lIron Ingot",
@@ -379,8 +379,8 @@ public class Shop {
                             XMaterial.IRON_INGOT,
                             8,
                             14,
-                            new BuyCost(200, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lGold Ingot",
@@ -388,8 +388,8 @@ public class Shop {
                             XMaterial.GOLD_INGOT,
                             8,
                             15,
-                            new BuyCost(200, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lDiamond",
@@ -397,8 +397,8 @@ public class Shop {
                             XMaterial.DIAMOND,
                             8,
                             21,
-                            new BuyCost(1000, 0),
-                            new SellReward(100, 0)
+                            new BuyCost(1000, 0, 0),
+                            new SellReward(100, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lEmerald",
@@ -406,8 +406,8 @@ public class Shop {
                             XMaterial.EMERALD,
                             8,
                             22,
-                            new BuyCost(200, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lQuartz",
@@ -415,8 +415,8 @@ public class Shop {
                             XMaterial.QUARTZ,
                             64,
                             23,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     )
                     )
             )
@@ -427,8 +427,8 @@ public class Shop {
                             XMaterial.WHEAT_SEEDS,
                             16,
                             10,
-                            new BuyCost(130, 0),
-                            new SellReward(2, 0)
+                            new BuyCost(130, 0, 0),
+                            new SellReward(2, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lPumpkin Seeds",
@@ -436,8 +436,8 @@ public class Shop {
                             XMaterial.PUMPKIN_SEEDS,
                             16,
                             11,
-                            new BuyCost(150, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lMelon Seeds",
@@ -445,8 +445,8 @@ public class Shop {
                             XMaterial.MELON_SEEDS,
                             16,
                             12,
-                            new BuyCost(250, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(250, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lNether Wart",
@@ -454,8 +454,8 @@ public class Shop {
                             XMaterial.NETHER_WART,
                             4,
                             13,
-                            new BuyCost(100, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSugar Cane",
@@ -463,8 +463,8 @@ public class Shop {
                             XMaterial.SUGAR_CANE,
                             16,
                             14,
-                            new BuyCost(150, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lWheat",
@@ -472,8 +472,8 @@ public class Shop {
                             XMaterial.WHEAT,
                             16,
                             15,
-                            new BuyCost(50, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lPumpkin",
@@ -481,8 +481,8 @@ public class Shop {
                             XMaterial.PUMPKIN,
                             16,
                             16,
-                            new BuyCost(150, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lMelon Slice",
@@ -490,8 +490,8 @@ public class Shop {
                             XMaterial.MELON_SLICE,
                             16,
                             19,
-                            new BuyCost(150, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lCactus",
@@ -499,8 +499,8 @@ public class Shop {
                             XMaterial.CACTUS,
                             8,
                             20,
-                            new BuyCost(80, 0),
-                            new SellReward(2, 0)
+                            new BuyCost(80, 0, 0),
+                            new SellReward(2, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lOak Sapling",
@@ -508,8 +508,8 @@ public class Shop {
                             XMaterial.OAK_SAPLING,
                             4,
                             21,
-                            new BuyCost(20, 0),
-                            new SellReward(2, 0)
+                            new BuyCost(20, 0, 0),
+                            new SellReward(2, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSpruce Sapling",
@@ -517,8 +517,8 @@ public class Shop {
                             XMaterial.SPRUCE_SAPLING,
                             4,
                             22,
-                            new BuyCost(20, 0),
-                            new SellReward(2, 0)
+                            new BuyCost(20, 0, 0),
+                            new SellReward(2, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lBirch Sapling",
@@ -526,8 +526,8 @@ public class Shop {
                             XMaterial.BIRCH_SAPLING,
                             4,
                             23,
-                            new BuyCost(20, 0),
-                            new SellReward(2, 0)
+                            new BuyCost(20, 0, 0),
+                            new SellReward(2, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lJungle Sapling",
@@ -535,8 +535,8 @@ public class Shop {
                             XMaterial.JUNGLE_SAPLING,
                             4,
                             24,
-                            new BuyCost(150, 0),
-                            new SellReward(4, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(4, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lAcacia Sapling",
@@ -544,8 +544,8 @@ public class Shop {
                             XMaterial.ACACIA_SAPLING,
                             4,
                             25,
-                            new BuyCost(20, 0),
-                            new SellReward(2, 0)
+                            new BuyCost(20, 0, 0),
+                            new SellReward(2, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lDark Oak Sapling",
@@ -553,8 +553,8 @@ public class Shop {
                             XMaterial.DARK_OAK_SAPLING,
                             4,
                             30,
-                            new BuyCost(150, 0),
-                            new SellReward(4, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(4, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lBrown Mushroom",
@@ -562,8 +562,8 @@ public class Shop {
                             XMaterial.BROWN_MUSHROOM,
                             8,
                             31,
-                            new BuyCost(60, 0),
-                            new SellReward(6, 0)
+                            new BuyCost(60, 0, 0),
+                            new SellReward(6, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lRed Mushroom",
@@ -571,8 +571,8 @@ public class Shop {
                             XMaterial.RED_MUSHROOM,
                             8,
                             32,
-                            new BuyCost(60, 0),
-                            new SellReward(6, 0)
+                            new BuyCost(60, 0, 0),
+                            new SellReward(6, 0, 0)
                     )
                     )
             )
@@ -583,8 +583,8 @@ public class Shop {
                             XMaterial.ROTTEN_FLESH,
                             16,
                             10,
-                            new BuyCost(20, 0),
-                            new SellReward(2, 0)
+                            new BuyCost(20, 0, 0),
+                            new SellReward(2, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lBone",
@@ -592,8 +592,8 @@ public class Shop {
                             XMaterial.BONE,
                             16,
                             11,
-                            new BuyCost(100, 0),
-                            new SellReward(3, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(3, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lGunpowder",
@@ -601,8 +601,8 @@ public class Shop {
                             XMaterial.GUNPOWDER,
                             16,
                             12,
-                            new BuyCost(30, 0),
-                            new SellReward(3, 0)
+                            new BuyCost(30, 0, 0),
+                            new SellReward(3, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lString",
@@ -610,8 +610,8 @@ public class Shop {
                             XMaterial.STRING,
                             16,
                             13,
-                            new BuyCost(80, 0),
-                            new SellReward(3, 0)
+                            new BuyCost(80, 0, 0),
+                            new SellReward(3, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lArrow",
@@ -619,8 +619,8 @@ public class Shop {
                             XMaterial.ARROW,
                             16,
                             14,
-                            new BuyCost(75, 0),
-                            new SellReward(4, 0)
+                            new BuyCost(75, 0, 0),
+                            new SellReward(4, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSpider Eye",
@@ -628,8 +628,8 @@ public class Shop {
                             XMaterial.SPIDER_EYE,
                             16,
                             15,
-                            new BuyCost(50, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lEnder Pearl",
@@ -637,8 +637,8 @@ public class Shop {
                             XMaterial.ENDER_PEARL,
                             3,
                             16,
-                            new BuyCost(75, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(75, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSlime Ball",
@@ -646,8 +646,8 @@ public class Shop {
                             XMaterial.SLIME_BALL,
                             16,
                             19,
-                            new BuyCost(200, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lPrismarine Crystals",
@@ -655,8 +655,8 @@ public class Shop {
                             XMaterial.PRISMARINE_CRYSTALS,
                             16,
                             20,
-                            new BuyCost(50, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lPrismarine Shard",
@@ -664,8 +664,8 @@ public class Shop {
                             XMaterial.PRISMARINE_SHARD,
                             16,
                             21,
-                            new BuyCost(50, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lBlaze Rod",
@@ -673,8 +673,8 @@ public class Shop {
                             XMaterial.BLAZE_ROD,
                             4,
                             22,
-                            new BuyCost(250, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(250, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lMagma Cream",
@@ -682,8 +682,8 @@ public class Shop {
                             XMaterial.MAGMA_CREAM,
                             4,
                             23,
-                            new BuyCost(150, 0),
-                            new SellReward(15, 0)
+                            new BuyCost(150, 0, 0),
+                            new SellReward(15, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lGhast Tear",
@@ -691,8 +691,8 @@ public class Shop {
                             XMaterial.GHAST_TEAR,
                             4,
                             24,
-                            new BuyCost(200, 0),
-                            new SellReward(30, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(30, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lLeather",
@@ -700,8 +700,8 @@ public class Shop {
                             XMaterial.LEATHER,
                             8,
                             25,
-                            new BuyCost(50, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lRabbit Foot",
@@ -709,8 +709,8 @@ public class Shop {
                             XMaterial.RABBIT_FOOT,
                             4,
                             30,
-                            new BuyCost(250, 0),
-                            new SellReward(30, 0)
+                            new BuyCost(250, 0, 0),
+                            new SellReward(30, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lInk Sack",
@@ -718,8 +718,8 @@ public class Shop {
                             XMaterial.INK_SAC,
                             8,
                             31,
-                            new BuyCost(50, 0),
-                            new SellReward(5, 0)
+                            new BuyCost(50, 0, 0),
+                            new SellReward(5, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lFeather",
@@ -727,8 +727,8 @@ public class Shop {
                             XMaterial.FEATHER,
                             16,
                             32,
-                            new BuyCost(30, 0),
-                            new SellReward(3, 0)
+                            new BuyCost(30, 0, 0),
+                            new SellReward(3, 0, 0)
                     )
                     )
             )
@@ -739,8 +739,8 @@ public class Shop {
                             XMaterial.BUCKET,
                             1,
                             12,
-                            new BuyCost(100, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(100, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lWater Bucket",
@@ -748,8 +748,8 @@ public class Shop {
                             XMaterial.WATER_BUCKET,
                             1,
                             13,
-                            new BuyCost(200, 0),
-                            new SellReward(10, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(10, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lLava Bucket",
@@ -757,8 +757,8 @@ public class Shop {
                             XMaterial.LAVA_BUCKET,
                             1,
                             14,
-                            new BuyCost(200, 0),
-                            new SellReward(20, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(20, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lName Tag",
@@ -766,8 +766,8 @@ public class Shop {
                             XMaterial.NAME_TAG,
                             1,
                             21,
-                            new BuyCost(200, 0),
-                            new SellReward(30, 0)
+                            new BuyCost(200, 0, 0),
+                            new SellReward(30, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lSaddle",
@@ -775,8 +775,8 @@ public class Shop {
                             XMaterial.SADDLE,
                             1,
                             22,
-                            new BuyCost(300, 0),
-                            new SellReward(30, 0)
+                            new BuyCost(300, 0, 0),
+                            new SellReward(30, 0, 0)
                     ),
                     new ShopItem(
                             "&9&lEnd Portal Frame",
@@ -786,8 +786,8 @@ public class Shop {
                             null,
                             1,
                             23,
-                            new BuyCost(5000, 50),
-                            new SellReward(0, 0)
+                            new BuyCost(5000, 50, 0),
+                            new SellReward(0, 0, 0)
                     )
                     )
             )
@@ -795,8 +795,8 @@ public class Shop {
 
     public String overviewTitle = "&7Island Shop";
     public String categoryTitle = "&7Island Shop | %category_name%";
-    public String buyPriceLore = "&aBuy Price: $%buy_price_vault%, %buy_price_crystals% Crystals";
-    public String sellRewardLore = "&cSelling Reward: $%sell_reward_vault%, %sell_reward_crystals% Crystals";
+    public String buyPriceLore = "&aBuy Price: $%buy_price_vault%, %buy_price_crystals% Crystals, %buy_price_mobcoins% Mob Coins";
+    public String sellRewardLore = "&cSelling Reward: $%sell_reward_vault%, %sell_reward_crystals% Crystals, %sell_reward_mobcoins% Mob Coins";
     public String notPurchasableLore = "&cThis item cannot be purchased!";
     public String notSellableLore = "&cThis item cannot be sold!";
 

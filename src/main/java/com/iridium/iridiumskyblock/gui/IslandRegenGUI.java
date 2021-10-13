@@ -44,7 +44,7 @@ public class IslandRegenGUI extends SchematicGUI {
         Optional<Island> island = user.getIsland();
         IslandRegenSettings regenSettings = IridiumSkyblock.getInstance().getConfiguration().regenSettings;
         if (island.isPresent()) {
-            if (PlayerUtils.pay(player, island.get(), regenSettings.crystalPrice, regenSettings.moneyPrice)) {
+            if (PlayerUtils.pay(player, island.get(), regenSettings.crystalPrice, regenSettings.moneyPrice, regenSettings.mobcoinPrice)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig);
                 cooldownProvider.applyCooldown(player);

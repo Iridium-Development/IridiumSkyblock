@@ -80,7 +80,7 @@ public class Messages {
     public String demotedPlayer = "%prefix% &7You have demoted %player% to %rank%.";
     public String userDemotedPlayer = "%prefix% &7%promoter% has demoted %player% to %rank%.";
     public String transferredOwnership = "%prefix% &7%oldowner% has transferred Island ownership to %newowner%.";
-    public String islandValue = "%prefix% &b&l * &7%rank%: &b%value%";
+    public String islandValue = "%prefix% &b&l • &7%rank%: &b%value%";
     public String cannotChangeName = "%prefix% &7You cannot change the Island name!";
     public String islandNameTooLong = "%prefix% %name% is too long for the Island name, the maximum length is %max_length%";
     public String islandNameTooShort = "%prefix% %name% is too short for the Island name, the minimum length is %min_length%";
@@ -129,7 +129,7 @@ public class Messages {
     public String unknownUpgrade = "%prefix% &7Unknown Island upgrade.";
     public String unknownBooster = "%prefix% &7Unknown Island booster.";
     public String successfullyBoughtBooster = "%prefix% &7You have successfully bought the %booster% Booster &r&7for $%vault_cost% and %crystal_cost% Crystals.";
-    public String successfullyBoughtUpgrade = "%prefix% &7You have successfully bought the %upgrade% Upgrade &r&7for $%vault_cost% and %crystal_cost% Crystals.";
+    public String successfullyBoughtUpgrade = "%prefix% &7You have successfully bought the %upgrade% Upgrade &r&7for %mobcoins_cost% Mob Coins.";
     public String unknownWarp = "%prefix% &7Unknown Island warp.";
     public String alreadyTrusted = "%prefix% &7This player is already trusted.";
     public String trustedPlayer = "%prefix% &7%truster% has trusted %player% to your Island.";
@@ -150,7 +150,7 @@ public class Messages {
     public String flightEnabled = "%prefix% &7Island flight enabled.";
     public String flightDisabled = "%prefix% &7Island flight disabled.";
     public String bankWithdrew = "%prefix% &7You successfully withdrew %amount% %type% from your Island bank.";
-    public String bankDeposited = "%prefix% &7You successfully deposited %amount% %type% from your Island bank.";
+    public String bankDeposited = "%prefix% &7You successfully deposited %amount% %type% to your Island bank.";
     public String insufficientFundsToWithdrew = "%prefix% &7You do not have enough %type% to withdraw from your Island bank.";
     public String insufficientFundsToDeposit = "%prefix% &7You do not have enough %type% to deposit into your Island bank.";
     public String blockLimitReached = "%prefix% &7The maximum block limit for %block% (%limit%) has been reached!";

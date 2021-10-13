@@ -9,6 +9,8 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
+import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
@@ -33,6 +35,8 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,7 +88,7 @@ public class IridiumSkyblock extends IridiumCore {
     private List<BankItem> bankItemList;
     private Map<String, Permission> permissionList;
     private Map<String, Setting> settingsList;
-    private Map<String, Mission> missionsList;
+    private Map<String, Mission> missionsList = new HashMap<>();
     private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
 
@@ -192,6 +196,22 @@ public class IridiumSkyblock extends IridiumCore {
                 ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
             }
         }), 0, 20);
+
+        // Effect Upgrades
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            user.getIsland().ifPresent(island -> {
+                IslandUpgrade fireResistanceUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, "fireResistance");
+                if(fireResistanceUpgrade.getLevel() > 1) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 160, 0));
+                }
+
+                IslandUpgrade waterBreathingUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, "waterBreathing");
+                if(waterBreathingUpgrade.getLevel() > 1) {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, 160, 0));
+                }
+            });
+        }), 0, 100);
 
         // Register worlds with multiverse
         Bukkit.getScheduler().runTaskLater(this, () -> {
@@ -438,6 +458,12 @@ public class IridiumSkyblock extends IridiumCore {
         if (upgrades.blockLimitUpgrade.name == null) upgrades.blockLimitUpgrade.name = "Block Limit";
         if (upgrades.memberUpgrade.name == null) upgrades.memberUpgrade.name = "Members";
         if (upgrades.oresUpgrade.name == null) upgrades.oresUpgrade.name = "Ore Generator";
+        if (upgrades.cropSpeedUpgrade.name == null) upgrades.cropSpeedUpgrade.name = "Crop Growth Rate";
+        if (upgrades.mobDropMultiplierUpgrade.name == null) upgrades.mobDropMultiplierUpgrade.name = "Mob Drop Mutliplier";
+        if (upgrades.fireResistanceUpgrade.name == null) upgrades.fireResistanceUpgrade.name = "Fire Resistance";
+        if (upgrades.waterBreathingUpgrade.name == null) upgrades.waterBreathingUpgrade.name = "Water Breathing";
+        if (upgrades.infusedSkullUpgrade.name == null) upgrades.infusedSkullUpgrade.name = "Infused Skull Rate";
+        if (upgrades.autoSellChestUpgrade.name == null) upgrades.autoSellChestUpgrade.name = "AutoSell Chest";
 
         this.bankItemList = new ArrayList<>();
         if (bankItems.crystalsBankItem.isEnabled()) {
@@ -449,6 +475,9 @@ public class IridiumSkyblock extends IridiumCore {
         if (bankItems.moneyBankItem.isEnabled()) {
             this.bankItemList.add(bankItems.moneyBankItem);
         }
+        if (bankItems.mobcoinsBankItem.isEnabled()) {
+            this.bankItemList.add(bankItems.mobcoinsBankItem);
+        }
 
         for (Map.Entry<String, Schematics.SchematicConfig> schematics : schematics.schematics.entrySet()) {
             Schematics.SchematicConfig schematic = schematics.getValue();
@@ -457,7 +486,7 @@ public class IridiumSkyblock extends IridiumCore {
             if (schematic.end.islandHeight == null) schematic.end.islandHeight = 90.0;
         }
 
-        this.missionsList = new HashMap<>(missions.missions);
+        //this.missionsList = new HashMap<>(missions.missions);
 
         this.upgradesList = new HashMap<>();
         if (upgrades.sizeUpgrade.enabled)
@@ -471,6 +500,24 @@ public class IridiumSkyblock extends IridiumCore {
         if (upgrades.oresUpgrade.enabled) {
             upgradesList.put("generator", upgrades.oresUpgrade);
             BlockFormListener.generateOrePossibilities();
+        }
+        if (upgrades.cropSpeedUpgrade.enabled) {
+            upgradesList.put("cropSpeed", upgrades.cropSpeedUpgrade);
+        }
+        if (upgrades.mobDropMultiplierUpgrade.enabled) {
+            upgradesList.put("mobDropMultiplier", upgrades.mobDropMultiplierUpgrade);
+        }
+        if (upgrades.fireResistanceUpgrade.enabled) {
+            upgradesList.put("fireResistance", upgrades.fireResistanceUpgrade);
+        }
+        if (upgrades.waterBreathingUpgrade.enabled) {
+            upgradesList.put("waterBreathing", upgrades.waterBreathingUpgrade);
+        }
+        if (upgrades.autoSellChestUpgrade.enabled) {
+            upgradesList.put("autoSellChest", upgrades.autoSellChestUpgrade);
+        }
+        if (upgrades.infusedSkullUpgrade.enabled) {
+            upgradesList.put("infusedSkull", upgrades.infusedSkullUpgrade);
         }
 
         this.boosterList = new HashMap<>();

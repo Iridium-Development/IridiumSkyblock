@@ -4,13 +4,17 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class EntityDeathListener implements Listener {
@@ -29,6 +33,19 @@ public class EntityDeathListener implements Listener {
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
             if (islandBooster.isActive()) {
                 event.setDroppedExp(event.getDroppedExp() * 2);
+            }
+
+            IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "mobDropMultiplier");
+            int mobDropMultiplier = IridiumSkyblock.getInstance().getUpgrades().mobDropMultiplierUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
+
+            if(mobDropMultiplier > 1) {
+                List<ItemStack> drops = new ArrayList(event.getDrops());
+                event.getDrops().clear();
+                drops.forEach(drop -> {
+                    ItemStack dropClone = drop.clone();
+                    dropClone.setAmount(dropClone.getAmount() * mobDropMultiplier);
+                    event.getDrops().add(dropClone);
+                });
             }
         });
     }

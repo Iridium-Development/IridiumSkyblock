@@ -18,6 +18,7 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.jeff-media.de/maven2/")
+
 }
 
 dependencies {
@@ -47,6 +48,8 @@ dependencies {
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.20")
+
+    compileOnly(files("../OPBlocks/lib/CurrenciesAPI.jar"))
 }
 
 tasks {
@@ -90,7 +93,7 @@ tasks {
 // Set the Java version and vendor
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(16))
         vendor.set(JvmVendorSpec.ADOPTOPENJDK)
     }
 }

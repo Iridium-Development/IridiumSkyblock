@@ -1,14 +1,23 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
+import com.iridium.iridiumskyblock.database.Island;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
 
 /**
  * Represents a clickable GUI.
@@ -18,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class GUI implements InventoryHolder {
 
     private NoItemGUI noItemGUI;
+    public ItemStack backItem = ItemStackUtils.makeItem(new Item(XMaterial.BARRIER, 1,StringUtils.color("&c&lBack"), new ArrayList<>()));
 
     /**
      * The default constructor.

@@ -94,13 +94,14 @@ public class ShopManager {
         BuyCost buyCost = shopItem.buyCost;
         double vaultCost = calculateCost(amount, shopItem.defaultAmount, buyCost.vault);
         int crystalCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.crystals);
+        int mobcoinCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.mobcoins);
         final Optional<Island> island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland();
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
 
-        boolean canPurchase = PlayerUtils.canPurchase(player, island.get(), crystalCost, vaultCost);
+        boolean canPurchase = PlayerUtils.canPurchase(player, island.get(), crystalCost, vaultCost, mobcoinCost);
         if (!canPurchase) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             IridiumSkyblock.getInstance().getShop().failSound.play(player);
@@ -133,7 +134,7 @@ public class ShopManager {
         }
 
         // Only run the withdrawing function when the user can buy it.
-        PlayerUtils.pay(player, island.get(), crystalCost, vaultCost);
+        PlayerUtils.pay(player, island.get(), crystalCost, vaultCost, mobcoinCost);
 
         IridiumSkyblock.getInstance().getShop().successSound.play(player);
 
@@ -145,6 +146,7 @@ public class ShopManager {
                                 .replace("%item%", StringUtils.color(shopItem.name))
                                 .replace("%vault_cost%", String.valueOf(vaultCost))
                                 .replace("%crystal_cost%", String.valueOf(crystalCost))
+                                .replace("%mobcoin_cost%", String.valueOf(crystalCost))
                 )
         );
     }
@@ -182,13 +184,16 @@ public class ShopManager {
     public void giveReward(Player player, ShopItem item, int amount) {
         double vaultReward = calculateCost(amount, item.defaultAmount, item.sellReward.vault);
         int crystalReward = (int) calculateCost(amount, item.defaultAmount, item.sellReward.crystals);
+        int mobcoinReward = (int) calculateCost(amount, item.defaultAmount, item.sellReward.mobcoins);
 
         Island island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland().get();
         IslandBank moneyIslandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
         IslandBank crystalIslandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+        IslandBank mobcoinIslandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem);
 
         moneyIslandBank.setNumber(moneyIslandBank.getNumber() + vaultReward);
         crystalIslandBank.setNumber(crystalIslandBank.getNumber() + crystalReward);
+        mobcoinIslandBank.setNumber(mobcoinIslandBank.getNumber() + mobcoinReward);
 
         player.sendMessage(
                 StringUtils.color(
@@ -198,6 +203,7 @@ public class ShopManager {
                                 .replace("%item%", StringUtils.color(item.name))
                                 .replace("%vault_reward%", String.valueOf(vaultReward))
                                 .replace("%crystal_reward%", String.valueOf(crystalReward))
+                                .replace("%mobcoin_reward%", String.valueOf(crystalReward))
                 )
         );
     }

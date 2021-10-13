@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.configs.inventories.InventoryConfig;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -29,6 +30,10 @@ public class InventoryConfigGUI extends GUI {
         for (String command : inventoryConfig.items.keySet()) {
             if (inventoryConfig.items.get(command).slot == event.getSlot()) {
                 event.getWhoClicked().closeInventory();
+                if(command.equalsIgnoreCase("is missions")) {
+                    ((Player) event.getWhoClicked()).chat("/is missions");
+                    return;
+                }
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), command);
             }
         }

@@ -23,6 +23,7 @@ public class Placeholders {
     public String islandBankExperience = "0";
     public String islandBankCrystals = "0";
     public String islandBankMoney = "0";
+    public String islandBankMobCoins = "0";
     public String islandBiome = "N/A";
 
     // Island Upgrade Placeholders
@@ -39,5 +40,6 @@ public class Placeholders {
     public String unknownPlayer = "N/A";
     public String crystalCost = "0";
     public String vaultCost = "0";
-    
+    public String mobcoinsCost = "0";
+
 }

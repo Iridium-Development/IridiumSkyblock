@@ -16,8 +16,8 @@ softdepend:
   - "UltimateStacker"
   - "EpicSpawners"
   - "WorldEdit"
-loadbefore:
-  - "Multiverse-Core"
+  - "CurrenciesAPI"
+loadbefore: [Multiverse-Core]
 commands:
   iridiumskyblock:
     aliases: [ "island", is ]

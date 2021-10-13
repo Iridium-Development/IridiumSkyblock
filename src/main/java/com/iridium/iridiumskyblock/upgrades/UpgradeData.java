@@ -13,6 +13,8 @@ import java.util.List;
 public class UpgradeData {
     public int money;
     public int crystals;
+    public int mobcoins;
+    public int prestigeRequired;
 
     @JsonIgnore
     public List<Placeholder> getPlaceholders() {

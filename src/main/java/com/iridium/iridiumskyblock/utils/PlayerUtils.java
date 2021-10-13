@@ -3,9 +3,11 @@ package com.iridium.iridiumskyblock.utils;
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
+import lynn.lace.currenciesapi.api.CurrenciesAPI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,18 +32,18 @@ public class PlayerUtils {
      * @param island    The Player's Island
      * @param crystals  The amount of crystals
      * @param money     The amount of money
-     * @return If the purchase was successful. {@link PlayerUtils#canPurchase(Player, Island, int, double)} should be preferred.
+     * @return If the purchase was successful. {@link PlayerUtils#canPurchase(Player, Island, int, double, int)} should be preferred.
      */
-    public static boolean pay(@NotNull Player player, @NotNull Island island, int crystals, double money) {
+    public static boolean pay(@NotNull Player player, @NotNull Island island, int crystals, double money, int mobcoins) {
         // Don't withdraw stuff if they can't purchase it.
-        if (!canPurchase(player, island, crystals, money)) {
+        if (!canPurchase(player, island, crystals, money, mobcoins)) {
             return false;
         }
 
         IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
         IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
-
+        CurrenciesAPI.getInstance().take("mobcoins", player,  mobcoins);
         islandCrystals.setNumber(islandCrystals.getNumber() - crystals);
         if (islandMoney.getNumber() >= money) {
             islandMoney.setNumber(islandMoney.getNumber() - money);
@@ -61,12 +63,14 @@ public class PlayerUtils {
      * @param money    The money being spent.
      * @return If they can purchase the item
      */
-    public static boolean canPurchase(@NotNull Player player, @NotNull Island island, int crystals, double money) {
+    public static boolean canPurchase(@NotNull Player player, @NotNull Island island, int crystals, double money, int mobcoins) {
         IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
         IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        double mobcoinsBalance = CurrenciesAPI.getInstance().get("mobcoins", player);
+        //IslandBank islandMobCoins = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem);
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
-        return islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money));
+        return mobcoinsBalance >= mobcoins && islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money));
     }
 
     /**

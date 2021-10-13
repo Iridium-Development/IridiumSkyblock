@@ -64,7 +64,7 @@ public class BoosterCommand extends Command {
             return false;
         }
 
-        if (!PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost)) {
+        if (!PlayerUtils.pay(player, island.get(), booster.crystalsCost, booster.vaultCost, booster.mobCoinCost)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }

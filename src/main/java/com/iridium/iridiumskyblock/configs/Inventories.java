@@ -102,16 +102,16 @@ public class Inventories {
 
     public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", background1, new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(
             "",
-            "&b&l * &7Island Name: &b%island_name%",
-            "&b&l * &7Island Rank: &b%island_rank%",
-            "&b&l * &7Island Value: &b%island_value%",
-            "&b&l * &7Netherite Blocks: &b%NETHERITE_BLOCK_AMOUNT%",
-            "&b&l * &7Emerald Blocks: &b%EMERALD_BLOCK_AMOUNT%",
-            "&b&l * &7Diamond Blocks: &b%DIAMOND_BLOCK_AMOUNT%",
-            "&b&l * &7Gold Blocks: &b%GOLD_BLOCK_AMOUNT%",
-            "&b&l * &7Iron Blocks: &b%IRON_BLOCK_AMOUNT%",
-            "&b&l * &7Hopper Blocks: &b%HOPPER_AMOUNT%",
-            "&b&l * &7Beacon Blocks: &b%BEACON_AMOUNT%",
+            "&b&l • &7Island Name: &b%island_name%",
+            "&b&l • &7Island Rank: &b%island_rank%",
+            "&b&l • &7Island Value: &b%island_value%",
+            "&b&l • &7Netherite Blocks: &b%NETHERITE_BLOCK_AMOUNT%",
+            "&b&l • &7Emerald Blocks: &b%EMERALD_BLOCK_AMOUNT%",
+            "&b&l • &7Diamond Blocks: &b%DIAMOND_BLOCK_AMOUNT%",
+            "&b&l • &7Gold Blocks: &b%GOLD_BLOCK_AMOUNT%",
+            "&b&l • &7Iron Blocks: &b%IRON_BLOCK_AMOUNT%",
+            "&b&l • &7Hopper Blocks: &b%HOPPER_AMOUNT%",
+            "&b&l • &7Beacon Blocks: &b%BEACON_AMOUNT%",
             "",
             "&b&l[!] &bLeft Click to Teleport to this Island."
     )), new Item(XMaterial.BARRIER, 1, " ", Collections.emptyList()));
@@ -144,7 +144,7 @@ public class Inventories {
             "&b%user% redeemed %type% reward (%days% days %hours% hours %minutes% minutes %seconds% seconds ago)",
             background2);
 
-    public NoItemGUI upgradesGUI = new NoItemGUI(27, "&7Island Upgrades", background2);
+    public NoItemGUI upgradesGUI = new NoItemGUI(36, "&7Island Upgrades", background2);
 
     public NoItemGUI boostersGUI = new NoItemGUI(27, "&7Island Boosters", background2);
 

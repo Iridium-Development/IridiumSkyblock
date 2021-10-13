@@ -396,6 +396,16 @@ public final class Island {
     }
 
     /**
+     * Returns the experience of this island that is in the Island bank.
+     *
+     * @return The experience in the bank
+     */
+    public long getMobCoins() {
+        return (long) IridiumSkyblock.getInstance().getIslandManager()
+                .getIslandBank(this, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem).getNumber();
+    }
+
+    /**
      * Returns the crystals of this island that are in the Island bank.
      *
      * @return The crystals in the bank
@@ -430,6 +440,15 @@ public final class Island {
      */
     public String getFormattedMoney() {
         return IridiumSkyblock.getInstance().getNumberFormatter().format(getMoney());
+    }
+
+    /**
+     * Formatted version of {@link Island#getMobCoins()}.
+     *
+     * @return The formatted mobcoins in the Island bank
+     */
+    public String getFormattedMobCoins() {
+        return IridiumSkyblock.getInstance().getNumberFormatter().format(getMobCoins());
     }
 
     /**
