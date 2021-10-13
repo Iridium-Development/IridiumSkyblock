@@ -7,10 +7,7 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.gui.IslandInvitesGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -102,12 +99,12 @@ public class InviteCommand extends Command {
         // Send a message to the user if he is online
         if (offlinePlayer instanceof Player) {
             Player targetPlayer = (Player) offlinePlayer;
-            TextComponent message = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited
+            BaseComponent[] message = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited
                     .replace("%inviter%", player.getName())
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
-            message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
-            message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
+            message[0].setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
+            message[0].setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
             targetPlayer.spigot().sendMessage(message);
         }
 

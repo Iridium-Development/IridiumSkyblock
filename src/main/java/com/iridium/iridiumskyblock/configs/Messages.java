@@ -185,6 +185,8 @@ public class Messages {
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
+    public String visitable = "Visitable";
+    public String notVisitable = "Private";
     public String ownerRankDisplayName = "Owner";
     public String coOwnerRankDisplayName = "Co-Owner";
     public String moderatorRankDisplayName = "Moderator";

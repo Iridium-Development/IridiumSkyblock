@@ -26,13 +26,13 @@ public class Configuration {
 
     public String prefix = "<GRADIENT:09C6F9>&lIridiumSkyblock</GRADIENT:045DE9> &8»";
     public String worldName = "IridiumSkyblock";
-    public boolean enableCheckVersion = true;
     public String islandCreateTitle = "&b&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
     public String spawnWorldName = "world";
     public String defaultCommandSyntax = "/is %command%";
 
+    public boolean enableCheckVersion = true;
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
     public boolean netherIslands = true;

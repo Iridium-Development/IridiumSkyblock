@@ -3,9 +3,14 @@ package com.iridium.iridiumskyblock.placeholders;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.stream.Collectors;
+
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -19,7 +24,7 @@ public class Placeholders {
     private static final com.iridium.iridiumskyblock.configs.Placeholders placeholdersConfig = IridiumSkyblock.getInstance().getPlaceholders();
     private static final IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
 
-    public static Map<String, Placeholder> placeholders = ImmutableMap.<String, Placeholder> builder()
+    public static Map<String, Placeholder> placeholders = ImmutableMap.<String, Placeholder>builder()
             .putAll(getIslandPlaceholders("island", player ->
                     IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland())
             )
@@ -35,7 +40,7 @@ public class Placeholders {
             .build();
 
     private static Map<String, Placeholder> getIslandPlaceholders(String startKey, IslandGetter islandGetter) {
-        return ImmutableMap.<String, Placeholder> builder()
+        ImmutableMap.Builder<String, Placeholder> placeholderBuilder = ImmutableMap.<String, Placeholder>builder()
                 .put(startKey + "_name", player ->
                         islandGetter.getIsland(player).map(Island::getName).orElse(placeholdersConfig.islandName)
                 )
@@ -51,23 +56,26 @@ public class Placeholders {
                 .put(startKey + "_value", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedValue).orElse(placeholdersConfig.islandValue)
                 )
+                .put(startKey + "_visitable", player ->
+                        islandGetter.getIsland(player).map(island -> island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().visitable : IridiumSkyblock.getInstance().getMessages().notVisitable).orElse(placeholdersConfig.islandValue)
+                )
                 .put(startKey + "_members", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getMembers().size())).orElse(placeholdersConfig.islandMembers)
                 )
                 .put(startKey + "_member_names", player ->
-                    islandGetter.getIsland(player).map(island -> island.getMembers().stream().map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandMemberNames)
+                        islandGetter.getIsland(player).map(island -> island.getMembers().stream().map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandMemberNames)
                 )
                 .put(startKey + "_visitors", player ->
-                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().filter(user -> !island.equals(user.getIsland().orElse(null))).count())).orElse(placeholdersConfig.islandVisitors)
+                        islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().filter(user -> !island.equals(user.getIsland().orElse(null))).count())).orElse(placeholdersConfig.islandVisitors)
                 )
                 .put(startKey + "_visitor_names", player ->
-                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().filter(user -> !island.equals(user.getIsland().orElse(null))).map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandVisitorNames)
+                        islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().filter(user -> !island.equals(user.getIsland().orElse(null))).map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandVisitorNames)
                 )
                 .put(startKey + "_players", player ->
-                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).size())).orElse(placeholdersConfig.islandPlayers)
+                        islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).size())).orElse(placeholdersConfig.islandPlayers)
                 )
                 .put(startKey + "_player_names", player ->
-                    islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandPlayerNames)
+                        islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island).stream().map(User::getName).collect(Collectors.joining(", "))).orElse(placeholdersConfig.islandPlayerNames)
                 )
                 .put(startKey + "_experience", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedExperience).orElse(placeholdersConfig.islandExperience)
@@ -145,9 +153,26 @@ public class Placeholders {
 
                 .put(startKey + "_upgrade_warp_amount", player -> islandGetter.getIsland(player).map(island ->
                         IridiumSkyblock.getInstance().getNumberFormatter().format(IridiumSkyblock.getInstance().getUpgrades().warpsUpgrade.upgrades.get(islandManager.getIslandUpgrade(island, "warp").getLevel()).amount)
-                ).orElse(placeholdersConfig.islandUpgradeWarpAmount))
+                ).orElse(placeholdersConfig.islandUpgradeWarpAmount));
 
-                .build();
+        //Boosters
+        for (String booster : IridiumSkyblock.getInstance().getBoosterList().keySet()) {
+            placeholderBuilder.put(startKey + "_booster_" + booster + "_remaining_minutes", player -> islandGetter.getIsland(player).map(island -> {
+                        IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, booster);
+                        long minutes = LocalDateTime.now().until(islandBooster.getTime(), ChronoUnit.MINUTES);
+                        return String.valueOf(Math.max(minutes, 0));
+                    }
+            ).orElse(placeholdersConfig.islandBoosterRemainingMinutes));
+            placeholderBuilder.put(startKey + "_booster_" + booster + "_remaining_seconds", player -> islandGetter.getIsland(player).map(island -> {
+                        IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, booster);
+                        long minutes = LocalDateTime.now().until(islandBooster.getTime(), ChronoUnit.MINUTES);
+                        long seconds = LocalDateTime.now().until(islandBooster.getTime(), ChronoUnit.SECONDS) - minutes * 60;
+                        return String.valueOf(Math.max(seconds, 0));
+                    }
+            ).orElse(placeholdersConfig.islandBoosterRemainingSeconds));
+        }
+
+        return placeholderBuilder.build();
     }
 
     private static Map<String, Placeholder> getIslandTopPlaceholders() {

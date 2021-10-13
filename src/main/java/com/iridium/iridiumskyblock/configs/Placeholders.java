@@ -36,6 +36,10 @@ public class Placeholders {
     public String islandUpgradeSizeDimensions = "0";
     public String islandUpgradeWarpAmount = "0";
 
+    // Island Booster Placeholders
+    public String islandBoosterRemainingMinutes = "0";
+    public String islandBoosterRemainingSeconds = "0";
+
     // Other Placeholders
     public String unknownPlayer = "N/A";
     public String crystalCost = "0";

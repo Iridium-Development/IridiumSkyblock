@@ -24,9 +24,9 @@ public class WorldEdit implements SchematicPaster {
     private static final HashMap<File, ClipboardFormat> cachedClipboardFormat = new HashMap<>();
 
     @Override
-    public void paste(File file, Location location, CompletableFuture<Void> completableFuture) {
+    public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         try {
-            ClipboardFormat format = (cachedClipboardFormat.get(file) != null) ? cachedClipboardFormat.get(file) : ClipboardFormats.findByFile(file);
+            ClipboardFormat format = cachedClipboardFormat.getOrDefault(file, ClipboardFormats.findByFile(file));
             ClipboardReader reader = format.getReader(new FileInputStream(file));
             Clipboard clipboard = reader.read();
             int width = clipboard.getDimensions().getBlockX();
@@ -34,14 +34,15 @@ public class WorldEdit implements SchematicPaster {
             int length = clipboard.getDimensions().getBlockZ();
             location.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
             clipboard.setOrigin(clipboard.getRegion().getMinimumPoint()); // Change the //copy point to the minimum corner
-            try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().getEditSessionFactory().getEditSession(new BukkitWorld(location.getWorld()), -1)) {
+            try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().newEditSession(new BukkitWorld(location.getWorld()))) {
                 Operation operation = new ClipboardHolder(clipboard)
                         .createPaste(editSession)
                         .to(BlockVector3.at(location.getX(), location.getY(), location.getZ()))
                         .copyEntities(true)
-                        .ignoreAirBlocks(true)
+                        .ignoreAirBlocks(ignoreAirBlock)
                         .build();
                 Operations.complete(operation);
+                Operations.complete(editSession.commit());
                 cachedClipboardFormat.putIfAbsent(file, format);
                 completableFuture.complete(null);
             }
