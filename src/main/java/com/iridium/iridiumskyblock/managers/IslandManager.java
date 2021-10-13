@@ -252,7 +252,7 @@ public class IslandManager {
                     user.setIslandRank(IslandRank.OWNER);
 
                     pasteSchematic(island, schematic).thenRun(() -> {
-                        teleportHome(player, island);
+                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> teleportHome(player, island));
                         completableFuture.complete(island);
                     });
                 })
