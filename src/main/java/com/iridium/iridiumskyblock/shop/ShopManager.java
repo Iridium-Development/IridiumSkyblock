@@ -120,9 +120,9 @@ public class ShopManager {
                 itemStack.setItemMeta(itemMeta);
             }
 
-            for (ItemStack items : player.getInventory().addItem(itemStack).values()) {
-                Item item = player.getWorld().dropItem(player.getEyeLocation(), items);
-                item.setVelocity(player.getEyeLocation().getDirection().multiply(0.28));
+            for (ItemStack dropItem : player.getInventory().addItem(itemStack).values()) {
+                player.getWorld().dropItem(player.getEyeLocation(), dropItem);
+
             }
         } else {
             // Run the command
