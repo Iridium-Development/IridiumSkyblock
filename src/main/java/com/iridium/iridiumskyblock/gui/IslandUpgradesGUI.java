@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;

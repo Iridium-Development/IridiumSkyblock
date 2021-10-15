@@ -20,7 +20,6 @@ import com.iridium.iridiumskyblock.managers.SchematicManager;
 import com.iridium.iridiumskyblock.managers.UserManager;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
-import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -428,9 +427,7 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         if (bankItems.crystalsBankItem.getDisplayName() == null) bankItems.crystalsBankItem.setDisplayName("Crystal");
-        if (bankItems.experienceBankItem.getDisplayName() == null) {
-            bankItems.experienceBankItem.setDisplayName("Experience");
-        }
+        if (bankItems.experienceBankItem.getDisplayName() == null) bankItems.experienceBankItem.setDisplayName("Experience");
         if (bankItems.moneyBankItem.getDisplayName() == null) bankItems.moneyBankItem.setDisplayName("Money");
 
         if (boosters.experienceBooster.name == null) boosters.experienceBooster.name = "Experience";
@@ -443,7 +440,6 @@ public class IridiumSkyblock extends IridiumCore {
         if (upgrades.blockLimitUpgrade.name == null) upgrades.blockLimitUpgrade.name = "Block Limit";
         if (upgrades.memberUpgrade.name == null) upgrades.memberUpgrade.name = "Members";
         if (upgrades.oresUpgrade.name == null) upgrades.oresUpgrade.name = "Ore Generator";
-
 
         this.bankItemList = new ArrayList<>();
         if (bankItems.crystalsBankItem.isEnabled()) {
@@ -529,7 +525,6 @@ public class IridiumSkyblock extends IridiumCore {
         if (inventories.islandRanksGUI.backButton == null) inventories.islandRanksGUI.backButton = backButton22Is;
         if (inventories.biomeGUI.backButton == null) inventories.biomeGUI.backButton = backButton40Is;
         if (inventories.islandReward.backButton == null) inventories.islandReward.backButton = backButton40Is;
-
     }
 
     private void loadConfigFiles() {

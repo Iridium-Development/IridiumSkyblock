@@ -7,7 +7,6 @@ import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 

@@ -14,7 +14,6 @@ public class LogInventoryConfig extends NoItemGUI {
     public Item IslandBoosters;
     public Item IslandUpgrades;
     public Item IslandRewards;
-
     public String USER_JOINED;
     public String USER_KICKED;
     public String USER_LEFT;
@@ -53,6 +52,5 @@ public class LogInventoryConfig extends NoItemGUI {
         this.BOOSTER_PURCHASE = BOOSTER_PURCHASE;
         this.UPGRADE_PURCHASE = UPGRADE_PURCHASE;
         this.REWARD_REDEEMED = REWARD_REDEEMED;
-
     }
 }

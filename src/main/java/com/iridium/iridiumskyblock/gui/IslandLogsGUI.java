@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -10,8 +9,6 @@ import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.LogInventoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -82,9 +79,9 @@ public class IslandLogsGUI extends IslandGUI {
                 int seconds = (int) Math.floor((time - (days * 86400) - (hours * 3600)) % 60.0D);
 
                 lore.add(StringUtils.color(getLore(islandLog.getLogAction())
-                                .replace("%type%", islandLog.getData())
-                                .replace("%amount%", String.valueOf(islandLog.getAmount()))
-                                .replace("%user%", islandLog.getUser().getName()))
+                        .replace("%type%", islandLog.getData())
+                        .replace("%amount%", String.valueOf(islandLog.getAmount()))
+                        .replace("%user%", islandLog.getUser().getName()))
                         .replace("%target%", islandLog.getTarget().getName())
                         .replace("%seconds%", String.valueOf(seconds))
                         .replace("%minutes%", String.valueOf(minutes))
@@ -100,11 +97,10 @@ public class IslandLogsGUI extends IslandGUI {
 
         int maxPage = (int) Math.ceil(islandLogs.size() / 10.00);
 
-        itemMeta.setLore(lore.stream()
-                .map(loreLine -> loreLine
-                        .replace("%current_page%", String.valueOf(page))
-                        .replace("%max_page%", String.valueOf(maxPage > 0 ? maxPage : 1))
-                ).collect(Collectors.toList()));
+        itemMeta.setLore(lore.stream().map(loreLine -> loreLine
+                .replace("%current_page%", String.valueOf(page))
+                .replace("%max_page%", String.valueOf(maxPage > 0 ? maxPage : 1))
+        ).collect(Collectors.toList()));
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(item.slot, itemStack);
     }

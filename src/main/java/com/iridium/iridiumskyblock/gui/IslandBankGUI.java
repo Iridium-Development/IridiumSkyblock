@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -30,6 +29,7 @@ public class IslandBankGUI extends IslandGUI {
         super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
     }
 
+    @Override
     public void addContent(Inventory inventory) {
         clearInventory(inventory);
 
