@@ -28,14 +28,14 @@ public class IslandUpgradesGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandUpgradesGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().upgradesGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().upgradesGUI, island, islandMenu);
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().upgradesGUI.background);
-
+        backItem(this, inventory);
         for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             Item item = upgrade.getValue().item;
             int level = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(getIsland(), upgrade.getKey()).getLevel();
@@ -67,6 +67,7 @@ public class IslandUpgradesGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             if (event.getSlot() == upgrade.getValue().item.slot) {
                 String command = IridiumSkyblock.getInstance().getCommands().upgradesCommand.aliases.get(0);

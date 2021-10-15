@@ -43,7 +43,7 @@ public class IslandLogsGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandLogsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().logsGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().logsGUI, island, islandMenu);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class IslandLogsGUI extends IslandGUI {
         inventory.clear();
 
         InventoryUtils.fillInventory(inventory, logInventoryConfig.background);
-
+        backItem(this, inventory);
         setItemStack(inventory, logInventoryConfig.IslandMembers, membersPage, LogAction.USER_JOINED, LogAction.USER_KICKED, LogAction.USER_LEFT, LogAction.USER_DEMOTED, LogAction.USER_PROMOTED);
         setItemStack(inventory, logInventoryConfig.IslandInvites, invitesPage, LogAction.USER_INVITED, LogAction.USER_UNINVITED);
         setItemStack(inventory, logInventoryConfig.IslandTrusts, trustsPage, LogAction.USER_TRUSTED, LogAction.USER_UNTRUSTED);
@@ -153,6 +153,7 @@ public class IslandLogsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         if (!event.getClick().equals(ClickType.LEFT) && !event.getClick().equals(ClickType.RIGHT)) return;
         int i = event.getClick().equals(ClickType.LEFT) ? -1 : 1;
         LogInventoryConfig logInventoryConfig = IridiumSkyblock.getInstance().getInventories().logsGUI;

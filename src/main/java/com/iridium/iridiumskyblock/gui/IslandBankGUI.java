@@ -26,14 +26,14 @@ public class IslandBankGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandBankGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().bankGUI, island, islandMenu);
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
-
+        backItem(this, inventory);
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(getIsland(), bankItem);
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", IridiumSkyblock.getInstance().getNumberFormatter().format(islandBank.getNumber())))));
@@ -48,6 +48,7 @@ public class IslandBankGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 

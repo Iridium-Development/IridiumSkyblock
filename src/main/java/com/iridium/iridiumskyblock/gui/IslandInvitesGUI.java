@@ -31,7 +31,7 @@ public class IslandInvitesGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandInvitesGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, island, islandMenu);
         invites = new HashMap<>();
     }
 
@@ -40,7 +40,7 @@ public class IslandInvitesGUI extends IslandGUI {
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(getIsland());
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
-
+        backItem(this, inventory);
         AtomicInteger slot = new AtomicInteger(0);
         for (int i = 0; i < islandInvites.size(); i++) {
             Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
@@ -62,6 +62,7 @@ public class IslandInvitesGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         if (invites.containsKey(event.getSlot())) {
             String command = IridiumSkyblock.getInstance().getCommands().unInviteCommand.aliases.get(0);
             Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + invites.get(event.getSlot()));

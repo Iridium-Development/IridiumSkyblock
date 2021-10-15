@@ -31,7 +31,7 @@ public class IslandVisitorsGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandVisitorsGUI(int page, @NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, island, islandMenu);
         this.page = page;
         this.visitors = new ArrayList<>();
     }
@@ -42,6 +42,7 @@ public class IslandVisitorsGUI extends IslandGUI {
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        backItem(this, inventory);
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         final long elementsPerPage = inventory.getSize() - 9;
@@ -67,6 +68,7 @@ public class IslandVisitorsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == size - 7 && page > 1) {

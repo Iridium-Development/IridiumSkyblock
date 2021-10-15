@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class IslandRewardsGUI extends IslandGUI {
 
     public IslandRewardsGUI(Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandReward, island);
+        super(IridiumSkyblock.getInstance().getInventories().islandReward, island, islandMenu);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class IslandRewardsGUI extends IslandGUI {
         inventory.clear();
 
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandReward.background);
-
+        backItem(this, inventory);
         List<Placeholder> placeholders = new PlaceholderBuilder().applyIslandPlaceholders(getIsland()).build();
 
         AtomicInteger atomicInteger = new AtomicInteger(0);
@@ -36,6 +36,7 @@ public class IslandRewardsGUI extends IslandGUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         List<IslandReward> islandRewards = IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(getIsland());
         if (islandRewards.size() > event.getSlot()) {
             IslandReward islandReward = islandRewards.get(event.getSlot());

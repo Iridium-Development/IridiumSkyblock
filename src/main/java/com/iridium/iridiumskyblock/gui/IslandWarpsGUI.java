@@ -26,14 +26,14 @@ public class IslandWarpsGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandWarpsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, island, islandMenu);
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().warpsGUI.background);
-
+        backItem(this, inventory);
         AtomicInteger atomicInteger = new AtomicInteger(1);
 
         List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(getIsland());
@@ -59,6 +59,7 @@ public class IslandWarpsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(getIsland());
         Collections.reverse(islandWarps);
         AtomicInteger atomicInteger = new AtomicInteger(1);

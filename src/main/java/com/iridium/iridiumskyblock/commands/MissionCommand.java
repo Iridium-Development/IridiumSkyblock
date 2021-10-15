@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.gui.IslandMissionsGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -45,8 +46,10 @@ public class MissionCommand extends Command {
             return false;
         }
 
+        Inventory mainMenu = new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI, new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu, null).getInventory()).getInventory();
+
         if (args.length != 2) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
+            player.openInventory(mainMenu);
             return true;
         }
 
@@ -56,7 +59,7 @@ public class MissionCommand extends Command {
             return false;
         }
 
-        player.openInventory(new IslandMissionsGUI(island.get(), missionType).getInventory());
+        player.openInventory(new IslandMissionsGUI(island.get(), missionType, mainMenu).getInventory());
         return true;
     }
 

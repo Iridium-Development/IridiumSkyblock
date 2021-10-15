@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a clickable GUI.
@@ -26,8 +27,8 @@ public abstract class IslandGUI extends GUI {
      * @param noItemGUI The NoItemGUI of this GUI
      * @param island    The island of this GUI. Can be null
      */
-    public IslandGUI(@NotNull NoItemGUI noItemGUI, @NotNull Island island) {
-        super(noItemGUI);
+    public IslandGUI(@NotNull NoItemGUI noItemGUI, @NotNull Island island, @Nullable Inventory backInventory) {
+        super(noItemGUI, backInventory);
         this.island = island;
     }
 

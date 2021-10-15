@@ -27,7 +27,7 @@ public class IslandRanksGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandRanksGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandRanksGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().islandRanksGUI, island, islandMenu);
     }
 
     @Override
@@ -35,6 +35,7 @@ public class IslandRanksGUI extends IslandGUI {
         inventory.clear();
         IslandRanksInventoryConfig islandRanks = IridiumSkyblock.getInstance().getInventories().islandRanksGUI;
         InventoryUtils.fillInventory(inventory, islandRanks.background);
+        backItem(this, inventory);
         List<User> members = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(getIsland());
         inventory.setItem(islandRanks.owner.slot, ItemStackUtils.makeItem(islandRanks.owner,
                 Collections.singletonList(new Placeholder("members", getIsland().getOwner().getName()))));
@@ -56,6 +57,7 @@ public class IslandRanksGUI extends IslandGUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         IslandRanksInventoryConfig islandRanks = IridiumSkyblock.getInstance().getInventories().islandRanksGUI;
         if (event.getSlot() == islandRanks.owner.slot)
             event.getWhoClicked().openInventory(new IslandPermissionsGUI(getIsland(), IslandRank.OWNER, 1).getInventory());

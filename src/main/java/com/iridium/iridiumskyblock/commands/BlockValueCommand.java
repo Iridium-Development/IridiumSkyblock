@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 /**
  * Command which shows all the valuable blocks and spawners.
@@ -37,14 +38,15 @@ public class BlockValueCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
+        Inventory mainInventory = new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI, new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu, null).getInventory()).getInventory();
         if (arguments.length != 2) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+            player.openInventory(mainInventory);
             return true;
         }
 
         BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
         if (blockValueType == null) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI, mainInventory).getInventory());
             return true;
         }
 

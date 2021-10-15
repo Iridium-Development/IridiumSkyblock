@@ -29,7 +29,7 @@ public class VisitGUI extends GUI {
      * @param viewer The viewer of this GUI
      */
     public VisitGUI(int page, User viewer) {
-        super(IridiumSkyblock.getInstance().getInventories().visitGUI);
+        super(IridiumSkyblock.getInstance().getInventories().visitGUI, islandMenu);
         this.page = page;
         this.viewer = viewer;
     }

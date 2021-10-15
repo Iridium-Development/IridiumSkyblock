@@ -31,7 +31,7 @@ public class IslandTrustedGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandTrustedGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().trustedGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().trustedGUI, island, islandMenu);
         this.members = new HashMap<>();
     }
 
@@ -39,7 +39,7 @@ public class IslandTrustedGUI extends IslandGUI {
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().trustedGUI.background);
-
+        backItem(this, inventory);
         List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(getIsland());
         AtomicInteger slot = new AtomicInteger(0);
         for (IslandTrusted islandTrusted : islandTrustedList) {
@@ -59,6 +59,7 @@ public class IslandTrustedGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
             String command = IridiumSkyblock.getInstance().getCommands().unTrustCommand.aliases.get(0);

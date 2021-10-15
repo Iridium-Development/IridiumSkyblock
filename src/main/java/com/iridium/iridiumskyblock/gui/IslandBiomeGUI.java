@@ -29,7 +29,7 @@ public class IslandBiomeGUI extends IslandGUI {
     private final CooldownProvider<CommandSender> cooldownProvider;
 
     public IslandBiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider) {
-        super(IridiumSkyblock.getInstance().getInventories().biomeGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().biomeGUI, island, islandMenu);
         this.biomes = Arrays.stream(XBiome.VALUES).filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
         this.environment = environment;
         this.page = page;
@@ -42,6 +42,7 @@ public class IslandBiomeGUI extends IslandGUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().biomeGUI.background);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        backItem(this, inventory);
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         final long elementsPerPage = inventory.getSize() - 9;
@@ -58,7 +59,7 @@ public class IslandBiomeGUI extends IslandGUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-
+        backItem(this, event);
         final int size = IridiumSkyblock.getInstance().getInventories().biomeGUI.size;
 
         Player player = (Player) event.getWhoClicked();

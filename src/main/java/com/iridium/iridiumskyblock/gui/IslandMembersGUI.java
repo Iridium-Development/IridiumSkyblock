@@ -28,7 +28,7 @@ public class IslandMembersGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandMembersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().membersGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().membersGUI, island, islandMenu);
         this.members = new HashMap<>();
     }
 
@@ -38,7 +38,7 @@ public class IslandMembersGUI extends IslandGUI {
         members.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().membersGUI.background);
         AtomicInteger slot = new AtomicInteger(0);
-
+        backItem(this, inventory);
         for (User user : getIsland().getMembers()) {
             int itemSlot = slot.getAndIncrement();
             inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().membersGUI.item, new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build()));
@@ -54,6 +54,7 @@ public class IslandMembersGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
 

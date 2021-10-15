@@ -32,7 +32,7 @@ public class BlockValueGUI extends GUI {
      * @param type The type of valuable block shown in this GUI
      */
     public BlockValueGUI(BlockValueType type) {
-        super(IridiumSkyblock.getInstance().getInventories().blockValue);
+        super(IridiumSkyblock.getInstance().getInventories().blockValue, islandMenu);
         this.guiType = type;
     }
 
@@ -43,6 +43,7 @@ public class BlockValueGUI extends GUI {
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        backItem(this, inventory);
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         if (guiType == BlockValueType.BLOCK) {
@@ -81,6 +82,7 @@ public class BlockValueGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == getNoItemGUI().size - 7 && page > 1) {
             page--;

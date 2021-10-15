@@ -33,7 +33,7 @@ public class IslandPermissionsGUI extends IslandGUI {
      * @param islandRank The rank which is being configured
      */
     public IslandPermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank, int page) {
-        super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI, island, islandMenu);
         this.islandRank = islandRank;
         this.page = page;
     }
@@ -43,6 +43,7 @@ public class IslandPermissionsGUI extends IslandGUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI.background);
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        backItem(this, inventory);
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
@@ -60,6 +61,7 @@ public class IslandPermissionsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
             if (permission.getValue().getItem().slot != event.getSlot()) continue;
             if (permission.getValue().getPage() != page) continue;

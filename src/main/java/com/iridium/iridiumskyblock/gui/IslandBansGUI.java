@@ -32,7 +32,7 @@ public class IslandBansGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandBansGUI(int page, @NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bansGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().bansGUI, island, islandMenu);
         this.page = page;
     }
 
@@ -42,6 +42,7 @@ public class IslandBansGUI extends IslandGUI {
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+        backItem(this, inventory);
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         islandBans = new ArrayList<>(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(getIsland()));
@@ -68,6 +69,7 @@ public class IslandBansGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == size - 7 && page > 1) {

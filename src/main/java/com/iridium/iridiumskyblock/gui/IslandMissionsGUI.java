@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.database.IslandMission;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,8 @@ public class IslandMissionsGUI extends IslandGUI {
      * @param missionType The amount of times the containing missions can be claimed
      * @see com.iridium.iridiumskyblock.Mission.MissionType
      */
-    public IslandMissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType) {
-        super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI, island);
+    public IslandMissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType, @Nullable Inventory backInventory) {
+        super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI, island, backInventory);
         this.missionType = missionType;
     }
 
@@ -36,7 +37,7 @@ public class IslandMissionsGUI extends IslandGUI {
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().missionsGUI.background);
-
+        backItem(this, inventory);
         if (missionType == Mission.MissionType.DAILY) {
             Map<String, Mission> missions = IridiumSkyblock.getInstance().getIslandManager().getDailyIslandMissions(getIsland());
             int i = 0;
@@ -79,6 +80,7 @@ public class IslandMissionsGUI extends IslandGUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         // Do nothing here
+        backItem(this, event);
     }
 
 }

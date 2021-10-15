@@ -32,14 +32,14 @@ public class IslandSettingsGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandSettingsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandSettingsGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().islandSettingsGUI, island, islandMenu);
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandSettingsGUI.background);
-
+        backItem(this, inventory);
         for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), setting.getKey(), setting.getValue().getDefaultValue());
             inventory.setItem(setting.getValue().getItem().slot, ItemStackUtils.makeItem(setting.getValue().getItem(), Collections.singletonList(new Placeholder("value", WordUtils.capitalize(islandSetting.getValue().toLowerCase().replace("_", " "))))));
@@ -54,6 +54,7 @@ public class IslandSettingsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         User user = IridiumSkyblock.getInstance().getUserManager().getUser((OfflinePlayer) event.getWhoClicked());
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), user, PermissionType.ISLAND_SETTINGS)) {
             event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangeSettings.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

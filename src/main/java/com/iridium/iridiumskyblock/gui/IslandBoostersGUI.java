@@ -29,14 +29,14 @@ public class IslandBoostersGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandBoostersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, island, islandMenu);
     }
 
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
-
+        backItem(this, inventory);
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             Item item = entry.getValue().item;
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(getIsland(), entry.getKey());
@@ -59,6 +59,7 @@ public class IslandBoostersGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             if (entry.getValue().item.slot == event.getSlot()) {
                 String command = IridiumSkyblock.getInstance().getCommands().boostersCommand.aliases.get(0);

@@ -30,6 +30,7 @@ public class ShopCategoryGUI extends GUI {
      * @param category The category whose items should be displayed in this GUI
      */
     public ShopCategoryGUI(ShopCategory category) {
+        super(new ShopOverviewGUI().getInventory());
         this.category = category;
     }
 
@@ -58,7 +59,7 @@ public class ShopCategoryGUI extends GUI {
         inventory.clear();
 
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getShop().categoryBackground);
-
+        backItem(this, inventory);
         for (ShopItem item : category.items) {
             ItemStack itemStack = item.type.parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
@@ -83,6 +84,7 @@ public class ShopCategoryGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        backItem(this, event);
         Optional<ShopItem> clickedItem = category.items.stream()
                 .filter(item -> item.slot == event.getSlot())
                 .findAny();
