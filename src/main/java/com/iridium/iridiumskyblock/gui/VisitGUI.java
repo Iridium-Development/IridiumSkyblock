@@ -36,10 +36,7 @@ public class VisitGUI extends GUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().visitGUI.background);
-
+        clearInventory(inventory);
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 

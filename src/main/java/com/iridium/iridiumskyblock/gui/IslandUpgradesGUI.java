@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -33,8 +34,7 @@ public class IslandUpgradesGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().upgradesGUI.background);
+        clearInventory(inventory);
 
         for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             Item item = upgrade.getValue().item;
@@ -67,10 +67,13 @@ public class IslandUpgradesGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
         for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             if (event.getSlot() == upgrade.getValue().item.slot) {
                 String command = IridiumSkyblock.getInstance().getCommands().upgradesCommand.aliases.get(0);
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + upgrade.getKey());
+                Bukkit.dispatchCommand(player, "is " + command + " " + upgrade.getKey());
                 addContent(event.getInventory());
             }
         }

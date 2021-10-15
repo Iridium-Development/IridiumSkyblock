@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumcore.BackButton;
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
@@ -29,15 +30,17 @@ public class Inventories {
             .put(17, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
             .build());
 
-    public InventoryConfig islandBorder = new InventoryConfig(27, "&7Island Border", background2, ImmutableMap.<String, Item>builder()
-            .put("is border blue", new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 10, 1, "&b&lBlue", Collections.emptyList()))
-            .put("is border red", new Item(XMaterial.RED_STAINED_GLASS_PANE, 12, 1, "&c&lRed", Collections.emptyList()))
-            .put("is border green", new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&a&lGreen", Collections.emptyList()))
-            .put("is border off", new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 16, 1, "&f&lOff", Collections.emptyList()))
-            .build()
+    public InventoryConfig islandBorder = new InventoryConfig(27, "&7Island Border", background2,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            ImmutableMap.<String, Item>builder()
+                    .put("is border blue", new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 10, 1, "&b&lBlue", Collections.emptyList()))
+                    .put("is border red", new Item(XMaterial.RED_STAINED_GLASS_PANE, 12, 1, "&c&lRed", Collections.emptyList()))
+                    .put("is border green", new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&a&lGreen", Collections.emptyList()))
+                    .put("is border off", new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 16, 1, "&f&lOff", Collections.emptyList()))
+                    .build()
     );
 
-    public InventoryConfig islandMenu = new InventoryConfig(45, "&7Island Menu", background1, ImmutableMap.<String, Item>builder()
+    public InventoryConfig islandMenu = new InventoryConfig(45, "&7Island Menu", background1, null, ImmutableMap.<String, Item>builder()
             .put("is regen", new Item(XMaterial.GRASS_BLOCK, 12, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island")))
             .put("is boosters", new Item(XMaterial.EXPERIENCE_BOTTLE, 23, 1, "&b&lIsland Boosters", Collections.singletonList("&7View your island boosters")))
             .put("is home", new Item(XMaterial.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
@@ -53,72 +56,89 @@ public class Inventories {
             .build()
     );
 
-    public InventoryConfig missionSelectGUI = new InventoryConfig(27, "&7Island Missions", background2, ImmutableMap.<String, Item>builder()
-            .put("is missions once", new Item(XMaterial.WRITABLE_BOOK, 15, 1, "&b&lQuests", Collections.emptyList()))
-            .put("is missions daily", new Item(XMaterial.DIAMOND_SWORD, 11, 1, "&b&lDaily Missions", Collections.emptyList()))
-            .build()
+    public InventoryConfig missionSelectGUI = new InventoryConfig(27, "&7Island Missions", background2,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            ImmutableMap.<String, Item>builder()
+                    .put("is missions once", new Item(XMaterial.WRITABLE_BOOK, 15, 1, "&b&lQuests", Collections.emptyList()))
+                    .put("is missions daily", new Item(XMaterial.DIAMOND_SWORD, 11, 1, "&b&lDaily Missions", Collections.emptyList()))
+                    .build()
     );
 
-    public InventoryConfig blockValueSelectGUI = new InventoryConfig(27, "Block Values", background2, ImmutableMap.<String, Item>builder()
-            .put("is blockvalues block", new Item(XMaterial.EMERALD_BLOCK, 11, 1, "&b&lValuable Blocks", Collections.emptyList()))
-            .put("is blockvalues spawner", new Item(XMaterial.SPAWNER, 15, 1, "&b&lValuable Spawners", Collections.emptyList()))
-            .build()
+    public InventoryConfig blockValueSelectGUI = new InventoryConfig(27, "Block Values", background2,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            ImmutableMap.<String, Item>builder()
+                    .put("is blockvalues block", new Item(XMaterial.EMERALD_BLOCK, 11, 1, "&b&lValuable Blocks", Collections.emptyList()))
+                    .put("is blockvalues spawner", new Item(XMaterial.SPAWNER, 15, 1, "&b&lValuable Spawners", Collections.emptyList()))
+                    .build()
     );
 
-    public SingleItemGUI visitGUI = new SingleItemGUI(45, "&7Visit an Island", background1, new Item(XMaterial.PLAYER_HEAD, 1, "&b&l%island_name%", "%island_owner%", Arrays.asList(
-            "&7Created: %island_create%",
-            "&7Owner: %island_owner%"
-    )));
+    public SingleItemGUI visitGUI = new SingleItemGUI(45, "&7Visit an Island", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 40, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.PLAYER_HEAD, 1, "&b&l%island_name%", "%island_owner%", Arrays.asList(
+                    "&7Created: %island_create%",
+                    "&7Owner: %island_owner%"
+            )));
 
-    public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
-            "&7Joined: %player_join%",
-            "&7Rank: %player_rank%",
-            "",
-            "&b&l[!] &7Right Click to promote",
-            "&b&l[!] &7Left click to demote/kick"
-    )));
-    public SingleItemGUI bansGUI = new SingleItemGUI(27, "&7Island Bans", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
-            "&7Banned time: %ban_time%",
-            "&7Banned by: %banned_by%",
-            "",
-            "&b&l[!] &7Left Click to unban"
-    )));
+    public SingleItemGUI membersGUI = new SingleItemGUI(27, "&7Island Members", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
+                    "&7Joined: %player_join%",
+                    "&7Rank: %player_rank%",
+                    "",
+                    "&b&l[!] &7Right Click to promote",
+                    "&b&l[!] &7Left click to demote/kick"
+            )));
+    public SingleItemGUI bansGUI = new SingleItemGUI(27, "&7Island Bans", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
+                    "&7Banned time: %ban_time%",
+                    "&7Banned by: %banned_by%",
+                    "",
+                    "&b&l[!] &7Left Click to unban"
+            )));
 
-    public SingleItemGUI trustedGUI = new SingleItemGUI(27, "&7Trusted Members", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
-            "%player_name%", Arrays.asList(
-            "&7Date: %player_join%",
-            "&7Trusted By: %trustee%",
-            "",
-            "&b&l [!] &7Left click to untrust"
-    )));
+    public SingleItemGUI trustedGUI = new SingleItemGUI(27, "&7Trusted Members", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
+                    "%player_name%", Arrays.asList(
+                    "&7Date: %player_join%",
+                    "&7Trusted By: %trustee%",
+                    "",
+                    "&b&l [!] &7Left click to untrust"
+            )));
 
-    public SingleItemGUI visitorsGUI = new SingleItemGUI(27, "&7Island Visitors", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
-            "%player_name%", Arrays.asList(
-            "&7Has Island: %has_island%",
-            "",
-            "&b&l[!] &7Left Click to expel this visitor from your island",
-            "&b&l[!] &7Right Click to ban this visitor from your island"
-    )));
+    public SingleItemGUI visitorsGUI = new SingleItemGUI(27, "&7Island Visitors", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%",
+                    "%player_name%", Arrays.asList(
+                    "&7Has Island: %has_island%",
+                    "",
+                    "&b&l[!] &7Left Click to expel this visitor from your island",
+                    "&b&l[!] &7Right Click to ban this visitor from your island"
+            )));
 
-    public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", background1, new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(
-            "",
-            "&b&l * &7Island Name: &b%island_name%",
-            "&b&l * &7Island Rank: &b%island_rank%",
-            "&b&l * &7Island Value: &b%island_value%",
-            "&b&l * &7Netherite Blocks: &b%NETHERITE_BLOCK_AMOUNT%",
-            "&b&l * &7Emerald Blocks: &b%EMERALD_BLOCK_AMOUNT%",
-            "&b&l * &7Diamond Blocks: &b%DIAMOND_BLOCK_AMOUNT%",
-            "&b&l * &7Gold Blocks: &b%GOLD_BLOCK_AMOUNT%",
-            "&b&l * &7Iron Blocks: &b%IRON_BLOCK_AMOUNT%",
-            "&b&l * &7Hopper Blocks: &b%HOPPER_AMOUNT%",
-            "&b&l * &7Beacon Blocks: &b%BEACON_AMOUNT%",
-            "",
-            "&b&l[!] &bLeft Click to Teleport to this Island."
-    )), new Item(XMaterial.BARRIER, 1, " ", Collections.emptyList()));
+    public IslandTopInventoryConfig islandTopGUI = new IslandTopInventoryConfig(27, "&7Top Islands", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.PLAYER_HEAD, 1, "&b&lIsland Owner: &f%island_owner% &7(#%island_rank%)", "%island_owner%", Arrays.asList(
+                    "",
+                    "&b&l * &7Island Name: &b%island_name%",
+                    "&b&l * &7Island Rank: &b%island_rank%",
+                    "&b&l * &7Island Value: &b%island_value%",
+                    "&b&l * &7Netherite Blocks: &b%NETHERITE_BLOCK_AMOUNT%",
+                    "&b&l * &7Emerald Blocks: &b%EMERALD_BLOCK_AMOUNT%",
+                    "&b&l * &7Diamond Blocks: &b%DIAMOND_BLOCK_AMOUNT%",
+                    "&b&l * &7Gold Blocks: &b%GOLD_BLOCK_AMOUNT%",
+                    "&b&l * &7Iron Blocks: &b%IRON_BLOCK_AMOUNT%",
+                    "&b&l * &7Hopper Blocks: &b%HOPPER_AMOUNT%",
+                    "&b&l * &7Beacon Blocks: &b%BEACON_AMOUNT%",
+                    "",
+                    "&b&l[!] &bLeft Click to Teleport to this Island."
+            )), new Item(XMaterial.BARRIER, 1, " ", Collections.emptyList()));
 
-    public ConfirmationInventoryConfig confirmationGUI = new ConfirmationInventoryConfig(27, "&7Are you sure?", background2, new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&a&lYes", Collections.emptyList()), new Item(XMaterial.RED_STAINED_GLASS_PANE, 11, 1, "&c&lNo", Collections.emptyList()));
+    public ConfirmationInventoryConfig confirmationGUI = new ConfirmationInventoryConfig(27, "&7Are you sure?", background2, null,
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&a&lYes", Collections.emptyList()), new Item(XMaterial.RED_STAINED_GLASS_PANE, 11, 1, "&c&lNo", Collections.emptyList()));
 
-    public NoItemGUI bankGUI = new NoItemGUI(27, "&7Island Bank", background2);
+    public NoItemGUI bankGUI = new NoItemGUI(27, "&7Island Bank", background2, new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())));
 
     public LogInventoryConfig logsGUI = new LogInventoryConfig(27, "&7Island Logs",
             new Item(XMaterial.PLAYER_HEAD, 10, 1, "&b&lIsland Members", "%island_owner%", Arrays.asList("", "&7Page %current_page%/%max_page%", "&b&l[!] &bLeft click to view Previous Page", "&b&l[!] &bRight click to view Next Page")),
@@ -142,50 +162,52 @@ public class Inventories {
             "&b%user% Purchased %type% booster (%days% days %hours% hours %minutes% minutes %seconds% seconds ago)",
             "&b%user% Purchased %type% upgrade (%days% days %hours% hours %minutes% minutes %seconds% seconds ago)",
             "&b%user% redeemed %type% reward (%days% days %hours% hours %minutes% minutes %seconds% seconds ago)",
-            background2);
+            background2, new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())));
 
-    public NoItemGUI upgradesGUI = new NoItemGUI(27, "&7Island Upgrades", background2);
+    public NoItemGUI upgradesGUI = new NoItemGUI(27, "&7Island Upgrades", background2, new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())));
 
-    public NoItemGUI boostersGUI = new NoItemGUI(27, "&7Island Boosters", background2);
+    public NoItemGUI boostersGUI = new NoItemGUI(27, "&7Island Boosters", background2, new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())));
 
-    public SingleItemGUI warpsGUI = new SingleItemGUI(27, "&7%island_name%'s Island Warps", background2, new Item(
-            XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l%warp_name%",
-            Arrays.asList(
-                    "&7%description%",
+    public SingleItemGUI warpsGUI = new SingleItemGUI(27, "&7%island_name%'s Island Warps", background2,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 1, "&b&l%warp_name%", Arrays.asList("&7%description%", "", "&b&l[!] &bLeft Click to Teleport", "&b&l[!] &bRight Click to Delete")));
+
+    public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", background1,
+            new BackButton(true, "is blockvalues", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            Collections.singletonList("&bValue per block: &7%value%"));
+
+    public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
+                    "&7Invited By: %inviter%",
+                    "&7Time: %time%",
                     "",
-                    "&b&l[!] &bLeft Click to Teleport",
-                    "&b&l[!] &bRight Click to Delete"
+                    "&b&l[!] &7Click to un-invite"
             )));
 
-    public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", background1, Collections.singletonList("&bValue per block: &7%value%"));
+    public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic", background2, null);
 
-    public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
-            "&7Invited By: %inviter%",
-            "&7Time: %time%",
-            "",
-            "&b&l[!] &7Click to un-invite"
-    )));
+    public NoItemGUI dailyMissionGUI = new NoItemGUI(27, "&7Daily Island Missions", background2, new BackButton(true, "is missions", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())));
 
-    public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic", background2);
+    public NoItemGUI missionsGUI = new NoItemGUI(45, "&7Island Missions", background1, new BackButton(true, "is missions", new Item(XMaterial.NETHER_STAR, 40, 1, "&c&lBack", Collections.emptyList())));
 
-    public NoItemGUI dailyMissionGUI = new NoItemGUI(27, "&7Daily Island Missions", background2);
+    public NoItemGUI islandPermissionsGUI = new NoItemGUI(54, "&7Island Permissions", background1, new BackButton(true, "is permissions", new Item(XMaterial.NETHER_STAR, 49, 1, "&c&lBack", Collections.emptyList())));
 
-    public NoItemGUI missionsGUI = new NoItemGUI(45, "&7Island Missions", background1);
-
-    public NoItemGUI islandPermissionsGUI = new NoItemGUI(54, "&7Island Permissions", background1);
-
-    public NoItemGUI islandSettingsGUI = new NoItemGUI(36, "&7Island Settings", background1);
+    public NoItemGUI islandSettingsGUI = new NoItemGUI(36, "&7Island Settings", background1, new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 31, 1, "&c&lBack", Collections.emptyList())));
 
     public IslandRanksInventoryConfig islandRanksGUI = new IslandRanksInventoryConfig(27, "&7Island Permissions", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 11, 1, "&b&lOwner", Collections.singletonList("&b%members%")),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 12, 1, "&b&lCo-Owner", Collections.singletonList("&b%members%")),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 13, 1, "&b&lModerator", Collections.singletonList("&b%members%")),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 14, 1, "&b&lMember", Collections.singletonList("&b%members%")),
             new Item(XMaterial.GREEN_STAINED_GLASS_PANE, 15, 1, "&b&lVisitor", Collections.emptyList()));
 
-    public SingleItemGUI biomeGUI = new SingleItemGUI(45, "&7Island Biomes", background1, new Item(XMaterial.GRASS_BLOCK, 1, "&b&l%biome%", Collections.singletonList("&7Click to change your island biome!")));
+    public SingleItemGUI biomeGUI = new SingleItemGUI(45, "&7Island Biomes", background1,
+            new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())),
+            new Item(XMaterial.GRASS_BLOCK, 1, "&b&l%biome%", Collections.singletonList("&7Click to change your island biome!")));
 
-    public NoItemGUI islandReward = new NoItemGUI(45, "&7Island Rewards", background1);
+    public NoItemGUI islandReward = new NoItemGUI(45, "&7Island Rewards", background1, new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())));
 
     public Item nextPage = new Item(XMaterial.LIME_STAINED_GLASS_PANE, 1, "&a&lNext Page", Collections.emptyList());
     public Item previousPage = new Item(XMaterial.RED_STAINED_GLASS_PANE, 1, "&c&lPrevious Page", Collections.emptyList());

@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -31,8 +32,7 @@ public class IslandWarpsGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().warpsGUI.background);
+        clearInventory(inventory);
 
         AtomicInteger atomicInteger = new AtomicInteger(1);
 
@@ -59,6 +59,9 @@ public class IslandWarpsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
         List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(getIsland());
         Collections.reverse(islandWarps);
         AtomicInteger atomicInteger = new AtomicInteger(1);
@@ -74,7 +77,7 @@ public class IslandWarpsGUI extends IslandGUI {
                         break;
                 }
                 if (command != null)
-                    Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandWarp.getName());
+                    Bukkit.dispatchCommand(player, "is " + command + " " + islandWarp.getName());
                 addContent(event.getInventory());
                 return;
             }

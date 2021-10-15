@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -8,6 +7,7 @@ import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -37,9 +37,8 @@ public class IslandInvitesGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
+        clearInventory(inventory);
         List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(getIsland());
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
         AtomicInteger slot = new AtomicInteger(0);
         for (int i = 0; i < islandInvites.size(); i++) {
@@ -62,10 +61,13 @@ public class IslandInvitesGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        if (isBackButton(event)) return;
+        Player player = (Player) event.getWhoClicked();
+
         if (invites.containsKey(event.getSlot())) {
             String command = IridiumSkyblock.getInstance().getCommands().unInviteCommand.aliases.get(0);
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + invites.get(event.getSlot()));
-            event.getWhoClicked().openInventory(getInventory());
+            Bukkit.getServer().dispatchCommand(player, "is " + command + " " + invites.get(event.getSlot()));
+            player.openInventory(getInventory());
         }
     }
 

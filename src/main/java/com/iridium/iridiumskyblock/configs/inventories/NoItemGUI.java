@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
+import com.iridium.iridiumcore.BackButton;
 import com.iridium.iridiumcore.Background;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,11 @@ public class NoItemGUI {
      * The background of the GUI.
      */
     public Background background;
+
+    /**
+     * The Back button of the GUI
+     */
+    public BackButton backButton;
+
 
 }

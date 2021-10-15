@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.dependencies.xseries.XBiome;
-import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -38,8 +37,7 @@ public class IslandBiomeGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().biomeGUI.background);
+        clearInventory(inventory);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
@@ -58,10 +56,11 @@ public class IslandBiomeGUI extends IslandGUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
 
         final int size = IridiumSkyblock.getInstance().getInventories().biomeGUI.size;
 
-        Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == size - 7 && page > 1) {
             player.openInventory(new IslandBiomeGUI(page - 1, getIsland(), environment, cooldownProvider).getInventory());
             return;

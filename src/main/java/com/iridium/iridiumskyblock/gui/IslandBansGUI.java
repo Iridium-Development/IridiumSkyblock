@@ -38,8 +38,7 @@ public class IslandBansGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
+        clearInventory(inventory);
 
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
@@ -70,6 +69,8 @@ public class IslandBansGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
         Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
         if (event.getSlot() == size - 7 && page > 1) {
             player.openInventory(new IslandBansGUI(page - 1, getIsland()).getInventory());
             return;
@@ -85,7 +86,7 @@ public class IslandBansGUI extends IslandGUI {
             if (islandBans.size() > index) {
                 IslandBan islandBan = islandBans.get(event.getSlot());
                 String command = IridiumSkyblock.getInstance().getCommands().unBanCommand.aliases.get(0);
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandBan.getBannedUser().getName());
+                Bukkit.getServer().dispatchCommand(player, "is " + command + " " + islandBan.getBannedUser().getName());
                 addContent(event.getInventory());
             }
         }

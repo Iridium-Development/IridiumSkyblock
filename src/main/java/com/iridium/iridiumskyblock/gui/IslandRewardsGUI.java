@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandReward;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -22,9 +23,7 @@ public class IslandRewardsGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandReward.background);
+        clearInventory(inventory);
 
         List<Placeholder> placeholders = new PlaceholderBuilder().applyIslandPlaceholders(getIsland()).build();
 
@@ -36,12 +35,15 @@ public class IslandRewardsGUI extends IslandGUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
         List<IslandReward> islandRewards = IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(getIsland());
         if (islandRewards.size() > event.getSlot()) {
             IslandReward islandReward = islandRewards.get(event.getSlot());
-            islandReward.getReward().claim((Player) event.getWhoClicked(), getIsland());
+            islandReward.getReward().claim(player, getIsland());
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().delete(islandReward);
-            event.getWhoClicked().closeInventory();
+            player.closeInventory();
         }
     }
 }

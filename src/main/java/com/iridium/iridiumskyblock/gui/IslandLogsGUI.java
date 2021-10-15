@@ -10,6 +10,8 @@ import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.configs.inventories.LogInventoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -48,11 +50,9 @@ public class IslandLogsGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        LogInventoryConfig logInventoryConfig = IridiumSkyblock.getInstance().getInventories().logsGUI;
-        inventory.clear();
+        clearInventory(inventory);
 
-        InventoryUtils.fillInventory(inventory, logInventoryConfig.background);
-
+        LogInventoryConfig logInventoryConfig = (LogInventoryConfig) getNoItemGUI();
         setItemStack(inventory, logInventoryConfig.IslandMembers, membersPage, LogAction.USER_JOINED, LogAction.USER_KICKED, LogAction.USER_LEFT, LogAction.USER_DEMOTED, LogAction.USER_PROMOTED);
         setItemStack(inventory, logInventoryConfig.IslandInvites, invitesPage, LogAction.USER_INVITED, LogAction.USER_UNINVITED);
         setItemStack(inventory, logInventoryConfig.IslandTrusts, trustsPage, LogAction.USER_TRUSTED, LogAction.USER_UNTRUSTED);
@@ -82,9 +82,9 @@ public class IslandLogsGUI extends IslandGUI {
                 int seconds = (int) Math.floor((time - (days * 86400) - (hours * 3600)) % 60.0D);
 
                 lore.add(StringUtils.color(getLore(islandLog.getLogAction())
-                        .replace("%type%", islandLog.getData())
-                        .replace("%amount%", String.valueOf(islandLog.getAmount()))
-                        .replace("%user%", islandLog.getUser().getName()))
+                                .replace("%type%", islandLog.getData())
+                                .replace("%amount%", String.valueOf(islandLog.getAmount()))
+                                .replace("%user%", islandLog.getUser().getName()))
                         .replace("%target%", islandLog.getTarget().getName())
                         .replace("%seconds%", String.valueOf(seconds))
                         .replace("%minutes%", String.valueOf(minutes))
@@ -101,10 +101,10 @@ public class IslandLogsGUI extends IslandGUI {
         int maxPage = (int) Math.ceil(islandLogs.size() / 10.00);
 
         itemMeta.setLore(lore.stream()
-            .map(loreLine -> loreLine
+                .map(loreLine -> loreLine
                         .replace("%current_page%", String.valueOf(page))
                         .replace("%max_page%", String.valueOf(maxPage > 0 ? maxPage : 1))
-            ).collect(Collectors.toList()));
+                ).collect(Collectors.toList()));
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(item.slot, itemStack);
     }
@@ -153,6 +153,8 @@ public class IslandLogsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        if (isBackButton(event)) return;
+
         if (!event.getClick().equals(ClickType.LEFT) && !event.getClick().equals(ClickType.RIGHT)) return;
         int i = event.getClick().equals(ClickType.LEFT) ? -1 : 1;
         LogInventoryConfig logInventoryConfig = IridiumSkyblock.getInstance().getInventories().logsGUI;

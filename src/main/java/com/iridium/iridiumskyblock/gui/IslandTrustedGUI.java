@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -37,8 +38,7 @@ public class IslandTrustedGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().trustedGUI.background);
+        clearInventory(inventory);
 
         List<IslandTrusted> islandTrustedList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(getIsland());
         AtomicInteger slot = new AtomicInteger(0);
@@ -59,10 +59,13 @@ public class IslandTrustedGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
             String command = IridiumSkyblock.getInstance().getCommands().unTrustCommand.aliases.get(0);
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + user.getName());
+            Bukkit.getServer().dispatchCommand(player, "is " + command + " " + user.getName());
             addContent(event.getInventory());
         }
     }

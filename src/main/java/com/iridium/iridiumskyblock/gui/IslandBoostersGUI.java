@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -34,8 +35,7 @@ public class IslandBoostersGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
+        clearInventory(inventory);
 
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             Item item = entry.getValue().item;
@@ -59,10 +59,13 @@ public class IslandBoostersGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             if (entry.getValue().item.slot == event.getSlot()) {
                 String command = IridiumSkyblock.getInstance().getCommands().boostersCommand.aliases.get(0);
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + entry.getKey());
+                Bukkit.dispatchCommand(player, "is " + command + " " + entry.getKey());
                 return;
             }
         }

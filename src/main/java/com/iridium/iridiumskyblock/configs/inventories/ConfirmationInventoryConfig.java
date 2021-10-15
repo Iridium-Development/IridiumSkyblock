@@ -1,11 +1,12 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
+import com.iridium.iridiumcore.BackButton;
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class ConfirmationInventoryConfig extends NoItemGUI{
+public class ConfirmationInventoryConfig extends NoItemGUI {
     /**
      * The yes item
      */
@@ -15,10 +16,8 @@ public class ConfirmationInventoryConfig extends NoItemGUI{
      */
     public Item no;
 
-    public ConfirmationInventoryConfig(int size, String title, Background background, Item yes, Item no) {
-        this.size = size;
-        this.title = title;
-        this.background = background;
+    public ConfirmationInventoryConfig(int size, String title, Background background, BackButton backButton, Item yes, Item no) {
+        super(size, title, background, backButton);
         this.yes = yes;
         this.no = no;
     }

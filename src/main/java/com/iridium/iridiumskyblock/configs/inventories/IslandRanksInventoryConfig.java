@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
+import com.iridium.iridiumcore.BackButton;
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
 import lombok.NoArgsConstructor;
@@ -27,10 +28,8 @@ public class IslandRanksInventoryConfig extends NoItemGUI {
      */
     public Item visitor;
 
-    public IslandRanksInventoryConfig(int size, String title, Background background, Item owner, Item coOwner, Item moderator, Item member, Item visitor) {
-        this.size = size;
-        this.title = title;
-        this.background = background;
+    public IslandRanksInventoryConfig(int size, String title, Background background, BackButton backButton, Item owner, Item coOwner, Item moderator, Item member, Item visitor) {
+        super(size, title, background, backButton);
         this.owner = owner;
         this.coOwner = coOwner;
         this.moderator = moderator;

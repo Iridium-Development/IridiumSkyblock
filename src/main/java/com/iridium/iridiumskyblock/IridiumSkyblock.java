@@ -1,7 +1,10 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.BackButton;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
+import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
@@ -418,14 +421,16 @@ public class IridiumSkyblock extends IridiumCore {
 
         initializePermissionList();
         initializeSettingsList();
+        updateBackButtons();
 
         for (Permission permission : permissionList.values()) {
             if (permission.getPage() == 0) permission.setPage(1);
         }
 
         if (bankItems.crystalsBankItem.getDisplayName() == null) bankItems.crystalsBankItem.setDisplayName("Crystal");
-        if (bankItems.experienceBankItem.getDisplayName() == null)
+        if (bankItems.experienceBankItem.getDisplayName() == null) {
             bankItems.experienceBankItem.setDisplayName("Experience");
+        }
         if (bankItems.moneyBankItem.getDisplayName() == null) bankItems.moneyBankItem.setDisplayName("Money");
 
         if (boosters.experienceBooster.name == null) boosters.experienceBooster.name = "Experience";
@@ -438,6 +443,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (upgrades.blockLimitUpgrade.name == null) upgrades.blockLimitUpgrade.name = "Block Limit";
         if (upgrades.memberUpgrade.name == null) upgrades.memberUpgrade.name = "Members";
         if (upgrades.oresUpgrade.name == null) upgrades.oresUpgrade.name = "Ore Generator";
+
 
         this.bankItemList = new ArrayList<>();
         if (bankItems.crystalsBankItem.isEnabled()) {
@@ -493,10 +499,37 @@ public class IridiumSkyblock extends IridiumCore {
         if (commandManager != null)
             commandManager.reloadCommands();
 
-        WorldEdit.clearClipBoardCache();
-
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);
+    }
+
+    private void updateBackButtons() {
+        BackButton backButton22Is = new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList())); //Used for making inline if statements
+        BackButton backButton40Is = new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 40, 1, "&c&lBack", Collections.emptyList())); //Used for making inline if statements
+        if (inventories.islandBorder.backButton == null) inventories.islandBorder.backButton = backButton22Is;
+        if (inventories.missionSelectGUI.backButton == null) inventories.missionSelectGUI.backButton = backButton22Is;
+        if (inventories.membersGUI.backButton == null) inventories.membersGUI.backButton = backButton22Is;
+        if (inventories.bansGUI.backButton == null) inventories.bansGUI.backButton = backButton22Is;
+        if (inventories.trustedGUI.backButton == null) inventories.trustedGUI.backButton = backButton22Is;
+        if (inventories.visitorsGUI.backButton == null) inventories.visitorsGUI.backButton = backButton22Is;
+        if (inventories.bankGUI.backButton == null) inventories.bankGUI.backButton = backButton22Is;
+        if (inventories.logsGUI.backButton == null) inventories.logsGUI.backButton = backButton22Is;
+        if (inventories.upgradesGUI.backButton == null) inventories.upgradesGUI.backButton = backButton22Is;
+        if (inventories.boostersGUI.backButton == null) inventories.boostersGUI.backButton = backButton22Is;
+        if (inventories.warpsGUI.backButton == null) inventories.warpsGUI.backButton = backButton22Is;
+        if (inventories.islandInvitesGUI.backButton == null) inventories.islandInvitesGUI.backButton = backButton22Is;
+        if (inventories.dailyMissionGUI.backButton == null)
+            inventories.dailyMissionGUI.backButton = new BackButton(true, "is missions", new Item(XMaterial.NETHER_STAR, 22, 1, "&c&lBack", Collections.emptyList()));
+        if (inventories.missionsGUI.backButton == null)
+            inventories.missionsGUI.backButton = new BackButton(true, "is missions", new Item(XMaterial.NETHER_STAR, 40, 1, "&c&lBack", Collections.emptyList()));
+        if (inventories.islandPermissionsGUI.backButton == null)
+            inventories.islandPermissionsGUI.backButton = new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 49, 1, "&c&lBack", Collections.emptyList()));
+        if (inventories.islandSettingsGUI.backButton == null)
+            inventories.islandSettingsGUI.backButton = new BackButton(true, "is", new Item(XMaterial.NETHER_STAR, 31, 1, "&c&lBack", Collections.emptyList()));
+        if (inventories.islandRanksGUI.backButton == null) inventories.islandRanksGUI.backButton = backButton22Is;
+        if (inventories.biomeGUI.backButton == null) inventories.biomeGUI.backButton = backButton40Is;
+        if (inventories.islandReward.backButton == null) inventories.islandReward.backButton = backButton40Is;
+
     }
 
     private void loadConfigFiles() {

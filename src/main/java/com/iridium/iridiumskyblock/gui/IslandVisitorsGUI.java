@@ -38,9 +38,7 @@ public class IslandVisitorsGUI extends IslandGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
-
+        clearInventory(inventory);
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
@@ -67,8 +65,10 @@ public class IslandVisitorsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
         Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
+        final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
         if (event.getSlot() == size - 7 && page > 1) {
             player.openInventory(new IslandVisitorsGUI(page - 1, getIsland()).getInventory());
             return;

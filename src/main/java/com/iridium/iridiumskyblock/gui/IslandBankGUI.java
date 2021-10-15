@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -29,10 +30,8 @@ public class IslandBankGUI extends IslandGUI {
         super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
     }
 
-    @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
+        clearInventory(inventory);
 
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(getIsland(), bankItem);
@@ -48,6 +47,9 @@ public class IslandBankGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        if (isBackButton(event)) return;
+
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
@@ -64,10 +66,10 @@ public class IslandBankGUI extends IslandGUI {
         }
 
         if (command != null) {
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
+            Bukkit.getServer().dispatchCommand(player, "is " + command + " " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
         }
 
-        event.getWhoClicked().openInventory(getInventory());
+        addContent(event.getInventory());
     }
 
 

@@ -42,19 +42,6 @@ public abstract class IslandGUI extends GUI {
         return inventory;
     }
 
-    /**
-     * Called when there is a click in this GUI.
-     * Cancelled automatically.
-     *
-     * @param event The InventoryClickEvent provided by Bukkit
-     */
-    public abstract void onInventoryClick(InventoryClickEvent event);
-
-    /**
-     * Called when updating the Inventories contents
-     */
-    public abstract void addContent(Inventory inventory);
-
     @NotNull
     public Island getIsland() {
         return island;
