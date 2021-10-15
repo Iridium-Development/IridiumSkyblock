@@ -27,7 +27,7 @@ public class IslandTopGUI extends GUI {
      * The default constructor.
      */
     public IslandTopGUI() {
-        super(IridiumSkyblock.getInstance().getInventories().islandTopGUI, islandMenu);
+        super(IridiumSkyblock.getInstance().getInventories().islandTopGUI, null);
     }
 
     @Override
@@ -36,7 +36,6 @@ public class IslandTopGUI extends GUI {
         islandSlots.clear();
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandTopGUI.background);
-        backItem(this, inventory);
 
         for (int rank : IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.keySet()) {
             int slot = IridiumSkyblock.getInstance().getConfiguration().islandTopSlots.get(rank);
@@ -58,7 +57,6 @@ public class IslandTopGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        backItem(this, event);
         if (!islandSlots.containsKey(event.getSlot())) return;
 
         Island island = islandSlots.get(event.getSlot());

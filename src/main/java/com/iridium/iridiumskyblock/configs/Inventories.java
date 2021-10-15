@@ -50,9 +50,6 @@ public class Inventories {
             .put("is permissions", new Item(XMaterial.WRITABLE_BOOK, 31, 1, "&b&lIsland Permissions", Collections.singletonList("&7View your island permissions")))
             .put("is trusted", new Item(XMaterial.NAME_TAG, 32, 1, "&b&lTrusted Members", Collections.singletonList("&7View your island's trusted members")))
             .put("is delete", new Item(XMaterial.BARRIER, 44, 1, "&b&lDelete Island", Collections.singletonList("&7Delete your island")))
-            .put("is shop", new Item(XMaterial.PLAYER_HEAD, 8, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODNjMjVhN2ExODgxOTZiMTg3MTcyNjRmZmU4MzdjYTM0OGNmNzE5ZTgyNzE3OWVkYzRiNzhjYmNiOGM3ZGQ4In19fQ==",1,"&b&lShop", Collections.singletonList("&7Open the shop menu")))
-            .put("is settings", new Item(XMaterial.PLAYER_HEAD, 36,"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTRkNDliYWU5NWM3OTBjM2IxZmY1YjJmMDEwNTJhNzE0ZDYxODU0ODFkNWIxYzg1OTMwYjNmOTlkMjMyMTY3NCJ9fX0=",1,"&b&lIsland Settings", Collections.singletonList("&7Change your island settings.")))
-            .put("is top", new Item(XMaterial.PLAYER_HEAD, 0, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTVjMmQ3NmYxNmViNWFmY2MyODA2MjQzYzZkMGMxMDIwMDU5YmNkMGMyMmU4MGMxNTJhOWFlOWExNjA5NzBjMyJ9fX0=", 1, "&b&lIsland Top", Collections.singletonList("&7Opens the island top menu")))
             .build()
     );
 
