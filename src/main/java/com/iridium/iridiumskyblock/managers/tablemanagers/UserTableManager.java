@@ -20,7 +20,7 @@ public class UserTableManager extends TableManager<User, Integer> {
     public UserTableManager(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, User.class, Comparator.comparing(User::getUuid));
         this.userIslandIndex = new SortedList<>(Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
-        this.userIslandIndex.addAll(getDao().queryForAll());
+        this.userIslandIndex.addAll(getEntries());
         sort();
     }
 
