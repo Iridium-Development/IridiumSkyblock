@@ -97,13 +97,7 @@ public class DatabaseManager {
     private @NotNull String getDatabaseURL(SQL sqlConfig) {
         switch (sqlConfig.driver) {
             case MYSQL:
-            case MARIADB:
-            case POSTGRESQL:
                 return "jdbc:" + sqlConfig.driver.name().toLowerCase() + "://" + sqlConfig.host + ":" + sqlConfig.port + "/" + sqlConfig.database + "?useSSL=" + sqlConfig.useSSL;
-            case SQLSERVER:
-                return "jdbc:sqlserver://" + sqlConfig.host + ":" + sqlConfig.port + ";databaseName=" + sqlConfig.database;
-            case H2:
-                return "jdbc:h2:file:" + sqlConfig.database;
             case SQLITE:
                 return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
             default:
