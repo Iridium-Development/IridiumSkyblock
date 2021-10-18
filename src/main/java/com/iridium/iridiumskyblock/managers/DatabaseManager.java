@@ -139,6 +139,7 @@ public class DatabaseManager {
         return CompletableFuture.runAsync(() -> {
             islandTableManager.addEntry(island);
             islandTableManager.save();
+            islandTableManager.sort();
         });
     }
 
