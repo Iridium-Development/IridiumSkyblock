@@ -17,7 +17,7 @@ public class EntitySpawnListener implements Listener {
     public void onEntitySpawn(EntitySpawnEvent event) {
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation()).ifPresent(island -> {
             IslandSetting mobSpawnSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.MOB_SPAWN);
-            if (!mobSpawnSetting.getBooleanValue() && event.getEntity() instanceof LivingEntity) {
+            if (SettingType.MOB_SPAWN.isFeactureValue() && !mobSpawnSetting.getBooleanValue() && event.getEntity() instanceof LivingEntity) {
                 event.setCancelled(true);
                 return;
             }
