@@ -14,7 +14,6 @@ import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.logger.NullLogBackend;
 import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.support.DatabaseConnection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -132,25 +131,14 @@ public class DatabaseManager {
 
     /**
      * Saves an island to the database and initializes variables like ID
-     * ik this is really dumb but I cant think of a better way to do this
      *
      * @param island The island we are saving
      * @return The island with variables like id added
      */
-    public synchronized CompletableFuture<Island> registerIsland(Island island) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                islandTableManager.getDao().createOrUpdate(island);
-                DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
-                islandTableManager.getDao().commit(connection);
-                Island is = islandTableManager.getDao().queryForAll().stream().max(Comparator.comparing(Island::getId)).orElse(island);
-                islandTableManager.addEntry(is);
-                connectionSource.releaseConnection(connection);
-                return is;
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
-            return island;
+    public synchronized CompletableFuture<Void> registerIsland(Island island) {
+        return CompletableFuture.runAsync(() -> {
+            islandTableManager.addEntry(island);
+            islandTableManager.save();
         });
     }
 

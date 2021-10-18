@@ -100,7 +100,7 @@ public class IslandManager {
 
         getIslandChunks(island, world).thenAccept(chunks -> {
             Location pos1 = island.getPos1(world);
-            Location pos2 = island.getPos2(world);      
+            Location pos2 = island.getPos2(world);
             xBiome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
@@ -174,7 +174,7 @@ public class IslandManager {
      */
     public void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp, int delay) {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 .replace("%name%", islandWarp.getName())
         );
         if (delay < 1) {
@@ -245,8 +245,11 @@ public class IslandManager {
         clearIslandCache();
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            final User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-            final Island island = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic)).join();
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            Island island = new Island(name, schematic);
+
+            IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
+
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
 
