@@ -44,6 +44,7 @@ public class CrystalsBankItem extends BankItem {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
             int crystals = Math.min(amount.intValue(), (int) islandBank.getNumber());
 
+            if (true) return crystals;
             if (crystals > 0) {
                 islandBank.setNumber(islandBank.getNumber() - crystals);
                 player.getInventory().addItem(IridiumSkyblock.getInstance().getIslandManager().getIslandCrystal(crystals)).values().forEach(itemStack ->
