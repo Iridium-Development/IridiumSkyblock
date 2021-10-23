@@ -44,6 +44,7 @@ public class ItemCraftListener implements Listener {
         for (ItemStack itemStack : event.getInventory().getMatrix()) {
             if (IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack) > 0) {
                 event.getInventory().setResult(new ItemStack(Material.AIR));
+                break;
             }
         }
     }
