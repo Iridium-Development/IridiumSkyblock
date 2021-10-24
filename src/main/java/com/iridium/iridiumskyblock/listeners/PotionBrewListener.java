@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -27,10 +26,6 @@ public class PotionBrewListener implements Listener {
                 ItemStack itemStack = event.getContents().getItem(i);
                 if (itemStack != null && itemStack.getItemMeta() instanceof PotionMeta) {
                     PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-
-                    for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                        p.sendMessage("Internal1: " + potionMeta.getBasePotionData().getType() + ":" + (potionMeta.getBasePotionData().isUpgraded() ? 2 : 1));
-                    }
 
                     // Increment missions with the name of the brewed potion
                     island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "BREW:" + potionMeta.getBasePotionData().getType() + ":" + (potionMeta.getBasePotionData().isUpgraded() ? 2 : 1), 1));
