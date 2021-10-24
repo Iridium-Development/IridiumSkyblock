@@ -970,17 +970,15 @@ public class IslandManager {
      *
      * @param missionConditions The mission conditions
      * @param conditions        The conditions that should be checked
-     * @return Whether or not the conditions are a part of the mission conditions
+     * @return Whether the conditions are a part of the mission conditions
      */
     private boolean matchesMission(String[] missionConditions, String[] conditions) {
-        boolean matches = true;
         for (int j = 0; j < missionConditions.length; j++) {
-            if (!(conditions[j].equals(missionConditions[j]) || missionConditions[j].equals("ANY"))) {
-                matches = false;
-                break;
+            if (!(conditions[j].equals(missionConditions[j]))) {
+                return false;
             }
         }
-        return matches;
+        return true;
     }
 
     /**

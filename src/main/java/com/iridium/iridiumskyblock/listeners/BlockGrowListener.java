@@ -12,6 +12,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
 import org.bukkit.material.Crops;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class BlockGrowListener implements Listener {
@@ -35,10 +37,22 @@ public class BlockGrowListener implements Listener {
                 }
             }
             if (!crops.getState().equals(CropState.RIPE)) return;
-
         }
 
+        // Increment missions with the name of the grown item
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:" + material.name(), 1));
+
+        // Increment missions with the ANY identifier
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:ANY", 1));
+
+        // Checks all itemLists created in missions.yml
+        for (Map.Entry<String, List<String>> itemList : IridiumSkyblock.getInstance().getItemLists().entrySet()) {
+            // If the smelted item matches one in the list
+            // Increment missions with the name of the list as the identifier
+            if (itemList.getValue().contains(material.name())) {
+                island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:" + itemList.getKey(), 1));
+            }
+        }
     }
 
 }

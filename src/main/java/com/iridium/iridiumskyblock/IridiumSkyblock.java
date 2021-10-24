@@ -84,6 +84,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Map<String, Permission> permissionList;
     private Map<String, Setting> settingsList;
     private Map<String, Mission> missionsList;
+    private Map<String, List<String>> itemLists;
     private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
 
@@ -460,6 +461,8 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         this.missionsList = new HashMap<>(missions.missions);
+
+        this.itemLists = new HashMap<>(missions.itemLists);
 
         this.upgradesList = new HashMap<>();
         if (upgrades.sizeUpgrade.enabled)

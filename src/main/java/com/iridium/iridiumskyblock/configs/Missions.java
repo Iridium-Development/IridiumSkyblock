@@ -483,4 +483,5 @@ public class Missions {
 
     public List<Integer> dailySlots = Arrays.asList(10, 12, 14, 16);
 
+    public Map<String, List<String>> itemLists = ImmutableMap.<String, List<String>>builder().build();
 }

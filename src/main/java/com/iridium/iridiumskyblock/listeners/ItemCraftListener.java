@@ -14,9 +14,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class ItemCraftListener implements Listener {
 
@@ -36,7 +34,20 @@ public class ItemCraftListener implements Listener {
         Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getRecipe().getResult().getType());
 
+        // Increment missions with the name of the crafted item
         island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "CRAFT:" + material.name(), amount));
+
+        // Increment missions with the ANY identifier
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "CRAFT:ANY", amount));
+
+        // Checks all itemLists created in missions.yml
+        for (Map.Entry<String, List<String>> itemList : IridiumSkyblock.getInstance().getItemLists().entrySet()) {
+            // If the crafted item matches one in the list
+            // Increment missions with the name of the list as the identifier
+            if (itemList.getValue().contains(material.name())) {
+                island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "CRAFT:" + itemList.getKey(), amount));
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.LOW)
