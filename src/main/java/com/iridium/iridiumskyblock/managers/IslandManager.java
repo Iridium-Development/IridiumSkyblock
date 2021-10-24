@@ -915,7 +915,7 @@ public class IslandManager {
                 String missionRequirement = missions.get(i).toUpperCase();
                 String[] conditions = missionRequirement.split(":");
                 // If the conditions are the same length (+1 because missionConditions doesn't include amount)
-                if (missionConditions.length + 1 != conditions.length) break;
+                if (missionConditions.length + 1 != conditions.length) continue;
 
                 // Check if this is a mission we want to increment
                 boolean matches = matchesMission(missionConditions, conditions);
@@ -969,7 +969,7 @@ public class IslandManager {
      * Checks if the given conditions are a part of the provided mission conditions.
      *
      * @param missionConditions The mission conditions
-     * @param conditions        The conditions that should be checked
+     * @param conditions        The conditions from missions.yml
      * @return Whether the conditions are a part of the mission conditions
      */
     private boolean matchesMission(String[] missionConditions, String[] conditions) {
