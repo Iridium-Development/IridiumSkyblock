@@ -212,7 +212,7 @@ public class Missions {
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
-            ), Collections.singletonList("MINE:logs:16"), Mission.MissionType.ONCE,
+            ), Collections.singletonList("MINE:LOGS:16"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lLumberjack Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
