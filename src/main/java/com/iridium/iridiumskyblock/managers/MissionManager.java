@@ -21,16 +21,16 @@ public class MissionManager {
      * @param island      The island
      * @param missionType The mission type e.g. BREAK
      * @param identifier  The mission identifier e.g. COBBLESTONE
-     * @param increment   The amount we are incrementing by
+     * @param amount      The amount we are incrementing by
      */
-    public void handleMissionUpdates(@NotNull Island island, @NotNull String missionType, @NotNull String identifier, int increment) {
-        incrementMission(island, missionType + ":" + identifier, increment);
+    public void handleMissionUpdates(@NotNull Island island, @NotNull String missionType, @NotNull String identifier, int amount) {
+        incrementMission(island, missionType + ":" + identifier, amount);
 
-        incrementMission(island, missionType + ":ANY", increment);
+        incrementMission(island, missionType + ":ANY", amount);
 
         for (Map.Entry<String, List<String>> itemList : IridiumSkyblock.getInstance().getMissions().customMaterialLists.entrySet()) {
             if (itemList.getValue().contains(identifier)) {
-                incrementMission(island, missionType + ":" + itemList.getKey(), increment);
+                incrementMission(island, missionType + ":" + itemList.getKey(), amount);
             }
         }
     }
@@ -40,9 +40,9 @@ public class MissionManager {
      *
      * @param island      The island
      * @param missionData The mission data e.g. BREAK:COBBLESTONE
-     * @param increment   The amount we are incrementing by
+     * @param amount      The amount we are incrementing by
      */
-    public synchronized void incrementMission(@NotNull Island island, @NotNull String missionData, int increment) {
+    public synchronized void incrementMission(@NotNull Island island, @NotNull String missionData, int amount) {
         String[] missionConditions = missionData.toUpperCase().split(":");
 
         for (Map.Entry<String, Mission> entry : IridiumSkyblock.getInstance().getMissionsList().entrySet()) {
@@ -63,10 +63,10 @@ public class MissionManager {
 
                 // Validate the required number for this condition
                 if (number.matches("^[0-9]+$")) {
-                    int amount = Integer.parseInt(number);
-                    if (islandMission.getProgress() >= amount) break;
+                    int totalAmount = Integer.parseInt(number);
+                    if (islandMission.getProgress() >= totalAmount) break;
                     completedBefore = false;
-                    islandMission.setProgress(Math.min(islandMission.getProgress() + increment, amount));
+                    islandMission.setProgress(Math.min(islandMission.getProgress() + amount, totalAmount));
                 } else {
                     IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + missionRequirement);
                     IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
@@ -101,12 +101,12 @@ public class MissionManager {
     }
 
     /**
-     * Checks whether or not the Island has completed the provided mission.
+     * Checks whether the Island has completed the provided mission.
      *
      * @param island  The Island which should be checked
      * @param mission The mission which should be checked
      * @param key     The key of the mission
-     * @return Whether or not this mission has been completed
+     * @return Whether this mission has been completed
      */
     private boolean hasCompletedMission(@NotNull Island island, @NotNull Mission mission, @NotNull String key) {
         List<String> missions = mission.getMissions();
