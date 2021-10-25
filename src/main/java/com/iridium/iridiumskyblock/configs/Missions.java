@@ -485,7 +485,7 @@ public class Missions {
 
     public Map<String, List<String>> customMaterialLists = ImmutableMap.<String, List<String>>builder()
             // CUSTOM LISTS
-            .put("logs", Arrays.asList(
+            .put("LOGS", Arrays.asList(
                     "OAK_LOG",
                     "BIRCH_LOG",
                     "SPRUCE_LOG",
