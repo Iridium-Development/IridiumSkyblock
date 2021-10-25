@@ -16,7 +16,8 @@ public class FurnaceSmeltListener implements Listener {
     public void monitorFurnaceSmelt(FurnaceSmeltEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
         XMaterial material = XMaterial.matchXMaterial(event.getSource().getType());
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "SMELT:" + material.name(), 1));
+
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "SMELT", material.name(), 1));
     }
 
 }
