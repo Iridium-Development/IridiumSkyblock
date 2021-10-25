@@ -212,7 +212,7 @@ public class Missions {
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
-            ), Collections.singletonList("MINE:OAK_LOG:16"), Mission.MissionType.ONCE,
+            ), Collections.singletonList("MINE:logs:16"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lLumberjack Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
@@ -483,5 +483,18 @@ public class Missions {
 
     public List<Integer> dailySlots = Arrays.asList(10, 12, 14, 16);
 
-    public Map<String, List<String>> itemLists = ImmutableMap.<String, List<String>>builder().build();
+    public Map<String, List<String>> customMaterialLists = ImmutableMap.<String, List<String>>builder()
+            // CUSTOM LISTS
+            .put("logs", Arrays.asList(
+                    "OAK_LOG",
+                    "BIRCH_LOG",
+                    "SPRUCE_LOG",
+                    "DARK_OAK_LOG",
+                    "ACACIA_LOG",
+                    "JUNGLE_LOG",
+                    "CRIMSON_STEM",
+                    "WARPED_STEM"
+            ))
+            .build();
+
 }

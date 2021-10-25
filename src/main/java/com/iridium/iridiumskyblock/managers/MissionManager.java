@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.IslandReward;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -28,7 +29,7 @@ public class MissionManager {
 
         incrementMission(island, missionType + ":ANY", increment);
 
-        for (Map.Entry<String, List<String>> itemList : IridiumSkyblock.getInstance().getItemLists().entrySet()) {
+        for (Map.Entry<String, List<String>> itemList : IridiumSkyblock.getInstance().getMissions().customMaterialLists.entrySet()) {
             if (itemList.getValue().contains(identifier)) {
                 incrementMission(island, missionType + ":" + itemList.getKey(), increment);
             }
