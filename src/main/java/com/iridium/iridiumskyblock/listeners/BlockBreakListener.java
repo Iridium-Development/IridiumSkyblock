@@ -13,8 +13,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public class BlockBreakListener implements Listener {
@@ -59,20 +57,8 @@ public class BlockBreakListener implements Listener {
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
         island.ifPresent(value -> {
-            // Increment missions with the name of the broken block
-            IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + material.name(), 1);
 
-            // Increment missions with the ANY identifier
-            IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:ANY", 1);
-
-            // Checks all itemLists created in missions.yml
-            for (Map.Entry<String, List<String>> itemList : IridiumSkyblock.getInstance().getItemLists().entrySet()) {
-                // If the broken block matches one in the list
-                // Increment missions with the name of the list as the identifier
-                if (itemList.getValue().contains(material.name())) {
-                    IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + itemList.getKey(), 1);
-                }
-            }
+            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
 
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
             if (islandBooster.isActive()) {

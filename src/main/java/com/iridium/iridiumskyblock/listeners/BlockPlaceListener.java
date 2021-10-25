@@ -18,8 +18,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -73,20 +71,7 @@ public class BlockPlaceListener implements Listener {
         Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
-        // Increment missions with the name of the broken block
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "PLACE:" + material.name(), 1));
-
-        // Increment missions with the ANY identifier
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "PLACE:ANY", 1));
-
-        // Checks all itemLists created in missions.yml
-        for (Map.Entry<String, List<String>> itemList : IridiumSkyblock.getInstance().getItemLists().entrySet()) {
-            // If the placed block matches one in the list
-            // Increment missions with the name of the list as the identifier
-            if (itemList.getValue().contains(material.name())) {
-                island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "PLACE:" + itemList.getKey(), 1));
-            }
-        }
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "PLACE", material.name(), 1));
     }
 
 }
