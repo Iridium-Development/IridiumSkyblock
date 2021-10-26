@@ -193,8 +193,10 @@ public class Messages {
     public String memberRankDisplayName = "Member";
     public String visitorRankDisplayName = "Visitor";
 
+    public String infoTitle = "&8[ &b&lIsland info for %island_name% &8]";
+    public String infoFiller = "&8&m ";
+
     public List<String> infoCommand = Arrays.asList(
-            "&8===== &b&lIsland Info for %player% &r&8=====",
             "<GRADIENT:09C6F9>Island Name</GRADIENT:045DE9>&r: &7%island_name%",
             "<GRADIENT:09C6F9>Island Owner</GRADIENT:045DE9>&r: &7%owner%",
             "<GRADIENT:09C6F9>Island Members</GRADIENT:045DE9>&r: &7%members%",
@@ -204,7 +206,7 @@ public class Messages {
     );
 
     public List<String> commandHelpMessage = Arrays.asList(
-        "&7Description: &b%description%",
-        "&7Syntax: &b%syntax% %subcommands%");
+            "&7Description: &b%description%",
+            "&7Syntax: &b%syntax% %subcommands%");
 
 }

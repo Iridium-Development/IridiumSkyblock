@@ -27,8 +27,10 @@ import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -89,11 +91,9 @@ public class IridiumSkyblock extends IridiumCore {
     private SpawnerStackerSupport spawnerStackerSupport;
     private BlockStackerSupport blockStackerSupport;
 
-    /**
-     * The default constructor.
-     */
-    public IridiumSkyblock() {
-        instance = this;
+    //For unit tests (TODO)
+    public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
     }
 
     /**
@@ -123,6 +123,7 @@ public class IridiumSkyblock extends IridiumCore {
     @Override
     public void onEnable() {
         super.onEnable();
+        instance = this;
 
         // Convert old IridiumSkyblock data
         DataConverter.copyLegacyData();
