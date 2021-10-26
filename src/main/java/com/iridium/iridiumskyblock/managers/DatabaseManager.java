@@ -86,7 +86,7 @@ public class DatabaseManager {
         this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser().getUuid()));
         this.islandSettingTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
 
-        convertDatabaseData();
+        convertDatabaseData(sqlConfig.driver);
     }
 
     /**
@@ -105,16 +105,16 @@ public class DatabaseManager {
         }
     }
 
-    private void convertDatabaseData() {
+    private void convertDatabaseData(SQL.Driver driver) {
         Path versionFile = Paths.get("plugins", "IridiumSkyblock", "sql_version.txt");
         try {
             Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE_NEW);
-            DataConverter.updateDatabaseData(1, version, connectionSource);
+            DataConverter.updateDatabaseData(1, version, connectionSource, driver);
         } catch (FileAlreadyExistsException exception) {
             try {
                 int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
                 if (oldVersion != version) {
-                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource);
+                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource, driver);
                     Files.delete(versionFile);
                     Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE);
                 }
