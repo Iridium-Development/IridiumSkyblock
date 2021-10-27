@@ -5,15 +5,16 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which shows infos about an Island.
@@ -83,6 +84,17 @@ public class InfoCommand extends Command {
         if (members.isEmpty()) {
             members = IridiumSkyblock.getInstance().getMessages().none;
         }
+
+
+        sender.sendMessage(StringUtils.getCenteredMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().infoTitle
+                .replace("%player%", requestedUser.getName())
+                .replace("%island_name%", island.getName())
+                .replace("%owner%", island.getOwner().getName())
+                .replace("%members%", members)
+                .replace("%level%", String.valueOf(island.getLevel()))
+                .replace("%value%", String.valueOf(island.getValue()))
+                .replace("%visitable%", island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().visitable : IridiumSkyblock.getInstance().getMessages().notVisitable)
+        ), IridiumSkyblock.getInstance().getMessages().infoFiller));
 
         for (String infoLine : IridiumSkyblock.getInstance().getMessages().infoCommand) {
             sender.sendMessage(StringUtils.color(infoLine

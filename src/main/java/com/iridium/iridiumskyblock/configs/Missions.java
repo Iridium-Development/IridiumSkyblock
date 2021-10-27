@@ -33,12 +33,13 @@ public class Missions {
                             "&b&l* &7Grow 10 Carrots: %progress_3%/10",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Arrays.asList("GROW:SUGAR_CANE:10", "GROW:WHEAT:10", "GROW:CARROTS:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lFarmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Farmer mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -58,12 +59,13 @@ public class Missions {
                             "&b&l* &7Kill 10 Creepers: %progress_3%/10",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lHunter Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Hunter mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -81,12 +83,13 @@ public class Missions {
                             "&b&l* &7Bake 64 Bread: %progress_1%/64",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Collections.singletonList("CRAFT:BREAD:64"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lBaker Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Baker mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -106,12 +109,13 @@ public class Missions {
                             "&b&l* &7Mine 1 Diamond Ore: %progress_3%/1",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Arrays.asList("MINE:IRON_ORE:15", "MINE:COAL_ORE:30", "MINE:DIAMOND_ORE:1"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMiner Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Miner mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -129,12 +133,13 @@ public class Missions {
                             "&b&l* &7Catch 10 Fish: %progress_1%/10",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Collections.singletonList("FISH:ANY:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lFisherman Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Fisherman mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -153,12 +158,13 @@ public class Missions {
                             "&b&l* &7Smelt 15 Gold Ores: %progress_2%/15",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Arrays.asList("SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_GOLD.name() : XMaterial.GOLD_ORE.name()) + ":15"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lBlacksmith Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Blacksmith mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -177,13 +183,14 @@ public class Missions {
                             "&b&l* &7Brew 3 Strength II Potions: %progress_2%/3",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
             ), Arrays.asList("BREW:SPEED:2:3", "BREW:STRENGTH:2:3"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lPotionBrewer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Potion Brewer mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -202,14 +209,14 @@ public class Missions {
                             "&b&l* &7Chop down 16 logs: %progress_1%/16",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
-            ), Collections.singletonList("MINE:OAK_LOG:16"), Mission.MissionType.ONCE,
+            ), Collections.singletonList("MINE:LOGS:16"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lLumberjack Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
-                                    "&b&l* &73 Island Crystals",
+                                    "&b&l* &75 Island Crystals",
                                     "&b&l* &7$1000"
                             )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Lumberjack mission Completed!",
@@ -230,14 +237,14 @@ public class Missions {
                             "&b&l* &7Craft 4 chests: %progress_3%/4",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
             ), Arrays.asList("CRAFT:CRAFTING_TABLE:1", "CRAFT:FURNACE:4", "CRAFT:CHEST:4"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCrafting Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
-                                    "&b&l* &73 Island Crystals",
+                                    "&b&l* &75 Island Crystals",
                                     "&b&l* &7$1000"
                             )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Crafting Completed!",
@@ -256,14 +263,14 @@ public class Missions {
                             "&b&l* &7Create a cobble generator and mine 100 cobblestone: %progress_1%/100",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
             ), Collections.singletonList("MINE:COBBLESTONE:100"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
-                                    "&b&l* &73 Island Crystals",
+                                    "&b&l* &75 Island Crystals",
                                     "&b&l* &7$1000"
                             )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Mining Completed!",
@@ -284,12 +291,13 @@ public class Missions {
                             "&b&l* &7Kill 10 Creepers: %progress_3%/10",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lHunter Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Hunter mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -307,12 +315,13 @@ public class Missions {
                             "&b&l* &7Grow 64 Wheat: %progress_1%/64",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Collections.singletonList("GROW:WHEAT:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lWheat Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Wheat Farmer mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -330,12 +339,13 @@ public class Missions {
                             "&b&l* &7Grow 64 Carrots: %progress_1%/64",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Collections.singletonList("GROW:CARROTS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCarrot Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Carrot Farmer mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -353,12 +363,13 @@ public class Missions {
                             "&b&l* &7Grow 64 Melons: %progress_1%/64",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Collections.singletonList("GROW:MELON:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMelon Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Melon Farmer mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -376,12 +387,13 @@ public class Missions {
                             "&b&l* &7Grow 64 Sugar Cane: %progress_1%/64",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Collections.singletonList("GROW:SUGAR_CANE:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lSugar Cane Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Sugar Cane Farmer mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -399,12 +411,13 @@ public class Missions {
                             "&b&l* &7Grow 64 Cactus: %progress_1%/64",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )), Collections.singletonList("GROW:CACTUS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCactus Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
-                            "&b&l* &73 Island Crystals"
+                            "&b&l* &75 Island Crystals",
+                            "&b&l* &7$1000"
                     )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Cactus Farmer mission Completed!",
                     "&b&l* &7+3 Island Experience",
@@ -423,14 +436,14 @@ public class Missions {
                             "&b&l* &7Smelt 32 Iron Ingots: %progress_2%/32",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
             ), Arrays.asList("MINE:IRON_ORE:32", "SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":32"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
-                                    "&b&l* &73 Island Crystals",
+                                    "&b&l* &75 Island Crystals",
                                     "&b&l* &7$1000"
                             )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Mining and smelting Iron Completed!",
@@ -449,14 +462,14 @@ public class Missions {
                             "&b&l* &7Fine and mine 5 diamond ore: %progress_1%/5",
                             "",
                             "&b&lRewards",
-                            "&b&l* &72 Island Crystals",
+                            "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
             ), Collections.singletonList("MINE:DIAMOND_ORE:5"), Mission.MissionType.ONCE,
                     new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
-                                    "&b&l* &73 Island Crystals",
+                                    "&b&l* &75 Island Crystals",
                                     "&b&l* &7$1000"
                             )), Collections.emptyList(), 3, 5, 1000, 0, XSound.ENTITY_PLAYER_LEVELUP), Arrays.asList(
                     "%prefix% &7Mining Diamonds Completed!",
@@ -469,5 +482,19 @@ public class Missions {
             .build();
 
     public List<Integer> dailySlots = Arrays.asList(10, 12, 14, 16);
+
+    public Map<String, List<String>> customMaterialLists = ImmutableMap.<String, List<String>>builder()
+            // CUSTOM LISTS
+            .put("LOGS", Arrays.asList(
+                    "OAK_LOG",
+                    "BIRCH_LOG",
+                    "SPRUCE_LOG",
+                    "DARK_OAK_LOG",
+                    "ACACIA_LOG",
+                    "JUNGLE_LOG",
+                    "CRIMSON_STEM",
+                    "WARPED_STEM"
+            ))
+            .build();
 
 }

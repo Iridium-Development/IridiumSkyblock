@@ -11,13 +11,9 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
-import com.iridium.iridiumskyblock.managers.DatabaseManager;
-import com.iridium.iridiumskyblock.managers.IslandManager;
-import com.iridium.iridiumskyblock.managers.SchematicManager;
-import com.iridium.iridiumskyblock.managers.UserManager;
+import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
-import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -31,8 +27,10 @@ import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +56,7 @@ public class IridiumSkyblock extends IridiumCore {
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
     private IslandManager islandManager;
+    private MissionManager missionManager;
     private UserManager userManager;
     private SchematicManager schematicManager;
     private ShopManager shopManager;
@@ -92,11 +91,9 @@ public class IridiumSkyblock extends IridiumCore {
     private SpawnerStackerSupport spawnerStackerSupport;
     private BlockStackerSupport blockStackerSupport;
 
-    /**
-     * The default constructor.
-     */
-    public IridiumSkyblock() {
-        instance = this;
+    //For unit tests (TODO)
+    public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
     }
 
     /**
@@ -126,6 +123,7 @@ public class IridiumSkyblock extends IridiumCore {
     @Override
     public void onEnable() {
         super.onEnable();
+        instance = this;
 
         // Convert old IridiumSkyblock data
         DataConverter.copyLegacyData();
@@ -150,6 +148,8 @@ public class IridiumSkyblock extends IridiumCore {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        this.missionManager = new MissionManager();
 
         this.shopManager = new ShopManager();
         shopManager.reloadCategories();
@@ -493,7 +493,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (commandManager != null)
             commandManager.reloadCommands();
 
-        WorldEdit.clearClipBoardCache();
+        if (schematicManager != null) schematicManager.schematicPaster.clearCache();
 
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);

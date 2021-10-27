@@ -35,10 +35,9 @@ public class BlockGrowListener implements Listener {
                 }
             }
             if (!crops.getState().equals(CropState.RIPE)) return;
-
         }
 
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "GROW:" + material.name(), 1));
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "GROW", material.name(), 1));
     }
 
 }

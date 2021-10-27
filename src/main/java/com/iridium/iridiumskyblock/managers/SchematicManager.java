@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class SchematicManager {
 
-    private final SchematicPaster schematicPaster;
+    public final SchematicPaster schematicPaster;
     public final Map<String, File> schematicFiles;
 
     private final boolean worldEdit = Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
