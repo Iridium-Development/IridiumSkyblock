@@ -768,7 +768,7 @@ public class IslandManager {
      * @return The a boolean the user is banned on this island
      */
     public boolean isBannedOnIsland(@NotNull Island island, User user) {
-        return getIslandBan(island, user).isPresent();
+        return getIslandBan(island, user).isPresent() && !user.isBypassing();
     }
 
     /**
