@@ -20,7 +20,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class PlayerPortalListener implements Listener {
-    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(100));
+
+    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(500));
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPortal(PlayerPortalEvent event) {
@@ -35,6 +36,7 @@ public class PlayerPortalListener implements Listener {
             if (hasNoCooldown(event.getPlayer())) {
                 event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotUsePortal.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
+
             event.setCancelled(true);
             return;
         }
@@ -47,7 +49,9 @@ public class PlayerPortalListener implements Listener {
             }
 
             event.setCancelled(true);
-            event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherIslandsDisabled.replace("%prefix", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            if (hasNoCooldown(event.getPlayer())) {
+                event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherIslandsDisabled.replace("%prefix", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
             return;
         }
 
@@ -60,7 +64,9 @@ public class PlayerPortalListener implements Listener {
                 return;
             }
 
-            event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().endIslandsDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            if (hasNoCooldown(event.getPlayer())) {
+                event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().endIslandsDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
         }
     }
 
