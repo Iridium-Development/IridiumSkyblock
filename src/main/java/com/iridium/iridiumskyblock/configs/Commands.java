@@ -54,6 +54,7 @@ public class Commands {
     public SetWarpCommand setWarpCommand = new SetWarpCommand();
     public SettingsCommand settingsCommand = new SettingsCommand();
     public ShopCommand shopCommand = new ShopCommand();
+    public SpyCommand spyCommand = new SpyCommand();
     public TopCommand topCommand = new TopCommand();
     public TransferCommand transferCommand = new TransferCommand();
     public TrustCommand trustCommand = new TrustCommand();
