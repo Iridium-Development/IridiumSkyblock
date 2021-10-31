@@ -95,7 +95,6 @@ public class IridiumSkyblock extends IridiumCore {
      * The default constructor.
      */
     public IridiumSkyblock() {
-        super();
         instance = this;
     }
 
