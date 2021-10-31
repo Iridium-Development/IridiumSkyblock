@@ -20,7 +20,7 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-** Server Version and Plugin Version**
+**Server and Plugin Version**
 Copy and paste the results of `/version` and `/is about`
 
 **Screenshots**
@@ -28,5 +28,6 @@ If applicable, add screenshots to help explain your problem.
 
 **Logs**
 If there are error messages in your console, please send them via [this](https://mclo.gs)
+
 **Additional context**
 Add any other context about the problem here.
