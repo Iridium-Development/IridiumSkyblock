@@ -91,9 +91,25 @@ public class IridiumSkyblock extends IridiumCore {
     private SpawnerStackerSupport spawnerStackerSupport;
     private BlockStackerSupport blockStackerSupport;
 
-    //For unit tests (TODO)
+    /**
+     * The default constructor.
+     */
+    public IridiumSkyblock() {
+        super();
+        instance = this;
+    }
+
+    /**
+     * The unit test constructor.
+     *
+     * @param loader        The JavaPluginLoader
+     * @param description   The PluginDescriptionFile
+     * @param dataFolder    The data folder File
+     * @param file          A file
+     */
     public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
+        instance = this;
     }
 
     /**
@@ -123,7 +139,6 @@ public class IridiumSkyblock extends IridiumCore {
     @Override
     public void onEnable() {
         super.onEnable();
-        instance = this;
 
         // Convert old IridiumSkyblock data
         DataConverter.copyLegacyData();
