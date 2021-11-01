@@ -69,7 +69,7 @@ public class DataConverter {
 
         try {
             DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
-            for (int version = oldVersion; version <= newVersion; version++) {
+            for (int version = oldVersion + 1; version <= newVersion; version++) {
                 InputStream inputStream = findPatchInputStream(version, driver);
                 if (inputStream == null) continue;
 
