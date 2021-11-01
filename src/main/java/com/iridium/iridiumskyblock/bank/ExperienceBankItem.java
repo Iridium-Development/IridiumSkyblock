@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class ExperienceBankItem extends BankItem {
      * The default constructor.
      *
      * @param defaultAmount The default withdrawal amount of this item
-     * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
+     * @param item          The Item which represents this bank item in the {@link IslandBankGUI}
      */
     public ExperienceBankItem(double defaultAmount, Item item) {
         super("experience", "Experience", defaultAmount, true, item);

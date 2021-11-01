@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock;
 
 import com.google.common.io.CharStreams;
+import com.iridium.iridiumskyblock.configs.SQL;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 
@@ -63,14 +64,13 @@ public class DataConverter {
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().deleteDuplicates();
     }
 
-    public static void updateDatabaseData(int oldVersion, int newVersion, ConnectionSource connectionSource) {
+    public static void updateDatabaseData(int oldVersion, int newVersion, ConnectionSource connectionSource, SQL.Driver driver) {
         IridiumSkyblock.getInstance().getLogger().info("Updating database from version " + oldVersion + " to " + newVersion);
 
         try {
             DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
-
-            for (int version = oldVersion + 1; version <= newVersion; version++) {
-                InputStream inputStream = IridiumSkyblock.getInstance().getResource("patch_" + version + ".sql");
+            for (int version = oldVersion; version <= newVersion; version++) {
+                InputStream inputStream = findPatchInputStream(version, driver);
                 if (inputStream == null) continue;
 
                 for (String statement : CharStreams.toString(new InputStreamReader(inputStream)).split("\n")) {
@@ -83,6 +83,15 @@ public class DataConverter {
         } catch (SQLException | IOException exception) {
             exception.printStackTrace();
         }
+    }
+
+    private static InputStream findPatchInputStream(int version, SQL.Driver driver) {
+        InputStream inputStream = IridiumSkyblock.getInstance().getResource("patch_" + version + ".sql");
+        if (inputStream == null) {
+            inputStream = IridiumSkyblock.getInstance().getResource("patch_" + version + "_" + driver.name().toLowerCase() + ".sql");
+        }
+
+        return inputStream;
     }
 
 }

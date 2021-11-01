@@ -8,16 +8,17 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.UpgradesGUI;
+import com.iridium.iridiumskyblock.gui.IslandUpgradesGUI;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class UpgradesCommand extends Command {
 
@@ -25,7 +26,7 @@ public class UpgradesCommand extends Command {
      * The default constructor.
      */
     public UpgradesCommand() {
-        super(Arrays.asList("upgrades", "upgrade"), "Open the Island Upgrades Menu", "", true, Duration.ZERO);
+        super(Arrays.asList("upgrades", "upgrade"), "Open the Island Upgrades Menu", "%prefix% &7/is upgrade <name>", "", true, Duration.ZERO);
     }
 
     /**
@@ -47,7 +48,7 @@ public class UpgradesCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new UpgradesGUI(island.get()).getInventory());
+            player.openInventory(new IslandUpgradesGUI(island.get()).getInventory());
             return true;
         }
 
@@ -75,6 +76,12 @@ public class UpgradesCommand extends Command {
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
         IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(island.get());
         island.get().resetCache();
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().successfullyBoughtUpgrade
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                .replace("%upgrade%", upgrade.name)
+                .replace("%vault_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.money))
+                .replace("%crystal_cost%", IridiumSkyblock.getInstance().getNumberFormatter().format(upgradeData.crystals))
+        ));
         return true;
     }
 

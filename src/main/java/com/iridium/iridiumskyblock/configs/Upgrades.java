@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Upgrades {
-    public Upgrade<SizeUpgrade> sizeUpgrade = new Upgrade<>(true,
+    public Upgrade<SizeUpgrade> sizeUpgrade = new Upgrade<>(true, "Size",
             new Item(XMaterial.GRASS_BLOCK, 11, 1, "&b&lIsland Size", Arrays.asList(
                     "&7Need more room to expand? Buy this",
                     "&7upgrade to increase your island size.",
@@ -32,7 +32,7 @@ public class Upgrades {
             .put(3, new SizeUpgrade(1000, 15, 150))
             .build());
 
-    public Upgrade<MemberUpgrade> memberUpgrade = new Upgrade<>(true,
+    public Upgrade<MemberUpgrade> memberUpgrade = new Upgrade<>(true, "Member",
             new Item(XMaterial.ARMOR_STAND, 12, 1, "&b&lIsland Members", Arrays.asList(
                     "&7Need more members? Buy this",
                     "&7upgrade to increase your member count.",
@@ -53,7 +53,7 @@ public class Upgrades {
             .put(3, new MemberUpgrade(1000, 15, 27))
             .build());
 
-    public Upgrade<BlockLimitUpgrade> blockLimitUpgrade = new Upgrade<>(true,
+    public Upgrade<BlockLimitUpgrade> blockLimitUpgrade = new Upgrade<>(true, "Block Limit",
             new Item(XMaterial.HOPPER, 13, 1, "&b&lIsland Block Limits", Arrays.asList(
                     "&7Need to place more blocks? Buy this",
                     "&7upgrade to increase the amount of blocks you can place.",
@@ -91,7 +91,7 @@ public class Upgrades {
                     .build()))
             .build());
 
-    public Upgrade<WarpsUpgrade> warpsUpgrade = new Upgrade<>(true,
+    public Upgrade<WarpsUpgrade> warpsUpgrade = new Upgrade<>(true, "Warps",
             new Item(XMaterial.END_PORTAL_FRAME, 14, 1, "&b&lIsland Warps", Arrays.asList(
                     "&7Need more island warps? Buy this",
                     "&7upgrade to increase your island warps.",
@@ -115,7 +115,7 @@ public class Upgrades {
             .put(5, new WarpsUpgrade(1000, 15, 5))
             .build());
 
-    public Upgrade<OresUpgrade> oresUpgrade = new Upgrade<>(true,
+    public Upgrade<OresUpgrade> oresUpgrade = new Upgrade<>(true, "Ore Generator",
             new Item(XMaterial.DIAMOND_ORE, 15, 1, "&b&lIsland Generator", Arrays.asList(
                     "&7Want to improve your generator? Buy this",
                     "&7upgrade to improve your island generator.",

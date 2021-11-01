@@ -107,7 +107,12 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                 Optional<Island> island = user.getIsland();
                 if (island.isPresent()) {
-                    player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
+                    if (IridiumSkyblock.getInstance().getConfiguration().islandMenu) {
+                        player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
+                    } else {
+                        String command = IridiumSkyblock.getInstance().getCommands().helpCommand.aliases.get(0);
+                        Bukkit.dispatchCommand(player, "is " + command);
+                    }
                 } else {
                     String command = IridiumSkyblock.getInstance().getCommands().createCommand.aliases.get(0);
                     Bukkit.dispatchCommand(player, "is " + command);
@@ -165,7 +170,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
         // Check cooldown
         CooldownProvider<CommandSender> cooldownProvider = command.getCooldownProvider();
-        boolean bypassing = commandSender instanceof Player && IridiumSkyblockAPI.getInstance().getUser((Player) commandSender).isBypass();
+        boolean bypassing = commandSender instanceof Player && IridiumSkyblockAPI.getInstance().getUser((Player) commandSender).isBypassing();
         if (commandSender instanceof Player && !bypassing && cooldownProvider.isOnCooldown(commandSender)) {
             Duration remainingTime = cooldownProvider.getRemainingTime(commandSender);
             String formattedTime = TimeUtils.formatDuration(IridiumSkyblock.getInstance().getMessages().activeCooldown, remainingTime);
@@ -223,6 +228,20 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         return commandSender.hasPermission(command.permission)
                 || command.permission.equalsIgnoreCase("")
                 || command.permission.equalsIgnoreCase("iridiumskyblock.");
+    }
+
+    public Optional<Command> findExecutingCommand(String[] arguments) {
+        if (arguments.length == 0) {
+            return Optional.empty();
+        }
+
+        for (Command command : commands) {
+            if (command.aliases.contains(arguments[0].toLowerCase())) {
+                return Optional.of(findExecutingCommand(command, arguments));
+            }
+        }
+
+        return Optional.empty();
     }
 
     private Command findExecutingCommand(Command baseCommand, String[] args) {

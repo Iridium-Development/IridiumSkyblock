@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
@@ -45,16 +44,15 @@ public final class User {
     @DatabaseField(columnName = "island_rank")
     private @NotNull IslandRank islandRank;
 
-    private boolean bypass = false;
+    private boolean bypassing = false;
 
     private boolean flying = false;
 
     private boolean islandChat = false;
 
-    private Island currentIslandVisiting;
+    private boolean islandChatSpying = false;
 
-    private Location schematicPos1;
-    private Location schematicPos2;
+    private Island currentIslandVisiting;
 
     private BukkitTask teleportingTask;
 
@@ -122,7 +120,17 @@ public final class User {
      *
      * @return The player object if one was found, null otherwise
      */
+    @Deprecated
     public Player toPlayer() {
+        return getPlayer();
+    }
+
+    /**
+     * Gets the user as Player
+     *
+     * @return The player object if one was found, null otherwise
+     */
+    public Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
 

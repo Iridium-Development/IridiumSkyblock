@@ -48,6 +48,7 @@ public class DatabaseManager {
     private ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
     private ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
     private ForeignIslandTableManager<IslandWarp, Integer> islandWarpTableManager;
+    private ForeignIslandTableManager<IslandSetting, Integer> islandSettingTableManager;
 
     @Getter(AccessLevel.NONE)
     private ConnectionSource connectionSource;
@@ -82,8 +83,9 @@ public class DatabaseManager {
         this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, Comparator.comparing(IslandWarp::getIslandId));
         this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandId));
         this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser().getUuid()));
+        this.islandSettingTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
 
-        convertDatabaseData();
+        convertDatabaseData(sqlConfig.driver);
     }
 
     /**
@@ -94,13 +96,7 @@ public class DatabaseManager {
     private @NotNull String getDatabaseURL(SQL sqlConfig) {
         switch (sqlConfig.driver) {
             case MYSQL:
-            case MARIADB:
-            case POSTGRESQL:
                 return "jdbc:" + sqlConfig.driver.name().toLowerCase() + "://" + sqlConfig.host + ":" + sqlConfig.port + "/" + sqlConfig.database + "?useSSL=" + sqlConfig.useSSL;
-            case SQLSERVER:
-                return "jdbc:sqlserver://" + sqlConfig.host + ":" + sqlConfig.port + ";databaseName=" + sqlConfig.database;
-            case H2:
-                return "jdbc:h2:file:" + sqlConfig.database;
             case SQLITE:
                 return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
             default:
@@ -108,16 +104,16 @@ public class DatabaseManager {
         }
     }
 
-    private void convertDatabaseData() {
+    private void convertDatabaseData(SQL.Driver driver) {
         Path versionFile = Paths.get("plugins", "IridiumSkyblock", "sql_version.txt");
         try {
             Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE_NEW);
-            DataConverter.updateDatabaseData(0, version, connectionSource);
+            DataConverter.updateDatabaseData(1, version, connectionSource, driver);
         } catch (FileAlreadyExistsException exception) {
             try {
                 int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
                 if (oldVersion != version) {
-                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource);
+                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource, driver);
                     Files.delete(versionFile);
                     Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE);
                 }

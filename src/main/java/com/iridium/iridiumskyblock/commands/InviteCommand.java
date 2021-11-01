@@ -4,21 +4,19 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.PermissionType;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandInvite;
-import com.iridium.iridiumskyblock.database.IslandLog;
-import com.iridium.iridiumskyblock.database.IslandUpgrade;
-import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.InvitesGUI;
+import com.iridium.iridiumskyblock.database.*;
+import com.iridium.iridiumskyblock.gui.IslandInvitesGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import net.md_5.bungee.api.chat.*;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Command which invites a user to the Island.
@@ -29,7 +27,7 @@ public class InviteCommand extends Command {
      * The default constructor.
      */
     public InviteCommand() {
-        super(Arrays.asList("invite", "invites"), "Invite a user to your Island", "", true, Duration.ZERO);
+        super(Arrays.asList("invite", "invites"), "Invite a user to your Island", "%prefix% &7/is invite <player>", "", true, Duration.ZERO);
     }
 
     /**
@@ -51,7 +49,7 @@ public class InviteCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new InvitesGUI(island.get()).getInventory());
+            player.openInventory(new IslandInvitesGUI(island.get()).getInventory());
             return true;
         }
 
@@ -100,7 +98,14 @@ public class InviteCommand extends Command {
 
         // Send a message to the user if he is online
         if (offlinePlayer instanceof Player) {
-            ((Player) offlinePlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited.replace("%inviter%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            Player targetPlayer = (Player) offlinePlayer;
+            BaseComponent[] message = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited
+                    .replace("%inviter%", player.getName())
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            message[0].setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
+            message[0].setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
+            targetPlayer.spigot().sendMessage(message);
         }
 
         return true;

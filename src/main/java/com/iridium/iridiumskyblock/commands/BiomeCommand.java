@@ -5,23 +5,24 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.BiomeGUI;
+import com.iridium.iridiumskyblock.gui.IslandBiomeGUI;
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.apache.commons.lang.WordUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class BiomeCommand extends Command {
 
     private final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
 
     public BiomeCommand() {
-        super(Collections.singletonList("biome"), "Change your island biome.", "", true, Duration.ZERO);
+        super(Collections.singletonList("biome"), "Change your island biome.", "%prefix% &7/is biome <biome>", "", true, Duration.ZERO);
     }
 
     @Override
@@ -36,7 +37,7 @@ public class BiomeCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new BiomeGUI(1, islandOptional.get(), player.getWorld().getEnvironment(), getCooldownProvider()).getInventory());
+            player.openInventory(new IslandBiomeGUI(1, islandOptional.get(), player.getWorld().getEnvironment(), getCooldownProvider()).getInventory());
             // The BiomeGUI handles the cooldown
             return false;
         }

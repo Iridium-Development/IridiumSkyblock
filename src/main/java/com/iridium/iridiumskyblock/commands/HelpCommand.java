@@ -1,10 +1,13 @@
 package com.iridium.iridiumskyblock.commands;
 
+import com.iridium.iridiumcore.dependencies.iridiumcolorapi.IridiumColorAPI;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -23,7 +26,7 @@ public class HelpCommand extends Command {
      * The default constructor.
      */
     public HelpCommand() {
-        super(Collections.singletonList("help"), "Show a list of all commands", "", false, Duration.ZERO);
+        super(Collections.singletonList("help"), "Show a list of all commands", "%prefix% &7/is help <page/command>", "", false, Duration.ZERO);
     }
 
     /**
@@ -48,6 +51,8 @@ public class HelpCommand extends Command {
             String pageArgument = arguments[1];
             if (pageArgument.matches("[0-9]+")) {
                 page = Integer.parseInt(pageArgument);
+            } else {
+                return showCommandHelp(sender, arguments);
             }
         }
 
@@ -66,12 +71,12 @@ public class HelpCommand extends Command {
         TextComponent nextButton = new TextComponent(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandNextPage));
 
         if (page != 1) {
-            previousButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page - 1)));
+            previousButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().helpCommand.aliases.get(0) + " " + (page - 1)));
             previousButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandPreviousPageHover)).create()));
         }
 
         if (page != maxPage) {
-            nextButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is help " + (page + 1)));
+            nextButton.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().helpCommand.aliases.get(0) + " " + (page + 1)));
             nextButton.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().helpCommandNextPageHover)).create()));
         }
 
@@ -88,6 +93,41 @@ public class HelpCommand extends Command {
         if (sender instanceof Player) {
             ((Player) sender).spigot().sendMessage(previousButton, footerText, nextButton);
         }
+
+        return true;
+    }
+
+    private boolean showCommandHelp(CommandSender commandSender, String[] arguments) {
+        String[] newArguments = Arrays.copyOfRange(arguments, 1, arguments.length);
+        Optional<Command> commandOptional = IridiumSkyblock.getInstance().getCommandManager().findExecutingCommand(newArguments);
+        if (!commandOptional.isPresent()) {
+            execute(commandSender, new String[0]);
+            return false;
+        }
+
+        Command executingCommand = commandOptional.get();
+        if (!commandSender.hasPermission(executingCommand.permission) && !executingCommand.permission.isEmpty()) {
+            execute(commandSender, new String[0]);
+            return false;
+        }
+
+        String syntax = IridiumColorAPI.stripColorFormatting(executingCommand.syntax.replaceAll("%prefix%\\s*", "").replace("&", "§"));
+        if (syntax.isEmpty()) {
+            syntax = IridiumSkyblock.getInstance().getConfiguration().defaultCommandSyntax.replace("%command%", executingCommand.aliases.get(0));
+        }
+
+        String finalSyntax = syntax;
+        String subCommands = executingCommand.childs.stream()
+            .filter(command -> commandSender.hasPermission(command.permission) || command.permission.isEmpty())
+            .map(command -> command.aliases.get(0))
+            .collect(Collectors.joining("/", "<", ">"));
+
+        IridiumSkyblock.getInstance().getMessages().commandHelpMessage.stream()
+            .map(line -> line.replace("%description%", executingCommand.description))
+            .map(line -> line.replace("%syntax%", finalSyntax))
+            .map(line -> line.replace("%subcommands%", executingCommand.childs.isEmpty() ? "" : subCommands))
+            .map(StringUtils::color)
+            .forEach(commandSender::sendMessage);
 
         return true;
     }

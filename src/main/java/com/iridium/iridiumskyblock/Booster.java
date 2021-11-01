@@ -11,5 +11,7 @@ public class Booster {
     public int crystalsCost;
     public int vaultCost;
     public int time;
+    public String name;
+    public boolean stackable;
     public boolean enabled;
 }

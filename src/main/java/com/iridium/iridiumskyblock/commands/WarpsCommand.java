@@ -5,15 +5,16 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.WarpsGUI;
+import com.iridium.iridiumskyblock.gui.IslandWarpsGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class WarpsCommand extends Command {
 
@@ -21,7 +22,7 @@ public class WarpsCommand extends Command {
      * The default constructor.
      */
     public WarpsCommand() {
-        super(Arrays.asList("warp", "warps"), "Open the Island Warps Menu", "%prefix% &7/is warp %warp% <password>", "", true, Duration.ZERO);
+        super(Arrays.asList("warp", "warps"), "Open the Island Warps Menu", "%prefix% &7/is warp <name> <password>", "", true, Duration.ZERO);
     }
 
     /**
@@ -43,7 +44,7 @@ public class WarpsCommand extends Command {
         }
 
         if (args.length != 2 && args.length != 3) {
-            player.openInventory(new WarpsGUI(island.get()).getInventory());
+            player.openInventory(new IslandWarpsGUI(island.get()).getInventory());
             return true;
         }
 

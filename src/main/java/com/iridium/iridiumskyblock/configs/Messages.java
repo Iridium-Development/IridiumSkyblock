@@ -38,7 +38,7 @@ public class Messages {
     public String notSafe = "%prefix% &7This location is not safe.";
     public String invitedPlayer = "%prefix% &7You have invited %player% to join your Island.";
     public String userInvitedPlayer = "%prefix% &7%inviter% has invited %player% to join your Island.";
-    public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their Island.";
+    public String youHaveBeenInvited = "%prefix% &7%inviter% has invited you to join their Island. Click here to join the Island!";
     public String alreadyInYourIsland = "%prefix% &7This player is already a member of your Island.";
     public String inviteRevoked = "%prefix% &7Island invite for %player% has been revoked.";
     public String noActiveInvite = "%prefix% &7%player% has no active invite for your Island.";
@@ -97,6 +97,8 @@ public class Messages {
     public String cannotOpenContainers = "%prefix% &7You cannot open containers on this Island.";
     public String cannotChangePermissions = "%prefix% &7You cannot change this permission.";
     public String cannotUseRedstone = "%prefix% &7You cannot use redstone on this Island.";
+    public String cannotHurtPlayer = "%prefix% &7PvP is disabled on this Island.";
+    public String cannotHurtMember = "%prefix% &7You cannot hurt members of your Island.";
     public String cannotHurtMobs = "%prefix% &7You cannot hurt mobs on this Island.";
     public String cannotInviteMember = "%prefix% &7You cannot invite members to this Island.";
     public String cannotRegenIsland = "%prefix% &7You cannot regenerate your Island.";
@@ -105,6 +107,7 @@ public class Messages {
     public String cannotTransferOwnership = "%prefix% &7Only the Island owner can transfer ownership.";
     public String cannotSpawnEntities = "%prefix% &7You cannot spawn entities on this Island.";
     public String cannotUsePortal = "%prefix% &7You cannot use a portal on this Island.";
+    public String cannotChangeSettings = "%prefix% &7You cannot change the Island Settings.";
     public String nowBypassing = "%prefix% &7You are now bypassing Island restrictions.";
     public String noLongerBypassing = "%prefix% &7You are no longer bypassing Island restrictions.";
     public String setSchematicPosition = "%prefix% &7The position has been set.";
@@ -125,6 +128,8 @@ public class Messages {
     public String cannotAfford = "%prefix% &7You cannot afford this.";
     public String unknownUpgrade = "%prefix% &7Unknown Island upgrade.";
     public String unknownBooster = "%prefix% &7Unknown Island booster.";
+    public String successfullyBoughtBooster = "%prefix% &7You have successfully bought the %booster% Booster &r&7for $%vault_cost% and %crystal_cost% Crystals.";
+    public String successfullyBoughtUpgrade = "%prefix% &7You have successfully bought the %upgrade% Upgrade &r&7for $%vault_cost% and %crystal_cost% Crystals.";
     public String unknownWarp = "%prefix% &7Unknown Island warp.";
     public String alreadyTrusted = "%prefix% &7This player is already trusted.";
     public String trustedPlayer = "%prefix% &7%truster% has trusted %player% to your Island.";
@@ -172,21 +177,29 @@ public class Messages {
     public String islandLevelUp = "%prefix% &7Your Island has reached level %level%!";
     public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
+    public String islandChatSpyEnabled = "%prefix% &7You can now see the Island chats of other Islands!";
+    public String islandChatSpyDisabled = "%prefix% &7You no longer see the Island chats of other Islands!";
+    public String islandChatSpyMessage = "%prefix% &7[%island%] %player% &8» &f%message%";
     public String invalidBiome = "%prefix% &7That Biome doesn't exist.";
     public String changedBiome = "%prefix% &7You have changed your island biome to %biome%!";
     public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
     public String activeCooldown = "%prefix% &7You cannot do that due to a running cooldown, please wait %hours% hour(s), %minutes% minute(s), %seconds% second(s)!";
+    public String clickToJoinHover = "&7Click to join this Island!";
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
+    public String visitable = "Visitable";
+    public String notVisitable = "Private";
     public String ownerRankDisplayName = "Owner";
     public String coOwnerRankDisplayName = "Co-Owner";
     public String moderatorRankDisplayName = "Moderator";
     public String memberRankDisplayName = "Member";
     public String visitorRankDisplayName = "Visitor";
 
+    public String infoTitle = "&8[ &b&lIsland info for %island_name% &8]";
+    public String infoFiller = "&8&m ";
+
     public List<String> infoCommand = Arrays.asList(
-            "&8===== &b&lIsland Info for %player% &r&8=====",
             "<GRADIENT:09C6F9>Island Name</GRADIENT:045DE9>&r: &7%island_name%",
             "<GRADIENT:09C6F9>Island Owner</GRADIENT:045DE9>&r: &7%owner%",
             "<GRADIENT:09C6F9>Island Members</GRADIENT:045DE9>&r: &7%members%",
@@ -194,5 +207,9 @@ public class Messages {
             "<GRADIENT:09C6F9>Island Value</GRADIENT:045DE9>&r: &7%value%",
             "<GRADIENT:09C6F9>Island Visitable</GRADIENT:045DE9>&r: &7%visitable%"
     );
+
+    public List<String> commandHelpMessage = Arrays.asList(
+            "&7Description: &b%description%",
+            "&7Syntax: &b%syntax% %subcommands%");
 
 }

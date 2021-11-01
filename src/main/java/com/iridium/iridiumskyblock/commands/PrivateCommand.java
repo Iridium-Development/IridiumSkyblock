@@ -5,12 +5,13 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which makes the user's Island unvisitable.
@@ -45,11 +46,12 @@ public class PrivateCommand extends Command {
         island.get().setVisitable(false);
         int visitorCount = 0;
         for (User visitor : IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island.get())) {
-            if (visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), visitor).isPresent()) {
+            if (visitor.isBypassing() || visitor.getIsland().map(Island::getId).orElse(0) == island.get().getId() || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), visitor).isPresent()) {
                 continue;
             }
-            PlayerUtils.teleportSpawn(visitor.toPlayer());
-            visitor.toPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledIslandLocked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+
+            PlayerUtils.teleportSpawn(visitor.getPlayer());
+            visitor.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().expelledIslandLocked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             visitorCount++;
         }
 

@@ -11,6 +11,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class Upgrade<T extends UpgradeData> {
     public boolean enabled;
+    public String name;
     public Item item;
     public Map<Integer, T> upgrades;
 }

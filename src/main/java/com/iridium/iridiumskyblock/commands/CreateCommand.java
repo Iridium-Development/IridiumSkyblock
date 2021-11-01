@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumskyblock.configs.Schematics.SchematicConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
@@ -27,7 +28,7 @@ public class CreateCommand extends Command {
      * The default constructor.
      */
     public CreateCommand() {
-        super(Collections.singletonList("create"), "Create an Island", "", true, Duration.ofSeconds(5));
+        super(Collections.singletonList("create"), "Create an Island", "%prefix% &7/is create <name> <schematic>", "", true, Duration.ofSeconds(5));
     }
 
     /**
@@ -57,6 +58,8 @@ public class CreateCommand extends Command {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
                 break;
+            default:
+                break;
         }
 
         // Always return false because the cooldown is set during Island creation
@@ -80,6 +83,12 @@ public class CreateCommand extends Command {
 
         if (name != null && IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
+        }
+
+        if (IridiumSkyblock.getInstance().getSchematics().schematics.size() == 1) {
+            SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.values().stream().findFirst().get();
+            IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, name, schematicConfig);
             return;
         }
 

@@ -5,16 +5,17 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.VisitorsGUI;
+import com.iridium.iridiumskyblock.gui.IslandVisitorsGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class ExpelCommand extends Command {
 
@@ -22,7 +23,7 @@ public class ExpelCommand extends Command {
      * The default constructor.
      */
     public ExpelCommand() {
-        super(Collections.singletonList("expel"), "Kick a visitor", "%prefix% &7/is expel [<name>]", "", true, Duration.ZERO);
+        super(Collections.singletonList("expel"), "Kick a visitor", "%prefix% &7/is expel <player>", "", true, Duration.ZERO);
     }
 
     /**
@@ -49,7 +50,7 @@ public class ExpelCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new VisitorsGUI(1, island.get()).getInventory());
+            player.openInventory(new IslandVisitorsGUI(1, island.get()).getInventory());
             return true;
         }
 
@@ -70,7 +71,7 @@ public class ExpelCommand extends Command {
             return false;
         }
 
-        if (targetUser.isBypass() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
+        if (targetUser.isBypassing() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotExpelPlayer.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }

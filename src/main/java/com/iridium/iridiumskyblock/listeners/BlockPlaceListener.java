@@ -31,7 +31,7 @@ public class BlockPlaceListener implements Listener {
         if (!island.isPresent()) {
             World world = event.getBlock().getLocation().getWorld();
             if (Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getWorld()) || Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getNetherWorld()) || Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getEndWorld())) {
-                if (!user.isBypass()) event.setCancelled(true);
+                if (!user.isBypassing()) event.setCancelled(true);
             }
             return;
         }
@@ -70,7 +70,8 @@ public class BlockPlaceListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "PLACE:" + material.name(), 1));
+
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "PLACE", material.name(), 1));
     }
 
 }
