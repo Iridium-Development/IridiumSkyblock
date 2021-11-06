@@ -7,11 +7,13 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
 import java.util.Optional;
 
@@ -64,6 +66,23 @@ public class BlockBreakListener implements Listener {
                 event.setExpToDrop(event.getExpToDrop() * 2);
             }
         });
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
+        if (event.getRemover() instanceof Player) {
+            if (event.getEntity() instanceof ItemFrame) {
+                Player player = (Player) event.getRemover();
+                ItemFrame itemFrame = (ItemFrame) event.getEntity();
+                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+                Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame.getLocation());
+                if (!island.isPresent()) return;
+                if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
+                    event.setCancelled(true);
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                }
+            }
+        }
     }
 
 }
