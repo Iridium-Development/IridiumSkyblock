@@ -133,9 +133,7 @@ public class DatabaseManager {
      */
     public synchronized CompletableFuture<Void> registerIsland(Island island) {
         return CompletableFuture.runAsync(() -> {
-            IridiumSkyblock.getInstance().getLogger().info(island.getId() + "");
             islandTableManager.save(island);
-            IridiumSkyblock.getInstance().getLogger().info(island.getId() + "");
             islandTableManager.addEntry(island);
         });
     }
