@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class DataConverter {
-    
+
     public static void copyLegacyData() {
         String[] fileNames = Objects.requireNonNull(IridiumSkyblock.getInstance().getDataFolder().list());
         if (!Arrays.asList(fileNames).contains("config.json")) {
@@ -69,8 +69,7 @@ public class DataConverter {
 
         try {
             DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
-
-            for (int version = oldVersion; version <= newVersion; version++) {
+            for (int version = oldVersion + 1; version <= newVersion; version++) {
                 InputStream inputStream = findPatchInputStream(version, driver);
                 if (inputStream == null) continue;
 
