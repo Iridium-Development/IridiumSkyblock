@@ -255,9 +255,7 @@ public class IslandManager {
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
 
-            pasteSchematic(island, schematic).thenRun(() -> {
-                completableFuture.complete(island);
-            });
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematic).thenRun(() -> completableFuture.complete(island)));
         });
         return completableFuture;
     }
