@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.commands;
 
+import com.iridium.iridiumcore.dependencies.iridiumcolorapi.IridiumColorAPI;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import java.time.Duration;
@@ -13,7 +14,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -111,8 +111,7 @@ public class HelpCommand extends Command {
             return false;
         }
 
-        String syntax = ChatColor.stripColor(executingCommand.syntax.replaceAll("%prefix%\\s*", "").replace("&", "§"));
-        System.out.println(syntax);
+        String syntax = IridiumColorAPI.stripColorFormatting(executingCommand.syntax.replaceAll("%prefix%\\s*", "").replace("&", "§"));
         if (syntax.isEmpty()) {
             syntax = IridiumSkyblock.getInstance().getConfiguration().defaultCommandSyntax.replace("%command%", executingCommand.aliases.get(0));
         }

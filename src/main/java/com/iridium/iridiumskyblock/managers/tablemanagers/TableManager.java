@@ -52,6 +52,15 @@ public class TableManager<T, S> {
         }
     }
 
+    public void save(T t) {
+        try {
+            dao.createOrUpdate(t);
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
     /**
      * Adds an entry to list
      *

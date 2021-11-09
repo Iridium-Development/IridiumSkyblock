@@ -26,7 +26,7 @@ public class IslandTableManager extends TableManager<Island, Integer> {
     /**
      * Sort the list of entries by island id
      */
-    private void sort() {
+    public void sort() {
         getEntries().sort(Comparator.comparing(Island::getId));
     }
 

@@ -40,8 +40,8 @@ public final class Island {
     @Setter(AccessLevel.PRIVATE)
     private int id;
 
-    @DatabaseField(columnName = "name", canBeNull = false, unique = true)
-    private @NotNull String name;
+    @DatabaseField(columnName = "name", unique = true)
+    private String name;
 
     /*
     The islands home relative to the island center as a string.
@@ -71,7 +71,8 @@ public final class Island {
     /**
      * The default constructor.
      *
-     * @param name The name of this island
+     * @param name            The name of this island
+     * @param schematicConfig The schematic of the island
      */
     public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
@@ -86,6 +87,10 @@ public final class Island {
      */
     public Island(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name == null ? getOwner().getName() : name;
     }
 
     /**

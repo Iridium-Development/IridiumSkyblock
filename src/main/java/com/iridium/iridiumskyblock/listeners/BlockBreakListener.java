@@ -57,7 +57,8 @@ public class BlockBreakListener implements Listener {
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
         island.ifPresent(value -> {
-            IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + material.name(), 1);
+            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
+
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
             if (islandBooster.isActive()) {
                 event.setExpToDrop(event.getExpToDrop() * 2);

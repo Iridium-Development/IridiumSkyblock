@@ -16,10 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Handles the shop.
@@ -109,7 +106,7 @@ public class ShopManager {
 
         if (shopItem.command == null) {
             // Add item to the player Inventory
-            if (!InventoryUtils.hasEmptySlot(player.getInventory())) {
+            if (!IridiumSkyblock.getInstance().getShop().dropItemWhenFull && !InventoryUtils.hasEmptySlot(player.getInventory())) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inventoryFull.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return;
             }
@@ -122,7 +119,10 @@ public class ShopManager {
                 itemStack.setItemMeta(itemMeta);
             }
 
-            player.getInventory().addItem(itemStack);
+            for (ItemStack dropItem : player.getInventory().addItem(itemStack).values()) {
+                player.getWorld().dropItem(player.getEyeLocation(), dropItem);
+
+            }
         } else {
             // Run the command
             String command = shopItem.command
