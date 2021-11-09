@@ -11,13 +11,14 @@ public class LeavesDecayListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
-        if (!SettingType.LEAF_DECAY.isFeactureValue()) return;
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
-            IslandSetting leafDecaySettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.LEAF_DECAY);
-            if (!leafDecaySettings.getBooleanValue()) {
-                event.setCancelled(true);
-            }
-        });
+        if (SettingType.LEAF_DECAY.isFeactureValue()) {
+            IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
+                IslandSetting leafDecaySettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.LEAF_DECAY);
+                if (!leafDecaySettings.getBooleanValue()) {
+                    event.setCancelled(true);
+                }
+            });
+        }
     }
 
 }

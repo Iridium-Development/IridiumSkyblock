@@ -46,29 +46,40 @@ public class OceanGenerator extends ChunkGenerator {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 int currentFloorHeight = (int) ((generator.noise(chunkX * 16 + x, chunkZ * 16 + z, 1.5D, 0.5D, true) + 1) * (maxOceanFloorLevel - minOceanFloorLevel) + minOceanFloorLevel);
-
                 // Generate layer of bedrock
-                chunkData.setBlock(x, LocationUtils.getMinHeight(world), z,
-                        Objects.requireNonNull(XMaterial.BEDROCK.parseMaterial())
-                );
+                if (!world.getEnvironment().equals(Environment.THE_END)) {
+                    if (!world.getEnvironment().equals(Environment.NETHER)) {
+                        chunkData.setBlock(x, LocationUtils.getMinHeight(world), z,
+                                Objects.requireNonNull(XMaterial.BEDROCK.parseMaterial())
+                        );
 
-                // Generate gravel layer
-                for (int y = 1; y < currentFloorHeight; y++) {
-                    chunkData.setBlock(x, y, z,
-                            Objects.requireNonNull(bottomMaterial.parseMaterial())
-                    );
+                        // Generate gravel layer
+                        for (int y = 1; y < currentFloorHeight; y++) {
+                            chunkData.setBlock(x, y, z,
+                                    Objects.requireNonNull(bottomMaterial.parseMaterial())
+                            );
+                        }
+
+                        // Generate sand on top of gravel
+                        chunkData.setBlock(x, currentFloorHeight, z,
+                                Objects.requireNonNull(topMaterial.parseMaterial())
+                        );
+                    }
+
+
+
+
+                    // Generate water or lava on top of the floor
+                    if (world.getEnvironment().equals(Environment.NORMAL)) {
+                        XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
+                        for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
+                            chunkData.setBlock(x, y, z, Objects.requireNonNull(oceanMaterial.parseMaterial()));
+                        }
+                    }
+
+
                 }
 
-                // Generate sand on top of gravel
-                chunkData.setBlock(x, currentFloorHeight, z,
-                        Objects.requireNonNull(topMaterial.parseMaterial())
-                );
-
-                // Generate water or lava on top of the floor
-                XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
-                for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
-                    chunkData.setBlock(x, y, z, Objects.requireNonNull(oceanMaterial.parseMaterial()));
-                }
             }
         }
 

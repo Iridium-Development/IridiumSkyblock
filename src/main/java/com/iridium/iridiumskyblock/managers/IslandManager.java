@@ -518,7 +518,8 @@ public class IslandManager {
      * @return an optional IslandBan object
      */
     public Optional<IslandBan> getIslandBan(Island island, User user) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntry(new IslandBan(island, user, user));
+        IslandBan islandBan = new IslandBan(island, user, user);
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntry(islandBan);
     }
 
     /**
@@ -876,7 +877,7 @@ public class IslandManager {
                 for (int z = 0; z < 16; z++) {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
-                        for (int y = 0; y <= maxy; y++) {
+                        for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
                             if (material.equals(XMaterial.AIR)) continue;
 

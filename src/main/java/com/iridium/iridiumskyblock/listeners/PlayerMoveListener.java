@@ -27,47 +27,60 @@ public class PlayerMoveListener implements Listener {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        if (event.getTo().getBlockX() != event.getFrom().getBlockX() || event.getTo().getBlockZ() != event.getFrom().getBlockZ()) {
-            if (user.getTeleportingTask() != null) {
-                user.getTeleportingTask().cancel();
-                user.setTeleportingTask(null);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportCanceled
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                );
-            }
+        if (event.getTo() != null) {
+            if (event.getTo().getBlockX() != event.getFrom().getBlockX() || event.getTo().getBlockZ() != event.getFrom().getBlockZ()) {
+                if (user.getTeleportingTask() != null) {
+                    user.getTeleportingTask().cancel();
+                    user.setTeleportingTask(null);
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportCanceled
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                    );
+                }
 
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
-            if (island.isPresent()) {
-                if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), user)) {
-                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                            .replace("%owner%", island.get().getOwner().getName())
-                            .replace("%name%", island.get().getName())
-                    ));
-                    PlayerUtils.teleportSpawn(player);
-                } else {
-                    IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.TIME);
-                    IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.WEATHER);
-                    IslandTime islandTime = IslandTime.valueOf(islandTimeSetting.getValue());
-                    IslandWeatherType islandWeatherType = IslandWeatherType.valueOf(islandWeatherSetting.getValue());
-                    if (SettingType.WEATHER.isFeactureValue() && islandWeatherType == IslandWeatherType.DEFAULT) {
-                        player.resetPlayerWeather();
+                Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
+                if (island.isPresent()) {
+                    if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), user)) {
+                        event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                .replace("%owner%", island.get().getOwner().getName())
+                                .replace("%name%", island.get().getName())
+                        ));
+                        PlayerUtils.teleportSpawn(player);
                     } else {
-                        WeatherType newWeatherType = islandWeatherType == IslandWeatherType.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL;
-                        if (SettingType.WEATHER.isFeactureValue() && player.getPlayerWeather() != newWeatherType) {
-                            player.setPlayerWeather(newWeatherType);
+                        /*
+                        IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.TIME);
+                        IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.WEATHER);
+                        IslandTime islandTime = IslandTime.valueOf(islandTimeSetting.getValue());
+                        IslandWeatherType islandWeatherType = IslandWeatherType.valueOf(islandWeatherSetting.getValue());
+                        if (SettingType.WEATHER.isFeactureValue() && islandWeatherType == IslandWeatherType.DEFAULT) {
+                            player.resetPlayerWeather();
+                        } else {
+                            WeatherType newWeatherType = islandWeatherType == IslandWeatherType.CLEAR ? WeatherType.CLEAR : WeatherType.DOWNFALL;
+                            if (SettingType.WEATHER.isFeactureValue() && player.getPlayerWeather() != newWeatherType) {
+                                player.setPlayerWeather(newWeatherType);
+                            }
                         }
-                    }
 
-                    if (SettingType.TIME.isFeactureValue() && ((islandTime == IslandTime.DEFAULT && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTime.getTime())) {
-                        player.setPlayerTime(islandTime.getTime(), islandTime.isRelative());
+                        if (SettingType.TIME.isFeactureValue() && ((islandTime == IslandTime.DEFAULT && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTime.getTime())) {
+                            player.setPlayerTime(islandTime.getTime(), islandTime.isRelative());
+                        }*/
                     }
                 }
-            }
-            if (user.isFlying()) {
-                if (island.isPresent()) {
-                    IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
-                    if (!islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {
+                if (user.isFlying()) {
+                    if (island.isPresent()) {
+                        IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
+                        if (!islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {
+                            user.setFlying(false);
+                            if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                                player.setFlying(false);
+                                player.setAllowFlight(false);
+                                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
+                                        .replace("%player%", player.getName())
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                );
+                            }
+                        }
+                    } else if (!player.hasPermission("iridiumskyblock.fly")) {
                         user.setFlying(false);
                         if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
                             player.setFlying(false);
@@ -77,16 +90,6 @@ public class PlayerMoveListener implements Listener {
                                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                             );
                         }
-                    }
-                } else if (!player.hasPermission("iridiumskyblock.fly")) {
-                    user.setFlying(false);
-                    if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
-                        player.setFlying(false);
-                        player.setAllowFlight(false);
-                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
-                                .replace("%player%", player.getName())
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        );
                     }
                 }
             }

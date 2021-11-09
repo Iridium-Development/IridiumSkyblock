@@ -13,8 +13,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class EntitySpawnListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+
     public void onEntitySpawn(EntitySpawnEvent event) {
+        if (true) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation()).ifPresent(island -> {
             IslandSetting mobSpawnSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.MOB_SPAWN);
             if (SettingType.MOB_SPAWN.isFeactureValue() && !mobSpawnSetting.getBooleanValue() && event.getEntity() instanceof LivingEntity) {

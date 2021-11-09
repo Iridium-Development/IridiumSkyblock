@@ -12,17 +12,22 @@ public class BlockFromToListener implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) {
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
-            if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.LAVA) {
-                if(!island.isInIsland(event.getToBlock().getLocation())){
+        if (true) return;
+        if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.LAVA) {
+            IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
+                if (!island.isInIsland(event.getToBlock().getLocation())) {
                     event.setCancelled(true);
+                    return;
                 }
-                IslandSetting liquidFlowSettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.LIQUID_FLOW);
-                if (SettingType.LIQUID_FLOW.isFeactureValue() && !liquidFlowSettings.getBooleanValue()) {
-                    event.setCancelled(true);
+                if (SettingType.LIQUID_FLOW.isFeactureValue()) {
+                    IslandSetting liquidFlowSettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.LIQUID_FLOW);
+                    if (!liquidFlowSettings.getBooleanValue()) {
+                        event.setCancelled(true);
+                    }
                 }
-            }
-        });
+
+            });
+        }
     }
 
 }
