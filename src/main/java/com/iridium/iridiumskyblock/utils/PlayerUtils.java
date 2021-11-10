@@ -78,8 +78,7 @@ public class PlayerUtils {
      */
     public static void sendBorder(@NotNull Player player, @NotNull Island island) {
         final Location centre = island.getCenter(player.getWorld()).clone();
-        Color color = island.getColor().equals(Color.OFF) ? Color.BLUE : island.getColor();
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, color, island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
     }
 
     /**
