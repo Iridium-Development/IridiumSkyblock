@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.utils;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
+import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -77,8 +78,8 @@ public class PlayerUtils {
      */
     public static void sendBorder(@NotNull Player player, @NotNull Island island) {
         final Location centre = island.getCenter(player.getWorld()).clone();
-
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
+        Color color = island.getColor().equals(Color.OFF) ? Color.BLUE : island.getColor();
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, color, island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
     }
 
     /**
