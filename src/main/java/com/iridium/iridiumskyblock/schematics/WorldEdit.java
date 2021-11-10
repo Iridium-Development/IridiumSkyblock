@@ -51,7 +51,8 @@ public class WorldEdit implements SchematicPaster {
         }
     }
 
-    public static void clearClipBoardCache() {
+    @Override
+    public void clearCache() {
         cachedClipboardFormat.clear();
     }
 }
