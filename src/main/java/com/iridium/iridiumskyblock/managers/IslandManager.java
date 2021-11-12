@@ -711,6 +711,8 @@ public class IslandManager {
         if (islandDeleteEvent.isCancelled()) return;
         clearIslandCache();
         deleteIslandBlocks(island, getWorld(), 3);
+        deleteIslandBlocks(island, getNetherWorld(), 3);
+        deleteIslandBlocks(island, getEndWorld(), 3);
         deleteIslanDatabasedEntries(island);
 
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
