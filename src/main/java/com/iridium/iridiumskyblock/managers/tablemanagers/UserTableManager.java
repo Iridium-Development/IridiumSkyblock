@@ -15,7 +15,7 @@ import java.util.*;
 public class UserTableManager extends TableManager<User, Integer> {
 
     // A list of users sorted by island id for binary search
-    private final SortedList<User> userIslandIndex;
+    private final List<User> userIslandIndex;
 
     public UserTableManager(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, User.class, Comparator.comparing(User::getUuid));

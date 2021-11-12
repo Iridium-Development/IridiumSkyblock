@@ -135,6 +135,14 @@ public final class User {
     }
 
     /**
+     * Gets the user as Player
+     *
+     * @return The player object if one was found, null otherwise
+     */
+    @Deprecated
+    public Player getPlayerByName() { return Bukkit.getPlayer(name); }
+
+    /**
      * Alters this users creation time.
      *
      * @param joinTime The internal time this user has been created

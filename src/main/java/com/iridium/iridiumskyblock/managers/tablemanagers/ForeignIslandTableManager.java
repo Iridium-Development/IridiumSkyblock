@@ -37,6 +37,7 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
     }
 
     public Optional<T> getEntry(T t) {
+        if (getEntries() == null || t == null || comparator == null) return Optional.empty();
         int index = Collections.binarySearch(getEntries(), t, comparator);
         if (index < 0) return Optional.empty();
         return Optional.ofNullable(getEntries().get(index));

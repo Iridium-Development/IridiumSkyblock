@@ -23,9 +23,9 @@ public class BlockGrowListener implements Listener {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
         XMaterial material = XMaterial.matchXMaterial(event.getNewState().getType());
 
-        if (event.getNewState().getData() instanceof Crops) {
-            Crops crops = (Crops) event.getNewState().getData();
-            if (island.isPresent()) {
+        island.ifPresent(value -> {
+            if (event.getNewState().getData() instanceof Crops) {
+                Crops crops = (Crops) event.getNewState().getData();
                 IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "farming");
                 if (islandBooster.isActive()) {
                     CropState newState = CropState.getByData((byte) (crops.getState().getData() + 1));
@@ -33,11 +33,11 @@ public class BlockGrowListener implements Listener {
                         crops.setState(newState);
                     }
                 }
+                if (!crops.getState().equals(CropState.RIPE)) return;
             }
-            if (!crops.getState().equals(CropState.RIPE)) return;
-        }
+            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "GROW", material.name(), 1);
+        });
 
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "GROW", material.name(), 1));
     }
 
 }
