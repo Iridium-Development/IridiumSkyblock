@@ -18,13 +18,14 @@ import java.util.concurrent.CompletableFuture;
 
 public class Schematic implements SchematicPaster {
 
-    private static final Map<File, SchematicData> schematicData = new HashMap<>();
+    private static final Map<File, SchematicData> schematicCache = new HashMap<>();
 
     @Override
     public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         SchematicData schematicData;
         try {
-            schematicData = getSchematicData(file);
+            schematicData = schematicCache.getOrDefault(file, SchematicData.loadSchematic(file));
+            schematicCache.put(file, schematicData);
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -90,10 +91,9 @@ public class Schematic implements SchematicPaster {
         completableFuture.complete(null);
     }
 
-    private static SchematicData getSchematicData(File file) throws IOException {
-        if (!schematicData.containsKey(file)) {
-            schematicData.put(file, SchematicData.loadSchematic(file));
-        }
-        return schematicData.get(file);
+    @Override
+    public void clearCache() {
+        schematicCache.clear();
     }
+
 }

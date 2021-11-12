@@ -50,6 +50,8 @@ public final class User {
 
     private boolean islandChat = false;
 
+    private boolean islandChatSpying = false;
+
     private Island currentIslandVisiting;
 
     private BukkitTask teleportingTask;

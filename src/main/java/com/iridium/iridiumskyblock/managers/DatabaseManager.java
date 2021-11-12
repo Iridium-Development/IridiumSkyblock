@@ -14,7 +14,6 @@ import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.logger.NullLogBackend;
 import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.support.DatabaseConnection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 public class DatabaseManager {
 
-    private final int version = 1;
+    private final int version = 2;
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
     private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;
@@ -86,7 +85,7 @@ public class DatabaseManager {
         this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser().getUuid()));
         this.islandSettingTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
 
-        convertDatabaseData();
+        convertDatabaseData(sqlConfig.driver);
     }
 
     /**
@@ -97,13 +96,7 @@ public class DatabaseManager {
     private @NotNull String getDatabaseURL(SQL sqlConfig) {
         switch (sqlConfig.driver) {
             case MYSQL:
-            case MARIADB:
-            case POSTGRESQL:
                 return "jdbc:" + sqlConfig.driver.name().toLowerCase() + "://" + sqlConfig.host + ":" + sqlConfig.port + "/" + sqlConfig.database + "?useSSL=" + sqlConfig.useSSL;
-            case SQLSERVER:
-                return "jdbc:sqlserver://" + sqlConfig.host + ":" + sqlConfig.port + ";databaseName=" + sqlConfig.database;
-            case H2:
-                return "jdbc:h2:file:" + sqlConfig.database;
             case SQLITE:
                 return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
             default:
@@ -111,16 +104,16 @@ public class DatabaseManager {
         }
     }
 
-    private void convertDatabaseData() {
+    private void convertDatabaseData(SQL.Driver driver) {
         Path versionFile = Paths.get("plugins", "IridiumSkyblock", "sql_version.txt");
         try {
             Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE_NEW);
-            DataConverter.updateDatabaseData(1, version, connectionSource);
+            DataConverter.updateDatabaseData(1, version, connectionSource, driver);
         } catch (FileAlreadyExistsException exception) {
             try {
                 int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
                 if (oldVersion != version) {
-                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource);
+                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource, driver);
                     Files.delete(versionFile);
                     Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE);
                 }
@@ -134,25 +127,14 @@ public class DatabaseManager {
 
     /**
      * Saves an island to the database and initializes variables like ID
-     * ik this is really dumb but I cant think of a better way to do this
      *
      * @param island The island we are saving
      * @return The island with variables like id added
      */
-    public CompletableFuture<Island> registerIsland(Island island) {
-        return CompletableFuture.supplyAsync(() -> {
-            try {
-                islandTableManager.getDao().createOrUpdate(island);
-                DatabaseConnection connection = connectionSource.getReadWriteConnection(null);
-                islandTableManager.getDao().commit(connection);
-                Island is = islandTableManager.getDao().queryBuilder().where().eq("name", island.getName()).queryForFirst();
-                islandTableManager.addEntry(is);
-                connectionSource.releaseConnection(connection);
-                return is;
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
-            return island;
+    public synchronized CompletableFuture<Void> registerIsland(Island island) {
+        return CompletableFuture.runAsync(() -> {
+            islandTableManager.save(island);
+            islandTableManager.addEntry(island);
         });
     }
 

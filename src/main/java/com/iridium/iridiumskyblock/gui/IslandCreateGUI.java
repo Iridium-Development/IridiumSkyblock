@@ -19,11 +19,11 @@ public class IslandCreateGUI extends SchematicGUI {
     /**
      * The default constructor.
      *
-     * @param player            The player who wants to create an Island
-     * @param islandName        The name of the new Island
-     * @param cooldownProvider  The provider for cooldowns that should be started on success
+     * @param player           The player who wants to create an Island
+     * @param islandName       The name of the new Island
+     * @param cooldownProvider The provider for cooldowns that should be started on success
      */
-    public IslandCreateGUI(@NotNull Player player, @NotNull String islandName, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
+    public IslandCreateGUI(@NotNull Player player, String islandName, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
         this.player = player;
         this.islandName = islandName;
         this.cooldownProvider = cooldownProvider;
