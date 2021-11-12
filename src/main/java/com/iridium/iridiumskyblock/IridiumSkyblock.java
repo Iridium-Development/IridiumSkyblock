@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock;
 
-import com.iridium.iridiumcore.BackButton;
+import com.iridium.iridiumskyblock.BackButton;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
 import com.iridium.iridiumcore.Item;

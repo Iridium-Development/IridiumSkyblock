@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
-import com.iridium.iridiumcore.BackButton;
+import com.iridium.iridiumskyblock.BackButton;
 import com.iridium.iridiumcore.Background;
 import lombok.NoArgsConstructor;
 
