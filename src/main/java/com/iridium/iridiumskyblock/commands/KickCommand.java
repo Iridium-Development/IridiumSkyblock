@@ -90,12 +90,6 @@ public class KickCommand extends Command {
 
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_KICKED, user, targetUser, 0, "");
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-        if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Player: " + user.getName() + "\n" +
-                    "UUID: " + user.getUuid() + "\n" +
-                    "Event: KickCommand");
-        }
-        IridiumSkyblock.getInstance().saveDataPlayer(targetUser).join(); // Docta - new save
         return true;
     }
 
