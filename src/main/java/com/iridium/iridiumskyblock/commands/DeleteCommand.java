@@ -52,6 +52,11 @@ public class DeleteCommand extends Command {
             IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get(), user);
             user.setIsland(null);
             user.setIslandRank(IslandRank.VISITOR);
+            if (IridiumSkyblock.getInstance().getConfiguration().debug) {
+                System.out.println("Player: " + user.getName() + "\n" +
+                        "UUID: " + user.getUuid() + "\n" +
+                        "Event: DeleteCommand");
+            }
             IridiumSkyblock.getInstance().saveDataPlayer(user).join();
         }, getCooldownProvider()).getInventory());
 

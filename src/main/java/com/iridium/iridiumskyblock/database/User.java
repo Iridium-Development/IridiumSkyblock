@@ -104,6 +104,11 @@ public final class User {
             );
         }
         IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().resortIsland(this);
+        if (IridiumSkyblock.getInstance().getConfiguration().debug) {
+            System.out.println("Player: " + this.getName() + "\n" +
+                    "UUID: " + this.getUuid() + "\n" +
+                    "Event: User#setIsland");
+        }
         IridiumSkyblock.getInstance().saveDataPlayer(this).join();
     }
 

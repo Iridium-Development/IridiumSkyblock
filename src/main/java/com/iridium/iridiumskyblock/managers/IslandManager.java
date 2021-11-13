@@ -256,6 +256,11 @@ public class IslandManager {
             user.setIslandRank(IslandRank.OWNER);
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematic).thenRun(() -> completableFuture.complete(island)));
+            if (IridiumSkyblock.getInstance().getConfiguration().debug) {
+                System.out.println("Player: " + user.getName() + "\n" +
+                        "UUID: " + user.getUuid() + "\n" +
+                        "Event: IslandManager#createIsland");
+            }
             IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
         });
         return completableFuture;
@@ -301,6 +306,11 @@ public class IslandManager {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     User user1 = IridiumSkyblock.getInstance().getUserManager().getUser(player); // Docta Change variable
                     user1.setIsland(null);
+                    if (IridiumSkyblock.getInstance().getConfiguration().debug) {
+                        System.out.println("Player: " + user.getName() + "\n" +
+                                "UUID: " + user.getUuid() + "\n" +
+                                "Event: IslandManager#regenerateIsland");
+                    }
                     IridiumSkyblock.getInstance().saveDataPlayer(user1).join(); // Docta new save
                 }
             }

@@ -24,6 +24,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Configuration {
 
+    public boolean debug = false;
     public String prefix = "<GRADIENT:09C6F9>&lIridiumSkyblock</GRADIENT:045DE9> &8»";
     public String worldName = "IridiumSkyblock";
     public String islandCreateTitle = "&b&lIsland Created";
