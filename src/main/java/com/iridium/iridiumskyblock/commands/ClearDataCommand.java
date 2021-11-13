@@ -32,6 +32,7 @@ public class ClearDataCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        if (true) return true; // Désactiver car dangereuse
         if (!(sender instanceof Player)) {
             execute(sender);
             return true;
