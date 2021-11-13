@@ -8,10 +8,7 @@ import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Used for handling Crud operations on a table + handling cache
@@ -42,9 +39,10 @@ public class TableManager<T, S> {
      */
     public void save() {
         try {
-            List<T> entryList = new ArrayList<>(entries);
-            for (T t : entryList) {
-                dao.createOrUpdate(t);
+            ListIterator<T> iterator = new ArrayList<>(entries).listIterator();
+            while (iterator.hasNext()) {
+                T user = iterator.next();
+                dao.createOrUpdate(user);
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
