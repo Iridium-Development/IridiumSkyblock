@@ -352,11 +352,7 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     public CompletableFuture<Void> saveDataPlayer(User user) {
-        System.out.println("Sauvegarde de l'utilisateur\n UUID : " + user.getUuid() + "\n" +
-                "Nom : " + user.getName());
-        return CompletableFuture.runAsync(() -> {
-            getDatabaseManager().getUserTableManager().save(user);
-        });
+        return CompletableFuture.runAsync(() -> getDatabaseManager().getUserTableManager().save(user));
     }
 
     /**

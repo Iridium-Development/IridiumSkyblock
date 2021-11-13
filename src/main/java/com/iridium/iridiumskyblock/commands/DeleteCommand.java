@@ -48,7 +48,12 @@ public class DeleteCommand extends Command {
             return false;
         }
 
-        player.openInventory(new ConfirmationGUI(() -> IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get(), user), getCooldownProvider()).getInventory());
+        player.openInventory(new ConfirmationGUI(() -> {
+            IridiumSkyblock.getInstance().getIslandManager().deleteIsland(island.get(), user);
+            user.setIsland(null);
+            user.setIslandRank(IslandRank.VISITOR);
+            IridiumSkyblock.getInstance().saveDataPlayer(user).join();
+        }, getCooldownProvider()).getInventory());
 
         // Always return false because the cooldown is set by the ConfirmationGUI
         return false;

@@ -95,7 +95,6 @@ public class JoinCommand extends Command {
 
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_JOINED, user, null, 0, "");
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-
         IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
         return true;
     }

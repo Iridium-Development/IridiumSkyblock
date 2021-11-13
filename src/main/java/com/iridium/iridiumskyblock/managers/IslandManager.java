@@ -256,7 +256,6 @@ public class IslandManager {
             user.setIslandRank(IslandRank.OWNER);
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematic).thenRun(() -> completableFuture.complete(island)));
-
             IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
         });
         return completableFuture;

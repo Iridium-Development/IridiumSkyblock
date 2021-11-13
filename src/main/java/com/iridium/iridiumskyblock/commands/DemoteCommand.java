@@ -89,7 +89,7 @@ public class DemoteCommand extends Command {
 
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_DEMOTED, user, offlinePlayerUser, 0, nextRank.getDisplayName());
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-
+        System.out.println("Demote");
         IridiumSkyblock.getInstance().saveDataPlayer(offlinePlayerUser).join(); // Docta - new save
         return true;
     }

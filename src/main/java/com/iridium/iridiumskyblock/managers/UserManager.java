@@ -28,6 +28,7 @@ public class UserManager {
             Optional<String> name = Optional.ofNullable(offlinePlayer.getName());
             User user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
             IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
+            IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
             return user;
         }
     }
