@@ -28,7 +28,7 @@ public class PromoteCommand extends Command {
      * The default constructor.
      */
     public PromoteCommand() {
-        super(Collections.singletonList("promote"), "Promote a user", "%prefix% &7/is promote <name>", "", true, Duration.ZERO);
+        super(Collections.singletonList("promote"), "Promote a user", "%prefix% &7/is promote <player>", "", true, Duration.ZERO);
     }
 
     /**

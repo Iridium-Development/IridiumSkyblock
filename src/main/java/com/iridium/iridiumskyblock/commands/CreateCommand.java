@@ -7,6 +7,9 @@ import com.iridium.iridiumskyblock.configs.Schematics.SchematicConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,7 +28,7 @@ public class CreateCommand extends Command {
      * The default constructor.
      */
     public CreateCommand() {
-        super(Collections.singletonList("create"), "Create an Island", "", true, Duration.ofSeconds(5));
+        super(Collections.singletonList("create"), "Create an Island", "%prefix% &7/is create <name> <schematic>", "", true, Duration.ofSeconds(5));
     }
 
     /**
@@ -42,7 +45,7 @@ public class CreateCommand extends Command {
 
         switch (args.length) {
             case 1:
-                createIsland(player, player.getName());
+                createIsland(player, null);
                 break;
             case 2:
                 createIsland(player, args[1]);
@@ -78,7 +81,7 @@ public class CreateCommand extends Command {
             return;
         }
 
-        if (IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
+        if (name != null && IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }

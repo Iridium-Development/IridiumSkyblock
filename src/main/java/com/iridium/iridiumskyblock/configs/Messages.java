@@ -178,6 +178,9 @@ public class Messages {
     public String islandLevelUp = "%prefix% &7Your Island has reached level %level%!";
     public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
+    public String islandChatSpyEnabled = "%prefix% &7You can now see the Island chats of other Islands!";
+    public String islandChatSpyDisabled = "%prefix% &7You no longer see the Island chats of other Islands!";
+    public String islandChatSpyMessage = "%prefix% &7[%island%] %player% &8» &f%message%";
     public String invalidBiome = "%prefix% &7That Biome doesn't exist.";
     public String changedBiome = "%prefix% &7You have changed your island biome to %biome%!";
     public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
@@ -186,14 +189,18 @@ public class Messages {
     public String yes = "Yes";
     public String no = "No";
     public String none = "None";
+    public String visitable = "Visitable";
+    public String notVisitable = "Private";
     public String ownerRankDisplayName = "Owner";
     public String coOwnerRankDisplayName = "Co-Owner";
     public String moderatorRankDisplayName = "Moderator";
     public String memberRankDisplayName = "Member";
     public String visitorRankDisplayName = "Visitor";
 
+    public String infoTitle = "&8[ &b&lIsland info for %island_name% &8]";
+    public String infoFiller = "&8&m ";
+
     public List<String> infoCommand = Arrays.asList(
-            "&8===== &b&lIsland Info for %player% &r&8=====",
             "<GRADIENT:09C6F9>Island Name</GRADIENT:045DE9>&r: &7%island_name%",
             "<GRADIENT:09C6F9>Island Owner</GRADIENT:045DE9>&r: &7%owner%",
             "<GRADIENT:09C6F9>Island Members</GRADIENT:045DE9>&r: &7%members%",
@@ -201,5 +208,9 @@ public class Messages {
             "<GRADIENT:09C6F9>Island Value</GRADIENT:045DE9>&r: &7%value%",
             "<GRADIENT:09C6F9>Island Visitable</GRADIENT:045DE9>&r: &7%visitable%"
     );
+
+    public List<String> commandHelpMessage = Arrays.asList(
+            "&7Description: &b%description%",
+            "&7Syntax: &b%syntax% %subcommands%");
 
 }

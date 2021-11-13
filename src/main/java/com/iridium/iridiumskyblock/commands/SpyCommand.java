@@ -2,29 +2,29 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.User;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-/**
- * Command which sets a corner position of a schematic in our own schematic system.
- */
-public class PositionCommand extends Command {
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+
+public class SpyCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public PositionCommand() {
-        super(Arrays.asList("pos", "position"), "Set the corner position of a schematic", "iridiumskyblock.schematic", true, Duration.ZERO);
+    public SpyCommand() {
+        super(Collections.singletonList("spy"), "Read the chats of other Islands", "iridiumskyblock.spy", true, Duration.ZERO);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Sets the corner position of a schematic.
+     *
+     * Allows players to read the Island chat of other Islands.
      *
      * @param sender    The CommandSender which executes this command
      * @param arguments The arguments used with this command. They contain the sub-command
@@ -32,21 +32,16 @@ public class PositionCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
-        if (!(arguments.length >= 2 && arguments[1].matches("[1-2]"))) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidPositionCommandSyntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
+        User user = IridiumSkyblockAPI.getInstance().getUser(player);
+        boolean newSpyStatus = !user.isIslandChatSpying();
+
+        user.setIslandChatSpying(newSpyStatus);
+        if (newSpyStatus) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandChatSpyEnabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        } else {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandChatSpyDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
 
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        int positionType = Integer.parseInt(arguments[1]);
-
-        if (positionType == 1) {
-            user.setSchematicPos1(player.getLocation());
-        } else if (positionType == 2) {
-            user.setSchematicPos2(player.getLocation());
-        }
-
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setSchematicPosition.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return true;
     }
 
@@ -61,7 +56,9 @@ public class PositionCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return Arrays.asList("1", "2");
+        // We currently don't want to tab-completion here
+        // Return a new List, so it isn't a list of online players
+        return Collections.emptyList();
     }
 
 }

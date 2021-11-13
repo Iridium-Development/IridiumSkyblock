@@ -24,7 +24,7 @@ public class MissionCommand extends Command {
      * The default constructor.
      */
     public MissionCommand() {
-        super(Collections.singletonList("missions"), "View your Island missions", "", true, Duration.ZERO);
+        super(Collections.singletonList("missions"), "View your Island missions", "%prefix% &7/is mission <type>", "", true, Duration.ZERO);
     }
 
     /**
@@ -44,15 +44,18 @@ public class MissionCommand extends Command {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         if (args.length != 2) {
             player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
             return true;
         }
+
         Mission.MissionType missionType = Mission.MissionType.getMission(args[1]);
         if (missionType == null) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
+
         player.openInventory(new IslandMissionsGUI(island.get(), missionType).getInventory());
         return true;
     }

@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
@@ -174,7 +175,7 @@ public class IslandManager {
      */
     public void teleportWarp(@NotNull Player player, @NotNull IslandWarp islandWarp, int delay) {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingWarp
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 .replace("%name%", islandWarp.getName())
         );
         if (delay < 1) {
@@ -214,7 +215,7 @@ public class IslandManager {
             return false;
         }
 
-        if (getIslandByName(name).isPresent()) {
+        if (name != null && getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -224,10 +225,11 @@ public class IslandManager {
         if (islandCreateEvent.isCancelled()) return false;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, name, schematicConfig).thenAccept(island -> {
-                    PaperLib.teleportAsync(player, island.getHome(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+        createIsland(player, name, schematicConfig).thenAccept(island ->
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    teleportHome(player, island);
                     IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
-                }
+                })
         );
 
         return true;
@@ -241,22 +243,19 @@ public class IslandManager {
      * @param schematic The schematic of the Island
      * @return The island being created
      */
-    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, @NotNull String name, @NotNull Schematics.SchematicConfig schematic) {
+    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, String name, @NotNull Schematics.SchematicConfig schematic) {
         clearIslandCache();
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            final User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-            final Island island = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(new Island(name, schematic));
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            Island island = new Island(name, schematic);
+
+            IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
+
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
 
-            // Paste schematic and then teleport the player (this needs to be done sync)
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
-                    pasteSchematic(island, schematic).thenRun(() -> {
-                        teleportHome(player, island);
-                        completableFuture.complete(island);
-                    })
-            );
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematic).thenRun(() -> completableFuture.complete(island)));
         });
         return completableFuture;
     }
@@ -367,15 +366,12 @@ public class IslandManager {
         setIslandBiome(island, schematicConfig.overworld.biome);
         setIslandBiome(island, schematicConfig.nether.biome);
         setIslandBiome(island, schematicConfig.end.biome);
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getWorld(), schematicConfig.overworld, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getNetherWorld(), schematicConfig.nether, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                        IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, getEndWorld(), schematicConfig.end, IridiumSkyblock.getInstance().getConfiguration().schematicPastingDelay).thenRun(() ->
-                                completableFuture.complete(null)
-                        )
-                )
+        return IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, ImmutableMap.<World, Schematics.SchematicWorld>builder()
+                .put(getWorld(), schematicConfig.overworld)
+                .put(getNetherWorld(), schematicConfig.nether)
+                .put(getEndWorld(), schematicConfig.end)
+                .build()
         );
-        return completableFuture;
     }
 
     /**
@@ -667,7 +663,7 @@ public class IslandManager {
 
     /**
      * Deletes all blocks in an Island.
-     * Starts at the top and works down to y = 0.
+     * Start at the top and work your way down to the lowest layer.
      *
      * @param island            The specified Island
      * @param world             The specified World
@@ -691,7 +687,7 @@ public class IslandManager {
             }
         }
 
-        if (y == 0) {
+        if (y == LocationUtils.getMinHeight(world)) {
             completableFuture.complete(null);
             getIslandChunks(island, world).thenAccept(chunks -> chunks.forEach(chunk -> IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk)));
         } else {
@@ -715,6 +711,8 @@ public class IslandManager {
         if (islandDeleteEvent.isCancelled()) return;
         clearIslandCache();
         deleteIslandBlocks(island, getWorld(), 3);
+        deleteIslandBlocks(island, getNetherWorld(), 3);
+        deleteIslandBlocks(island, getEndWorld(), 3);
         deleteIslanDatabasedEntries(island);
 
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
@@ -772,7 +770,7 @@ public class IslandManager {
      * @return The a boolean the user is banned on this island
      */
     public boolean isBannedOnIsland(@NotNull Island island, User user) {
-        return getIslandBan(island, user).isPresent();
+        return getIslandBan(island, user).isPresent() && !user.isBypassing();
     }
 
     /**
@@ -853,7 +851,7 @@ public class IslandManager {
      * @param island The specified Island
      */
     public void recalculateIsland(@NotNull Island island) {
-        getIslandChunks(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(chunks -> {
+        getIslandChunks(island, getWorld(), getNetherWorld(), getEndWorld()).thenAcceptAsync(chunks -> {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).forEach(islandBlocks -> islandBlocks.setAmount(0));
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(islandSpawners -> islandSpawners.setAmount(0));
 
@@ -880,7 +878,7 @@ public class IslandManager {
                 for (int z = 0; z < 16; z++) {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
-                        for (int y = 0; y <= maxy; y++) {
+                        for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
                             if (material.equals(XMaterial.AIR)) continue;
 
@@ -903,55 +901,6 @@ public class IslandManager {
     }
 
     /**
-     * Increments a mission's data based on requirements.
-     *
-     * @param island      The island
-     * @param missionData The mission data e.g. BREAK:COBBLESTONE
-     * @param increment   The amount we are incrementing by
-     */
-    public synchronized void incrementMission(@NotNull Island island, @NotNull String missionData, int increment) {
-        String[] missionConditions = missionData.toUpperCase().split(":");
-
-        for (Map.Entry<String, Mission> entry : IridiumSkyblock.getInstance().getMissionsList().entrySet()) {
-            boolean completedBefore = true;
-            List<String> missions = entry.getValue().getMissions();
-            for (int i = 0; i < entry.getValue().getMissions().size(); i++) {
-                String missionRequirement = missions.get(i).toUpperCase();
-                String[] conditions = missionRequirement.split(":");
-                // If the conditions are the same length (+1 because missionConditions doesn't include amount)
-                if (missionConditions.length + 1 != conditions.length) break;
-
-                // Check if this is a mission we want to increment
-                boolean matches = matchesMission(missionConditions, conditions);
-                if (!matches) continue;
-
-                IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, entry.getValue(), entry.getKey(), i);
-                String number = conditions[missionData.split(":").length];
-
-                // Validate the required number for this condition
-                if (number.matches("^[0-9]+$")) {
-                    int amount = Integer.parseInt(number);
-                    if (islandMission.getProgress() >= amount) break;
-                    completedBefore = false;
-                    islandMission.setProgress(Math.min(islandMission.getProgress() + increment, amount));
-                } else {
-                    IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + missionRequirement);
-                    IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
-                }
-            }
-
-            // Check if this mission is now completed
-            if (!completedBefore && hasCompletedMission(island, entry.getValue(), entry.getKey())) {
-                island.getMembers().stream().map(user -> Bukkit.getPlayer(user.getUuid())).filter(Objects::nonNull).forEach(player -> {
-                    entry.getValue().getMessage().stream().map(string -> StringUtils.color(string.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))).forEach(player::sendMessage);
-                    entry.getValue().getCompleteSound().play(player);
-                });
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().addEntry(new IslandReward(island, entry.getValue().getReward()));
-            }
-        }
-    }
-
-    /**
      * Gets time remaining on an island booster
      *
      * @param island  The specified Island
@@ -967,54 +916,6 @@ public class IslandManager {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().addEntry(newBooster);
             return newBooster;
         }
-    }
-
-    /**
-     * Checks if the given conditions are a part of the provided mission conditions.
-     *
-     * @param missionConditions The mission conditions
-     * @param conditions        The conditions that should be checked
-     * @return Whether or not the conditions are a part of the mission conditions
-     */
-    private boolean matchesMission(String[] missionConditions, String[] conditions) {
-        boolean matches = true;
-        for (int j = 0; j < missionConditions.length; j++) {
-            if (!(conditions[j].equals(missionConditions[j]) || missionConditions[j].equals("ANY"))) {
-                matches = false;
-                break;
-            }
-        }
-        return matches;
-    }
-
-    /**
-     * Checks whether or not the Island has completed the provided mission.
-     *
-     * @param island  The Island which should be checked
-     * @param mission The mission which should be checked
-     * @param key     The key of the mission
-     * @return Whether or not this mission has been completed
-     */
-    private boolean hasCompletedMission(@NotNull Island island, @NotNull Mission mission, @NotNull String key) {
-        List<String> missions = mission.getMissions();
-        for (int i = 0; i < mission.getMissions().size(); i++) {
-            String missionRequirement = missions.get(i).toUpperCase();
-            IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(island, mission, key, i);
-            String[] conditions = missionRequirement.split(":");
-            String number = conditions[conditions.length - 1];
-
-            // Validate the required number for this condition
-            if (number.matches("^[0-9]+$")) {
-                int requiredAmount = Integer.parseInt(number);
-                if (islandMission.getProgress() < requiredAmount) {
-                    return false;
-                }
-            } else {
-                IridiumSkyblock.getInstance().getLogger().warning("Unknown format " + missionRequirement);
-                IridiumSkyblock.getInstance().getLogger().warning(number + " Is not a number");
-            }
-        }
-        return true;
     }
 
     /**
@@ -1140,6 +1041,18 @@ public class IslandManager {
      */
     public World getEndWorld() {
         return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
+    }
+
+    public boolean isIslandOverWorld(World world) {
+        return world.equals(getWorld());
+    }
+
+    public boolean isIslandNether(World world) {
+        return world.equals(getNetherWorld());
+    }
+
+    public boolean isIslandEnd(World world) {
+        return world.equals(getEndWorld());
     }
 
     public ItemStack getIslandCrystal(int amount) {
