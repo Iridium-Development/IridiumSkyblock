@@ -87,6 +87,8 @@ public class PromoteCommand extends Command {
 
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_PROMOTED, user, targetUser, 0, nextRank.getDisplayName());
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+
+        IridiumSkyblock.getInstance().saveDataPlayer(targetUser).join(); // Docta new save
         return true;
     }
 

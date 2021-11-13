@@ -256,6 +256,8 @@ public class IslandManager {
             user.setIslandRank(IslandRank.OWNER);
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematic).thenRun(() -> completableFuture.complete(island)));
+
+            IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
         });
         return completableFuture;
     }
@@ -281,9 +283,11 @@ public class IslandManager {
                 }
             }
         } else {
-            deleteIslandBlocks(island, getWorld(), 0).join();
-            deleteIslandBlocks(island, getNetherWorld(), 0).join();
-            deleteIslandBlocks(island, getEndWorld(), 0).join();
+            if (IridiumSkyblock.getInstance().getConfiguration().deleteIslandBlocksWhenIslandIsDelete) {
+                deleteIslandBlocks(island, getWorld(), 0).join();
+                deleteIslandBlocks(island, getNetherWorld(), 0).join();
+                deleteIslandBlocks(island, getEndWorld(), 0).join();
+            }
         }
         IslandRegenSettings regenSettings = IridiumSkyblock.getInstance().getConfiguration().regenSettings;
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
@@ -296,7 +300,9 @@ public class IslandManager {
                     IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, IridiumSkyblock.getInstance().getEconomy().getBalance(player));
                 if (regenSettings.kickMembers) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    IridiumSkyblock.getInstance().getUserManager().getUser(player).setIsland(null);
+                    User user1 = IridiumSkyblock.getInstance().getUserManager().getUser(player); // Docta Change variable
+                    user1.setIsland(null);
+                    IridiumSkyblock.getInstance().saveDataPlayer(user1).join(); // Docta new save
                 }
             }
         });
@@ -688,7 +694,7 @@ public class IslandManager {
             }
         }
 
-        if (y == 0) {
+        if (y == LocationUtils.getMinHeight(world)) {
             completableFuture.complete(null);
             getIslandChunks(island, world).thenAccept(chunks -> chunks.forEach(chunk -> IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk)));
         } else {
@@ -711,9 +717,11 @@ public class IslandManager {
         Bukkit.getPluginManager().callEvent(islandDeleteEvent);
         if (islandDeleteEvent.isCancelled()) return;
         clearIslandCache();
-        deleteIslandBlocks(island, getWorld(), 3);
-        deleteIslandBlocks(island, getNetherWorld(), 3);
-        deleteIslandBlocks(island, getEndWorld(), 3);
+        if (IridiumSkyblock.getInstance().getConfiguration().deleteIslandBlocksWhenIslandIsDelete) {
+            deleteIslandBlocks(island, getWorld(), 3);
+            deleteIslandBlocks(island, getNetherWorld(), 3);
+            deleteIslandBlocks(island, getEndWorld(), 3);
+        }
         deleteIslanDatabasedEntries(island);
 
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {

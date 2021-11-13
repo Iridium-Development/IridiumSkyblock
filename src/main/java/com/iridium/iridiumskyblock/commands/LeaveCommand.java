@@ -71,6 +71,7 @@ public class LeaveCommand extends Command {
             PlayerUtils.teleportSpawn(player);
             IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_LEFT, user, null, 0, "");
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+            IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
         }, getCooldownProvider()).getInventory());
 
         // Always return false because the cooldown is set by the ConfirmationGUI

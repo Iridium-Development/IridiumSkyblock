@@ -104,6 +104,7 @@ public final class User {
             );
         }
         IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().resortIsland(this);
+        IridiumSkyblock.getInstance().saveDataPlayer(this).join();
     }
 
     /**

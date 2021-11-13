@@ -5,6 +5,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -43,11 +44,11 @@ public class IslandBan extends IslandData {
         this.banner = banner.getUuid();
     }
 
-    public User getBannedUser() {
+    public @Nullable User getBannedUser() {
         return IridiumSkyblock.getInstance().getUserManager().getUserByUUID(bannedUser).orElse(null);
     }
 
-    public User getBanner() {
+    public @Nullable User getBanner() {
         return IridiumSkyblock.getInstance().getUserManager().getUserByUUID(banner).orElse(null);
     }
 

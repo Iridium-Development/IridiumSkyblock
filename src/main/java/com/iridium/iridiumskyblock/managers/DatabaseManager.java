@@ -82,7 +82,7 @@ public class DatabaseManager {
         this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class, Comparator.comparing(IslandBooster::getIslandId).thenComparing(IslandBooster::getBooster));
         this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, Comparator.comparing(IslandWarp::getIslandId));
         this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandId));
-        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser().getUuid()));
+        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser() != null ? islandBan.getBannedUser().getUuid() : null));
         this.islandSettingTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
 
         convertDatabaseData(sqlConfig.driver);

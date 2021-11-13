@@ -81,6 +81,10 @@ public class TransferCommand extends Command {
             ));
         }
 
+        // Docta start - New Save Data
+        IridiumSkyblock.getInstance().saveDataPlayer(islandOwner).join();
+        IridiumSkyblock.getInstance().saveDataPlayer(targetUser).join();
+        // Docta stop
         return true;
     }
 

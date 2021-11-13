@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
@@ -42,6 +43,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -331,7 +333,7 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void saveData() {
-        getDatabaseManager().getUserTableManager().save();
+        //getDatabaseManager().getUserTableManager().save(); // Todo ? Rework
         getDatabaseManager().getIslandTableManager().save();
         getDatabaseManager().getIslandInviteTableManager().save();
         getDatabaseManager().getIslandPermissionTableManager().save();
@@ -347,6 +349,14 @@ public class IridiumSkyblock extends IridiumCore {
         getDatabaseManager().getIslandLogTableManager().save();
         getDatabaseManager().getIslandBanTableManager().save();
         getDatabaseManager().getIslandSettingTableManager().save();
+    }
+
+    public CompletableFuture<Void> saveDataPlayer(User user) {
+        System.out.println("Sauvegarde de l'utilisateur\n UUID : " + user.getUuid() + "\n" +
+                "Nom : " + user.getName());
+        return CompletableFuture.runAsync(() -> {
+            getDatabaseManager().getUserTableManager().save(user);
+        });
     }
 
     /**

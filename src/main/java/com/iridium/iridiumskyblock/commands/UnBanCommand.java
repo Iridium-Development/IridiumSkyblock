@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 
 /**
@@ -91,7 +92,10 @@ public class UnBanCommand extends Command {
         Optional<Island> island = user.getIsland();
 
         return island.map(value -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(value).stream()
-                .map(islandBan -> islandBan.getBannedUser().getName())
+                .map(islandBan -> {
+                    User banned = islandBan.getBannedUser();
+                    return banned != null ? banned.getName() : null;
+                })
                 .collect(Collectors.toList())
         ).orElse(Collections.emptyList());
     }

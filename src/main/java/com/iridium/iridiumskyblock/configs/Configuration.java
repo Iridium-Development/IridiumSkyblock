@@ -41,6 +41,7 @@ public class Configuration {
     public boolean obsidianBucket = true;
     public boolean patreonMessage = true;
     public boolean islandMenu = true;
+    public boolean deleteIslandBlocksWhenIslandIsDelete = true;
 
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
