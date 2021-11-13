@@ -679,7 +679,7 @@ public class IslandManager {
 
     /**
      * Deletes all blocks in an Island.
-     * Starts at the top and works down to y = 0.
+     * Start at the top and work your way down to the lowest layer.
      *
      * @param island            The specified Island
      * @param world             The specified World
