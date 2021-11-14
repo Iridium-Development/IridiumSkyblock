@@ -79,7 +79,7 @@ public final class Island {
         this.visitable = IridiumSkyblock.getInstance().getConfiguration().defaultIslandPublic;
         this.home = schematicConfig.xHome + "," + schematicConfig.yHome + "," + schematicConfig.zHome + ",0," + schematicConfig.yawHome;
         this.time = ZonedDateTime.of(LocalDateTime.now(), ZoneId.systemDefault()).toInstant().toEpochMilli();
-        this.color = IridiumSkyblock.getInstance().getBorder().defaultColor;
+        this.color = schematicConfig.borderColor;
     }
 
     /**

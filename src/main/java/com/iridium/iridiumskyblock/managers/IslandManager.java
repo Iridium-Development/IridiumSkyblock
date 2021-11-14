@@ -336,7 +336,7 @@ public class IslandManager {
         }
 
         if (regenSettings.resetBorderColour) {
-            island.setColor(IridiumSkyblock.getInstance().getBorder().defaultColor);
+            island.setColor(schematicConfig.borderColor);
         }
 
         if (regenSettings.makeIslandPrivate) {

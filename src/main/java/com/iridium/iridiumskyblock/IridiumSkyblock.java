@@ -466,6 +466,7 @@ public class IridiumSkyblock extends IridiumCore {
 
         for (Map.Entry<String, Schematics.SchematicConfig> schematics : schematics.schematics.entrySet()) {
             Schematics.SchematicConfig schematic = schematics.getValue();
+            if (schematic.borderColor == null) schematic.borderColor = border.defaultColor;
             if (schematic.overworld.islandHeight == null) schematic.overworld.islandHeight = 90.0;
             if (schematic.overworld.ignoreAirBlocks == null) schematic.overworld.ignoreAirBlocks = true;
             if (schematic.nether.islandHeight == null) schematic.nether.islandHeight = 90.0;
