@@ -333,7 +333,7 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void saveData() {
-        //getDatabaseManager().getUserTableManager().save(); // Todo ? Rework
+        getDatabaseManager().getUserTableManager().save(); // Todo ? Rework
         getDatabaseManager().getIslandTableManager().save();
         getDatabaseManager().getIslandInviteTableManager().save();
         getDatabaseManager().getIslandPermissionTableManager().save();
@@ -352,7 +352,10 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     public CompletableFuture<Void> saveDataPlayer(User user) {
-        return CompletableFuture.runAsync(() -> getDatabaseManager().getUserTableManager().save(user));
+        return CompletableFuture.runAsync(() -> {
+            if (true) return;
+            getDatabaseManager().getUserTableManager().save(user);
+        });
     }
 
     /**

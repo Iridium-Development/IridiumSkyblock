@@ -261,7 +261,7 @@ public class IslandManager {
                         "UUID: " + user.getUuid() + "\n" +
                         "Event: IslandManager#createIsland");
             }
-            IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
+            if (false) IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
         });
         return completableFuture;
     }
@@ -311,7 +311,7 @@ public class IslandManager {
                                 "UUID: " + user.getUuid() + "\n" +
                                 "Event: IslandManager#regenerateIsland");
                     }
-                    IridiumSkyblock.getInstance().saveDataPlayer(user1).join(); // Docta new save
+                    if (false) IridiumSkyblock.getInstance().saveDataPlayer(user1).join(); // Docta new save
                 }
             }
         });

@@ -87,8 +87,8 @@ public class TransferCommand extends Command {
                     "UUID: " + user.getUuid() + "\n" +
                     "Event: transferCommand");
         }
-        IridiumSkyblock.getInstance().saveDataPlayer(islandOwner).join();
-        IridiumSkyblock.getInstance().saveDataPlayer(targetUser).join();
+        if (false) IridiumSkyblock.getInstance().saveDataPlayer(islandOwner).join();
+        if (false) IridiumSkyblock.getInstance().saveDataPlayer(targetUser).join();
         // Docta stop
         return true;
     }

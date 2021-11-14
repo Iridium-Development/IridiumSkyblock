@@ -33,7 +33,7 @@ public class UserManager {
                         "UUID: " + user.getUuid() + "\n" +
                         "Event: UserManager#getUser");
             }
-            IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
+            if (false) IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
             return user;
         }
     }

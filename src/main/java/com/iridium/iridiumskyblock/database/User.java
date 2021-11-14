@@ -109,7 +109,7 @@ public final class User {
                     "UUID: " + this.getUuid() + "\n" +
                     "Event: User#setIsland");
         }
-        IridiumSkyblock.getInstance().saveDataPlayer(this).join();
+        if (false) IridiumSkyblock.getInstance().saveDataPlayer(this).join();
     }
 
     /**
