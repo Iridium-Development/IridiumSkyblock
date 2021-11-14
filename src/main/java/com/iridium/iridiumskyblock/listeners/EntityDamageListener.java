@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -65,6 +66,11 @@ public class EntityDamageListener implements Listener {
 
         if (event.getDamager() instanceof Player) {
             Player player = (Player) event.getDamager();
+            if (event.getEntity().getType().equals(EntityType.VILLAGER)) {
+                event.setCancelled(true);
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return;
+            }
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
                 event.setCancelled(true);
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
