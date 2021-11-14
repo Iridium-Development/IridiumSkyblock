@@ -32,12 +32,5 @@ public class PlayerJoinQuitListener implements Listener {
                             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " &7Thanks for using IridiumSkyblock, if you like the plugin, consider donating at &bwww.patreon.com/Peaches_MLG"))
                     , 5);
         }
-
-        if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Player: " + user.getName() + "\n" +
-                    "UUID: " + user.getUuid() + "\n" +
-                    "Event: PlayerJoinEvent");
-        }
-        IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
     }
 }
