@@ -22,6 +22,12 @@ public abstract class GUI implements InventoryHolder {
     private NoItemGUI noItemGUI;
     private Inventory previousInventory;
 
+    public GUI(Inventory previousInventory){
+        if (previousInventory != null && previousInventory.getHolder() != null && previousInventory.getHolder() instanceof GUI) {
+            this.previousInventory = previousInventory;
+        }
+    }
+
     /**
      * The default constructor.
      *
