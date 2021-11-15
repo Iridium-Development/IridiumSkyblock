@@ -30,8 +30,8 @@ public class IslandInvitesGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandInvitesGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, island);
+    public IslandInvitesGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, previousInventory, island);
         invites = new HashMap<>();
     }
 
@@ -51,6 +51,10 @@ public class IslandInvitesGUI extends IslandGUI {
                 inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList));
                 invites.put(itemSlot, islandInvites.get(itemSlot).getUser().getName());
             });
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 

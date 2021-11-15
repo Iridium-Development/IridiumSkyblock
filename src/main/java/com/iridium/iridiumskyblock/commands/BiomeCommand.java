@@ -37,7 +37,7 @@ public class BiomeCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new IslandBiomeGUI(1, islandOptional.get(), player.getWorld().getEnvironment(), getCooldownProvider()).getInventory());
+            player.openInventory(new IslandBiomeGUI(1, islandOptional.get(), player.getWorld().getEnvironment(), getCooldownProvider(), player.getOpenInventory().getTopInventory()).getInventory());
             // The BiomeGUI handles the cooldown
             return false;
         }
@@ -64,10 +64,10 @@ public class BiomeCommand extends Command {
 
         Player player = (Player) commandSender;
         return Arrays.stream(XBiome.VALUES)
-            .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
-            .filter(biome -> biome.getBiome() != null)
-            .map(XBiome::name)
-            .collect(Collectors.toList());
+                .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
+                .filter(biome -> biome.getBiome() != null)
+                .map(XBiome::name)
+                .collect(Collectors.toList());
     }
 
 }

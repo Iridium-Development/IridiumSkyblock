@@ -49,7 +49,7 @@ public class InviteCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new IslandInvitesGUI(island.get()).getInventory());
+            player.openInventory(new IslandInvitesGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
 

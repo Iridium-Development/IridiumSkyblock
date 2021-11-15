@@ -31,7 +31,7 @@ public class IslandTrustedGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandTrustedGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().trustedGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().trustedGUI, null, island);
         this.members = new HashMap<>();
     }
 

@@ -9,20 +9,17 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.utils.TimeUtils;
-import java.lang.reflect.Field;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.lang.reflect.Field;
+import java.time.Duration;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Handles command executions and tab-completions for all commands of this plugin.
@@ -108,7 +105,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 Optional<Island> island = user.getIsland();
                 if (island.isPresent()) {
                     if (IridiumSkyblock.getInstance().getConfiguration().islandMenu) {
-                        player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
+                        player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu, player.getOpenInventory().getTopInventory()).getInventory());
                     } else {
                         String command = IridiumSkyblock.getInstance().getCommands().helpCommand.aliases.get(0);
                         Bukkit.dispatchCommand(player, "is " + command);
