@@ -1,22 +1,33 @@
 package com.iridium.iridiumskyblock.api;
 
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.User;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called before an Island has been created.
+ */
 @Getter
 public class IslandCreateEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private final String islandName;
-    private final User user;
+    @NotNull private final String islandName;
+    @NotNull private final User user;
 
-    public IslandCreateEvent(User user, String islandName) {
+    @NotNull
+    @Setter
+    private Schematics.SchematicConfig schematicConfig;
+
+    public IslandCreateEvent(User user, String islandName, Schematics.SchematicConfig schematicConfig) {
         this.islandName = islandName;
         this.user = user;
+        this.schematicConfig = schematicConfig;
     }
 
     @NotNull
@@ -30,12 +41,8 @@ public class IslandCreateEvent extends Event implements Cancellable {
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
 }

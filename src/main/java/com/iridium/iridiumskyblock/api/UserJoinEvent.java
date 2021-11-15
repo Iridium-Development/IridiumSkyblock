@@ -9,13 +9,17 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Called before a user joins a new Island.
+ */
 @Getter
 public class UserJoinEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private final Island island;
-    private final User user;
-    private final User inviter;
+    @NotNull private final Island island;
+    @NotNull private final User user;
+    @NotNull private final User inviter;
 
     public UserJoinEvent(Island island, User user, @Nullable User inviter) {
         this.island = island;
@@ -38,12 +42,8 @@ public class UserJoinEvent extends Event implements Cancellable {
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
 }

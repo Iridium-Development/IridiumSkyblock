@@ -1,27 +1,26 @@
 package com.iridium.iridiumskyblock.api;
 
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.shop.ShopItem;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Called before an Island has been deleted.
- */
 @Getter
-public class IslandDeleteEvent extends Event implements Cancellable {
+public class ShopPurchaseEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    @NotNull private final Island island;
-    @NotNull private final User user;
+    @NotNull private final Player player;
+    @NotNull private final ShopItem shopItem;
+    private final int amount;
 
-    public IslandDeleteEvent(Island island, User user) {
-        this.island = island;
-        this.user = user;
+    public ShopPurchaseEvent(Player player, ShopItem shopItem, int amount) {
+        this.player = player;
+        this.shopItem = shopItem;
+        this.amount = amount;
     }
 
     @NotNull
@@ -35,8 +34,8 @@ public class IslandDeleteEvent extends Event implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel) {
+        this.cancelled = cancel;
     }
 
 }

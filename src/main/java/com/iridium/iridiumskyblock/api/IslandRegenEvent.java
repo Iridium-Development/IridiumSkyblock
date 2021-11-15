@@ -9,13 +9,17 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called before an Island has been regenerated using /is regen.
+ */
 @Getter
 public class IslandRegenEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private final Island island;
-    private final User user;
-    private final Schematics.SchematicConfig schematicConfig;
+    @NotNull private final Island island;
+    @NotNull private final User user;
+    @NotNull private final Schematics.SchematicConfig schematicConfig;
 
     public IslandRegenEvent(Island island, User user, Schematics.SchematicConfig schematicConfig) {
         this.island = island;
@@ -34,12 +38,8 @@ public class IslandRegenEvent extends Event implements Cancellable {
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
 }

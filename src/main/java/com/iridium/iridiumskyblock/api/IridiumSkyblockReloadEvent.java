@@ -4,6 +4,9 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called after the shop has been reloaded successfully.
+ */
 public class IridiumSkyblockReloadEvent extends Event {
     
     private static final HandlerList handlers = new HandlerList();
@@ -17,4 +20,5 @@ public class IridiumSkyblockReloadEvent extends Event {
     public static HandlerList getHandlerList() {
         return handlers;
     }
+
 }
