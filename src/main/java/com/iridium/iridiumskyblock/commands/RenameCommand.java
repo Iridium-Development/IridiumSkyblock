@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.api.IslandRenameEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import java.time.Duration;
@@ -71,7 +72,12 @@ public class RenameCommand extends Command {
             player.sendMessage(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
             return false;
         }
-        
+
+        IslandRenameEvent islandRenameEvent = new IslandRenameEvent(user, name);
+        Bukkit.getPluginManager().callEvent(islandRenameEvent);
+        if (islandRenameEvent.isCancelled()) return false;
+
+        name = islandRenameEvent.getIslandName();
         island.get().setName(name);
         island.get().getMembers().forEach(member -> {
             Player islandMember = Bukkit.getPlayer(member.getUuid());
