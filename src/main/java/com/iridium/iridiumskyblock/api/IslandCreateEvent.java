@@ -19,12 +19,9 @@ public class IslandCreateEvent extends Event implements Cancellable {
     private boolean cancelled;
     @NotNull private final String islandName;
     @NotNull private final User user;
+    @NotNull private Schematics.SchematicConfig schematicConfig;
 
-    @NotNull
-    @Setter
-    private Schematics.SchematicConfig schematicConfig;
-
-    public IslandCreateEvent(User user, String islandName, Schematics.SchematicConfig schematicConfig) {
+    public IslandCreateEvent(@NotNull User user, @NotNull String islandName, Schematics.@NotNull SchematicConfig schematicConfig) {
         this.islandName = islandName;
         this.user = user;
         this.schematicConfig = schematicConfig;
@@ -43,6 +40,10 @@ public class IslandCreateEvent extends Event implements Cancellable {
     @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
+    }
+
+    public void setSchematicConfig(Schematics.@NotNull SchematicConfig schematicConfig) {
+        this.schematicConfig = schematicConfig;
     }
 
 }

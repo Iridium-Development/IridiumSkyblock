@@ -21,7 +21,7 @@ public class IslandRegenEvent extends Event implements Cancellable {
     @NotNull private final User user;
     @NotNull private final Schematics.SchematicConfig schematicConfig;
 
-    public IslandRegenEvent(Island island, User user, Schematics.SchematicConfig schematicConfig) {
+    public IslandRegenEvent(@NotNull Island island, @NotNull User user, Schematics.@NotNull SchematicConfig schematicConfig) {
         this.island = island;
         this.user = user;
         this.schematicConfig = schematicConfig;

@@ -18,7 +18,7 @@ public class UserChatToggleEvent extends Event implements Cancellable {
     private final boolean newChatState;
     @NotNull private final User user;
 
-    public UserChatToggleEvent(User user, boolean newState) {
+    public UserChatToggleEvent(@NotNull User user, boolean newState) {
         this.user = user;
         this.newChatState = newState;
     }

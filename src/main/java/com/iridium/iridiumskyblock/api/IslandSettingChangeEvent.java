@@ -23,7 +23,7 @@ public class IslandSettingChangeEvent extends Event implements Cancellable {
     @NotNull private final SettingType settingType;
     @NotNull private String newValue;
 
-    public IslandSettingChangeEvent(Player player, Island island, SettingType settingType, String newValue) {
+    public IslandSettingChangeEvent(@NotNull Player player, @NotNull Island island, @NotNull SettingType settingType, @NotNull String newValue) {
         this.player = player;
         this.island = island;
         this.settingType = settingType;

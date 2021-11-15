@@ -21,7 +21,7 @@ public class UserPromoteEvent extends Event implements Cancellable {
     @NotNull private final User user;
     @NotNull private final IslandRank newRank;
 
-    public UserPromoteEvent(Island island, User user, IslandRank newRank) {
+    public UserPromoteEvent(@NotNull Island island, @NotNull User user, @NotNull IslandRank newRank) {
         this.island = island;
         this.user = user;
         this.newRank = newRank;

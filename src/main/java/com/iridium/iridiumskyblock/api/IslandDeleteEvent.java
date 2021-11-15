@@ -19,7 +19,7 @@ public class IslandDeleteEvent extends Event implements Cancellable {
     @NotNull private final Island island;
     @NotNull private final User user;
 
-    public IslandDeleteEvent(Island island, User user) {
+    public IslandDeleteEvent(@NotNull Island island, @NotNull User user) {
         this.island = island;
         this.user = user;
     }

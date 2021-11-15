@@ -20,7 +20,7 @@ public class UserKickEvent extends Event implements Cancellable {
     @NotNull private final User user;
     @NotNull private final User kicker;
 
-    public UserKickEvent(Island island, User user, User kicker) {
+    public UserKickEvent(@NotNull Island island, @NotNull User user, @NotNull User kicker) {
         this.island = island;
         this.user = user;
         this.kicker = kicker;

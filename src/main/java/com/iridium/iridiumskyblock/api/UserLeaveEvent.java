@@ -19,7 +19,7 @@ public class UserLeaveEvent extends Event implements Cancellable {
     @NotNull private final Island island;
     @NotNull private final User user;
 
-    public UserLeaveEvent(Island island, User user) {
+    public UserLeaveEvent(@NotNull Island island, @NotNull User user) {
         this.island = island;
         this.user = user;
     }

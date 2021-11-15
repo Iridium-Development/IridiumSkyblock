@@ -17,7 +17,7 @@ public class ShopSellEvent extends Event implements Cancellable {
     @NotNull private final ShopItem shopItem;
     private final int amount;
 
-    public ShopSellEvent(Player player, ShopItem shopItem, int amount) {
+    public ShopSellEvent(@NotNull Player player, @NotNull ShopItem shopItem, int amount) {
         this.player = player;
         this.shopItem = shopItem;
         this.amount = amount;

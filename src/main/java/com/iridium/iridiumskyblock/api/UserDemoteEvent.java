@@ -21,7 +21,7 @@ public class UserDemoteEvent extends Event implements Cancellable {
     @NotNull private final User user;
     @NotNull private final IslandRank newRank;
 
-    public UserDemoteEvent(Island island, User user, IslandRank newRank) {
+    public UserDemoteEvent(@NotNull Island island, @NotNull User user, @NotNull IslandRank newRank) {
         this.island = island;
         this.user = user;
         this.newRank = newRank;

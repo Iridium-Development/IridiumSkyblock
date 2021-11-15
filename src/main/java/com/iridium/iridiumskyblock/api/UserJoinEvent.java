@@ -21,7 +21,7 @@ public class UserJoinEvent extends Event implements Cancellable {
     @NotNull private final User user;
     @NotNull private final User inviter;
 
-    public UserJoinEvent(Island island, User user, @Nullable User inviter) {
+    public UserJoinEvent(@NotNull Island island, @NotNull User user, @Nullable User inviter) {
         this.island = island;
         this.user = user;
         this.inviter = inviter;
