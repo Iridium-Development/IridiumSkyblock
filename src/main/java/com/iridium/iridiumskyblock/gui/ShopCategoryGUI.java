@@ -116,8 +116,8 @@ public class ShopCategoryGUI extends GUI {
             lore.add(
                     StringUtils.color(IridiumSkyblock.getInstance().getShop().buyPriceLore
                             .replace("%amount%", String.valueOf(item.defaultAmount))
-                            .replace("%buy_price_vault%", String.valueOf(item.buyCost.vault))
-                            .replace("%buy_price_crystals%", String.valueOf(item.buyCost.crystals))
+                            .replace("%buy_price_vault%", formatPrice(item.buyCost.vault))
+                            .replace("%buy_price_crystals%", formatPrice(item.buyCost.crystals))
                     )
             );
         } else {
@@ -128,8 +128,8 @@ public class ShopCategoryGUI extends GUI {
             lore.add(
                     StringUtils.color(IridiumSkyblock.getInstance().getShop().sellRewardLore
                             .replace("%amount%", String.valueOf(item.defaultAmount))
-                            .replace("%sell_reward_vault%", String.valueOf(item.sellReward.vault))
-                            .replace("%sell_reward_crystals%", String.valueOf(item.sellReward.crystals))
+                            .replace("%sell_reward_vault%", formatPrice(item.sellReward.vault))
+                            .replace("%sell_reward_crystals%", formatPrice(item.sellReward.crystals))
                     )
             );
         } else {
@@ -141,6 +141,14 @@ public class ShopCategoryGUI extends GUI {
                 .forEach(line -> lore.add(
                         line.replace("%amount%", String.valueOf(item.defaultAmount))
                 ));
+    }
+
+    private String formatPrice(double value) {
+        if (IridiumSkyblock.getInstance().getShop().abbreviatePrices) {
+            return IridiumSkyblock.getInstance().getConfiguration().numberFormatter.format(value);
+        } else {
+            return String.valueOf(value);
+        }
     }
 
 }
