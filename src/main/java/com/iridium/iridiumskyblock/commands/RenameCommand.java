@@ -77,15 +77,15 @@ public class RenameCommand extends Command {
         Bukkit.getPluginManager().callEvent(islandRenameEvent);
         if (islandRenameEvent.isCancelled()) return false;
 
-        name = islandRenameEvent.getIslandName();
-        island.get().setName(name);
+        final String finalName = islandRenameEvent.getIslandName();
+        island.get().setName(finalName);
         island.get().getMembers().forEach(member -> {
             Player islandMember = Bukkit.getPlayer(member.getUuid());
             if (islandMember != null) {
                 islandMember.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
                         .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
                         .replace("%player%", player.getName())
-                        .replace("%name%", name)
+                        .replace("%name%", finalName == null ? player.getName() : finalName)
                 ));
             }
         });
