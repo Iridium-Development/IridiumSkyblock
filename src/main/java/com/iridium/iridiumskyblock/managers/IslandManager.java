@@ -23,6 +23,8 @@ import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -882,6 +884,15 @@ public class IslandManager {
                         }
                     }
                 }
+            }
+        });
+        chunks.forEach(chunk -> {
+            for (BlockState blockState : chunk.getTileEntities()) {
+                if (!(blockState instanceof CreatureSpawner)) continue;
+                if (!island.isInIsland(blockState.getLocation())) continue;
+                CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
+                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
+                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
             }
         });
     }
