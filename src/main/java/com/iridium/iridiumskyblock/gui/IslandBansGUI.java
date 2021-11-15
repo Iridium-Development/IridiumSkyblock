@@ -7,7 +7,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBan;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -88,8 +87,7 @@ public class IslandBansGUI extends IslandGUI {
             int index = ((size - 9) * (page - 1)) + event.getSlot();
             if (islandBans.size() > index) {
                 IslandBan islandBan = islandBans.get(event.getSlot());
-                String command = IridiumSkyblock.getInstance().getCommands().unBanCommand.aliases.get(0);
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandBan.getBannedUser().getName());
+                IridiumSkyblock.getInstance().getCommands().unBanCommand.execute(event.getWhoClicked(), new String[]{islandBan.getBannedUser().getName()});
                 addContent(event.getInventory());
             }
         }

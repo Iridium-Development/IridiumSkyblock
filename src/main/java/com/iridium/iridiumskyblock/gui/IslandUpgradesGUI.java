@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.upgrades.UpgradeData;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -73,8 +72,7 @@ public class IslandUpgradesGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             if (event.getSlot() == upgrade.getValue().item.slot) {
-                String command = IridiumSkyblock.getInstance().getCommands().upgradesCommand.aliases.get(0);
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + upgrade.getKey());
+                IridiumSkyblock.getInstance().getCommands().upgradesCommand.execute(event.getWhoClicked(), new String[]{upgrade.getKey()});
                 addContent(event.getInventory());
             }
         }

@@ -9,7 +9,6 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import com.iridium.iridiumskyblock.utils.TimeUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -107,16 +106,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                     if (IridiumSkyblock.getInstance().getConfiguration().islandMenu) {
                         player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu, player.getOpenInventory().getTopInventory()).getInventory());
                     } else {
-                        String command = IridiumSkyblock.getInstance().getCommands().helpCommand.aliases.get(0);
-                        Bukkit.dispatchCommand(player, "is " + command);
+                        IridiumSkyblock.getInstance().getCommands().helpCommand.execute(player, new String[]{});
                     }
                 } else {
-                    String command = IridiumSkyblock.getInstance().getCommands().createCommand.aliases.get(0);
-                    Bukkit.dispatchCommand(player, "is " + command);
+                    IridiumSkyblock.getInstance().getCommands().createCommand.execute(player, new String[]{});
                 }
             } else {
-                String command = IridiumSkyblock.getInstance().getCommands().helpCommand.aliases.get(0);
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "is " + command);
+                IridiumSkyblock.getInstance().getCommands().helpCommand.execute(commandSender, new String[]{});
             }
 
             return true;
@@ -257,8 +253,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
 
     private List<String> filterTabCompletionResults(List<String> tabCompletion, String[] arguments) {
         return tabCompletion.stream()
-            .filter(completion -> completion.toLowerCase().contains(arguments[arguments.length - 1].toLowerCase()))
-            .collect(Collectors.toList());
+                .filter(completion -> completion.toLowerCase().contains(arguments[arguments.length - 1].toLowerCase()))
+                .collect(Collectors.toList());
     }
 
 }

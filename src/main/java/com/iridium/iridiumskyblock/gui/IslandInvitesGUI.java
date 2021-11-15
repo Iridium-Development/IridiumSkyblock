@@ -67,8 +67,7 @@ public class IslandInvitesGUI extends IslandGUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         if (invites.containsKey(event.getSlot())) {
-            String command = IridiumSkyblock.getInstance().getCommands().unInviteCommand.aliases.get(0);
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + invites.get(event.getSlot()));
+            IridiumSkyblock.getInstance().getCommands().unInviteCommand.execute(event.getWhoClicked(), new String[]{invites.get(event.getSlot())});
             event.getWhoClicked().openInventory(getInventory());
         }
     }
