@@ -31,7 +31,7 @@ public class IslandVisitorsGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandVisitorsGUI(int page, @NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, null, island);
         this.page = page;
         this.visitors = new ArrayList<>();
     }
@@ -56,7 +56,6 @@ public class IslandVisitorsGUI extends IslandGUI {
                     List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build();
                     inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitorsGUI.item, placeholderList));
                 });
-
     }
 
     /**

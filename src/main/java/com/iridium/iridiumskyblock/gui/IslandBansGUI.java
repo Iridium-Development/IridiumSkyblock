@@ -31,8 +31,8 @@ public class IslandBansGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandBansGUI(int page, @NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bansGUI, island);
+    public IslandBansGUI(int page, @NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().bansGUI, previousInventory, island);
         this.page = page;
     }
 
@@ -58,6 +58,10 @@ public class IslandBansGUI extends IslandGUI {
                     placeholderList.add(new Placeholder("banned_by", islandBan.getBanner().getName()));
                     inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().bansGUI.item, placeholderList));
                 });
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     /**
@@ -71,12 +75,12 @@ public class IslandBansGUI extends IslandGUI {
         final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == size - 7 && page > 1) {
-            player.openInventory(new IslandBansGUI(page - 1, getIsland()).getInventory());
+            player.openInventory(new IslandBansGUI(page - 1, getIsland(), getPreviousInventory()).getInventory());
             return;
         }
 
         if (event.getSlot() == size - 3 && (size - 9) * page < islandBans.size()) {
-            player.openInventory(new IslandBansGUI(page + 1, getIsland()).getInventory());
+            player.openInventory(new IslandBansGUI(page + 1, getIsland(), getPreviousInventory()).getInventory());
             return;
         }
 

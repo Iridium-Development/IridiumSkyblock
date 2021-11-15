@@ -4,13 +4,14 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.gui.BlockValueGUI;
 import com.iridium.iridiumskyblock.gui.BlockValueGUI.BlockValueType;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which shows all the valuable blocks and spawners.
@@ -38,17 +39,17 @@ public class BlockValueCommand extends Command {
     public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
         if (arguments.length != 2) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
 
         BlockValueGUI.BlockValueType blockValueType = BlockValueGUI.BlockValueType.getType(arguments[1]);
         if (blockValueType == null) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI).getInventory());
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().blockValueSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
 
-        player.openInventory(new BlockValueGUI(blockValueType).getInventory());
+        player.openInventory(new BlockValueGUI(blockValueType, player.getOpenInventory().getTopInventory()).getInventory());
         return true;
     }
 

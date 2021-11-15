@@ -31,8 +31,8 @@ public class IslandSettingsGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandSettingsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandSettingsGUI, island);
+    public IslandSettingsGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().islandSettingsGUI, previousInventory, island);
     }
 
     @Override
@@ -43,6 +43,10 @@ public class IslandSettingsGUI extends IslandGUI {
         for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), setting.getKey(), setting.getValue().getDefaultValue());
             inventory.setItem(setting.getValue().getItem().slot, ItemStackUtils.makeItem(setting.getValue().getItem(), Collections.singletonList(new Placeholder("value", WordUtils.capitalize(islandSetting.getValue().toLowerCase().replace("_", " "))))));
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 
@@ -59,10 +63,10 @@ public class IslandSettingsGUI extends IslandGUI {
             event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangeSettings.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
-        
+
         for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
             if (event.getSlot() != setting.getValue().getItem().slot) continue;
-            
+
             SettingType settingType = SettingType.getByName(setting.getKey());
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), settingType);
             String newValue = (event.getClick() == ClickType.RIGHT ? settingType.getNext() : settingType.getPrevious()).getNew(islandSetting.getValue());

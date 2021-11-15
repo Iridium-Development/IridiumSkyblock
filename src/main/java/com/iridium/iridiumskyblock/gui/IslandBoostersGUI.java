@@ -28,8 +28,8 @@ public class IslandBoostersGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandBoostersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, island);
+    public IslandBoostersGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, previousInventory, island);
     }
 
     @Override
@@ -48,6 +48,10 @@ public class IslandBoostersGUI extends IslandGUI {
                     new Placeholder("crystalcost", IridiumSkyblock.getInstance().getNumberFormatter().format(entry.getValue().crystalsCost)),
                     new Placeholder("vaultcost", IridiumSkyblock.getInstance().getNumberFormatter().format(entry.getValue().vaultCost))
             )));
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 

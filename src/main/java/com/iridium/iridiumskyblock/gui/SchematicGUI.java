@@ -32,6 +32,10 @@ public abstract class SchematicGUI extends GUI {
             inventory.setItem(entry.getValue().item.slot, ItemStackUtils.makeItem(entry.getValue().item));
             schematics.put(entry.getValue().item.slot, entry.getValue());
         }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     /**

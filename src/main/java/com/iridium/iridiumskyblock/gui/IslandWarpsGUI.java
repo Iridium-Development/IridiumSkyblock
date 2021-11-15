@@ -25,8 +25,8 @@ public class IslandWarpsGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandWarpsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, island);
+    public IslandWarpsGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, previousInventory, island);
     }
 
     @Override
@@ -48,6 +48,10 @@ public class IslandWarpsGUI extends IslandGUI {
             Material material = islandWarp.getIcon().parseMaterial();
             if (material != null) itemStack.setType(material);
             inventory.setItem(slot, itemStack);
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 
