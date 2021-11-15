@@ -68,8 +68,9 @@ public class DatabaseManager {
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
-        convertDatabaseData(sqlConfig.driver);
-
+        if (connectionSource.getReadWriteConnection(null).isTableExists("islands")) {
+            convertDatabaseData(sqlConfig.driver);
+        }
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.userTableManager = new UserTableManager(connectionSource);
         this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, Comparator.comparing(IslandInvite::getIslandId).thenComparing(islandInvite -> islandInvite.getUser().getUuid()));
