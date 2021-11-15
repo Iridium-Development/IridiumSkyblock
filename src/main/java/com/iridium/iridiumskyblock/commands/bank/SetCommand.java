@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class SetCommand extends Command {
     /**
@@ -28,29 +28,25 @@ public class SetCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length == 5) {
-            Player player = Bukkit.getPlayer(args[2]);
-            if (player != null) {
-                User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                Optional<Island> island = user.getIsland();
-                if (island.isPresent()) {
-                    Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[3])).findFirst();
-                    if (bankItem.isPresent()) {
-                        try {
-                            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
-                            islandBank.setNumber(Math.max(Double.parseDouble(args[4]), 0));
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            return true;
-                        } catch (NumberFormatException exception) {
-                            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        }
-                    } else {
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchBankItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            Optional<Island> island = user.getIsland();
+            if (island.isPresent()) {
+                Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[3])).findFirst();
+                if (bankItem.isPresent()) {
+                    try {
+                        IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
+                        islandBank.setNumber(Math.max(Double.parseDouble(args[4]), 0));
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        return true;
+                    } catch (NumberFormatException exception) {
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     }
                 } else {
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchBankItem.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             } else {
-                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             }
         } else {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
