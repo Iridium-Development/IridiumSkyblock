@@ -51,10 +51,9 @@ public class ShopOverviewGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory -> {
-            String command = IridiumSkyblock.getInstance().getCommands().shopCommand.aliases.get(0);
-            Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + shopCategory.name);
-        });
+        IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory ->
+                IridiumSkyblock.getInstance().getCommands().shopCommand.execute(event.getWhoClicked(), new String[]{shopCategory.name})
+        );
     }
 
 }

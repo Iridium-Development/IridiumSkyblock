@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -79,9 +78,7 @@ public class IslandBiomeGUI extends IslandGUI {
         if (event.getSlot() + 1 <= biomes.size()) {
             int index = ((size - 9) * (page - 1)) + event.getSlot();
             if (biomes.size() > index) {
-                XBiome biome = biomes.get(index);
-                String command = IridiumSkyblock.getInstance().getCommands().biomeCommand.aliases.get(0);
-                Bukkit.dispatchCommand(player, "is " + command + " " + biome.toString());
+                IridiumSkyblock.getInstance().getCommands().biomeCommand.execute(player, new String[]{biomes.get(index).toString()});
                 player.closeInventory();
                 cooldownProvider.applyCooldown(player);
             }
