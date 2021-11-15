@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.api;
 
-import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.User;
 import lombok.Getter;
 import org.bukkit.event.Cancellable;
@@ -10,21 +9,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Called before an Island has been created.
+ * Called before an Island has been renamed.
  */
 @Getter
-public class IslandCreateEvent extends Event implements Cancellable {
+public class IslandRenameEvent extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     @Nullable private String islandName;
     @NotNull private final User user;
-    @NotNull private Schematics.SchematicConfig schematicConfig;
 
-    public IslandCreateEvent(@NotNull User user, @Nullable String islandName, Schematics.@NotNull SchematicConfig schematicConfig) {
+    public IslandRenameEvent(@NotNull User user, @Nullable String islandName) {
         this.islandName = islandName;
         this.user = user;
-        this.schematicConfig = schematicConfig;
     }
 
     @NotNull
@@ -56,10 +53,6 @@ public class IslandCreateEvent extends Event implements Cancellable {
 
     public void setIslandName(@Nullable String islandName) {
         this.islandName = islandName;
-    }
-
-    public void setSchematicConfig(Schematics.@NotNull SchematicConfig schematicConfig) {
-        this.schematicConfig = schematicConfig;
     }
 
 }

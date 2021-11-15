@@ -7,16 +7,20 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called before a user toggles the Island chat using /is chat.
+ */
 @Getter
 public class UserChatToggleEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     private final boolean newChatState;
-    private final User user;
+    @NotNull private final User user;
 
-    public UserChatToggleEvent(User user, boolean toState) {
+    public UserChatToggleEvent(@NotNull User user, boolean newState) {
         this.user = user;
-        this.newChatState = toState;
+        this.newChatState = newState;
     }
 
     @NotNull
@@ -30,16 +34,8 @@ public class UserChatToggleEvent extends Event implements Cancellable {
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 
-    public boolean getNewChatState() {
-        return newChatState;
-    }
 }

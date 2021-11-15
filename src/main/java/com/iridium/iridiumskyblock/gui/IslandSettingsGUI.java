@@ -8,11 +8,13 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.Setting;
 import com.iridium.iridiumskyblock.SettingType;
+import com.iridium.iridiumskyblock.api.IslandSettingChangeEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandSetting;
 import com.iridium.iridiumskyblock.database.User;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -58,7 +60,8 @@ public class IslandSettingsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser((OfflinePlayer) event.getWhoClicked());
+        Player player = (Player) event.getWhoClicked();
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), user, PermissionType.ISLAND_SETTINGS)) {
             event.getWhoClicked().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangeSettings.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
@@ -70,6 +73,12 @@ public class IslandSettingsGUI extends IslandGUI {
             SettingType settingType = SettingType.getByName(setting.getKey());
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), settingType);
             String newValue = (event.getClick() == ClickType.RIGHT ? settingType.getNext() : settingType.getPrevious()).getNew(islandSetting.getValue());
+
+            IslandSettingChangeEvent islandSettingChangeEvent = new IslandSettingChangeEvent(player, getIsland(), settingType, newValue);
+            Bukkit.getPluginManager().callEvent(islandSettingChangeEvent);
+            if (islandSettingChangeEvent.isCancelled()) return;
+
+            newValue = islandSettingChangeEvent.getNewValue();
             islandSetting.setValue(newValue);
             settingType.getOnChange().run(getIsland(), newValue);
             addContent(event.getInventory());
