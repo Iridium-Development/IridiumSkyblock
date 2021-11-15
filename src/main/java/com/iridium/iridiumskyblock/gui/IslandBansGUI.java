@@ -87,7 +87,7 @@ public class IslandBansGUI extends IslandGUI {
             int index = ((size - 9) * (page - 1)) + event.getSlot();
             if (islandBans.size() > index) {
                 IslandBan islandBan = islandBans.get(event.getSlot());
-                IridiumSkyblock.getInstance().getCommands().unBanCommand.execute(event.getWhoClicked(), new String[]{islandBan.getBannedUser().getName()});
+                IridiumSkyblock.getInstance().getCommands().unBanCommand.execute(event.getWhoClicked(), new String[]{"", islandBan.getBannedUser().getName()});
                 addContent(event.getInventory());
             }
         }

@@ -56,10 +56,10 @@ public class IslandBankGUI extends IslandGUI {
 
         switch (event.getClick()) {
             case LEFT:
-                IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 break;
             case RIGHT:
-                IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 break;
         }
 

@@ -64,7 +64,7 @@ public class IslandBoostersGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             if (entry.getValue().item.slot == event.getSlot()) {
-                IridiumSkyblock.getInstance().getCommands().boostersCommand.execute(event.getWhoClicked(), new String[]{entry.getKey()});
+                IridiumSkyblock.getInstance().getCommands().boostersCommand.execute(event.getWhoClicked(), new String[]{"", entry.getKey()});
                 return;
             }
         }

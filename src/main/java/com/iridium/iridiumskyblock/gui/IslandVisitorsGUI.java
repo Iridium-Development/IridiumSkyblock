@@ -79,9 +79,9 @@ public class IslandVisitorsGUI extends IslandGUI {
         if (visitors.size() > event.getSlot()) {
             User visitor = visitors.get(event.getSlot());
             if (event.isLeftClick()) {
-                IridiumSkyblock.getInstance().getCommands().expelCommand.execute(event.getWhoClicked(), new String[]{visitor.getName()});
+                IridiumSkyblock.getInstance().getCommands().expelCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
             } else if (event.isRightClick()) {
-                IridiumSkyblock.getInstance().getCommands().banCommand.execute(event.getWhoClicked(), new String[]{visitor.getName()});
+                IridiumSkyblock.getInstance().getCommands().banCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
             }
             addContent(event.getInventory());
         }

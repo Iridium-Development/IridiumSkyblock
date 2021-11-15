@@ -60,7 +60,7 @@ public class IslandTrustedGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
-            IridiumSkyblock.getInstance().getCommands().unTrustCommand.execute(event.getWhoClicked(), new String[]{user.getName()});
+            IridiumSkyblock.getInstance().getCommands().unTrustCommand.execute(event.getWhoClicked(), new String[]{"", user.getName()});
             addContent(event.getInventory());
         }
     }

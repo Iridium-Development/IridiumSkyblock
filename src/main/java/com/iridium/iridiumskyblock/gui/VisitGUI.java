@@ -77,7 +77,7 @@ public class VisitGUI extends GUI {
             int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
             if (islands.size() > index) {
                 Island island = islands.get(index);
-                IridiumSkyblock.getInstance().getCommands().visitCommand.execute(event.getWhoClicked(), new String[]{island.getOwner().getName()});
+                IridiumSkyblock.getInstance().getCommands().visitCommand.execute(event.getWhoClicked(), new String[]{"", island.getOwner().getName()});
                 event.getWhoClicked().closeInventory();
             }
         }
