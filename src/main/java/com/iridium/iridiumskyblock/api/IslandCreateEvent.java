@@ -3,7 +3,6 @@ package com.iridium.iridiumskyblock.api;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.User;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
