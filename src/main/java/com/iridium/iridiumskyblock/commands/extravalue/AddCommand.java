@@ -1,66 +1,65 @@
-package com.iridium.iridiumskyblock.commands;
+package com.iridium.iridiumskyblock.commands.extravalue;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.commands.extravalue.AddCommand;
-import com.iridium.iridiumskyblock.commands.extravalue.RemoveCommand;
-import com.iridium.iridiumskyblock.commands.extravalue.SetCommand;
+import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
-public class ExtraValueCommand extends Command {
-
-    public AddCommand addCommand;
-    public RemoveCommand removeCommand;
-    public SetCommand setCommand;
+public class AddCommand extends Command {
 
     /**
      * The default constructor.
      */
-    public ExtraValueCommand() {
-        super(Collections.singletonList("extravalue"), "Set extra values of island", "%prefix% &7/is extravalue <player/add/remove/set>", "iridiumskyblock.extravalue", false, Duration.ZERO);
-
-        this.addCommand = new AddCommand();
-        this.removeCommand = new RemoveCommand();
-        this.setCommand = new SetCommand();
-        addChilds(addCommand, removeCommand, setCommand);
+    public AddCommand() {
+        super(Collections.singletonList("add"), "Add value to the extra value of a player", "%prefix% &7/is extravalue add <player> <amount>", "iridiumskyblock.extravalue", false, Duration.ZERO);
     }
 
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
-     * Gives extra values to specific player's island
      *
-     * @param sender The CommandSender which executes this command
-     * @param args   The arguments used with this command. They contain the sub-command
+     * @param sender    The CommandSender which executes this command
+     * @param args      The arguments used with this command. They contain the sub-command
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length < 3) {
+        if (args.length < 4) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
-        if (!island.isPresent()) {
+        Optional<Island> optionalIsland = user.getIsland();
+        if (!optionalIsland.isPresent()) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
-        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().extraValueInfo
+        double amount;
+        try {
+            amount = Double.parseDouble(args[3]);
+        } catch (NumberFormatException exception) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+
+        Island island = optionalIsland.get();
+        island.setExtraValue(island.getExtraValue() + amount);
+        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().extraValueSet
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                .replace("%player%", player.getName()))
-                .replace("%amount%", String.valueOf(island.get().getExtraValue())));
+                .replace("%player%", player.getName())
+                .replace("%amount%", String.valueOf(island.getExtraValue()))));
         return true;
     }
 
@@ -75,8 +74,11 @@ public class ExtraValueCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        // Tab-completion is handled by the subcommands
+        if (args.length == 3) {
+            return PlayerUtils.getOnlinePlayerNames();
+        }
+
         return Collections.emptyList();
     }
-    
+
 }
