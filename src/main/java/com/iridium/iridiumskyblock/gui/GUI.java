@@ -30,7 +30,9 @@ public abstract class GUI implements InventoryHolder {
      */
     public GUI(@NotNull NoItemGUI noItemGUI, Inventory previousInventory) {
         this.noItemGUI = noItemGUI;
-        this.previousInventory = previousInventory;
+        if (previousInventory != null && previousInventory.getHolder() != null && previousInventory.getHolder() instanceof GUI) {
+            this.previousInventory = previousInventory;
+        }
     }
 
     /**

@@ -34,7 +34,6 @@ public class InventoryConfigGUI extends GUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (String command : inventoryConfig.items.keySet()) {
             if (inventoryConfig.items.get(command).slot == event.getSlot()) {
-                event.getWhoClicked().closeInventory();
                 Bukkit.getServer().dispatchCommand(event.getWhoClicked(), command);
             }
         }
