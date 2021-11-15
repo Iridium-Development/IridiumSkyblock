@@ -228,8 +228,6 @@ public class IridiumSkyblock extends IridiumCore {
                     .checkNow();
         }
 
-        DataConverter.deleteDuplicateRecords();
-
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
