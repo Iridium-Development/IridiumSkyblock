@@ -52,7 +52,7 @@ public class ShopOverviewGUI extends GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory ->
-                IridiumSkyblock.getInstance().getCommands().shopCommand.execute(event.getWhoClicked(), new String[]{shopCategory.name})
+                IridiumSkyblock.getInstance().getCommands().shopCommand.execute(event.getWhoClicked(), new String[]{"", shopCategory.name})
         );
     }
 

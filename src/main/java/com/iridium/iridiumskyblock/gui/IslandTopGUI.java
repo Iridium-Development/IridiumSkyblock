@@ -64,7 +64,7 @@ public class IslandTopGUI extends GUI {
         if (!islandSlots.containsKey(event.getSlot())) return;
 
         Island island = islandSlots.get(event.getSlot());
-        IridiumSkyblock.getInstance().getCommands().visitCommand.execute(event.getWhoClicked(), new String[]{island.getOwner().getName()});
+        IridiumSkyblock.getInstance().getCommands().visitCommand.execute(event.getWhoClicked(), new String[]{"", island.getOwner().getName()});
     }
 
 }
