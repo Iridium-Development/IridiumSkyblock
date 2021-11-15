@@ -62,8 +62,8 @@ public final class Island {
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
-    // Cache resets every 5 seconds
-    private Cache<Double> valueCache = new Cache<>(5000);
+    // Cache resets every 0.5 seconds
+    private Cache<Double> valueCache = new Cache<>(500);
 
     // Cache
     private Integer size;
