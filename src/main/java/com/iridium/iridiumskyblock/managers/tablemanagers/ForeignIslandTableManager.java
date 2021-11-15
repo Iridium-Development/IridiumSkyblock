@@ -88,22 +88,4 @@ public class ForeignIslandTableManager<T extends IslandData, S> extends TableMan
         }
         return result;
     }
-
-    public void deleteDuplicates() {
-        List<String> islandDataList = new ArrayList<>();
-        List<T> remove = new ArrayList<>();
-        for (T islandData : getEntries()) {
-            Optional<Island> island = islandData.getIsland();
-            if (island.isPresent()) {
-                if (islandDataList.contains(islandData.getUniqueKey())) {
-                    remove.add(islandData);
-                } else {
-                    islandDataList.add(islandData.getUniqueKey());
-                }
-            } else {
-                remove.add(islandData);
-            }
-        }
-        delete(remove);
-    }
 }

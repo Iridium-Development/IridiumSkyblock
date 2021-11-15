@@ -55,15 +55,6 @@ public class DataConverter {
                 });
     }
 
-    public static void deleteDuplicateRecords() {
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().deleteDuplicates();
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().deleteDuplicates();
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().deleteDuplicates();
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().deleteDuplicates();
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().deleteDuplicates();
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().deleteDuplicates();
-    }
-
     public static void updateDatabaseData(int oldVersion, int newVersion, ConnectionSource connectionSource, SQL.Driver driver) {
         IridiumSkyblock.getInstance().getLogger().info("Updating database from version " + oldVersion + " to " + newVersion);
 
