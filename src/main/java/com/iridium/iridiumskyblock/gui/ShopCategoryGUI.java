@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.utils.InventoryUtils;
+import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
@@ -29,7 +30,8 @@ public class ShopCategoryGUI extends GUI {
      *
      * @param category The category whose items should be displayed in this GUI
      */
-    public ShopCategoryGUI(ShopCategory category) {
+    public ShopCategoryGUI(ShopCategory category, Inventory previousInventory) {
+        super(previousInventory);
         this.category = category;
     }
 
@@ -73,6 +75,10 @@ public class ShopCategoryGUI extends GUI {
             itemStack.setItemMeta(itemMeta);
 
             inventory.setItem(item.slot, itemStack);
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 

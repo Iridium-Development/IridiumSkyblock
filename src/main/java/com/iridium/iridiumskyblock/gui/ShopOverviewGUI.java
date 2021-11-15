@@ -15,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ShopOverviewGUI extends GUI {
 
+    public ShopOverviewGUI(Inventory previousInventory) {
+        super(previousInventory);
+    }
+
     /**
      * Get the object's inventory.
      *
@@ -41,6 +45,14 @@ public class ShopOverviewGUI extends GUI {
 
         for (ShopCategory category : IridiumSkyblock.getInstance().getShopManager().getCategories()) {
             inventory.setItem(category.item.slot, ItemStackUtils.makeItem(category.item));
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 
