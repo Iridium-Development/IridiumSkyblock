@@ -27,8 +27,8 @@ public class IslandUpgradesGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandUpgradesGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().upgradesGUI, island);
+    public IslandUpgradesGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().upgradesGUI, previousInventory, island);
     }
 
     @Override
@@ -56,6 +56,10 @@ public class IslandUpgradesGUI extends IslandGUI {
             }
 
             inventory.setItem(item.slot, ItemStackUtils.makeItem(item, placeholderList));
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 

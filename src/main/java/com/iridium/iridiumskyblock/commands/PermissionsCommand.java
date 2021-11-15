@@ -5,13 +5,14 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandRanksGUI;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Commands which allows a user to manage the permissions of his Island.
@@ -43,7 +44,7 @@ public class PermissionsCommand extends Command {
             return false;
         }
 
-        player.openInventory(new IslandRanksGUI(island.get()).getInventory());
+        player.openInventory(new IslandRanksGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
         return true;
     }
 
