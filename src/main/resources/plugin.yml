@@ -11,10 +11,6 @@ softdepend:
   - "Essentials"
   - "EssentialsSpawn"
   - "RoseStacker"
-  - "WildStacker"
-  - "AdvancedSpawners"
-  - "UltimateStacker"
-  - "EpicSpawners"
   - "WorldEdit"
 loadbefore:
   - "Multiverse-Core"

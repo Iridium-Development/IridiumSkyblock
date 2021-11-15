@@ -23,8 +23,6 @@ import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -857,10 +855,7 @@ public class IslandManager {
 
             recalculateIsland(island, chunks);
 
-            IridiumSkyblock.getInstance().getBlockStackerSupport().getBlockAmounts(island).forEach(blockAmount -> {
-                IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
-                islandBlock.setAmount(islandBlock.getAmount() + blockAmount.getAmount());
-            });
+            IridiumSkyblock.getInstance().getStackerSupport().applyStackedBlockValue(island);
         });
     }
 
@@ -879,7 +874,7 @@ public class IslandManager {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
-                            XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
+                            XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
                             if (material.equals(XMaterial.AIR)) continue;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
@@ -887,15 +882,6 @@ public class IslandManager {
                         }
                     }
                 }
-            }
-        });
-        chunks.forEach(chunk -> {
-            for (BlockState blockState : chunk.getTileEntities()) {
-                if (!(blockState instanceof CreatureSpawner)) continue;
-                CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
-                int amount = IridiumSkyblock.getInstance().getSpawnerStackerSupport().getSpawnerAmount(creatureSpawner);
-                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
-                islandSpawners.setAmount(islandSpawners.getAmount() + amount);
             }
         });
     }
