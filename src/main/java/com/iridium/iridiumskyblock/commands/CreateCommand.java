@@ -11,13 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import java.util.*;
 
 /**
  * Command which creates a new Island for a user.
@@ -44,6 +38,7 @@ public class CreateCommand extends Command {
         Player player = (Player) sender;
 
         switch (args.length) {
+            case 0:
             case 1:
                 createIsland(player, null);
                 break;
