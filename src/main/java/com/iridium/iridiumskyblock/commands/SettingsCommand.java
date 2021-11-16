@@ -46,38 +46,7 @@ public class SettingsCommand extends Command {
             return false;
         }
 
-        if (args.length == 3) {
-            String settingsName = args[1];
-            String booleanValue = args[2];
-
-            Island islandPlayer = island.get();
-
-            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(islandPlayer, user, PermissionType.ISLAND_SETTINGS)) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangeSettings.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-
-            SettingType settingType = SettingType.getByName(settingsName);
-            if (settingType == null) {
-                player.sendMessage(StringUtils.color("%prefix% &7Le settings que vous avez mentionné n'existe pas".replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-            if (!settingType.isFeactureValue()) {
-                player.sendMessage(StringUtils.color("%prefix% &7Cette fonctionnalité n'existe pas".replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-            IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(islandPlayer, settingType);
-            if (islandSetting == null) {
-                player.sendMessage(StringUtils.color("%prefix% &7Le settings que vous avez mentionné n'existe pas".replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
-            }
-            islandSetting.setValue(booleanValue);
-            settingType.getOnChange().run(islandPlayer, booleanValue);
-
-            player.sendMessage(StringUtils.color("%prefix% &7Les paramètres de votre île a été modifiés".replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        } else {
-            player.openInventory(new IslandSettingsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
-        }
+        player.openInventory(new IslandSettingsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
 
         return true;
     }
