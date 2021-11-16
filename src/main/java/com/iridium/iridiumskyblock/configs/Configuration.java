@@ -33,7 +33,7 @@ public class Configuration {
     public String spawnWorldName = "world";
     public String defaultCommandSyntax = "/is %command%";
 
-    public boolean enableCheckVersion = true;
+    public boolean enableCheckVersion = true; public boolean deleteIslandBlocksWhenIslandIsDelete = true;
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
     public boolean netherIslands = true;
@@ -42,7 +42,6 @@ public class Configuration {
     public boolean obsidianBucket = true;
     public boolean patreonMessage = true;
     public boolean islandMenu = true;
-    public boolean deleteIslandBlocksWhenIslandIsDelete = true;
 
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 

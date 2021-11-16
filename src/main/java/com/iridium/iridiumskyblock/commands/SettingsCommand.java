@@ -76,7 +76,7 @@ public class SettingsCommand extends Command {
 
             player.sendMessage(StringUtils.color("%prefix% &7Les paramètres de votre île a été modifiés".replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         } else {
-            player.openInventory(new IslandSettingsGUI(island.get()).getInventory());
+            player.openInventory(new IslandSettingsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
         }
 
         return true;

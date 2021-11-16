@@ -39,15 +39,16 @@ public class PlayerMoveListener implements Listener {
 
                 Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 if (island.isPresent()) {
-                    if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), user)) {
-                        event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                                .replace("%owner%", island.get().getOwner().getName())
-                                .replace("%name%", island.get().getName())
-                        ));
-                        PlayerUtils.teleportSpawn(player);
-                    } else {
-                        /*
+                    try {
+                        if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), user)) {
+                            event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                    .replace("%owner%", island.get().getOwner().getName())
+                                    .replace("%name%", island.get().getName())
+                            ));
+                            PlayerUtils.teleportSpawn(player);
+                        } /* else {
+
                         IslandSetting islandTimeSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.TIME);
                         IslandSetting islandWeatherSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island.get(), SettingType.WEATHER);
                         IslandTime islandTime = IslandTime.valueOf(islandTimeSetting.getValue());
@@ -63,8 +64,10 @@ public class PlayerMoveListener implements Listener {
 
                         if (SettingType.TIME.isFeactureValue() && ((islandTime == IslandTime.DEFAULT && player.getPlayerTime() != player.getWorld().getTime()) || player.getPlayerTime() != islandTime.getTime())) {
                             player.setPlayerTime(islandTime.getTime(), islandTime.isRelative());
-                        }*/
-                    }
+                        }
+                    }*/
+                    } catch (NullPointerException ignored) {}
+
                 }
                 if (user.isFlying()) {
                     if (island.isPresent()) {

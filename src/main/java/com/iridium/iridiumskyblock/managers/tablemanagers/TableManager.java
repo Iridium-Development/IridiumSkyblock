@@ -40,7 +40,7 @@ public class TableManager<T, S> {
     public void save() {
         try {
             ListIterator<T> iterator = new ArrayList<>(entries).listIterator();
-            System.out.println("Nombre de sauvegarde : " + entries.size());
+            //System.out.println("Nombre de sauvegarde : " + entries.size());
             while (iterator.hasNext()) {
                 T user = iterator.next();
                 dao.createOrUpdate(user);
