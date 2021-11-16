@@ -7,7 +7,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -25,8 +24,8 @@ public class IslandBankGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandBankGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
+    public IslandBankGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().bankGUI, previousInventory, island);
     }
 
     @Override
@@ -37,6 +36,10 @@ public class IslandBankGUI extends IslandGUI {
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(getIsland(), bankItem);
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", IridiumSkyblock.getInstance().getNumberFormatter().format(islandBank.getNumber())))));
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 
@@ -51,23 +54,16 @@ public class IslandBankGUI extends IslandGUI {
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
-        String command;
         switch (event.getClick()) {
             case LEFT:
-                command = IridiumSkyblock.getInstance().getCommands().withdrawCommand.aliases.get(0);
+                IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 break;
             case RIGHT:
-                command = IridiumSkyblock.getInstance().getCommands().depositCommand.aliases.get(0);
+                IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 break;
-            default:
-                return;
         }
 
-        if (command != null) {
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + bankItem.get().getName() + " " + bankItem.get().getDefaultAmount());
-        }
-
-        event.getWhoClicked().openInventory(getInventory());
+        addContent(event.getInventory());
     }
 
 

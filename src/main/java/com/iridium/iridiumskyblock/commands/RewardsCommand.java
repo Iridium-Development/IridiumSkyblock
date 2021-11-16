@@ -43,7 +43,7 @@ public class RewardsCommand extends Command {
             return false;
         }
 
-        player.openInventory(new IslandRewardsGUI(island.get()).getInventory());
+        player.openInventory(new IslandRewardsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
         return true;
     }
 

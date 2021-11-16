@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,8 +27,8 @@ public class IslandBiomeGUI extends IslandGUI {
     private final World.Environment environment;
     private final CooldownProvider<CommandSender> cooldownProvider;
 
-    public IslandBiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider) {
-        super(IridiumSkyblock.getInstance().getInventories().biomeGUI, island);
+    public IslandBiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().biomeGUI, previousInventory, island);
         this.biomes = Arrays.stream(XBiome.VALUES).filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
         this.environment = environment;
         this.page = page;
@@ -54,6 +53,10 @@ public class IslandBiomeGUI extends IslandGUI {
                 .forEachOrdered(biome ->
                         inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().biomeGUI.item, Collections.singletonList(new Placeholder("biome", WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " "))))))
                 );
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     @Override
@@ -63,21 +66,19 @@ public class IslandBiomeGUI extends IslandGUI {
 
         Player player = (Player) event.getWhoClicked();
         if (event.getSlot() == size - 7 && page > 1) {
-            player.openInventory(new IslandBiomeGUI(page - 1, getIsland(), environment, cooldownProvider).getInventory());
+            player.openInventory(new IslandBiomeGUI(page - 1, getIsland(), environment, cooldownProvider, getPreviousInventory()).getInventory());
             return;
         }
 
         if (event.getSlot() == size - 3 && (size - 9) * page < biomes.size()) {
-            player.openInventory(new IslandBiomeGUI(page + 1, getIsland(), environment, cooldownProvider).getInventory());
+            player.openInventory(new IslandBiomeGUI(page + 1, getIsland(), environment, cooldownProvider, getPreviousInventory()).getInventory());
             return;
         }
 
         if (event.getSlot() + 1 <= biomes.size()) {
             int index = ((size - 9) * (page - 1)) + event.getSlot();
             if (biomes.size() > index) {
-                XBiome biome = biomes.get(index);
-                String command = IridiumSkyblock.getInstance().getCommands().biomeCommand.aliases.get(0);
-                Bukkit.dispatchCommand(player, "is " + command + " " + biome.toString());
+                IridiumSkyblock.getInstance().getCommands().biomeCommand.execute(player, new String[]{"", biomes.get(index).toString()});
                 player.closeInventory();
                 cooldownProvider.applyCooldown(player);
             }

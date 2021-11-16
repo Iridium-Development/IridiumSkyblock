@@ -220,12 +220,12 @@ public class IslandManager {
             return false;
         }
 
-        IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name);
+        IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name, schematicConfig);
         Bukkit.getPluginManager().callEvent(islandCreateEvent);
         if (islandCreateEvent.isCancelled()) return false;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, name, schematicConfig).thenAccept(island ->
+        createIsland(player, islandCreateEvent.getIslandName(), islandCreateEvent.getSchematicConfig()).thenAccept(island ->
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                     teleportHome(player, island);
                     IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
@@ -875,10 +875,7 @@ public class IslandManager {
 
             recalculateIsland(island, chunks);
 
-            IridiumSkyblock.getInstance().getBlockStackerSupport().getBlockAmounts(island).forEach(blockAmount -> {
-                IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, blockAmount.getMaterial());
-                islandBlock.setAmount(islandBlock.getAmount() + blockAmount.getAmount());
-            });
+            IridiumSkyblock.getInstance().getStackerSupport().applyStackedBlockValue(island);
         });
     }
 
@@ -897,7 +894,7 @@ public class IslandManager {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
-                            XMaterial material = IridiumSkyblock.getInstance().getMultiVersion().getMaterialAtPosition(chunk, x, y, z);
+                            XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
                             if (material.equals(XMaterial.AIR)) continue;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
@@ -910,10 +907,10 @@ public class IslandManager {
         chunks.forEach(chunk -> {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner)) continue;
+                if (!island.isInIsland(blockState.getLocation())) continue;
                 CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
-                int amount = IridiumSkyblock.getInstance().getSpawnerStackerSupport().getSpawnerAmount(creatureSpawner);
                 IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
-                islandSpawners.setAmount(islandSpawners.getAmount() + amount);
+                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
             }
         });
     }

@@ -59,11 +59,14 @@ public final class Island {
     @DatabaseField(columnName = "experience")
     private int experience;
 
+    @DatabaseField(columnName = "extra_value")
+    private double extraValue;
+
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
-    // Cache resets every 5 seconds
-    private Cache<Double> valueCache = new Cache<>(5000);
+    // Cache resets every 0.5 seconds
+    private Cache<Double> valueCache = new Cache<>(500);
 
     // Cache
     private Integer size;
@@ -207,7 +210,7 @@ public final class Island {
      */
     public double getValue() {
         return valueCache.getCache(() -> {
-            double value = 0;
+            double value = extraValue;
 
             List<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(this);
             List<IslandSpawners> islandSpawners = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(this);

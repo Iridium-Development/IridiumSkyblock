@@ -31,8 +31,8 @@ public class BlockValueGUI extends GUI {
      *
      * @param type The type of valuable block shown in this GUI
      */
-    public BlockValueGUI(BlockValueType type) {
-        super(IridiumSkyblock.getInstance().getInventories().blockValue);
+    public BlockValueGUI(BlockValueType type, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().blockValue, previousInventory);
         this.guiType = type;
     }
 
@@ -63,6 +63,10 @@ public class BlockValueGUI extends GUI {
                         ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
                         inventory.setItem(spawnerInfo.slot, spawnerItem);
                     });
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 

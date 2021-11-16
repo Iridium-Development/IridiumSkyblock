@@ -46,7 +46,7 @@ public class MissionCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI).getInventory());
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
 
@@ -56,7 +56,7 @@ public class MissionCommand extends Command {
             return false;
         }
 
-        player.openInventory(new IslandMissionsGUI(island.get(), missionType).getInventory());
+        player.openInventory(new IslandMissionsGUI(island.get(), missionType, player.getOpenInventory().getTopInventory()).getInventory());
         return true;
     }
 
@@ -74,8 +74,8 @@ public class MissionCommand extends Command {
         // We currently don't want to tab-completion here
         // Return a new List, so it isn't a list of online players
         return Arrays.stream(Mission.MissionType.values())
-            .map(MissionType::name)
-            .collect(Collectors.toList());
+                .map(MissionType::name)
+                .collect(Collectors.toList());
     }
 
 }

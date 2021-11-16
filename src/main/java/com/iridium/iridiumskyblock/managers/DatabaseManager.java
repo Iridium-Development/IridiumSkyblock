@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 public class DatabaseManager {
 
-    private final int version = 2;
+    private final int version = 3;
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
     private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;
@@ -68,6 +68,9 @@ public class DatabaseManager {
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
+        if (connectionSource.getReadWriteConnection(null).isTableExists("islands")) {
+            convertDatabaseData(sqlConfig.driver);
+        }
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.userTableManager = new UserTableManager(connectionSource);
         this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, Comparator.comparing(IslandInvite::getIslandId).thenComparing(islandInvite -> islandInvite.getUser().getUuid()));
@@ -84,8 +87,6 @@ public class DatabaseManager {
         this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandId));
         this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser() != null ? islandBan.getBannedUser().getUuid() : null));
         this.islandSettingTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
-
-        convertDatabaseData(sqlConfig.driver);
     }
 
     /**

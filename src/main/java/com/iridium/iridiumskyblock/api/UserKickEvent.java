@@ -8,15 +8,19 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called before a user is kicked from an Island.
+ */
 @Getter
 public class UserKickEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private final Island island;
-    private final User user;
-    private final User kicker;
+    @NotNull private final Island island;
+    @NotNull private final User user;
+    @NotNull private final User kicker;
 
-    public UserKickEvent(Island island, User user, User kicker) {
+    public UserKickEvent(@NotNull Island island, @NotNull User user, @NotNull User kicker) {
         this.island = island;
         this.user = user;
         this.kicker = kicker;
@@ -33,12 +37,8 @@ public class UserKickEvent extends Event implements Cancellable {
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
 }

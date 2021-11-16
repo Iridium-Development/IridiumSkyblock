@@ -30,8 +30,8 @@ public class IslandInvitesGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandInvitesGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, island);
+    public IslandInvitesGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, previousInventory, island);
         invites = new HashMap<>();
     }
 
@@ -52,6 +52,10 @@ public class IslandInvitesGUI extends IslandGUI {
                 invites.put(itemSlot, islandInvites.get(itemSlot).getUser().getName());
             });
         }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     /**
@@ -63,8 +67,7 @@ public class IslandInvitesGUI extends IslandGUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         if (invites.containsKey(event.getSlot())) {
-            String command = IridiumSkyblock.getInstance().getCommands().unInviteCommand.aliases.get(0);
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + invites.get(event.getSlot()));
+            IridiumSkyblock.getInstance().getCommands().unInviteCommand.execute(event.getWhoClicked(), new String[]{"", invites.get(event.getSlot())});
             event.getWhoClicked().openInventory(getInventory());
         }
     }

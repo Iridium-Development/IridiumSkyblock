@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -28,8 +27,8 @@ public class IslandBoostersGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandBoostersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, island);
+    public IslandBoostersGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().boostersGUI, previousInventory, island);
     }
 
     @Override
@@ -49,6 +48,10 @@ public class IslandBoostersGUI extends IslandGUI {
                     new Placeholder("vaultcost", IridiumSkyblock.getInstance().getNumberFormatter().format(entry.getValue().vaultCost))
             )));
         }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     /**
@@ -61,8 +64,7 @@ public class IslandBoostersGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Booster> entry : IridiumSkyblock.getInstance().getBoosterList().entrySet()) {
             if (entry.getValue().item.slot == event.getSlot()) {
-                String command = IridiumSkyblock.getInstance().getCommands().boostersCommand.aliases.get(0);
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + entry.getKey());
+                IridiumSkyblock.getInstance().getCommands().boostersCommand.execute(event.getWhoClicked(), new String[]{"", entry.getKey()});
                 return;
             }
         }

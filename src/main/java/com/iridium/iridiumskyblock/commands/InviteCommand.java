@@ -49,7 +49,7 @@ public class InviteCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new IslandInvitesGUI(island.get()).getInventory());
+            player.openInventory(new IslandInvitesGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
 
@@ -103,8 +103,10 @@ public class InviteCommand extends Command {
                     .replace("%inviter%", player.getName())
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
-            message[0].setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
-            message[0].setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
+            for (BaseComponent baseComponent : message) {
+                baseComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
+                baseComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
+            }
             targetPlayer.spigot().sendMessage(message);
         }
 

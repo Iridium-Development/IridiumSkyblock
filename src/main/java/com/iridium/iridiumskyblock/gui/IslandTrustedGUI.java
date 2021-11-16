@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +30,7 @@ public class IslandTrustedGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandTrustedGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().trustedGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().trustedGUI, null, island);
         this.members = new HashMap<>();
     }
 
@@ -61,8 +60,7 @@ public class IslandTrustedGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
-            String command = IridiumSkyblock.getInstance().getCommands().unTrustCommand.aliases.get(0);
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + user.getName());
+            IridiumSkyblock.getInstance().getCommands().unTrustCommand.execute(event.getWhoClicked(), new String[]{"", user.getName()});
             addContent(event.getInventory());
         }
     }

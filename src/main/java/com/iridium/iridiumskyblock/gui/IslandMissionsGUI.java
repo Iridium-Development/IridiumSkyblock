@@ -27,8 +27,8 @@ public class IslandMissionsGUI extends IslandGUI {
      * @param missionType The amount of times the containing missions can be claimed
      * @see com.iridium.iridiumskyblock.Mission.MissionType
      */
-    public IslandMissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType) {
-        super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI, island);
+    public IslandMissionsGUI(@NotNull Island island, @NotNull Mission.MissionType missionType, Inventory previousInventory) {
+        super(missionType == Mission.MissionType.DAILY ? IridiumSkyblock.getInstance().getInventories().dailyMissionGUI : IridiumSkyblock.getInstance().getInventories().missionsGUI, previousInventory, island);
         this.missionType = missionType;
     }
 
@@ -67,6 +67,10 @@ public class IslandMissionsGUI extends IslandGUI {
 
                 inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
             }
+        }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 

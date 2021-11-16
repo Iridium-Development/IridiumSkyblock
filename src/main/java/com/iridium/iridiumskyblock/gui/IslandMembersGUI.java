@@ -6,7 +6,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +27,7 @@ public class IslandMembersGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandMembersGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().membersGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().membersGUI, null, island);
         this.members = new HashMap<>();
     }
 
@@ -57,22 +56,14 @@ public class IslandMembersGUI extends IslandGUI {
         if (members.containsKey(event.getSlot())) {
             User user = members.get(event.getSlot());
 
-            String command;
             switch (event.getClick()) {
                 case LEFT:
-                    command = IridiumSkyblock.getInstance().getCommands().demoteCommand.aliases.get(0);
+                    IridiumSkyblock.getInstance().getCommands().demoteCommand.execute(event.getWhoClicked(), new String[]{"", user.getName()});
                     break;
                 case RIGHT:
-                    command = IridiumSkyblock.getInstance().getCommands().promoteCommand.aliases.get(0);
+                    IridiumSkyblock.getInstance().getCommands().promoteCommand.execute(event.getWhoClicked(), new String[]{"", user.getName()});
                     break;
-                default:
-                    return;
             }
-
-            if (command != null) {
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + user.getName());
-            }
-
             addContent(event.getInventory());
         }
     }

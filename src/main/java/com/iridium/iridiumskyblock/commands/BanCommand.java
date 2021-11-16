@@ -53,7 +53,7 @@ public class BanCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new IslandBansGUI(1, island.get()).getInventory());
+            player.openInventory(new IslandBansGUI(1, island.get(), player.getOpenInventory().getTopInventory()).getInventory());
             return false;
         }
 
