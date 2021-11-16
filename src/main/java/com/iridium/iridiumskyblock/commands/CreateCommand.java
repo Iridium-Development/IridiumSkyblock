@@ -38,7 +38,6 @@ public class CreateCommand extends Command {
         Player player = (Player) sender;
 
         switch (args.length) {
-            case 0:
             case 1:
                 createIsland(player, null);
                 break;
