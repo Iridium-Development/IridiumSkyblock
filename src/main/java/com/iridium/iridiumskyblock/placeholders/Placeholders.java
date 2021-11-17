@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 public class Placeholders {
@@ -177,9 +178,10 @@ public class Placeholders {
 
     private static Map<String, Placeholder> getIslandTopPlaceholders() {
         HashMap<String, Placeholder> hashmap = new HashMap<>();
+        List<Island> topIslands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
         for (int i = 1; i <= 20; i++) {
             int finalI = i;
-            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> Optional.of(IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE).get(finalI - 1))));
+            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> finalI < topIslands.size() ? Optional.of(topIslands.get(finalI)) : Optional.empty()));
         }
         return hashmap;
     }
