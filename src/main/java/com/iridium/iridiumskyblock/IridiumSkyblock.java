@@ -335,27 +335,53 @@ public class IridiumSkyblock extends IridiumCore {
         pluginManager.registerEvents(new VehicleDamageListener(), this);
     }
 
+
+    private boolean pendingSave = false; // Est il en pleine save ?
     /**
      * Saves islands, users and other data to the database.
      */
     @Override
     public void saveData() {
-        getDatabaseManager().getUserTableManager().save(); // Todo ? Rework
-        getDatabaseManager().getIslandTableManager().save();
-        getDatabaseManager().getIslandInviteTableManager().save();
-        getDatabaseManager().getIslandPermissionTableManager().save();
-        getDatabaseManager().getIslandBlocksTableManager().save();
-        getDatabaseManager().getIslandSpawnersTableManager().save();
-        getDatabaseManager().getIslandBankTableManager().save();
-        getDatabaseManager().getIslandMissionTableManager().save();
-        getDatabaseManager().getIslandRewardTableManager().save();
-        getDatabaseManager().getIslandUpgradeTableManager().save();
-        getDatabaseManager().getIslandTrustedTableManager().save();
-        getDatabaseManager().getIslandBoosterTableManager().save();
-        getDatabaseManager().getIslandWarpTableManager().save();
-        getDatabaseManager().getIslandLogTableManager().save();
-        getDatabaseManager().getIslandBanTableManager().save();
-        getDatabaseManager().getIslandSettingTableManager().save();
+        if (pendingSave == false) {
+            pendingSave = true; // On ne sauvegarde plus le temps que ce n'est pas fini
+            System.out.println("save task");
+
+            System.out.println("Sauvegarde des Users");
+            getDatabaseManager().getUserTableManager().save(); // Todo ? Rework
+            System.out.println("Sauvegarde des Islands");
+            getDatabaseManager().getIslandTableManager().save();
+            System.out.println("Sauvegarde des Invites");
+            getDatabaseManager().getIslandInviteTableManager().save();
+            System.out.println("Sauvegarde des Permissions");
+            getDatabaseManager().getIslandPermissionTableManager().save();
+            System.out.println("Sauvegarde des Blocks");
+            getDatabaseManager().getIslandBlocksTableManager().save();
+            System.out.println("Sauvegarde des Spawners");
+            getDatabaseManager().getIslandSpawnersTableManager().save();
+            System.out.println("Sauvegarde des Banks");
+            getDatabaseManager().getIslandBankTableManager().save();
+            System.out.println("Sauvegarde des Missions");
+            getDatabaseManager().getIslandMissionTableManager().save();
+            System.out.println("Sauvegarde des Reward");
+            getDatabaseManager().getIslandRewardTableManager().save();
+            System.out.println("Sauvegarde des Upgrades");
+            getDatabaseManager().getIslandUpgradeTableManager().save();
+            System.out.println("Sauvegarde des Confiances");
+            getDatabaseManager().getIslandTrustedTableManager().save();
+            System.out.println("Sauvegarde des Booster");
+            getDatabaseManager().getIslandBoosterTableManager().save();
+            System.out.println("Sauvegarde des Warps");
+            getDatabaseManager().getIslandWarpTableManager().save();
+            System.out.println("Sauvegarde des Logs");
+            getDatabaseManager().getIslandLogTableManager().save();
+            System.out.println("Sauvegarde des Bans");
+            getDatabaseManager().getIslandBanTableManager().save();
+            System.out.println("Sauvegarde des Seettings");
+            getDatabaseManager().getIslandSettingTableManager().save();
+            System.out.println("Fin des sauvegardes");
+            pendingSave = false; // La prochaine sauvegarde peut se faire
+        }
+
     }
 
     public CompletableFuture<Void> saveDataPlayer(User user) {
