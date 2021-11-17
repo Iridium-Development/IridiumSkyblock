@@ -63,7 +63,7 @@ public final class Island extends DatabaseObject {
     private @NotNull Color color;
 
     // Cache resets every 0.5 seconds
-    private Cache<Double> valueCache = new Cache<>(500);
+    private final Cache<Double> valueCache = new Cache<>(500);
 
     // Cache
     private Integer size;
@@ -482,18 +482,8 @@ public final class Island extends DatabaseObject {
         setChanged(true);
     }
 
-    public void setValueCache(Cache<Double> valueCache) {
-        this.valueCache = valueCache;
-        setChanged(true);
-    }
-
     public void setSize(Integer size) {
         this.size = size;
-        setChanged(true);
-    }
-
-    private void setId(int id) {
-        this.id = id;
         setChanged(true);
     }
 }
