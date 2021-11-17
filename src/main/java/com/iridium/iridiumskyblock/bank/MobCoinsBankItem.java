@@ -3,13 +3,14 @@ package com.iridium.iridiumskyblock.bank;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.api.IslandBankDepositEvent;
+import com.iridium.iridiumskyblock.api.IslandBankWithdrawEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
 import lombok.NoArgsConstructor;
 import lynn.lace.currenciesapi.api.CurrenciesAPI;
-import org.bukkit.Material;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -25,7 +26,7 @@ public class MobCoinsBankItem extends BankItem {
      * The default constructor.
      *
      * @param defaultAmount The default withdrawal amount of this item
-     * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.BankGUI}
+     * @param item          The Item which represents this bank item in the {@link com.iridium.iridiumskyblock.gui.IslandBankGUI}
      */
     public MobCoinsBankItem(double defaultAmount, Item item) {
         super("mobcoins", "Mob Coins", defaultAmount, true, item);
@@ -53,6 +54,8 @@ public class MobCoinsBankItem extends BankItem {
                         .replace("%amount%", String.valueOf(mobcoins))
                         .replace("%type%", getDisplayName())
                 );
+                IslandBankWithdrawEvent event = new IslandBankWithdrawEvent(island.get(), user, this, amount.doubleValue());
+                Bukkit.getPluginManager().callEvent(event);
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
@@ -79,16 +82,18 @@ public class MobCoinsBankItem extends BankItem {
 
         if (island.isPresent()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
-            double mobcoins = Math.min(amount.doubleValue(), CurrenciesAPI.getInstance().get("mobcoins", player));
-            if (mobcoins > 0) {
-                islandBank.setNumber(islandBank.getNumber() + mobcoins);
-                CurrenciesAPI.getInstance().take("mobcoins", player, mobcoins);
+            double mobcoins = CurrenciesAPI.getInstance().get("mobcoins", player);
+            if (mobcoins > amount.doubleValue()) {
+                CurrenciesAPI.getInstance().take("mobcoins", player, amount.doubleValue());
+                islandBank.setNumber(islandBank.getNumber() + amount.doubleValue());
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%amount%", String.valueOf(mobcoins))
+                        .replace("%amount%", String.valueOf(amount.doubleValue()))
                         .replace("%type%", getDisplayName())
                 );
-            } else{
+                IslandBankDepositEvent event = new IslandBankDepositEvent(island.get(), user, this, amount.doubleValue());
+                Bukkit.getPluginManager().callEvent(event);
+            } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())

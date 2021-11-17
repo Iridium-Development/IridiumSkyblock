@@ -42,9 +42,11 @@ public class PlayerUtils {
 
         IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
         IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
+        IslandBank islandMobCoins = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem);
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
-        CurrenciesAPI.getInstance().take("mobcoins", player,  mobcoins);
+        //CurrenciesAPI.getInstance().take("mobcoins", player,  mobcoins);
         islandCrystals.setNumber(islandCrystals.getNumber() - crystals);
+        islandMobCoins.setNumber(islandMobCoins.getNumber() - mobcoins);
         if (islandMoney.getNumber() >= money) {
             islandMoney.setNumber(islandMoney.getNumber() - money);
         } else {
@@ -66,11 +68,12 @@ public class PlayerUtils {
     public static boolean canPurchase(@NotNull Player player, @NotNull Island island, int crystals, double money, int mobcoins) {
         IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
         IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
-        double mobcoinsBalance = CurrenciesAPI.getInstance().get("mobcoins", player);
+        IslandBank islandMobCoins = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem);
+        //double mobcoinsBalance = CurrenciesAPI.getInstance().get("mobcoins", player);
         //IslandBank islandMobCoins = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem);
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
-        return mobcoinsBalance >= mobcoins && islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money));
+        return islandMobCoins.getNumber() >= mobcoins && islandCrystals.getNumber() >= crystals && (islandMoney.getNumber() >= money || (economy != null && economy.getBalance(player) >= money));
     }
 
     /**

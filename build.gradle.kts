@@ -51,6 +51,7 @@ dependencies {
 
     compileOnly(files("../OPBlocks/lib/CurrenciesAPI.jar"))
     compileOnly(files("../OPBlocks/lib/OPCore-v1.16.jar"))
+    compileOnly(files("../OPBlocks/lib/Outposts.jar"))
 }
 
 tasks {

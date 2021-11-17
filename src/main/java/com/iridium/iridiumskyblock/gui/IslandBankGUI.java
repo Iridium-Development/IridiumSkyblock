@@ -3,8 +3,10 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.bank.MobCoinsBankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.opblocks.utils.SignContainer;
@@ -63,6 +65,11 @@ public class IslandBankGUI extends IslandGUI {
         switch (event.getClick()) {
             case LEFT:
                 player.closeInventory();
+                if(bankItem.get() instanceof MobCoinsBankItem) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " &7You can't withdraw Mob Coins from your bank!"));
+                    return;
+                }
+
                 SignContainer.openGUIFor(player, "", "^^^^^^^^^^^^^^^^", "Enter the", "withdraw amount", new SignContainer.SignGUIListener() {
                     @Override
                     public void onSignDone(Player player, String[] lines) {

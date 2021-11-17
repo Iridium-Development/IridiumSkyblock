@@ -3,11 +3,14 @@ package com.iridium.iridiumskyblock.bank;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IslandBankDepositEvent;
+import com.iridium.iridiumskyblock.api.IslandBankWithdrawEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import lombok.NoArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -51,6 +54,8 @@ public class MoneyBankItem extends BankItem {
                         .replace("%amount%", String.valueOf(money))
                         .replace("%type%", getDisplayName())
                 );
+                IslandBankWithdrawEvent event = new IslandBankWithdrawEvent(island.get(), user, this, amount.doubleValue());
+                Bukkit.getPluginManager().callEvent(event);
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
@@ -86,7 +91,9 @@ public class MoneyBankItem extends BankItem {
                         .replace("%amount%", String.valueOf(money))
                         .replace("%type%", getDisplayName())
                 );
-            }else{
+                IslandBankDepositEvent event = new IslandBankDepositEvent(island.get(), user, this, amount.doubleValue());
+                Bukkit.getPluginManager().callEvent(event);
+            } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())
