@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.database;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Cache;
+import com.iridium.iridiumskyblock.DatabaseObject;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.configs.BlockValues;
@@ -10,10 +11,8 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -31,13 +30,11 @@ import java.util.UUID;
  * Represents an Island of IridiumSkyblock.
  */
 @Getter
-@Setter
 @NoArgsConstructor
 @DatabaseTable(tableName = "islands")
-public final class Island {
+public final class Island extends DatabaseObject {
 
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
-    @Setter(AccessLevel.PRIVATE)
     private int id;
 
     @DatabaseField(columnName = "name", unique = true)
@@ -192,6 +189,7 @@ public final class Island {
     public void setHome(@NotNull Location location) {
         Location homeLocation = location.subtract(getCenter(location.getWorld()));
         this.home = homeLocation.getX() + "," + homeLocation.getY() + "," + homeLocation.getZ() + "," + homeLocation.getPitch() + "," + homeLocation.getYaw();
+        setChanged(true);
     }
 
     /**
@@ -262,6 +260,7 @@ public final class Island {
     public void setColor(@NotNull Color color) {
         this.color = color;
         IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(this);
+        setChanged(true);
     }
 
     public void setExperience(int experience) {
@@ -271,6 +270,7 @@ public final class Island {
         if (newLevel > currentLevel) {
             IridiumSkyblock.getInstance().getIslandManager().islandLevelUp(this, newLevel);
         }
+        setChanged(true);
     }
 
     /**
@@ -462,4 +462,38 @@ public final class Island {
         size = null;
     }
 
+    public void setName(String name) {
+        this.name = name;
+        setChanged(true);
+    }
+
+    public void setVisitable(boolean visitable) {
+        this.visitable = visitable;
+        setChanged(true);
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+        setChanged(true);
+    }
+
+    public void setExtraValue(double extraValue) {
+        this.extraValue = extraValue;
+        setChanged(true);
+    }
+
+    public void setValueCache(Cache<Double> valueCache) {
+        this.valueCache = valueCache;
+        setChanged(true);
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+        setChanged(true);
+    }
+
+    private void setId(int id) {
+        this.id = id;
+        setChanged(true);
+    }
 }
