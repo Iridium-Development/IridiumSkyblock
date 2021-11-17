@@ -29,8 +29,8 @@ public class IslandBankGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandBankGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().bankGUI, island);
+    public IslandBankGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().bankGUI, previousInventory, island);
     }
 
     @Override
@@ -42,7 +42,10 @@ public class IslandBankGUI extends IslandGUI {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(getIsland(), bankItem);
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", IridiumSkyblock.getInstance().getNumberFormatter().format(islandBank.getNumber())))));
         }
-        inventory.setItem(22, backItem);
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     /**
@@ -76,8 +79,10 @@ public class IslandBankGUI extends IslandGUI {
                         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + IridiumSkyblock.getInstance().getCommands().withdrawCommand.aliases.get(0) + " " + bankItem.get().getName() + " " + lines[0]));
                     }
                 });
+                IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 break;
             case RIGHT:
+                IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
                 player.closeInventory();
                 SignContainer.openGUIFor(player, "", "^^^^^^^^^^^^^^^^", "Enter the", "deposit amount", new SignContainer.SignGUIListener() {
                     @Override
@@ -86,6 +91,9 @@ public class IslandBankGUI extends IslandGUI {
                     }
                 });
                 break;
+        }
+
+        addContent(event.getInventory());
             default:
                 return;
         }

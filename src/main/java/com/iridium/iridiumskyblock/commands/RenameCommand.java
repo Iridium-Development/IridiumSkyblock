@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.api.IslandRenameEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import java.time.Duration;
@@ -66,15 +67,25 @@ public class RenameCommand extends Command {
             ));
             return false;
         }
+        
+        if (IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
+            player.sendMessage(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
+            return false;
+        }
 
-        island.get().setName(name);
+        IslandRenameEvent islandRenameEvent = new IslandRenameEvent(user, name);
+        Bukkit.getPluginManager().callEvent(islandRenameEvent);
+        if (islandRenameEvent.isCancelled()) return false;
+
+        final String finalName = islandRenameEvent.getIslandName();
+        island.get().setName(finalName);
         island.get().getMembers().forEach(member -> {
             Player islandMember = Bukkit.getPlayer(member.getUuid());
             if (islandMember != null) {
                 islandMember.sendMessage(StringUtils.color((IridiumSkyblock.getInstance().getMessages()).islandNameChanged
                         .replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)
                         .replace("%player%", player.getName())
-                        .replace("%name%", name)
+                        .replace("%name%", finalName == null ? player.getName() : finalName)
                 ));
             }
         });

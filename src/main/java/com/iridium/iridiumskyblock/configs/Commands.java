@@ -30,6 +30,7 @@ public class Commands {
     public DepositCommand depositCommand = new DepositCommand();
     public EditWarpCommand editWarpCommand = new EditWarpCommand();
     public ExpelCommand expelCommand = new ExpelCommand();
+    public ExtraValueCommand extraValueCommand = new ExtraValueCommand();
     public FlyCommand flyCommand = new FlyCommand();
     public HelpCommand helpCommand = new HelpCommand();
     public HomeCommand homeCommand = new HomeCommand();
@@ -55,6 +56,7 @@ public class Commands {
     public SetWarpCommand setWarpCommand = new SetWarpCommand();
     public SettingsCommand settingsCommand = new SettingsCommand();
     //public ShopCommand shopCommand = new ShopCommand();
+    public SpyCommand spyCommand = new SpyCommand();
     public TopCommand topCommand = new TopCommand();
     //public TransferCommand transferCommand = new TransferCommand();
     public TrustCommand trustCommand = new TrustCommand();

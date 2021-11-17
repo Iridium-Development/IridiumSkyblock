@@ -13,15 +13,13 @@ import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
-import com.iridium.iridiumskyblock.managers.DatabaseManager;
-import com.iridium.iridiumskyblock.managers.IslandManager;
-import com.iridium.iridiumskyblock.managers.SchematicManager;
-import com.iridium.iridiumskyblock.managers.UserManager;
+import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
 import com.iridium.iridiumskyblock.placeholders.MVDWPlaceholderAPI;
-import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import com.iridium.iridiumskyblock.shop.ShopManager;
-import com.iridium.iridiumskyblock.support.*;
+import com.iridium.iridiumskyblock.support.RoseStackerSupport;
+import com.iridium.iridiumskyblock.support.StackerSupport;
+import com.iridium.iridiumskyblock.support.WildStackerSupport;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
 import lombok.Getter;
@@ -33,8 +31,10 @@ import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -62,6 +62,7 @@ public class IridiumSkyblock extends IridiumCore {
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
     private IslandManager islandManager;
+    private MissionManager missionManager;
     private UserManager userManager;
     private SchematicManager schematicManager;
     private ShopManager shopManager;
@@ -93,13 +94,26 @@ public class IridiumSkyblock extends IridiumCore {
     private Map<String, Booster> boosterList;
 
     private Economy economy;
-    private SpawnerStackerSupport spawnerStackerSupport;
-    private BlockStackerSupport blockStackerSupport;
+
+    private StackerSupport stackerSupport;
 
     /**
      * The default constructor.
      */
     public IridiumSkyblock() {
+        instance = this;
+    }
+
+    /**
+     * The unit test constructor.
+     *
+     * @param loader      The JavaPluginLoader
+     * @param description The PluginDescriptionFile
+     * @param dataFolder  The data folder File
+     * @param file        A file
+     */
+    public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
         instance = this;
     }
 
@@ -155,6 +169,8 @@ public class IridiumSkyblock extends IridiumCore {
             return;
         }
 
+        this.missionManager = new MissionManager();
+
         this.shopManager = new ShopManager();
         shopManager.reloadCategories();
 
@@ -163,11 +179,10 @@ public class IridiumSkyblock extends IridiumCore {
 
         this.schematicManager = new SchematicManager();
 
-        this.spawnerStackerSupport = setupSpawnerSupport();
-        this.blockStackerSupport = setupBlockStackerSupport();
-
         // Initialize Vault economy support
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
+
+        this.stackerSupport = registerBlockStackerSupport();
 
         registerPlaceholderSupport();
 
@@ -233,8 +248,6 @@ public class IridiumSkyblock extends IridiumCore {
                     .checkNow();
         }
 
-        DataConverter.deleteDuplicateRecords();
-
         getLogger().info("----------------------------------------");
         getLogger().info("");
         getLogger().info(getDescription().getName() + " Enabled!");
@@ -256,6 +269,14 @@ public class IridiumSkyblock extends IridiumCore {
                 getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
             }
         }
+    }
+
+    private StackerSupport registerBlockStackerSupport() {
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
+        return island -> {
+            // Do nothing
+        };
     }
 
     /**
@@ -367,36 +388,6 @@ public class IridiumSkyblock extends IridiumCore {
             return null;
         }
         return economyProvider.getProvider();
-    }
-
-    /**
-     * Gets the SpawnerSupport Object
-     *
-     * @return The Spawner Support Object
-     */
-    private SpawnerStackerSupport setupSpawnerSupport() {
-        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker"))
-            return new RoseStackerSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker"))
-            return new WildStackerSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("AdvancedSpawners"))
-            return new AdvancedSpawnersSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("UltimateStacker"))
-            return new UltimateStackerSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("EpicSpawners"))
-            return new EpicSpawnersSupport();
-        return spawner -> 1;
-    }
-
-    /**
-     * Gets the BlockStacker Object
-     *
-     * @return The BlockStacker Support Object
-     */
-    private BlockStackerSupport setupBlockStackerSupport() {
-        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker"))
-            return new RoseStackerSupport();
-        return block -> Collections.emptyList();
     }
 
     /**
@@ -548,7 +539,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (commandManager != null)
             commandManager.reloadCommands();
 
-        WorldEdit.clearClipBoardCache();
+        if (schematicManager != null) schematicManager.schematicPaster.clearCache();
 
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);

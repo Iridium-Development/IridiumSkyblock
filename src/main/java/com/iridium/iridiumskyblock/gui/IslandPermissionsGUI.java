@@ -32,8 +32,8 @@ public class IslandPermissionsGUI extends IslandGUI {
      * @param island     The Island this GUI belongs to
      * @param islandRank The rank which is being configured
      */
-    public IslandPermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank, int page) {
-        super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI, island);
+    public IslandPermissionsGUI(@NotNull Island island, @NotNull IslandRank islandRank, Inventory previousInventory, int page) {
+        super(IridiumSkyblock.getInstance().getInventories().islandPermissionsGUI, previousInventory, island);
         this.islandRank = islandRank;
         this.page = page;
     }
@@ -51,7 +51,9 @@ public class IslandPermissionsGUI extends IslandGUI {
             inventory.setItem(permission.getValue().getItem().slot, ItemStackUtils.makeItem(permission.getValue().getItem(), Collections.singletonList(new Placeholder("permission", allowed ? IridiumSkyblock.getInstance().getPermissions().allowed : IridiumSkyblock.getInstance().getPermissions().denied))));
         }
 
-        inventory.setItem(49, backItem);
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     /**
@@ -62,11 +64,6 @@ public class IslandPermissionsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getSlot() == 49) {
-            event.getWhoClicked().openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
-            return;
-        }
-
         for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
             if (permission.getValue().getItem().slot != event.getSlot()) continue;
             if (permission.getValue().getPage() != page) continue;

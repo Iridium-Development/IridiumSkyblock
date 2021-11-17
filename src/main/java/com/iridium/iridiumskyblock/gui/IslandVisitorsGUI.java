@@ -7,7 +7,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -31,7 +30,7 @@ public class IslandVisitorsGUI extends IslandGUI {
      * @param island The Island this GUI belongs to
      */
     public IslandVisitorsGUI(int page, @NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, island);
+        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, null, island);
         this.page = page;
         this.visitors = new ArrayList<>();
     }
@@ -56,7 +55,6 @@ public class IslandVisitorsGUI extends IslandGUI {
                     List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build();
                     inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitorsGUI.item, placeholderList));
                 });
-
     }
 
     /**
@@ -80,13 +78,11 @@ public class IslandVisitorsGUI extends IslandGUI {
         }
         if (visitors.size() > event.getSlot()) {
             User visitor = visitors.get(event.getSlot());
-            String command = "";
             if (event.isLeftClick()) {
-                command = IridiumSkyblock.getInstance().getCommands().expelCommand.aliases.get(0);
+                IridiumSkyblock.getInstance().getCommands().expelCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
             } else if (event.isRightClick()) {
-                command = IridiumSkyblock.getInstance().getCommands().banCommand.aliases.get(0);
+                IridiumSkyblock.getInstance().getCommands().banCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
             }
-            Bukkit.getServer().dispatchCommand(event.getWhoClicked(), "is " + command + " " + visitor.getName());
             addContent(event.getInventory());
         }
     }

@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.placeholders.Placeholders;
@@ -28,6 +29,19 @@ public class PlayerChatListener implements Listener {
                 if (recipient != null) {
                     recipient.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().islandMemberChat, new PlaceholderBuilder().applyIslandPlaceholders(island.get()).build())
                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%player%", event.getPlayer().getName())
+                            .replace("%message%", event.getMessage()))
+                    );
+                }
+            }
+
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                User onlineUser = IridiumSkyblockAPI.getInstance().getUser(player);
+
+                if (onlineUser.isIslandChatSpying()) {
+                    player.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().islandChatSpyMessage, new PlaceholderBuilder().applyIslandPlaceholders(island.get()).build())
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%island%", island.get().getName())
                             .replace("%player%", event.getPlayer().getName())
                             .replace("%message%", event.getMessage()))
                     );

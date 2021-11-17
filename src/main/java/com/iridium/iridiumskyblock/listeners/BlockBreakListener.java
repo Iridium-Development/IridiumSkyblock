@@ -7,11 +7,15 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.ItemFrame;
+import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 
 import java.util.Optional;
 
@@ -57,12 +61,34 @@ public class BlockBreakListener implements Listener {
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
         island.ifPresent(value -> {
-            IridiumSkyblock.getInstance().getIslandManager().incrementMission(value, "MINE:" + material.name(), 1);
+            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
+
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
             if (islandBooster.isActive()) {
                 event.setExpToDrop(event.getExpToDrop() * 2);
             }
         });
+    }
+
+ @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
+        if (event.getEntity() instanceof ItemFrame || event.getEntity() instanceof Painting) {
+            Player remover = null;
+            if (event.getRemover() instanceof Projectile && ((Projectile) event.getRemover()).getShooter() instanceof Player) {
+                remover = (Player) ((Projectile) event.getRemover()).getShooter();
+            } else if (event.getRemover() instanceof Player) {
+                remover = (Player) event.getRemover();
+            }
+            if (remover == null) return;
+            ItemFrame itemFrame = (ItemFrame) event.getEntity();
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(remover);
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame.getLocation());
+            if (!island.isPresent()) return;
+            if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
+                event.setCancelled(true);
+                remover.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+        }
     }
 
 }

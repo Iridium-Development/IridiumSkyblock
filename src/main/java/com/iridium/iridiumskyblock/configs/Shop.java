@@ -800,6 +800,9 @@ public class Shop {
     public String notPurchasableLore = "&cThis item cannot be purchased!";
     public String notSellableLore = "&cThis item cannot be sold!";
 
+    public boolean abbreviatePrices = true;
+    public boolean dropItemWhenFull = false;
+
     public int overviewSize = 4 * 9;
 
     public XSound failSound = XSound.BLOCK_ANVIL_LAND;

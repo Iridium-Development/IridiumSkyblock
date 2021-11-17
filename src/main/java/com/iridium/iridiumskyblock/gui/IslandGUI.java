@@ -26,8 +26,8 @@ public abstract class IslandGUI extends GUI {
      * @param noItemGUI The NoItemGUI of this GUI
      * @param island    The island of this GUI. Can be null
      */
-    public IslandGUI(@NotNull NoItemGUI noItemGUI, @NotNull Island island) {
-        super(noItemGUI);
+    public IslandGUI(@NotNull NoItemGUI noItemGUI, Inventory previousInventory, @NotNull Island island) {
+        super(noItemGUI, previousInventory);
         this.island = island;
     }
 

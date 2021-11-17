@@ -17,7 +17,9 @@ public class EntitySpawnListener implements Listener {
     public void onEntitySpawn(EntitySpawnEvent event) {
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation()).ifPresent(island -> {
             IslandSetting mobSpawnSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.MOB_SPAWN);
-            if (!mobSpawnSetting.getBooleanValue() && event.getEntity() instanceof LivingEntity) {
+
+            // Exception for ArmorStands because they're a LivingEntity
+            if (!mobSpawnSetting.getBooleanValue() && event.getEntity() instanceof LivingEntity && event.getEntityType() != EntityType.ARMOR_STAND) {
                 event.setCancelled(true);
                 return;
             }

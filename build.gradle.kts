@@ -5,10 +5,11 @@ plugins {
 }
 
 group = "com.iridium"
-version = "3.1.3"
+version = "3.1.9"
 description = "IridiumSkyblock"
 
 repositories {
+    mavenCentral()
     maven("https://repo.mvdw-software.com/content/groups/public/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
@@ -19,19 +20,20 @@ repositories {
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.jeff-media.de/maven2/")
 
+    maven("https://hub.jeff-media.com/nexus/repository/jeff-media-public/")
 }
 
 dependencies {
     // Dependencies that we want to shade in
     implementation("org.jetbrains:annotations:22.0.0")
-    implementation("com.iridium:IridiumCore:1.3.2")
+    implementation("com.iridium:IridiumCore:1.3.9")
     implementation("org.bstats:bstats-bukkit:2.2.1")
-    implementation("com.github.j256:ormlite-core:master-SNAPSHOT")
-    implementation("com.j256.ormlite:ormlite-jdbc:5.6")
-    implementation("de.jeff_media:SpigotUpdateChecker:1.2.4")
+    implementation("com.j256.ormlite:ormlite-core:5.7")
+    implementation("com.j256.ormlite:ormlite-jdbc:5.7")
+    implementation("de.jeff_media:SpigotUpdateChecker:1.3.0")
 
     // Other dependencies that are not required or already available at runtime
-    compileOnly("org.projectlombok:lombok:1.18.20")
+    compileOnly("org.projectlombok:lombok:1.18.22")
     compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
@@ -47,11 +49,11 @@ dependencies {
     compileOnly("com.sk89q:WorldEdit:7.2.6")
 
     // Enable lombok annotation processing
-    annotationProcessor("org.projectlombok:lombok:1.18.20")
 
     compileOnly(files("../OPBlocks/lib/CurrenciesAPI.jar"))
     compileOnly(files("../OPBlocks/lib/OPCore-v1.16.jar"))
     compileOnly(files("../OPBlocks/lib/Outposts.jar"))
+    annotationProcessor("org.projectlombok:lombok:1.18.22")
 }
 
 tasks {
@@ -70,7 +72,7 @@ tasks {
         // Relocate dependencies
         relocate("com.j256.ormlite")
         relocate("org.bstats")
-        relocate("de.jeff_media")
+        relocate("de.jeff_media.updatechecker")
 
         // Remove unnecessary files from the jar
         minimize()

@@ -25,7 +25,7 @@ import java.util.Set;
 
 public class PlayerInteractListener implements Listener {
 
-    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(100));
+    private final CooldownProvider<Player> cooldownProvider = CooldownProvider.newInstance(Duration.ofMillis(500));
     private final Set<XMaterial> redstoneMaterials = new HashSet<>(Arrays.asList(
             XMaterial.REPEATER,
             XMaterial.COMPARATOR,

@@ -7,14 +7,15 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.ShopCategoryGUI;
 import com.iridium.iridiumskyblock.gui.ShopOverviewGUI;
 import com.iridium.iridiumskyblock.shop.ShopCategory;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which opens the island shop.
@@ -46,7 +47,7 @@ public class ShopCommand extends Command {
         }
 
         if (arguments.length == 1) {
-            player.openInventory(new ShopOverviewGUI().getInventory());
+            player.openInventory(new ShopOverviewGUI(player.getOpenInventory().getTopInventory()).getInventory());
         } else {
             String[] commandArguments = Arrays.copyOfRange(arguments, 1, arguments.length);
             String categoryName = String.join(" ", commandArguments);
@@ -57,7 +58,7 @@ public class ShopCommand extends Command {
                 return false;
             }
 
-            player.openInventory(new ShopCategoryGUI(category.get()).getInventory());
+            player.openInventory(new ShopCategoryGUI(category.get(), player.getOpenInventory().getTopInventory()).getInventory());
         }
 
         return true;

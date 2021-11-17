@@ -42,7 +42,7 @@ public class LogsCommand extends Command {
             return false;
         }
 
-        player.openInventory(new IslandLogsGUI(island.get()).getInventory());
+        player.openInventory(new IslandLogsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
         return true;
     }
 

@@ -9,15 +9,19 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Called before a user promotes another user.
+ */
 @Getter
 public class UserPromoteEvent extends Event implements Cancellable {
+
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
-    private final Island island;
-    private final User user;
-    private final IslandRank newRank;
+    @NotNull private final Island island;
+    @NotNull private final User user;
+    @NotNull private final IslandRank newRank;
 
-    public UserPromoteEvent(Island island, User user, IslandRank newRank) {
+    public UserPromoteEvent(@NotNull Island island, @NotNull User user, @NotNull IslandRank newRank) {
         this.island = island;
         this.user = user;
         this.newRank = newRank;
@@ -34,12 +38,8 @@ public class UserPromoteEvent extends Event implements Cancellable {
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
 }

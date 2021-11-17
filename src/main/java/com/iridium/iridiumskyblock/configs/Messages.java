@@ -110,12 +110,6 @@ public class Messages {
     public String cannotChangeSettings = "%prefix% &7You cannot change the Island Settings.";
     public String nowBypassing = "%prefix% &7You are now bypassing Island restrictions.";
     public String noLongerBypassing = "%prefix% &7You are no longer bypassing Island restrictions.";
-    public String setSchematicPosition = "%prefix% &7The position has been set.";
-    public String addedSchematic = "%prefix% &7Schematic has been added.";
-    public String invalidPositionCommandSyntax = "%prefix% &7Please use /is position <1/2>.";
-    public String invalidSaveSchematicCommandSyntax = "%prefix% &7Please use /is saveSchematic <Name>.";
-    public String invalidSchematicPositions = "%prefix% &7You haven't set valid schematic positions with /is position.";
-    public String missingSchematicConfirmation = "%prefix% &7A schematic by that name already exists, to overwrite it use /is save <name> confirm.";
     public String noSuchBankItem = "%prefix% &7That bank item doesn't exist.";
     public String islandBorderChanged = "%prefix% &7%player% has changed your Island border to %color%.";
     public String notAColor = "%prefix% &7That is not a valid color.";
@@ -123,6 +117,8 @@ public class Messages {
     public String gaveBank = "%prefix% &7You gave %player% %amount% %item%.";
     public String setBank = "%prefix% &7You set %player%'s %amount% to %item%.";
     public String removedBank = "%prefix% &7You took %amount% %item%'s from %player%.";
+    public String extraValueInfo = "%prefix% &7The extra value of %player% is %amount%.";
+    public String extraValueSet = "%prefix% &7You have set %player%'s island extra value to %amount%.";
     public String invalidMissionType = "%prefix% &7That is not a valid mission type.";
     public String maxLevelReached = "%prefix% &7Maximum level reached.";
     public String cannotAfford = "%prefix% &7You cannot afford this.";
@@ -177,6 +173,9 @@ public class Messages {
     public String islandLevelUp = "%prefix% &7Your Island has reached level %level%!";
     public String islandChatEnabled = "%prefix% &7Island Chat Enabled!";
     public String islandChatDisabled = "%prefix% &7Island Chat Disabled!";
+    public String islandChatSpyEnabled = "%prefix% &7You can now see the Island chats of other Islands!";
+    public String islandChatSpyDisabled = "%prefix% &7You no longer see the Island chats of other Islands!";
+    public String islandChatSpyMessage = "%prefix% &7[%island%] %player% &8» &f%message%";
     public String invalidBiome = "%prefix% &7That Biome doesn't exist.";
     public String changedBiome = "%prefix% &7You have changed your island biome to %biome%!";
     public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
@@ -193,8 +192,10 @@ public class Messages {
     public String memberRankDisplayName = "Member";
     public String visitorRankDisplayName = "Visitor";
 
+    public String infoTitle = "&8[ &b&lIsland info for %island_name% &8]";
+    public String infoFiller = "&8&m ";
+
     public List<String> infoCommand = Arrays.asList(
-            "&8===== &b&lIsland Info for %player% &r&8=====",
             "<GRADIENT:09C6F9>Island Name</GRADIENT:045DE9>&r: &7%island_name%",
             "<GRADIENT:09C6F9>Island Owner</GRADIENT:045DE9>&r: &7%owner%",
             "<GRADIENT:09C6F9>Island Members</GRADIENT:045DE9>&r: &7%members%",
@@ -204,7 +205,7 @@ public class Messages {
     );
 
     public List<String> commandHelpMessage = Arrays.asList(
-        "&7Description: &b%description%",
-        "&7Syntax: &b%syntax% %subcommands%");
+            "&7Description: &b%description%",
+            "&7Syntax: &b%syntax% %subcommands%");
 
 }

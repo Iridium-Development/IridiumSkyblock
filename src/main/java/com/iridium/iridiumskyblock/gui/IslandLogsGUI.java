@@ -42,8 +42,8 @@ public class IslandLogsGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandLogsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().logsGUI, island);
+    public IslandLogsGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().logsGUI, previousInventory, island);
     }
 
     @Override
@@ -60,6 +60,10 @@ public class IslandLogsGUI extends IslandGUI {
         setItemStack(inventory, logInventoryConfig.IslandBoosters, boostersPage, LogAction.BOOSTER_PURCHASE);
         setItemStack(inventory, logInventoryConfig.IslandUpgrades, upgradesPage, LogAction.UPGRADE_PURCHASE);
         setItemStack(inventory, logInventoryConfig.IslandRewards, rewardsPage, LogAction.REWARD_REDEEMED);
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     public void setItemStack(Inventory inventory, Item item, int page, LogAction... logActions) {
@@ -82,9 +86,9 @@ public class IslandLogsGUI extends IslandGUI {
                 int seconds = (int) Math.floor((time - (days * 86400) - (hours * 3600)) % 60.0D);
 
                 lore.add(StringUtils.color(getLore(islandLog.getLogAction())
-                        .replace("%type%", islandLog.getData())
-                        .replace("%amount%", String.valueOf(islandLog.getAmount()))
-                        .replace("%user%", islandLog.getUser().getName()))
+                                .replace("%type%", islandLog.getData())
+                                .replace("%amount%", String.valueOf(islandLog.getAmount()))
+                                .replace("%user%", islandLog.getUser().getName()))
                         .replace("%target%", islandLog.getTarget().getName())
                         .replace("%seconds%", String.valueOf(seconds))
                         .replace("%minutes%", String.valueOf(minutes))
@@ -101,10 +105,10 @@ public class IslandLogsGUI extends IslandGUI {
         int maxPage = (int) Math.ceil(islandLogs.size() / 10.00);
 
         itemMeta.setLore(lore.stream()
-            .map(loreLine -> loreLine
+                .map(loreLine -> loreLine
                         .replace("%current_page%", String.valueOf(page))
                         .replace("%max_page%", String.valueOf(maxPage > 0 ? maxPage : 1))
-            ).collect(Collectors.toList()));
+                ).collect(Collectors.toList()));
         itemStack.setItemMeta(itemMeta);
         inventory.setItem(item.slot, itemStack);
     }

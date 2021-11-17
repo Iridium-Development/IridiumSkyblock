@@ -52,7 +52,7 @@ public class UpgradesCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new IslandUpgradesGUI(island.get()).getInventory());
+            player.openInventory(new IslandUpgradesGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
 

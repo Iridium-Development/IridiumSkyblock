@@ -6,7 +6,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -78,8 +77,7 @@ public class VisitGUI extends GUI {
             int index = ((event.getInventory().getSize() - 9) * (page - 1)) + event.getSlot();
             if (islands.size() > index) {
                 Island island = islands.get(index);
-                String command = IridiumSkyblock.getInstance().getCommands().visitCommand.aliases.get(0);
-                Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + island.getOwner().getName());
+                IridiumSkyblock.getInstance().getCommands().visitCommand.execute(event.getWhoClicked(), new String[]{"", island.getOwner().getName()});
                 event.getWhoClicked().closeInventory();
             }
         }

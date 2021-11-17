@@ -7,16 +7,13 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.time.Duration;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Command which changes the Island's Border Color.
@@ -54,7 +51,7 @@ public class BorderCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandBorder).getInventory());
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandBorder, player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
 

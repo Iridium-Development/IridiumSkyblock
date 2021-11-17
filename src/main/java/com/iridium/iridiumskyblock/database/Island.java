@@ -40,8 +40,8 @@ public final class Island {
     @Setter(AccessLevel.PRIVATE)
     private int id;
 
-    @DatabaseField(columnName = "name", canBeNull = false, unique = true)
-    private @NotNull String name;
+    @DatabaseField(columnName = "name", unique = true)
+    private String name;
 
     /*
     The islands home relative to the island center as a string.
@@ -59,11 +59,14 @@ public final class Island {
     @DatabaseField(columnName = "experience")
     private int experience;
 
+    @DatabaseField(columnName = "extra_value")
+    private double extraValue;
+
     @DatabaseField(columnName = "color", canBeNull = false)
     private @NotNull Color color;
 
-    // Cache resets every 5 seconds
-    private Cache<Double> valueCache = new Cache<>(5000);
+    // Cache resets every 0.5 seconds
+    private Cache<Double> valueCache = new Cache<>(500);
 
     @DatabaseField(columnName = "size")
     private int sizeAddon;
@@ -74,7 +77,8 @@ public final class Island {
     /**
      * The default constructor.
      *
-     * @param name The name of this island
+     * @param name            The name of this island
+     * @param schematicConfig The schematic of the island
      */
     public Island(@NotNull String name, @NotNull Schematics.SchematicConfig schematicConfig) {
         this.name = name;
@@ -89,6 +93,10 @@ public final class Island {
      */
     public Island(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name == null ? getOwner().getName() : name;
     }
 
     /**
@@ -205,7 +213,7 @@ public final class Island {
      */
     public double getValue() {
         return valueCache.getCache(() -> {
-            double value = 0;
+            double value = extraValue;
 
             List<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(this);
             List<IslandSpawners> islandSpawners = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(this);

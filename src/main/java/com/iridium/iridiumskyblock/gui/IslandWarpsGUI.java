@@ -6,7 +6,6 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -25,8 +24,8 @@ public class IslandWarpsGUI extends IslandGUI {
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandWarpsGUI(@NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, island);
+    public IslandWarpsGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().warpsGUI, previousInventory, island);
     }
 
     @Override
@@ -49,6 +48,10 @@ public class IslandWarpsGUI extends IslandGUI {
             if (material != null) itemStack.setType(material);
             inventory.setItem(slot, itemStack);
         }
+
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
+        }
     }
 
     /**
@@ -64,17 +67,14 @@ public class IslandWarpsGUI extends IslandGUI {
         AtomicInteger atomicInteger = new AtomicInteger(1);
         for (IslandWarp islandWarp : islandWarps) {
             if (IridiumSkyblock.getInstance().getConfiguration().islandWarpSlots.get(atomicInteger.getAndIncrement()) == event.getSlot()) {
-                String command = null;
                 switch (event.getClick()) {
                     case LEFT:
-                        command = IridiumSkyblock.getInstance().getCommands().warpsCommand.aliases.get(0);
+                        IridiumSkyblock.getInstance().getCommands().warpsCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
                         break;
                     case RIGHT:
-                        command = IridiumSkyblock.getInstance().getCommands().deleteWarpCommand.aliases.get(0);
+                        IridiumSkyblock.getInstance().getCommands().deleteWarpCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
                         break;
                 }
-                if (command != null)
-                    Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + islandWarp.getName());
                 addContent(event.getInventory());
                 return;
             }

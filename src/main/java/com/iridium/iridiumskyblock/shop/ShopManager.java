@@ -4,6 +4,8 @@ import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.api.ShopPurchaseEvent;
+import com.iridium.iridiumskyblock.api.ShopSellEvent;
 import com.iridium.iridiumskyblock.configs.Shop.ShopCategoryConfig;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
@@ -16,10 +18,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Handles the shop.
@@ -108,9 +107,13 @@ public class ShopManager {
             return;
         }
 
+        ShopPurchaseEvent shopPurchaseEvent = new ShopPurchaseEvent(player, shopItem, amount);
+        Bukkit.getPluginManager().callEvent(shopPurchaseEvent);
+        if (shopPurchaseEvent.isCancelled()) return;
+
         if (shopItem.command == null) {
             // Add item to the player Inventory
-            if (!InventoryUtils.hasEmptySlot(player.getInventory())) {
+            if (!IridiumSkyblock.getInstance().getShop().dropItemWhenFull && !InventoryUtils.hasEmptySlot(player.getInventory())) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inventoryFull.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return;
             }
@@ -123,7 +126,10 @@ public class ShopManager {
                 itemStack.setItemMeta(itemMeta);
             }
 
-            player.getInventory().addItem(itemStack);
+            for (ItemStack dropItem : player.getInventory().addItem(itemStack).values()) {
+                player.getWorld().dropItem(player.getEyeLocation(), dropItem);
+
+            }
         } else {
             // Run the command
             String command = shopItem.command
@@ -168,6 +174,10 @@ public class ShopManager {
         }
 
         int soldAmount = Math.min(inventoryAmount, amount);
+        ShopSellEvent shopSellEvent = new ShopSellEvent(player, shopItem, soldAmount);
+        Bukkit.getPluginManager().callEvent(shopSellEvent);
+        if (shopSellEvent.isCancelled()) return;
+
         InventoryUtils.removeAmount(player.getInventory(), shopItem.type, soldAmount);
         giveReward(player, shopItem, soldAmount);
         IridiumSkyblock.getInstance().getShop().successSound.play(player);
