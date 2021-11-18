@@ -343,6 +343,10 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void saveData() {
+        if (true) {
+            saveDataIridium(true);
+            return;
+        }
         if (Bukkit.isPrimaryThread() == true) {
             isEnd = true;
             saveDataIridium(false);
