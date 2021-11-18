@@ -245,6 +245,10 @@ public class IslandManager {
 
             IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
 
+            // Add Logs Create
+            IslandLog islandLog = new IslandLog(island, LogAction.CREATE_ISLAND, user, null, 0, "");
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
+
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
 
