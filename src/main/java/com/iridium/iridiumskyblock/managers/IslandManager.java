@@ -309,6 +309,9 @@ public class IslandManager {
                     }
                     if (false) IridiumSkyblock.getInstance().saveDataPlayer(user1).join(); // Docta new save
                 }
+
+                IslandLog log = new IslandLog(island, LogAction.REGEN_ISLAND, user, null, 0, "");
+                IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(log);
             }
         });
 
