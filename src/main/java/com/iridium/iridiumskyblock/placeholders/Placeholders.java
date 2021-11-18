@@ -6,19 +6,17 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Placeholders {
 
@@ -180,8 +178,8 @@ public class Placeholders {
         HashMap<String, Placeholder> hashmap = new HashMap<>();
         List<Island> topIslands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
         for (int i = 1; i <= 20; i++) {
-            int finalI = i;
-            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> finalI < topIslands.size() ? Optional.of(topIslands.get(finalI)) : Optional.empty()));
+            Optional<Island> island = Optional.ofNullable(topIslands.size() > i ? topIslands.get(i) : null);
+            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> island));
         }
         return hashmap;
     }
