@@ -358,7 +358,7 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     private void saveDataIridium(Boolean isAsync) {
-        System.out.println("Démarrage de la sauvegarde en " + (isAsync ? "Async" : "Sync"));
+        // System.out.println("Démarrage de la sauvegarde en " + (isAsync ? "Async" : "Sync"));
         if (isAsync && isEnd) {
             return;
         }
