@@ -84,23 +84,23 @@ public class InfoCommand extends Command {
             members = IridiumSkyblock.getInstance().getMessages().none;
         }
 
-        String info = StringUtils.color(IridiumSkyblock.getInstance().getMessages().infoTitle);
-        if (sender.hasPermission("iridiumskyblock.command.allinfo")) {
-            info = info + "<GRADIENT:09C6F9>Island ID</GRADIENT:045DE9>&r: &7%IslandID%";
-        }
-        sender.sendMessage(StringUtils.getCenteredMessage(StringUtils.color(info
+        sender.sendMessage(StringUtils.getCenteredMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().infoTitle
                 .replace("%player%", requestedUser.getName())
                 .replace("%island_name%", island.getName())
                 .replace("%owner%", island.getOwner().getName())
                 .replace("%members%", members)
                 .replace("%level%", String.valueOf(island.getLevel()))
                 .replace("%value%", String.valueOf(island.getValue()))
-                .replace("%IslandID%", String.valueOf(island.getId()))
                 .replace("%visitable%", island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().visitable : IridiumSkyblock.getInstance().getMessages().notVisitable)
-
         ), IridiumSkyblock.getInstance().getMessages().infoFiller));
 
-        for (String infoLine : IridiumSkyblock.getInstance().getMessages().infoCommand) {
+        List<String> infoLines = IridiumSkyblock.getInstance().getMessages().infoCommand;
+
+        if (sender.hasPermission("iridiumskyblock.command.info.all")) {
+            infoLines.add("<GRADIENT:09C6F9>Island ID</GRADIENT:045DE9>&r: &7%IslandID%");
+        }
+
+        for (String infoLine : infoLines) {
             sender.sendMessage(StringUtils.color(infoLine
                     .replace("%player%", requestedUser.getName())
                     .replace("%island_name%", island.getName())
