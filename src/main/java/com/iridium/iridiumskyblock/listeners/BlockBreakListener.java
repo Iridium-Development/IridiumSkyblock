@@ -7,6 +7,8 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
@@ -61,7 +63,14 @@ public class BlockBreakListener implements Listener {
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
         island.ifPresent(value -> {
-            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
+            BlockData blockData = event.getBlock().getBlockData();
+            if (blockData instanceof Ageable ageable) {
+                if (ageable.getAge() == ageable.getMaximumAge()) {
+                    IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
+                }
+            } else {
+                IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
+            }
 
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
             if (islandBooster.isActive()) {
