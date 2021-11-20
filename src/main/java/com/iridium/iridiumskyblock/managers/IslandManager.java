@@ -826,8 +826,10 @@ public class IslandManager {
                 .filter(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getMissionType() == Mission.MissionType.DAILY)
                 .filter(mission -> islandMissions.stream().noneMatch(m -> m.equals(mission)))
                 .collect(Collectors.toList());
+
         String key = availableMissions.get(random.nextInt(availableMissions.size()));
         Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
+
         for (int i = 0; i < mission.getMissions().size(); i++) {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().addEntry(new IslandMission(island, mission, key, i));
         }
