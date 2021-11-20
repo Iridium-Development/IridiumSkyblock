@@ -39,6 +39,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Class which handles islands and their worlds.
@@ -808,6 +809,28 @@ public class IslandManager {
         }
     }
 
+    private String getDailyIslandMissions(@NotNull Island island, int index) {
+        List<String> islandMissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream()
+                .filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY)
+                .map(IslandMission::getMissionName)
+                .distinct()
+                .collect(Collectors.toList());
+        if (islandMissions.size() > index) {
+            return islandMissions.get(index);
+        }
+        Random random = new Random();
+        List<String> missionList = IridiumSkyblock.getInstance().getMissionsList().keySet().stream()
+                .filter(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getMissionType() == Mission.MissionType.DAILY)
+                .filter(mission -> islandMissions.stream().noneMatch(m -> m.equals(mission)))
+                .collect(Collectors.toList());
+        String key = missionList.get(random.nextInt(missionList.size()));
+        Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
+        for (int i = 0; i < mission.getMissions().size(); i++) {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().addEntry(new IslandMission(island, mission, key, i));
+        }
+        return key;
+    }
+
     /**
      * Gets the Islands daily missions.
      *
@@ -816,32 +839,12 @@ public class IslandManager {
      */
     public synchronized Map<String, Mission> getDailyIslandMissions(@NotNull Island island) {
         Map<String, Mission> missions = new HashMap<>();
-        List<IslandMission> islandMissions =
-                IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream().filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList());
-
-        if (islandMissions.isEmpty()) {
-            Random random = new Random();
-            List<String> missionList = IridiumSkyblock.getInstance().getMissionsList().keySet().stream().filter(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getMissionType() == Mission.MissionType.DAILY).collect(Collectors.toList());
-            for (int i = 0; i < IridiumSkyblock.getInstance().getMissions().dailySlots.size(); i++) {
-                String key = missionList.get(random.nextInt(missionList.size()));
-                Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
-                missionList.remove(key);
-
-                for (int j = 0; j < mission.getMissions().size(); j++) {
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().addEntry(new IslandMission(island, mission, key, j));
-                }
-
-                missions.put(key, mission);
-            }
-        } else {
-            islandMissions.forEach(islandMission -> {
-                Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(islandMission.getMissionName());
-                if (mission != null) {
-                    missions.put(islandMission.getMissionName(), mission);
-                }
-            });
-        }
-
+        IntStream.range(0, IridiumSkyblock.getInstance().getMissions().dailySlots.size())
+                .boxed()
+                .map(i -> getDailyIslandMissions(island, i))
+                .forEach(mission ->
+                        missions.put(mission, IridiumSkyblock.getInstance().getMissionsList().get(mission))
+                );
         return missions;
     }
 
