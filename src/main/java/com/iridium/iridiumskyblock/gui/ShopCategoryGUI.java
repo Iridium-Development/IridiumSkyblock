@@ -63,8 +63,9 @@ public class ShopCategoryGUI extends GUI {
 
         for (ShopItem item : category.items) {
             ItemStack itemStack = item.type.parseItem();
+            if (itemStack == null) continue;
             ItemMeta itemMeta = itemStack.getItemMeta();
-
+            if (itemMeta == null) continue;
             itemStack.setAmount(item.defaultAmount);
             itemMeta.setDisplayName(StringUtils.color(item.name));
 
@@ -93,7 +94,7 @@ public class ShopCategoryGUI extends GUI {
                 .filter(item -> item.slot == event.getSlot())
                 .findAny();
 
-        if (!clickedItem.isPresent()) {
+        if (clickedItem.isEmpty()) {
             return;
         }
 

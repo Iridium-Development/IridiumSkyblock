@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandMission;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -59,13 +60,15 @@ public class IslandMissionsGUI extends IslandGUI {
             for (Map.Entry<String, Mission> entry : IridiumSkyblock.getInstance().getMissionsList().entrySet()) {
                 if (entry.getValue().getMissionType() != Mission.MissionType.ONCE) continue;
                 List<Placeholder> placeholders = new ArrayList<>();
-
-                for (int j = 0; j < entry.getValue().getMissions().size(); j++) {
+                int missionSize = entry.getValue().getMissions().size();
+                for (int j = 0; j < missionSize; j++) {
                     IslandMission islandMission = IridiumSkyblock.getInstance().getIslandManager().getIslandMission(getIsland(), entry.getValue(), entry.getKey(), j);
                     placeholders.add(new Placeholder("progress_" + (j + 1), String.valueOf(islandMission.getProgress())));
                 }
-
-                inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
+                int slotIndex = slot.get();
+                ItemStack itemStack = ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders);
+                inventory.setItem(slotIndex, itemStack);
+                slot.set(slotIndex + 1);
             }
         }
 
