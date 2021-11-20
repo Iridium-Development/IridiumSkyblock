@@ -38,6 +38,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -809,7 +810,7 @@ public class IslandManager {
         }
     }
 
-    private synchronized String getDailyIslandMissions(@NotNull Island island, int index) {
+    private synchronized String getDailyIslandMission(@NotNull Island island, int index) {
         List<String> islandMissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream()
                 .filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY)
                 .map(IslandMission::getMissionName)
@@ -820,7 +821,7 @@ public class IslandManager {
             return islandMissions.get(index);
         }
 
-        Random random = new Random();
+        ThreadLocalRandom random = ThreadLocalRandom.current();
         List<String> availableMissions = IridiumSkyblock.getInstance().getMissionsList().keySet().stream()
                 .filter(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getMissionType() == Mission.MissionType.DAILY)
                 .filter(mission -> islandMissions.stream().noneMatch(m -> m.equals(mission)))
@@ -845,7 +846,7 @@ public class IslandManager {
 
         IntStream.range(0, IridiumSkyblock.getInstance().getMissions().dailySlots.size())
                 .boxed()
-                .map(i -> getDailyIslandMissions(island, i))
+                .map(i -> getDailyIslandMission(island, i))
                 .forEach(mission ->
                         missions.put(mission, IridiumSkyblock.getInstance().getMissionsList().get(mission))
                 );
