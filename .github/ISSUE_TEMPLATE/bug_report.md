@@ -3,7 +3,7 @@ name: Bug report
 about: Create a report to help us improve
 title: ''
 labels: bug, unconfirmed
-assignees: PeachesMLG, dlsf, Oribuin, MertUnverdi
+assignees: PeachesMLG, dlsf, MertUnverdi
 
 ---
 
