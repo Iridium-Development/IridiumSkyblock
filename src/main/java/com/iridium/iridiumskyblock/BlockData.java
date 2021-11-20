@@ -35,8 +35,7 @@ public class BlockData {
         this.material = XMaterial.matchXMaterial(block.getType());
         this.data = block.getData();
 
-        if (block.getState() instanceof InventoryHolder) {
-            InventoryHolder inventoryHolder = (InventoryHolder) block.getState();
+        if (block.getState() instanceof InventoryHolder inventoryHolder) {
             this.inventory = Arrays.stream(inventoryHolder.getInventory().getContents()).map(item -> item != null ? ItemStackUtils.serialize(item) : null).collect(Collectors.toList());
         }
     }
@@ -55,8 +54,7 @@ public class BlockData {
             blockState.update(true, true);
 
             // We gotta create a new BlockState because the old one is still air and wont be instance of container
-            if (block.getState() instanceof InventoryHolder && inventory != null) {
-                InventoryHolder inventoryHolder = (InventoryHolder) block.getState();
+            if (block.getState() instanceof InventoryHolder inventoryHolder && inventory != null) {
                 inventoryHolder.getInventory().setContents(inventory.stream().map(item -> item != null ? ItemStackUtils.deserialize(item) : null).toArray(ItemStack[]::new));
             }
         }

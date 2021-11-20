@@ -34,20 +34,13 @@ public enum IslandRank {
 
     @NotNull
     public String getDisplayName() {
-        switch (this) {
-            case OWNER:
-                return IridiumSkyblock.getInstance().getMessages().ownerRankDisplayName;
-            case CO_OWNER:
-                return IridiumSkyblock.getInstance().getMessages().coOwnerRankDisplayName;
-            case MODERATOR:
-                return IridiumSkyblock.getInstance().getMessages().moderatorRankDisplayName;
-            case MEMBER:
-                return IridiumSkyblock.getInstance().getMessages().memberRankDisplayName;
-            case VISITOR:
-                return IridiumSkyblock.getInstance().getMessages().visitorRankDisplayName;
-            default:
-                return "";
-        }
+        return switch (this) {
+            case OWNER -> IridiumSkyblock.getInstance().getMessages().ownerRankDisplayName;
+            case CO_OWNER -> IridiumSkyblock.getInstance().getMessages().coOwnerRankDisplayName;
+            case MODERATOR -> IridiumSkyblock.getInstance().getMessages().moderatorRankDisplayName;
+            case MEMBER -> IridiumSkyblock.getInstance().getMessages().memberRankDisplayName;
+            default -> IridiumSkyblock.getInstance().getMessages().visitorRankDisplayName; // Visitor is default
+        };
     }
 
     /**
