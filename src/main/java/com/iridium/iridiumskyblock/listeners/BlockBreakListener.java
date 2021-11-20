@@ -64,7 +64,8 @@ public class BlockBreakListener implements Listener {
 
         island.ifPresent(value -> {
             BlockData blockData = event.getBlock().getBlockData();
-            if (blockData instanceof Ageable ageable) {
+            if (blockData instanceof Ageable) {
+                Ageable ageable = (Ageable) blockData;
                 if (ageable.getAge() == ageable.getMaximumAge()) {
                     IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
                 }
