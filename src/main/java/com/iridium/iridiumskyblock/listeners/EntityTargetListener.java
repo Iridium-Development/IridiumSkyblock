@@ -27,9 +27,8 @@ public class EntityTargetListener implements Listener {
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
         if (!island.isPresent()) return;
-        if (event.getTarget() == null || !(event.getTarget() instanceof Player)) return;
+        if (event.getTarget() == null || !(event.getTarget() instanceof Player targetPlayer)) return;
 
-        Player targetPlayer = (Player) event.getTarget();
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
         Optional<IslandTrusted> targetTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
         if (island.get().equals(targetUser.getIsland().orElse(null)) || targetTrusted.isPresent()) return;

@@ -39,6 +39,18 @@ public class PlayerMoveListener implements Listener {
 
                 Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
                 if (island.isPresent()) {
+                    IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
+                    if (user.isFlying() && !islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {
+                        user.setFlying(false);
+                        if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                            player.setFlying(false);
+                            player.setAllowFlight(false);
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
+                                    .replace("%player%", player.getName())
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                            );
+                        }
+                    }
                     try {
                         if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), user)) {
                             event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
@@ -69,30 +81,15 @@ public class PlayerMoveListener implements Listener {
                     } catch (NullPointerException ignored) {}
 
                 }
-                if (user.isFlying()) {
-                    if (island.isPresent()) {
-                        IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
-                        if (!islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {
-                            user.setFlying(false);
-                            if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
-                                player.setFlying(false);
-                                player.setAllowFlight(false);
-                                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
-                                        .replace("%player%", player.getName())
-                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                                );
-                            }
-                        }
-                    } else if (!player.hasPermission("iridiumskyblock.fly")) {
-                        user.setFlying(false);
-                        if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
-                            player.setFlying(false);
-                            player.setAllowFlight(false);
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
-                                    .replace("%player%", player.getName())
-                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                            );
-                        }
+                else if (user.isFlying() && !player.hasPermission("iridiumskyblock.fly")) {
+                    user.setFlying(false);
+                    if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                        player.setFlying(false);
+                        player.setAllowFlight(false);
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
+                                .replace("%player%", player.getName())
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        );
                     }
                 }
             }

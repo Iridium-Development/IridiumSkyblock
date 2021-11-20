@@ -34,7 +34,7 @@ public class EntityDamageListener implements Listener {
         }
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
-        if (!island.isPresent()) return;
+        if (island.isEmpty()) return;
 
         if (event.getEntity() instanceof Player) {
             handlePlayerDamage(event, island.get());
@@ -46,16 +46,14 @@ public class EntityDamageListener implements Listener {
         if (event.getEntity().equals(event.getDamager())) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
-        if (!island.isPresent()) return;
+        if (island.isEmpty()) return;
 
-        if (event.getEntity() instanceof Player) {
-            Player victim = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player victim) {
             if (event.getDamager() instanceof Player) {
                 handleDamageBetweenPlayers(event, (Player) event.getDamager(), victim, island.get());
                 return;
             }
-            if (event.getDamager() instanceof Projectile) {
-                Projectile projectile = (Projectile) event.getDamager();
+            if (event.getDamager() instanceof Projectile projectile) {
                 if (!(projectile.getShooter() instanceof Player)) return;
                 handleDamageBetweenPlayers(event, (Player) projectile.getShooter(), victim, island.get());
                 return;
@@ -64,8 +62,7 @@ public class EntityDamageListener implements Listener {
             return;
         }
 
-        if (event.getDamager() instanceof Player) {
-            Player player = (Player) event.getDamager();
+        if (event.getDamager() instanceof Player player) {
             if (event.getEntity().getType() == EntityType.VILLAGER || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
                 event.setCancelled(true);
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotHurtMobs.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -73,8 +70,7 @@ public class EntityDamageListener implements Listener {
             return;
         }
 
-        if (event.getDamager() instanceof Projectile) {
-            Projectile projectile = (Projectile) event.getDamager();
+        if (event.getDamager() instanceof Projectile projectile) {
             if (projectile.getShooter() == null || !(projectile.getShooter() instanceof Player)) return;
             
             Player player = (Player) projectile.getShooter();
