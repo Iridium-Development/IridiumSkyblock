@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.utils;
 
 import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.spawn.EssentialsSpawn;
-import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -95,10 +94,12 @@ public class PlayerUtils {
         if (Bukkit.getPluginManager().isPluginEnabled("EssentialsSpawn")) {
             EssentialsSpawn essentialsSpawn = (EssentialsSpawn) Bukkit.getPluginManager().getPlugin("EssentialsSpawn");
             Essentials essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-            PaperLib.teleportAsync(player, essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()), PlayerTeleportEvent.TeleportCause.PLUGIN);
-        } else {
-            PaperLib.teleportAsync(player, spawnWorld.getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
+            if (essentialsSpawn != null && essentials != null) {
+                PaperLib.teleportAsync(player, essentialsSpawn.getSpawn(essentials.getUser(player).getGroup()), PlayerTeleportEvent.TeleportCause.PLUGIN);
+                return;
+            }
         }
+        PaperLib.teleportAsync(player, spawnWorld.getSpawnLocation(), PlayerTeleportEvent.TeleportCause.PLUGIN);
     }
 
     /**
