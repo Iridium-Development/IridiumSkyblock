@@ -28,7 +28,7 @@ public class BlockBreakListener implements Listener {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
-        if (!island.isPresent()) return;
+        if (island.isEmpty()) return;
 
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
@@ -44,8 +44,7 @@ public class BlockBreakListener implements Listener {
         if (islandBlocks.getAmount() > 0) {
             islandBlocks.setAmount(islandBlocks.getAmount() - 1);
         }
-        if (event.getBlock().getState() instanceof CreatureSpawner) {
-            CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
+        if (event.getBlock().getState() instanceof CreatureSpawner creatureSpawner) {
             IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island.get(), creatureSpawner.getSpawnedType());
             if (islandSpawners.getAmount() > 0) {
                 islandSpawners.setAmount(islandSpawners.getAmount() - 1);
@@ -64,8 +63,7 @@ public class BlockBreakListener implements Listener {
 
         island.ifPresent(value -> {
             BlockData blockData = event.getBlock().getBlockData();
-            if (blockData instanceof Ageable) {
-                Ageable ageable = (Ageable) blockData;
+            if (blockData instanceof Ageable ageable) {
                 if (ageable.getAge() == ageable.getMaximumAge()) {
                     IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
                 }
@@ -93,7 +91,7 @@ public class BlockBreakListener implements Listener {
             ItemFrame itemFrame = (ItemFrame) event.getEntity();
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(remover);
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame.getLocation());
-            if (!island.isPresent()) return;
+            if (island.isEmpty()) return;
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
                 event.setCancelled(true);
                 remover.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

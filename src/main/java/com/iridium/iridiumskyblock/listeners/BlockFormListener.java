@@ -48,7 +48,7 @@ public class BlockFormListener implements Listener {
                 if (randomMaterialList == null) return;
 
                 Optional<XMaterial> xMaterialOptional = randomMaterialList.nextElement();
-                if (!xMaterialOptional.isPresent()) return;
+                if (xMaterialOptional.isEmpty()) return;
 
                 Material material = xMaterialOptional.get().parseMaterial();
                 if (material == Material.COBBLESTONE && newMaterial == XMaterial.STONE) material = Material.STONE;

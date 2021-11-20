@@ -16,7 +16,7 @@ public class PlayerDropItemListener implements Listener {
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getItemDrop().getLocation());
 
-        if (!island.isPresent()) return;
+        if (island.isEmpty()) return;
         if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer()), PermissionType.DROP_ITEMS)) {
             return;
         }

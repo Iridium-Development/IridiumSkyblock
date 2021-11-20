@@ -5,12 +5,12 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
-import org.bukkit.CropState;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.material.Crops;
 
 import java.util.Optional;
 
@@ -24,16 +24,15 @@ public class BlockGrowListener implements Listener {
         XMaterial material = XMaterial.matchXMaterial(event.getNewState().getType());
 
         island.ifPresent(value -> {
-            if (event.getNewState().getData() instanceof Crops) {
-                Crops crops = (Crops) event.getNewState().getData();
+            BlockData blockData = event.getNewState().getBlockData();
+            if (blockData instanceof Ageable) {
+                Ageable ageable = (Ageable) blockData;
                 IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "farming");
                 if (islandBooster.isActive()) {
-                    CropState newState = CropState.getByData((byte) (crops.getState().getData() + 1));
-                    if (newState != null) {
-                        crops.setState(newState);
-                    }
+                    if (ageable.getMaximumAge() == ageable.getAge()) return;
+                    System.out.println("ca a poussé");
+                    ageable.setAge(ageable.getAge() + 1);
                 }
-                if (!crops.getState().equals(CropState.RIPE)) return;
             }
             IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "GROW", material.name(), 1);
         });

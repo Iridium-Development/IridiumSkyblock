@@ -38,7 +38,7 @@ public class BucketListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
 
-        if (!island.isPresent()) {
+        if (island.isEmpty()) {
             if (IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlockClicked().getWorld())) {
                 if (!user.isBypassing()) event.setCancelled(true);
             }

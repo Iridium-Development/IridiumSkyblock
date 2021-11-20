@@ -22,8 +22,7 @@ public class PotionBrewListener implements Listener {
 
             for (int i = 0; i < 3; i++) {
                 ItemStack itemStack = event.getContents().getItem(i);
-                if (itemStack != null && itemStack.getItemMeta() instanceof PotionMeta) {
-                    PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+                if (itemStack != null && itemStack.getItemMeta() instanceof PotionMeta potionMeta) {
 
                     island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value,
                             "BREW", potionMeta.getBasePotionData().getType() + ":" + (potionMeta.getBasePotionData().isUpgraded() ? 2 : 1), 1));
