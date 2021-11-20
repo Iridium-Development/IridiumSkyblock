@@ -160,31 +160,25 @@ public final class User extends DatabaseObject {
 
     public void setBypassing(boolean bypassing) {
         this.bypassing = bypassing;
-        setChanged(true);
     }
 
     public void setFlying(boolean flying) {
         this.flying = flying;
-        setChanged(true);
     }
 
     public void setIslandChat(boolean islandChat) {
         this.islandChat = islandChat;
-        setChanged(true);
     }
 
     public void setIslandChatSpying(boolean islandChatSpying) {
         this.islandChatSpying = islandChatSpying;
-        setChanged(true);
     }
 
     public void setCurrentIslandVisiting(Island currentIslandVisiting) {
         this.currentIslandVisiting = currentIslandVisiting;
-        setChanged(true);
     }
 
     public void setTeleportingTask(BukkitTask teleportingTask) {
         this.teleportingTask = teleportingTask;
-        setChanged(true);
     }
 }

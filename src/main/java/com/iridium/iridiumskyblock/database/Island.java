@@ -484,6 +484,5 @@ public final class Island extends DatabaseObject {
 
     public void setSize(Integer size) {
         this.size = size;
-        setChanged(true);
     }
 }
