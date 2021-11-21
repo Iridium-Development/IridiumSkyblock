@@ -12,19 +12,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class IslandMissionsGUI extends IslandGUI {
+public class DailyIslandMissionsGUI extends IslandGUI {
 
     /**
      * The default constructor.
      *
      * @param island The Island this GUI belongs to
      */
-    public IslandMissionsGUI(@NotNull Island island, Inventory previousInventory) {
-        super(IridiumSkyblock.getInstance().getInventories().missionsGUI, previousInventory, island);
+    public DailyIslandMissionsGUI(@NotNull Island island, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().dailyMissionGUI, previousInventory, island);
     }
 
     @Override
@@ -32,17 +31,21 @@ public class IslandMissionsGUI extends IslandGUI {
         inventory.clear();
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().missionsGUI.background);
 
-        AtomicInteger slot = new AtomicInteger(0);
-        for (Map.Entry<String, Mission> entry : IridiumSkyblock.getInstance().getMissionsList().entrySet()) {
-            if (entry.getValue().getMissionType() != Mission.MissionType.ONCE) continue;
+        Map<String, Mission> missions = IridiumSkyblock.getInstance().getIslandManager().getDailyIslandMissions(getIsland());
+        int i = 0;
 
+        for (Map.Entry<String, Mission> entry : missions.entrySet()) {
             List<Placeholder> placeholders = IntStream.range(0, entry.getValue().getMissions().size())
                     .boxed()
                     .map(integer -> IridiumSkyblock.getInstance().getIslandManager().getIslandMission(getIsland(), entry.getValue(), entry.getKey(), integer))
                     .map(islandMission -> new Placeholder("progress_"+(islandMission.getMissionIndex()+1), String.valueOf(islandMission.getProgress())))
                     .collect(Collectors.toList());
 
-            inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
+            if (IridiumSkyblock.getInstance().getMissions().dailySlots.size() > i) {
+                Integer slot = IridiumSkyblock.getInstance().getMissions().dailySlots.get(i);
+                inventory.setItem(slot, ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
+            }
+            i++;
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
