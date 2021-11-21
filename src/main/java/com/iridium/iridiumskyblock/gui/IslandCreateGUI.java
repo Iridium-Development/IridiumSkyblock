@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class IslandCreateGUI extends SchematicGUI {
 
     private final @NotNull Player player;
-    private final @NotNull String islandName;
+    private final String islandName;
     private final @NotNull CooldownProvider<CommandSender> cooldownProvider;
 
     /**

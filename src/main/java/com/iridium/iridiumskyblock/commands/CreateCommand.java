@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.util.*;
@@ -67,7 +68,7 @@ public class CreateCommand extends Command {
      * @param player The player who performed this command
      * @param name   The name of the new island
      */
-    private void createIsland(Player player, String name) {
+    private void createIsland(Player player, @Nullable String name) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 

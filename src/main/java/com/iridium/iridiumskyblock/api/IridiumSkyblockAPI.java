@@ -8,7 +8,6 @@ import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-import java.util.Objects;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
@@ -16,6 +15,7 @@ import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -74,7 +74,7 @@ public class IridiumSkyblockAPI {
      * @param upgradeName The name of the Upgrade (Used for storage purposes)
      * @param upgrade     the upgrade item
      */
-    public void addUpgrade(@NotNull String upgradeName, @NotNull Upgrade upgrade) {
+    public void addUpgrade(@NotNull String upgradeName, @NotNull Upgrade<?> upgrade) {
         iridiumSkyblock.getUpgradesList().put(upgradeName, upgrade);
     }
 
