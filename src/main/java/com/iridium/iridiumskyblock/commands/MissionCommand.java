@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.Mission.MissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.DailyIslandMissionsGUI;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
 import com.iridium.iridiumskyblock.gui.IslandMissionsGUI;
 import org.bukkit.command.CommandSender;
@@ -49,15 +50,17 @@ public class MissionCommand extends Command {
             player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
-
-        Mission.MissionType missionType = Mission.MissionType.getMission(args[1]);
-        if (missionType == null) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
+        switch (Mission.MissionType.getMission(args[1])) {
+            case ONCE:
+                player.openInventory(new IslandMissionsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
+                return true;
+            case DAILY:
+                player.openInventory(new DailyIslandMissionsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
+                return true;
+            default:
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return false;
         }
-
-        player.openInventory(new IslandMissionsGUI(island.get(), missionType, player.getOpenInventory().getTopInventory()).getInventory());
-        return true;
     }
 
     /**
