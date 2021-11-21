@@ -7,14 +7,14 @@ import com.iridium.iridiumskyblock.commands.extravalue.RemoveCommand;
 import com.iridium.iridiumskyblock.commands.extravalue.SetCommand;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class ExtraValueCommand extends Command {
 

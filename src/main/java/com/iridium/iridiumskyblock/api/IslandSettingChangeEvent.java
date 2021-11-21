@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.api;
 
 import com.iridium.iridiumskyblock.SettingType;
 import com.iridium.iridiumskyblock.database.Island;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
