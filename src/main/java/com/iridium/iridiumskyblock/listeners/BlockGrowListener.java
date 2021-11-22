@@ -3,41 +3,34 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandBooster;
-import org.bukkit.CropState;
+import org.bukkit.Bukkit;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
-import org.bukkit.material.Crops;
-
-import java.util.Optional;
 
 public class BlockGrowListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorBlockGrow(BlockGrowEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
+                    XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
-        XMaterial material = XMaterial.matchXMaterial(event.getNewState().getType());
-
-        if (event.getNewState().getData() instanceof Crops) {
-            Crops crops = (Crops) event.getNewState().getData();
-            if (island.isPresent()) {
-                IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "farming");
-                if (islandBooster.isActive()) {
-                    CropState newState = CropState.getByData((byte) (crops.getState().getData() + 1));
-                    if (newState != null) {
-                        crops.setState(newState);
+                    if (event.getNewState().getBlock().getBlockData() instanceof Ageable) {
+                        Ageable ageable = (Ageable) event.getNewState().getBlock().getBlockData();
+                        ageable.setAge(Math.min(ageable.getAge() + 1, ageable.getMaximumAge()));
+                        event.getNewState().getBlock().setBlockData(ageable);
+                        if (ageable.getAge() == ageable.getMaximumAge()) {
+                            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", material.name(), 1);
+                        }
+                    } else {
+                        IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", material.name(), 1);
                     }
-                }
-            }
-            if (!crops.getState().equals(CropState.RIPE)) return;
-        }
-
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "GROW", material.name(), 1));
+                })
+        );
     }
 
 }
