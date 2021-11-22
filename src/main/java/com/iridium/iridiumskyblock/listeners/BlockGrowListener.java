@@ -11,7 +11,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockGrowEvent;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class BlockGrowListener implements Listener {
+
+    private List<XMaterial> instantGrowCrops = Arrays.asList(XMaterial.CACTUS, XMaterial.SUGAR_CANE, XMaterial.BAMBOO);
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorBlockGrow(BlockGrowEvent event) {
@@ -26,7 +31,7 @@ public class BlockGrowListener implements Listener {
                             ageable.setAge(Math.min(ageable.getAge() + 1, ageable.getMaximumAge()));
                             event.getNewState().getBlock().setBlockData(ageable);
                         }
-                        if (ageable.getAge() == ageable.getMaximumAge()) {
+                        if (ageable.getAge() == ageable.getMaximumAge() || instantGrowCrops.contains(XMaterial.matchXMaterial(event.getNewState().getType()))) {
                             IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", material.name(), 1);
                         }
                     } else {
