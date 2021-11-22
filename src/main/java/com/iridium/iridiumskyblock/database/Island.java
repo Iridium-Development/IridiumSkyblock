@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -212,15 +213,12 @@ public final class Island {
         return valueCache.getCache(() -> {
             double value = extraValue;
 
-            List<IslandBlocks> islandBlocks = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(this);
-            List<IslandSpawners> islandSpawners = IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(this);
-
-            for (IslandBlocks islandBlock : islandBlocks) {
-                value = value + getValueOf(islandBlock.getMaterial()) * islandBlock.getAmount();
+            for (Map.Entry<XMaterial, BlockValues.ValuableBlock> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {
+                value += IridiumSkyblock.getInstance().getIslandManager().getIslandBlockAmount(this, valuableBlock.getKey()) * valuableBlock.getValue().value;
             }
 
-            for (IslandSpawners islandSpawner : islandSpawners) {
-                value = value + getValueOf(islandSpawner.getSpawnerType()) * islandSpawner.getAmount();
+            for (Map.Entry<EntityType, BlockValues.ValuableBlock> valuableSpawner : IridiumSkyblock.getInstance().getBlockValues().spawnerValues.entrySet()) {
+                value += IridiumSkyblock.getInstance().getIslandManager().getIslandSpawnerAmount(this, valuableSpawner.getKey()) * valuableSpawner.getValue().value;
             }
 
             return value;

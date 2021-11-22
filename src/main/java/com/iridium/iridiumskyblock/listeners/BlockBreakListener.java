@@ -34,22 +34,9 @@ public class BlockBreakListener implements Listener {
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
             event.setCancelled(true);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
         } else if (material.equals(XMaterial.SPAWNER) && !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.SPAWNERS)) {
             event.setCancelled(true);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotMineSpawners.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
-        }
-        IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
-        if (islandBlocks.getAmount() > 0) {
-            islandBlocks.setAmount(islandBlocks.getAmount() - 1);
-        }
-        if (event.getBlock().getState() instanceof CreatureSpawner) {
-            CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
-            IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island.get(), creatureSpawner.getSpawnedType());
-            if (islandSpawners.getAmount() > 0) {
-                islandSpawners.setAmount(islandSpawners.getAmount() - 1);
-            }
         }
     }
 
@@ -59,28 +46,39 @@ public class BlockBreakListener implements Listener {
 
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
-        island.ifPresent(value -> {
+        user.getIsland().ifPresent(island -> {
             BlockData blockData = event.getBlock().getBlockData();
             if (blockData instanceof Ageable) {
                 Ageable ageable = (Ageable) blockData;
                 if (ageable.getAge() == ageable.getMaximumAge()) {
-                    IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
+                    IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "MINE", material.name(), 1);
                 }
             } else {
-                IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "MINE", material.name(), 1);
+                IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "MINE", material.name(), 1);
             }
 
-            IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "experience");
+            IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, "experience");
             if (islandBooster.isActive()) {
                 event.setExpToDrop(event.getExpToDrop() * 2);
+            }
+
+            IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
+            if (islandBlocks.getAmount() > 0) {
+                islandBlocks.setAmount(islandBlocks.getAmount() - 1);
+            }
+            if (event.getBlock().getState() instanceof CreatureSpawner) {
+                CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
+                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
+                if (islandSpawners.getAmount() > 0) {
+                    islandSpawners.setAmount(islandSpawners.getAmount() - 1);
+                }
             }
         });
     }
 
- @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
         if (event.getEntity() instanceof ItemFrame || event.getEntity() instanceof Painting) {
             Player remover = null;
