@@ -6,5 +6,5 @@ import lombok.Setter;
 @Setter
 @Getter
 public class DatabaseObject {
-    private boolean changed = false;
+    private boolean changed = true;
 }
