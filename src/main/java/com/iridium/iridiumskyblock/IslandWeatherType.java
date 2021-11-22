@@ -15,7 +15,7 @@ public enum IslandWeatherType {
 
     public static String getPrevious(String current) {
         int previousOrdinal = valueOf(current.toUpperCase()).ordinal() - 1;
-        if (previousOrdinal < 0) return values()[0].name();
+        if (previousOrdinal < 0) return values()[values().length-1].name();
         return values()[previousOrdinal].name();
     }
 
