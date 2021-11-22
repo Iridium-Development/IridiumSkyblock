@@ -856,6 +856,14 @@ public class IslandManager {
         return missions;
     }
 
+    public int getIslandBlockAmount(Island island, XMaterial material) {
+        return getIslandBlock(island, material).getAmount() + IridiumSkyblock.getInstance().getStackerSupport().getExtraBlocks(island, material);
+    }
+
+    public int getIslandSpawnerAmount(Island island, EntityType entityType) {
+        return getIslandSpawners(island, entityType).getAmount() + IridiumSkyblock.getInstance().getStackerSupport().getExtraSpawners(island, entityType);
+    }
+
     /**
      * Recalculates the island value of the specified island.
      *
@@ -867,8 +875,6 @@ public class IslandManager {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(islandSpawners -> islandSpawners.setAmount(0));
 
             recalculateIsland(island, chunks);
-
-            IridiumSkyblock.getInstance().getStackerSupport().applyStackedBlockValue(island);
         });
     }
 
