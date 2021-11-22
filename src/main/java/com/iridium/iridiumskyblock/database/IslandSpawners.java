@@ -4,7 +4,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +19,6 @@ public final class IslandSpawners extends IslandData {
     private @NotNull EntityType spawnerType;
 
     @DatabaseField(columnName = "amount", canBeNull = false)
-    @Setter
     private int amount;
 
     /**
@@ -39,4 +37,8 @@ public final class IslandSpawners extends IslandData {
         return spawnerType.name() + "-" + getIslandId();
     }
 
+    public void setAmount(int amount) {
+        this.amount = amount;
+        setChanged(true);
+    }
 }

@@ -57,6 +57,7 @@ public final class IslandBooster extends IslandData {
      */
     public void setTime(LocalDateTime time) {
         this.time = ZonedDateTime.of(time, ZoneId.systemDefault()).toInstant().toEpochMilli();
+        setChanged(true);
     }
 
     /**
