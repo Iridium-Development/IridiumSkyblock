@@ -39,11 +39,12 @@ public class TableManager<T, S> {
      */
     public void save() {
         try {
-            ListIterator<T> iterator = new ArrayList<>(entries).listIterator();
-            //System.out.println("Nombre de sauvegarde : " + entries.size());
-            while (iterator.hasNext()) {
-                T user = iterator.next();
-                dao.createOrUpdate(user);
+            List<T> entryList = new ArrayList<>(entries);
+            for (T t : entryList) {
+                if (t.isChanged()) {
+                    dao.createOrUpdate(t);
+                    t.setChanged(false);
+                }
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
