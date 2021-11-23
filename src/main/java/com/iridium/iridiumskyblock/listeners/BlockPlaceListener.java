@@ -68,10 +68,25 @@ public class BlockPlaceListener implements Listener {
 
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
 
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "PLACE", material.name(), 1));
+        user.getIsland().ifPresent(island -> {
+            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "PLACE", material.name(), 1);
+
+            IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
+            islandBlocks.setAmount(islandBlocks.getAmount() + 1);
+            if (event.getBlock().getState() instanceof CreatureSpawner) {
+                CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
+                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
+                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
+            }
+
+            if (event.getBlock().getState() instanceof CreatureSpawner) {
+                CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
+                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
+                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
+            }
+        });
     }
 
 }
