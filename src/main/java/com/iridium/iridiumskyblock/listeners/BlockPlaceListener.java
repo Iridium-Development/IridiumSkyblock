@@ -43,22 +43,13 @@ public class BlockPlaceListener implements Listener {
             return;
         }
 
-        IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island.get(), material);
         int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "blocklimit").getLevel();
         int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, 0);
 
-        if (blockLimit > 0 && islandBlocks.getAmount() >= blockLimit) {
+        if (blockLimit > 0 && IridiumSkyblock.getInstance().getIslandManager().getIslandBlockAmount(island.get(), material) >= blockLimit) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().blockLimitReached
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%limit%", String.valueOf(blockLimit)).replace("%block%", WordUtils.capitalizeFully(material.name().toLowerCase().replace("_", " ")))));
             event.setCancelled(true);
-            return;
-        }
-        islandBlocks.setAmount(islandBlocks.getAmount() + 1);
-
-        if (event.getBlock().getState() instanceof CreatureSpawner) {
-            CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
-            IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island.get(), creatureSpawner.getSpawnedType());
-            islandSpawners.setAmount(islandSpawners.getAmount() + 1);
         }
     }
 

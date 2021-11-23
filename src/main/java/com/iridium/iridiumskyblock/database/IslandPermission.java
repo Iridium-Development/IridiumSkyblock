@@ -5,7 +5,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
@@ -23,7 +22,6 @@ public final class IslandPermission extends IslandData {
     private @NotNull IslandRank rank;
 
     @DatabaseField(columnName = "allowed", canBeNull = false)
-    @Setter
     private boolean allowed;
 
     /**
@@ -41,4 +39,8 @@ public final class IslandPermission extends IslandData {
         this.allowed = allowed;
     }
 
+    public void setAllowed(boolean allowed) {
+        this.allowed = allowed;
+        setChanged(true);
+    }
 }

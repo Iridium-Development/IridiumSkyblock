@@ -4,7 +4,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
@@ -19,7 +18,6 @@ public final class IslandSetting extends IslandData {
     private @NotNull String setting;
 
     @DatabaseField(columnName = "value", canBeNull = false)
-    @Setter
     private String value;
 
     public boolean getBooleanValue() {
@@ -39,4 +37,8 @@ public final class IslandSetting extends IslandData {
         this.value = value;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+        setChanged(true);
+    }
 }

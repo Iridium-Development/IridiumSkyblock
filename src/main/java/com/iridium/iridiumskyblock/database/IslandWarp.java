@@ -6,7 +6,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -27,15 +26,12 @@ public final class IslandWarp extends IslandData {
     private @NotNull String name;
 
     @DatabaseField(columnName = "password")
-    @Setter
     private String password;
 
     @DatabaseField(columnName = "description")
-    @Setter
     private String description;
 
     @DatabaseField(columnName = "icon")
-    @Setter
     private XMaterial icon;
 
     /**
@@ -62,5 +58,20 @@ public final class IslandWarp extends IslandData {
         World world = Bukkit.getWorld(params[0]);
         return new Location(world, Double.parseDouble(params[1]), Double.parseDouble(params[2]), Double.parseDouble(params[3]),
                 Float.parseFloat(params[5]), Float.parseFloat(params[4]));
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+        setChanged(true);
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+        setChanged(true);
+    }
+
+    public void setIcon(XMaterial icon) {
+        this.icon = icon;
+        setChanged(true);
     }
 }

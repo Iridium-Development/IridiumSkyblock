@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumcore.utils.SortedList;
+import com.iridium.iridiumskyblock.DatabaseObject;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -16,7 +17,7 @@ import java.util.*;
  * @param <T> The Table Class
  * @param <S> The Table Primary Id Class
  */
-public class TableManager<T, S> {
+public class TableManager<T extends DatabaseObject, S> {
     private final SortedList<T> entries;
     private final Dao<T, S> dao;
     private final Class<T> clazz;
@@ -54,8 +55,11 @@ public class TableManager<T, S> {
 
     public void save(T t) {
         try {
-            dao.createOrUpdate(t);
-            dao.commit(getDatabaseConnection());
+            if (t.isChanged()) {
+                dao.createOrUpdate(t);
+                dao.commit(getDatabaseConnection());
+                t.setChanged(false);
+            }
         } catch (SQLException exception) {
             exception.printStackTrace();
         }

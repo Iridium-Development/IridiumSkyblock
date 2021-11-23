@@ -26,10 +26,10 @@ public class PlayerUtils {
      * Removes the specified amount of crystals and money from the island bank and from
      * the player's purse if there is not enough in the bank.
      *
-     * @param player    The Player
-     * @param island    The Player's Island
-     * @param crystals  The amount of crystals
-     * @param money     The amount of money
+     * @param player   The Player
+     * @param island   The Player's Island
+     * @param crystals The amount of crystals
+     * @param money    The amount of money
      * @return If the purchase was successful. {@link PlayerUtils#canPurchase(Player, Island, int, double)} should be preferred.
      */
     public static boolean pay(@NotNull Player player, @NotNull Island island, int crystals, double money) {

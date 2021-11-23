@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
@@ -27,6 +28,7 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
@@ -256,8 +258,16 @@ public class IridiumSkyblock extends IridiumCore {
     private StackerSupport registerBlockStackerSupport() {
         if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
         if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
-        return island -> {
-            // Do nothing
+        return new StackerSupport() {
+            @Override
+            public int getExtraBlocks(Island island, XMaterial material) {
+                return 0;
+            }
+
+            @Override
+            public int getExtraSpawners(Island island, EntityType entityType) {
+                return 0;
+            }
         };
     }
 
@@ -333,6 +343,7 @@ public class IridiumSkyblock extends IridiumCore {
         pluginManager.registerEvents(new PotionBrewListener(), this);
         pluginManager.registerEvents(new SpawnerSpawnListener(), this);
         pluginManager.registerEvents(new VehicleDamageListener(), this);
+        pluginManager.registerEvents(new BlockBurnListener(), this);
     }
 
 
