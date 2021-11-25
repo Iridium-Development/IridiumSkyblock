@@ -93,7 +93,7 @@ public class IslandPermissionsGUI extends IslandGUI {
 
     private boolean hasPage(int page) {
         return IridiumSkyblock.getInstance().getPermissionList().entrySet().stream()
-                .anyMatch(entry -> entry.getValue().getPage() > page);
+                .anyMatch(entry -> entry.getValue().getPage() == page);
     }
 
 }
