@@ -34,9 +34,6 @@ public class EntityTargetListener implements Listener {
         Optional<IslandTrusted> targetTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
         if (island.get().equals(targetUser.getIsland().orElse(null)) || targetTrusted.isPresent()) return;
 
-        // Player is a visitor and mobsVisitorTargeting is disabled
-        event.setCancelled(true);
-
         if (!canSearchTarget(event.getEntity())) {
             return;
         }
@@ -51,6 +48,7 @@ public class EntityTargetListener implements Listener {
                 .collect(Collectors.toList());
 
         if (nextTargets.isEmpty()) {
+	    event.setCancelled(true);
             return;
         }
 
