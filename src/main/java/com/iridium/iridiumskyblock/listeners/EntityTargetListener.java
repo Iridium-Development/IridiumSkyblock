@@ -23,7 +23,9 @@ public class EntityTargetListener implements Listener {
 
     @EventHandler
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
-        if (IridiumSkyblock.getInstance().getConfiguration().pvpSettings.mobsVisitorTargeting) return;
+        if (IridiumSkyblock.getInstance().getConfiguration().pvpSettings.mobsVisitorTargeting) {
+            return;
+        }
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
         if (!island.isPresent()) return;
@@ -33,6 +35,9 @@ public class EntityTargetListener implements Listener {
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
         Optional<IslandTrusted> targetTrusted = IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser);
         if (island.get().equals(targetUser.getIsland().orElse(null)) || targetTrusted.isPresent()) return;
+
+        // Player is a visitor and mobsVisitorTargeting is disabled
+        event.setCancelled(true);
 
         if (!canSearchTarget(event.getEntity())) {
             return;
