@@ -47,6 +47,7 @@ public class EntityTargetListener implements Listener {
                 .collect(Collectors.toList());
 
         if (nextTargets.isEmpty()) {
+	        event.setCancelled(true);
             return;
         }
 
