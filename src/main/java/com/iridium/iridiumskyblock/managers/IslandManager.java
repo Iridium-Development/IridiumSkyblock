@@ -99,7 +99,7 @@ public class IslandManager {
             Location pos2 = island.getPos2(world);
             xBiome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
-                    IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk);
+                    chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
                 }
             });
         }).exceptionally(throwable -> {
@@ -706,7 +706,6 @@ public class IslandManager {
 
         if (y == LocationUtils.getMinHeight(world)) {
             completableFuture.complete(null);
-            getIslandChunks(island, world).thenAccept(chunks -> chunks.forEach(chunk -> IridiumSkyblock.getInstance().getNms().sendChunk(world.getPlayers(), chunk)));
         } else {
             if (delay < 1) {
                 deleteIslandBlocks(island, world, y - 1, completableFuture, delay);
