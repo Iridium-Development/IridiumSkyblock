@@ -25,7 +25,7 @@ public class PlayerFishListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer());
         Optional<Island> island = user.getIsland();
 
-        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "FISH", ((Item) caughtEntity).getItemStack().getType().toString(), 1));
+        island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "FISH", ((Item) caughtEntity).getItemStack().getType().name(), 1));
     }
 
 }
