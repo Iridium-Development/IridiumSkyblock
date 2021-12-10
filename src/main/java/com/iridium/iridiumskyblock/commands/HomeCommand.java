@@ -41,6 +41,9 @@ public class HomeCommand extends Command {
         if (island.isPresent()) {
             IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
             return true;
+        } else if (IridiumSkyblock.getInstance().getConfiguration().createIslandOnHome) {
+            IridiumSkyblock.getInstance().getCommands().createCommand.execute(player, new String[]{});
+            return true;
         } else {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
