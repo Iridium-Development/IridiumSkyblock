@@ -39,14 +39,15 @@ public class InfoCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] arguments) {
         if (arguments.length == 1) {
-            if (!(sender instanceof Player player)) {
+            if (!(sender instanceof Player)) {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
 
+            Player player = (Player) sender;
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Optional<Island> userIsland = user.getIsland();
-            if (userIsland.isEmpty()) {
+            if (!userIsland.isPresent()) {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
@@ -58,7 +59,7 @@ public class InfoCommand extends Command {
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(arguments[1]);
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
         Optional<Island> targetIsland = targetUser.getIsland();
-        if (targetIsland.isEmpty()) {
+        if (!targetIsland.isPresent()) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -84,6 +85,7 @@ public class InfoCommand extends Command {
             members = IridiumSkyblock.getInstance().getMessages().none;
         }
 
+
         sender.sendMessage(StringUtils.getCenteredMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().infoTitle
                 .replace("%player%", requestedUser.getName())
                 .replace("%island_name%", island.getName())
@@ -94,13 +96,7 @@ public class InfoCommand extends Command {
                 .replace("%visitable%", island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().visitable : IridiumSkyblock.getInstance().getMessages().notVisitable)
         ), StringUtils.color(IridiumSkyblock.getInstance().getMessages().infoFiller)));
 
-        List<String> infoLines = IridiumSkyblock.getInstance().getMessages().infoCommand;
-
-        if (sender.hasPermission("iridiumskyblock.command.info.all")) {
-            infoLines.add("<GRADIENT:09C6F9>Island ID</GRADIENT:045DE9>&r: &7%IslandID%");
-        }
-
-        for (String infoLine : infoLines) {
+        for (String infoLine : IridiumSkyblock.getInstance().getMessages().infoCommand) {
             sender.sendMessage(StringUtils.color(infoLine
                     .replace("%player%", requestedUser.getName())
                     .replace("%island_name%", island.getName())
