@@ -220,12 +220,13 @@ public class IslandManager {
         if (islandCreateEvent.isCancelled()) return false;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, user.getName(), islandCreateEvent.getSchematicConfig()).thenAccept(island ->
-                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                    teleportHome(player, island);
-                    IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
-                })
-        );
+        createIsland(player, user.getName(), islandCreateEvent.getSchematicConfig()).thenAccept(island -> {
+            if (island == null) return;
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                teleportHome(player, island);
+                IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
+            });
+        });
 
         return true;
     }
@@ -245,8 +246,12 @@ public class IslandManager {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Island island = new Island(name, schematic);
 
-            IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
-
+            boolean isRegister = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
+            if (isRegister == false) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " Une erreur s'est produite lors de la création de votre île." +
+                        " Merci de crée un ticket sur le discord: https://discord.gg/excalia"));
+                return;
+            }
             // Add Logs Create
             IslandLog islandLog = new IslandLog(island, LogAction.CREATE_ISLAND, user, null, 0, "");
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
@@ -260,7 +265,6 @@ public class IslandManager {
                         "UUID: " + user.getUuid() + "\n" +
                         "Event: IslandManager#createIsland");
             }
-            if (false) IridiumSkyblock.getInstance().saveDataPlayer(user).join(); // Docta - new save
         });
         return completableFuture;
     }
