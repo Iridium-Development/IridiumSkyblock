@@ -40,7 +40,7 @@ public class TableManager<T extends DatabaseObject, S> {
      */
     public void save() {
         try {
-            List<T> entryList = new ArrayList<>(entries);
+            List<T> entryList = new LinkedList<>(entries);
             for (T t : entryList) {
                 if (t.isChanged()) {
                     dao.createOrUpdate(t);
