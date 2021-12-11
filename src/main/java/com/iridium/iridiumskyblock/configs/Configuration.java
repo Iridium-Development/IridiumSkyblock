@@ -42,7 +42,7 @@ public class Configuration {
     public boolean patreonMessage = true;
     public boolean islandMenu = true;
     public boolean backButtons = true;
-    public boolean createIslandOnHome = false;
+    public boolean createIslandOnHome = true;
 
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
