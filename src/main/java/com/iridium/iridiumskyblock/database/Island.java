@@ -38,7 +38,7 @@ public final class Island extends DatabaseObject {
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
 
-    @DatabaseField(columnName = "name", unique = true)
+    @DatabaseField(columnName = "name")
     private String name;
 
     /*
