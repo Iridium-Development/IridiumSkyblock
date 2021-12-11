@@ -246,12 +246,7 @@ public class IslandManager {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Island island = new Island(name, schematic);
 
-            boolean isRegister = IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
-            if (isRegister == false) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getConfiguration().prefix + " Une erreur s'est produite lors de la création de votre île." +
-                        " Merci de crée un ticket sur le discord: https://discord.gg/excalia"));
-                return;
-            }
+            IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
             // Add Logs Create
             IslandLog islandLog = new IslandLog(island, LogAction.CREATE_ISLAND, user, null, 0, "");
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);

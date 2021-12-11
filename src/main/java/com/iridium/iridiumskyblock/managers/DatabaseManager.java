@@ -132,15 +132,11 @@ public class DatabaseManager {
      * @param island The island we are saving
      * @return The island with variables like id added
      */
-    public synchronized CompletableFuture<Boolean> registerIsland(Island island) {
-        return CompletableFuture.supplyAsync(() -> {
-            boolean isSave = islandTableManager.save(island);
-            if (isSave == true) {
-                islandTableManager.addEntry(island);
-                return true;
-            } else {
-                return false;
-            }
+    public synchronized CompletableFuture<Void> registerIsland(Island island) {
+        island.setName("Ile de : " + island.getName());
+        return CompletableFuture.runAsync(() -> {
+            islandTableManager.save(island);
+            islandTableManager.addEntry(island);
         });
     }
 

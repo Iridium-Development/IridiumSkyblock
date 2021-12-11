@@ -53,17 +53,15 @@ public class TableManager<T extends DatabaseObject, S> {
         }
     }
 
-    public boolean save(T t) {
+    public void save(T t) {
         try {
             if (t.isChanged()) {
                 dao.createOrUpdate(t);
                 dao.commit(getDatabaseConnection());
                 t.setChanged(false);
             }
-            return true;
         } catch (SQLException exception) {
             exception.printStackTrace();
-            return false;
         }
     }
 
