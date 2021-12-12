@@ -358,39 +358,66 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     private void saveDataIridium(Boolean isAsync) {
-        // System.out.println("Démarrage de la sauvegarde en " + (isAsync ? "Async" : "Sync"));
-        System.out.println("Sauvegarde des Users");
-        getDatabaseManager().getUserTableManager().save();
-        System.out.println("Sauvegarde des Islands");
-        getDatabaseManager().getIslandTableManager().save();
-        System.out.println("Sauvegarde des Invites");
-        getDatabaseManager().getIslandInviteTableManager().save();
-        System.out.println("Sauvegarde des Permissions");
-        getDatabaseManager().getIslandPermissionTableManager().save();
-        System.out.println("Sauvegarde des Blocks");
-        getDatabaseManager().getIslandBlocksTableManager().save();
-        System.out.println("Sauvegarde des Spawners");
-        getDatabaseManager().getIslandSpawnersTableManager().save();
-        System.out.println("Sauvegarde des Banks");
-        getDatabaseManager().getIslandBankTableManager().save();
-        System.out.println("Sauvegarde des Missions");
-        getDatabaseManager().getIslandMissionTableManager().save();
-        System.out.println("Sauvegarde des Reward");
-        getDatabaseManager().getIslandRewardTableManager().save();
-        System.out.println("Sauvegarde des Upgrades");
-        getDatabaseManager().getIslandUpgradeTableManager().save();
-        System.out.println("Sauvegarde des Confiances");
-        getDatabaseManager().getIslandTrustedTableManager().save();
-        System.out.println("Sauvegarde des Booster");
-        getDatabaseManager().getIslandBoosterTableManager().save();
-        System.out.println("Sauvegarde des Warps");
-        getDatabaseManager().getIslandWarpTableManager().save();
-        System.out.println("Sauvegarde des Logs");
-        getDatabaseManager().getIslandLogTableManager().save();
-        System.out.println("Sauvegarde des Bans");
-        getDatabaseManager().getIslandBanTableManager().save();
-        System.out.println("Sauvegarde des Settings");
-        getDatabaseManager().getIslandSettingTableManager().save();
+        try {
+            System.out.println("Sauvegarde des Users");
+            getDatabaseManager().getUserTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Islands");
+            getDatabaseManager().getIslandTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Invites");
+            getDatabaseManager().getIslandInviteTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Permissions");
+            getDatabaseManager().getIslandPermissionTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Spawners");
+            getDatabaseManager().getIslandSpawnersTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Banks");
+            getDatabaseManager().getIslandBankTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Missions");
+            getDatabaseManager().getIslandMissionTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Reward");
+            getDatabaseManager().getIslandRewardTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Upgrades");
+            getDatabaseManager().getIslandUpgradeTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Confiances");
+            getDatabaseManager().getIslandTrustedTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Booster");
+            getDatabaseManager().getIslandBoosterTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Warps");
+            getDatabaseManager().getIslandWarpTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Bans");
+            getDatabaseManager().getIslandBanTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Blocks");
+            getDatabaseManager().getIslandBlocksTableManager().save();
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Logs");
+            getDatabaseManager().getIslandLogTableManager().save();
+        } catch (Exception ignored) {}
         System.out.println("Fin des sauvegardes");
     }
 
