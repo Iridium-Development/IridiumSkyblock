@@ -244,7 +244,7 @@ public class IslandManager {
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-            Island island = new Island(name + "'s Island", schematic);
+            Island island = new Island(name, schematic); // ALTER TABLE islands DROP INDEX `name` / `sqlite_autoindex_islands_1`;
 
             IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
             // Add Logs Create
