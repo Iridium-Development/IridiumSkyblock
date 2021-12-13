@@ -32,6 +32,7 @@ public class Configuration {
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
     public String spawnWorldName = "world";
     public String defaultCommandSyntax = "/is %command%";
+    public String islandLevelEquation = "abs(cbrt($1+1))";
 
     public boolean enableCheckVersion = true; public boolean deleteIslandBlocksWhenIslandIsDelete = true;
     public boolean defaultIslandPublic = true;
@@ -43,6 +44,7 @@ public class Configuration {
     public boolean patreonMessage = true;
     public boolean islandMenu = true;
     public boolean backButtons = true;
+    public boolean createIslandOnHome = true;
 
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
