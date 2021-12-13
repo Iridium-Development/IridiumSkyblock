@@ -34,6 +34,7 @@ public class TableManager<T extends DatabaseObject, S> {
         this.dao.setAutoCommit(getDatabaseConnection(), false);
         this.entries = new SortedList<>(comparator);
         this.entries.addAll(dao.queryForAll());
+        entries.forEach(t -> t.setChanged(false));
         this.entries.sort(comparator);
         this.clazz = clazz;
     }
