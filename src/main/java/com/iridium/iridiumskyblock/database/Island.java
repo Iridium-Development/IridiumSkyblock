@@ -115,8 +115,20 @@ public final class Island extends DatabaseObject {
      * @return The experience required to reach this level
      */
     private int getExperienceRequired(int level) {
-        //TODO
-        return -1 + (level * level * level);
+        int lower = 0;
+        int upper = Integer.MAX_VALUE;
+        while (lower < upper) {
+            int mid = (lower + upper) / 2;
+            double experience = islandLevelEquation.evaluate(mid);
+            if (experience == level) {
+                return mid;
+            } else if (experience < level) {
+                lower = mid + 1;
+            } else {
+                upper = mid;
+            }
+        }
+        return 0;
     }
 
     /**
