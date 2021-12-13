@@ -76,10 +76,18 @@ public class InfoCommand extends Command {
      * @param requestedUser The User whose data was requested
      */
     private void sendInfo(CommandSender sender, Island island, User requestedUser) {
-        String members = island.getMembers().stream()
-                .filter(user -> user != island.getOwner())
-                .map(User::getName)
-                .collect(Collectors.joining(", "));
+
+        StringBuilder membersBuilder = new StringBuilder();
+        boolean hasAdminPermission = sender.hasPermission("iridiumskyblock.info.admin");
+
+        int size = island.getMembers().size();
+        for (int i = 0; i < size; i++) {
+            User user = island.getMembers().get(i);
+            membersBuilder.append(user.getName());
+            if (hasAdminPermission) membersBuilder.append(" [").append(user.getUuid()).append("] ");
+            if (i < (size-1)) membersBuilder.append(", ");
+        }
+        String members = membersBuilder.toString();
 
         if (members.isEmpty()) {
             members = IridiumSkyblock.getInstance().getMessages().none;

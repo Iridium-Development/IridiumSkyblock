@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
-import com.iridium.iridiumcore.utils.SortedList;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.support.ConnectionSource;
@@ -14,22 +13,14 @@ import java.util.*;
  */
 public class UserTableManager extends TableManager<User, Integer> {
 
-    // A list of users sorted by island id for binary search
-    private final List<User> userIslandIndex;
+    private final HashMap<Integer, User> userIslandMap = new HashMap<>();
 
     public UserTableManager(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, User.class, Comparator.comparing(User::getUuid));
-        this.userIslandIndex = new SortedList<>(Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
-        this.userIslandIndex.addAll(getEntries());
-        sort();
-    }
-
-    /**
-     * Sort the list of entries by UUID
-     */
-    public void sort() {
-        getEntries().sort(Comparator.comparing(User::getUuid));
-        userIslandIndex.sort(Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
+        int size = getEntries().size();
+        for (int i = 0; i < size; i++) {
+            userIslandMap.put(i, getEntries().get(i));
+        }
     }
 
     /**
@@ -38,8 +29,14 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The item we are adding
      */
     public void addEntry(User user) {
+        for (User user1 : userIslandMap.values()) {
+            if (user1.getUuid().equals(user.getUuid())) {
+                System.out.println("Alerte Tentative de Duplication d'entrée !");
+                return;
+            }
+        }
         getEntries().add(user);
-        userIslandIndex.add(user);
+        userIslandMap.put(userIslandMap.size(), user);
     }
 
     /**
@@ -48,15 +45,21 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The specified User
      */
     public void resortIsland(User user) {
-        userIslandIndex.remove(user);
-        int islandIndex = Collections.binarySearch(userIslandIndex, user, Comparator.comparing(u -> u.getIsland().map(Island::getId).orElse(0)));
-        userIslandIndex.add(islandIndex < 0 ? -(islandIndex + 1) : islandIndex, user);
+        for (Map.Entry<Integer, User> userEntry : userIslandMap.entrySet()) {
+            if (user.getUuid().equals(userEntry.getValue().getUuid())) {
+                userIslandMap.replace(userEntry.getKey(), user);
+                return;
+            }
+        }
     }
 
     public Optional<User> getUser(UUID uuid) {
-        int index = Collections.binarySearch(getEntries(), new User(uuid, ""), Comparator.comparing(User::getUuid));
-        if (index < 0) return Optional.empty();
-        return Optional.of(getEntries().get(index));
+        for (Map.Entry<Integer, User> userEntry : userIslandMap.entrySet()) {
+            if (uuid.equals(userEntry.getValue().getUuid())) {
+                return Optional.of(userEntry.getValue());
+            }
+        }
+        return Optional.empty();
     }
 
 
@@ -66,42 +69,20 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param island the specified island
      */
     public List<User> getEntries(@NotNull Island island) {
-        int index = Collections.binarySearch(userIslandIndex, new User(island), Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
-        if (index < 0) return Collections.emptyList();
-
-        int currentIndex = index - 1;
-        List<User> result = new ArrayList<>();
-        result.add(userIslandIndex.get(index));
-
-        while (true) {
-            if (currentIndex < 0) break;
-            User user = userIslandIndex.get(currentIndex);
-            if (island.equals(user.getIsland().orElse(null))) {
-                result.add(userIslandIndex.get(currentIndex));
-                currentIndex--;
-            } else {
-                break;
-            }
+        List<User> userList = new LinkedList<>();
+        for (Map.Entry<Integer, User> entry : userIslandMap.entrySet()) {
+            User user = entry.getValue();
+            Optional<Island> hasIsland = user.getIsland();
+            if (hasIsland.isEmpty()) continue;
+            Island islandPlayer = hasIsland.get();
+            if (islandPlayer.getId() == island.getId()) userList.add(user);
         }
-
-        currentIndex = index + 1;
-
-        while (true) {
-            if (currentIndex >= userIslandIndex.size()) break;
-            User user = userIslandIndex.get(currentIndex);
-            if (island.equals(user.getIsland().orElse(null))) {
-                result.add(userIslandIndex.get(currentIndex));
-                currentIndex++;
-            } else {
-                break;
-            }
-        }
-        return result;
+        return userList;
     }
 
     @Override
     public void clear() {
         super.clear();
-        userIslandIndex.clear();
+        userIslandMap.clear();
     }
 }
