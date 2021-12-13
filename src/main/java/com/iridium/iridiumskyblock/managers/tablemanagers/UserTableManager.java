@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class UserTableManager extends TableManager<User, Integer> {
 
-    private final HashMap<Integer, User> userIslandMap = new HashMap<>();
+    private final LinkedHashMap<Integer, User> userIslandMap = new LinkedHashMap<>();
 
     public UserTableManager(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, User.class, Comparator.comparing(User::getUuid));
