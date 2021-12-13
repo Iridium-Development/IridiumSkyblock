@@ -29,13 +29,12 @@ public class IslandBiomeGUI extends IslandGUI {
 
     public IslandBiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider, Inventory previousInventory) {
         super(IridiumSkyblock.getInstance().getInventories().biomeGUI, previousInventory, island);
-        final long elementsPerPage = IridiumSkyblock.getInstance().getInventories().biomeGUI.size - 9;
         this.biomes = Arrays.stream(XBiome.VALUES)
                 .filter(biome -> biome.getEnvironment() == environment)
                 .filter(biome -> biome.getBiome() != null)
                 .filter(biome -> biome != XBiome.THE_VOID)
-                .skip((page - 1) * elementsPerPage)
-                .limit(elementsPerPage)
+                .filter(biome -> biome != XBiome.CUSTOM)
+                .filter(biome -> !biome.getBiome().name().startsWith("old_"))
                 .collect(Collectors.toList());
         this.environment = environment;
         this.page = page;
@@ -52,9 +51,13 @@ public class IslandBiomeGUI extends IslandGUI {
 
         AtomicInteger index = new AtomicInteger(0);
 
-        for (XBiome xBiome : biomes) {
-            inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().biomeGUI.item, Collections.singletonList(new Placeholder("biome", WordUtils.capitalizeFully(xBiome.name().toLowerCase().replace("_", " "))))));
-        }
+        final long elementsPerPage = IridiumSkyblock.getInstance().getInventories().biomeGUI.size - 9;
+        biomes.stream()
+                .skip((page - 1) * elementsPerPage)
+                .limit(elementsPerPage)
+                .forEach(xBiome ->
+                        inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().biomeGUI.item, Collections.singletonList(new Placeholder("biome", WordUtils.capitalizeFully(xBiome.name().toLowerCase().replace("_", " "))))))
+                );
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
             inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
