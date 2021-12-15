@@ -13,13 +13,14 @@ import java.util.*;
  */
 public class UserTableManager extends TableManager<User, Integer> {
 
-    private final LinkedHashMap<Integer, User> userIslandMap = new LinkedHashMap<>();
+    private final LinkedHashMap<UUID, User> userIslandMap = new LinkedHashMap<>();
 
     public UserTableManager(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, User.class, Comparator.comparing(User::getUuid));
         int size = getEntries().size();
         for (int i = 0; i < size; i++) {
-            userIslandMap.put(i, getEntries().get(i));
+            User user = getEntries().get(i);
+            userIslandMap.put(user.getUuid(), user);
         }
     }
 
@@ -29,14 +30,12 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The item we are adding
      */
     public void addEntry(User user) {
-        for (User user1 : userIslandMap.values()) {
-            if (user1.getUuid().equals(user.getUuid())) {
-                System.out.println("Alerte Tentative de Duplication d'entrée !");
-                return;
-            }
+        if (userIslandMap.get(user.getUuid()) != null) {
+            System.out.println("Alerte Tentative de Duplication d'entrée !");
+            return;
         }
         getEntries().add(user);
-        userIslandMap.put(userIslandMap.size(), user);
+        userIslandMap.put(user.getUuid(), user);
     }
 
     /**
@@ -45,21 +44,13 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The specified User
      */
     public void resortIsland(User user) {
-        for (Map.Entry<Integer, User> userEntry : userIslandMap.entrySet()) {
-            if (user.getUuid().equals(userEntry.getValue().getUuid())) {
-                userIslandMap.replace(userEntry.getKey(), user);
-                return;
-            }
-        }
+        userIslandMap.replace(user.getUuid(), user);
     }
 
     public Optional<User> getUser(UUID uuid) {
-        for (Map.Entry<Integer, User> userEntry : userIslandMap.entrySet()) {
-            if (uuid.equals(userEntry.getValue().getUuid())) {
-                return Optional.of(userEntry.getValue());
-            }
-        }
-        return Optional.empty();
+        User user = userIslandMap.get(uuid);
+        if (user == null) return Optional.empty();
+        return Optional.of(user);
     }
 
 
@@ -70,7 +61,7 @@ public class UserTableManager extends TableManager<User, Integer> {
      */
     public List<User> getEntries(@NotNull Island island) {
         List<User> userList = new LinkedList<>();
-        for (Map.Entry<Integer, User> entry : userIslandMap.entrySet()) {
+        for (Map.Entry<UUID, User> entry : userIslandMap.entrySet()) {
             User user = entry.getValue();
             Optional<Island> hasIsland = user.getIsland();
             if (hasIsland.isEmpty()) continue;
