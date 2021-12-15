@@ -22,7 +22,6 @@ public class UserTableManager extends TableManager<User, Integer> {
             User user = getEntries().get(i);
             userIslandMap.put(user.getUuid(), user);
         }
-        System.out.println("Teste de la taille : " + userIslandMap.size());
     }
 
     /**
