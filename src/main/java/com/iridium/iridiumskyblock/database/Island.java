@@ -95,7 +95,7 @@ public final class Island extends DatabaseObject {
     }
 
     public String getName() {
-        return name == null ? getOwner().getName() : name;
+        return name == null ? IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%island_owner_name%", getOwner().getName()) : name;
     }
 
     /**

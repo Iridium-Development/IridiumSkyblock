@@ -33,6 +33,7 @@ public class Configuration {
     public String spawnWorldName = "world";
     public String defaultCommandSyntax = "/is %command%";
     public String islandLevelEquation = "abs(cbrt($1+1))";
+    public String defaultIslandName = "%island_owner_name%'s Island";
 
     public boolean enableCheckVersion = true; public boolean deleteIslandBlocksWhenIslandIsDelete = true;
     public boolean defaultIslandPublic = true;
