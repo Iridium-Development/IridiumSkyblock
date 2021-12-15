@@ -61,8 +61,7 @@ public class UserTableManager extends TableManager<User, Integer> {
      */
     public List<User> getEntries(@NotNull Island island) {
         List<User> userList = new LinkedList<>();
-        for (Map.Entry<UUID, User> entry : userIslandMap.entrySet()) {
-            User user = entry.getValue();
+        for (User user : userIslandMap.values()) {
             Optional<Island> hasIsland = user.getIsland();
             if (hasIsland.isEmpty()) continue;
             Island islandPlayer = hasIsland.get();
