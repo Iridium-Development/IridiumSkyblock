@@ -92,7 +92,6 @@ public class PromoteCommand extends Command {
                     "UUID: " + user.getUuid() + "\n" +
                     "Event: PromoteCommand");
         }
-        if (false) IridiumSkyblock.getInstance().saveDataPlayer(targetUser).join(); // Docta new save
         return true;
     }
 

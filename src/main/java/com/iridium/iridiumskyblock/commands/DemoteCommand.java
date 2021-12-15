@@ -94,7 +94,6 @@ public class DemoteCommand extends Command {
                     "UUID: " + user.getUuid() + "\n" +
                     "Event: DemoteCommand");
         }
-        if (false) IridiumSkyblock.getInstance().saveDataPlayer(offlinePlayerUser).join(); // Docta - new save
         return true;
     }
 

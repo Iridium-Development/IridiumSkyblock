@@ -108,7 +108,6 @@ public final class User extends DatabaseObject {
                     "UUID: " + this.getUuid() + "\n" +
                     "Event: User#setIsland");
         }
-        if (false) IridiumSkyblock.getInstance().saveDataPlayer(this).join();
     }
 
     /**
