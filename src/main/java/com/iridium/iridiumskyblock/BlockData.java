@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class BlockData {
 
     private XMaterial material;
-    private byte data;
+    private org.bukkit.block.data.BlockData data;
     private List<String> inventory;
 
     /**
@@ -33,7 +33,7 @@ public class BlockData {
      */
     public BlockData(Block block) {
         this.material = XMaterial.matchXMaterial(block.getType());
-        this.data = block.getData();
+        this.data = block.getBlockData();
 
         if (block.getState() instanceof InventoryHolder inventoryHolder) {
             this.inventory = Arrays.stream(inventoryHolder.getInventory().getContents()).map(item -> item != null ? ItemStackUtils.serialize(item) : null).collect(Collectors.toList());
@@ -50,7 +50,7 @@ public class BlockData {
         Material mat = material.parseMaterial();
         if (mat != null) {
             blockState.setType(mat);
-            blockState.setRawData(data);
+            blockState.setBlockData(data);
             blockState.update(true, true);
 
             // We gotta create a new BlockState because the old one is still air and wont be instance of container

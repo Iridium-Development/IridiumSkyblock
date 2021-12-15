@@ -22,6 +22,7 @@ public class UserTableManager extends TableManager<User, Integer> {
             User user = getEntries().get(i);
             userIslandMap.put(user.getUuid(), user);
         }
+        System.out.println("Teste de la taille : " + userIslandMap.size());
     }
 
     /**
@@ -39,7 +40,7 @@ public class UserTableManager extends TableManager<User, Integer> {
     }
 
     /**
-     * Puts the user in the correct order of userIslandIndex
+     * Puts the user in userIslandMap
      *
      * @param user The specified User
      */
