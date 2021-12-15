@@ -40,8 +40,8 @@ public class TableManager<T extends DatabaseObject, S> {
      * Saves everything to the Database
      */
     public void save() {
+        List<T> entryList = new LinkedList<>(entries); // Pas besoin de le mettre dans le try/catch
         try {
-            List<T> entryList = new LinkedList<>(entries);
             for (T t : entryList) {
                 if (t.isChanged()) {
                     dao.createOrUpdate(t);
