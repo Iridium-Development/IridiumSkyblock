@@ -45,7 +45,7 @@ public class UserManager {
      * @param uuid The uuid of the onlyForPlayers
      * @return the User class of the onlyForPlayers
      */
-    public Optional<User> getUserByUUID(@NotNull UUID uuid) {
+    private Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(uuid);
     }
 
