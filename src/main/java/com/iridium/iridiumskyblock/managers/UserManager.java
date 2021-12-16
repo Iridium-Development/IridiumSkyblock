@@ -21,7 +21,7 @@ public class UserManager {
      * @return The user data
      */
     public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
-        Optional<User> userOptional = getUserByUUID(offlinePlayer.getUniqueId());
+        Optional<User> userOptional = this.getUserByUUID(offlinePlayer.getUniqueId());
         if (userOptional.isPresent()) {
             return userOptional.get();
         } else {
