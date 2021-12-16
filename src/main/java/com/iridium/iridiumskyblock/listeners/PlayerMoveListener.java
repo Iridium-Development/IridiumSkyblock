@@ -37,7 +37,7 @@ public class PlayerMoveListener implements Listener {
                     );
                 }
 
-                Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
+                Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player, user);
                 if (island.isPresent()) {
                     IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
                     if (user.isFlying() && !islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {
@@ -96,13 +96,13 @@ public class PlayerMoveListener implements Listener {
         }
 
         if (event.getTo().getY() < LocationUtils.getMinHeight(event.getTo().getWorld()) && IridiumSkyblock.getInstance().getConfiguration().voidTeleport && IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player, user);
             if (island.isPresent()) {
-                IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), 0);
+                IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, user, island.get(), 0);
             } else {
                 Optional<Island> userIsland = user.getIsland();
                 if (userIsland.isPresent()) {
-                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, userIsland.get(), 0);
+                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, user, userIsland.get(), 0);
                 } else {
                     PlayerUtils.teleportSpawn(player);
                 }

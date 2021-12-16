@@ -95,14 +95,11 @@ public class DatabaseManager {
      * @return The database URL String
      */
     private @NotNull String getDatabaseURL(SQL sqlConfig) {
-        switch (sqlConfig.driver) {
-            case MYSQL:
-                return "jdbc:" + sqlConfig.driver.name().toLowerCase() + "://" + sqlConfig.host + ":" + sqlConfig.port + "/" + sqlConfig.database + "?useSSL=" + sqlConfig.useSSL;
-            case SQLITE:
-                return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
-            default:
-                throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
-        }
+        return switch (sqlConfig.driver) {
+            case MYSQL -> "jdbc:" + sqlConfig.driver.name().toLowerCase() + "://" + sqlConfig.host + ":" + sqlConfig.port + "/" + sqlConfig.database + "?useSSL=" + sqlConfig.useSSL;
+            case SQLITE -> "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
+            default -> throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
+        };
     }
 
     private void convertDatabaseData(SQL.Driver driver) {
