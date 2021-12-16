@@ -91,7 +91,7 @@ public class JoinCommand extends Command {
         user.setIsland(island.get());
         user.setIslandRank(IslandRank.MEMBER);
         islandInvite.ifPresent(invite -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(invite));
-        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), 0);
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, user, island.get(), 0);
 
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_JOINED, user, null, 0, "");
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);

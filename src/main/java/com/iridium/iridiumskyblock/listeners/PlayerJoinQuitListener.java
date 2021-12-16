@@ -23,7 +23,7 @@ public class PlayerJoinQuitListener implements Listener {
         user.setName(event.getPlayer().getName());
 
         // Send their island border
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player).ifPresent(island ->
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player, user).ifPresent(island ->
                 PlayerUtils.sendBorder(player, island)
         );
 

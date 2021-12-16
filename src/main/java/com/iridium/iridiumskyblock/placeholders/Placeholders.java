@@ -28,7 +28,7 @@ public class Placeholders {
                     IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland())
             )
             .putAll(getIslandPlaceholders("current", player ->
-                    IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player))
+                    IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player, null))
             )
             .putAll(getIslandTopPlaceholders())
 

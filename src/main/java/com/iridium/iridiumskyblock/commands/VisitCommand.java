@@ -56,7 +56,7 @@ public class VisitCommand extends Command {
             return false;
         }
 
-        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, targetUser.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, user, targetUser.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
         return true;
     }
 

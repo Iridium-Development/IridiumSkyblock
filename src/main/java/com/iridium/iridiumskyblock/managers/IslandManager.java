@@ -116,7 +116,12 @@ public class IslandManager {
      * @param delay  How long the player should stand still for before teleporting
      */
     public void teleportHome(@NotNull Player player, @NotNull Island island, int delay) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        this.teleportHome(player, null, island, delay);
+    }
+    public void teleportHome(@NotNull Player player, User user, @NotNull Island island, int delay) {
+        if (user == null) {
+            user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        }
         if (isBannedOnIsland(island, user)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
@@ -139,9 +144,10 @@ public class IslandManager {
                 teleportHome(player, island);
                 return;
             }
+            final User user1 = user;
             BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
                 teleportHome(player, island);
-                user.setTeleportingTask(null);
+                user1.setTeleportingTask(null);
             }, 20L * delay);
             user.setTeleportingTask(bukkitTask);
         } else {
@@ -220,7 +226,7 @@ public class IslandManager {
         if (islandCreateEvent.isCancelled()) return false;
 
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, user.getName(), islandCreateEvent.getSchematicConfig()).thenAccept(island -> {
+        createIsland(player, user, user.getName(), islandCreateEvent.getSchematicConfig()).thenAccept(island -> {
             if (island == null) return;
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 teleportHome(player, island);
@@ -240,24 +246,30 @@ public class IslandManager {
      * @return The island being created
      */
     private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, String name, @NotNull Schematics.SchematicConfig schematic) {
+        return this.createIsland(player, null, name, schematic);
+    }
+    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, User user, String name, @NotNull Schematics.SchematicConfig schematic) {
         clearIslandCache();
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            User finaluser = user;
+            if (finaluser == null) {
+                finaluser = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            }
             Island island = new Island(name, schematic); // ALTER TABLE islands DROP INDEX `name` / `sqlite_autoindex_islands_1`;
 
             IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
             // Add Logs Create
-            IslandLog islandLog = new IslandLog(island, LogAction.CREATE_ISLAND, user, null, 0, "");
+            IslandLog islandLog = new IslandLog(island, LogAction.CREATE_ISLAND, finaluser, null, 0, "");
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
 
-            user.setIsland(island);
-            user.setIslandRank(IslandRank.OWNER);
+            finaluser.setIsland(island);
+            finaluser.setIslandRank(IslandRank.OWNER);
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> pasteSchematic(island, schematic).thenRun(() -> completableFuture.complete(island)));
             if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-                System.out.println("Player: " + user.getName() + "\n" +
-                        "UUID: " + user.getUuid() + "\n" +
+                System.out.println("Player: " + finaluser.getName() + "\n" +
+                        "UUID: " + finaluser.getUuid() + "\n" +
                         "Event: IslandManager#createIsland");
             }
         });
@@ -366,7 +378,7 @@ public class IslandManager {
             getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entities -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                         for (Entity entity : entities) {
                             if (entity instanceof Player) {
-                                teleportHome((Player) entity, island, 0);
+                                teleportHome((Player) entity, user, island, 0);
                             } else {
                                 entity.remove();
                             }
@@ -486,11 +498,15 @@ public class IslandManager {
      * @return An optional of the island the player is in
      */
     public @NotNull Optional<Island> getIslandViaPlayerLocation(Player player) {
+        return this.getIslandViaPlayerLocation(player, null);
+    }
+    public @NotNull Optional<Island> getIslandViaPlayerLocation(Player player, User user) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
             return Optional.empty();
         }
-
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        if (user == null) {
+            user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        }
         if (user.getCurrentIslandVisiting() != null) {
             if (user.getCurrentIslandVisiting().isInIsland(player.getLocation())) {
                 return Optional.of(user.getCurrentIslandVisiting());

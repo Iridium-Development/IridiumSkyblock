@@ -39,7 +39,7 @@ public class HomeCommand extends Command {
         Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
-            IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
+            IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, user, island.get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
             return true;
         } else if (IridiumSkyblock.getInstance().getConfiguration().createIslandOnHome) {
             IridiumSkyblock.getInstance().getCommands().createCommand.execute(player, new String[]{});
