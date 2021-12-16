@@ -17,7 +17,7 @@ import java.util.*;
  * @param <T> The Table Class
  * @param <S> The Table Primary Id Class
  */
-public class TableManager<T extends DatabaseObject, S> {
+public class TableManager<T extends DatabaseObject, S> {z
     private final SortedList<T> entries;
     private final Dao<T, S> dao;
     private final Class<T> clazz;
