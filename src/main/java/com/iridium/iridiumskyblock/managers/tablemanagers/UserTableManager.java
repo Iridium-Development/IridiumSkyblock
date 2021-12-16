@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.support.ConnectionSource;
@@ -36,9 +37,11 @@ public class UserTableManager extends TableManager<User, Integer> {
         }
         getEntries().add(user);
         userIslandMap.put(user.getUuid(), user);
-        System.out.println("Debugage de la liste/map : \n" +
-                "Liste : " + getEntries().size() + "\n" +
-                "Map : " + userIslandMap.size());
+        if (IridiumSkyblock.getInstance().getConfiguration().debug) {
+            System.out.println("Debugage de la liste/map : \n" +
+                    "Liste : " + getEntries().size() + "\n" +
+                    "Map : " + userIslandMap.size());
+        }
     }
 
     /**
