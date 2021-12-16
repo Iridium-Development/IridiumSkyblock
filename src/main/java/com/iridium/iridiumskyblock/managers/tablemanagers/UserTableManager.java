@@ -25,7 +25,7 @@ public class UserTableManager extends TableManager<User, Integer> {
     }
 
     /**
-     * Add an item to the list whilst maintaining sorted list
+     * Add an item to the list
      *
      * @param user The item we are adding
      */
@@ -36,6 +36,9 @@ public class UserTableManager extends TableManager<User, Integer> {
         }
         getEntries().add(user);
         userIslandMap.put(user.getUuid(), user);
+        System.out.println("Debugage de la liste/map : \n" +
+                "Liste : " + getEntries().size() + "\n" +
+                "Map : " + userIslandMap.size());
     }
 
     /**
@@ -44,7 +47,11 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The specified User
      */
     public void resortIsland(User user) {
-        userIslandMap.replace(user.getUuid(), user);
+        if (userIslandMap.get(user.getUuid()) != null) {
+            userIslandMap.replace(user.getUuid(), user);
+        } else {
+            userIslandMap.putIfAbsent(user.getUuid(), user);
+        }
     }
 
     public Optional<User> getUser(UUID uuid) {
