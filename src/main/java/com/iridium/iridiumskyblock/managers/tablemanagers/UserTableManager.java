@@ -63,6 +63,10 @@ public class UserTableManager extends TableManager<User, Integer> {
         return Optional.of(user);
     }
 
+    public User getUserbyUUID(UUID uuid) {
+        return userIslandMap.get(uuid);
+    }
+
 
     /**
      * Gets all entries associated with an island

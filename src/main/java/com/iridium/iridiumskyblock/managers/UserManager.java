@@ -21,22 +21,18 @@ public class UserManager {
      * @return The user data
      */
     public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
-        Optional<User> userOptional = this.getUserByUUID(offlinePlayer.getUniqueId());
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
+        User user = IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUserbyUUID(offlinePlayer.getUniqueId());
+        if (user == null) {
             Optional<String> name = Optional.ofNullable(offlinePlayer.getName());
-            User user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
+            user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
             IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
             if (IridiumSkyblock.getInstance().getConfiguration().debug) {
                 System.out.println("Player: " + user.getName() + "\n" +
                         "UUID: " + user.getUuid() + "\n" +
                         "Event: UserManager#getUser");
             }
-            return user;
         }
-
-
+        return user;
     }
 
     /**
