@@ -360,7 +360,7 @@ public class IridiumSkyblock extends IridiumCore {
     private void saveDataIridium(Boolean isAsync) {
         try {
             System.out.println("Sauvegarde des Users");
-            getDatabaseManager().getUserTableManager().save();
+            getDatabaseManager().getUserTableManager().saveHashMap(IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUserIslandMap());
         } catch (Exception ignored) {}
         try {
             System.out.println("Sauvegarde des Islands");
@@ -422,10 +422,7 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     public CompletableFuture<Void> saveDataPlayer(User user) {
-        return CompletableFuture.runAsync(() -> {
-            if (true) return;
-            getDatabaseManager().getUserTableManager().save(user);
-        });
+        return null;
     }
 
     /**
