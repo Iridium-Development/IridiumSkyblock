@@ -35,6 +35,12 @@ public class UserTableManager extends TableManager<User, Integer> {
             System.out.println("Alerte Tentative de Duplication d'entrée !");
             return;
         }
+        for (int i = 0; i < sizeEntries(); i++) {
+            if (getEntries().get(i).getUuid() == user.getUuid())  {
+                System.out.println("Alerte Tentative de Duplication d'entrée !");
+                return;
+            }
+        }
         getEntries().add(user);
         userIslandMap.put(user.getUuid(), user);
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
@@ -92,5 +98,9 @@ public class UserTableManager extends TableManager<User, Integer> {
 
     public LinkedHashMap<UUID, User> getUserIslandMap() {
         return userIslandMap;
+    }
+
+    public int sizeEntries() {
+        return getEntries().size();
     }
 }

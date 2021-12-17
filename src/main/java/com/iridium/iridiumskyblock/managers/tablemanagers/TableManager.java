@@ -40,21 +40,18 @@ public class TableManager<T extends DatabaseObject, S> {
      * Saves everything to the Database
      */
     public void save() {
-        int numberSave = 0;
         List<T> entryList = new LinkedList<>(entries); // Pas besoin de le mettre dans le try/catch
         try {
             for (T t : entryList) {
                 if (t.isChanged()) {
                     dao.createOrUpdate(t);
                     t.setChanged(false);
-                    numberSave++;
                 }
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        System.out.println("List save : " + numberSave);
     }
 
     public void save(T t) {
