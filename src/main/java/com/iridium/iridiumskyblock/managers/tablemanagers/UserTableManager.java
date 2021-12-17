@@ -71,8 +71,8 @@ public class UserTableManager extends TableManager<User, Integer> {
      *
      * @param island the specified island
      */
-    public List<User> getEntries(@NotNull Island island) {
-        List<User> userList = new LinkedList<>();
+    public LinkedList<User> getEntries(@NotNull Island island) {
+        LinkedList<User> userList = new LinkedList<>();
         for (User user : userIslandMap.values()) {
             Optional<Island> hasIsland = user.getIsland();
             if (hasIsland.isEmpty()) continue;
