@@ -54,7 +54,7 @@ public class TableManager<T extends DatabaseObject, S> {
         }
     }
 
-    public void saveHashMap(LinkedHashMap<UUID, T> uuidtLinkedHashMap) {
+    public void saveHashMap(LinkedHashMap<?, T> uuidtLinkedHashMap) {
         List<T> tList = uuidtLinkedHashMap.values().stream().toList();
         int sizeList = tList.size();
         try {
