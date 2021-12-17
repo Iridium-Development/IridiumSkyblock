@@ -89,4 +89,8 @@ public class UserTableManager extends TableManager<User, Integer> {
         super.clear();
         userIslandMap.clear();
     }
+
+    public LinkedHashMap<UUID, User> getUserIslandMap() {
+        return userIslandMap;
+    }
 }
