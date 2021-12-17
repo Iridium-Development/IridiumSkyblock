@@ -172,9 +172,6 @@ public class IridiumSkyblock extends IridiumCore {
         this.shopManager = new ShopManager();
         shopManager.reloadCategories();
 
-        // Initialize the API
-        IridiumSkyblockAPI.initializeAPI(this);
-
         this.schematicManager = new SchematicManager();
 
         // Initialize Vault economy support
