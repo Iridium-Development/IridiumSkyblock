@@ -5,11 +5,16 @@ import com.iridium.iridiumskyblock.database.Island;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class IslandBuilder {
-    private static AtomicInteger ISLAND_ID = new AtomicInteger(1);
+    private final static AtomicInteger ISLAND_ID = new AtomicInteger(1);
     private final Island island;
 
     public IslandBuilder() {
         int id = ISLAND_ID.getAndIncrement();
+        this.island = new Island("Island_" + id, id);
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().addEntry(island);
+    }
+
+    public IslandBuilder(int id) {
         this.island = new Island("Island_" + id, id);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().addEntry(island);
     }
@@ -21,9 +26,5 @@ public class IslandBuilder {
 
     public Island build() {
         return island;
-    }
-
-    public static void resetIslandId() {
-        ISLAND_ID = new AtomicInteger(1);
     }
 }

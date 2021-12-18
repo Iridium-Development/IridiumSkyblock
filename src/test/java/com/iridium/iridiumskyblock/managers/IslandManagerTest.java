@@ -29,14 +29,26 @@ class IslandManagerTest {
     public void tearDown() {
         Bukkit.getScheduler().cancelTasks(IridiumSkyblock.getInstance());
         MockBukkit.unmock();
-        IslandBuilder.resetIslandId();
     }
 
     @Test
     public void getIslandById() {
-        for (int i = 1; i <= 10; i++) {
-            assertEquals(new IslandBuilder().build(), IridiumSkyblock.getInstance().getIslandManager().getIslandById(i).orElse(null));
-        }
+        assertEquals(new IslandBuilder(1).build(), IridiumSkyblock.getInstance().getIslandManager().getIslandById(1).orElse(null));
+        assertEquals(new IslandBuilder(2).build(), IridiumSkyblock.getInstance().getIslandManager().getIslandById(2).orElse(null));
+        assertEquals(new IslandBuilder(3).build(), IridiumSkyblock.getInstance().getIslandManager().getIslandById(3).orElse(null));
+    }
+
+    @Test
+    public void getIslandByName() {
+        Island island1 = new IslandBuilder("Island 1").build();
+        Island island2 = new IslandBuilder("Island 2").build();
+        assertEquals(island1, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("Island 1").orElse(null));
+        assertEquals(island1, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("ISLAND 1").orElse(null));
+        assertEquals(island1, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island 1").orElse(null));
+
+        assertEquals(island2, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("Island 2").orElse(null));
+        assertEquals(island2, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("ISLAND 2").orElse(null));
+        assertEquals(island2, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island 2").orElse(null));
     }
 
     @Test
