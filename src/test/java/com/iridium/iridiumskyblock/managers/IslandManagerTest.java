@@ -39,10 +39,10 @@ class IslandManagerTest {
 
     @Test
     public void getIslandByName() {
-        Island island = new IslandBuilder().build();
-        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("Island_1").orElse(null));
-        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("ISLAND_1").orElse(null));
-        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island_1").orElse(null));
+        Island island = new IslandBuilder("Island Name").build();
+        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("Island Name").orElse(null));
+        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("ISLAND NAME").orElse(null));
+        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island name").orElse(null));
 
         assertNull(IridiumSkyblock.getInstance().getIslandManager().getIslandByName("fake_island").orElse(null));
         assertNull(IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island1").orElse(null));
