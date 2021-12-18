@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
-import com.iridium.iridiumcore.utils.SortedList;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.support.ConnectionSource;
@@ -14,49 +14,49 @@ import java.util.*;
  */
 public class UserTableManager extends TableManager<User, Integer> {
 
-    // A list of users sorted by island id for binary search
-    private final SortedList<User> userIslandIndex;
+    private final LinkedHashMap<UUID, User> userIslandMap = new LinkedHashMap<>();
 
     public UserTableManager(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, User.class, Comparator.comparing(User::getUuid));
-        this.userIslandIndex = new SortedList<>(Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
-        this.userIslandIndex.addAll(getEntries());
-        sort();
+        int size = getEntries().size();
+        for (int i = 0; i < size; i++) {
+            User user = getEntries().get(i);
+            userIslandMap.put(user.getUuid(), user);
+        }
     }
 
     /**
-     * Sort the list of entries by UUID
-     */
-    public void sort() {
-        getEntries().sort(Comparator.comparing(User::getUuid));
-        userIslandIndex.sort(Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
-    }
-
-    /**
-     * Add an item to the list whilst maintaining sorted list
+     * Add an item to the list
      *
      * @param user The item we are adding
      */
     public void addEntry(User user) {
-        getEntries().add(user);
-        userIslandIndex.add(user);
+        if (userIslandMap.get(user.getUuid()) != null) return;
+        userIslandMap.put(user.getUuid(), user);
     }
 
     /**
-     * Puts the user in the correct order of userIslandIndex
+     * Puts the user in userIslandMap
      *
      * @param user The specified User
      */
     public void resortIsland(User user) {
-        userIslandIndex.remove(user);
-        int islandIndex = Collections.binarySearch(userIslandIndex, user, Comparator.comparing(u -> u.getIsland().map(Island::getId).orElse(0)));
-        userIslandIndex.add(islandIndex < 0 ? -(islandIndex + 1) : islandIndex, user);
+        if (userIslandMap.get(user.getUuid()) != null) {
+            userIslandMap.replace(user.getUuid(), user);
+        } else {
+            userIslandMap.putIfAbsent(user.getUuid(), user);
+        }
     }
 
+    @Deprecated
     public Optional<User> getUser(UUID uuid) {
-        int index = Collections.binarySearch(getEntries(), new User(uuid, ""), Comparator.comparing(User::getUuid));
-        if (index < 0) return Optional.empty();
-        return Optional.of(getEntries().get(index));
+        User user = userIslandMap.get(uuid);
+        if (user == null) return Optional.empty();
+        return Optional.of(user);
+    }
+
+    public User getUserbyUUID(UUID uuid) {
+        return userIslandMap.get(uuid);
     }
 
 
@@ -65,43 +65,28 @@ public class UserTableManager extends TableManager<User, Integer> {
      *
      * @param island the specified island
      */
-    public List<User> getEntries(@NotNull Island island) {
-        int index = Collections.binarySearch(userIslandIndex, new User(island), Comparator.comparing(user -> user.getIsland().map(Island::getId).orElse(0)));
-        if (index < 0) return Collections.emptyList();
-
-        int currentIndex = index - 1;
-        List<User> result = new ArrayList<>();
-        result.add(userIslandIndex.get(index));
-
-        while (true) {
-            if (currentIndex < 0) break;
-            User user = userIslandIndex.get(currentIndex);
-            if (island.equals(user.getIsland().orElse(null))) {
-                result.add(userIslandIndex.get(currentIndex));
-                currentIndex--;
-            } else {
-                break;
-            }
+    public LinkedList<User> getEntries(@NotNull Island island) {
+        LinkedList<User> userList = new LinkedList<>();
+        for (User user : userIslandMap.values()) {
+            Optional<Island> hasIsland = user.getIsland();
+            if (hasIsland.isEmpty()) continue;
+            Island islandPlayer = hasIsland.get();
+            if (islandPlayer.getId() == island.getId()) userList.add(user);
         }
-
-        currentIndex = index + 1;
-
-        while (true) {
-            if (currentIndex >= userIslandIndex.size()) break;
-            User user = userIslandIndex.get(currentIndex);
-            if (island.equals(user.getIsland().orElse(null))) {
-                result.add(userIslandIndex.get(currentIndex));
-                currentIndex++;
-            } else {
-                break;
-            }
-        }
-        return result;
+        return userList;
     }
 
     @Override
     public void clear() {
         super.clear();
-        userIslandIndex.clear();
+        userIslandMap.clear();
+    }
+
+    public LinkedHashMap<UUID, User> getUserIslandMap() {
+        return userIslandMap;
+    }
+
+    public int sizeEntries() {
+        return getEntries().size();
     }
 }
