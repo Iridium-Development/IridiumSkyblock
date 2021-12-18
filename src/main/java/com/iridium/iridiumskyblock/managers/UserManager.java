@@ -2,7 +2,6 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +35,8 @@ public class UserManager {
      * @param uuid The uuid of the onlyForPlayers
      * @return the User class of the onlyForPlayers
      */
-    private Optional<User> getUserByUUID(@NotNull UUID uuid) {
+    @Deprecated
+    public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(uuid);
     }
 
