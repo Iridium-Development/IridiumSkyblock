@@ -50,7 +50,13 @@ public class MissionCommand extends Command {
             player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
-        switch (MissionType.getMission(args[1])) {
+
+        MissionType missionType = MissionType.getMission(args[1]);
+        if (missionType == null) {
+            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
+            return true;
+        }
+        switch (missionType) {
             case ONCE -> {
                 player.openInventory(new IslandMissionsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
                 return true;

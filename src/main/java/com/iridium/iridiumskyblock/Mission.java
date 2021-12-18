@@ -3,6 +3,7 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +55,7 @@ public class Mission {
          * @param mission The mission name which should be parsed
          * @return The mission type, null if there is none
          */
+        @Nullable
         public static MissionType getMission(String mission) {
             return Arrays.stream(MissionType.values()).filter(type -> type.name().equalsIgnoreCase(mission)).findFirst().orElse(null);
         }
