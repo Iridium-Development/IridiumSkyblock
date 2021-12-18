@@ -29,6 +29,7 @@ class IslandManagerTest {
     public void tearDown() {
         Bukkit.getScheduler().cancelTasks(IridiumSkyblock.getInstance());
         MockBukkit.unmock();
+        IslandBuilder.resetIslandId();
     }
 
     @Test

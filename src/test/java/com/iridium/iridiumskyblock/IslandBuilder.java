@@ -5,7 +5,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class IslandBuilder {
-    private static final AtomicInteger ISLAND_ID = new AtomicInteger(1);
+    private static AtomicInteger ISLAND_ID = new AtomicInteger(1);
     private final Island island;
 
     public IslandBuilder() {
@@ -21,5 +21,9 @@ public class IslandBuilder {
 
     public Island build() {
         return island;
+    }
+
+    public static void resetIslandId() {
+        ISLAND_ID = new AtomicInteger(1);
     }
 }
