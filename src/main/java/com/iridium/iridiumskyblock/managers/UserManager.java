@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,15 +21,13 @@ public class UserManager {
      * @return The user data
      */
     public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
-        Optional<User> userOptional = getUserByUUID(offlinePlayer.getUniqueId());
-        if (userOptional.isPresent()) {
-            return userOptional.get();
-        } else {
+        User user = IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUserbyUUID(offlinePlayer.getUniqueId());
+        if (user == null) {
             Optional<String> name = Optional.ofNullable(offlinePlayer.getName());
-            User user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
+            user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
             IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
-            return user;
         }
+        return user;
     }
 
     /**
@@ -37,7 +36,7 @@ public class UserManager {
      * @param uuid The uuid of the onlyForPlayers
      * @return the User class of the onlyForPlayers
      */
-    public Optional<User> getUserByUUID(@NotNull UUID uuid) {
+    private Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(uuid);
     }
 
