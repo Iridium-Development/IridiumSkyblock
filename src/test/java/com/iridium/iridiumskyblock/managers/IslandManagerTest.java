@@ -12,8 +12,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class IslandManagerTest {
 
@@ -40,15 +39,13 @@ class IslandManagerTest {
 
     @Test
     public void getIslandByName() {
-        Island island1 = new IslandBuilder("Island 1").build();
-        Island island2 = new IslandBuilder("Island 2").build();
-        assertEquals(island1, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("Island 1").orElse(null));
-        assertEquals(island1, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("ISLAND 1").orElse(null));
-        assertEquals(island1, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island 1").orElse(null));
+        Island island = new IslandBuilder().build();
+        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("Island_1").orElse(null));
+        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("ISLAND_1").orElse(null));
+        assertEquals(island, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island_1").orElse(null));
 
-        assertEquals(island2, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("Island 2").orElse(null));
-        assertEquals(island2, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("ISLAND 2").orElse(null));
-        assertEquals(island2, IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island 2").orElse(null));
+        assertNull(IridiumSkyblock.getInstance().getIslandManager().getIslandByName("fake_island").orElse(null));
+        assertNull(IridiumSkyblock.getInstance().getIslandManager().getIslandByName("island1").orElse(null));
     }
 
     @Test
