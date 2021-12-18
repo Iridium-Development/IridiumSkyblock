@@ -39,23 +39,18 @@ public class CreateCommand extends Command {
         Player player = (Player) sender;
 
         switch (args.length) {
-            case 0:
-            case 1:
-                createIsland(player, null);
-                break;
-            case 2:
-                createIsland(player, args[1]);
-                break;
-            case 3:
-                Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(args[2])).map(Map.Entry::getValue).findFirst();
+            case 0, 1 -> createIsland(player, null);
+            case 2 -> createIsland(player, args[1]);
+            case 3 -> {
+                Optional<SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(args[2])).map(Map.Entry::getValue).findFirst();
                 if (schematicConfig.isPresent()) {
                     return IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
 
         // Always return false because the cooldown is set during Island creation

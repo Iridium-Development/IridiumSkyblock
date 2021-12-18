@@ -43,7 +43,7 @@ public class InviteCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        if (!island.isPresent()) {
+        if (island.isEmpty()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -97,8 +97,7 @@ public class InviteCommand extends Command {
         }
 
         // Send a message to the user if he is online
-        if (offlinePlayer instanceof Player) {
-            Player targetPlayer = (Player) offlinePlayer;
+        if (offlinePlayer instanceof Player targetPlayer) {
             BaseComponent[] message = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited
                     .replace("%inviter%", player.getName())
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)

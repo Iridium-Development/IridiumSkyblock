@@ -100,7 +100,7 @@ public class HelpCommand extends Command {
     private boolean showCommandHelp(CommandSender commandSender, String[] arguments) {
         String[] newArguments = Arrays.copyOfRange(arguments, 1, arguments.length);
         Optional<Command> commandOptional = IridiumSkyblock.getInstance().getCommandManager().findExecutingCommand(newArguments);
-        if (!commandOptional.isPresent()) {
+        if (commandOptional.isEmpty()) {
             execute(commandSender, new String[0]);
             return false;
         }

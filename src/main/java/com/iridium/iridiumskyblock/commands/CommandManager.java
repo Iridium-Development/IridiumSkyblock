@@ -98,8 +98,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, org.bukkit.command.@NotNull Command cmd, @NotNull String label, String[] args) {
         if (args.length == 0) {
-            if (commandSender instanceof Player) {
-                Player player = (Player) commandSender;
+            if (commandSender instanceof Player player) {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                 Optional<Island> island = user.getIsland();
                 if (island.isPresent()) {
@@ -243,7 +242,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         // Check for each argument if it's a child of the previous command
         for (int currentArgument = 1; currentArgument < args.length; currentArgument++) {
             Optional<Command> child = executingCommand.getChildByName(args[currentArgument]);
-            if (!child.isPresent()) break;
+            if (child.isEmpty()) break;
 
             executingCommand = child.get();
         }

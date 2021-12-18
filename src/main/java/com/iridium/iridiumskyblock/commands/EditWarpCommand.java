@@ -44,7 +44,7 @@ public class EditWarpCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        if (!island.isPresent()) {
+        if (island.isEmpty()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -56,18 +56,17 @@ public class EditWarpCommand extends Command {
 
         List<IslandWarp> islandWarps = IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island.get());
         Optional<IslandWarp> islandWarp = islandWarps.stream().filter(warp -> warp.getName().equalsIgnoreCase(args[1])).findFirst();
-        if (!islandWarp.isPresent()) {
+        if (islandWarp.isEmpty()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownWarp.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
         //TODO: Use subcommand system
         switch (args[2]) {
-            case "icon":
+            case "icon" -> {
                 if (args.length != 4) {
                     sender.sendMessage("/is editwarp <name> icon <icon>");
                 }
-
                 Optional<XMaterial> xMaterial = XMaterial.matchXMaterial(args[3]);
                 if (xMaterial.isPresent()) {
                     islandWarp.get().setIcon(xMaterial.get());
@@ -77,16 +76,17 @@ public class EditWarpCommand extends Command {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSuchMaterial.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     return false;
                 }
-            case "description":
+            }
+            case "description" -> {
                 if (args.length < 4) {
                     sender.sendMessage("/is editwarp <name> description <description>");
                     return false;
                 }
-
                 String description = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
                 islandWarp.get().setDescription(description);
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().warpDescriptionSet.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return true;
+            }
         }
 
         return false;

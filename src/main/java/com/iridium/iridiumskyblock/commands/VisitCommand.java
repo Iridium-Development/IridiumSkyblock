@@ -46,7 +46,7 @@ public class VisitCommand extends Command {
 
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[1]);
         User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
-        if (!targetUser.getIsland().isPresent()) {
+        if (targetUser.getIsland().isEmpty()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIslandFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }

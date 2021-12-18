@@ -41,7 +41,7 @@ public class ShopCommand extends Command {
     public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
         User user = IridiumSkyblockAPI.getInstance().getUser(player);
-        if (!user.getIsland().isPresent()) {
+        if (user.getIsland().isEmpty()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -53,7 +53,7 @@ public class ShopCommand extends Command {
             String categoryName = String.join(" ", commandArguments);
             Optional<ShopCategory> category = IridiumSkyblock.getInstance().getShopManager().getCategoryByName(categoryName);
 
-            if (!category.isPresent()) {
+            if (category.isEmpty()) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noShopCategory.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
