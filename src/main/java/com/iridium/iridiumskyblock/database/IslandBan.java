@@ -44,11 +44,11 @@ public class IslandBan extends IslandData {
     }
 
     public User getBannedUser() {
-        return IridiumSkyblock.getInstance().getUserManager().getUserByUUID(bannedUser).orElse(null);
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(bannedUser).orElse(null);
     }
 
     public User getBanner() {
-        return IridiumSkyblock.getInstance().getUserManager().getUserByUUID(banner).orElse(null);
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(banner).orElse(null);
     }
 
     public LocalDateTime getBanTime() {
