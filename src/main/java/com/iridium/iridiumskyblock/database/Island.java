@@ -73,6 +73,11 @@ public final class Island extends DatabaseObject {
     // Cache
     private Integer size;
 
+    public Island(String name, int id){
+        this.name = name;
+        this.id = id;
+    }
+
     /**
      * The default constructor.
      *
