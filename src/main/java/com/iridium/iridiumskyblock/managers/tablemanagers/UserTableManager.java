@@ -69,9 +69,10 @@ public class UserTableManager extends TableManager<User, Integer> {
         LinkedList<User> userList = new LinkedList<>();
         for (User user : userIslandMap.values()) {
             Optional<Island> hasIsland = user.getIsland();
-            if (hasIsland.isEmpty()) continue;
-            Island islandPlayer = hasIsland.get();
-            if (islandPlayer.getId() == island.getId()) userList.add(user);
+            if (hasIsland.isPresent()) {
+                Island islandPlayer = hasIsland.get();
+                if (islandPlayer.getId() == island.getId()) userList.add(user);
+            }
         }
         return userList;
     }
