@@ -66,6 +66,24 @@ public class TableManager<T extends DatabaseObject, S> {
         }
     }
 
+    public void saveHashMap(LinkedHashMap<?, T> uuidtLinkedHashMap) {
+        List<T> tList = uuidtLinkedHashMap.values().stream().toList();
+        int sizeList = tList.size();
+        try {
+            for (int i = 0; i < sizeList; i++) {
+                T t = tList.get(i);
+                if (t.isChanged()) {
+                    dao.createOrUpdate(t);
+                    t.setChanged(false);
+                }
+            }
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+   
     /**
      * Adds an entry to list
      *
