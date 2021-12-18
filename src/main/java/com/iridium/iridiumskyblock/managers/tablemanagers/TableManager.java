@@ -9,10 +9,7 @@ import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Used for handling Crud operations on a table + handling cache
@@ -43,9 +40,26 @@ public class TableManager<T extends DatabaseObject, S> {
      * Saves everything to the Database
      */
     public void save() {
+        List<T> entryList = new LinkedList<>(entries); // Pas besoin de le mettre dans le try/catch
         try {
-            List<T> entryList = new ArrayList<>(entries);
             for (T t : entryList) {
+                if (t.isChanged()) {
+                    dao.createOrUpdate(t);
+                    t.setChanged(false);
+                }
+            }
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void saveHashMap(LinkedHashMap<?, T> uuidtLinkedHashMap) {
+        List<T> tList = uuidtLinkedHashMap.values().stream().toList();
+        int sizeList = tList.size();
+        try {
+            for (int i = 0; i < sizeList; i++) {
+                T t = tList.get(i);
                 if (t.isChanged()) {
                     dao.createOrUpdate(t);
                     t.setChanged(false);
