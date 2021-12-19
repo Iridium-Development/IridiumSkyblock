@@ -62,10 +62,11 @@ public class IslandManager {
      * @param name        The World's Name
      */
     public void createWorld(World.Environment environment, String name) {
-        new WorldCreator(name)
+        WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
-                .environment(environment)
-                .createWorld();
+                .environment(environment);
+        //TODO
+//        Bukkit.createWorld(worldCreator);
     }
 
     /**
@@ -132,28 +133,26 @@ public class IslandManager {
             ));
             return;
         }
-
         boolean trusted = getIslandTrusted(island, user).isPresent();
         boolean inIsland = user.getIsland().map(Island::getId).orElse(0) == island.getId();
-        // If the island is visitable, the user is in the island, the user is trusted or the user is bypassing teleport them
-        if (island.isVisitable() || inIsland || trusted || user.isBypassing()) {
-            if (inIsland) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHomeOther.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
-            }
-            if (delay < 1) {
-                teleportHome(player, island);
-                return;
-            }
-            BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
-                teleportHome(player, island);
-                user.setTeleportingTask(null);
-            }, 20L * delay);
-            user.setTeleportingTask(bukkitTask);
-        } else {
+        if (!island.isVisitable() && !inIsland && !trusted && !user.isBypassing()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return;
         }
+        if (inIsland) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        } else {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHomeOther.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
+        }
+        if (delay < 1) {
+            teleportHome(player, island);
+            return;
+        }
+        BukkitTask bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
+            teleportHome(player, island);
+            user.setTeleportingTask(null);
+        }, 20L * delay);
+        user.setTeleportingTask(bukkitTask);
     }
 
     /**
