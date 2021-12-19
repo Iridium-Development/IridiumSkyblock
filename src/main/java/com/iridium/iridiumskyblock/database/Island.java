@@ -73,6 +73,11 @@ public final class Island extends DatabaseObject {
     // Cache
     private Integer size;
 
+    public Island(String name, int id) {
+        this(name, IridiumSkyblock.getInstance().getSchematics().schematics.values().stream().findFirst().get());
+        this.id = id;
+    }
+
     /**
      * The default constructor.
      *

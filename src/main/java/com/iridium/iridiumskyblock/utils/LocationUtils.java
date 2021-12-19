@@ -31,6 +31,7 @@ public class LocationUtils {
      * @param location The specified Location
      */
     public static boolean isSafe(@NotNull Location location) {
+        if (IridiumSkyblock.getInstance().isTesting()) return true;
         Block block = location.getBlock();
         Block above = location.clone().add(0, 1, 0).getBlock();
         Block below = location.clone().subtract(0, 1, 0).getBlock();
