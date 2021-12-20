@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.api.UserKickEvent;
@@ -75,6 +76,7 @@ public class KickCommand extends Command {
         }
 
         targetUser.setIsland(null);
+        targetUser.setIslandRank(IslandRank.VISITOR);
 
         // Send a message to all other members
         for (User member : island.get().getMembers()) {

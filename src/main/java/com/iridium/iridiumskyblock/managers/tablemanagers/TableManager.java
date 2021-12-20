@@ -72,10 +72,8 @@ public class TableManager<T extends DatabaseObject, S> {
         try {
             for (int i = 0; i < sizeList; i++) {
                 T t = tList.get(i);
-                if (t.isChanged()) {
-                    dao.createOrUpdate(t);
-                    t.setChanged(false);
-                }
+                dao.createOrUpdate(t);
+                t.setChanged(false);
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
