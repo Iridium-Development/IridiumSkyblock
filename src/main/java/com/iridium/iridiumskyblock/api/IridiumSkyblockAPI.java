@@ -28,6 +28,10 @@ public class IridiumSkyblockAPI {
     private static IridiumSkyblockAPI instance;
     private final IridiumSkyblock iridiumSkyblock;
 
+    static {
+        instance = new IridiumSkyblockAPI(IridiumSkyblock.getInstance());
+    }
+
     /**
      * Constructor for api initialization.
      *
@@ -46,17 +50,6 @@ public class IridiumSkyblockAPI {
      */
     public static IridiumSkyblockAPI getInstance() {
         return instance;
-    }
-
-    /**
-     * Initializes the api. For internal use only.
-     *
-     * @param iridiumSkyblock The {@link IridiumSkyblock} instance used by the plugin
-     */
-    public static synchronized void initializeAPI(IridiumSkyblock iridiumSkyblock) {
-        if (instance == null) {
-            instance = new IridiumSkyblockAPI(iridiumSkyblock);
-        }
     }
 
     /**

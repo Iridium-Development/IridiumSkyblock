@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "3.2.2"
+version = "3.2.3"
 description = "IridiumSkyblock"
 
 repositories {
@@ -24,8 +24,9 @@ repositories {
 dependencies {
     // Dependencies that we want to shade in
     implementation("org.jetbrains:annotations:22.0.0")
-    implementation("com.iridium:IridiumCore:1.4.4")
+    implementation("com.iridium:IridiumCore:1.4.8")
     implementation("org.bstats:bstats-bukkit:2.2.1")
+    implementation("com.github.Redempt:Crunch:1.0.0")
     implementation("com.j256.ormlite:ormlite-core:5.7")
     implementation("com.j256.ormlite:ormlite-jdbc:5.7")
     implementation("de.jeff_media:SpigotUpdateChecker:1.3.0")
@@ -48,6 +49,12 @@ dependencies {
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.22")
+
+    // Test dependencies
+    testImplementation(platform("org.junit:junit-bom:5.7.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("org.mockito:mockito-inline:4.1.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.16:1.5.2")
 }
 
 tasks {
@@ -85,6 +92,10 @@ tasks {
 
         // Always re-run this task
         outputs.upToDateWhen { false }
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 

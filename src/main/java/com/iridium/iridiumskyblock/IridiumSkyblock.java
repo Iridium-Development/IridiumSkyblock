@@ -172,9 +172,6 @@ public class IridiumSkyblock extends IridiumCore {
         this.shopManager = new ShopManager();
         shopManager.reloadCategories();
 
-        // Initialize the API
-        IridiumSkyblockAPI.initializeAPI(this);
-
         this.schematicManager = new SchematicManager();
 
         // Initialize Vault economy support
@@ -219,15 +216,17 @@ public class IridiumSkyblock extends IridiumCore {
 
         resetIslandMissions();
 
-        Metrics metrics = new Metrics(this, 5825);
-        metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
+        if (!isTesting()) {
+            Metrics metrics = new Metrics(this, 5825);
+            metrics.addCustomChart(new SimplePie("database_type", () -> sql.driver.name()));
 
-        if (getConfiguration().enableCheckVersion) {
-            UpdateChecker.init(this, 62480)
-                    .checkEveryXHours(24)
-                    .setDownloadLink(62480)
-                    .setColoredConsoleOutput(true)
-                    .checkNow();
+            if (getConfiguration().enableCheckVersion) {
+                UpdateChecker.init(this, 62480)
+                        .checkEveryXHours(24)
+                        .setDownloadLink(62480)
+                        .setColoredConsoleOutput(true)
+                        .checkNow();
+            }
         }
 
         getLogger().info("----------------------------------------");

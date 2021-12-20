@@ -31,6 +31,8 @@ public class Configuration {
     public String dateTimeFormat = "EEEE, MMMM dd HH:mm:ss";
     public String spawnWorldName = "world";
     public String defaultCommandSyntax = "/is %command%";
+    public String islandLevelEquation = "abs(cbrt($1+1))";
+    public String defaultIslandName = "%island_owner_name%'s Island";
 
     public boolean enableCheckVersion = true;
     public boolean defaultIslandPublic = true;

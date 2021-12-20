@@ -17,6 +17,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
+import redempt.crunch.CompiledExpression;
+import redempt.crunch.Crunch;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -34,6 +36,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @DatabaseTable(tableName = "islands")
 public final class Island extends DatabaseObject {
+
+    private final static CompiledExpression islandLevelEquation = Crunch.compileExpression(IridiumSkyblock.getInstance().getConfiguration().islandLevelEquation);
 
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
@@ -69,6 +73,11 @@ public final class Island extends DatabaseObject {
     // Cache
     private Integer size;
 
+    public Island(String name, int id) {
+        this(name, IridiumSkyblock.getInstance().getSchematics().schematics.values().stream().findFirst().get());
+        this.id = id;
+    }
+
     /**
      * The default constructor.
      *
@@ -91,17 +100,16 @@ public final class Island extends DatabaseObject {
     }
 
     public String getName() {
-        return name == null ? getOwner().getName() : name;
+        return name == null ? IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%island_owner_name%", getOwner().getName()) : name;
     }
 
     /**
      * Gets the island's level.
-     * TODO: Change the equation
      *
      * @return The islands level
      */
     public int getLevel() {
-        return (int) Math.abs(Math.cbrt(experience + 1));
+        return (int) islandLevelEquation.evaluate(experience);
     }
 
     /**
@@ -112,7 +120,20 @@ public final class Island extends DatabaseObject {
      * @return The experience required to reach this level
      */
     private int getExperienceRequired(int level) {
-        return -1 + (level * level * level);
+        int lower = 0;
+        int upper = Integer.MAX_VALUE;
+        while (lower < upper) {
+            int mid = (lower + upper) / 2;
+            double experience = islandLevelEquation.evaluate(mid);
+            if (experience == level) {
+                return mid;
+            } else if (experience < level) {
+                lower = mid + 1;
+            } else {
+                upper = mid;
+            }
+        }
+        return 0;
     }
 
     /**
