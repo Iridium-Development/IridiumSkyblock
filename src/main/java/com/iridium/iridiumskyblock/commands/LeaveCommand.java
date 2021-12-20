@@ -59,6 +59,7 @@ public class LeaveCommand extends Command {
             if (userLeaveEvent.isCancelled()) return;
 
             user.setIsland(null);
+            user.setIslandRank(IslandRank.VISITOR);
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
             for (User member : island.get().getMembers()) {
