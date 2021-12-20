@@ -47,7 +47,7 @@ public class ShopCategoryGUI extends GUI {
                 .replace("%category_name%", category.name)
         ));
 
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
+        addContent(inventory);
 
         return inventory;
     }

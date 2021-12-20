@@ -55,7 +55,7 @@ public abstract class GUI implements InventoryHolder {
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
 
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
+        addContent(inventory); // WTF why async ???
 
         return inventory;
     }

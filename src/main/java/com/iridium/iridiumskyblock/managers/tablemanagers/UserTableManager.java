@@ -65,6 +65,10 @@ public class UserTableManager extends TableManager<User, Integer> {
         return userIslandMap.get(uuid);
     }
 
+    /*public User getUserbyUsername(String username) {
+
+    }*/
+
 
     /**
      * Gets all entries associated with an island
