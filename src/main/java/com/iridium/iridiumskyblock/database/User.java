@@ -97,6 +97,7 @@ public final class User extends DatabaseObject {
     public void setIsland(@Nullable Island island) {
         this.island = island == null ? null : island.getId();
         setJoinTime(LocalDateTime.now());
+        setChanged(true);
         if (island != null) {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntry(new IslandTrusted(island, this, this)).ifPresent(trusted ->
                     IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(trusted)
