@@ -749,7 +749,7 @@ public class IslandManager {
             deleteIslandBlocks(island, getNetherWorld(), 3);
             deleteIslandBlocks(island, getEndWorld(), 3);
         }
-        deleteIslanDatabasedEntries(island, user);
+        deleteIslandDatabasedEntries(island, user);
 
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
             if (player != null) {
@@ -780,7 +780,9 @@ public class IslandManager {
      *
      * @param island The specified Island
      */
-    private void deleteIslanDatabasedEntries(@NotNull Island island, User user) {
+    private void deleteIslandDatabasedEntries(@NotNull Island island, User user) {
+        user.setIslandRank(IslandRank.VISITOR);
+        user.setIsland(null);
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             IslandLog islandLogDelete = new IslandLog(island, LogAction.DELETE_ISLAND, user, null, 0, "Suppression de l'ile");
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
@@ -797,6 +799,7 @@ public class IslandManager {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager()::delete);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager()::delete);
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLogDelete);
+
         });
     }
 
