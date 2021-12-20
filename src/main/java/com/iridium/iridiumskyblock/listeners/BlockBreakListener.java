@@ -28,7 +28,7 @@ public class BlockBreakListener implements Listener {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
-        if (!island.isPresent()) return;
+        if (island.isEmpty()) return;
 
         XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
         if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
