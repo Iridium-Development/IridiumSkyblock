@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumcore.utils.SortedList;
 import com.iridium.iridiumskyblock.DatabaseObject;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -69,15 +70,19 @@ public class TableManager<T extends DatabaseObject, S> {
     public void saveHashMap(LinkedHashMap<?, T> uuidtLinkedHashMap) {
         List<T> tList = new LinkedList<>(uuidtLinkedHashMap.values());
         int sizeList = tList.size();
+        int savedata = 0;
         try {
             for (int i = 0; i < sizeList; i++) {
                 T t = tList.get(i);
                 dao.createOrUpdate(t);
-                t.setChanged(false);
+                savedata++;
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
+        }
+        if (IridiumSkyblock.getInstance().getConfiguration().debug) {
+            System.out.println("Sauvegarde faite : " + savedata + "/" + sizeList);
         }
     }
 
