@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public abstract class SchematicGUI extends GUI {
 
-    private final Map<Integer, Schematics.SchematicConfig> schematics = new HashMap<>();
+    private final Map<Integer, Map.Entry<String, Schematics.SchematicConfig>> schematics = new HashMap<>();
 
     public SchematicGUI() {
         super(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI);
@@ -30,7 +30,7 @@ public abstract class SchematicGUI extends GUI {
 
         for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
             inventory.setItem(entry.getValue().item.slot, ItemStackUtils.makeItem(entry.getValue().item));
-            schematics.put(entry.getValue().item.slot, entry.getValue());
+            schematics.put(entry.getValue().item.slot, entry);
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
@@ -56,6 +56,6 @@ public abstract class SchematicGUI extends GUI {
      *
      * @param schematicConfig The data of the selected schematic
      */
-    public abstract void selectSchematic(Schematics.SchematicConfig schematicConfig);
+    public abstract void selectSchematic(Map.Entry<String, Schematics.SchematicConfig> schematicConfig);
 
 }
