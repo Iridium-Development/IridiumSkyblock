@@ -2,6 +2,8 @@ package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumcore.utils.SortedList;
 import com.iridium.iridiumskyblock.DatabaseObject;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.managers.TestingDao;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -26,14 +28,18 @@ public class TableManager<T extends DatabaseObject, S> {
 
     public TableManager(ConnectionSource connectionSource, Class<T> clazz, Comparator<T> comparator) throws SQLException {
         this.connectionSource = connectionSource;
-        TableUtils.createTableIfNotExists(connectionSource, clazz);
-        this.dao = DaoManager.createDao(connectionSource, clazz);
-        this.dao.setAutoCommit(getDatabaseConnection(), false);
         this.entries = new SortedList<>(comparator);
-        this.entries.addAll(dao.queryForAll());
-        entries.forEach(t -> t.setChanged(false));
-        this.entries.sort(comparator);
         this.clazz = clazz;
+        if (!IridiumSkyblock.getInstance().isTesting()) {
+            TableUtils.createTableIfNotExists(connectionSource, clazz);
+            this.dao = DaoManager.createDao(connectionSource, clazz);
+            this.dao.setAutoCommit(getDatabaseConnection(), false);
+            this.entries.addAll(dao.queryForAll());
+            entries.forEach(t -> t.setChanged(false));
+            this.entries.sort(comparator);
+        } else {
+            this.dao = new TestingDao<T, S>();
+        }
     }
 
     /**
@@ -138,6 +144,7 @@ public class TableManager<T extends DatabaseObject, S> {
      * @throws SQLException If there is an error with the exception
      */
     private DatabaseConnection getDatabaseConnection() throws SQLException {
+        if (IridiumSkyblock.getInstance().isTesting()) return null;
         return connectionSource.getReadWriteConnection(null);
     }
 
