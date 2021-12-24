@@ -8,10 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -43,7 +40,7 @@ public class RecalculateCommand extends Command {
         }
 
         int interval = 1;
-        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
+        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getIslandList();
         int seconds = (islandList.size() * interval / 20) % 60;
         int minutes = (islandList.size() * interval / 20) / 60;
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingIslands
@@ -54,14 +51,14 @@ public class RecalculateCommand extends Command {
         );
 
         bukkitTask = Bukkit.getScheduler().runTaskTimer(IridiumSkyblock.getInstance(), new Runnable() {
-            final ListIterator<Integer> islands = islandList.stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+            final Iterator<Island> islands = islandList.listIterator();
 
             @Override
             public void run() {
                 if (islands.hasNext()) {
-                    IridiumSkyblock.getInstance().getIslandManager().getIslandById(islands.next()).ifPresent(island ->
-                            IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island)
-                    );
+                    Island island = islands.next();
+                    if (island == null) return;
+                    IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island);
                 } else {
                     bukkitTask.cancel();
                     bukkitTask = null;

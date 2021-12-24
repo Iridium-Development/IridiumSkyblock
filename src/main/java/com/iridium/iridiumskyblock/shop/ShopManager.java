@@ -94,7 +94,7 @@ public class ShopManager {
         double vaultCost = calculateCost(amount, shopItem.defaultAmount, buyCost.vault);
         int crystalCost = (int) calculateCost(amount, shopItem.defaultAmount, buyCost.crystals);
         final Optional<Island> island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland();
-        if (!island.isPresent()) {
+        if (island.isEmpty()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
