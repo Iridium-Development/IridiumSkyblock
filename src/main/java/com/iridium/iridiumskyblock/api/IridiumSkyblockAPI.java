@@ -123,12 +123,7 @@ public class IridiumSkyblockAPI {
      * @param id The id of the island
      * @return An Optional with the Island, empty if there is none
      */
-    @Deprecated
     public Optional<Island> getIslandById(int id) {
-        return Optional.of(iridiumSkyblock.getIslandManager().getIslandById(id));
-    }
-
-    public Island getIslandbyID(int id) {
         return iridiumSkyblock.getIslandManager().getIslandById(id);
     }
 

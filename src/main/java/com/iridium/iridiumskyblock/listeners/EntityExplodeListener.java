@@ -10,6 +10,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.metadata.MetadataValue;
 
 import java.util.List;
+import java.util.Optional;
 
 public class EntityExplodeListener implements Listener {
 
@@ -18,8 +19,9 @@ public class EntityExplodeListener implements Listener {
         List<MetadataValue> list = event.getEntity().getMetadata("island_spawned");
         if (list.isEmpty()) return;
         int islandId = list.get(0).asInt();
-        Island island = IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandId);
-        if (island == null) return;
+        Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandId);
+        if (islandOptional.isEmpty()) return;
+        Island island = islandOptional.get();
         IslandSetting tntExplosion = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.TNT_DAMAGE);
         if (SettingType.TNT_DAMAGE.isFeactureValue() && !tntExplosion.getBooleanValue()) {
             event.setCancelled(true);
