@@ -4,7 +4,9 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumskyblock.*;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.IslandBuilder;
+import com.iridium.iridiumskyblock.UserBuilder;
 import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -129,19 +131,6 @@ class IslandManagerTest {
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 .replace("%name%", islandWarp.getName())
         );
-    }
-
-    @Test
-    public void createIsland() {
-        //TODO needs fixing
-        PlayerMock playerMock = new UserBuilder(serverMock).buildPlayer();
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(playerMock);
-
-        Island island = IridiumSkyblock.getInstance().getIslandManager().createIsland(playerMock, "Island", TestingHelper.getSchematicConfig()).join();
-
-        assertEquals(1, IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().size());
-        assertEquals(IslandRank.OWNER, user.getIslandRank());
-        assertEquals(island, user.getIsland().orElse(null));
     }
 
     @Test
