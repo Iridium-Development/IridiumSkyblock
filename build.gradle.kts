@@ -97,12 +97,21 @@ tasks {
     test {
         useJUnitPlatform()
     }
+
+    compileJava {
+        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
+        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+    }
+
+    compileTestJava {
+        sourceCompatibility = JavaVersion.VERSION_16.toString()
+        targetCompatibility = JavaVersion.VERSION_16.toString()
+    }
 }
 
 // Set the Java version and vendor
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
         vendor.set(JvmVendorSpec.ADOPTOPENJDK)
     }
 }
