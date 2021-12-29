@@ -79,16 +79,21 @@ public class IslandPermissionsGUI extends IslandGUI {
             return;
         }
 
-       if (event.getSlot() == getNoItemGUI().size - 7 && page > 1) {
+       if (event.getSlot() == getNoItemGUI().size - 7 && hasPage(page - 1)) {
            page--;
            event.getWhoClicked().openInventory(getInventory());
            return;
        }
        
-       if (event.getSlot() == getNoItemGUI().size - 3) {
+       if (event.getSlot() == getNoItemGUI().size - 3 && hasPage(page + 1)) {
            page++;
            event.getWhoClicked().openInventory(getInventory());
        }
+    }
+
+    private boolean hasPage(int page) {
+        return IridiumSkyblock.getInstance().getPermissionList().entrySet().stream()
+                .anyMatch(entry -> entry.getValue().getPage() == page);
     }
 
 }

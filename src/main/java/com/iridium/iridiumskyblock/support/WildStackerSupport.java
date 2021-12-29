@@ -4,30 +4,35 @@ import com.bgsoftware.wildstacker.api.WildStackerAPI;
 import com.bgsoftware.wildstacker.api.objects.StackedBarrel;
 import com.bgsoftware.wildstacker.api.objects.StackedSpawner;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandBlocks;
-import com.iridium.iridiumskyblock.database.IslandSpawners;
+import org.bukkit.entity.EntityType;
 
 public class WildStackerSupport implements StackerSupport {
 
     @Override
-    public void applyStackedBlockValue(Island island) {
+    public int getExtraBlocks(Island island, XMaterial material) {
+        int stackedBlocks = 0;
         for (StackedBarrel stackedBarrel : WildStackerAPI.getWildStacker().getSystemManager().getStackedBarrels()) {
             if (!island.isInIsland(stackedBarrel.getLocation())) continue;
+            if (material != XMaterial.matchXMaterial(stackedBarrel.getType())) continue;
 
-            IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, XMaterial.matchXMaterial(stackedBarrel.getBlock().getType()));
-            islandBlock.setAmount(islandBlock.getAmount() - 1);
-
-            IslandBlocks stackedBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, XMaterial.matchXMaterial(stackedBarrel.getType()));
-            stackedBlock.setAmount(islandBlock.getAmount() + stackedBlock.getAmount());
+            if (material == XMaterial.matchXMaterial(stackedBarrel.getType())) {
+                stackedBlocks--;
+            } else {
+                stackedBlocks += stackedBarrel.getStackAmount();
+            }
         }
+        return stackedBlocks;
+    }
 
+    @Override
+    public int getExtraSpawners(Island island, EntityType entityType) {
+        int stackedSpawners = 0;
         for (StackedSpawner stackedSpawner : WildStackerAPI.getWildStacker().getSystemManager().getStackedSpawners()) {
             if (!island.isInIsland(stackedSpawner.getLocation())) continue;
-
-            IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, stackedSpawner.getSpawner().getSpawnedType());
-            islandSpawners.setAmount(islandSpawners.getAmount() + stackedSpawner.getStackAmount() - 1);
+            if (stackedSpawner.getSpawnedType() != entityType) continue;
+            stackedSpawners += stackedSpawner.getStackAmount();
         }
+        return stackedSpawners;
     }
 }

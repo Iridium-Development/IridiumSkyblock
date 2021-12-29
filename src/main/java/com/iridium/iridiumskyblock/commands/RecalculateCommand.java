@@ -42,7 +42,7 @@ public class RecalculateCommand extends Command {
             return false;
         }
 
-        int interval = 5;
+        int interval = 1;
         List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
         int seconds = (islandList.size() * interval / 20) % 60;
         int minutes = (islandList.size() * interval / 20) / 60;

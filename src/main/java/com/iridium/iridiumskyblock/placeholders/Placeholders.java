@@ -181,8 +181,8 @@ public class Placeholders {
         HashMap<String, Placeholder> hashmap = new HashMap<>();
         List<Island> topIslands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
         for (int i = 1; i <= 20; i++) {
-            int finalI = i;
-            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> finalI < topIslands.size() ? Optional.of(topIslands.get(finalI)) : Optional.empty()));
+            Optional<Island> island = Optional.ofNullable(topIslands.size() > i ? topIslands.get(i - 1) : null);
+            hashmap.putAll(getIslandPlaceholders("island_top_" + i, player -> island));
         }
         return hashmap;
     }

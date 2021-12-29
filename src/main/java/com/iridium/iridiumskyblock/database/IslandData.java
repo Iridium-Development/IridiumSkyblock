@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.DatabaseObject;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.field.DatabaseField;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.Optional;
  */
 @NoArgsConstructor
 @Getter
-public class IslandData {
+public class IslandData extends DatabaseObject {
 
     @DatabaseField(columnName = "island_id", uniqueCombo = true)
     private int islandId;

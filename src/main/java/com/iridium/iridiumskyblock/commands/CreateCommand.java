@@ -2,13 +2,15 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.configs.Schematics.SchematicConfig;
-import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandCreateGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.util.*;
@@ -48,7 +50,7 @@ public class CreateCommand extends Command {
             case 3:
                 Optional<Schematics.SchematicConfig> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(args[2])).map(Map.Entry::getValue).findFirst();
                 if (schematicConfig.isPresent()) {
-                    return IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, args[1], schematicConfig.get());
+                    return createIsland(player, args[1], schematicConfig.get());
                 } else {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
@@ -56,8 +58,6 @@ public class CreateCommand extends Command {
             default:
                 break;
         }
-
-        // Always return false because the cooldown is set during Island creation
         return false;
     }
 
@@ -67,27 +67,49 @@ public class CreateCommand extends Command {
      * @param player The player who performed this command
      * @param name   The name of the new island
      */
-    private void createIsland(Player player, String name) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
-
-        if (island.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+    private void createIsland(Player player, @Nullable String name) {
+        if (IridiumSkyblock.getInstance().getSchematics().schematics.size() == 1) {
+            SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.values().stream().findFirst().get();
+            createIsland(player, name, schematicConfig);
             return;
+        }
+
+        player.openInventory(new IslandCreateGUI(player, name).getInventory());
+    }
+
+    /**
+     * Creates an island for a specific Player and then teleports them to the island home.
+     *
+     * @param player          The owner of the island
+     * @param name            The name of  the island
+     * @param schematicConfig The schematic of the island
+     * @return True if the island has been created successfully
+     */
+    private boolean createIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        if (user.getIsland().isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
         }
 
         if (name != null && IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
-        if (IridiumSkyblock.getInstance().getSchematics().schematics.size() == 1) {
-            SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.values().stream().findFirst().get();
-            IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, name, schematicConfig);
-            return;
-        }
+        IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name, schematicConfig);
+        Bukkit.getPluginManager().callEvent(islandCreateEvent);
+        if (islandCreateEvent.isCancelled()) return false;
 
-        player.openInventory(new IslandCreateGUI(player, name, getCooldownProvider()).getInventory());
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        IridiumSkyblock.getInstance().getIslandManager().createIsland(player, islandCreateEvent.getIslandName(), islandCreateEvent.getSchematicConfig()).thenAccept(island ->
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island, 0);
+                    IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
+                })
+        );
+
+        return true;
     }
 
     /**

@@ -6,7 +6,9 @@ import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+
+import java.util.Optional;
 
 import java.util.Optional;
 
@@ -14,8 +16,9 @@ public class EntityPickupItemListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     @SuppressWarnings("deprecation")
-    public void onEntityPickupItem(PlayerPickupItemEvent event) {
-        Player player = event.getPlayer();
+    public void onEntityPickupItem(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        Player player = (Player) event.getEntity();
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getItem().getLocation());
         if (!island.isPresent()) return;
 

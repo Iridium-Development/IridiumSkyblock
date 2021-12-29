@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "3.1.9"
+version = "3.2.3"
 description = "IridiumSkyblock"
 
 repositories {
@@ -26,15 +26,16 @@ repositories {
 dependencies {
     // Dependencies that we want to shade in
     implementation("org.jetbrains:annotations:22.0.0")
-    implementation("com.iridium:IridiumCore:1.3.9")
+    implementation("com.iridium:IridiumCore:1.5.0")
     implementation("org.bstats:bstats-bukkit:2.2.1")
+    implementation("com.github.Redempt:Crunch:1.0.0")
     implementation("com.j256.ormlite:ormlite-core:5.7")
     implementation("com.j256.ormlite:ormlite-jdbc:5.7")
     implementation("de.jeff_media:SpigotUpdateChecker:1.3.0")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.22")
-    compileOnly("org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("me.clip:placeholderapi:2.9.2")
@@ -42,7 +43,7 @@ dependencies {
         exclude("org.spigotmc")
     }
     compileOnly("com.gc:AdvancedSpawners:1.2.6")
-    compileOnly("dev.rosewood:rosestacker:1.2.6")
+    compileOnly("dev.rosewood:rosestacker:1.4.0")
     compileOnly("com.github.OmerBenGera:WildStackerAPI:master")
     compileOnly("com.songoda:UltimateStacker:2.1.7")
     compileOnly("com.songoda:EpicSpawners:7.0.8")
@@ -54,6 +55,12 @@ dependencies {
     compileOnly(files("../OPBlocks/lib/OPCore-v1.16.jar"))
     compileOnly(files("../OPBlocks/lib/Outposts.jar"))
     annotationProcessor("org.projectlombok:lombok:1.18.22")
+
+    // Test dependencies
+    testImplementation(platform("org.junit:junit-bom:5.7.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation("org.mockito:mockito-inline:4.1.0")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:1.15.0")
 }
 
 tasks {
@@ -91,6 +98,10 @@ tasks {
 
         // Always re-run this task
         outputs.upToDateWhen { false }
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 

@@ -28,6 +28,10 @@ public class IridiumSkyblockAPI {
     private static IridiumSkyblockAPI instance;
     private final IridiumSkyblock iridiumSkyblock;
 
+    static {
+        instance = new IridiumSkyblockAPI(IridiumSkyblock.getInstance());
+    }
+
     /**
      * Constructor for api initialization.
      *
@@ -49,17 +53,6 @@ public class IridiumSkyblockAPI {
     }
 
     /**
-     * Initializes the api. For internal use only.
-     *
-     * @param iridiumSkyblock The {@link IridiumSkyblock} instance used by the plugin
-     */
-    public static synchronized void initializeAPI(IridiumSkyblock iridiumSkyblock) {
-        if (instance == null) {
-            instance = new IridiumSkyblockAPI(iridiumSkyblock);
-        }
-    }
-
-    /**
      * Adds an Island BankItem
      *
      * @param bankItem The specified Bankitem
@@ -74,7 +67,7 @@ public class IridiumSkyblockAPI {
      * @param upgradeName The name of the Upgrade (Used for storage purposes)
      * @param upgrade     the upgrade item
      */
-    public void addUpgrade(@NotNull String upgradeName, @NotNull Upgrade upgrade) {
+    public void addUpgrade(@NotNull String upgradeName, @NotNull Upgrade<?> upgrade) {
         iridiumSkyblock.getUpgradesList().put(upgradeName, upgrade);
     }
 

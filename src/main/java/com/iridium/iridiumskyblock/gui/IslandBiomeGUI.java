@@ -29,7 +29,13 @@ public class IslandBiomeGUI extends IslandGUI {
 
     public IslandBiomeGUI(int page, Island island, World.Environment environment, CooldownProvider<CommandSender> cooldownProvider, Inventory previousInventory) {
         super(IridiumSkyblock.getInstance().getInventories().biomeGUI, previousInventory, island);
-        this.biomes = Arrays.stream(XBiome.VALUES).filter(biome -> biome.getEnvironment() == environment).collect(Collectors.toList());
+        this.biomes = Arrays.stream(XBiome.VALUES)
+                .filter(biome -> biome.getEnvironment() == environment)
+                .filter(biome -> biome.getBiome() != null)
+                .filter(biome -> biome != XBiome.THE_VOID)
+                .filter(biome -> biome != XBiome.CUSTOM)
+                .filter(biome -> !biome.getBiome().name().startsWith("old_"))
+                .collect(Collectors.toList());
         this.environment = environment;
         this.page = page;
         this.cooldownProvider = cooldownProvider;
@@ -43,15 +49,14 @@ public class IslandBiomeGUI extends IslandGUI {
         inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
-        final long elementsPerPage = inventory.getSize() - 9;
         AtomicInteger index = new AtomicInteger(0);
 
+        final long elementsPerPage = IridiumSkyblock.getInstance().getInventories().biomeGUI.size - 9;
         biomes.stream()
-                .filter(xBiome -> xBiome.getBiome() != null)
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
-                .forEachOrdered(biome ->
-                        inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().biomeGUI.item, Collections.singletonList(new Placeholder("biome", WordUtils.capitalizeFully(biome.name().toLowerCase().replace("_", " "))))))
+                .forEach(xBiome ->
+                        inventory.setItem(index.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().biomeGUI.item, Collections.singletonList(new Placeholder("biome", WordUtils.capitalizeFully(xBiome.name().toLowerCase().replace("_", " "))))))
                 );
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {

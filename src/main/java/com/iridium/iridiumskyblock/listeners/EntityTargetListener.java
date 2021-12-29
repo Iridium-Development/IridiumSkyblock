@@ -42,12 +42,14 @@ public class EntityTargetListener implements Listener {
                 .filter(entity -> entity instanceof Player)
                 .filter(entity -> island.get().isInIsland(entity.getLocation()))
                 .map(entity -> (Player) entity)
+                .filter(player -> player != targetPlayer)
                 .filter(player -> island.get().equals(IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland().orElse(null)))
                 .filter(player -> IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player)).isPresent())
                 .filter(player -> player.hasLineOfSight(event.getEntity()))
                 .collect(Collectors.toList());
 
         if (nextTargets.isEmpty()) {
+	        event.setCancelled(true);
             return;
         }
 

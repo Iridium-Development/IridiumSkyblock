@@ -5,7 +5,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -26,11 +25,9 @@ public class IslandMission extends IslandData {
     private int missionIndex;
 
     @DatabaseField(columnName = "progress")
-    @Setter
     private int progress;
 
     @DatabaseField(columnName = "type")
-    @Setter
     private Mission.MissionType type;
 
     /**
@@ -53,4 +50,13 @@ public class IslandMission extends IslandData {
         return missionName + "-" + missionIndex + "-" + getIslandId();
     }
 
+    public void setProgress(int progress) {
+        this.progress = progress;
+        setChanged(true);
+    }
+
+    public void setType(Mission.MissionType type) {
+        this.type = type;
+        setChanged(true);
+    }
 }

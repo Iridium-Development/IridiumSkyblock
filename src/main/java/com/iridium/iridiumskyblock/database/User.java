@@ -1,12 +1,12 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumskyblock.DatabaseObject;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -24,10 +24,9 @@ import java.util.UUID;
  * Represents a User of IridiumSkyblock.
  */
 @Getter
-@Setter
 @NoArgsConstructor
 @DatabaseTable(tableName = "users")
-public final class User {
+public final class User extends DatabaseObject {
 
     @DatabaseField(columnName = "uuid", canBeNull = false, id = true)
     private @NotNull UUID uuid;
@@ -141,6 +140,45 @@ public final class User {
      */
     public void setJoinTime(LocalDateTime joinTime) {
         this.joinTime = ZonedDateTime.of(joinTime, ZoneId.systemDefault()).toInstant().toEpochMilli();
+        setChanged(true);
     }
 
+    public void setUuid(@NotNull UUID uuid) {
+        this.uuid = uuid;
+        setChanged(true);
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
+        setChanged(true);
+    }
+
+    public void setIslandRank(@NotNull IslandRank islandRank) {
+        this.islandRank = islandRank;
+        setChanged(true);
+    }
+
+    public void setBypassing(boolean bypassing) {
+        this.bypassing = bypassing;
+    }
+
+    public void setFlying(boolean flying) {
+        this.flying = flying;
+    }
+
+    public void setIslandChat(boolean islandChat) {
+        this.islandChat = islandChat;
+    }
+
+    public void setIslandChatSpying(boolean islandChatSpying) {
+        this.islandChatSpying = islandChatSpying;
+    }
+
+    public void setCurrentIslandVisiting(Island currentIslandVisiting) {
+        this.currentIslandVisiting = currentIslandVisiting;
+    }
+
+    public void setTeleportingTask(BukkitTask teleportingTask) {
+        this.teleportingTask = teleportingTask;
+    }
 }

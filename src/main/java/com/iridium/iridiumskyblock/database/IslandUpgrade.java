@@ -4,7 +4,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -19,7 +18,6 @@ public final class IslandUpgrade extends IslandData {
     private int id;
 
     @DatabaseField(columnName = "level", canBeNull = false)
-    @Setter
     private int level;
 
     @DatabaseField(columnName = "upgrade", canBeNull = false, uniqueCombo = true)
@@ -42,4 +40,8 @@ public final class IslandUpgrade extends IslandData {
         return upgrade + "-" + getIslandId();
     }
 
+    public void setLevel(int level) {
+        this.level = level;
+        setChanged(true);
+    }
 }

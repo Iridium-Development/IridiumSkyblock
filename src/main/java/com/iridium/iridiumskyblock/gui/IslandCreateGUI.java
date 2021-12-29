@@ -2,31 +2,30 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import com.iridium.iridiumskyblock.managers.CooldownProvider;
-import org.bukkit.command.CommandSender;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 /**
  * GUI which shows the users all available schematics when creating a new Island.
  */
+@Getter
 public class IslandCreateGUI extends SchematicGUI {
 
     private final @NotNull Player player;
-    private final @NotNull String islandName;
-    private final @NotNull CooldownProvider<CommandSender> cooldownProvider;
+    private final String islandName;
 
     /**
      * The default constructor.
      *
      * @param player           The player who wants to create an Island
      * @param islandName       The name of the new Island
-     * @param cooldownProvider The provider for cooldowns that should be started on success
      */
-    public IslandCreateGUI(@NotNull Player player, String islandName, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
+    public IslandCreateGUI(@NotNull Player player, String islandName) {
         this.player = player;
         this.islandName = islandName;
-        this.cooldownProvider = cooldownProvider;
     }
 
     /**
@@ -35,9 +34,8 @@ public class IslandCreateGUI extends SchematicGUI {
      * @param schematicConfig The data of the selected schematic
      */
     @Override
-    public void selectSchematic(Schematics.SchematicConfig schematicConfig) {
-        boolean success = IridiumSkyblock.getInstance().getIslandManager().makeIsland(player, islandName, schematicConfig);
-        if (success) cooldownProvider.applyCooldown(player);
+    public void selectSchematic(Map.Entry<String, Schematics.SchematicConfig> schematicConfig) {
+        IridiumSkyblock.getInstance().getCommands().createCommand.execute(player, new String[]{"create", islandName, schematicConfig.getKey()});
     }
 
 }

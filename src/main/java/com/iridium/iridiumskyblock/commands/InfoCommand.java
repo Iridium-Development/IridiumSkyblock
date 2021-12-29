@@ -94,7 +94,7 @@ public class InfoCommand extends Command {
                 .replace("%level%", String.valueOf(island.getLevel()))
                 .replace("%value%", String.valueOf(island.getValue()))
                 .replace("%visitable%", island.isVisitable() ? IridiumSkyblock.getInstance().getMessages().visitable : IridiumSkyblock.getInstance().getMessages().notVisitable)
-        ), IridiumSkyblock.getInstance().getMessages().infoFiller));
+        ), StringUtils.color(IridiumSkyblock.getInstance().getMessages().infoFiller)));
 
         for (String infoLine : IridiumSkyblock.getInstance().getMessages().infoCommand) {
             sender.sendMessage(StringUtils.color(infoLine
