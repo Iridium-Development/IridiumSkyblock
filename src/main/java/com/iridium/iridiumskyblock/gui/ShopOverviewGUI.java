@@ -63,9 +63,8 @@ public class ShopOverviewGUI extends GUI {
            // Bukkit.dispatchCommand(event.getWhoClicked(), "is " + command + " " + shopCategory.name);
 
         });
-        IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory ->
-                IridiumSkyblock.getInstance().getCommands().shopCommand.execute(event.getWhoClicked(), new String[]{"", shopCategory.name})
-        );
+        //IridiumSkyblock.getInstance().getShopManager().getCategoryBySlot(event.getSlot()).ifPresent(shopCategory ->
+                //IridiumSkyblock.getInstance().getCommands().shopCommand.execute(event.getWhoClicked(), new String[]{"", shopCategory.name}));
     }
 
 }

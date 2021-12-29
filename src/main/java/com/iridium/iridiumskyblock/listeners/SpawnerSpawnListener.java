@@ -4,13 +4,13 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
-import java.time.Duration;
 import org.bukkit.Bukkit;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.SpawnerSpawnEvent;
 
+import java.time.Duration;
 import java.util.Optional;
 
 public class SpawnerSpawnListener implements Listener {

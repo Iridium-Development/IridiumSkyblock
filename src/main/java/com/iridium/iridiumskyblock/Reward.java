@@ -28,7 +28,6 @@ public class Reward {
     public int crystals;
     public double money;
     public int experience;
-    public int mobcoins;
     public XSound sound;
 
     /**
@@ -48,11 +47,9 @@ public class Reward {
         IslandBank islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
         IslandBank islandExperience = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().experienceBankItem);
         IslandBank islandMoney = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
-        IslandBank islandMobCoins = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().mobcoinsBankItem);
         islandCrystals.setNumber(islandCrystals.getNumber() + crystals);
         islandExperience.setNumber(islandExperience.getNumber() + experience);
         islandMoney.setNumber(islandMoney.getNumber() + money);
-        islandMobCoins.setNumber(islandMoney.getNumber() + mobcoins);
 
         IslandLog islandLog = new IslandLog(island, LogAction.REWARD_REDEEMED, user, null, 0, ChatColor.stripColor(item.displayName));
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);

@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.commands.bank.RemoveCommand;
 import com.iridium.iridiumskyblock.commands.bank.SetCommand;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

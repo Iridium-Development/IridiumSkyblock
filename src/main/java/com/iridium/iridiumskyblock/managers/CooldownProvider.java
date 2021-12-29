@@ -1,9 +1,10 @@
 package com.iridium.iridiumskyblock.managers;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.lang.NotImplementedException;
 
 /**
  * Provides various cooldown features.

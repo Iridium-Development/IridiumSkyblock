@@ -7,13 +7,14 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which deposits a currency into the Island bank.
@@ -57,9 +58,10 @@ public class DepositCommand extends Command {
         }
 
         try {
-            double amount = bankItem.get().deposit(player, Double.parseDouble(args[2]));
+            double amount = Double.parseDouble(args[2]);
             if (amount > 0) {
-                IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, amount, bankItem.get().getName());
+                double deposited = bankItem.get().deposit(player, Double.parseDouble(args[2]));
+                IslandLog islandLog = new IslandLog(island.get(), LogAction.BANK_DEPOSIT, user, null, deposited, bankItem.get().getName());
                 IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
             }
             return true;

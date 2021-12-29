@@ -1,1 +1,0 @@
-ALTER TABLE islands ADD size int NOT NULL DEFAULT(0);

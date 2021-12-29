@@ -57,11 +57,6 @@ public class IslandBankGUI extends IslandGUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-        if (event.getSlot() == 22) {
-            player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
-            return;
-        }
-
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
@@ -94,10 +89,5 @@ public class IslandBankGUI extends IslandGUI {
         }
 
         addContent(event.getInventory());
-            default:
-                return;
-        }
     }
-
-
 }

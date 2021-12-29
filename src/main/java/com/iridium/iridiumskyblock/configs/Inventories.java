@@ -29,7 +29,7 @@ public class Inventories {
             .put(17, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
             .build());
 
-    public Item backButton = new Item(XMaterial.NETHER_STAR, -5, 1, "&c&lBack", Collections.emptyList());
+    public Item backButton = new Item(XMaterial.BARRIER, -5, 1, "&c&lBack", Collections.emptyList());
 
     public InventoryConfig islandBorder = new InventoryConfig(27, "&7Island Border", background2, ImmutableMap.<String, Item>builder()
             .put("is border blue", new Item(XMaterial.BLUE_STAINED_GLASS_PANE, 10, 1, "&b&lBlue", Collections.emptyList()))

@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.api;
 
 import com.iridium.iridiumskyblock.bank.BankItem;
-import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import lombok.Getter;

@@ -6,19 +6,17 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.managers.IslandManager;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.stream.Collectors;
-
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Placeholders {
 

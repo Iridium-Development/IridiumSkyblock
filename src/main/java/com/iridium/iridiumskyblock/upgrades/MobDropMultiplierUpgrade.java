@@ -3,8 +3,6 @@ package com.iridium.iridiumskyblock.upgrades;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.utils.Placeholder;
 import lombok.NoArgsConstructor;
-import org.bukkit.Material;
-import org.bukkit.entity.Villager;
 
 import java.util.Collections;
 import java.util.List;

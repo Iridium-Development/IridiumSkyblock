@@ -5,15 +5,14 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Command which opens visitable islands or visits an island.
