@@ -301,36 +301,34 @@ public final class Island extends DatabaseObject {
      */
     public Location getCenter(World world) {
         if (id == 1) return new Location(world, 0, 0, 0);
-        // In this algorithm id  0 will be where we want id 2 to be and 1 will be where 3 is ect
-        int n = id - 2;
+        // In this algorithm position 2 is where id 1 is, position 3 is where id 2 is, ect.
+        int position = id - 1;
 
-        int r = (int) (Math.floor((Math.sqrt(n + 1) - 1) / 2) + 1);
-        // compute radius : inverse arithmetic sum of 8+16+24+...=
+        // The radius of the last completed square
+        int radius = (int) (Math.floor((Math.sqrt(position) - 1) / 2) + 1);
+        int diameter = radius * 2;
+        int perimeter = diameter * 4;
 
-        int p = (8 * r * (r - 1)) / 2;
-        // compute total point on radius -1 : arithmetic sum of 8+16+24+...
+        // The position the square was last completed at
+        int lastCompletePosition = (perimeter * (radius - 1)) / 2;
 
-        int en = r * 2;
-        // points by face
-
-        int a = (1 + n - p) % (r * 8);
-        // compute de position and shift it so the first is (-r,-r) but (-r+1,-r)
-        // so square can connect
+        // The current index in the perimeter where 1 is first and 0 is the last index
+        int currentIndexInPerimeter = (position - lastCompletePosition) % perimeter;
 
         Location location;
 
-        switch (a / (r * 2)) {
+        switch (currentIndexInPerimeter / diameter) {
             case 0:
-                location = new Location(world, (a - r), 0, -r);
+                location = new Location(world, (currentIndexInPerimeter - radius), 0, -radius);
                 break;
             case 1:
-                location = new Location(world, r, 0, (a % en) - r);
+                location = new Location(world, radius, 0, (currentIndexInPerimeter % diameter) - radius);
                 break;
             case 2:
-                location = new Location(world, r - (a % en), 0, r);
+                location = new Location(world, radius - (currentIndexInPerimeter % diameter), 0, radius);
                 break;
             case 3:
-                location = new Location(world, -r, 0, r - (a % en));
+                location = new Location(world, -radius, 0, radius - (currentIndexInPerimeter % diameter));
                 break;
             default:
                 throw new IllegalStateException("Could not find island location with ID: " + id);
