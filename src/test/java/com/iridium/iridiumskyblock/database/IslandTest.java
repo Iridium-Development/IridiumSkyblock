@@ -31,19 +31,19 @@ class IslandTest {
     @Test
     public void getCenter() {
         IridiumSkyblock.getInstance().getConfiguration().distance = 1;
-        assertEquals(new Location(null, 0, 0, 0), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 0, 0, -1), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 1, 0, -1), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 1, 0, 0), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 1, 0, 1), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 0, 0, 1), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, -1, 0, 1), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, -1, 0, 0), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, -1, 0, -1), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, -1, 0, -2), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 0, 0, -2), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 1, 0, -2), new IslandBuilder().build().getCenter(null));
-        assertEquals(new Location(null, 2, 0, -2), new IslandBuilder().build().getCenter(null));
+        assertEquals(new Location(null, 0, 0, 0), new IslandBuilder(1).build().getCenter(null));
+        assertEquals(new Location(null, 0, 0, -1), new IslandBuilder(2).build().getCenter(null));
+        assertEquals(new Location(null, 1, 0, -1), new IslandBuilder(3).build().getCenter(null));
+        assertEquals(new Location(null, 1, 0, 0), new IslandBuilder(4).build().getCenter(null));
+        assertEquals(new Location(null, 1, 0, 1), new IslandBuilder(5).build().getCenter(null));
+        assertEquals(new Location(null, 0, 0, 1), new IslandBuilder(6).build().getCenter(null));
+        assertEquals(new Location(null, -1, 0, 1), new IslandBuilder(7).build().getCenter(null));
+        assertEquals(new Location(null, -1, 0, 0), new IslandBuilder(8).build().getCenter(null));
+        assertEquals(new Location(null, -1, 0, -1), new IslandBuilder(9).build().getCenter(null));
+        assertEquals(new Location(null, -1, 0, -2), new IslandBuilder(10).build().getCenter(null));
+        assertEquals(new Location(null, 0, 0, -2), new IslandBuilder(11).build().getCenter(null));
+        assertEquals(new Location(null, 1, 0, -2), new IslandBuilder(12).build().getCenter(null));
+        assertEquals(new Location(null, 2, 0, -2), new IslandBuilder(13).build().getCenter(null));
     }
 
 }
