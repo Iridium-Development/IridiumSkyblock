@@ -32,7 +32,7 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 public class DatabaseManager {
 
-    private final int version = 3;
+    private final int version = 4;
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
     private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;

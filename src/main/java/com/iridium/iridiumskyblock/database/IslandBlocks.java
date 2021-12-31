@@ -26,6 +26,9 @@ public final class IslandBlocks extends IslandData {
     @DatabaseField(columnName = "amount", canBeNull = false)
     private int amount;
 
+    @DatabaseField(columnName = "extra_amount", canBeNull = false)
+    private int extraAmount;
+
     /**
      * The default constructor.
      *
@@ -44,6 +47,11 @@ public final class IslandBlocks extends IslandData {
 
     public void setAmount(int amount) {
         this.amount = amount;
+        setChanged(true);
+    }
+
+    public void setExtraAmount(int extraAmount) {
+        this.extraAmount = extraAmount;
         setChanged(true);
     }
 }

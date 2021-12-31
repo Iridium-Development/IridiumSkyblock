@@ -818,11 +818,13 @@ public class IslandManager {
     }
 
     public int getIslandBlockAmount(Island island, XMaterial material) {
-        return getIslandBlock(island, material).getAmount() + IridiumSkyblock.getInstance().getStackerSupport().getExtraBlocks(island, material);
+        int extraAmount = getPlayersOnIsland(island).size() == 0 ? getIslandBlock(island, material).getExtraAmount() : IridiumSkyblock.getInstance().getStackerSupport().getExtraBlocks(island, material);
+        return getIslandBlock(island, material).getAmount() + extraAmount;
     }
 
     public int getIslandSpawnerAmount(Island island, EntityType entityType) {
-        return getIslandSpawners(island, entityType).getAmount() + IridiumSkyblock.getInstance().getStackerSupport().getExtraSpawners(island, entityType);
+        int extraAmount = getPlayersOnIsland(island).size() == 0 ? getIslandSpawners(island, entityType).getExtraAmount() : IridiumSkyblock.getInstance().getStackerSupport().getExtraSpawners(island, entityType);
+        return getIslandSpawners(island, entityType).getAmount() + extraAmount;
     }
 
     /**
