@@ -67,7 +67,15 @@ public class UserTableManager extends TableManager<User, Integer> {
     }
 
     public @Nullable User getUserByUsername(String username) {
-        return userIslandMap.values().stream().filter(user -> user.getName().equalsIgnoreCase(username)).findFirst().orElse(null);
+        for (User user : userIslandMap.values()) {
+            if (user.getName().equalsIgnoreCase(username)) {
+                if (username.contains(IridiumSkyblock.getInstance().getConfiguration().bedrockPrefix)) { // Support Bedrock + fixe
+                    if (user.getUuid().toString().contains("00000000-0000-0000") == false) continue;
+                }
+                return user;
+            }
+        }
+        return null;
     }
 
     /**
