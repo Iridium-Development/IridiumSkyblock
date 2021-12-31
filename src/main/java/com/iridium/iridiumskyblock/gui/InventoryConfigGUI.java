@@ -3,10 +3,13 @@ package com.iridium.iridiumskyblock.gui;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.commands.*;
 import com.iridium.iridiumskyblock.configs.inventories.InventoryConfig;
-import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.Arrays;
 
 public class InventoryConfigGUI extends GUI {
 
@@ -32,9 +35,29 @@ public class InventoryConfigGUI extends GUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
         for (String command : inventoryConfig.items.keySet()) {
             if (inventoryConfig.items.get(command).slot == event.getSlot()) {
-                Bukkit.getServer().dispatchCommand(event.getWhoClicked(), command);
+                player.closeInventory();
+                String[] arguments = command.split(" ");
+                String commandExec = arguments[1];
+                String[] args = new String[arguments.length - 1];
+                System.arraycopy(arguments, 1, args, 0, arguments.length - 1);
+                switch (commandExec) {
+                    case "bank" -> BankCommand.bankExecutor(player, args);
+                    case "boosters" -> BoosterCommand.boosterExecutor(player, args);
+                    case "border" -> BorderCommand.borderExecutor(player, args);
+                    case "delete" -> DeleteCommand.deleteExecutor(player, args);
+                    case "home" -> HomeCommand.homeExecutor(player, args);
+                    case "members" -> MembersCommand.membersExecutor(player, args);
+                    case "missions" -> MissionCommand.missionExecutor(player, args);
+                    case "permissions" -> PermissionsCommand.permissionsExecutor(player, args);
+                    case "regen" -> RegenCommand.regenExecutor(player, args);
+                    case "trusted" -> TrustCommand.trustExecutor(player, args);
+                    case "upgrade" -> UpgradesCommand.upgradesExecutor(player, args);
+                    case "warps" -> WarpsCommand.warpsExecutor(player, args);
+                    default -> System.out.println(commandExec);
+                }
             }
         }
     }

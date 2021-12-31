@@ -40,6 +40,10 @@ public class UpgradesCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        return upgradesExecutor(player, args);
+    }
+
+    public static boolean upgradesExecutor(Player player, String[] args) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isEmpty()) {

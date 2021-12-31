@@ -35,6 +35,22 @@ public class UserManager {
         return user;
     }
 
+    public User getUserByUsername(String username) {
+        User user = IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUserByUsername(username);
+        if (user == null) {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(username);
+            Optional<String> name = Optional.ofNullable(offlinePlayer.getName());
+            user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
+            IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
+            if (IridiumSkyblock.getInstance().getConfiguration().debug) {
+                System.out.println("Player: " + user.getName() + "\n" +
+                        "UUID: " + user.getUuid() + "\n" +
+                        "Event: UserManager#getUser");
+            }
+        }
+        return user;
+    }
+
     /**
      * Finds an User by his {@link UUID}.
      *

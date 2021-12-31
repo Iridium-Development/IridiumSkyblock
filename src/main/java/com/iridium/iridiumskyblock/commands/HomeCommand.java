@@ -35,6 +35,10 @@ public class HomeCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        return homeExecutor(player, args);
+    }
+
+    public static boolean homeExecutor(Player player, String[] args) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
 

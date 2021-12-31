@@ -40,6 +40,10 @@ public class BoosterCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        return boosterExecutor(player, args);
+    }
+
+    public static boolean boosterExecutor(Player player, String[] args) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isEmpty()) {

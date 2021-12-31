@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.j256.ormlite.support.ConnectionSource;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -65,10 +66,9 @@ public class UserTableManager extends TableManager<User, Integer> {
         return userIslandMap.get(uuid);
     }
 
-    /*public User getUserbyUsername(String username) {
-
-    }*/
-
+    public @Nullable User getUserByUsername(String username) {
+        return userIslandMap.values().stream().filter(user -> user.getName().equalsIgnoreCase(username)).findFirst().orElse(null);
+    }
 
     /**
      * Gets all entries associated with an island

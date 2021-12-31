@@ -62,19 +62,13 @@ public class BanCommand extends Command {
             return false;
         }
 
-        Player targetPlayer = Bukkit.getPlayer(args[1]);
-        if (targetPlayer == null) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
-        }
-
-        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUserByUsername(args[1]);
         if (island.get().equals(targetUser.getIsland().orElse(null)) || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), targetUser).isPresent()) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().inYourTeam.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
-        if (targetUser.isBypassing() || targetPlayer.hasPermission("iridiumskyblock.visitbypass")) {
+        if (targetUser.isBypassing() || targetUser.getPlayer().hasPermission("iridiumskyblock.visitbypass")) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -85,9 +79,9 @@ public class BanCommand extends Command {
         }
 
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().addEntry(new IslandBan(island.get(), user, targetUser));
-        if (island.get().isInIsland(targetPlayer.getLocation())) {
-            PlayerUtils.teleportSpawn(targetPlayer);
-            targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        if (island.get().isInIsland(targetUser.getPlayer().getLocation())) {
+            PlayerUtils.teleportSpawn(targetUser.getPlayer());
+            targetUser.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
 
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerBanned.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

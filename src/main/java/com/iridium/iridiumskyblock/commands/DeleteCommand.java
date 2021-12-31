@@ -36,6 +36,10 @@ public class DeleteCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        return deleteExecutor(player, args);
+    }
+
+    public static boolean deleteExecutor(Player player, String[] args) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isEmpty()) {

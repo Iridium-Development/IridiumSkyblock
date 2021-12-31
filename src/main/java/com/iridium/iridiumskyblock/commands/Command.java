@@ -21,13 +21,13 @@ public abstract class Command {
     public final @NotNull List<Command> childs;
     public final @NotNull String description;
     public final @NotNull String permission;
-    public final @NotNull String syntax;
+    public static String syntax;
     @JsonIgnore
     public final boolean onlyForPlayers;
     public final boolean enabled;
-    public final long cooldownInSeconds;
+    public static long cooldownInSeconds;
     @JsonIgnore
-    private CooldownProvider<CommandSender> cooldownProvider;
+    private static CooldownProvider<CommandSender> cooldownProvider;
 
     /**
      * The default constructor.
@@ -43,11 +43,11 @@ public abstract class Command {
         this.aliases = aliases;
         this.childs = new ArrayList<>();
         this.description = description;
-        this.syntax = syntax;
+        Command.syntax = syntax;
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = true;
-        this.cooldownInSeconds = cooldown.getSeconds();
+        Command.cooldownInSeconds = cooldown.getSeconds();
     }
 
     /**
@@ -63,16 +63,16 @@ public abstract class Command {
         this.aliases = aliases;
         this.childs = new ArrayList<>();
         this.description = description;
-        this.syntax = "";
+        Command.syntax = "";
         this.permission = permission;
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = true;
-        this.cooldownInSeconds = cooldown.getSeconds();
+        Command.cooldownInSeconds = cooldown.getSeconds();
     }
 
-    public CooldownProvider<CommandSender> getCooldownProvider() {
+    public static CooldownProvider<CommandSender> getCooldownProvider() {
         if (cooldownProvider == null) {
-            this.cooldownProvider = CooldownProvider.newInstance(Duration.ofSeconds(cooldownInSeconds));
+            cooldownProvider = CooldownProvider.newInstance(Duration.ofSeconds(cooldownInSeconds));
         }
 
         return cooldownProvider;

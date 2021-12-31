@@ -37,6 +37,10 @@ public class PermissionsCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
+        return permissionsExecutor(player, args);
+    }
+
+    public static boolean permissionsExecutor(Player player, String[] args) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         if (island.isEmpty()) {
@@ -48,7 +52,7 @@ public class PermissionsCommand extends Command {
         return true;
     }
 
-    /**
+     /**
      * Handles tab-completion for this command.
      *
      * @param commandSender The CommandSender which tries to tab-complete
