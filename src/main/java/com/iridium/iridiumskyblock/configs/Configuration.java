@@ -195,7 +195,8 @@ public class Configuration {
                 EntityDamageEvent.DamageCause.ENTITY_ATTACK,
                 EntityDamageEvent.DamageCause.HOT_FLOOR,
                 EntityDamageEvent.DamageCause.LAVA,
-                EntityDamageEvent.DamageCause.CONTACT
+                EntityDamageEvent.DamageCause.CONTACT,
+                EntityDamageEvent.DamageCause.FIRE_TICK
         );
 
     }
