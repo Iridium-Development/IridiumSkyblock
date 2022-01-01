@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Hanging;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
@@ -87,11 +88,13 @@ public class BlockBreakListener implements Listener {
             } else if (event.getRemover() instanceof Player) {
                 remover = (Player) event.getRemover();
             }
+
             if (remover == null) return;
-            ItemFrame itemFrame = (ItemFrame) event.getEntity();
+            Hanging hangingEntity = event.getEntity();
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(remover);
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame.getLocation());
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(hangingEntity.getLocation());
             if (!island.isPresent()) return;
+
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
                 event.setCancelled(true);
                 remover.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
