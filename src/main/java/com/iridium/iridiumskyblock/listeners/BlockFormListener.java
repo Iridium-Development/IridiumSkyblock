@@ -12,7 +12,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class BlockFormListener implements Listener {
 
@@ -21,16 +23,8 @@ public class BlockFormListener implements Listener {
 
     public static void generateOrePossibilities() {
         for (Map.Entry<Integer, OresUpgrade> oreUpgrade : IridiumSkyblock.getInstance().getUpgrades().oresUpgrade.upgrades.entrySet()) {
-            int level = oreUpgrade.getKey();
-            OresUpgrade oresUpgrade = oreUpgrade.getValue();
-            RandomAccessList<XMaterial> oreList = new RandomAccessList<>();
-            RandomAccessList<XMaterial> netherOreList = new RandomAccessList<>();
-
-            oreList.addAll(oresUpgrade.ores);
-            netherOreList.addAll(oresUpgrade.netherOres);
-
-            normalOreLevels.put(level, oreList);
-            netherOreLevels.put(level, netherOreList);
+            normalOreLevels.put(oreUpgrade.getKey(), new RandomAccessList<>(oreUpgrade.getValue().ores));
+            netherOreLevels.put(oreUpgrade.getKey(), new RandomAccessList<>(oreUpgrade.getValue().netherOres));
         }
     }
 
