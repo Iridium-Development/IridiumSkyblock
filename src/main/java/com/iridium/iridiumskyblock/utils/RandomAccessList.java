@@ -33,9 +33,9 @@ public class RandomAccessList<E> {
 
     /**
      * Adds a Map of elements to the list where the key is an element and the value its possibility.
-     * The possibility depends on the elementsWithPossibilities of the other elements, it is relative.
+     * The possibility depends on the possibilities of the other elements, it is relative.
      *
-     * @param elementsWithPossibilities Map of the elements with their elementsWithPossibilities
+     * @param elementsWithPossibilities Map of the elements with their possibilities
      */
     public void addAll(Map<E, Integer> elementsWithPossibilities) {
         elementsWithPossibilities.forEach(this::add);
