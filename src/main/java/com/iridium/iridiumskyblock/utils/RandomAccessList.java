@@ -96,10 +96,6 @@ public class RandomAccessList<E> {
             return element;
         }
 
-        public IntRange getRange() {
-            return range;
-        }
-
         /**
          * Returns if the provided integer is inside the range for this element.
          *
