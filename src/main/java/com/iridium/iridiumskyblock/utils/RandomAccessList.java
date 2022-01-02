@@ -71,7 +71,7 @@ public class RandomAccessList<E> {
      *
      * @param <E> The type represented by this element.
      */
-    public static class RandomAccessElement<E> {
+    private static class RandomAccessElement<E> {
 
         private final E element;
         private final IntRange range;
