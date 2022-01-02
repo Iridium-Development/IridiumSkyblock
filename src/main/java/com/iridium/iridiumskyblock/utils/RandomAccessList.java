@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -12,44 +12,29 @@ import java.util.concurrent.ThreadLocalRandom;
  *
  * @param <E> The type of elements in this list
  */
+@AllArgsConstructor
 public class RandomAccessList<E> {
 
-    private final List<E> underlyingList = new ArrayList<>();
-
-    /**
-     * Adds an element with a certain possibility to this list.
-     * The possibility depends on the possibilities of the other elements, it is relative.
-     *
-     * @param e The element which should be added
-     * @param possibility The possibility of this element being selected.
-     */
-    public void add(E e, int possibility) {
-        for (int i = 0; i < possibility; i++) {
-            underlyingList.add(e);
-        }
-    }
-
-    /**
-     * Adds a Map of elements to the list where the key is an element and the value its possibility.
-     * The possibility depends on the possibilities of the other elements, it is relative.
-     *
-     * @param possibilities Map of the elements with their possibilities
-     */
-    public void addAll(Map<E, Integer> possibilities) {
-        for (E e : possibilities.keySet()) {
-            add(e, possibilities.get(e));
-        }
-    }
+    private final Map<E, Integer> underlyingList;
 
     /**
      * Generates a random element from this list, considering the specified possibilities.
      *
      * @return A random element
      */
-    public Optional<E> nextElement() throws IndexOutOfBoundsException {
+    public Optional<E> nextElement() {
         if (underlyingList.isEmpty()) return Optional.empty();
-        int randomIndex = ThreadLocalRandom.current().nextInt(underlyingList.size());
-        return Optional.of(underlyingList.get(randomIndex));
+        int listSize = underlyingList.values().stream().mapToInt(Integer::intValue).sum();
+        int randomIndex = ThreadLocalRandom.current().nextInt(listSize);
+        int counter = 0;
+        for (E e : underlyingList.keySet()) {
+            if (randomIndex >= counter && randomIndex < counter + underlyingList.get(e)) {
+                return Optional.of(e);
+            }
+            counter += underlyingList.get(e);
+        }
+        // The code should never reach here
+        return Optional.empty();
     }
 
 }
