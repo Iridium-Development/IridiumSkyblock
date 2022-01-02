@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.utils;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -15,11 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RandomAccessListTest {
 
-    private ServerMock serverMock;
-
     @BeforeEach
     public void setup() {
-        this.serverMock = MockBukkit.mock();
+        MockBukkit.mock();
         MockBukkit.load(IridiumSkyblock.class);
     }
 
