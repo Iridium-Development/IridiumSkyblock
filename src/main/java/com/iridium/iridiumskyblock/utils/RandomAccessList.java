@@ -22,7 +22,7 @@ public class RandomAccessList<E> {
      *
      * @return A random element
      */
-    public Optional<E> nextElement() throws IndexOutOfBoundsException {
+    public Optional<E> nextElement() {
         if (underlyingList.isEmpty()) return Optional.empty();
         int listSize = underlyingList.values().stream().mapToInt(Integer::intValue).sum();
         int randomIndex = ThreadLocalRandom.current().nextInt(listSize);
