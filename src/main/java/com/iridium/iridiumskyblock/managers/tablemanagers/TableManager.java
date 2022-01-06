@@ -60,8 +60,8 @@ public class TableManager<T extends DatabaseObject, S> {
         }
     }
     
-    public void saveHashMap(LinkedHashMap<?, T> uuidtLinkedHashMap) {
-        List<T> tList = new LinkedList<>(uuidtLinkedHashMap.values());
+    public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {
+        List<T> tList = new LinkedList<>(uuidLinkedHashMap.values());
         int sizeList = tList.size();
         try {
             for (int i = 0; i < sizeList; i++) {
