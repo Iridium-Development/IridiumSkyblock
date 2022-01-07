@@ -43,14 +43,12 @@ public class IslandInvitesGUI extends IslandGUI {
 
         AtomicInteger slot = new AtomicInteger(0);
         for (int i = 0; i < islandInvites.size(); i++) {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                int itemSlot = slot.getAndIncrement();
-                List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandInvites.get(itemSlot).getUser()).applyIslandPlaceholders(getIsland()).build();
-                placeholderList.add(new Placeholder("inviter", islandInvites.get(itemSlot).getInviter().getName()));
-                placeholderList.add(new Placeholder("time", islandInvites.get(itemSlot).getTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
-                inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList));
-                invites.put(itemSlot, islandInvites.get(itemSlot).getUser().getName());
-            });
+            int itemSlot = slot.getAndIncrement();
+            List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandInvites.get(itemSlot).getUser()).applyIslandPlaceholders(getIsland()).build();
+            placeholderList.add(new Placeholder("inviter", islandInvites.get(itemSlot).getInviter().getName()));
+            placeholderList.add(new Placeholder("time", islandInvites.get(itemSlot).getTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
+            inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList));
+            invites.put(itemSlot, islandInvites.get(itemSlot).getUser().getName());
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
