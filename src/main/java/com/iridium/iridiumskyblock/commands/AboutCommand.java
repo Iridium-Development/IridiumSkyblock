@@ -16,7 +16,7 @@ public class AboutCommand extends Command {
     /*
     Please don't add yourself to this list, if you contribute enough I (Peaches) will add you.
     */
-    private final List<String> contributors = Arrays.asList("das_", "SlashRemix");
+    private final List<String> contributors = Arrays.asList("das_", "SlashRemix", "DoctaEnkoda");
 
     /**
      * The default constructor.
