@@ -31,7 +31,7 @@ public class RoseStackerSupport implements StackerSupport {
         int stackedSpawners = 0;
         for (StackedSpawner stackedSpawner : RoseStackerAPI.getInstance().getStackedSpawners().values()) {
             if (!island.isInIsland(stackedSpawner.getLocation())) continue;
-            if (stackedSpawner.getSpawnerTile().getSpawnedType() != entityType) continue;
+            if (stackedSpawner.getSpawner().getSpawnedType() != entityType) continue;
             stackedSpawners += (stackedSpawner.getStackSize() - 1);
         }
         islandSpawners.setExtraAmount(stackedSpawners);
