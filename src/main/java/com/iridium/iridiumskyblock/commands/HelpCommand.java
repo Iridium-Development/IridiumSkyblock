@@ -125,7 +125,7 @@ public class HelpCommand extends Command {
         IridiumSkyblock.getInstance().getMessages().commandHelpMessage.stream()
             .map(line -> line.replace("%description%", executingCommand.description))
             .map(line -> line.replace("%syntax%", finalSyntax))
-            .map(line -> line.replace("%subcommands%", executingCommand.childs.isEmpty() ? "" : subCommands))
+            .map(line -> line.replace("%subcommands%", subCommands.equals("<>") ? "" : subCommands))
             .map(StringUtils::color)
             .forEach(commandSender::sendMessage);
 
