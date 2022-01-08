@@ -34,6 +34,11 @@ public class TestingDao<T, ID> implements Dao<T, ID> {
     }
 
     @Override
+    public T queryForFirst() throws SQLException {
+        return null;
+    }
+
+    @Override
     public List<T> queryForEq(String fieldName, Object value) throws SQLException {
         return null;
     }
