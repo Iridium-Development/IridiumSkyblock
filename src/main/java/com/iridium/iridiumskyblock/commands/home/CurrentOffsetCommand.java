@@ -33,7 +33,7 @@ public class CurrentOffsetCommand extends Command {
     public boolean execute(CommandSender sender, String[] arguments) {
         Player player = (Player) sender;
         Location playerLocation = player.getLocation();
-        Optional<Island> islandOptional =IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
+        Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player);
         if (!islandOptional.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnAnIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
