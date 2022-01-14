@@ -866,7 +866,7 @@ public class IslandManager {
                 }
             }
         });
-        if (Bukkit.isPrimaryThread() == false) {
+        if (!Bukkit.isPrimaryThread()) {
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
         } else {
             getAllTileInIsland(island, chunks);
