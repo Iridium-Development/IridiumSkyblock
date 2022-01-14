@@ -146,7 +146,7 @@ public class Messages {
     public String flightEnabled = "%prefix% &7Island flight enabled.";
     public String flightDisabled = "%prefix% &7Island flight disabled.";
     public String bankWithdrew = "%prefix% &7You successfully withdrew %amount% %type% from your Island bank.";
-    public String bankDeposited = "%prefix% &7You successfully deposited %amount% %type% from your Island bank.";
+    public String bankDeposited = "%prefix% &7You successfully deposited %amount% %type% to your Island bank.";
     public String insufficientFundsToWithdrew = "%prefix% &7You do not have enough %type% to withdraw from your Island bank.";
     public String insufficientFundsToDeposit = "%prefix% &7You do not have enough %type% to deposit into your Island bank.";
     public String blockLimitReached = "%prefix% &7The maximum block limit for %block% (%limit%) has been reached!";

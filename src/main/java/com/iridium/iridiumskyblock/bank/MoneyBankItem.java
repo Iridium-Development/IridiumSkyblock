@@ -86,7 +86,7 @@ public class MoneyBankItem extends BankItem {
                         .replace("%amount%", String.valueOf(money))
                         .replace("%type%", getDisplayName())
                 );
-            }else{
+            } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())
