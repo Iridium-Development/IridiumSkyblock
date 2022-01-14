@@ -190,7 +190,7 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         // Auto recalculate islands
-        if (getConfiguration().islandRecalculateInterval != -1) {
+        if (getConfiguration().islandRecalculateInterval > 0) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
                 ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
