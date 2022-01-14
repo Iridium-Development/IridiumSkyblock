@@ -198,7 +198,7 @@ public class IridiumSkyblock extends IridiumCore {
                 if (!islands.hasNext()) {
                     islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
                 } else {
-                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
+                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island, null));
                 }
             }
 

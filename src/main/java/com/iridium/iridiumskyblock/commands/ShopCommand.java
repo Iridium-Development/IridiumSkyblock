@@ -26,7 +26,7 @@ public class ShopCommand extends Command {
      * The default constructor.
      */
     public ShopCommand() {
-        super(Collections.singletonList("shop"), "Opens the Island shop", "%prefix% &7/is shop <category>", "", true, Duration.ZERO);
+        super(Collections.singletonList("shop"), "Opens the Island shop", "%prefix% &7/is shop <category>", "iridiumskyblock.shop", true, Duration.ZERO);
     }
 
     /**

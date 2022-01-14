@@ -39,6 +39,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -233,6 +234,9 @@ public class IslandManager {
                 teleportHome(player, island);
                 IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
             });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
         });
 
         return true;
@@ -399,7 +403,10 @@ public class IslandManager {
                         }
                     })
             );
-        });
+        }).exceptionally(throwable -> {
+                    throwable.printStackTrace();
+                    return null;
+                });
     }
 
     private CompletableFuture<Void> pasteSchematic(@NotNull Island island, @NotNull Schematics.SchematicConfig schematicConfig) {
@@ -793,7 +800,10 @@ public class IslandManager {
                                 .map(entity -> (Player) entity)
                                 .forEach(PlayerUtils::teleportSpawn)
                 )
-        );
+        ).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 
     /**
@@ -930,12 +940,15 @@ public class IslandManager {
      *
      * @param island The specified Island
      */
-    public void recalculateIsland(@NotNull Island island) {
+    public void recalculateIsland(@NotNull Island island, Player player) {
         getIslandChunks(island, getWorld(), getNetherWorld(), getEndWorld()).thenAcceptAsync(chunks -> {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).forEach(islandBlocks -> islandBlocks.setAmount(0));
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(islandSpawners -> islandSpawners.setAmount(0));
+            recalculateIsland(island, chunks, player);
 
-            recalculateIsland(island, chunks);
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
         });
     }
 
@@ -945,7 +958,7 @@ public class IslandManager {
      * @param island The specified Island
      * @param chunks The Island's Chunks
      */
-    private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
+    private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks, Player player) {
         chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
             World world = Bukkit.getWorld(chunk.getWorldName());
             int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
@@ -964,6 +977,18 @@ public class IslandManager {
                 }
             }
         });
+        if (!Bukkit.isPrimaryThread()) {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
+        } else {
+            getAllTileInIsland(island, chunks);
+        }
+
+        if (player != null) {
+            player.sendMessage(StringUtils.color( "%prefix% &7Tous les blocs ont été recalculés avec succès.".replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        }
+    }
+
+    private void getAllTileInIsland(Island island, List<Chunk> chunks) {
         chunks.forEach(chunk -> {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner creatureSpawner)) continue;
@@ -1057,6 +1082,9 @@ public class IslandManager {
                     PlayerUtils.sendBorder((Player) entity, island);
                 }
             }
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
         });
     }
 

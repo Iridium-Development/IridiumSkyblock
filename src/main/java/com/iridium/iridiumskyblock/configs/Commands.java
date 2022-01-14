@@ -20,6 +20,7 @@ public class Commands {
     public BoosterCommand boostersCommand = new BoosterCommand();
     public BorderCommand borderCommand = new BorderCommand();
     public BypassCommand bypassCommand = new BypassCommand();
+    public CalculateCommand calculateCommand = new CalculateCommand();
     public ChatCommand chatCommand = new ChatCommand();
     public ClearDataCommand clearDataCommand = new ClearDataCommand();
     public CreateCommand createCommand = new CreateCommand();

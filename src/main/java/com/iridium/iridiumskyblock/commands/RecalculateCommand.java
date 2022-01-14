@@ -58,7 +58,7 @@ public class RecalculateCommand extends Command {
                 if (islands.hasNext()) {
                     Island island = islands.next();
                     if (island == null) return;
-                    IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island);
+                    IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island, null);
                 } else {
                     bukkitTask.cancel();
                     bukkitTask = null;
