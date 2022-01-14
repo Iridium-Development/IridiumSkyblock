@@ -866,15 +866,27 @@ public class IslandManager {
                 }
             }
         });
-        chunks.forEach(chunk -> {
-            for (BlockState blockState : chunk.getTileEntities()) {
-                if (!(blockState instanceof CreatureSpawner)) continue;
-                if (!island.isInIsland(blockState.getLocation())) continue;
-                CreatureSpawner creatureSpawner = (CreatureSpawner) blockState;
-                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
-                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
-            }
-        });
+        if (Bukkit.isPrimaryThread() == false) {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                chunks.forEach(chunk -> {
+                    for (BlockState blockState : chunk.getTileEntities()) {
+                        if (!(blockState instanceof CreatureSpawner creatureSpawner)) continue;
+                        if (!island.isInIsland(blockState.getLocation())) continue;
+                        IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
+                        islandSpawners.setAmount(islandSpawners.getAmount() + 1);
+                    }
+                });
+            });
+        } else {
+            chunks.forEach(chunk -> {
+                for (BlockState blockState : chunk.getTileEntities()) {
+                    if (!(blockState instanceof CreatureSpawner creatureSpawner)) continue;
+                    if (!island.isInIsland(blockState.getLocation())) continue;
+                    IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
+                    islandSpawners.setAmount(islandSpawners.getAmount() + 1);
+                }
+            });
+        }
     }
 
     /**
