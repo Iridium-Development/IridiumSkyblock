@@ -43,24 +43,28 @@ public class PlayerInteractListener implements Listener {
             if (event.getAction() != Action.PHYSICAL) {
                 int islandCrystals = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(event.getPlayer().getInventory().getItemInMainHand());
                 if (islandCrystals > 0) {
-                    int amount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
-                    if (amount == 1) {
-                        event.getPlayer().getInventory().setItemInMainHand(null);
-                    } else {
-                        event.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
+                    // Required because Spigot likes to trigger this event for each hand which removes two items
+                    if (hasNoCooldown(player)) {
+                        int amount = event.getPlayer().getInventory().getItemInMainHand().getAmount();
+                        if (amount == 1) {
+                            event.getPlayer().getInventory().setItemInMainHand(null);
+                        } else {
+                            event.getPlayer().getInventory().getItemInMainHand().setAmount(amount - 1);
+                        }
+
+                        IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
+                        islandBank.setNumber(islandBank.getNumber() + islandCrystals);
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getDisplayName())
+                                .replace("%amount%", String.valueOf(islandCrystals))));
                     }
-                    IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
-                    islandBank.setNumber(islandBank.getNumber() + islandCrystals);
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                            .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getDisplayName())
-                            .replace("%amount%", String.valueOf(islandCrystals))));
                 }
             }
         });
+
         if (event.getClickedBlock() == null) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation()).ifPresent(island -> {
-
             XMaterial material = XMaterial.matchXMaterial(event.getClickedBlock().getType());
             String materialName = material.name();
 
