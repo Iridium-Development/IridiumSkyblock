@@ -190,19 +190,21 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         // Auto recalculate islands
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-            ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+        if (getConfiguration().islandRecalculateInterval != -1) {
+            Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
-            @Override
-            public void run() {
-                if (!islands.hasNext()) {
-                    islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-                } else {
-                    getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island, null));
+                @Override
+                public void run() {
+                    if (!islands.hasNext()) {
+                        islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                    } else {
+                        getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island, null));
+                    }
                 }
-            }
 
-        }, 0, getConfiguration().islandRecalculateInterval * 20L);
+            }, 0, getConfiguration().islandRecalculateInterval * 20L);
+        }
 
         // Automatically update all inventories
         Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
@@ -213,11 +215,13 @@ public class IridiumSkyblock extends IridiumCore {
         }), 0, 20);
 
         // Register worlds with multiverse
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            registerMultiverse(islandManager.getWorld());
-            registerMultiverse(islandManager.getNetherWorld());
-            registerMultiverse(islandManager.getEndWorld());
-        }, 1);
+        if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                registerMultiverse(islandManager.getWorld());
+                registerMultiverse(islandManager.getNetherWorld());
+                registerMultiverse(islandManager.getEndWorld());
+            }, 1);
+        }
 
         resetIslandMissions();
 
@@ -445,10 +449,8 @@ public class IridiumSkyblock extends IridiumCore {
      * @param world The specified World
      */
     private void registerMultiverse(World world) {
-        if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
-        }
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
     }
 
     /**
