@@ -39,7 +39,7 @@ public class VisitCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        if (args.length != 2) {
+        if (false && args.length != 2) {
             player.openInventory(new VisitGUI(1, user).getInventory());
             return true;
         }
