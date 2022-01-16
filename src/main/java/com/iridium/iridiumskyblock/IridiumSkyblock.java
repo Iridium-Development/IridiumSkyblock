@@ -29,6 +29,7 @@ import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
@@ -214,6 +215,7 @@ public class IridiumSkyblock extends IridiumCore {
                     ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
                 }
             } catch (Exception e) {
+                System.out.println("Error : IridiumSkyblock#runTaskTimer#inventoryHolder");
                 e.printStackTrace();
             }
 
@@ -247,6 +249,8 @@ public class IridiumSkyblock extends IridiumCore {
         getLogger().info("Version: " + getDescription().getVersion());
         getLogger().info("");
         getLogger().info("----------------------------------------");
+
+        playerStopGlitchBorder();
     }
 
     private void registerPlaceholderSupport() {
@@ -697,6 +701,27 @@ public class IridiumSkyblock extends IridiumCore {
      */
     public NumberFormatter getNumberFormatter() {
         return configuration.numberFormatter;
+    }
+
+    private void playerStopGlitchBorder() {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(getInstance(), () -> {
+            Collection<? extends Player> players = Bukkit.getOnlinePlayers();
+            for (Player player : players) {
+                if (!player.isOnline()) continue; // Check au cas où !
+                try {
+                    if (player.hasPermission("iridiumskyblock.locationisland.bypass")) continue;
+                    User playerUser = User.of(player);
+                    if (playerUser.isBypassing()) continue;
+                    Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player, playerUser);
+                    if (island.isEmpty()) {
+                        Bukkit.getScheduler().runTask(getInstance(), () -> PlayerUtils.teleportSpawn(player));
+                    }
+                } catch (Exception e) {
+                    System.out.println("Error : IridiumSkyblock#runTaskTimerAsynchronously#checkEmplacement");
+                    e.printStackTrace();
+                }
+            }
+        },0, 5*20); // toutes les 5 secondes
     }
 
 }

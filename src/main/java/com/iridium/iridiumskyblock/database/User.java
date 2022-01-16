@@ -77,6 +77,10 @@ public final class User extends DatabaseObject {
         this.island = island.getId();
     }
 
+    public static User of(Player player) {
+        return IridiumSkyblock.getInstance().getUserManager().getUser(player);
+    }
+
 
     /**
      * Returns the Island of this user.

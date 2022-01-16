@@ -104,6 +104,7 @@ public class IslandManager {
                 }
             });
         }).exceptionally(throwable -> {
+            System.out.println("Error : IslandManager#setIslandBiome");
             throwable.printStackTrace();
             return null;
         });
@@ -235,6 +236,7 @@ public class IslandManager {
                 IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
             });
         }).exceptionally(throwable -> {
+            System.out.println("Error : IslandManager#makeIsland");
             throwable.printStackTrace();
             return null;
         });
@@ -404,6 +406,7 @@ public class IslandManager {
                     })
             );
         }).exceptionally(throwable -> {
+            System.out.println("Error : IslandManager#regenerateIsland");
                     throwable.printStackTrace();
                     return null;
                 });
@@ -463,6 +466,7 @@ public class IslandManager {
             }
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
         }).exceptionally(throwable -> {
+            System.out.println("Error : IslandManager#getIslandChunks");
             throwable.printStackTrace();
             return Collections.emptyList();
         });
@@ -801,6 +805,7 @@ public class IslandManager {
                                 .forEach(PlayerUtils::teleportSpawn)
                 )
         ).exceptionally(throwable -> {
+            System.out.println("Error : IslandManager#deleteIslands");
             throwable.printStackTrace();
             return null;
         });
@@ -947,6 +952,7 @@ public class IslandManager {
             recalculateIsland(island, chunks, player);
 
         }).exceptionally(throwable -> {
+            System.out.println("Error : IslandManager#recalculateIsland");
             throwable.printStackTrace();
             return null;
         });
@@ -1083,6 +1089,7 @@ public class IslandManager {
                 }
             }
         }).exceptionally(throwable -> {
+            System.out.println("Error : IslandManager#sendIslandBorder");
             throwable.printStackTrace();
             return null;
         });

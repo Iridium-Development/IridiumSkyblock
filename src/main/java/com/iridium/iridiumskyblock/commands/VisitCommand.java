@@ -39,7 +39,8 @@ public class VisitCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        if (false && args.length != 2) {
+        if (args.length != 2) {
+            //player.sendMessage("Le GUI est temporairement désactivé");
             player.openInventory(new VisitGUI(1, user).getInventory());
             return true;
         }
