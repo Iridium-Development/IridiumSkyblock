@@ -4,12 +4,14 @@ import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
@@ -20,6 +22,7 @@ import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.RoseStackerSupport;
 import com.iridium.iridiumskyblock.support.StackerSupport;
 import com.iridium.iridiumskyblock.support.WildStackerSupport;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
 import lombok.Getter;
@@ -27,6 +30,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -709,12 +713,48 @@ public class IridiumSkyblock extends IridiumCore {
             for (Player player : players) {
                 if (!player.isOnline()) continue; // Check au cas où !
                 try {
+                    if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) continue;
                     if (player.hasPermission("iridiumskyblock.locationisland.bypass")) continue;
                     User playerUser = User.of(player);
                     if (playerUser.isBypassing()) continue;
                     Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player, playerUser);
                     if (island.isEmpty()) {
+                        if (playerUser.isFlying() && !player.hasPermission("iridiumskyblock.fly")) {
+                            playerUser.setFlying(false);
+                            if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                                player.setFlying(false);
+                                player.setAllowFlight(false);
+                                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
+                                        .replace("%player%", player.getName())
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                );
+                            }
+                        }
                         Bukkit.getScheduler().runTask(getInstance(), () -> PlayerUtils.teleportSpawn(player));
+                    } else {
+                        IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
+                        if (playerUser.isFlying() && !islandBooster.isActive() && !player.hasPermission("iridiumskyblock.fly")) {
+                            playerUser.setFlying(false);
+                            if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
+                                player.setFlying(false);
+                                player.setAllowFlight(false);
+                                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().flightDisabled
+                                        .replace("%player%", player.getName())
+                                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                );
+                            }
+                        }
+                        if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island.get(), playerUser)) {
+                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                    .replace("%owner%", island.get().getOwner().getName())
+                                    .replace("%name%", island.get().getName())
+                            ));
+                            Bukkit.getScheduler().runTask(getInstance(), () -> PlayerUtils.teleportSpawn(player));
+                        }
+                        if (player.getLocation().getY() < LocationUtils.getMinHeight(player.getWorld())&& IridiumSkyblock.getInstance().getConfiguration().voidTeleport && IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
+                            IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, playerUser, island.get(), 0);
+                        }
                     }
                 } catch (Exception e) {
                     System.out.println("Error : IridiumSkyblock#runTaskTimerAsynchronously#checkEmplacement");
