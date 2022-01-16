@@ -32,7 +32,7 @@ public class IslandRewardsGUI extends IslandGUI {
         
         AtomicInteger atomicInteger = new AtomicInteger(0);
         for (IslandReward islandReward : IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(getIsland())) {
-            if (atomicInteger.get() > maxSize) continue;
+            if (atomicInteger.get() > maxSize) break;
             inventory.setItem(atomicInteger.getAndIncrement(), ItemStackUtils.makeItem(islandReward.getReward().item, placeholders));
         }
 
