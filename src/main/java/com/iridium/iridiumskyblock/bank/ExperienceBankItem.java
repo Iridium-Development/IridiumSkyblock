@@ -53,7 +53,7 @@ public class ExperienceBankItem extends BankItem {
                         .replace("%amount%", String.valueOf(experience))
                         .replace("%type%", getDisplayName())
                 );
-            }else{
+            } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())
@@ -88,7 +88,7 @@ public class ExperienceBankItem extends BankItem {
                         .replace("%amount%", String.valueOf(experience))
                         .replace("%type%", getDisplayName())
                 );
-            }else{
+            } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())

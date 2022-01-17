@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import lombok.NoArgsConstructor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
 
@@ -75,7 +76,53 @@ public class CrystalsBankItem extends BankItem {
      */
     @Override
     public double deposit(Player player, Number amount) {
-        return 0;
+        Optional<Island> islandOptional = IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland();
+        if (!islandOptional.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return 0;
+        }
+
+        int remainingItemAmount = amount.intValue();
+        int depositAmount = 0;
+
+        ItemStack[] contents = player.getInventory().getContents();
+        for (int i = 0; i < contents.length && remainingItemAmount > 0; i++) {
+            ItemStack itemStack = contents[i];
+
+            int crystalsPerItem = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack);
+            if (crystalsPerItem == 0) continue;
+
+            int itemStackAmount = itemStack.getAmount();
+            if (itemStackAmount <= remainingItemAmount) {
+                player.getInventory().setItem(i, null);
+
+                depositAmount += itemStackAmount * crystalsPerItem;
+                remainingItemAmount -= itemStackAmount;
+            } else {
+                itemStack.setAmount(itemStack.getAmount() - remainingItemAmount);
+                player.getInventory().setItem(i, itemStack);
+
+                depositAmount += remainingItemAmount * crystalsPerItem;
+                remainingItemAmount = 0;
+            }
+        }
+
+        if (depositAmount == 0) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                    .replace("%type%", getDisplayName())
+            );
+            return 0;
+        }
+
+        IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(islandOptional.get(), this);
+        islandBank.setNumber(islandBank.getNumber() + depositAmount);
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                .replace("%amount%", String.valueOf(depositAmount))
+                .replace("%type%", getDisplayName())
+        );
+        return depositAmount;
     }
 
     /**
