@@ -714,11 +714,10 @@ public class IridiumSkyblock extends IridiumCore {
                 if (!player.isOnline()) continue; // Check au cas où !
                 try {
                     if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) continue;
-                    if (player.hasPermission("iridiumskyblock.locationisland.bypass")) continue;
                     User playerUser = User.of(player);
-                    if (playerUser.isBypassing()) continue;
                     Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player, playerUser);
                     if (island.isEmpty()) {
+                        if (playerUser.isBypassing()) continue;
                         if (playerUser.isFlying() && !player.hasPermission("iridiumskyblock.fly")) {
                             playerUser.setFlying(false);
                             if (player.getGameMode().equals(GameMode.SURVIVAL) || player.getGameMode().equals(GameMode.ADVENTURE)) {
@@ -730,6 +729,7 @@ public class IridiumSkyblock extends IridiumCore {
                                 );
                             }
                         }
+                        if (player.hasPermission("iridiumskyblock.locationisland.bypass")) continue;
                         Bukkit.getScheduler().runTask(getInstance(), () -> PlayerUtils.teleportSpawn(player));
                     } else {
                         IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "flight");
