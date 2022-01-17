@@ -208,11 +208,13 @@ public class IridiumSkyblock extends IridiumCore {
         }), 0, 20);
 
         // Register worlds with multiverse
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            registerMultiverse(islandManager.getWorld());
-            registerMultiverse(islandManager.getNetherWorld());
-            registerMultiverse(islandManager.getEndWorld());
-        }, 1);
+        if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                registerMultiverse(islandManager.getWorld());
+                registerMultiverse(islandManager.getNetherWorld());
+                registerMultiverse(islandManager.getEndWorld());
+            }, 1);
+        }
 
         resetIslandMissions();
 
@@ -386,10 +388,8 @@ public class IridiumSkyblock extends IridiumCore {
      * @param world The specified World
      */
     private void registerMultiverse(World world) {
-        if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
-        }
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
     }
 
     /**
