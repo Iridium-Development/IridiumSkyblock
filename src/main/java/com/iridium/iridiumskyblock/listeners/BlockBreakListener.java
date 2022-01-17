@@ -9,10 +9,7 @@ import com.iridium.iridiumskyblock.database.*;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.ItemFrame;
-import org.bukkit.entity.Painting;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -86,9 +83,9 @@ public class BlockBreakListener implements Listener {
                 remover = (Player) event.getRemover();
             }
             if (remover == null) return;
-            ItemFrame itemFrame = (ItemFrame) event.getEntity();
+            Entity itemFrame_Painting = event.getEntity();
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(remover);
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame.getLocation());
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame_Painting.getLocation());
             if (island.isEmpty()) return;
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
                 event.setCancelled(true);
