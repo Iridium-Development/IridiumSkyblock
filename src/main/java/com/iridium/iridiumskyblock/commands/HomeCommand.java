@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.commands.home.CurrentOffsetCommand;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import java.time.Duration;
@@ -17,11 +18,15 @@ import org.bukkit.entity.Player;
  */
 public class HomeCommand extends Command {
 
+    public CurrentOffsetCommand currentOffsetCommand = new CurrentOffsetCommand();
+
     /**
      * The default constructor.
      */
     public HomeCommand() {
         super(Arrays.asList("home", "go"), "Teleport to your Island home", "", true, Duration.ofSeconds(3));
+
+        addChilds(currentOffsetCommand);
     }
 
     /**
