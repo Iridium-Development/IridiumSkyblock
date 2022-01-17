@@ -51,9 +51,8 @@ public class Schematic implements SchematicPaster {
         }
 
         for (Tag tag : schematicData.tileEntities) {
-            if (!(tag instanceof CompoundTag))
+            if (!(tag instanceof CompoundTag t))
                 continue;
-            CompoundTag t = (CompoundTag) tag;
             Map<String, Tag> tags = t.getValue();
 
             int[] pos = SchematicData.getChildTag(tags, "Pos", IntArrayTag.class).getValue();
@@ -66,8 +65,7 @@ public class Schematic implements SchematicPaster {
             String id = SchematicData.getChildTag(tags, "Id", StringTag.class).getValue().toLowerCase().replace("minecraft:", "");
             if (id.equalsIgnoreCase("chest")) {
                 List<Tag> items = SchematicData.getChildTag(tags, "Items", ListTag.class).getValue();
-                if (block.getState() instanceof Chest) {
-                    Chest chest = (Chest) block.getState();
+                if (block.getState() instanceof Chest chest) {
                     for (Tag item : items) {
                         if (!(item instanceof CompoundTag))
                             continue;

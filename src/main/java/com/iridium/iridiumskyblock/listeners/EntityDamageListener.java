@@ -71,9 +71,8 @@ public class EntityDamageListener implements Listener {
         }
 
         if (event.getDamager() instanceof Projectile projectile) {
-            if (projectile.getShooter() == null || !(projectile.getShooter() instanceof Player)) return;
-            
-            Player player = (Player) projectile.getShooter();
+            if (projectile.getShooter() == null || !(projectile.getShooter() instanceof Player player)) return;
+
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.KILL_MOBS)) {
                 projectile.remove();
                 event.setCancelled(true);

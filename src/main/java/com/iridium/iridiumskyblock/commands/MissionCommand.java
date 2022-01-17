@@ -56,7 +56,6 @@ public class MissionCommand extends Command {
         }
 
         MissionType missionType = MissionType.getMission(args[1]);
-        System.out.println("me" + args[1]);
         if (missionType == null) {
             player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
             return true;

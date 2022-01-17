@@ -128,7 +128,7 @@ public class PlayerInteractListener implements Listener {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getRightClicked().getLocation());
-        if (!island.isPresent()) return;
+        if (island.isEmpty()) return;
 
         if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.INTERACT_ENTITIES)) {
             return;

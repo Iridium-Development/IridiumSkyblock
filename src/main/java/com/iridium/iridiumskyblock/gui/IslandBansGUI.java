@@ -52,10 +52,12 @@ public class IslandBansGUI extends IslandGUI {
                 .skip((page - 1) * elementsPerPage)
                 .limit(elementsPerPage)
                 .forEachOrdered(islandBan -> {
-                    List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandBan.getBannedUser()).applyIslandPlaceholders(getIsland()).build();
-                    placeholderList.add(new Placeholder("ban_time", islandBan.getBanTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
-                    placeholderList.add(new Placeholder("banned_by", islandBan.getBanner().getName()));
-                    inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().bansGUI.item, placeholderList));
+                    if (islandBan.getBannedUser() != null && islandBan.getBanner() != null) {
+                        List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandBan.getBannedUser()).applyIslandPlaceholders(getIsland()).build();
+                        placeholderList.add(new Placeholder("ban_time", islandBan.getBanTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
+                        placeholderList.add(new Placeholder("banned_by", islandBan.getBanner().getName()));
+                        inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().bansGUI.item, placeholderList));
+                    }
                 });
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
@@ -87,8 +89,10 @@ public class IslandBansGUI extends IslandGUI {
             int index = ((size - 9) * (page - 1)) + event.getSlot();
             if (islandBans.size() > index) {
                 IslandBan islandBan = islandBans.get(event.getSlot());
-                IridiumSkyblock.getInstance().getCommands().unBanCommand.execute(event.getWhoClicked(), new String[]{"", islandBan.getBannedUser().getName()});
-                addContent(event.getInventory());
+                if (islandBan.getBannedUser() != null) {
+                    IridiumSkyblock.getInstance().getCommands().unBanCommand.execute(event.getWhoClicked(), new String[]{"", islandBan.getBannedUser().getName()});
+                    addContent(event.getInventory());
+                }
             }
         }
     }

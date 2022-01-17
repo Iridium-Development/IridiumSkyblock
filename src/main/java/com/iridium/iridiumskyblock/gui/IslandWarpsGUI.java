@@ -68,12 +68,8 @@ public class IslandWarpsGUI extends IslandGUI {
         for (IslandWarp islandWarp : islandWarps) {
             if (IridiumSkyblock.getInstance().getConfiguration().islandWarpSlots.get(atomicInteger.getAndIncrement()) == event.getSlot()) {
                 switch (event.getClick()) {
-                    case LEFT:
-                        IridiumSkyblock.getInstance().getCommands().warpsCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
-                        break;
-                    case RIGHT:
-                        IridiumSkyblock.getInstance().getCommands().deleteWarpCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
-                        break;
+                    case LEFT -> IridiumSkyblock.getInstance().getCommands().warpsCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
+                    case RIGHT -> IridiumSkyblock.getInstance().getCommands().deleteWarpCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
                 }
                 addContent(event.getInventory());
                 return;

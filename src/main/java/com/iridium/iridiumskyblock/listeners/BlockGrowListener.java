@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BlockGrowListener implements Listener {
 
-    private List<XMaterial> instantGrowCrops = Arrays.asList(XMaterial.CACTUS, XMaterial.SUGAR_CANE, XMaterial.BAMBOO);
+    private final List<XMaterial> instantGrowCrops = Arrays.asList(XMaterial.CACTUS, XMaterial.SUGAR_CANE, XMaterial.BAMBOO);
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorBlockGrow(BlockGrowEvent event) {
@@ -24,9 +24,8 @@ public class BlockGrowListener implements Listener {
         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
                 IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
                     XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
-                    if (event.getNewState().getBlock().getBlockData() instanceof Ageable) {
+                    if (event.getNewState().getBlock().getBlockData() instanceof Ageable ageable) {
                         IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, "farming");
-                        Ageable ageable = (Ageable) event.getNewState().getBlock().getBlockData();
                         if (islandBooster.isActive()) {
                             ageable.setAge(Math.min(ageable.getAge() + 1, ageable.getMaximumAge()));
                             event.getNewState().getBlock().setBlockData(ageable);

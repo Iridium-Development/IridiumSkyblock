@@ -5,7 +5,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;

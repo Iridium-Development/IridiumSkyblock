@@ -98,7 +98,7 @@ public class IslandLogsGUI extends IslandGUI {
             index++;
         }
 
-        if (itemMeta.getLore() != null) {
+        if (itemMeta != null && itemMeta.getLore() != null) {
             lore.addAll(itemMeta.getLore());
         }
 
@@ -115,38 +115,23 @@ public class IslandLogsGUI extends IslandGUI {
 
     public String getLore(LogAction logAction) {
         LogInventoryConfig logInventoryConfig = IridiumSkyblock.getInstance().getInventories().logsGUI;
-        switch (logAction) {
-            case USER_JOINED:
-                return logInventoryConfig.USER_JOINED;
-            case USER_KICKED:
-                return logInventoryConfig.USER_KICKED;
-            case USER_LEFT:
-                return logInventoryConfig.USER_LEFT;
-            case USER_DEMOTED:
-                return logInventoryConfig.USER_DEMOTED;
-            case USER_PROMOTED:
-                return logInventoryConfig.USER_PROMOTED;
-            case USER_INVITED:
-                return logInventoryConfig.USER_INVITED;
-            case USER_UNINVITED:
-                return logInventoryConfig.USER_UNINVITED;
-            case USER_TRUSTED:
-                return logInventoryConfig.USER_TRUSTED;
-            case USER_UNTRUSTED:
-                return logInventoryConfig.USER_UNTRUSTED;
-            case BANK_DEPOSIT:
-                return logInventoryConfig.BANK_DEPOSIT;
-            case BANK_WITHDRAW:
-                return logInventoryConfig.BANK_WITHDRAW;
-            case BOOSTER_PURCHASE:
-                return logInventoryConfig.BOOSTER_PURCHASE;
-            case UPGRADE_PURCHASE:
-                return logInventoryConfig.UPGRADE_PURCHASE;
-            case REWARD_REDEEMED:
-                return logInventoryConfig.REWARD_REDEEMED;
-            default:
-                return "";
-        }
+        return switch (logAction) {
+            case USER_JOINED -> logInventoryConfig.USER_JOINED;
+            case USER_KICKED -> logInventoryConfig.USER_KICKED;
+            case USER_LEFT -> logInventoryConfig.USER_LEFT;
+            case USER_DEMOTED -> logInventoryConfig.USER_DEMOTED;
+            case USER_PROMOTED -> logInventoryConfig.USER_PROMOTED;
+            case USER_INVITED -> logInventoryConfig.USER_INVITED;
+            case USER_UNINVITED -> logInventoryConfig.USER_UNINVITED;
+            case USER_TRUSTED -> logInventoryConfig.USER_TRUSTED;
+            case USER_UNTRUSTED -> logInventoryConfig.USER_UNTRUSTED;
+            case BANK_DEPOSIT -> logInventoryConfig.BANK_DEPOSIT;
+            case BANK_WITHDRAW -> logInventoryConfig.BANK_WITHDRAW;
+            case BOOSTER_PURCHASE -> logInventoryConfig.BOOSTER_PURCHASE;
+            case UPGRADE_PURCHASE -> logInventoryConfig.UPGRADE_PURCHASE;
+            case REWARD_REDEEMED -> logInventoryConfig.REWARD_REDEEMED;
+            default -> "";
+        };
     }
 
     /**
