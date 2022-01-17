@@ -56,7 +56,7 @@ public class BucketListener implements Listener {
     public void onClick(PlayerInteractEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
         Player player = event.getPlayer();
-        ItemStack itemInHand = player.getInventory().getItemInHand();
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
         if (!(IridiumSkyblock.getInstance().getConfiguration().obsidianBucket
                 && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
