@@ -88,12 +88,6 @@ public abstract class Command {
             .findAny();
     }
 
-    public List<String> getChildNames() {
-        return childs.stream()
-            .map(command -> command.aliases.get(0))
-            .collect(Collectors.toList());
-    }
-
     /**
      * Executes the command for the specified {@link CommandSender} with the provided arguments.
      * Not called when the command execution was invalid (no permission, no player or command disabled).
