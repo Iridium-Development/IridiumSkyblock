@@ -34,6 +34,16 @@ public class CalculateCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (user == null) return true;
+        if (args.length > 1) {
+            if (sender.hasPermission("iridiumskyblock.calculate.otherisland")) {
+                int islandID = Integer.parseInt(args[0]);
+                IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandID).ifPresent(island -> {
+                    player.sendMessage(StringUtils.color( ("%prefix% &7Recalcule de tous les blocs de l'île de " + island.getOwner().getName() + ". Patientez un instant...").replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island, player);
+                });
+                return true;
+            }
+        }
         if (user.getIsland().isEmpty()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
