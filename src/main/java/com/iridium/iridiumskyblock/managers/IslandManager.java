@@ -866,6 +866,15 @@ public class IslandManager {
                 }
             }
         });
+        
+        if (!Bukkit.isPrimaryThread()) {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
+        } else {
+            getAllTileInIsland(island, chunks);
+        }
+    }
+    
+    private void getAllTileInIsland(Island island, List<Chunk> chunks) {
         chunks.forEach(chunk -> {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner)) continue;
