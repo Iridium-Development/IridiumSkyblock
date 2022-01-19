@@ -59,6 +59,7 @@ public class PlayerInteractListener implements Listener {
                                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                                 .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getDisplayName())
                                 .replace("%amount%", String.valueOf(islandCrystals))));
+                        event.setCancelled(true);
                     }
                 }
             }
