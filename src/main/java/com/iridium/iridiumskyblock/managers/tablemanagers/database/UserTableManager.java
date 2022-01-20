@@ -1,8 +1,9 @@
-package com.iridium.iridiumskyblock.managers.tablemanagers;
+package com.iridium.iridiumskyblock.managers.tablemanagers.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.managers.tablemanagers.TableManager;
 import com.j256.ormlite.support.ConnectionSource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

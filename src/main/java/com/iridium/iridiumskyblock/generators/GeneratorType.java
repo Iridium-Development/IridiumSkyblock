@@ -1,7 +1,8 @@
 package com.iridium.iridiumskyblock.generators;
 
-import java.util.function.Supplier;
 import org.bukkit.generator.ChunkGenerator;
+
+import java.util.function.Supplier;
 
 /**
  * Represents a generator for the IridiumSkyblock world.

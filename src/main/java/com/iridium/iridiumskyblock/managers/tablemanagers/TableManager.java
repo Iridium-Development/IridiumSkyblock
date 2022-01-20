@@ -11,6 +11,7 @@ import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Used for handling Crud operations on a table + handling cache
@@ -67,13 +68,22 @@ public class TableManager<T extends DatabaseObject, S> {
         }
     }
 
+    public void saveHashMapList(LinkedHashMap<?, List<T>> saveMultipleListInMap) {
+        LinkedList<List<T>> listLinkedList = new LinkedList<>(saveMultipleListInMap.values());
+        multipleSave(listLinkedList.stream().flatMap(Collection::stream).collect(Collectors.toCollection(LinkedList::new)));
+    }
+
     public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {
-        List<T> tList = new LinkedList<>(uuidLinkedHashMap.values());
+        multipleSave(new LinkedList<>(uuidLinkedHashMap.values()));
+    }
+
+    private void multipleSave(List<T> tList) {
         int sizeList = tList.size();
         int savedata = 0;
         try {
             for (int i = 0; i < sizeList; i++) {
                 T t = tList.get(i);
+                if (t == null) continue;
                 dao.createOrUpdate(t);
                 savedata++;
             }

@@ -5,9 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.database.types.XMaterialType;
-import com.iridium.iridiumskyblock.managers.tablemanagers.ForeignIslandTableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
+import com.iridium.iridiumskyblock.managers.tablemanagers.database.*;
 import com.j256.ormlite.field.DataPersisterManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
@@ -35,20 +33,20 @@ public class DatabaseManager {
     private final int version = 3;
     private IslandTableManager islandTableManager;
     private UserTableManager userTableManager;
-    private ForeignIslandTableManager<IslandBan, Integer> islandBanTableManager;
-    private ForeignIslandTableManager<IslandBank, Integer> islandBankTableManager;
-    private ForeignIslandTableManager<IslandBlocks, Integer> islandBlocksTableManager;
-    private ForeignIslandTableManager<IslandBooster, Integer> islandBoosterTableManager;
-    private ForeignIslandTableManager<IslandInvite, Integer> islandInviteTableManager;
-    private ForeignIslandTableManager<IslandLog, Integer> islandLogTableManager;
-    private ForeignIslandTableManager<IslandMission, Integer> islandMissionTableManager;
-    private ForeignIslandTableManager<IslandPermission, Integer> islandPermissionTableManager;
-    private ForeignIslandTableManager<IslandReward, Integer> islandRewardTableManager;
-    private ForeignIslandTableManager<IslandSpawners, Integer> islandSpawnersTableManager;
-    private ForeignIslandTableManager<IslandTrusted, Integer> islandTrustedTableManager;
-    private ForeignIslandTableManager<IslandUpgrade, Integer> islandUpgradeTableManager;
-    private ForeignIslandTableManager<IslandWarp, Integer> islandWarpTableManager;
-    private ForeignIslandTableManager<IslandSetting, Integer> islandSettingTableManager;
+    private IslandBanTableManager islandBanTableManager;
+    private IslandBankTableManager islandBankTableManager;
+    private IslandBlocksTableManager islandBlocksTableManager;
+    private IslandBoosterTableManager islandBoosterTableManager;
+    private IslandInviteTableManager islandInviteTableManager;
+    private IslandLogTableManager islandLogTableManager;
+    private IslandMissionTableManager islandMissionTableManager;
+    private IslandPermissionTableManager islandPermissionTableManager;
+    private IslandRewardTableManager islandRewardTableManager;
+    private IslandSpawnersTableManager islandSpawnersTableManager;
+    private IslandTrustedTableManager islandTrustedTableManager;
+    private IslandUpgradeTableManager islandUpgradeTableManager;
+    private IslandWarpTableManager islandWarpTableManager;
+    private IslandSettingTableManager islandSettingTableManager;
 
     @Getter(AccessLevel.NONE)
     private ConnectionSource connectionSource;
@@ -73,20 +71,20 @@ public class DatabaseManager {
         }
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.userTableManager = new UserTableManager(connectionSource);
-        this.islandInviteTableManager = new ForeignIslandTableManager<>(connectionSource, IslandInvite.class, Comparator.comparing(IslandInvite::getIslandId).thenComparing(islandInvite -> islandInvite.getUser().getUuid()));
-        this.islandPermissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandPermission.class, Comparator.comparing(IslandPermission::getIslandId).thenComparing(IslandPermission::getRank).thenComparing(IslandPermission::getPermission));
-        this.islandBlocksTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBlocks.class, Comparator.comparing(IslandBlocks::getIslandId).thenComparing(IslandBlocks::getMaterial));
-        this.islandSpawnersTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSpawners.class, Comparator.comparing(IslandSpawners::getIslandId).thenComparing(IslandSpawners::getSpawnerType));
-        this.islandBankTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBank.class, Comparator.comparing(IslandBank::getIslandId).thenComparing(IslandBank::getBankItem));
-        this.islandMissionTableManager = new ForeignIslandTableManager<>(connectionSource, IslandMission.class, Comparator.comparing(IslandMission::getIslandId).thenComparing(IslandMission::getMissionName).thenComparing(IslandMission::getMissionIndex));
-        this.islandRewardTableManager = new ForeignIslandTableManager<>(connectionSource, IslandReward.class, Comparator.comparing(IslandReward::getIslandId));
-        this.islandUpgradeTableManager = new ForeignIslandTableManager<>(connectionSource, IslandUpgrade.class, Comparator.comparing(IslandUpgrade::getIslandId).thenComparing(IslandUpgrade::getUpgrade));
-        this.islandTrustedTableManager = new ForeignIslandTableManager<>(connectionSource, IslandTrusted.class, Comparator.comparing(IslandTrusted::getIslandId).thenComparing(islandTrusted -> islandTrusted.getUser().getUuid()));
-        this.islandBoosterTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBooster.class, Comparator.comparing(IslandBooster::getIslandId).thenComparing(IslandBooster::getBooster));
-        this.islandWarpTableManager = new ForeignIslandTableManager<>(connectionSource, IslandWarp.class, Comparator.comparing(IslandWarp::getIslandId));
-        this.islandLogTableManager = new ForeignIslandTableManager<>(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandId));
-        this.islandBanTableManager = new ForeignIslandTableManager<>(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser() != null ? islandBan.getBannedUser().getUuid() : null));
-        this.islandSettingTableManager = new ForeignIslandTableManager<>(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
+        this.islandInviteTableManager = new IslandInviteTableManager(connectionSource, IslandInvite.class, Comparator.comparing(IslandInvite::getIslandId).thenComparing(islandInvite -> islandInvite.getUser().getUuid()));
+        this.islandPermissionTableManager = new IslandPermissionTableManager(connectionSource, IslandPermission.class, Comparator.comparing(IslandPermission::getIslandId).thenComparing(IslandPermission::getRank).thenComparing(IslandPermission::getPermission));
+        this.islandBlocksTableManager = new IslandBlocksTableManager(connectionSource, IslandBlocks.class, Comparator.comparing(IslandBlocks::getIslandId).thenComparing(IslandBlocks::getMaterial));
+        this.islandSpawnersTableManager = new IslandSpawnersTableManager(connectionSource, IslandSpawners.class, Comparator.comparing(IslandSpawners::getIslandId).thenComparing(IslandSpawners::getSpawnerType));
+        this.islandBankTableManager = new IslandBankTableManager(connectionSource, IslandBank.class, Comparator.comparing(IslandBank::getIslandId).thenComparing(IslandBank::getBankItem));
+        this.islandMissionTableManager = new IslandMissionTableManager(connectionSource, IslandMission.class, Comparator.comparing(IslandMission::getIslandId).thenComparing(IslandMission::getMissionName).thenComparing(IslandMission::getMissionIndex));
+        this.islandRewardTableManager = new IslandRewardTableManager(connectionSource, IslandReward.class, Comparator.comparing(IslandReward::getIslandId));
+        this.islandUpgradeTableManager = new IslandUpgradeTableManager(connectionSource, IslandUpgrade.class, Comparator.comparing(IslandUpgrade::getIslandId).thenComparing(IslandUpgrade::getUpgrade));
+        this.islandTrustedTableManager = new IslandTrustedTableManager(connectionSource, IslandTrusted.class, Comparator.comparing(IslandTrusted::getIslandId).thenComparing(islandTrusted -> islandTrusted.getUser().getUuid()));
+        this.islandBoosterTableManager = new IslandBoosterTableManager(connectionSource, IslandBooster.class, Comparator.comparing(IslandBooster::getIslandId).thenComparing(IslandBooster::getBooster));
+        this.islandWarpTableManager = new IslandWarpTableManager(connectionSource, IslandWarp.class, Comparator.comparing(IslandWarp::getIslandId));
+        this.islandLogTableManager = new IslandLogTableManager(connectionSource, IslandLog.class, Comparator.comparing(IslandLog::getIslandId));
+        this.islandBanTableManager = new IslandBanTableManager(connectionSource, IslandBan.class, Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser() != null ? islandBan.getBannedUser().getUuid() : null));
+        this.islandSettingTableManager = new IslandSettingTableManager(connectionSource, IslandSetting.class, Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting));
     }
 
     /**

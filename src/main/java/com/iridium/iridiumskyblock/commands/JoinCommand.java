@@ -5,20 +5,17 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
 import com.iridium.iridiumskyblock.api.UserJoinEvent;
-import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.database.IslandInvite;
-import com.iridium.iridiumskyblock.database.IslandLog;
-import com.iridium.iridiumskyblock.database.IslandUpgrade;
-import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Command which enables users to join other Islands.

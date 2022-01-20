@@ -6,7 +6,6 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -36,7 +35,7 @@ public class CalculateCommand extends Command {
         if (user == null) return true;
         if (args.length > 1) {
             if (sender.hasPermission("iridiumskyblock.calculate.otherisland")) {
-                int islandID = Integer.parseInt(args[0]);
+                int islandID = Integer.parseInt(args[1]);
                 IridiumSkyblock.getInstance().getIslandManager().getIslandById(islandID).ifPresent(island -> {
                     player.sendMessage(StringUtils.color( ("%prefix% &7Recalcule de tous les blocs de l'île de " + island.getOwner().getName() + ". Patientez un instant...").replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island, player);

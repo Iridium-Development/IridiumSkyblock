@@ -2,11 +2,12 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import org.bukkit.command.CommandSender;
+
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.bukkit.command.CommandSender;
 
 /**
  * Command which display plugin information to the user.

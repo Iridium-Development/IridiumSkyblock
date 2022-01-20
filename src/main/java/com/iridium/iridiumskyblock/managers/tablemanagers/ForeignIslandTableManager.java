@@ -14,6 +14,7 @@ import java.util.*;
  * @param <T> The Table Class
  * @param <S> The Table Primary Id Class
  */
+@Deprecated
 public class ForeignIslandTableManager<T extends IslandData, S> extends TableManager<T, S> {
 
     private final Comparator<T> comparator;
