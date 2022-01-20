@@ -79,7 +79,7 @@ public class TableManager<T extends DatabaseObject, S> {
     }
 
     private void multipleSave(List<T> tList) {
-        List<T> test = tList.stream().filter(t -> t != null && t.isChanged()).collect(Collectors.toList());
+        List<T> test = new ArrayList<>(tList).stream().filter(DatabaseObject::isChanged).collect(Collectors.toList());
         int sizeList = test.size();
         int savedata = 0;
         try {
@@ -87,6 +87,7 @@ public class TableManager<T extends DatabaseObject, S> {
                 T t = test.get(i);
                 dao.createOrUpdate(t);
                 savedata++;
+                t.setChanged(false);
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
