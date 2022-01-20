@@ -92,9 +92,7 @@ public class TableManager<T extends DatabaseObject, S> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Sauvegarde faite : " + savedata + "/" + tList.size());
-        }
+        System.out.println("Sauvegarde faite : " + savedata + "/" + tList.size());
     }
 
    
