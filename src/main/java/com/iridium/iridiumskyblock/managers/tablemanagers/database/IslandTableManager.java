@@ -31,13 +31,7 @@ public class IslandTableManager extends TableManager<Island, Integer> {
     @Override
     public void addEntry(Island island) {
         island.setChanged(true);
-        if (islandMapByID.containsKey(island.getId())) {
-            islandMapByID.replace(island.getId(), island);
-            System.out.println("Remplacement de donnée");
-        } else {
-            islandMapByID.put(island.getId(), island);
-            System.out.println("Ajout de donnée dans la MAP");
-        }
+        islandMapByID.put(island.getId(), island);
     }
 
     @Override
