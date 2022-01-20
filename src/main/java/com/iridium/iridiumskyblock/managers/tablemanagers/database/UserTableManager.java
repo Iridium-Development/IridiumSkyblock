@@ -33,10 +33,7 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The item we are adding
      */
     public void addEntry(User user) {
-        if (userIslandMap.get(user.getUuid()) != null) {
-            System.out.println("Alerte Tentative de Duplication d'entrée !");
-            return;
-        }
+        if (userIslandMap.get(user.getUuid()) != null) return;
         user.setChanged(true);
         userIslandMap.put(user.getUuid(), user);
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
