@@ -79,12 +79,12 @@ public class TableManager<T extends DatabaseObject, S> {
     }
 
     private void multipleSave(List<T> tList) {
-        int sizeList = tList.size();
+        List<T> test = tList.stream().filter(t -> t != null && t.isChanged()).collect(Collectors.toList());
+        int sizeList = test.size();
         int savedata = 0;
         try {
             for (int i = 0; i < sizeList; i++) {
-                T t = tList.get(i);
-                if (t == null) continue;
+                T t = test.get(i);
                 dao.createOrUpdate(t);
                 savedata++;
             }
@@ -93,7 +93,7 @@ public class TableManager<T extends DatabaseObject, S> {
             exception.printStackTrace();
         }
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Sauvegarde faite : " + savedata + "/" + sizeList);
+            System.out.println("Sauvegarde faite : " + savedata + "/" + tList.size());
         }
     }
 
