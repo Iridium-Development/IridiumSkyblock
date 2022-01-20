@@ -25,13 +25,6 @@ public class IslandWarpTableManager extends TableManager<IslandWarp, Integer> {
             warps.add(warp);
             islandWarpById.put(warp.getIslandId(), warps);
         }
-
-        int valueReward = 0;
-        for (List<IslandWarp> islandWarps : islandWarpById.values()) {
-            valueReward = islandWarps.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

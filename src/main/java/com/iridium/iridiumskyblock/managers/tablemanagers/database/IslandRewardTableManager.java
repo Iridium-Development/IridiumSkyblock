@@ -25,13 +25,6 @@ public class IslandRewardTableManager extends TableManager<IslandReward, Integer
             rewards.add(reward);
             islandRewardById.put(reward.getIslandId(), rewards);
         }
-
-        int valueReward = 0;
-        for (List<IslandReward> islandReward : islandRewardById.values()) {
-            valueReward = islandReward.size();
-        }
-        System.out.println("Nombre de Reward en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

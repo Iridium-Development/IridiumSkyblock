@@ -11,26 +11,17 @@ import java.util.*;
 
 public class IslandTrustedTableManager extends TableManager<IslandTrusted, Integer> {
 
-    // Comparator.comparing(IslandTrusted::getIslandId).thenComparing(islandTrusted -> islandTrusted.getUser().getUuid())
-
     LinkedHashMap<Integer, List<IslandTrusted>> islandTrustedById = new LinkedHashMap<>();
 
     public IslandTrustedTableManager(ConnectionSource connectionSource, Class<IslandTrusted> clazz, Comparator<IslandTrusted> comparing) throws SQLException {
         super(connectionSource, clazz, comparing);
-        List<IslandTrusted> spawnersList = getEntries();
-        for (int i = 0, spawnerSize = spawnersList.size(); i < spawnerSize; i++) {
-            IslandTrusted spawners = spawnersList.get(i);
-            List<IslandTrusted> blocks = islandTrustedById.getOrDefault(spawners.getIslandId(), new ArrayList<>());
-            blocks.add(spawners);
-            islandTrustedById.put(spawners.getIslandId(), blocks);
+        List<IslandTrusted> trustedList = getEntries();
+        for (int i = 0, trustedSize = trustedList.size(); i < trustedSize; i++) {
+            IslandTrusted islandTrusted = trustedList.get(i);
+            List<IslandTrusted> trusteds = islandTrustedById.getOrDefault(islandTrusted.getIslandId(), new ArrayList<>());
+            trusteds.add(islandTrusted);
+            islandTrustedById.put(islandTrusted.getIslandId(), trusteds);
         }
-
-        int valueReward = 0;
-        for (List<IslandTrusted> islandWarps : islandTrustedById.values()) {
-            valueReward = islandWarps.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

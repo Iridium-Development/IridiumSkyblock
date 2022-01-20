@@ -11,26 +11,17 @@ import java.util.*;
 
 public class IslandSettingTableManager extends TableManager<IslandSetting, Integer> {
 
-    // Comparator.comparing(IslandSetting::getIslandId).thenComparing(IslandSetting::getSetting)
-
     LinkedHashMap<Integer, List<IslandSetting>> islandSettingById = new LinkedHashMap<>();
 
     public IslandSettingTableManager(ConnectionSource connectionSource, Class<IslandSetting> clazz, Comparator<IslandSetting> comparing) throws SQLException {
         super(connectionSource, clazz, comparing);
-        List<IslandSetting> bankList = getEntries();
-        for (int i = 0, bankSize = bankList.size(); i < bankSize; i++) {
-            IslandSetting setting = bankList.get(i);
+        List<IslandSetting> settingList = getEntries();
+        for (int i = 0, settingSize = settingList.size(); i < settingSize; i++) {
+            IslandSetting setting = settingList.get(i);
             List<IslandSetting> settings = islandSettingById.getOrDefault(setting.getIslandId(), new ArrayList<>());
             settings.add(setting);
             islandSettingById.put(setting.getIslandId(), settings);
         }
-
-        int valueReward = 0;
-        for (List<IslandSetting> islandBanks : islandSettingById.values()) {
-            valueReward = islandBanks.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

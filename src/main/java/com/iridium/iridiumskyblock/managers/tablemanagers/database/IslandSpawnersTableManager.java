@@ -11,8 +11,6 @@ import java.util.*;
 
 public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Integer> {
 
-    //Comparator.comparing(IslandSpawners::getIslandId).thenComparing(IslandSpawners::getSpawnerType)
-
     LinkedHashMap<Integer, List<IslandSpawners>> islandSpawnerById = new LinkedHashMap<>();
 
     public IslandSpawnersTableManager(ConnectionSource connectionSource, Class<IslandSpawners> clazz, Comparator<IslandSpawners> comparing) throws SQLException {
@@ -20,17 +18,10 @@ public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Int
         List<IslandSpawners> spawnersList = getEntries();
         for (int i = 0, spawnerSize = spawnersList.size(); i < spawnerSize; i++) {
             IslandSpawners spawners = spawnersList.get(i);
-            List<IslandSpawners> blocks = islandSpawnerById.getOrDefault(spawners.getIslandId(), new ArrayList<>());
-            blocks.add(spawners);
-            islandSpawnerById.put(spawners.getIslandId(), blocks);
+            List<IslandSpawners> spawner = islandSpawnerById.getOrDefault(spawners.getIslandId(), new ArrayList<>());
+            spawner.add(spawners);
+            islandSpawnerById.put(spawners.getIslandId(), spawner);
         }
-
-        int valueReward = 0;
-        for (List<IslandSpawners> islandWarps : islandSpawnerById.values()) {
-            valueReward = islandWarps.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

@@ -13,24 +13,15 @@ public class IslandPermissionTableManager  extends TableManager<IslandPermission
 
     LinkedHashMap<Integer, List<IslandPermission>> islandPermissionById = new LinkedHashMap<>();
 
-    // Comparator.comparing(IslandPermission::getIslandId).thenComparing(IslandPermission::getRank).thenComparing(IslandPermission::getPermission)
-
     public IslandPermissionTableManager(ConnectionSource connectionSource, Class<IslandPermission> clazz, Comparator<IslandPermission> comparing) throws SQLException {
         super(connectionSource, clazz, comparing);
         List<IslandPermission> permissionList = getEntries();
-        for (int i = 0, rewardSize = permissionList.size(); i < rewardSize; i++) {
-            IslandPermission warp = permissionList.get(i);
-            List<IslandPermission> warps = islandPermissionById.getOrDefault(warp.getIslandId(), new ArrayList<>());
-            warps.add(warp);
-            islandPermissionById.put(warp.getIslandId(), warps);
+        for (int i = 0, permissionSize = permissionList.size(); i < permissionSize; i++) {
+            IslandPermission permission = permissionList.get(i);
+            List<IslandPermission> permissions = islandPermissionById.getOrDefault(permission.getIslandId(), new ArrayList<>());
+            permissions.add(permission);
+            islandPermissionById.put(permission.getIslandId(), permissions);
         }
-
-        int valueReward = 0;
-        for (List<IslandPermission> islandWarps : islandPermissionById.values()) {
-            valueReward = islandWarps.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

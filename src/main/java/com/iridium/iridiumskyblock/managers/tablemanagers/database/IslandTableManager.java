@@ -26,9 +26,6 @@ public class IslandTableManager extends TableManager<Island, Integer> {
             island.setChanged(false);
             islandMapByID.put(island.getId(), island);
         }
-        System.out.println("Debug de Démarrage : " +
-                "\nIle dans la base de donnée : " + islandsStatic +
-                "\nIle dans la Map : " + islandMapByID.size());
     }
 
     @Override

@@ -11,26 +11,17 @@ import java.util.*;
 
 public class IslandBanTableManager extends TableManager<IslandBan, Integer> {
 
-    // Comparator.comparing(IslandBan::getIslandId).thenComparing(islandBan -> islandBan.getBannedUser() != null ? islandBan.getBannedUser().getUuid() : null)
-
     LinkedHashMap<Integer, List<IslandBan>> islandBanById = new LinkedHashMap<>();
 
     public IslandBanTableManager(ConnectionSource connectionSource, Class<IslandBan> clazz, Comparator<IslandBan> comparing) throws SQLException {
         super(connectionSource, clazz, comparing);
-        List<IslandBan> bankList = getEntries();
-        for (int i = 0, bankSize = bankList.size(); i < bankSize; i++) {
-            IslandBan bank = bankList.get(i);
-            List<IslandBan> banks = islandBanById.getOrDefault(bank.getIslandId(), new ArrayList<>());
-            banks.add(bank);
-            islandBanById.put(bank.getIslandId(), banks);
+        List<IslandBan> banList = getEntries();
+        for (int i = 0, bansSize = banList.size(); i < bansSize; i++) {
+            IslandBan ban = banList.get(i);
+            List<IslandBan> banks = islandBanById.getOrDefault(ban.getIslandId(), new ArrayList<>());
+            banks.add(ban);
+            islandBanById.put(ban.getIslandId(), banks);
         }
-
-        int valueReward = 0;
-        for (List<IslandBan> islandBanks : islandBanById.values()) {
-            valueReward = islandBanks.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

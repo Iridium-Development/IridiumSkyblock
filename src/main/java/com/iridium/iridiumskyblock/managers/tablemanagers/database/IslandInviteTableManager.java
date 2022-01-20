@@ -15,20 +15,13 @@ public class IslandInviteTableManager extends TableManager<IslandInvite, Integer
 
     public IslandInviteTableManager(ConnectionSource connectionSource, Class<IslandInvite> clazz, Comparator<IslandInvite> comparing) throws SQLException {
         super(connectionSource, clazz, comparing);
-        List<IslandInvite> warpsList = getEntries();
-        for (int i = 0, rewardSize = warpsList.size(); i < rewardSize; i++) {
-            IslandInvite warp = warpsList.get(i);
-            List<IslandInvite> warps = islandInviteById.getOrDefault(warp.getIslandId(), new ArrayList<>());
-            warps.add(warp);
-            islandInviteById.put(warp.getIslandId(), warps);
+        List<IslandInvite> inviteList = getEntries();
+        for (int i = 0, inviteSize = inviteList.size(); i < inviteSize; i++) {
+            IslandInvite invite = inviteList.get(i);
+            List<IslandInvite> invites = islandInviteById.getOrDefault(invite.getIslandId(), new ArrayList<>());
+            invites.add(invite);
+            islandInviteById.put(invite.getIslandId(), invites);
         }
-
-        int valueReward = 0;
-        for (List<IslandInvite> islandWarps : islandInviteById.values()) {
-            valueReward = islandWarps.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

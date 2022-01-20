@@ -11,8 +11,6 @@ import java.util.*;
 
 public class IslandMissionTableManager extends TableManager<IslandMission, Integer> {
 
-    // Comparator.comparing(IslandMission::getIslandId).thenComparing(IslandMission::getMissionName).thenComparing(IslandMission::getMissionIndex)
-
     LinkedHashMap<Integer, List<IslandMission>> islandMissionById = new LinkedHashMap<>();
 
     public IslandMissionTableManager(ConnectionSource connectionSource, Class<IslandMission> clazz, Comparator<IslandMission> comparing) throws SQLException {
@@ -24,13 +22,6 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
             missionList.add(mission);
             islandMissionById.put(mission.getIslandId(), missionList);
         }
-
-        int valueReward = 0;
-        for (List<IslandMission> missionList : islandMissionById.values()) {
-            valueReward = missionList.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

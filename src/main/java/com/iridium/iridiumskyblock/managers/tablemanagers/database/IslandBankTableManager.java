@@ -24,13 +24,6 @@ public class IslandBankTableManager extends TableManager<IslandBank, Integer> {
             banks.add(bank);
             islandBankById.put(bank.getIslandId(), banks);
         }
-
-        int valueReward = 0;
-        for (List<IslandBank> islandBanks : islandBankById.values()) {
-            valueReward = islandBanks.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

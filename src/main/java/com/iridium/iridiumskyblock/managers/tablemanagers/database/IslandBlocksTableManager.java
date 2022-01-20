@@ -11,26 +11,17 @@ import java.util.*;
 
 public class IslandBlocksTableManager extends TableManager<IslandBlocks, Integer> {
 
-    //Comparator.comparing(IslandBlocks::getIslandId).thenComparing(IslandBlocks::getMaterial)
-
     LinkedHashMap<Integer, List<IslandBlocks>> islandBlockById = new LinkedHashMap<>();
 
     public IslandBlocksTableManager(ConnectionSource connectionSource, Class<IslandBlocks> clazz, Comparator<IslandBlocks> comparing) throws SQLException {
         super(connectionSource, clazz, comparing);
         List<IslandBlocks> blocksList = getEntries();
-        for (int i = 0, rewardSize = blocksList.size(); i < rewardSize; i++) {
-            IslandBlocks warp = blocksList.get(i);
-            List<IslandBlocks> blocks = islandBlockById.getOrDefault(warp.getIslandId(), new ArrayList<>());
-            blocks.add(warp);
-            islandBlockById.put(warp.getIslandId(), blocks);
+        for (int i = 0, BlockSize = blocksList.size(); i < BlockSize; i++) {
+            IslandBlocks block = blocksList.get(i);
+            List<IslandBlocks> blocks = islandBlockById.getOrDefault(block.getIslandId(), new ArrayList<>());
+            blocks.add(block);
+            islandBlockById.put(block.getIslandId(), blocks);
         }
-
-        int valueReward = 0;
-        for (List<IslandBlocks> islandWarps : islandBlockById.values()) {
-            valueReward = islandWarps.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

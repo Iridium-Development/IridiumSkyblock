@@ -15,20 +15,13 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
 
     public IslandBoosterTableManager(ConnectionSource connectionSource, Class<IslandBooster> clazz, Comparator<IslandBooster> comparing) throws SQLException {
         super(connectionSource, clazz, comparing);
-        List<IslandBooster> blocksList = getEntries();
-        for (int i = 0, rewardSize = blocksList.size(); i < rewardSize; i++) {
-            IslandBooster warp = blocksList.get(i);
-            List<IslandBooster> blocks = islandBoosterById.getOrDefault(warp.getIslandId(), new ArrayList<>());
-            blocks.add(warp);
-            islandBoosterById.put(warp.getIslandId(), blocks);
+        List<IslandBooster> boosterList = getEntries();
+        for (int i = 0, boostSize = boosterList.size(); i < boostSize; i++) {
+            IslandBooster booster = boosterList.get(i);
+            List<IslandBooster> blocks = islandBoosterById.getOrDefault(booster.getIslandId(), new ArrayList<>());
+            blocks.add(booster);
+            islandBoosterById.put(booster.getIslandId(), blocks);
         }
-
-        int valueReward = 0;
-        for (List<IslandBooster> islandWarps : islandBoosterById.values()) {
-            valueReward = islandWarps.size();
-        }
-        System.out.println("Nombre de Warps en attente dans la base de donnée: " + getEntries().size() + "\n" +
-                "Nombre de reward en attente final " + valueReward);
     }
 
     @Override

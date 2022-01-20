@@ -20,10 +20,10 @@ public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
         super(connectionSource, clazz, comparator);
         List<IslandLog> islandLogsStatic = getEntries();
         for (int i = 0, islandLogsSize = islandLogsStatic.size(); i < islandLogsSize; i++) {
-            IslandLog reward = islandLogsStatic.get(i);
-            List<IslandLog> rewards = islandLogById.getOrDefault(reward.getIslandId(), new ArrayList<>());
-            rewards.add(reward);
-            islandLogById.put(reward.getIslandId(), rewards);
+            IslandLog log = islandLogsStatic.get(i);
+            List<IslandLog> logs = islandLogById.getOrDefault(log.getIslandId(), new ArrayList<>());
+            logs.add(log);
+            islandLogById.put(log.getIslandId(), logs);
         }
     }
 
