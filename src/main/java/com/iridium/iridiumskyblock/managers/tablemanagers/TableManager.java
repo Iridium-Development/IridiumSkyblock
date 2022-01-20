@@ -43,13 +43,11 @@ public class TableManager<T extends DatabaseObject, S> {
      * Saves everything to the Database
      */
     public void save() {
-        List<T> entryList = new LinkedList<>(entries);
+        List<T> entryList = new LinkedList<>(entries).stream().filter(DatabaseObject::isChanged).collect(Collectors.toList());
         try {
             for (T t : entryList) {
-                if (t.isChanged()) {
-                    dao.createOrUpdate(t);
-                    t.setChanged(false);
-                }
+                dao.createOrUpdate(t);
+                t.setChanged(false);
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
