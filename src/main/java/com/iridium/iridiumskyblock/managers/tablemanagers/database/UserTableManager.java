@@ -37,6 +37,7 @@ public class UserTableManager extends TableManager<User, Integer> {
             System.out.println("Alerte Tentative de Duplication d'entrée !");
             return;
         }
+        user.setChanged(true);
         userIslandMap.put(user.getUuid(), user);
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
             System.out.println("Debugage de la liste/map : \n" +
@@ -50,6 +51,7 @@ public class UserTableManager extends TableManager<User, Integer> {
      * @param user The specified User
      */
     public void resortIsland(User user) {
+        user.setChanged(true);
         if (userIslandMap.get(user.getUuid()) != null) {
             userIslandMap.replace(user.getUuid(), user);
         } else {

@@ -30,12 +30,11 @@ public class IslandTableManager extends TableManager<Island, Integer> {
 
     @Override
     public void addEntry(Island island) {
+        island.setChanged(true);
         if (islandMapByID.containsKey(island.getId())) {
-            island.setChanged(true);
             islandMapByID.replace(island.getId(), island);
             System.out.println("Remplacement de donnée");
         } else {
-            island.setChanged(true);
             islandMapByID.put(island.getId(), island);
             System.out.println("Ajout de donnée dans la MAP");
         }
@@ -43,7 +42,7 @@ public class IslandTableManager extends TableManager<Island, Integer> {
 
     @Override
     public void delete(Island island) {
-        islandMapByID.remove(island.getId()); // Todo ? A voir comment modifier ceci
+        islandMapByID.put(island.getId(), null);
         super.delete(island);
     }
 
@@ -55,7 +54,9 @@ public class IslandTableManager extends TableManager<Island, Integer> {
     }
 
     public Optional<Island> getIsland(int id) {
-        return Optional.ofNullable(islandMapByID.get(id));
+        Island island = islandMapByID.get(id);
+        if (island == null) return Optional.empty();
+        return Optional.of(island);
     }
 
     public LinkedHashMap<Integer, Island> getIslandMapByID() {
