@@ -50,12 +50,10 @@ public class TableManager<T extends DatabaseObject, S> {
      */
     public void save() {
         try {
-            List<T> entryList = new ArrayList<>(entries);
+            List<T> entryList = new ArrayList<>(entries).stream().filter(DatabaseObject::isChanged).collect(Collectors.toList());
             for (T t : entryList) {
-                if (t.isChanged()) {
-                    dao.createOrUpdate(t);
-                    t.setChanged(false);
-                }
+                dao.createOrUpdate(t);
+                t.setChanged(false);
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
