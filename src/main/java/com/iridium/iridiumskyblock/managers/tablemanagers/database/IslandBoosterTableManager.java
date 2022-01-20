@@ -34,11 +34,12 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
     }
 
     @Override
-    public void addEntry(IslandBooster islandBlocks) {
-        islandBlocks.setChanged(true);
-        List<IslandBooster> invites = islandBoosterById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
-        invites.add(islandBlocks);
-        islandBoosterById.put(islandBlocks.getIslandId(), invites);
+    public void addEntry(IslandBooster islandBooster) {
+        islandBooster.setChanged(true);
+        List<IslandBooster> boosters = islandBoosterById.getOrDefault(islandBooster.getIslandId(), new ArrayList<>());
+        if (boosters == null) boosters = new ArrayList<>();
+        boosters.add(islandBooster);
+        islandBoosterById.put(islandBooster.getIslandId(), boosters);
     }
 
     @Override

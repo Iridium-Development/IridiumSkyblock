@@ -37,9 +37,10 @@ public class IslandWarpTableManager extends TableManager<IslandWarp, Integer> {
     @Override
     public void addEntry(IslandWarp islandWarp) {
         islandWarp.setChanged(true);
-        List<IslandWarp> rewards = islandWarpById.getOrDefault(islandWarp.getIslandId(), new ArrayList<>());
-        rewards.add(islandWarp);
-        islandWarpById.put(islandWarp.getIslandId(), rewards);
+        List<IslandWarp> warps = islandWarpById.getOrDefault(islandWarp.getIslandId(), new ArrayList<>());
+        if (warps == null) warps = new ArrayList<>();
+        warps.add(islandWarp);
+        islandWarpById.put(islandWarp.getIslandId(), warps);
     }
 
     @Override

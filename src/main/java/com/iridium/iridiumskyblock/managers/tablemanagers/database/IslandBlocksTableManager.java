@@ -36,9 +36,10 @@ public class IslandBlocksTableManager extends TableManager<IslandBlocks, Integer
     @Override
     public void addEntry(IslandBlocks islandBlocks) {
         islandBlocks.setChanged(true);
-        List<IslandBlocks> invites = islandBlockById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
-        invites.add(islandBlocks);
-        islandBlockById.put(islandBlocks.getIslandId(), invites);
+        List<IslandBlocks> blocksList = islandBlockById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
+        if (blocksList == null) blocksList = new ArrayList<>();
+        blocksList.add(islandBlocks);
+        islandBlockById.put(islandBlocks.getIslandId(), blocksList);
     }
 
     @Override

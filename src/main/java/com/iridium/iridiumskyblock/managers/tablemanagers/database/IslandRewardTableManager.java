@@ -37,6 +37,7 @@ public class IslandRewardTableManager extends TableManager<IslandReward, Integer
     @Override
     public void addEntry(IslandReward islandReward) {
         List<IslandReward> rewards = islandRewardById.getOrDefault(islandReward.getIslandId(), new ArrayList<>());
+        if (rewards == null) rewards = new ArrayList<>();
         rewards.add(islandReward);
         islandRewardById.put(islandReward.getIslandId(), rewards);
     }

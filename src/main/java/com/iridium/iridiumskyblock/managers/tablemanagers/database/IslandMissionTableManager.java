@@ -34,11 +34,12 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
     }
 
     @Override
-    public void addEntry(IslandMission islandBlocks) {
-        islandBlocks.setChanged(true);
-        List<IslandMission> islandMissions = islandMissionById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
-        islandMissions.add(islandBlocks);
-        islandMissionById.put(islandBlocks.getIslandId(), islandMissions);
+    public void addEntry(IslandMission islandMission) {
+        islandMission.setChanged(true);
+        List<IslandMission> islandMissions = islandMissionById.getOrDefault(islandMission.getIslandId(), new ArrayList<>());
+        if (islandMissions == null) islandMissions = new ArrayList<>();
+        islandMissions.add(islandMission);
+        islandMissionById.put(islandMission.getIslandId(), islandMissions);
     }
 
     @Override

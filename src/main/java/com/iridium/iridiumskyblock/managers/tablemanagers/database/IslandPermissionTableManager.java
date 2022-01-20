@@ -37,6 +37,7 @@ public class IslandPermissionTableManager  extends TableManager<IslandPermission
     public void addEntry(IslandPermission islandPermission) {
         islandPermission.setChanged(true);
         List<IslandPermission> permissions = islandPermissionById.getOrDefault(islandPermission.getIslandId(), new ArrayList<>());
+        if (permissions == null) permissions = new ArrayList<>();
         permissions.add(islandPermission);
         islandPermissionById.put(islandPermission.getIslandId(), permissions);
     }

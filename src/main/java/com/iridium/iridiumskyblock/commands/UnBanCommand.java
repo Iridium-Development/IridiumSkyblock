@@ -57,21 +57,24 @@ public class UnBanCommand extends Command {
             return false;
         }
 
-        Player targetPlayer = Bukkit.getPlayer(args[1]);
+        /*Player targetPlayer = Bukkit.getPlayer(args[1]);
         if (targetPlayer == null) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
-        }
+        }*/
 
-        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUserByUsername(args[1]);
         Optional<IslandBan> islandBan = IridiumSkyblock.getInstance().getIslandManager().getIslandBan(island.get(), targetUser);
         if (islandBan.isEmpty()) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notBanned.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().delete(islandBan.get()));
-        targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenUnBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().delete(islandBan.get()); // Ne pas modifier une LinkedHashMap en async
+        Player targetPlayer = Bukkit.getPlayer(args[1]);
+        if (targetPlayer != null) {
+            targetPlayer.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenUnBanned.replace("%player%", user.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        }
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerUnBanned.replace("%player%", targetUser.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return true;
     }

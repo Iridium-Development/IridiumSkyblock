@@ -36,9 +36,10 @@ public class IslandUpgradeTableManager  extends TableManager<IslandUpgrade, Inte
     @Override
     public void addEntry(IslandUpgrade islandUpgrade) {
         islandUpgrade.setChanged(true);
-        List<IslandUpgrade> spawners = islandUpgradeById.getOrDefault(islandUpgrade.getIslandId(), new ArrayList<>());
-        spawners.add(islandUpgrade);
-        islandUpgradeById.put(islandUpgrade.getIslandId(), spawners);
+        List<IslandUpgrade> upgrades = islandUpgradeById.getOrDefault(islandUpgrade.getIslandId(), new ArrayList<>());
+        if (upgrades == null) upgrades = new ArrayList<>();
+        upgrades.add(islandUpgrade);
+        islandUpgradeById.put(islandUpgrade.getIslandId(), upgrades);
     }
 
     @Override

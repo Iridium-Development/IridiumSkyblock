@@ -36,9 +36,10 @@ public class IslandTrustedTableManager extends TableManager<IslandTrusted, Integ
     @Override
     public void addEntry(IslandTrusted islandTrusted) {
         islandTrusted.setChanged(true);
-        List<IslandTrusted> spawners = islandTrustedById.getOrDefault(islandTrusted.getIslandId(), new ArrayList<>());
-        spawners.add(islandTrusted);
-        islandTrustedById.put(islandTrusted.getIslandId(), spawners);
+        List<IslandTrusted> trusts = islandTrustedById.getOrDefault(islandTrusted.getIslandId(), new ArrayList<>());
+        if (trusts == null) trusts = new ArrayList<>();
+        trusts.add(islandTrusted);
+        islandTrustedById.put(islandTrusted.getIslandId(), trusts);
     }
 
     @Override

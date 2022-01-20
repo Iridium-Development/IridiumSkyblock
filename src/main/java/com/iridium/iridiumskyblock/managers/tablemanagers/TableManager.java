@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
+import org.bukkit.Bukkit;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -121,13 +122,15 @@ public class TableManager<T extends DatabaseObject, S> {
      * @param t the variable we are deleting
      */
     public void delete(T t) {
-        try {
-            dao.delete(t);
-            entries.remove(t);
-            dao.commit(getDatabaseConnection());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
-        }
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            try {
+                dao.delete(t);
+                entries.remove(t);
+                dao.commit(getDatabaseConnection());
+            } catch (SQLException exception) {
+                exception.printStackTrace();
+            }
+        });
     }
 
     /**

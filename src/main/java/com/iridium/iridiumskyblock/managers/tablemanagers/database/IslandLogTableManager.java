@@ -30,6 +30,7 @@ public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
     @Override
     public void addEntry(IslandLog islandLog) {
         List<IslandLog> islandLogs = islandLogById.getOrDefault(islandLog.getIslandId(), new ArrayList<>());
+        if (islandLogs == null) islandLogs = new ArrayList<>();
         islandLogs.add(islandLog);
         islandLogById.put(islandLog.getIslandId(), islandLogs);
     }

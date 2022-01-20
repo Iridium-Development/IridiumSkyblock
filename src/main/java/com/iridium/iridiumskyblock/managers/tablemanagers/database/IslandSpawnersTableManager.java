@@ -34,11 +34,12 @@ public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Int
     }
 
     @Override
-    public void addEntry(IslandSpawners islandBlocks) {
-        islandBlocks.setChanged(true);
-        List<IslandSpawners> spawners = islandSpawnerById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
-        spawners.add(islandBlocks);
-        islandSpawnerById.put(islandBlocks.getIslandId(), spawners);
+    public void addEntry(IslandSpawners islandSpawners) {
+        islandSpawners.setChanged(true);
+        List<IslandSpawners> spawners = islandSpawnerById.getOrDefault(islandSpawners.getIslandId(), new ArrayList<>());
+        if (spawners == null) spawners = new ArrayList<>();
+        spawners.add(islandSpawners);
+        islandSpawnerById.put(islandSpawners.getIslandId(), spawners);
     }
 
     @Override

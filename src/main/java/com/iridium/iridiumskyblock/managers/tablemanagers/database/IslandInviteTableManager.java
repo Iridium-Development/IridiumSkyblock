@@ -35,6 +35,7 @@ public class IslandInviteTableManager extends TableManager<IslandInvite, Integer
     public void addEntry(IslandInvite islandInvite) {
         islandInvite.setChanged(true);
         List<IslandInvite> invites = islandInviteById.getOrDefault(islandInvite.getIslandId(), new ArrayList<>());
+        if (invites == null) invites = new ArrayList<>();
         invites.add(islandInvite);
         islandInviteById.put(islandInvite.getIslandId(), invites);
     }

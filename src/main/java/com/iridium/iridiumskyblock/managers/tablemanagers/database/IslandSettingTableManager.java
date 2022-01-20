@@ -37,6 +37,7 @@ public class IslandSettingTableManager extends TableManager<IslandSetting, Integ
     public void addEntry(IslandSetting setting) {
         setting.setChanged(true);
         List<IslandSetting> islandSettings = islandSettingById.getOrDefault(setting.getIslandId(), new ArrayList<>());
+        if (islandSettings == null) islandSettings = new ArrayList<>();
         islandSettings.add(setting);
         islandSettingById.put(setting.getIslandId(), islandSettings);
     }

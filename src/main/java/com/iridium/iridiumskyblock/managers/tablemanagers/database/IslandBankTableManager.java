@@ -34,11 +34,12 @@ public class IslandBankTableManager extends TableManager<IslandBank, Integer> {
     }
 
     @Override
-    public void addEntry(IslandBank islandBlocks) {
-        islandBlocks.setChanged(true);
-        List<IslandBank> islandBanks = islandBankById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
-        islandBanks.add(islandBlocks);
-        islandBankById.put(islandBlocks.getIslandId(), islandBanks);
+    public void addEntry(IslandBank islandBank) {
+        islandBank.setChanged(true);
+        List<IslandBank> islandBanks = islandBankById.getOrDefault(islandBank.getIslandId(), new ArrayList<>());
+        if (islandBanks == null) islandBanks = new ArrayList<>();
+        islandBanks.add(islandBank);
+        islandBankById.put(islandBank.getIslandId(), islandBanks);
     }
 
     @Override

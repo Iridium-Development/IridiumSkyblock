@@ -36,9 +36,10 @@ public class IslandBanTableManager extends TableManager<IslandBan, Integer> {
     @Override
     public void addEntry(IslandBan islandBan) {
         islandBan.setChanged(true);
-        List<IslandBan> islandBanks = islandBanById.getOrDefault(islandBan.getIslandId(), new ArrayList<>());
-        islandBanks.add(islandBan);
-        islandBanById.put(islandBan.getIslandId(), islandBanks);
+        List<IslandBan> islandBans = islandBanById.getOrDefault(islandBan.getIslandId(), new ArrayList<>());
+        if (islandBans == null) islandBans = new ArrayList<>();
+        islandBans.add(islandBan);
+        islandBanById.put(islandBan.getIslandId(), islandBans);
     }
 
     @Override
