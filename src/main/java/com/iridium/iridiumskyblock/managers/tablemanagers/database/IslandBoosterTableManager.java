@@ -11,8 +11,6 @@ import java.util.*;
 
 public class IslandBoosterTableManager extends TableManager<IslandBooster, Integer> {
 
-    // Comparator.comparing(IslandBooster::getIslandId).thenComparing(IslandBooster::getBooster)
-
     LinkedHashMap<Integer, List<IslandBooster>> islandBoosterById = new LinkedHashMap<>();
 
     public IslandBoosterTableManager(ConnectionSource connectionSource, Class<IslandBooster> clazz, Comparator<IslandBooster> comparing) throws SQLException {
@@ -54,11 +52,11 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
         super.clear();
     }
 
-    public Optional<IslandBooster> getEntry(IslandBooster islandBlocks) {
-        List<IslandBooster> blocks = islandBoosterById.get(islandBlocks.getIslandId());
-        if (blocks == null) return Optional.empty();
-        for (IslandBooster block : blocks) {
-            if (block.getBooster().equalsIgnoreCase(islandBlocks.getBooster())) return Optional.of(islandBlocks);
+    public Optional<IslandBooster> getEntry(IslandBooster islandBooster) {
+        List<IslandBooster> boosters = islandBoosterById.get(islandBooster.getIslandId());
+        if (boosters == null) return Optional.empty();
+        for (IslandBooster booster : boosters) {
+            if (booster.getBooster().equalsIgnoreCase(islandBooster.getBooster())) return Optional.of(booster);
         }
         return Optional.empty();
     }

@@ -63,7 +63,7 @@ public class IslandSettingTableManager extends TableManager<IslandSetting, Integ
         return Optional.empty();
     }
 
-    public LinkedHashMap<Integer, List<IslandSetting>> get() {
+    public LinkedHashMap<Integer, List<IslandSetting>> getIslandSettingById() {
         return islandSettingById;
     }
 

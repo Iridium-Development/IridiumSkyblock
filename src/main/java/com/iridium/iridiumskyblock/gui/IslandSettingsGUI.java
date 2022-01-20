@@ -81,6 +81,7 @@ public class IslandSettingsGUI extends IslandGUI {
 
             newValue = islandSettingChangeEvent.getNewValue();
             islandSetting.setValue(newValue);
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandSettingTableManager().addEntry(islandSetting);
             settingType.getOnChange().run(getIsland(), newValue);
             addContent(event.getInventory());
         }

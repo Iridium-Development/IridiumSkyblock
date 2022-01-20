@@ -13,6 +13,7 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
@@ -34,6 +35,7 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -210,18 +212,18 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         // Automatically update all inventories
-        /*Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             try {
                 InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
-                if (inventoryHolder instanceof GUI) {
-                    ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
+                if (inventoryHolder instanceof GUI gui) {
+                    gui.addContent(player.getOpenInventory().getTopInventory());
                 }
             } catch (Exception e) {
                 System.out.println("Error : IridiumSkyblock#runTaskTimer#inventoryHolder");
                 e.printStackTrace();
             }
 
-        }), 0, 20);*/
+        }), 0, 20);
 
         // Register worlds with multiverse
         if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
@@ -432,6 +434,10 @@ public class IridiumSkyblock extends IridiumCore {
         try {
             System.out.println("Sauvegarde des Logs");
             getDatabaseManager().getIslandLogTableManager().saveHashMapList(getDatabaseManager().getIslandLogTableManager().getIslandLogById());
+        } catch (Exception ignored) {}
+        try {
+            System.out.println("Sauvegarde des Settings");
+            getDatabaseManager().getIslandSettingTableManager().saveHashMapList(getDatabaseManager().getIslandSettingTableManager().getIslandSettingById());
         } catch (Exception ignored) {}
         System.out.println("Fin des sauvegardes");
     }
