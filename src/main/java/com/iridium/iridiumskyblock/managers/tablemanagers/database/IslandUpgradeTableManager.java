@@ -47,7 +47,7 @@ public class IslandUpgradeTableManager  extends TableManager<IslandUpgrade, Inte
 
     public Optional<IslandUpgrade> getEntry(IslandUpgrade islandUpgrade) {
         List<IslandUpgrade> upgrades = islandUpgradeById.get(islandUpgrade.getIslandId());
-        if (upgrades == null || upgrades.isEmpty()) return Optional.empty();
+        if (upgrades == null) return Optional.empty();
         for (IslandUpgrade upgrade : upgrades) {
             if (upgrade.getUpgrade().equalsIgnoreCase(islandUpgrade.getUpgrade())) return Optional.of(upgrade);
         }

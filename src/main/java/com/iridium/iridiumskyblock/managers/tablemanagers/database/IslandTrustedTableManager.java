@@ -46,10 +46,10 @@ public class IslandTrustedTableManager extends TableManager<IslandTrusted, Integ
     }
 
     public Optional<IslandTrusted> getEntry(IslandTrusted islandTrusted) {
-        List<IslandTrusted> islandTrustedList = islandTrustedById.get(islandTrusted.getIslandId());
-        if (islandTrustedList == null || islandTrustedList.isEmpty()) return Optional.empty();
-        for (IslandTrusted trusted : islandTrustedList) {
-            if (trusted.getUser().getUuid().equals(islandTrusted.getUser().getUuid())) return Optional.of(trusted);
+        List<IslandTrusted> spawners = islandTrustedById.get(islandTrusted.getIslandId());
+        if (spawners == null) return Optional.empty();
+        for (IslandTrusted spawner : spawners) {
+            if (spawner.getUser().getUuid().equals(islandTrusted.getUser().getUuid())) return Optional.of(spawner);
         }
         return Optional.empty();
     }

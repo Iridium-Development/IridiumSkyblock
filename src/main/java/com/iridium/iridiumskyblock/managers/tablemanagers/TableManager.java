@@ -68,8 +68,8 @@ public class TableManager<T extends DatabaseObject, S> {
     }
 
     public void saveHashMapList(LinkedHashMap<?, List<T>> saveMultipleListInMap) {
-        ArrayList<List<T>> allDataIsland = new ArrayList<>(saveMultipleListInMap.values());
-        multipleSave(allDataIsland.stream().flatMap(Collection::stream).collect(Collectors.toList()));
+        LinkedList<List<T>> listLinkedList = new LinkedList<>(saveMultipleListInMap.values());
+        multipleSave(listLinkedList.stream().flatMap(Collection::stream).collect(Collectors.toCollection(LinkedList::new)));
     }
 
     public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {
@@ -80,18 +80,16 @@ public class TableManager<T extends DatabaseObject, S> {
         List<T> test = tList.stream().filter(t -> t != null && t.isChanged()).collect(Collectors.toList());
         int sizeList = test.size();
         int savedata = 0;
-        if (sizeList > 0) {
-            try {
-                for (int i = 0; i < sizeList; i++) {
-                    T t = test.get(i);
-                    dao.createOrUpdate(t);
-                    savedata++;
-                    t.setChanged(false);
-                }
-                dao.commit(getDatabaseConnection());
-            } catch (SQLException exception) {
-                exception.printStackTrace();
+        try {
+            for (int i = 0; i < sizeList; i++) {
+                T t = test.get(i);
+                dao.createOrUpdate(t);
+                savedata++;
+                t.setChanged(false);
             }
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
         }
         System.out.println("Sauvegarde faite : " + savedata + "/" + tList.size());
     }
@@ -121,10 +119,10 @@ public class TableManager<T extends DatabaseObject, S> {
      * @param t the variable we are deleting
      */
     public void delete(T t) {
-        entries.remove(t);
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             try {
                 dao.delete(t);
+                entries.remove(t);
                 dao.commit(getDatabaseConnection());
             } catch (SQLException exception) {
                 exception.printStackTrace();

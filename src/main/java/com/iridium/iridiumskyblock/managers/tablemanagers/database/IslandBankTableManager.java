@@ -49,7 +49,7 @@ public class IslandBankTableManager extends TableManager<IslandBank, Integer> {
 
     public Optional<IslandBank> getEntry(IslandBank islandBank) {
         List<IslandBank> banks = islandBankById.get(islandBank.getIslandId());
-        if (banks == null || banks.isEmpty()) return Optional.empty();
+        if (banks == null) return Optional.empty();
         for (IslandBank bank : banks) {
             if (bank.getBankItem().equalsIgnoreCase(islandBank.getBankItem())) return Optional.of(bank);
         }

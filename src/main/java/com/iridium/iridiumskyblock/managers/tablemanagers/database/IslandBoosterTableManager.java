@@ -47,7 +47,7 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
 
     public Optional<IslandBooster> getEntry(IslandBooster islandBooster) {
         List<IslandBooster> boosters = islandBoosterById.get(islandBooster.getIslandId());
-        if (boosters == null || boosters.isEmpty()) return Optional.empty();
+        if (boosters == null) return Optional.empty();
         for (IslandBooster booster : boosters) {
             if (booster.getBooster().equalsIgnoreCase(islandBooster.getBooster())) return Optional.of(booster);
         }

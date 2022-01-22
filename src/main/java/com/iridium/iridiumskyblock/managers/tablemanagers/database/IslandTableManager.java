@@ -23,6 +23,7 @@ public class IslandTableManager extends TableManager<Island, Integer> {
         List<Island> islandsStatic = getEntries();
         for (int index = 0, sizeEntries = islandsStatic.size(); index < sizeEntries; index++) {
             Island island = islandsStatic.get(index);
+            island.setChanged(false);
             islandMapByID.put(island.getId(), island);
         }
     }

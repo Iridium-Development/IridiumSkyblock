@@ -47,7 +47,7 @@ public class IslandBlocksTableManager extends TableManager<IslandBlocks, Integer
 
     public Optional<IslandBlocks> getEntry(IslandBlocks islandBlocks) {
         List<IslandBlocks> blocks = islandBlockById.get(islandBlocks.getIslandId());
-        if (blocks == null || blocks.isEmpty()) return Optional.empty();
+        if (blocks == null) return Optional.empty();
         for (IslandBlocks block : blocks) {
             if (islandBlocks.getMaterial().equals(block.getMaterial())) return Optional.of(block);
         }

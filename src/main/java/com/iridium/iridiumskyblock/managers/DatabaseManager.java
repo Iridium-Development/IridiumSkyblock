@@ -128,9 +128,9 @@ public class DatabaseManager {
      * @return The island with variables like id added
      */
     public synchronized CompletableFuture<Void> registerIsland(Island island) {
-        islandTableManager.addEntry(island);
         return CompletableFuture.runAsync(() -> {
             islandTableManager.save(island);
+            islandTableManager.addEntry(island);
         });
     }
 
