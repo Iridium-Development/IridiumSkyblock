@@ -47,7 +47,7 @@ public class IslandBanTableManager extends TableManager<IslandBan, Integer> {
 
     public Optional<IslandBan> getEntry(IslandBan islandBan) {
         List<IslandBan> islandBans = islandBanById.get(islandBan.getIslandId());
-        if (islandBans == null) return Optional.empty();
+        if (islandBans == null || islandBans.isEmpty()) return Optional.empty();
         for (IslandBan ban : islandBans) {
             if (ban.getBannedUser() != null) {
                 if (islandBan.getBannedUser() != null) {

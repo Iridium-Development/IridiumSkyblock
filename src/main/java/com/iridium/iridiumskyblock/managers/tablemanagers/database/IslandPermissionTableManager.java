@@ -47,7 +47,7 @@ public class IslandPermissionTableManager  extends TableManager<IslandPermission
 
     public Optional<IslandPermission> getEntry(IslandPermission islandPermission) {
         List<IslandPermission> permissions = islandPermissionById.get(islandPermission.getIslandId());
-        if (permissions == null) return Optional.empty();
+        if (permissions == null || permissions.isEmpty()) return Optional.empty();
         for (IslandPermission permission : permissions) {
             if (permission.getRank().equals(islandPermission.getRank())) {
                 if (permission.getPermission().equalsIgnoreCase(islandPermission.getPermission())) return Optional.of(permission);

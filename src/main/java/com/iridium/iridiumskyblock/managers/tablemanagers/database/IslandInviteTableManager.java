@@ -47,7 +47,7 @@ public class IslandInviteTableManager extends TableManager<IslandInvite, Integer
 
     public Optional<IslandInvite> getEntry(IslandInvite islandInvite) {
         List<IslandInvite> invites = islandInviteById.get(islandInvite.getIslandId());
-        if (invites == null) return Optional.empty();
+        if (invites == null || invites.isEmpty()) return Optional.empty();
         for (IslandInvite invite : invites) {
             if (islandInvite.getUser().getUuid().equals(invite.getUser().getUuid())) return Optional.of(invite);
         }

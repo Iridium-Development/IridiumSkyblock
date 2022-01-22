@@ -47,7 +47,7 @@ public class IslandSettingTableManager extends TableManager<IslandSetting, Integ
 
     public Optional<IslandSetting> getEntry(IslandSetting islandSetting) {
         List<IslandSetting> islandSettings = islandSettingById.get(islandSetting.getIslandId());
-        if (islandSettings == null) return Optional.empty();
+        if (islandSettings == null || islandSettings.isEmpty()) return Optional.empty();
         for (IslandSetting setting : islandSettings) {
             if (setting.getSetting().equalsIgnoreCase(islandSetting.getSetting())) return Optional.of(setting);
         }

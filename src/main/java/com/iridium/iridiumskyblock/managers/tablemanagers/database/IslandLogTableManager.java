@@ -31,7 +31,7 @@ public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
     public void addEntry(IslandLog islandLog) {
         islandLog.setChanged(true);
         List<IslandLog> islandLogs = islandLogById.getOrDefault(islandLog.getIslandId(), new ArrayList<>());
-        if (islandLogs == null) islandLogs = new ArrayList<>();
+        if (islandLogs == null || islandLogs.isEmpty()) islandLogs = new ArrayList<>();
         islandLogs.add(islandLog);
         islandLogById.put(islandLog.getIslandId(), islandLogs);
     }

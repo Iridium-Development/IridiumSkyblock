@@ -68,8 +68,8 @@ public class TableManager<T extends DatabaseObject, S> {
     }
 
     public void saveHashMapList(LinkedHashMap<?, List<T>> saveMultipleListInMap) {
-        LinkedList<List<T>> listLinkedList = new LinkedList<>(saveMultipleListInMap.values());
-        multipleSave(listLinkedList.stream().flatMap(Collection::stream).collect(Collectors.toCollection(LinkedList::new)));
+        ArrayList<List<T>> allDataIsland = new ArrayList<>(saveMultipleListInMap.values());
+        multipleSave(allDataIsland.stream().flatMap(Collection::stream).collect(Collectors.toList()));
     }
 
     public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {

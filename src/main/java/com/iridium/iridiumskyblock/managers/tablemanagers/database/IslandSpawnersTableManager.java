@@ -47,7 +47,7 @@ public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Int
 
     public Optional<IslandSpawners> getEntry(IslandSpawners islandSpawners) {
         List<IslandSpawners> spawners = islandSpawnerById.get(islandSpawners.getIslandId());
-        if (spawners == null) return Optional.empty();
+        if (spawners == null || spawners.isEmpty()) return Optional.empty();
         for (IslandSpawners spawner : spawners) {
             if (islandSpawners.getSpawnerType().equals(spawner.getSpawnerType())) return Optional.of(spawner);
         }

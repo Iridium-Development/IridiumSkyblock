@@ -47,7 +47,7 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
 
     public Optional<IslandMission> getEntry(IslandMission islandMission) {
         List<IslandMission> islandMissions = islandMissionById.get(islandMission.getIslandId());
-        if (islandMissions == null) return Optional.empty();
+        if (islandMissions == null || islandMissions.isEmpty()) return Optional.empty();
         for (IslandMission mission : islandMissions) {
             if (mission.getMissionName().equalsIgnoreCase(islandMission.getMissionName())) {
                 if (mission.getMissionIndex() == islandMission.getMissionIndex()) return Optional.of(mission);
