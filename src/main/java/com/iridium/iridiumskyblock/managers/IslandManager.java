@@ -708,20 +708,22 @@ public class IslandManager {
      * @param island The specified Island
      */
     private void deleteIslanDatabasedEntries(@NotNull Island island) {
+        DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager()::delete);
+            databaseManager.getIslandTableManager().delete(island);
+            databaseManager.getIslandBanTableManager().getEntries(island).forEach(databaseManager.getIslandBanTableManager()::delete);
+            databaseManager.getIslandBankTableManager().getEntries(island).forEach(databaseManager.getIslandBankTableManager()::delete);
+            databaseManager.getIslandBlocksTableManager().getEntries(island).forEach(databaseManager.getIslandBlocksTableManager()::delete);
+            databaseManager.getIslandBoosterTableManager().getEntries(island).forEach(databaseManager.getIslandBoosterTableManager()::delete);
+            databaseManager.getIslandInviteTableManager().getEntries(island).forEach(databaseManager.getIslandInviteTableManager()::delete);
+            databaseManager.getIslandLogTableManager().getEntries(island).forEach(databaseManager.getIslandLogTableManager()::delete);
+            databaseManager.getIslandMissionTableManager().getEntries(island).forEach(databaseManager.getIslandMissionTableManager()::delete);
+            databaseManager.getIslandRewardTableManager().getEntries(island).forEach(databaseManager.getIslandRewardTableManager()::delete);
+            databaseManager.getIslandSpawnersTableManager().getEntries(island).forEach(databaseManager.getIslandSpawnersTableManager()::delete);
+            databaseManager.getIslandTrustedTableManager().getEntries(island).forEach(databaseManager.getIslandTrustedTableManager()::delete);
+            databaseManager.getIslandUpgradeTableManager().getEntries(island).forEach(databaseManager.getIslandUpgradeTableManager()::delete);
+            databaseManager.getIslandWarpTableManager().getEntries(island).forEach(databaseManager.getIslandWarpTableManager()::delete);
+            databaseManager.getIslandSettingTableManager().getEntries(island).forEach(databaseManager.getIslandSettingTableManager()::delete);
         });
     }
 
