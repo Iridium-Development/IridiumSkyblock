@@ -553,6 +553,7 @@ public class IslandManager {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return Optional.empty();
         List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands();
         for (Island island : islandList) {
+            if (island == null) continue;
             if (island.isInIsland(location)) return Optional.of(island);
         }
         return Optional.empty();
