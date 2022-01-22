@@ -28,14 +28,15 @@ public class IslandBlocksTableManager extends TableManager<IslandBlocks, Integer
     public void addEntry(IslandBlocks islandBlocks) {
         islandBlocks.setChanged(true);
         List<IslandBlocks> blocksList = islandBlockById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
-        if (blocksList == null) blocksList = new ArrayList<>();
         blocksList.add(islandBlocks);
         islandBlockById.put(islandBlocks.getIslandId(), blocksList);
     }
 
     @Override
     public void delete(IslandBlocks islandBlocks) {
-        islandBlockById.put(islandBlocks.getIslandId(), null);
+        List<IslandBlocks> blocksList = islandBlockById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
+        blocksList.remove(islandBlocks);
+        islandBlockById.put(islandBlocks.getIslandId(), blocksList);
         super.delete(islandBlocks);
     }
 
@@ -46,9 +47,8 @@ public class IslandBlocksTableManager extends TableManager<IslandBlocks, Integer
     }
 
     public Optional<IslandBlocks> getEntry(IslandBlocks islandBlocks) {
-        List<IslandBlocks> blocks = islandBlockById.get(islandBlocks.getIslandId());
-        if (blocks == null) return Optional.empty();
-        for (IslandBlocks block : blocks) {
+        List<IslandBlocks> blocksList = islandBlockById.getOrDefault(islandBlocks.getIslandId(), new ArrayList<>());
+        for (IslandBlocks block : blocksList) {
             if (islandBlocks.getMaterial().equals(block.getMaterial())) return Optional.of(block);
         }
         return Optional.empty();
@@ -64,7 +64,12 @@ public class IslandBlocksTableManager extends TableManager<IslandBlocks, Integer
      * @param island the specified island
      */
     public List<IslandBlocks> getEntries(@NotNull Island island) {
+        return islandBlockById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandBlocks> blocksList = islandBlockById.getOrDefault(island.getId(), new ArrayList<>());
-        return blocksList == null ? new ArrayList<>() : blocksList;
+        islandBlockById.remove(island.getId());
+        super.delete(blocksList);
     }
 }

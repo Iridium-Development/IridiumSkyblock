@@ -28,14 +28,15 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
     public void addEntry(IslandBooster islandBooster) {
         islandBooster.setChanged(true);
         List<IslandBooster> boosters = islandBoosterById.getOrDefault(islandBooster.getIslandId(), new ArrayList<>());
-        if (boosters == null) boosters = new ArrayList<>();
         boosters.add(islandBooster);
         islandBoosterById.put(islandBooster.getIslandId(), boosters);
     }
 
     @Override
     public void delete(IslandBooster islandBooster) {
-        islandBoosterById.put(islandBooster.getIslandId(), null);
+        List<IslandBooster> boosters = islandBoosterById.getOrDefault(islandBooster.getIslandId(), new ArrayList<>());
+        boosters.remove(islandBooster);
+        islandBoosterById.put(islandBooster.getIslandId(), boosters);
         super.delete(islandBooster);
     }
 
@@ -46,8 +47,7 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
     }
 
     public Optional<IslandBooster> getEntry(IslandBooster islandBooster) {
-        List<IslandBooster> boosters = islandBoosterById.get(islandBooster.getIslandId());
-        if (boosters == null) return Optional.empty();
+        List<IslandBooster> boosters = islandBoosterById.getOrDefault(islandBooster.getIslandId(), new ArrayList<>());
         for (IslandBooster booster : boosters) {
             if (booster.getBooster().equalsIgnoreCase(islandBooster.getBooster())) return Optional.of(booster);
         }
@@ -64,7 +64,12 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
      * @param island the specified island
      */
     public List<IslandBooster> getEntries(@NotNull Island island) {
+        return islandBoosterById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandBooster> islandBoosters = islandBoosterById.getOrDefault(island.getId(), new ArrayList<>());
-        return islandBoosters == null ? new ArrayList<>() : islandBoosters;
+        islandBoosterById.remove(island.getId());
+        super.delete(islandBoosters);
     }
 }

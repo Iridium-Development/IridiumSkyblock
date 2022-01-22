@@ -7,10 +7,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
 
@@ -38,7 +35,9 @@ public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
 
     @Override
     public void delete(IslandLog islandLog) {
-        islandLogById.put(islandLog.getIslandId(), null);
+        List<IslandLog> islandLogs = islandLogById.getOrDefault(islandLog.getIslandId(), new ArrayList<>());
+        islandLogs.remove(islandLog);
+        islandLogById.put(islandLog.getIslandId(), islandLogs);
         super.delete(islandLog);
     }
 
@@ -58,7 +57,17 @@ public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
      * @param island the specified island
      */
     public List<IslandLog> getEntries(@NotNull Island island) {
+        return islandLogById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public List<IslandLog> deleteDataByIsland(Island island) {
         List<IslandLog> islandLogs = islandLogById.getOrDefault(island.getId(), new ArrayList<>());
-        return islandLogs == null ? new ArrayList<>() : islandLogs;
+        islandLogById.remove(island.getId());
+        // super.delete(islandLogs);
+        return islandLogs;
+    }
+
+    public void deleteAll(Collection<IslandLog> logCollection) {
+        super.delete(logCollection);
     }
 }

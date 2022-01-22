@@ -28,14 +28,15 @@ public class IslandPermissionTableManager  extends TableManager<IslandPermission
     public void addEntry(IslandPermission islandPermission) {
         islandPermission.setChanged(true);
         List<IslandPermission> permissions = islandPermissionById.getOrDefault(islandPermission.getIslandId(), new ArrayList<>());
-        if (permissions == null) permissions = new ArrayList<>();
         permissions.add(islandPermission);
         islandPermissionById.put(islandPermission.getIslandId(), permissions);
     }
 
     @Override
     public void delete(IslandPermission islandPermission) {
-        islandPermissionById.put(islandPermission.getIslandId(), null);
+        List<IslandPermission> permissions = islandPermissionById.getOrDefault(islandPermission.getIslandId(), new ArrayList<>());
+        permissions.remove(islandPermission);
+        islandPermissionById.put(islandPermission.getIslandId(), permissions);
         super.delete(islandPermission);
     }
 
@@ -46,8 +47,7 @@ public class IslandPermissionTableManager  extends TableManager<IslandPermission
     }
 
     public Optional<IslandPermission> getEntry(IslandPermission islandPermission) {
-        List<IslandPermission> permissions = islandPermissionById.get(islandPermission.getIslandId());
-        if (permissions == null) return Optional.empty();
+        List<IslandPermission> permissions = islandPermissionById.getOrDefault(islandPermission.getIslandId(), new ArrayList<>());
         for (IslandPermission permission : permissions) {
             if (permission.getRank().equals(islandPermission.getRank())) {
                 if (permission.getPermission().equalsIgnoreCase(islandPermission.getPermission())) return Optional.of(permission);
@@ -66,7 +66,12 @@ public class IslandPermissionTableManager  extends TableManager<IslandPermission
      * @param island the specified island
      */
     public List<IslandPermission> getEntries(@NotNull Island island) {
+        return islandPermissionById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandPermission> islandPermissions = islandPermissionById.getOrDefault(island.getId(), new ArrayList<>());
-        return islandPermissions == null ? new ArrayList<>() : islandPermissions;
+        islandPermissionById.remove(island.getId());
+        super.delete(islandPermissions);
     }
 }

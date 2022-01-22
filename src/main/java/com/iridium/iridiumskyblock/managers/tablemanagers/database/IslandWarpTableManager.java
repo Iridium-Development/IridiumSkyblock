@@ -38,7 +38,9 @@ public class IslandWarpTableManager extends TableManager<IslandWarp, Integer> {
 
     @Override
     public void delete(IslandWarp islandWarp) {
-        islandWarpById.put(islandWarp.getIslandId(), null);
+        List<IslandWarp> warps = islandWarpById.getOrDefault(islandWarp.getIslandId(), new ArrayList<>());
+        warps.remove(islandWarp);
+        islandWarpById.put(islandWarp.getIslandId(), warps);
         super.delete(islandWarp);
     }
 
@@ -58,7 +60,12 @@ public class IslandWarpTableManager extends TableManager<IslandWarp, Integer> {
      * @param island the specified island
      */
     public List<IslandWarp> getEntries(@NotNull Island island) {
-        List<IslandWarp> warpList = islandWarpById.getOrDefault(island.getId(), new ArrayList<>());
-        return warpList == null ? new ArrayList<>() : warpList;
+        return islandWarpById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
+        List<IslandWarp> islandWarps = islandWarpById.getOrDefault(island.getId(), new ArrayList<>());
+        islandWarpById.remove(island.getId());
+        super.delete(islandWarps);
     }
 }

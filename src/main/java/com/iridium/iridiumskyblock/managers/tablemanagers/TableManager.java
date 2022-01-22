@@ -2,13 +2,11 @@ package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumcore.utils.SortedList;
 import com.iridium.iridiumskyblock.DatabaseObject;
-import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.support.DatabaseConnection;
 import com.j256.ormlite.table.TableUtils;
-import org.bukkit.Bukkit;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -68,8 +66,12 @@ public class TableManager<T extends DatabaseObject, S> {
     }
 
     public void saveHashMapList(LinkedHashMap<?, List<T>> saveMultipleListInMap) {
-        LinkedList<List<T>> listLinkedList = new LinkedList<>(saveMultipleListInMap.values());
-        multipleSave(listLinkedList.stream().flatMap(Collection::stream).collect(Collectors.toCollection(LinkedList::new)));
+        ArrayList<List<T>> listLinkedList = new ArrayList<>(saveMultipleListInMap.values());
+        ArrayList<T> list = new ArrayList<>();
+        for (List<T> tList : listLinkedList) {
+            list.addAll(tList);
+        }
+        multipleSave(list);
     }
 
     public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {

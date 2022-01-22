@@ -28,14 +28,15 @@ public class IslandUpgradeTableManager  extends TableManager<IslandUpgrade, Inte
     public void addEntry(IslandUpgrade islandUpgrade) {
         islandUpgrade.setChanged(true);
         List<IslandUpgrade> upgrades = islandUpgradeById.getOrDefault(islandUpgrade.getIslandId(), new ArrayList<>());
-        if (upgrades == null) upgrades = new ArrayList<>();
         upgrades.add(islandUpgrade);
         islandUpgradeById.put(islandUpgrade.getIslandId(), upgrades);
     }
 
     @Override
     public void delete(IslandUpgrade islandUpgrade) {
-        islandUpgradeById.put(islandUpgrade.getIslandId(), null);
+        List<IslandUpgrade> upgrades = islandUpgradeById.getOrDefault(islandUpgrade.getIslandId(), new ArrayList<>());
+        upgrades.remove(islandUpgrade);
+        islandUpgradeById.put(islandUpgrade.getIslandId(), upgrades);
         super.delete(islandUpgrade);
     }
 
@@ -46,8 +47,7 @@ public class IslandUpgradeTableManager  extends TableManager<IslandUpgrade, Inte
     }
 
     public Optional<IslandUpgrade> getEntry(IslandUpgrade islandUpgrade) {
-        List<IslandUpgrade> upgrades = islandUpgradeById.get(islandUpgrade.getIslandId());
-        if (upgrades == null) return Optional.empty();
+        List<IslandUpgrade> upgrades = islandUpgradeById.getOrDefault(islandUpgrade.getIslandId(), new ArrayList<>());
         for (IslandUpgrade upgrade : upgrades) {
             if (upgrade.getUpgrade().equalsIgnoreCase(islandUpgrade.getUpgrade())) return Optional.of(upgrade);
         }
@@ -64,7 +64,12 @@ public class IslandUpgradeTableManager  extends TableManager<IslandUpgrade, Inte
      * @param island the specified island
      */
     public List<IslandUpgrade> getEntries(@NotNull Island island) {
+        return islandUpgradeById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandUpgrade> islandUpgrades = islandUpgradeById.getOrDefault(island.getId(), new ArrayList<>());
-        return islandUpgrades == null ? new ArrayList<>() : islandUpgrades;
+        islandUpgradeById.remove(island.getId());
+        super.delete(islandUpgrades);
     }
 }

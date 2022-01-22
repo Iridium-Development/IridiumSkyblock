@@ -28,14 +28,15 @@ public class IslandInviteTableManager extends TableManager<IslandInvite, Integer
     public void addEntry(IslandInvite islandInvite) {
         islandInvite.setChanged(true);
         List<IslandInvite> invites = islandInviteById.getOrDefault(islandInvite.getIslandId(), new ArrayList<>());
-        if (invites == null) invites = new ArrayList<>();
         invites.add(islandInvite);
         islandInviteById.put(islandInvite.getIslandId(), invites);
     }
 
     @Override
     public void delete(IslandInvite islandInvite) {
-        islandInviteById.put(islandInvite.getIslandId(), null);
+        List<IslandInvite> invites = islandInviteById.getOrDefault(islandInvite.getIslandId(), new ArrayList<>());
+        invites.remove(islandInvite);
+        islandInviteById.put(islandInvite.getIslandId(), invites);
         super.delete(islandInvite);
     }
 
@@ -46,8 +47,7 @@ public class IslandInviteTableManager extends TableManager<IslandInvite, Integer
     }
 
     public Optional<IslandInvite> getEntry(IslandInvite islandInvite) {
-        List<IslandInvite> invites = islandInviteById.get(islandInvite.getIslandId());
-        if (invites == null) return Optional.empty();
+        List<IslandInvite> invites = islandInviteById.getOrDefault(islandInvite.getIslandId(), new ArrayList<>());
         for (IslandInvite invite : invites) {
             if (islandInvite.getUser().getUuid().equals(invite.getUser().getUuid())) return Optional.of(invite);
         }
@@ -64,7 +64,12 @@ public class IslandInviteTableManager extends TableManager<IslandInvite, Integer
      * @param island the specified island
      */
     public List<IslandInvite> getEntries(@NotNull Island island) {
+        return islandInviteById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandInvite> islandInvites = islandInviteById.getOrDefault(island.getId(), new ArrayList<>());
-        return islandInvites == null ? new ArrayList<>() : islandInvites;
+        islandInviteById.remove(island.getId());
+        super.delete(islandInvites);
     }
 }

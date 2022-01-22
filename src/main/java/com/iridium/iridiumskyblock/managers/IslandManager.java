@@ -814,22 +814,22 @@ public class IslandManager {
     private void deleteIslandDatabasedEntries(@NotNull Island island, User user) {
         user.setIslandRank(IslandRank.VISITOR);
         user.setIsland(null);
+        DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
             IslandLog islandLogDelete = new IslandLog(island, LogAction.DELETE_ISLAND, user, null, 0, "Suppression de l'ile");
             databaseManager.getIslandTableManager().delete(island);
-            databaseManager.getIslandBanTableManager().getEntries(island).forEach(databaseManager.getIslandBanTableManager()::delete);
-            databaseManager.getIslandBankTableManager().getEntries(island).forEach(databaseManager.getIslandBankTableManager()::delete);
-            databaseManager.getIslandBlocksTableManager().getEntries(island).forEach(databaseManager.getIslandBlocksTableManager()::delete);
-            databaseManager.getIslandBoosterTableManager().getEntries(island).forEach(databaseManager.getIslandBoosterTableManager()::delete);
-            databaseManager.getIslandInviteTableManager().getEntries(island).forEach(databaseManager.getIslandInviteTableManager()::delete);
-            // IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager()::delete); -> Nous gardons les logs
-            databaseManager.getIslandMissionTableManager().getEntries(island).forEach(databaseManager.getIslandMissionTableManager()::delete);
-            databaseManager.getIslandRewardTableManager().getEntries(island).forEach(databaseManager.getIslandRewardTableManager()::delete);
-            databaseManager.getIslandSpawnersTableManager().getEntries(island).forEach(databaseManager.getIslandSpawnersTableManager()::delete);
-            databaseManager.getIslandTrustedTableManager().getEntries(island).forEach(databaseManager.getIslandTrustedTableManager()::delete);
-            databaseManager.getIslandUpgradeTableManager().getEntries(island).forEach(databaseManager.getIslandUpgradeTableManager()::delete);
-            databaseManager.getIslandWarpTableManager().getEntries(island).forEach(databaseManager.getIslandWarpTableManager()::delete);
+            databaseManager.getIslandBanTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandBankTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandBlocksTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandBoosterTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandInviteTableManager().deleteDataByIsland(island);
+            // IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().deleteDataByIsland(island)); -> Nous gardons les logs
+            databaseManager.getIslandMissionTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandRewardTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandSpawnersTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandTrustedTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandUpgradeTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandWarpTableManager().deleteDataByIsland(island);
             databaseManager.getIslandLogTableManager().addEntry(islandLogDelete);
         });
     }

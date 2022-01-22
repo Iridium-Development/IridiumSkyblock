@@ -30,14 +30,15 @@ public class IslandBankTableManager extends TableManager<IslandBank, Integer> {
     public void addEntry(IslandBank islandBank) {
         islandBank.setChanged(true);
         List<IslandBank> islandBanks = islandBankById.getOrDefault(islandBank.getIslandId(), new ArrayList<>());
-        if (islandBanks == null) islandBanks = new ArrayList<>();
         islandBanks.add(islandBank);
         islandBankById.put(islandBank.getIslandId(), islandBanks);
     }
 
     @Override
     public void delete(IslandBank islandBank) {
-        islandBankById.put(islandBank.getIslandId(), null);
+        List<IslandBank> islandBanks = islandBankById.getOrDefault(islandBank.getIslandId(), new ArrayList<>());
+        islandBanks.remove(islandBank);
+        islandBankById.put(islandBank.getIslandId(), islandBanks);
         super.delete(islandBank);
     }
 
@@ -48,8 +49,7 @@ public class IslandBankTableManager extends TableManager<IslandBank, Integer> {
     }
 
     public Optional<IslandBank> getEntry(IslandBank islandBank) {
-        List<IslandBank> banks = islandBankById.get(islandBank.getIslandId());
-        if (banks == null) return Optional.empty();
+        List<IslandBank> banks = islandBankById.getOrDefault(islandBank.getIslandId(), new ArrayList<>());
         for (IslandBank bank : banks) {
             if (bank.getBankItem().equalsIgnoreCase(islandBank.getBankItem())) return Optional.of(bank);
         }
@@ -66,7 +66,12 @@ public class IslandBankTableManager extends TableManager<IslandBank, Integer> {
      * @param island the specified island
      */
     public List<IslandBank> getEntries(@NotNull Island island) {
-        List<IslandBank> bankList = islandBankById.getOrDefault(island.getId(), new ArrayList<>());
-        return bankList == null ? new ArrayList<>() : bankList;
+         return islandBankById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
+        List<IslandBank> islandBanks = islandBankById.getOrDefault(island.getId(), new ArrayList<>());
+        islandBankById.remove(island.getId());
+        super.delete(islandBanks);
     }
 }

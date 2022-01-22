@@ -35,9 +35,11 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
     }
 
     @Override
-    public void delete(IslandMission islandBank) {
-        islandMissionById.put(islandBank.getIslandId(), null);
-        super.delete(islandBank);
+    public void delete(IslandMission islandMission) {
+        List<IslandMission> islandMissions = islandMissionById.getOrDefault(islandMission.getIslandId(), new ArrayList<>());
+        islandMissions.remove(islandMission);
+        islandMissionById.put(islandMission.getIslandId(), islandMissions);
+        super.delete(islandMission);
     }
 
     @Override
@@ -47,8 +49,7 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
     }
 
     public Optional<IslandMission> getEntry(IslandMission islandMission) {
-        List<IslandMission> islandMissions = islandMissionById.get(islandMission.getIslandId());
-        if (islandMissions == null) return Optional.empty();
+        List<IslandMission> islandMissions = islandMissionById.getOrDefault(islandMission.getIslandId(), new ArrayList<>());
         for (IslandMission mission : islandMissions) {
             if (mission.getMissionName().equalsIgnoreCase(islandMission.getMissionName())) {
                 if (mission.getMissionIndex() == islandMission.getMissionIndex()) return Optional.of(mission);
@@ -67,11 +68,16 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
      * @param island the specified island
      */
     public List<IslandMission> getEntries(@NotNull Island island) {
-        List<IslandMission> missionList = islandMissionById.getOrDefault(island.getId(), new ArrayList<>());
-        return missionList == null ? new ArrayList<>() : missionList;
+        return islandMissionById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
     public List<IslandMission> getAllEntries() {
-        return islandMissionById.values().stream().filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
+        return islandMissionById.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    public void deleteDataByIsland(Island island) {
+        List<IslandMission> islandMissions = islandMissionById.getOrDefault(island.getId(), new ArrayList<>());
+        islandMissionById.remove(island.getId());
+        super.delete(islandMissions);
     }
 }

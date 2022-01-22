@@ -28,14 +28,15 @@ public class IslandTrustedTableManager extends TableManager<IslandTrusted, Integ
     public void addEntry(IslandTrusted islandTrusted) {
         islandTrusted.setChanged(true);
         List<IslandTrusted> trusts = islandTrustedById.getOrDefault(islandTrusted.getIslandId(), new ArrayList<>());
-        if (trusts == null) trusts = new ArrayList<>();
         trusts.add(islandTrusted);
         islandTrustedById.put(islandTrusted.getIslandId(), trusts);
     }
 
     @Override
     public void delete(IslandTrusted islandTrusted) {
-        islandTrustedById.put(islandTrusted.getIslandId(), null);
+        List<IslandTrusted> trusts = islandTrustedById.getOrDefault(islandTrusted.getIslandId(), new ArrayList<>());
+        trusts.remove(islandTrusted);
+        islandTrustedById.put(islandTrusted.getIslandId(), trusts);
         super.delete(islandTrusted);
     }
 
@@ -46,8 +47,7 @@ public class IslandTrustedTableManager extends TableManager<IslandTrusted, Integ
     }
 
     public Optional<IslandTrusted> getEntry(IslandTrusted islandTrusted) {
-        List<IslandTrusted> spawners = islandTrustedById.get(islandTrusted.getIslandId());
-        if (spawners == null) return Optional.empty();
+        List<IslandTrusted> spawners = islandTrustedById.getOrDefault(islandTrusted.getIslandId(), new ArrayList<>());
         for (IslandTrusted spawner : spawners) {
             if (spawner.getUser().getUuid().equals(islandTrusted.getUser().getUuid())) return Optional.of(spawner);
         }
@@ -64,7 +64,12 @@ public class IslandTrustedTableManager extends TableManager<IslandTrusted, Integ
      * @param island the specified island
      */
     public List<IslandTrusted> getEntries(@NotNull Island island) {
-        List<IslandTrusted> islandTrusted = islandTrustedById.getOrDefault(island.getId(), new ArrayList<>());
-        return islandTrusted == null ? new ArrayList<>() : islandTrusted;
+        return islandTrustedById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
+        List<IslandTrusted> trustedList = islandTrustedById.getOrDefault(island.getId(), new ArrayList<>());
+        islandTrustedById.remove(island.getId());
+        super.delete(trustedList);
     }
 }

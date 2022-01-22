@@ -28,14 +28,15 @@ public class IslandSettingTableManager extends TableManager<IslandSetting, Integ
     public void addEntry(IslandSetting setting) {
         setting.setChanged(true);
         List<IslandSetting> islandSettings = islandSettingById.getOrDefault(setting.getIslandId(), new ArrayList<>());
-        if (islandSettings == null) islandSettings = new ArrayList<>();
         islandSettings.add(setting);
         islandSettingById.put(setting.getIslandId(), islandSettings);
     }
 
     @Override
     public void delete(IslandSetting setting) {
-        islandSettingById.put(setting.getIslandId(), null);
+        List<IslandSetting> islandSettings = islandSettingById.getOrDefault(setting.getIslandId(), new ArrayList<>());
+        islandSettings.remove(setting);
+        islandSettingById.put(setting.getIslandId(), islandSettings);
         super.delete(setting);
     }
 
@@ -46,7 +47,7 @@ public class IslandSettingTableManager extends TableManager<IslandSetting, Integ
     }
 
     public Optional<IslandSetting> getEntry(IslandSetting islandSetting) {
-        List<IslandSetting> islandSettings = islandSettingById.get(islandSetting.getIslandId());
+        List<IslandSetting> islandSettings = islandSettingById.getOrDefault(islandSetting.getIslandId(), new ArrayList<>());
         if (islandSettings == null) return Optional.empty();
         for (IslandSetting setting : islandSettings) {
             if (setting.getSetting().equalsIgnoreCase(islandSetting.getSetting())) return Optional.of(setting);
@@ -64,7 +65,12 @@ public class IslandSettingTableManager extends TableManager<IslandSetting, Integ
      * @param island the specified island
      */
     public List<IslandSetting> getEntries(@NotNull Island island) {
+        return islandSettingById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandSetting> islandSettings = islandSettingById.getOrDefault(island.getId(), new ArrayList<>());
-        return islandSettings == null ? new ArrayList<>() : islandSettings;
+        islandSettingById.remove(island.getId());
+        super.delete(islandSettings);
     }
 }

@@ -31,14 +31,15 @@ public class IslandRewardTableManager extends TableManager<IslandReward, Integer
     public void addEntry(IslandReward islandReward) {
         islandReward.setChanged(true);
         List<IslandReward> rewards = islandRewardById.getOrDefault(islandReward.getIslandId(), new ArrayList<>());
-        if (rewards == null) rewards = new ArrayList<>();
         rewards.add(islandReward);
         islandRewardById.put(islandReward.getIslandId(), rewards);
     }
 
     @Override
     public void delete(IslandReward islandReward) {
-        islandRewardById.put(islandReward.getIslandId(), null);
+        List<IslandReward> rewards = islandRewardById.getOrDefault(islandReward.getIslandId(), new ArrayList<>());
+        rewards.remove(islandReward);
+        islandRewardById.put(islandReward.getIslandId(), rewards);
         super.delete(islandReward);
     }
 
@@ -58,7 +59,12 @@ public class IslandRewardTableManager extends TableManager<IslandReward, Integer
      * @param island the specified island
      */
     public List<IslandReward> getEntries(@NotNull Island island) {
+        return islandRewardById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandReward> rewardList = islandRewardById.getOrDefault(island.getId(), new ArrayList<>());
-        return rewardList == null ? new ArrayList<>() : rewardList;
+        islandRewardById.remove(island.getId());
+        super.delete(rewardList);
     }
 }

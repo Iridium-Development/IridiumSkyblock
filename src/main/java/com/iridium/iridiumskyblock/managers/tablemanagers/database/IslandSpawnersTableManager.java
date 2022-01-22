@@ -28,14 +28,15 @@ public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Int
     public void addEntry(IslandSpawners islandSpawners) {
         islandSpawners.setChanged(true);
         List<IslandSpawners> spawners = islandSpawnerById.getOrDefault(islandSpawners.getIslandId(), new ArrayList<>());
-        if (spawners == null) spawners = new ArrayList<>();
         spawners.add(islandSpawners);
         islandSpawnerById.put(islandSpawners.getIslandId(), spawners);
     }
 
     @Override
     public void delete(IslandSpawners islandSpawners) {
-        islandSpawnerById.put(islandSpawners.getIslandId(), null);
+        List<IslandSpawners> spawners = islandSpawnerById.getOrDefault(islandSpawners.getIslandId(), new ArrayList<>());
+        spawners.remove(islandSpawners);
+        islandSpawnerById.put(islandSpawners.getIslandId(), spawners);
         super.delete(islandSpawners);
     }
 
@@ -46,8 +47,7 @@ public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Int
     }
 
     public Optional<IslandSpawners> getEntry(IslandSpawners islandSpawners) {
-        List<IslandSpawners> spawners = islandSpawnerById.get(islandSpawners.getIslandId());
-        if (spawners == null) return Optional.empty();
+        List<IslandSpawners> spawners = islandSpawnerById.getOrDefault(islandSpawners.getIslandId(), new ArrayList<>());
         for (IslandSpawners spawner : spawners) {
             if (islandSpawners.getSpawnerType().equals(spawner.getSpawnerType())) return Optional.of(spawner);
         }
@@ -64,7 +64,12 @@ public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Int
      * @param island the specified island
      */
     public List<IslandSpawners> getEntries(@NotNull Island island) {
+        return islandSpawnerById.getOrDefault(island.getId(), new ArrayList<>());
+    }
+
+    public void deleteDataByIsland(Island island) {
         List<IslandSpawners> spawnersList = islandSpawnerById.getOrDefault(island.getId(), new ArrayList<>());
-        return spawnersList == null ? new ArrayList<>() : spawnersList;
+        islandSpawnerById.remove(island.getId());
+        super.delete(spawnersList);
     }
 }

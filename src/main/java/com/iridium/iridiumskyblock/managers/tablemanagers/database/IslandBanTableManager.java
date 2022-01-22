@@ -28,14 +28,15 @@ public class IslandBanTableManager extends TableManager<IslandBan, Integer> {
     public void addEntry(IslandBan islandBan) {
         islandBan.setChanged(true);
         List<IslandBan> islandBans = islandBanById.getOrDefault(islandBan.getIslandId(), new ArrayList<>());
-        if (islandBans == null) islandBans = new ArrayList<>();
         islandBans.add(islandBan);
         islandBanById.put(islandBan.getIslandId(), islandBans);
     }
 
     @Override
     public void delete(IslandBan islandBan) {
-        islandBanById.put(islandBan.getIslandId(), null);
+        List<IslandBan> islandBans = islandBanById.getOrDefault(islandBan.getIslandId(), new ArrayList<>());
+        islandBans.remove(islandBan);
+        islandBanById.put(islandBan.getIslandId(), islandBans);
         super.delete(islandBan);
     }
 
@@ -46,8 +47,7 @@ public class IslandBanTableManager extends TableManager<IslandBan, Integer> {
     }
 
     public Optional<IslandBan> getEntry(IslandBan islandBan) {
-        List<IslandBan> islandBans = islandBanById.get(islandBan.getIslandId());
-        if (islandBans == null) return Optional.empty();
+        List<IslandBan> islandBans = islandBanById.getOrDefault(islandBan.getIslandId(), new ArrayList<>());
         for (IslandBan ban : islandBans) {
             if (ban.getBannedUser() != null) {
                 if (islandBan.getBannedUser() != null) {
@@ -68,7 +68,14 @@ public class IslandBanTableManager extends TableManager<IslandBan, Integer> {
      * @param island the specified island
      */
     public List<IslandBan> getEntries(@NotNull Island island) {
-        List<IslandBan> banList = islandBanById.getOrDefault(island.getId(), new ArrayList<>());
-        return banList == null ? new ArrayList<>() : banList;
+        return islandBanById.getOrDefault(island.getId(), new ArrayList<>());
     }
+
+    public void deleteDataByIsland(Island island) {
+        List<IslandBan> islandBans = islandBanById.getOrDefault(island.getId(), new ArrayList<>());
+        islandBanById.remove(island.getId());
+        super.delete(islandBans);
+    }
+
+
 }
