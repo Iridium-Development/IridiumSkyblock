@@ -80,16 +80,18 @@ public class TableManager<T extends DatabaseObject, S> {
         List<T> test = tList.stream().filter(t -> t != null && t.isChanged()).collect(Collectors.toList());
         int sizeList = test.size();
         int savedata = 0;
-        try {
-            for (int i = 0; i < sizeList; i++) {
-                T t = test.get(i);
-                dao.createOrUpdate(t);
-                savedata++;
-                t.setChanged(false);
+        if (sizeList > 0) {
+            try {
+                for (int i = 0; i < sizeList; i++) {
+                    T t = test.get(i);
+                    dao.createOrUpdate(t);
+                    savedata++;
+                    t.setChanged(false);
+                }
+                dao.commit(getDatabaseConnection());
+            } catch (SQLException exception) {
+                exception.printStackTrace();
             }
-            dao.commit(getDatabaseConnection());
-        } catch (SQLException exception) {
-            exception.printStackTrace();
         }
         System.out.println("Sauvegarde faite : " + savedata + "/" + tList.size());
     }
