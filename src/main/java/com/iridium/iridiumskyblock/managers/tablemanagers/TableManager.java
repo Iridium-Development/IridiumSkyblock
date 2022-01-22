@@ -119,15 +119,13 @@ public class TableManager<T extends DatabaseObject, S> {
      * @param t the variable we are deleting
      */
     public void delete(T t) {
-        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            try {
-                dao.delete(t);
-                entries.remove(t);
-                dao.commit(getDatabaseConnection());
-            } catch (SQLException exception) {
-                exception.printStackTrace();
-            }
-        });
+        try {
+            dao.delete(t);
+            entries.remove(t);
+            dao.commit(getDatabaseConnection());
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
     }
 
     /**

@@ -512,7 +512,7 @@ public class IslandManager {
      * @return An Optional with the Island, empty if there is none
      */
     public Optional<Island> getIslandByName(String name) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     /**
@@ -551,14 +551,9 @@ public class IslandManager {
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return Optional.empty();
-        List<?> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
-        int sizeList = islandList.size();
-        for (int i = 0; i < sizeList; i++) {
-            Object o = islandList.get(i); // Pourquoi ? Car la liste est parfois cassé !
-            if (o == null) continue;
-            if (o instanceof Island island) {
-                if (island.isInIsland(location)) return Optional.of(island);
-            }
+        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands();
+        for (Island island : islandList) {
+            if (island.isInIsland(location)) return Optional.of(island);
         }
         return Optional.empty();
     }
@@ -818,22 +813,24 @@ public class IslandManager {
     private void deleteIslandDatabasedEntries(@NotNull Island island, User user) {
         user.setIslandRank(IslandRank.VISITOR);
         user.setIsland(null);
-        DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
-        IslandLog islandLogDelete = new IslandLog(island, LogAction.DELETE_ISLAND, user, null, 0, "Suppression de l'ile");
-        databaseManager.getIslandTableManager().delete(island);
-        databaseManager.getIslandBanTableManager().getEntries(island).forEach(databaseManager.getIslandBanTableManager()::delete);
-        databaseManager.getIslandBankTableManager().getEntries(island).forEach(databaseManager.getIslandBankTableManager()::delete);
-        databaseManager.getIslandBlocksTableManager().getEntries(island).forEach(databaseManager.getIslandBlocksTableManager()::delete);
-        databaseManager.getIslandBoosterTableManager().getEntries(island).forEach(databaseManager.getIslandBoosterTableManager()::delete);
-        databaseManager.getIslandInviteTableManager().getEntries(island).forEach(databaseManager.getIslandInviteTableManager()::delete);
-        // IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager()::delete); -> Nous gardons les logs
-        databaseManager.getIslandMissionTableManager().getEntries(island).forEach(databaseManager.getIslandMissionTableManager()::delete);
-        databaseManager.getIslandRewardTableManager().getEntries(island).forEach(databaseManager.getIslandRewardTableManager()::delete);
-        databaseManager.getIslandSpawnersTableManager().getEntries(island).forEach(databaseManager.getIslandSpawnersTableManager()::delete);
-        databaseManager.getIslandTrustedTableManager().getEntries(island).forEach(databaseManager.getIslandTrustedTableManager()::delete);
-        databaseManager.getIslandUpgradeTableManager().getEntries(island).forEach(databaseManager.getIslandUpgradeTableManager()::delete);
-        databaseManager.getIslandWarpTableManager().getEntries(island).forEach(databaseManager.getIslandWarpTableManager()::delete);
-        databaseManager.getIslandLogTableManager().addEntry(islandLogDelete);
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
+            IslandLog islandLogDelete = new IslandLog(island, LogAction.DELETE_ISLAND, user, null, 0, "Suppression de l'ile");
+            databaseManager.getIslandTableManager().delete(island);
+            databaseManager.getIslandBanTableManager().getEntries(island).forEach(databaseManager.getIslandBanTableManager()::delete);
+            databaseManager.getIslandBankTableManager().getEntries(island).forEach(databaseManager.getIslandBankTableManager()::delete);
+            databaseManager.getIslandBlocksTableManager().getEntries(island).forEach(databaseManager.getIslandBlocksTableManager()::delete);
+            databaseManager.getIslandBoosterTableManager().getEntries(island).forEach(databaseManager.getIslandBoosterTableManager()::delete);
+            databaseManager.getIslandInviteTableManager().getEntries(island).forEach(databaseManager.getIslandInviteTableManager()::delete);
+            // IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager()::delete); -> Nous gardons les logs
+            databaseManager.getIslandMissionTableManager().getEntries(island).forEach(databaseManager.getIslandMissionTableManager()::delete);
+            databaseManager.getIslandRewardTableManager().getEntries(island).forEach(databaseManager.getIslandRewardTableManager()::delete);
+            databaseManager.getIslandSpawnersTableManager().getEntries(island).forEach(databaseManager.getIslandSpawnersTableManager()::delete);
+            databaseManager.getIslandTrustedTableManager().getEntries(island).forEach(databaseManager.getIslandTrustedTableManager()::delete);
+            databaseManager.getIslandUpgradeTableManager().getEntries(island).forEach(databaseManager.getIslandUpgradeTableManager()::delete);
+            databaseManager.getIslandWarpTableManager().getEntries(island).forEach(databaseManager.getIslandWarpTableManager()::delete);
+            databaseManager.getIslandLogTableManager().addEntry(islandLogDelete);
+        });
     }
 
     /**
@@ -1100,15 +1097,15 @@ public class IslandManager {
     public List<Island> getIslands(SortType sortType) {
         if (sortType == SortType.VALUE) {
             return islandValueSortCache.getCache(() ->
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList())
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList())
             );
         }
         if (sortType == SortType.LEVEL) {
             return islandLevelSortCache.getCache(() ->
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList())
+                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList())
             );
         }
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands();
     }
 
     /**

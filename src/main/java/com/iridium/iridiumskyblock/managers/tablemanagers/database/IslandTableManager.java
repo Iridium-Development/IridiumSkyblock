@@ -5,10 +5,8 @@ import com.iridium.iridiumskyblock.managers.tablemanagers.TableManager;
 import com.j256.ormlite.support.ConnectionSource;
 
 import java.sql.SQLException;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Used for handling Crud operations on a table + handling cache
@@ -23,7 +21,6 @@ public class IslandTableManager extends TableManager<Island, Integer> {
         List<Island> islandsStatic = getEntries();
         for (int index = 0, sizeEntries = islandsStatic.size(); index < sizeEntries; index++) {
             Island island = islandsStatic.get(index);
-            island.setChanged(false);
             islandMapByID.put(island.getId(), island);
         }
     }
@@ -51,6 +48,11 @@ public class IslandTableManager extends TableManager<Island, Integer> {
         Island island = islandMapByID.get(id);
         if (island == null) return Optional.empty();
         return Optional.of(island);
+    }
+
+
+    public List<Island> getAllIslands() {
+        return islandMapByID.values().stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
     public LinkedHashMap<Integer, Island> getIslandMapByID() {

@@ -197,12 +197,12 @@ public class IridiumSkyblock extends IridiumCore {
         // Auto recalculate islands
         if (getConfiguration().islandRecalculateInterval > 0) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getAllIslands().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
 
                 @Override
                 public void run() {
                     if (!islands.hasNext()) {
-                        islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                        islands = getDatabaseManager().getIslandTableManager().getAllIslands().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
                     } else {
                         getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island, null));
                     }
@@ -212,7 +212,7 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         // Automatically update all inventories
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             try {
                 InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
                 if (inventoryHolder instanceof GUI gui) {
@@ -303,7 +303,7 @@ public class IridiumSkyblock extends IridiumCore {
             @Override
             public void run() {
                 databaseManager.getIslandMissionTableManager().delete(
-                        databaseManager.getIslandMissionTableManager().getEntries().stream().filter(islandMission ->
+                        databaseManager.getIslandMissionTableManager().getAllEntries().stream().filter(islandMission ->
                                 islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList()
                         )
                 );

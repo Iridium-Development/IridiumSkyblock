@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class IslandMissionTableManager extends TableManager<IslandMission, Integer> {
 
@@ -68,5 +69,9 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
     public List<IslandMission> getEntries(@NotNull Island island) {
         List<IslandMission> missionList = islandMissionById.getOrDefault(island.getId(), new ArrayList<>());
         return missionList == null ? new ArrayList<>() : missionList;
+    }
+
+    public List<IslandMission> getAllEntries() {
+        return islandMissionById.values().stream().filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
     }
 }
