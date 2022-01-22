@@ -212,7 +212,7 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         // Automatically update all inventories
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
+        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
             try {
                 InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
                 if (inventoryHolder instanceof GUI gui) {
