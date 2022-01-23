@@ -119,16 +119,16 @@ public class HelpCommand extends Command {
 
         String finalSyntax = syntax;
         String subCommands = executingCommand.childs.stream()
-            .filter(command -> commandSender.hasPermission(command.permission) || command.permission.isEmpty())
-            .map(command -> command.aliases.get(0))
-            .collect(Collectors.joining("/", "<", ">"));
+                .filter(command -> commandSender.hasPermission(command.permission) || command.permission.isEmpty())
+                .map(command -> command.aliases.get(0))
+                .collect(Collectors.joining("/", "<", ">"));
 
         IridiumSkyblock.getInstance().getMessages().commandHelpMessage.stream()
-            .map(line -> line.replace("%description%", executingCommand.description))
-            .map(line -> line.replace("%syntax%", finalSyntax))
-            .map(line -> line.replace("%subcommands%", executingCommand.childs.isEmpty() ? "" : subCommands))
-            .map(StringUtils::color)
-            .forEach(commandSender::sendMessage);
+                .map(line -> line.replace("%description%", executingCommand.description))
+                .map(line -> line.replace("%syntax%", finalSyntax))
+                .map(line -> line.replace("%subcommands%", subCommands.equals("<>") ? "" : subCommands))
+                .map(StringUtils::color)
+                .forEach(commandSender::sendMessage);
 
         return true;
     }
