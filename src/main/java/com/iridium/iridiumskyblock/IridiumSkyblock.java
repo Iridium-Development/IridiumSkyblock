@@ -761,7 +761,7 @@ public class IridiumSkyblock extends IridiumCore {
                             Bukkit.getScheduler().runTask(getInstance(), () -> PlayerUtils.teleportSpawn(player));
                         }
                         if (player.getLocation().getY() < LocationUtils.getMinHeight(player.getWorld())&& IridiumSkyblock.getInstance().getConfiguration().voidTeleport && IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) {
-                            IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, playerUser, island.get(), 0);
+                            Bukkit.getScheduler().runTask(getInstance(), () -> IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, playerUser, island.get(), 0));
                         }
                     }
                 } catch (Exception e) {
