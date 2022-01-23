@@ -75,6 +75,7 @@ public class PlayerInteractListener implements Listener {
                 if (hasNoCooldown(player)) {
                     player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteract.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
+                return;
             }
 
             if (event.getAction() == Action.PHYSICAL && material == XMaterial.FARMLAND) {
