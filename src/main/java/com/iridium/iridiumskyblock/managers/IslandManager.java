@@ -124,7 +124,7 @@ public class IslandManager {
         if (user == null) {
             user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         }
-        if (isBannedOnIsland(island, user)) {
+        if (!player.hasPermission("iridiumskyblock.bypassban") && isBannedOnIsland(island, user)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                     .replace("%owner%", island.getOwner().getName())

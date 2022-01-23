@@ -16,7 +16,7 @@ public class PlayerTeleportListener implements Listener {
         if (event.getTo() == null) return;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer());
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getTo()).ifPresent(island -> {
-                    if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island, user)) {
+                    if (!event.getPlayer().hasPermission("iridiumskyblock.bypassban") && IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island, user)) {
                         event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
                                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                                 .replace("%owner%", island.getOwner().getName())
