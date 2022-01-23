@@ -30,7 +30,7 @@ public class BlockPlaceListener implements Listener {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
         if (!island.isPresent()) {
             World world = event.getBlock().getLocation().getWorld();
-            if (Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getWorld()) || Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getNetherWorld()) || Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getEndWorld())) {
+            if (IridiumSkyblockAPI.getInstance().isIslandWorld(world)) {
                 if (!user.isBypassing()) event.setCancelled(true);
             }
             return;
