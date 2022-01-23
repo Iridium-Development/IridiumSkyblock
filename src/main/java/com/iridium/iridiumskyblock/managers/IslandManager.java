@@ -830,6 +830,7 @@ public class IslandManager {
             databaseManager.getIslandTrustedTableManager().deleteDataByIsland(island);
             databaseManager.getIslandUpgradeTableManager().deleteDataByIsland(island);
             databaseManager.getIslandWarpTableManager().deleteDataByIsland(island);
+            databaseManager.getIslandSettingTableManager().deleteDataByIsland(island);
             databaseManager.getIslandLogTableManager().addEntry(islandLogDelete);
         });
     }
