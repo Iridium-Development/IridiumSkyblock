@@ -67,9 +67,15 @@ public class IslandBoosterTableManager extends TableManager<IslandBooster, Integ
         return islandBoosterById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandBooster> deleteDataInHashMap(Island island) {
         List<IslandBooster> islandBoosters = islandBoosterById.getOrDefault(island.getId(), new ArrayList<>());
         islandBoosterById.remove(island.getId());
-        super.delete(islandBoosters);
+        return islandBoosters;
+    }
+
+
+    @Override
+    public void delete(Collection<IslandBooster> data) {
+        super.delete(data);
     }
 }

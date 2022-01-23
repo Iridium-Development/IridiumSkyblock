@@ -67,9 +67,15 @@ public class IslandTrustedTableManager extends TableManager<IslandTrusted, Integ
         return islandTrustedById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandTrusted> deleteDataInHashMap(Island island) {
         List<IslandTrusted> trustedList = islandTrustedById.getOrDefault(island.getId(), new ArrayList<>());
         islandTrustedById.remove(island.getId());
-        super.delete(trustedList);
+        return trustedList;
+    }
+
+
+    @Override
+    public void delete(Collection<IslandTrusted> data) {
+        super.delete(data);
     }
 }

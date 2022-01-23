@@ -49,11 +49,7 @@ public class UserTableManager extends TableManager<User, Integer> {
      */
     public void resortIsland(User user) {
         user.setChanged(true);
-        if (userIslandMap.get(user.getUuid()) != null) {
-            userIslandMap.replace(user.getUuid(), user);
-        } else {
-            userIslandMap.putIfAbsent(user.getUuid(), user);
-        }
+        userIslandMap.put(user.getUuid(), user);
     }
 
     public Optional<User> getUser(UUID uuid) {
@@ -83,8 +79,8 @@ public class UserTableManager extends TableManager<User, Integer> {
      *
      * @param island the specified island
      */
-    public LinkedList<User> getEntries(@NotNull Island island) {
-        LinkedList<User> userList = new LinkedList<>();
+    public List<User> getEntries(@NotNull Island island) {
+        List<User> userList = new ArrayList<>();
         for (User user : userIslandMap.values()) {
             Optional<Island> hasIsland = user.getIsland();
             if (hasIsland.isPresent()) {
@@ -105,7 +101,4 @@ public class UserTableManager extends TableManager<User, Integer> {
         return userIslandMap;
     }
 
-    public int sizeEntries() {
-        return getEntries().size();
-    }
 }

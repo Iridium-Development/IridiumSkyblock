@@ -67,9 +67,14 @@ public class IslandUpgradeTableManager  extends TableManager<IslandUpgrade, Inte
         return islandUpgradeById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandUpgrade> deleteDataInHashMap(Island island) {
         List<IslandUpgrade> islandUpgrades = islandUpgradeById.getOrDefault(island.getId(), new ArrayList<>());
         islandUpgradeById.remove(island.getId());
-        super.delete(islandUpgrades);
+        return islandUpgrades;
+    }
+
+    @Override
+    public void delete(Collection<IslandUpgrade> data) {
+        super.delete(data);
     }
 }

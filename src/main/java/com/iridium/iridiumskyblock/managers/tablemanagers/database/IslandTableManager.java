@@ -31,11 +31,16 @@ public class IslandTableManager extends TableManager<Island, Integer> {
         islandMapByID.put(island.getId(), island);
     }
 
+    public void deleteIsland(Island island) {
+        islandMapByID.remove(island.getId());
+    }
+
     @Override
     public void delete(Island island) {
-        islandMapByID.put(island.getId(), null);
         super.delete(island);
     }
+
+
 
     @Override
     public void clear() {

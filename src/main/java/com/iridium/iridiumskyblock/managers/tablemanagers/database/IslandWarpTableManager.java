@@ -7,10 +7,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public class IslandWarpTableManager extends TableManager<IslandWarp, Integer> {
 
@@ -63,9 +60,14 @@ public class IslandWarpTableManager extends TableManager<IslandWarp, Integer> {
         return islandWarpById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandWarp> deleteDataInHashMap(Island island) {
         List<IslandWarp> islandWarps = islandWarpById.getOrDefault(island.getId(), new ArrayList<>());
         islandWarpById.remove(island.getId());
-        super.delete(islandWarps);
+        return islandWarps;
+    }
+
+    @Override
+    public void delete(Collection<IslandWarp> data) {
+        super.delete(data);
     }
 }

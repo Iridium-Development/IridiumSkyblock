@@ -68,9 +68,15 @@ public class IslandSettingTableManager extends TableManager<IslandSetting, Integ
         return islandSettingById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandSetting> deleteDataInHashMap(Island island) {
         List<IslandSetting> islandSettings = islandSettingById.getOrDefault(island.getId(), new ArrayList<>());
         islandSettingById.remove(island.getId());
-        super.delete(islandSettings);
+        return islandSettings;
+    }
+
+
+    @Override
+    public void delete(Collection<IslandSetting> data) {
+        super.delete(data);
     }
 }

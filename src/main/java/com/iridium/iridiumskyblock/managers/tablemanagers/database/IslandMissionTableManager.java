@@ -75,9 +75,15 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
         return islandMissionById.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandMission> deleteDataInHashMap(Island island) {
         List<IslandMission> islandMissions = islandMissionById.getOrDefault(island.getId(), new ArrayList<>());
         islandMissionById.remove(island.getId());
-        super.delete(islandMissions);
+        return islandMissions;
+    }
+
+
+    @Override
+    public void delete(Collection<IslandMission> data) {
+        super.delete(data);
     }
 }

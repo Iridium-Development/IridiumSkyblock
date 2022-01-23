@@ -815,23 +815,40 @@ public class IslandManager {
         user.setIslandRank(IslandRank.VISITOR);
         user.setIsland(null);
         DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
+        // Ajout Log suppression Ile
+        IslandLog islandLogDelete = new IslandLog(island, LogAction.DELETE_ISLAND, user, null, 0, "Suppression de l'ile");
+        databaseManager.getIslandLogTableManager().addEntry(islandLogDelete);
+
+        // Suppresion dans la MAP
+        databaseManager.getIslandTableManager().deleteIsland(island);
+        List<IslandBan> islandBans = databaseManager.getIslandBanTableManager().deleteDataInHashMap(island);
+        List<IslandBank> islandBanks = databaseManager.getIslandBankTableManager().deleteDataInHashMap(island);
+        List<IslandBlocks> blocksList = databaseManager.getIslandBlocksTableManager().deleteDataInHashMap(island);
+        List<IslandBooster> islandBoosters = databaseManager.getIslandBoosterTableManager().deleteDataInHashMap(island);
+        List<IslandInvite> islandInvites = databaseManager.getIslandInviteTableManager().deleteDataInHashMap(island);
+        List<IslandMission> islandMissions = databaseManager.getIslandMissionTableManager().deleteDataInHashMap(island);
+        List<IslandReward> rewards = databaseManager.getIslandRewardTableManager().deleteDataInHashMap(island);
+        List<IslandSpawners> spawnersList = databaseManager.getIslandSpawnersTableManager().deleteDataInHashMap(island);
+        List<IslandTrusted> islandTrusted = databaseManager.getIslandTrustedTableManager().deleteDataInHashMap(island);
+        List<IslandUpgrade> islandUpgrades = databaseManager.getIslandUpgradeTableManager().deleteDataInHashMap(island);
+        List<IslandWarp> islandWarps = databaseManager.getIslandWarpTableManager().deleteDataInHashMap(island);
+        List<IslandSetting> islandSettings = databaseManager.getIslandSettingTableManager().deleteDataInHashMap(island);
+
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            IslandLog islandLogDelete = new IslandLog(island, LogAction.DELETE_ISLAND, user, null, 0, "Suppression de l'ile");
+            // Suppression dans la DB
             databaseManager.getIslandTableManager().delete(island);
-            databaseManager.getIslandBanTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandBankTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandBlocksTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandBoosterTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandInviteTableManager().deleteDataByIsland(island);
-            // IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().deleteDataByIsland(island)); -> Nous gardons les logs
-            databaseManager.getIslandMissionTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandRewardTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandSpawnersTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandTrustedTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandUpgradeTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandWarpTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandSettingTableManager().deleteDataByIsland(island);
-            databaseManager.getIslandLogTableManager().addEntry(islandLogDelete);
+            databaseManager.getIslandBanTableManager().delete(islandBans);
+            databaseManager.getIslandBankTableManager().delete(islandBanks);
+            databaseManager.getIslandBlocksTableManager().delete(blocksList);
+            databaseManager.getIslandBoosterTableManager().delete(islandBoosters);
+            databaseManager.getIslandInviteTableManager().delete(islandInvites);
+            databaseManager.getIslandMissionTableManager().delete(islandMissions);
+            databaseManager.getIslandRewardTableManager().delete(rewards);
+            databaseManager.getIslandSpawnersTableManager().delete(spawnersList);
+            databaseManager.getIslandTrustedTableManager().delete(islandTrusted);
+            databaseManager.getIslandUpgradeTableManager().delete(islandUpgrades);
+            databaseManager.getIslandWarpTableManager().delete(islandWarps);
+            databaseManager.getIslandSettingTableManager().delete(islandSettings);
         });
     }
 

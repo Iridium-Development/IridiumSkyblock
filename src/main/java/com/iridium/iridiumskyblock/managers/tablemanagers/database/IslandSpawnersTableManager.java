@@ -67,9 +67,15 @@ public class IslandSpawnersTableManager extends TableManager<IslandSpawners, Int
         return islandSpawnerById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandSpawners> deleteDataInHashMap(Island island) {
         List<IslandSpawners> spawnersList = islandSpawnerById.getOrDefault(island.getId(), new ArrayList<>());
         islandSpawnerById.remove(island.getId());
-        super.delete(spawnersList);
+        return spawnersList;
+    }
+
+
+    @Override
+    public void delete(Collection<IslandSpawners> data) {
+        super.delete(data);
     }
 }

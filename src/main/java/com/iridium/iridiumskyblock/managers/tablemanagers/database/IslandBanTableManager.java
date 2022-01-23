@@ -71,9 +71,14 @@ public class IslandBanTableManager extends TableManager<IslandBan, Integer> {
         return islandBanById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandBan> deleteDataInHashMap(Island island) {
         List<IslandBan> islandBans = islandBanById.getOrDefault(island.getId(), new ArrayList<>());
         islandBanById.remove(island.getId());
+        return islandBans;
+    }
+
+    @Override
+    public void delete(Collection<IslandBan> islandBans) {
         super.delete(islandBans);
     }
 

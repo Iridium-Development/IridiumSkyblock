@@ -67,9 +67,15 @@ public class IslandInviteTableManager extends TableManager<IslandInvite, Integer
         return islandInviteById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandInvite> deleteDataInHashMap(Island island) {
         List<IslandInvite> islandInvites = islandInviteById.getOrDefault(island.getId(), new ArrayList<>());
         islandInviteById.remove(island.getId());
-        super.delete(islandInvites);
+        return islandInvites;
+    }
+
+
+    @Override
+    public void delete(Collection<IslandInvite> data) {
+        super.delete(data);
     }
 }

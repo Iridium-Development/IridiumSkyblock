@@ -69,9 +69,15 @@ public class IslandPermissionTableManager  extends TableManager<IslandPermission
         return islandPermissionById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public void deleteDataByIsland(Island island) {
+    public List<IslandPermission> deleteDataInHashMap(Island island) {
         List<IslandPermission> islandPermissions = islandPermissionById.getOrDefault(island.getId(), new ArrayList<>());
         islandPermissionById.remove(island.getId());
-        super.delete(islandPermissions);
+        return islandPermissions;
+    }
+
+
+    @Override
+    public void delete(Collection<IslandPermission> data) {
+        super.delete(data);
     }
 }

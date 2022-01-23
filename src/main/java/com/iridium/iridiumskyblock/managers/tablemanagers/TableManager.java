@@ -123,7 +123,7 @@ public class TableManager<T extends DatabaseObject, S> {
     public void delete(T t) {
         try {
             dao.delete(t);
-            entries.remove(t);
+            // entries.remove(t);
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -138,7 +138,7 @@ public class TableManager<T extends DatabaseObject, S> {
     public void delete(Collection<T> t) {
         try {
             dao.delete(t);
-            entries.removeAll(t);
+            // entries.removeAll(t);
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
             exception.printStackTrace();

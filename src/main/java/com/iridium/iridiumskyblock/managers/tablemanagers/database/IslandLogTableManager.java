@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.managers.tablemanagers.database;
 
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
+import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.managers.tablemanagers.TableManager;
 import com.j256.ormlite.support.ConnectionSource;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +29,6 @@ public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
     public void addEntry(IslandLog islandLog) {
         islandLog.setChanged(true);
         List<IslandLog> islandLogs = islandLogById.getOrDefault(islandLog.getIslandId(), new ArrayList<>());
-        if (islandLogs == null) islandLogs = new ArrayList<>();
         islandLogs.add(islandLog);
         islandLogById.put(islandLog.getIslandId(), islandLogs);
     }
@@ -60,14 +60,14 @@ public class IslandLogTableManager extends TableManager<IslandLog, Integer> {
         return islandLogById.getOrDefault(island.getId(), new ArrayList<>());
     }
 
-    public List<IslandLog> deleteDataByIsland(Island island) {
+    public List<IslandLog> deleteDataInHashMap(Island island) {
         List<IslandLog> islandLogs = islandLogById.getOrDefault(island.getId(), new ArrayList<>());
         islandLogById.remove(island.getId());
-        // super.delete(islandLogs);
         return islandLogs;
     }
 
-    public void deleteAll(Collection<IslandLog> logCollection) {
-        super.delete(logCollection);
+    @Override
+    public void delete(Collection<IslandLog> data) {
+        super.delete(data);
     }
 }
