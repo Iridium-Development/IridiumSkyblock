@@ -32,7 +32,6 @@ public class CalculateCommand extends Command {
     public boolean execute(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        if (user == null) return true;
         if (args.length > 1) {
             if (sender.hasPermission("iridiumskyblock.calculate.otherisland")) {
                 int islandID = Integer.parseInt(args[1]);

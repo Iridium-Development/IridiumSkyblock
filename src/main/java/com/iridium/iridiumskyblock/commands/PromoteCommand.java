@@ -55,8 +55,7 @@ public class PromoteCommand extends Command {
             return false;
         }
 
-        OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUserByUsername(args[1]);
 
         if (!island.get().equals(targetUser.getIsland().orElse(null))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

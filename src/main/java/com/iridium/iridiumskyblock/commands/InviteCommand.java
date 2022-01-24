@@ -53,8 +53,7 @@ public class InviteCommand extends Command {
             return true;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
+        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUserByUsername(args[1]);
         List<User> islandMembers = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island.get());
         IslandUpgrade islandUpgrade = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "member");
         int memberLimit = IridiumSkyblock.getInstance().getUpgrades().memberUpgrade.upgrades.get(islandUpgrade.getLevel()).amount;
@@ -82,7 +81,7 @@ public class InviteCommand extends Command {
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().addEntry(islandInvite);
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_INVITED, user, offlinePlayerUser, 0, "");
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-        String playerName = offlinePlayer.getName() != null ? offlinePlayerUser.getName() : args[1];
+        String playerName = offlinePlayerUser.getName();
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedPlayer.replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
         // Send a message to all other members
@@ -97,7 +96,7 @@ public class InviteCommand extends Command {
         }
 
         // Send a message to the user if he is online
-        if (offlinePlayer instanceof Player targetPlayer) {
+        if (offlinePlayerUser.getPlayer().isOnline()) {
             BaseComponent[] message = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited
                     .replace("%inviter%", player.getName())
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
@@ -106,7 +105,7 @@ public class InviteCommand extends Command {
                 baseComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/is " + IridiumSkyblock.getInstance().getCommands().joinCommand.aliases.get(0) + " " + player.getName()));
                 baseComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(StringUtils.color(IridiumSkyblock.getInstance().getMessages().clickToJoinHover)).create()));
             }
-            targetPlayer.spigot().sendMessage(message);
+            offlinePlayerUser.getPlayer().spigot().sendMessage(message);
         }
 
         return true;

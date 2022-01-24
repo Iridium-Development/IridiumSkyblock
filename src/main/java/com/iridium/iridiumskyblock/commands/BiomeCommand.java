@@ -58,11 +58,10 @@ public class BiomeCommand extends Command {
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        if (!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player player)) {
             return Collections.emptyList();
         }
 
-        Player player = (Player) commandSender;
         return Arrays.stream(XBiome.VALUES)
                 .filter(biome -> biome.getEnvironment() == player.getWorld().getEnvironment())
                 .filter(biome -> biome.getBiome() != null)

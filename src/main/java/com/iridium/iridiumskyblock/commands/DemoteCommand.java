@@ -55,8 +55,7 @@ public class DemoteCommand extends Command {
             return false;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
+        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUserByUsername(args[1]);
         if (!island.get().equals(offlinePlayerUser.getIsland().orElse(null))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;

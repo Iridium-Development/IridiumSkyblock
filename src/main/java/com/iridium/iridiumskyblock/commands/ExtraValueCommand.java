@@ -49,20 +49,15 @@ public class ExtraValueCommand extends Command {
             return false;
         }
 
-        OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUserByUsername(args[2]);
         Optional<Island> island = user.getIsland();
         if (island.isEmpty()) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
-        if (player.getName() == null) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
-        }
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().extraValueInfo
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                .replace("%player%", player.getName()))
+                .replace("%player%", user.getName()))
                 .replace("%amount%", String.valueOf(island.get().getExtraValue())));
         return true;
     }

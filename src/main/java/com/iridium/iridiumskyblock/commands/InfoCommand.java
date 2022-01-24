@@ -38,12 +38,11 @@ public class InfoCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] arguments) {
         if (arguments.length == 1) {
-            if (!(sender instanceof Player)) {
+            if (!(sender instanceof Player player)) {
                 sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().mustBeAPlayer.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
 
-            Player player = (Player) sender;
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Optional<Island> userIsland = user.getIsland();
             if (!userIsland.isPresent()) {
@@ -55,8 +54,7 @@ public class InfoCommand extends Command {
             return true;
         }
 
-        OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(arguments[1]);
-        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUserByUsername(arguments[1]);
         Optional<Island> targetIsland = targetUser.getIsland();
         if (targetIsland.isEmpty()) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
