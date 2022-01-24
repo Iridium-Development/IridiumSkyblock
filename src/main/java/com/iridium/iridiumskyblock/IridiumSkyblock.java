@@ -439,10 +439,6 @@ public class IridiumSkyblock extends IridiumCore {
             System.out.println("Sauvegarde des Settings");
             getDatabaseManager().getIslandSettingTableManager().saveHashMapList(getDatabaseManager().getIslandSettingTableManager().getIslandSettingById());
         } catch (Exception ignored) {}
-        try {
-            System.out.println("Sauvegarde des Settings");
-            getDatabaseManager().getIslandSettingTableManager().saveHashMapList(getDatabaseManager().getIslandSettingTableManager().getIslandSettingById());
-        } catch (Exception ignored) {}
         System.out.println("Fin des sauvegardes");
     }
 
