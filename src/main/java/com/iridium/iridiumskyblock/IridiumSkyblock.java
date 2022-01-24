@@ -371,79 +371,104 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void saveData() {
-        saveDataIridium(true);
-    }
 
-    private void saveDataIridium(Boolean isAsync) {
         try {
             System.out.println("Sauvegarde des Users");
             getDatabaseManager().getUserTableManager().saveHashMap(getDatabaseManager().getUserTableManager().getUserIslandMap());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Islands");
             getDatabaseManager().getIslandTableManager().saveHashMap(getDatabaseManager().getIslandTableManager().getIslandMapByID());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Invites");
             getDatabaseManager().getIslandInviteTableManager().saveHashMapList(getDatabaseManager().getIslandInviteTableManager().getIslandInviteById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Permissions");
             getDatabaseManager().getIslandPermissionTableManager().saveHashMapList(getDatabaseManager().getIslandPermissionTableManager().getIslandPermissionById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Spawners");
             getDatabaseManager().getIslandSpawnersTableManager().saveHashMapList(getDatabaseManager().getIslandSpawnersTableManager().getIslandSpawnerById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Banks");
             getDatabaseManager().getIslandBankTableManager().saveHashMapList(getDatabaseManager().getIslandBankTableManager().getIslandBankById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Missions");
             getDatabaseManager().getIslandMissionTableManager().saveHashMapList(getDatabaseManager().getIslandMissionTableManager().getIslandMissionById());
-        } catch (Exception ignored) {}
+        }  catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Reward");
             getDatabaseManager().getIslandRewardTableManager().saveHashMapList(getDatabaseManager().getIslandRewardTableManager().getIslandRewardById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Upgrades");
             getDatabaseManager().getIslandUpgradeTableManager().saveHashMapList(getDatabaseManager().getIslandUpgradeTableManager().getIslandUpgradeById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Confiances");
             getDatabaseManager().getIslandTrustedTableManager().saveHashMapList(getDatabaseManager().getIslandTrustedTableManager().getIslandTrustedById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Booster");
             getDatabaseManager().getIslandBoosterTableManager().saveHashMapList(getDatabaseManager().getIslandBoosterTableManager().getIslandBoosterById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Warps");
             getDatabaseManager().getIslandWarpTableManager().saveHashMapList(getDatabaseManager().getIslandWarpTableManager().getIslandWarpById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Bans");
             getDatabaseManager().getIslandBanTableManager().saveHashMapList(getDatabaseManager().getIslandBanTableManager().getIslandBanById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Blocks");
             getDatabaseManager().getIslandBlocksTableManager().saveHashMapList(getDatabaseManager().getIslandBlocksTableManager().getIslandBlockById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Logs");
             getDatabaseManager().getIslandLogTableManager().saveHashMapList(getDatabaseManager().getIslandLogTableManager().getIslandLogById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         try {
             System.out.println("Sauvegarde des Settings");
             getDatabaseManager().getIslandSettingTableManager().saveHashMapList(getDatabaseManager().getIslandSettingTableManager().getIslandSettingById());
-        } catch (Exception ignored) {}
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         System.out.println("Fin des sauvegardes");
-    }
-
-    public CompletableFuture<Void> saveDataPlayer(User user) {
-        return null;
     }
 
     /**
