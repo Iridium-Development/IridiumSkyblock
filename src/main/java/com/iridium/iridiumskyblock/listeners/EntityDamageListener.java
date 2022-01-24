@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
@@ -27,6 +28,7 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityDamage(EntityDamageEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getEntity().getWorld())) return;
         if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK) ||
                 event.getCause().equals(EntityDamageEvent.DamageCause.PROJECTILE) ||
                 event.getCause().equals(EntityDamageEvent.DamageCause.MAGIC)) {
@@ -34,7 +36,10 @@ public class EntityDamageListener implements Listener {
         }
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
-        if (island.isEmpty()) return;
+        if (island.isEmpty()) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (event.getEntity() instanceof Player) {
             handlePlayerDamage(event, island.get());
@@ -43,10 +48,14 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getEntity().getWorld())) return;
         if (event.getEntity().equals(event.getDamager())) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
-        if (island.isEmpty()) return;
+        if (island.isEmpty()) {
+            event.setCancelled(true);
+            return;
+        }
 
         if (event.getEntity() instanceof Player victim) {
             if (event.getDamager() instanceof Player) {
