@@ -58,7 +58,7 @@ public class UserTableManager extends TableManager<User, Integer> {
         return Optional.of(user);
     }
 
-    public User getUserbyUUID(UUID uuid) {
+    public User getUserByUUID(UUID uuid) {
         return userIslandMap.get(uuid);
     }
 

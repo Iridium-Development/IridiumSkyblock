@@ -21,7 +21,7 @@ public class UserManager {
      * @return The user data
      */
     public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
-        User user = IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUserbyUUID(offlinePlayer.getUniqueId());
+        User user = IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUserByUUID(offlinePlayer.getUniqueId());
         if (user == null) {
             Optional<String> name = Optional.ofNullable(offlinePlayer.getName());
             user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
