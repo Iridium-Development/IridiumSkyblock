@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.managers.CooldownProvider;
@@ -19,6 +20,7 @@ public class SpawnerSpawnListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCreatureSpawn(SpawnerSpawnEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getLocation().getWorld())) return;
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation());
         if (island.isPresent()) {
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "spawner");

@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.listeners;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PermissionType;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ public class VehicleDamageListener implements Listener {
 
     @EventHandler
     public void onVehicleDamage(VehicleDamageEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getVehicle().getWorld())) return;
         if (event.getAttacker() != null && event.getAttacker() instanceof Player attacker) {
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getVehicle().getLocation());
             if (island.isPresent()) {

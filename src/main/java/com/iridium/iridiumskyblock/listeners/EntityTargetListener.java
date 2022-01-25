@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandTrusted;
 import com.iridium.iridiumskyblock.database.User;
@@ -15,7 +16,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class EntityTargetListener implements Listener {
 
@@ -23,6 +23,7 @@ public class EntityTargetListener implements Listener {
 
     @EventHandler
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getEntity().getWorld())) return;
         if (IridiumSkyblock.getInstance().getConfiguration().pvpSettings.mobsVisitorTargeting) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
@@ -44,8 +45,7 @@ public class EntityTargetListener implements Listener {
                 .filter(player -> player != targetPlayer)
                 .filter(player -> island.get().equals(IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland().orElse(null)))
                 .filter(player -> IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player)).isPresent())
-                .filter(player -> player.hasLineOfSight(event.getEntity()))
-                .collect(Collectors.toList());
+                .filter(player -> player.hasLineOfSight(event.getEntity())).toList();
 
         if (nextTargets.isEmpty()) {
 	        event.setCancelled(true);
