@@ -134,6 +134,13 @@ public class IslandManager {
         boolean trusted = getIslandTrusted(island, user).isPresent();
         boolean inIsland = user.getIsland().map(Island::getId).orElse(0) == island.getId();
         if (!island.isVisitable() && !inIsland && !trusted && !user.isBypassing()) {
+            if (island.isInIsland(player.getLocation())) {
+                if (user.getIsland().isPresent()) {
+                    teleportHome(player, user.getIsland().get(), delay);
+                } else {
+                    PlayerUtils.teleportSpawn(player);
+                }
+            }
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return;
         }
