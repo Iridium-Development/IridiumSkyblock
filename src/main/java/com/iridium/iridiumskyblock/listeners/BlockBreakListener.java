@@ -81,6 +81,7 @@ public class BlockBreakListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onHangingBreakByEntityEvent(HangingBreakByEntityEvent event) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getEntity().getWorld())) return;
         if (event.getEntity() instanceof ItemFrame || event.getEntity() instanceof Painting) {
             Player remover = null;
             if (event.getRemover() instanceof Projectile && ((Projectile) event.getRemover()).getShooter() instanceof Player) {
