@@ -1,5 +1,8 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Cache;
@@ -28,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -312,24 +316,13 @@ public final class Island extends DatabaseObject {
         // compute de position and shift it so the first is (-r,-r) but (-r+1,-r)
         // so square can connect
 
-        Location location;
-
-        switch (a / (r * 2)) {
-            case 0:
-                location = new Location(world, (a - r), 0, -r);
-                break;
-            case 1:
-                location = new Location(world, r, 0, (a % en) - r);
-                break;
-            case 2:
-                location = new Location(world, r - (a % en), 0, r);
-                break;
-            case 3:
-                location = new Location(world, -r, 0, r - (a % en));
-                break;
-            default:
-                throw new IllegalStateException("Could not find island location with ID: " + id);
-        }
+        Location location = switch (a / (r * 2)) {
+            case 0 -> new Location(world, (a - r), 0, -r);
+            case 1 -> new Location(world, r, 0, (a % en) - r);
+            case 2 -> new Location(world, r - (a % en), 0, r);
+            case 3 -> new Location(world, -r, 0, r - (a % en));
+            default -> throw new IllegalStateException("Could not find island location with ID: " + id);
+        };
 
         return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);
     }
