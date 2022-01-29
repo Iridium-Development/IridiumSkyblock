@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.Cache;
 import com.iridium.iridiumskyblock.DatabaseObject;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -369,11 +370,23 @@ public final class Island extends DatabaseObject {
     public boolean isInIsland(@NotNull Location location) {
         IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
         World world = location.getWorld();
-        if (Objects.equals(world, islandManager.getWorld()) || Objects.equals(world, islandManager.getNetherWorld()) || Objects.equals(world, islandManager.getEndWorld())) {
-            return isInIsland(location.getBlockX(), location.getBlockZ());
-        } else {
+        if (world == null) {
             return false;
         }
+        if (false) {
+            if (Objects.equals(world, islandManager.getWorld()) || Objects.equals(world, islandManager.getNetherWorld()) || Objects.equals(world, islandManager.getEndWorld())) {
+                return isInIsland(location.getBlockX(), location.getBlockZ());
+            } else {
+                return false;
+            }
+        } else {
+            if (IridiumSkyblockAPI.getInstance().isIslandWorld(world)) {
+                return isInIsland(location.getBlockX(), location.getBlockZ());
+            } else {
+                return false;
+            }
+        }
+
     }
 
     /**

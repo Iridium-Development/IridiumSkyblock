@@ -1141,7 +1141,7 @@ public class IslandManager {
      * @since 3.0.0
      */
     public World getWorld() {
-        return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName);
+        return Bukkit.getWorld(this.getWorldName());
     }
 
     /**
@@ -1151,7 +1151,7 @@ public class IslandManager {
      * @since 3.0.0
      */
     public World getNetherWorld() {
-        return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether");
+        return Bukkit.getWorld(this.getNetherName());
     }
 
     /**
@@ -1161,7 +1161,19 @@ public class IslandManager {
      * @since 3.0.0
      */
     public World getEndWorld() {
-        return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
+        return Bukkit.getWorld(this.getEndName());
+    }
+
+    public String getWorldName() {
+        return IridiumSkyblock.getInstance().getConfiguration().worldName;
+    }
+
+    public String getNetherName() {
+        return IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether";
+    }
+
+    public String getEndName() {
+        return IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end";
     }
 
     public boolean isIslandOverWorld(World world) {

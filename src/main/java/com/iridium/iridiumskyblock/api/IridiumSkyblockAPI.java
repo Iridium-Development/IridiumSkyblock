@@ -272,7 +272,11 @@ public class IridiumSkyblockAPI {
      * @since 3.0.7
      */
     public boolean isIslandWorld(World world) {
-        return Objects.equals(getWorld(), world) || Objects.equals(getNetherWorld(), world) || Objects.equals(getEndWorld(), world);
+        String worldName = world.getName();
+
+        return worldName.equalsIgnoreCase(iridiumSkyblock.getIslandManager().getWorldName()) ||
+                worldName.equalsIgnoreCase(iridiumSkyblock.getIslandManager().getNetherName()) ||
+                worldName.equalsIgnoreCase(iridiumSkyblock.getIslandManager().getEndName());
     }
 
     public boolean isIslandOverWorld(World world) {
