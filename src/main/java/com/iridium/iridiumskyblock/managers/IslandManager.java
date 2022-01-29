@@ -512,7 +512,7 @@ public class IslandManager {
      * @return An Optional with the Island, empty if there is none
      */
     public Optional<Island> getIslandByName(String name) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream().filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getIslandByName(name);
     }
 
     /**

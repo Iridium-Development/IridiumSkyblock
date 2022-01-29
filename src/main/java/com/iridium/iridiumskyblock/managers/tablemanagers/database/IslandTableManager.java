@@ -6,7 +6,6 @@ import com.j256.ormlite.support.ConnectionSource;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Used for handling Crud operations on a table + handling cache
@@ -57,7 +56,15 @@ public class IslandTableManager extends TableManager<Island, Integer> {
 
 
     public List<Island> getAllIslands() {
-        return islandMapByID.values().stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return islandMapByID.values().stream().filter(Objects::nonNull).toList();
+    }
+
+    public List<Integer> getAllIslandID() {
+        return islandMapByID.values().stream().filter(Objects::nonNull).map(Island::getId).toList();
+    }
+
+    public Optional<Island> getIslandByName(String name) {
+        return islandMapByID.values().stream().filter(Objects::nonNull).filter(island -> island.getName().equalsIgnoreCase(name)).findFirst();
     }
 
     public LinkedHashMap<Integer, Island> getIslandMapByID() {

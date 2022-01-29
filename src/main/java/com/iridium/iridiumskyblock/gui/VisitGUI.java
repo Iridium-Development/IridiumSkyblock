@@ -46,8 +46,7 @@ public class VisitGUI extends GUI {
         List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream()
                 .filter(island -> viewer.isBypassing() || island.isVisitable())
                 .skip((long) (page - 1) * elementsPerPage)
-                .limit(elementsPerPage)
-                .collect(Collectors.toList());
+                .limit(elementsPerPage).toList();
         AtomicInteger slot = new AtomicInteger(0);
         for (Island island : islands) {
             inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));

@@ -197,12 +197,12 @@ public class IridiumSkyblock extends IridiumCore {
         // Auto recalculate islands
         if (getConfiguration().islandRecalculateInterval > 0) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getAllIslands().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getAllIslandID().listIterator();
 
                 @Override
                 public void run() {
                     if (!islands.hasNext()) {
-                        islands = getDatabaseManager().getIslandTableManager().getAllIslands().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                        islands = getDatabaseManager().getIslandTableManager().getAllIslandID().listIterator();
                     } else {
                         getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island, null));
                     }
