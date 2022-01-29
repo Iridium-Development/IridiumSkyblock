@@ -96,7 +96,7 @@ public class InviteCommand extends Command {
         }
 
         // Send a message to the user if he is online
-        if (offlinePlayerUser.getPlayer().isOnline()) {
+        if (offlinePlayerUser.getPlayer() != null && offlinePlayerUser.getPlayer().isOnline()) {
             BaseComponent[] message = TextComponent.fromLegacyText(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenInvited
                     .replace("%inviter%", player.getName())
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
