@@ -25,21 +25,23 @@ public class BlockGrowListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorBlockGrow(BlockGrowEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
-            XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
-            if (event.getNewState().getBlock().getBlockData() instanceof Ageable ageable) {
-                IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, "farming");
-                if (islandBooster.isActive()) {
-                    ageable.setAge(Math.min(ageable.getAge() + 1, ageable.getMaximumAge()));
-                    event.getNewState().getBlock().setBlockData(ageable);
-                }
-                if (ageable.getAge() == ageable.getMaximumAge() || instantGrowCrops.contains(XMaterial.matchXMaterial(event.getNewState().getType()))) {
-                    IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", material.name(), 1);
-                }
-            } else {
-                IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", material.name(), 1);
-            }
-        });
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
+                    XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
+                    if (event.getNewState().getBlock().getBlockData() instanceof Ageable ageable) {
+                        IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, "farming");
+                        if (islandBooster.isActive()) {
+                            ageable.setAge(Math.min(ageable.getAge() + 1, ageable.getMaximumAge()));
+                            event.getNewState().getBlock().setBlockData(ageable);
+                        }
+                        if (ageable.getAge() == ageable.getMaximumAge() || instantGrowCrops.contains(XMaterial.matchXMaterial(event.getNewState().getType()))) {
+                            IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", material.name(), 1);
+                        }
+                    } else {
+                        IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", material.name(), 1);
+                    }
+                })
+        );
     }
 
     @EventHandler
