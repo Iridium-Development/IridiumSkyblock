@@ -84,6 +84,11 @@ public class IslandMissionTableManager extends TableManager<IslandMission, Integ
 
     @Override
     public void delete(Collection<IslandMission> data) {
+        for (IslandMission islandMission : data) {
+            List<IslandMission> islandMissions = islandMissionById.getOrDefault(islandMission.getIslandId(), new ArrayList<>());
+            islandMissions.remove(islandMission);
+            islandMissionById.put(islandMission.getId(), islandMissions);
+        }
         super.delete(data);
     }
 }

@@ -12,6 +12,7 @@ import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
+import com.iridium.iridiumskyblock.database.IslandMission;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
@@ -302,11 +303,9 @@ public class IridiumSkyblock extends IridiumCore {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                databaseManager.getIslandMissionTableManager().delete(
-                        databaseManager.getIslandMissionTableManager().getAllEntries().stream().filter(islandMission ->
-                                islandMission.getType() == Mission.MissionType.DAILY).collect(Collectors.toList()
-                        )
-                );
+                List<IslandMission> missionList = databaseManager.getIslandMissionTableManager().getAllEntries().stream().filter(islandMission ->
+                        islandMission.getType() == Mission.MissionType.DAILY).toList();
+                databaseManager.getIslandMissionTableManager().delete(missionList);
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> resetIslandMissions());
             }
         }, c.getTime());
