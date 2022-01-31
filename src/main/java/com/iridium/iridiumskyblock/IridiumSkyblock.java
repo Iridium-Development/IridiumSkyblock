@@ -373,97 +373,97 @@ public class IridiumSkyblock extends IridiumCore {
 
         try {
             System.out.println("Sauvegarde des Users");
-            getDatabaseManager().getUserTableManager().saveHashMap(getDatabaseManager().getUserTableManager().getUserIslandMap());
+            getDatabaseManager().getUserTableManager().saveHashMap(getDatabaseManager().getUserTableManager().getUserIslandMap(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Islands");
-            getDatabaseManager().getIslandTableManager().saveHashMap(getDatabaseManager().getIslandTableManager().getIslandMapByID());
+            getDatabaseManager().getIslandTableManager().saveHashMap(getDatabaseManager().getIslandTableManager().getIslandMapByID(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Invites");
-            getDatabaseManager().getIslandInviteTableManager().saveHashMapList(getDatabaseManager().getIslandInviteTableManager().getIslandInviteById());
+            getDatabaseManager().getIslandInviteTableManager().saveHashMapList(getDatabaseManager().getIslandInviteTableManager().getIslandInviteById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Permissions");
-            getDatabaseManager().getIslandPermissionTableManager().saveHashMapList(getDatabaseManager().getIslandPermissionTableManager().getIslandPermissionById());
+            getDatabaseManager().getIslandPermissionTableManager().saveHashMapList(getDatabaseManager().getIslandPermissionTableManager().getIslandPermissionById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Spawners");
-            getDatabaseManager().getIslandSpawnersTableManager().saveHashMapList(getDatabaseManager().getIslandSpawnersTableManager().getIslandSpawnerById());
+            getDatabaseManager().getIslandSpawnersTableManager().saveHashMapList(getDatabaseManager().getIslandSpawnersTableManager().getIslandSpawnerById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Banks");
-            getDatabaseManager().getIslandBankTableManager().saveHashMapList(getDatabaseManager().getIslandBankTableManager().getIslandBankById());
+            getDatabaseManager().getIslandBankTableManager().saveHashMapList(getDatabaseManager().getIslandBankTableManager().getIslandBankById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Missions");
-            getDatabaseManager().getIslandMissionTableManager().saveHashMapList(getDatabaseManager().getIslandMissionTableManager().getIslandMissionById());
+            getDatabaseManager().getIslandMissionTableManager().saveHashMapList(getDatabaseManager().getIslandMissionTableManager().getIslandMissionById(), true);
         }  catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Reward");
-            getDatabaseManager().getIslandRewardTableManager().saveHashMapList(getDatabaseManager().getIslandRewardTableManager().getIslandRewardById());
+            getDatabaseManager().getIslandRewardTableManager().saveHashMapList(getDatabaseManager().getIslandRewardTableManager().getIslandRewardById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Upgrades");
-            getDatabaseManager().getIslandUpgradeTableManager().saveHashMapList(getDatabaseManager().getIslandUpgradeTableManager().getIslandUpgradeById());
+            getDatabaseManager().getIslandUpgradeTableManager().saveHashMapList(getDatabaseManager().getIslandUpgradeTableManager().getIslandUpgradeById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Confiances");
-            getDatabaseManager().getIslandTrustedTableManager().saveHashMapList(getDatabaseManager().getIslandTrustedTableManager().getIslandTrustedById());
+            getDatabaseManager().getIslandTrustedTableManager().saveHashMapList(getDatabaseManager().getIslandTrustedTableManager().getIslandTrustedById(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Booster");
-            getDatabaseManager().getIslandBoosterTableManager().saveHashMapList(getDatabaseManager().getIslandBoosterTableManager().getIslandBoosterById());
+            getDatabaseManager().getIslandBoosterTableManager().saveHashMapList(getDatabaseManager().getIslandBoosterTableManager().getIslandBoosterById(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Warps");
-            getDatabaseManager().getIslandWarpTableManager().saveHashMapList(getDatabaseManager().getIslandWarpTableManager().getIslandWarpById());
+            getDatabaseManager().getIslandWarpTableManager().saveHashMapList(getDatabaseManager().getIslandWarpTableManager().getIslandWarpById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Bans");
-            getDatabaseManager().getIslandBanTableManager().saveHashMapList(getDatabaseManager().getIslandBanTableManager().getIslandBanById());
+            getDatabaseManager().getIslandBanTableManager().saveHashMapList(getDatabaseManager().getIslandBanTableManager().getIslandBanById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Blocks");
-            getDatabaseManager().getIslandBlocksTableManager().saveHashMapList(getDatabaseManager().getIslandBlocksTableManager().getIslandBlockById());
+            getDatabaseManager().getIslandBlocksTableManager().saveHashMapList(getDatabaseManager().getIslandBlocksTableManager().getIslandBlockById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Logs");
-            getDatabaseManager().getIslandLogTableManager().saveHashMapList(getDatabaseManager().getIslandLogTableManager().getIslandLogById());
+            getDatabaseManager().getIslandLogTableManager().saveHashMapList(getDatabaseManager().getIslandLogTableManager().getIslandLogById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
             System.out.println("Sauvegarde des Settings");
-            getDatabaseManager().getIslandSettingTableManager().saveHashMapList(getDatabaseManager().getIslandSettingTableManager().getIslandSettingById());
+            getDatabaseManager().getIslandSettingTableManager().saveHashMapList(getDatabaseManager().getIslandSettingTableManager().getIslandSettingById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

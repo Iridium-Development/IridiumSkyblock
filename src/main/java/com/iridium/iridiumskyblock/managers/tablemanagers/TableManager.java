@@ -65,21 +65,24 @@ public class TableManager<T extends DatabaseObject, S> {
         }
     }
 
-    public void saveHashMapList(LinkedHashMap<?, List<T>> saveMultipleListInMap) {
+    public void saveHashMapList(LinkedHashMap<?, List<T>> saveMultipleListInMap, boolean useChanged) {
         ArrayList<List<T>> listLinkedList = new ArrayList<>(saveMultipleListInMap.values());
         ArrayList<T> list = new ArrayList<>();
         for (List<T> tList : listLinkedList) {
             list.addAll(tList);
         }
-        multipleSave(list);
+        multipleSave(list, useChanged);
     }
 
-    public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {
-        multipleSave(new LinkedList<>(uuidLinkedHashMap.values()));
+    public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap, boolean useChanged) {
+        multipleSave(new LinkedList<>(uuidLinkedHashMap.values()), useChanged);
     }
 
-    private void multipleSave(List<T> tList) {
-        List<T> test = new ArrayList<>(tList).stream().filter(t -> t != null && t.isChanged()).collect(Collectors.toList());
+    private void multipleSave(List<T> tList, boolean useChanged) {
+        List<T> test = new ArrayList<>(tList);
+        if (useChanged) {
+            test = test.stream().filter(t -> t != null && t.isChanged()).toList();
+        }
         int sizeList = test.size();
         int savedata = 0;
         try {
@@ -87,7 +90,9 @@ public class TableManager<T extends DatabaseObject, S> {
                 T t = test.get(i);
                 dao.createOrUpdate(t);
                 savedata++;
-                t.setChanged(false);
+                if (useChanged) {
+                    t.setChanged(false);
+                }
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException exception) {
