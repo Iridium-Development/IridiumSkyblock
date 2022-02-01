@@ -61,14 +61,21 @@ public class TableManager<T extends DatabaseObject, S> {
     }
     
     public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {
+        this.saveHashMap(uuidLinkedHashMap, true);
+    }
+    public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap, boolean useChanged) {
         List<T> tList = new LinkedList<>(uuidLinkedHashMap.values());
         int sizeList = tList.size();
         try {
             for (int i = 0; i < sizeList; i++) {
                 T t = tList.get(i);
-                if (t.isChanged()) {
+                if (!useChanged) { // all save
                     dao.createOrUpdate(t);
-                    t.setChanged(false);
+                } else {
+                    if (t.isChanged()) {
+                        dao.createOrUpdate(t);
+                        t.setChanged(false);
+                    }
                 }
             }
             dao.commit(getDatabaseConnection());
