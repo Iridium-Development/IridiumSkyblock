@@ -348,7 +348,7 @@ public class IridiumSkyblock extends IridiumCore {
      */
     @Override
     public void saveData() {
-        getDatabaseManager().getUserTableManager().saveHashMap(getDatabaseManager().getUserTableManager().getUserIslandMap());
+        getDatabaseManager().getUserTableManager().saveHashMap(getDatabaseManager().getUserTableManager().getUserIslandMap(), false);
         getDatabaseManager().getIslandTableManager().save();
         getDatabaseManager().getIslandInviteTableManager().save();
         getDatabaseManager().getIslandPermissionTableManager().save();
