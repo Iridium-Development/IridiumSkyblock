@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.TreeType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 
 import java.util.Optional;
@@ -24,6 +25,20 @@ public class StructureGrowListener implements Listener {
                 TreeType treeType = event.getSpecies();
                 Island island = optionalIsland.get();
                 IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "GROW", treeType.name(), 1);
+            }
+        });
+    }
+
+    @EventHandler
+    public void onBlockSpreadEvent(BlockSpreadEvent event) {
+        if (event.isCancelled()) return;
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
+
+            if (optionalIsland.isPresent()) {
+                Island island = optionalIsland.get();
+                IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "SPREAD", event.getNewState().getBlock().getType().name(), 1);
             }
         });
     }
