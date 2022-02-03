@@ -131,6 +131,8 @@ public class Upgrades {
                     .put(XMaterial.COAL_ORE, 1)
                     .build(), ImmutableMap.<XMaterial, Integer>builder()
                     .put(XMaterial.BASALT, 1)
+                    .build(), ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.END_STONE, 1)
                     .build()))
             .put(2, new OresUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
                     .put(XMaterial.DIAMOND_ORE, 1)
@@ -147,6 +149,8 @@ public class Upgrades {
                     .put(XMaterial.NETHER_GOLD_ORE, 20)
                     .put(XMaterial.NETHERRACK, 20)
                     .put(XMaterial.ANCIENT_DEBRIS, 1)
+                    .build(), ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.END_STONE, 1)
                     .build()))
             .put(3, new OresUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
                     .put(XMaterial.DIAMOND_ORE, 10)
@@ -163,6 +167,8 @@ public class Upgrades {
                     .put(XMaterial.NETHER_GOLD_ORE, 10)
                     .put(XMaterial.NETHERRACK, 10)
                     .put(XMaterial.ANCIENT_DEBRIS, 1)
+                    .build(), ImmutableMap.<XMaterial, Integer>builder()
+                    .put(XMaterial.END_STONE, 1)
                     .build()))
             .build());
 
