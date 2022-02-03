@@ -360,6 +360,7 @@ public class IridiumSkyblock extends IridiumCore {
         pluginManager.registerEvents(new SpawnerSpawnListener(), this);
         pluginManager.registerEvents(new VehicleDamageListener(), this);
         pluginManager.registerEvents(new BlockBurnListener(), this);
+        pluginManager.registerEvents(new StructureGrowListener(), this);
     }
 
 
