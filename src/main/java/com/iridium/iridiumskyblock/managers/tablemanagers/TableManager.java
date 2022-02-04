@@ -63,6 +63,7 @@ public class TableManager<T extends DatabaseObject, S> {
     public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap) {
         this.saveHashMap(uuidLinkedHashMap, true);
     }
+    
     public void saveHashMap(LinkedHashMap<?, T> uuidLinkedHashMap, boolean useChanged) {
         List<T> tList = new LinkedList<>(uuidLinkedHashMap.values());
         int sizeList = tList.size();
