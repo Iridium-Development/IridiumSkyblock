@@ -21,7 +21,14 @@ public class EntityExplodeListener implements Listener {
             IslandSetting tntExplosion = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.TNT_DAMAGE);
             if (!tntExplosion.getBooleanValue()) {
                 event.setCancelled(true);
+                return;
             }
+
+            if (!island.isInIsland(event.getLocation())) {
+                event.setCancelled(true);
+                return;
+            }
+
             event.blockList().removeIf(block -> !island.isInIsland(block.getLocation()));
         });
     }
