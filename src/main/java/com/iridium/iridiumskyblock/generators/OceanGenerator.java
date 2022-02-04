@@ -53,7 +53,7 @@ public class OceanGenerator extends ChunkGenerator {
                 );
 
                 // Generate gravel layer
-                for (int y = 1; y < currentFloorHeight; y++) {
+                for (int y = LocationUtils.getMinHeight(world) + 1; y < currentFloorHeight; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(bottomMaterial.parseMaterial())
                     );
