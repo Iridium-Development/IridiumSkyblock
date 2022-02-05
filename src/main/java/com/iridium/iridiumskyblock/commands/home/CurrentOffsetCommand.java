@@ -44,7 +44,7 @@ public class CurrentOffsetCommand extends Command {
                 StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandCenterOffset
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                         .replace("%x%", String.valueOf(offset.getBlockX() + 0.5))
-                        .replace("%y%", String.valueOf(offset.getBlockY() + 0.5))
+                        .replace("%y%", String.valueOf(offset.getBlockY()))
                         .replace("%z%", String.valueOf(offset.getBlockZ() + 0.5))
                         .replace("%yaw%", String.valueOf(playerLocation.getYaw()))
                 )
