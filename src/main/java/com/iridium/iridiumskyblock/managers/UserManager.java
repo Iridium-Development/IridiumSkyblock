@@ -27,7 +27,7 @@ public class UserManager {
             user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
             IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
             if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-                System.out.println("Player: " + user.getName() + "\n" +
+                IridiumSkyblock.getInstance().getLogger().info("Player: " + user.getName() + "\n" +
                         "UUID: " + user.getUuid() + "\n" +
                         "Event: UserManager#getUser");
             }
@@ -43,7 +43,7 @@ public class UserManager {
             user = new User(offlinePlayer.getUniqueId(), name.orElse(""));
             IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
             if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-                System.out.println("Player: " + user.getName() + "\n" +
+                IridiumSkyblock.getInstance().getLogger().info("Player: " + user.getName() + "\n" +
                         "UUID: " + user.getUuid() + "\n" +
                         "Event: UserManager#getUser");
             }

@@ -54,7 +54,7 @@ public class InventoryConfigGUI extends GUI {
                     case "trusted" -> TrustCommand.trustExecutor(player, args);
                     case "upgrade" -> UpgradesCommand.upgradesExecutor(player, args);
                     case "warps" -> WarpsCommand.warpsExecutor(player, args);
-                    default -> System.out.println(commandExec);
+                    default -> IridiumSkyblock.getInstance().getLogger().info(commandExec);
                 }
             }
         }

@@ -103,7 +103,7 @@ public class IslandManager {
                 }
             });
         }).exceptionally(throwable -> {
-            System.out.println("Error : IslandManager#setIslandBiome");
+            IridiumSkyblock.getInstance().getLogger().severe("Error : IslandManager#setIslandBiome");
             throwable.printStackTrace();
             return null;
         });
@@ -235,7 +235,7 @@ public class IslandManager {
                 IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
             });
         }).exceptionally(throwable -> {
-            System.out.println("Error : IslandManager#makeIsland");
+            IridiumSkyblock.getInstance().getLogger().severe("Error : IslandManager#makeIsland");
             throwable.printStackTrace();
             return null;
         });
@@ -288,7 +288,7 @@ public class IslandManager {
             );
         }
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Player: " + user.getName() + "\n" +
+            IridiumSkyblock.getInstance().getLogger().info("Player: " + user.getName() + "\n" +
                     "UUID: " + user.getUuid() + "\n" +
                     "Event: IslandManager#createIsland");
         }
@@ -335,7 +335,7 @@ public class IslandManager {
                     User user1 = IridiumSkyblock.getInstance().getUserManager().getUser(player); // Docta Change variable
                     user1.setIsland(null);
                     if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-                        System.out.println("Player: " + user.getName() + "\n" +
+                        IridiumSkyblock.getInstance().getLogger().info("Player: " + user.getName() + "\n" +
                                 "UUID: " + user.getUuid() + "\n" +
                                 "Event: IslandManager#regenerateIsland");
                     }
@@ -405,7 +405,7 @@ public class IslandManager {
                     })
             );
         }).exceptionally(throwable -> {
-            System.out.println("Error : IslandManager#regenerateIsland");
+            IridiumSkyblock.getInstance().getLogger().severe("Error : IslandManager#regenerateIsland");
                     throwable.printStackTrace();
                     return null;
                 });
@@ -465,7 +465,7 @@ public class IslandManager {
             }
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
         }).exceptionally(throwable -> {
-            System.out.println("Error : IslandManager#getIslandChunks");
+            IridiumSkyblock.getInstance().getLogger().severe("Error : IslandManager#getIslandChunks");
             throwable.printStackTrace();
             return Collections.emptyList();
         });
@@ -800,7 +800,7 @@ public class IslandManager {
                                 .forEach(PlayerUtils::teleportSpawn)
                 )
         ).exceptionally(throwable -> {
-            System.out.println("Error : IslandManager#deleteIslands");
+            IridiumSkyblock.getInstance().getLogger().severe("Error : IslandManager#deleteIslands");
             throwable.printStackTrace();
             return null;
         });
@@ -964,7 +964,7 @@ public class IslandManager {
             recalculateIsland(island, chunks, player);
 
         }).exceptionally(throwable -> {
-            System.out.println("Error : IslandManager#recalculateIsland");
+            IridiumSkyblock.getInstance().getLogger().severe("Error : IslandManager#recalculateIsland");
             throwable.printStackTrace();
             return null;
         });
@@ -1101,7 +1101,7 @@ public class IslandManager {
                 }
             }
         }).exceptionally(throwable -> {
-            System.out.println("Error : IslandManager#sendIslandBorder");
+            IridiumSkyblock.getInstance().getLogger().severe("Error : IslandManager#sendIslandBorder");
             throwable.printStackTrace();
             return null;
         });

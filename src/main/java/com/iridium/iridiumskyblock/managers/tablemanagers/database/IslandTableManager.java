@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers.database;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.managers.tablemanagers.TableManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -16,7 +17,7 @@ public class IslandTableManager extends TableManager<Island, Integer> {
 
     public IslandTableManager(ConnectionSource connectionSource) throws SQLException {
         super(connectionSource, Island.class, Comparator.comparing(Island::getId));
-        System.out.println("Nouvelle Systeme des îles : ok");
+        IridiumSkyblock.getInstance().getLogger().info("Nouveau Systeme des îles : ok");
         List<Island> islandsStatic = getEntries();
         for (int index = 0, sizeEntries = islandsStatic.size(); index < sizeEntries; index++) {
             Island island = islandsStatic.get(index);
@@ -44,7 +45,7 @@ public class IslandTableManager extends TableManager<Island, Integer> {
     @Override
     public void clear() {
         islandMapByID.clear();
-        System.out.println("Suppression de toute les données");
+        IridiumSkyblock.getInstance().getLogger().info("Suppression de toute les données");
         super.clear();
     }
 

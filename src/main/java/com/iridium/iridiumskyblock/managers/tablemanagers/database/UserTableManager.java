@@ -37,7 +37,7 @@ public class UserTableManager extends TableManager<User, Integer> {
         user.setChanged(true);
         userIslandMap.put(user.getUuid(), user);
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Debugage de la liste/map : \n" +
+            IridiumSkyblock.getInstance().getLogger().info("Debugage de la liste/map : \n" +
                     "Map : " + userIslandMap.size());
         }
     }

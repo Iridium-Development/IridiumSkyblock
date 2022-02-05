@@ -109,7 +109,7 @@ public final class User extends DatabaseObject {
         }
         IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().resortIsland(this);
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Player: " + this.getName() + "\n" +
+            IridiumSkyblock.getInstance().getLogger().info("Player: " + this.getName() + "\n" +
                     "UUID: " + this.getUuid() + "\n" +
                     "Event: User#setIsland");
         }

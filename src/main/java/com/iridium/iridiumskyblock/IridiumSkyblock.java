@@ -54,6 +54,8 @@ import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -64,6 +66,7 @@ import java.util.stream.Collectors;
 public class IridiumSkyblock extends IridiumCore {
 
     private static IridiumSkyblock instance;
+    private static Logger logger;
 
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
@@ -150,7 +153,7 @@ public class IridiumSkyblock extends IridiumCore {
     @Override
     public void onEnable() {
         super.onEnable();
-
+        logger = Bukkit.getLogger();
         // Convert old IridiumSkyblock data
         DataConverter.copyLegacyData();
 
@@ -220,7 +223,7 @@ public class IridiumSkyblock extends IridiumCore {
                     gui.addContent(player.getOpenInventory().getTopInventory());
                 }
             } catch (Exception e) {
-                System.out.println("Error : IridiumSkyblock#runTaskTimer#inventoryHolder");
+                logger.log(Level.SEVERE, "Error : IridiumSkyblock#runTaskTimer#inventoryHolder");
                 e.printStackTrace();
             }
 
@@ -248,12 +251,12 @@ public class IridiumSkyblock extends IridiumCore {
                     .checkNow();
         }
 
-        getLogger().info("----------------------------------------");
-        getLogger().info("");
-        getLogger().info(getDescription().getName() + " Enabled!");
-        getLogger().info("Version: " + getDescription().getVersion());
-        getLogger().info("");
-        getLogger().info("----------------------------------------");
+        logger.info("----------------------------------------");
+        logger.info("");
+        logger.info(getDescription().getName() + " Enabled!");
+        logger.info("Version: " + getDescription().getVersion());
+        logger.info("");
+        logger.info("----------------------------------------");
 
         playerStopGlitchBorder();
     }
@@ -262,13 +265,13 @@ public class IridiumSkyblock extends IridiumCore {
         Plugin MVDWPlaceholderAPI = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (MVDWPlaceholderAPI != null && MVDWPlaceholderAPI.isEnabled()) {
             new MVDWPlaceholderAPI();
-            getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with MVDWPlaceholderAPI.");
+            logger.info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with MVDWPlaceholderAPI.");
         }
 
         Plugin PlaceholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (PlaceholderAPI != null && PlaceholderAPI.isEnabled()) {
             if (new ClipPlaceholderAPI().register()) {
-                getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
+                logger.info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
             }
         }
     }
@@ -375,102 +378,102 @@ public class IridiumSkyblock extends IridiumCore {
     public void saveData() {
 
         try {
-            System.out.println("Sauvegarde des Users");
+            logger.info("Sauvegarde des Users");
             getDatabaseManager().getUserTableManager().saveHashMap(getDatabaseManager().getUserTableManager().getUserIslandMap(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Islands");
+            logger.info("Sauvegarde des Islands");
             getDatabaseManager().getIslandTableManager().saveHashMap(getDatabaseManager().getIslandTableManager().getIslandMapByID(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Invites");
+            logger.info("Sauvegarde des Invites");
             getDatabaseManager().getIslandInviteTableManager().saveHashMapList(getDatabaseManager().getIslandInviteTableManager().getIslandInviteById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Permissions");
+            logger.info("Sauvegarde des Permissions");
             getDatabaseManager().getIslandPermissionTableManager().saveHashMapList(getDatabaseManager().getIslandPermissionTableManager().getIslandPermissionById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Spawners");
+            logger.info("Sauvegarde des Spawners");
             getDatabaseManager().getIslandSpawnersTableManager().saveHashMapList(getDatabaseManager().getIslandSpawnersTableManager().getIslandSpawnerById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Banks");
+            logger.info("Sauvegarde des Banks");
             getDatabaseManager().getIslandBankTableManager().saveHashMapList(getDatabaseManager().getIslandBankTableManager().getIslandBankById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Missions");
+            logger.info("Sauvegarde des Missions");
             getDatabaseManager().getIslandMissionTableManager().saveHashMapList(getDatabaseManager().getIslandMissionTableManager().getIslandMissionById(), true);
         }  catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Reward");
+            logger.info("Sauvegarde des Reward");
             getDatabaseManager().getIslandRewardTableManager().saveHashMapList(getDatabaseManager().getIslandRewardTableManager().getIslandRewardById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Upgrades");
+            logger.info("Sauvegarde des Upgrades");
             getDatabaseManager().getIslandUpgradeTableManager().saveHashMapList(getDatabaseManager().getIslandUpgradeTableManager().getIslandUpgradeById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Confiances");
+            logger.info("Sauvegarde des Confiances");
             getDatabaseManager().getIslandTrustedTableManager().saveHashMapList(getDatabaseManager().getIslandTrustedTableManager().getIslandTrustedById(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Booster");
+            logger.info("Sauvegarde des Booster");
             getDatabaseManager().getIslandBoosterTableManager().saveHashMapList(getDatabaseManager().getIslandBoosterTableManager().getIslandBoosterById(), false);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Warps");
+            logger.info("Sauvegarde des Warps");
             getDatabaseManager().getIslandWarpTableManager().saveHashMapList(getDatabaseManager().getIslandWarpTableManager().getIslandWarpById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Bans");
+            logger.info("Sauvegarde des Bans");
             getDatabaseManager().getIslandBanTableManager().saveHashMapList(getDatabaseManager().getIslandBanTableManager().getIslandBanById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Blocks");
+            logger.info("Sauvegarde des Blocks");
             getDatabaseManager().getIslandBlocksTableManager().saveHashMapList(getDatabaseManager().getIslandBlocksTableManager().getIslandBlockById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Logs");
+            logger.info("Sauvegarde des Logs");
             getDatabaseManager().getIslandLogTableManager().saveHashMapList(getDatabaseManager().getIslandLogTableManager().getIslandLogById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
         try {
-            System.out.println("Sauvegarde des Settings");
+            logger.info("Sauvegarde des Settings");
             getDatabaseManager().getIslandSettingTableManager().saveHashMapList(getDatabaseManager().getIslandSettingTableManager().getIslandSettingById(), true);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        System.out.println("Fin des sauvegardes");
+        logger.info("Fin des sauvegardes");
     }
 
     /**
@@ -481,7 +484,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Economy setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
         if (economyProvider == null) {
-            getLogger().warning("You do not have an economy plugin installed (like Essentials)");
+            logger.log(Level.SEVERE, "You do not have an economy plugin installed (like Essentials)");
             return null;
         }
         return economyProvider.getProvider();
@@ -701,7 +704,7 @@ public class IridiumSkyblock extends IridiumCore {
                 if (source == null) return;
                 Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException exception) {
-                getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
+                logger.warning("Could not copy " + name + " to " + file.getAbsolutePath());
             }
         }
     }
@@ -788,7 +791,7 @@ public class IridiumSkyblock extends IridiumCore {
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("Error : IridiumSkyblock#runTaskTimerAsynchronously#checkEmplacement");
+                    logger.log(Level.SEVERE, "Error : IridiumSkyblock#runTaskTimerAsynchronously#checkEmplacement");
                     e.printStackTrace();
                 }
             }

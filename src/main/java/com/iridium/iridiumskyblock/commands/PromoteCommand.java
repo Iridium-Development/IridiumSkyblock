@@ -88,7 +88,7 @@ public class PromoteCommand extends Command {
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_PROMOTED, user, targetUser, 0, nextRank.getDisplayName());
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Player: " + user.getName() + "\n" +
+            IridiumSkyblock.getInstance().getLogger().info("Player: " + user.getName() + "\n" +
                     "UUID: " + user.getUuid() + "\n" +
                     "Event: PromoteCommand");
         }

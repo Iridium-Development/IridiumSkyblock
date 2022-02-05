@@ -84,7 +84,7 @@ public class TransferCommand extends Command {
 
         // Docta start - New Save Data
         if (IridiumSkyblock.getInstance().getConfiguration().debug) {
-            System.out.println("Player: " + user.getName() + "\n" +
+            IridiumSkyblock.getInstance().getLogger().info("Player: " + user.getName() + "\n" +
                     "UUID: " + user.getUuid() + "\n" +
                     "Event: transferCommand");
         }

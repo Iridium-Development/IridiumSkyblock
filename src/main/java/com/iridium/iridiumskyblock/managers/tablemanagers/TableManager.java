@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumcore.utils.SortedList;
 import com.iridium.iridiumskyblock.DatabaseObject;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -98,7 +99,7 @@ public class TableManager<T extends DatabaseObject, S> {
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
-        System.out.println("Sauvegarde faite : " + savedata + "/" + tList.size());
+        IridiumSkyblock.getInstance().getLogger().info("Sauvegarde faite : " + savedata + "/" + tList.size());
     }
 
    
