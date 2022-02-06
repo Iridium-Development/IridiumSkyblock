@@ -43,6 +43,8 @@ public class IslandSettingsGUI extends IslandGUI {
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandSettingsGUI.background);
 
         for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
+            if (!setting.getValue().isModifiable()) continue;
+
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), setting.getKey(), setting.getValue().getDefaultValue());
             inventory.setItem(setting.getValue().getItem().slot, ItemStackUtils.makeItem(setting.getValue().getItem(), Collections.singletonList(new Placeholder("value", WordUtils.capitalize(islandSetting.getValue().toLowerCase().replace("_", " "))))));
         }
@@ -69,6 +71,7 @@ public class IslandSettingsGUI extends IslandGUI {
 
         for (Map.Entry<String, Setting> setting : IridiumSkyblock.getInstance().getSettingsList().entrySet()) {
             if (event.getSlot() != setting.getValue().getItem().slot) continue;
+            if (!setting.getValue().isModifiable()) continue;
 
             SettingType settingType = SettingType.getByName(setting.getKey());
             IslandSetting islandSetting = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(getIsland(), settingType);

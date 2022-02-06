@@ -15,6 +15,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Permission {
+
+    private boolean modifiable = true;
     /**
      * The Item used to display the item
      */

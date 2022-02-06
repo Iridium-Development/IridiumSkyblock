@@ -47,6 +47,8 @@ public class IslandPermissionsGUI extends IslandGUI {
 
         for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
             if (permission.getValue().getPage() != page) continue;
+            if (!permission.getValue().isModifiable()) continue;
+
             boolean allowed = IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), islandRank, permission.getValue(), permission.getKey());
             inventory.setItem(permission.getValue().getItem().slot, ItemStackUtils.makeItem(permission.getValue().getItem(), Collections.singletonList(new Placeholder("permission", allowed ? IridiumSkyblock.getInstance().getPermissions().allowed : IridiumSkyblock.getInstance().getPermissions().denied))));
         }
@@ -67,6 +69,7 @@ public class IslandPermissionsGUI extends IslandGUI {
         for (Map.Entry<String, Permission> permission : IridiumSkyblock.getInstance().getPermissionList().entrySet()) {
             if (permission.getValue().getItem().slot != event.getSlot()) continue;
             if (permission.getValue().getPage() != page) continue;
+            if (!permission.getValue().isModifiable()) continue;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser((Player) event.getWhoClicked());
             if (user.getIslandRank().getLevel() <= islandRank.getLevel() || !IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(getIsland(), user, PermissionType.CHANGE_PERMISSIONS)) {
