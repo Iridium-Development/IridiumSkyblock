@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -31,16 +32,15 @@ public class IslandBankGUI extends IslandGUI {
     @Override
     public void addContent(Inventory inventory) {
         inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
+        InventoryUtils.fillInventory(inventory, this.getNoItemGUI().background);
 
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
-            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(getIsland(), bankItem);
+            IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(this.getIsland(), bankItem);
             inventory.setItem(bankItem.getItem().slot, ItemStackUtils.makeItem(bankItem.getItem(), Collections.singletonList(new Placeholder("amount", IridiumSkyblock.getInstance().getNumberFormatter().format(islandBank.getNumber())))));
         }
 
-        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
+        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && this.getPreviousInventory() != null)
             inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
-        }
     }
 
     /**
@@ -54,6 +54,22 @@ public class IslandBankGUI extends IslandGUI {
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
 
+        if (event.isShiftClick()) {
+            switch (event.getClick()) {
+                case LEFT:
+                case SHIFT_LEFT:
+                    IridiumSkyblock.getInstance().getIslandCustomAmountBankGUI().openInventory((Player) event.getWhoClicked(), this.getIsland(), bankItem.get(), false);
+                    //IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                    break;
+                case RIGHT:
+                case SHIFT_RIGHT:
+                    IridiumSkyblock.getInstance().getIslandCustomAmountBankGUI().openInventory((Player) event.getWhoClicked(), this.getIsland(), bankItem.get(), true);
+                    //IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                    break;
+            }
+            return;
+        }
+
         switch (event.getClick()) {
             case LEFT:
                 IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
@@ -63,7 +79,7 @@ public class IslandBankGUI extends IslandGUI {
                 break;
         }
 
-        addContent(event.getInventory());
+        this.addContent(event.getInventory());
     }
 
 

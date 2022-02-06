@@ -51,20 +51,18 @@ public class CrystalsBankItem extends BankItem {
                         player.getWorld().dropItem(player.getLocation(), itemStack)
                 );
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(crystals))
-                        .replace("%type%", getDisplayName())
+                        .replace("%type%", this.getDisplayName())
                 );
-            } else {
+            } else
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", getDisplayName())
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%type%", this.getDisplayName())
                 );
-            }
             return crystals;
-        } else {
+        } else
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        }
         return 0;
     }
 
@@ -90,7 +88,8 @@ public class CrystalsBankItem extends BankItem {
             ItemStack itemStack = contents[i];
 
             int crystalsPerItem = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack);
-            if (crystalsPerItem == 0) continue;
+            if (crystalsPerItem == 0)
+                continue;
 
             int itemStackAmount = itemStack.getAmount();
             if (itemStackAmount <= remainingItemAmount) {
@@ -109,8 +108,8 @@ public class CrystalsBankItem extends BankItem {
 
         if (depositAmount == 0) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                    .replace("%type%", getDisplayName())
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                    .replace("%type%", this.getDisplayName())
             );
             return 0;
         }
@@ -120,7 +119,7 @@ public class CrystalsBankItem extends BankItem {
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                 .replace("%amount%", String.valueOf(depositAmount))
-                .replace("%type%", getDisplayName())
+                .replace("%type%", this.getDisplayName())
         );
         return depositAmount;
     }
