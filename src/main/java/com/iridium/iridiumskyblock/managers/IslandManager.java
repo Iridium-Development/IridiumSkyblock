@@ -902,8 +902,7 @@ public class IslandManager {
         List<String> islandMissions = IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).stream()
                 .filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY)
                 .map(IslandMission::getMissionName)
-                .distinct()
-                .collect(Collectors.toList());
+                .distinct().toList();
 
         if (islandMissions.size() > index) {
             return islandMissions.get(index);
@@ -912,8 +911,7 @@ public class IslandManager {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         List<String> availableMissions = IridiumSkyblock.getInstance().getMissionsList().keySet().stream()
                 .filter(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getMissionType() == Mission.MissionType.DAILY)
-                .filter(mission -> islandMissions.stream().noneMatch(m -> m.equals(mission)))
-                .collect(Collectors.toList());
+                .filter(mission -> islandMissions.stream().noneMatch(m -> m.equals(mission))).toList();
 
         String key = availableMissions.get(random.nextInt(availableMissions.size()));
         Mission mission = IridiumSkyblock.getInstance().getMissionsList().get(key);
