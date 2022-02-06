@@ -39,7 +39,14 @@ public class DeleteCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length == 2 && sender.hasPermission("iridiumskyblock.delete.other")) {
-            deleteOtherIsland(sender, args[1]);
+            Optional<Island> islandOptional = IridiumSkyblockAPI.getInstance().getUser(Bukkit.getOfflinePlayer(args[1])).getIsland();
+            if (!islandOptional.isPresent()) {
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            } else {
+                IridiumSkyblock.getInstance().getIslandManager().deleteIsland(islandOptional.get(), null);
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().otherIslandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+
             return false;
         }
 
@@ -65,17 +72,6 @@ public class DeleteCommand extends Command {
 
         // Always return false because the cooldown is set by the ConfirmationGUI
         return false;
-    }
-
-    private void deleteOtherIsland(CommandSender commandSender, String playerName) {
-        Optional<Island> islandOptional = IridiumSkyblockAPI.getInstance().getUser(Bukkit.getOfflinePlayer(playerName)).getIsland();
-        if (!islandOptional.isPresent()) {
-            commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
-        }
-
-        IridiumSkyblock.getInstance().getIslandManager().deleteIsland(islandOptional.get(), null);
-        commandSender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().otherIslandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 
     /**
