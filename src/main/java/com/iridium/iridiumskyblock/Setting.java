@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Setting {
 
+    private boolean modifiable = true;
     /**
      * The Item used to display the item
      */
