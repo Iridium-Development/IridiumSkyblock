@@ -120,7 +120,7 @@ public final class User extends DatabaseObject {
      * @return The player object if one was found, null otherwise
      */
     @Deprecated
-    public Player toPlayer() {
+    public @Nullable Player toPlayer() {
         return getPlayer();
     }
 
@@ -129,7 +129,7 @@ public final class User extends DatabaseObject {
      *
      * @return The player object if one was found, null otherwise
      */
-    public Player getPlayer() {
+    public @Nullable Player getPlayer() {
         return Bukkit.getPlayer(uuid);
     }
 
