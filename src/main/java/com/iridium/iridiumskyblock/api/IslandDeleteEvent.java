@@ -7,6 +7,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Called before an Island has been deleted.
@@ -17,9 +18,9 @@ public class IslandDeleteEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private boolean cancelled;
     @NotNull private final Island island;
-    @NotNull private final User user;
+    @Nullable private final User user;
 
-    public IslandDeleteEvent(@NotNull Island island, @NotNull User user) {
+    public IslandDeleteEvent(@NotNull Island island, @Nullable User user) {
         this.island = island;
         this.user = user;
     }
