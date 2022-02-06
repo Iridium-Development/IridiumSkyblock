@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
@@ -10,6 +11,8 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +25,7 @@ public class DeleteCommand extends Command {
      * The default constructor.
      */
     public DeleteCommand() {
-        super(Collections.singletonList("delete"), "Delete your Island", "", true, Duration.ofMinutes(5));
+        super(Collections.singletonList("delete"), "Delete your Island", "%prefix% &7/is delete <name>", "", false, Duration.ofMinutes(5));
     }
 
     /**
@@ -35,6 +38,23 @@ public class DeleteCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
+        if (args.length == 2 && sender.hasPermission("iridiumskyblock.delete.other")) {
+            Optional<Island> islandOptional = IridiumSkyblockAPI.getInstance().getUser(Bukkit.getOfflinePlayer(args[1])).getIsland();
+            if (!islandOptional.isPresent()) {
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            } else {
+                IridiumSkyblock.getInstance().getIslandManager().deleteIsland(islandOptional.get(), null);
+                sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().otherIslandDeleted.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            }
+
+            return false;
+        }
+
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAPlayer).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
+            return false;
+        }
+
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
