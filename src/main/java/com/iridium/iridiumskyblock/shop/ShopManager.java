@@ -197,7 +197,7 @@ public class ShopManager {
         IslandBank moneyIslandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().moneyBankItem);
         IslandBank crystalIslandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island, IridiumSkyblock.getInstance().getBankItems().crystalsBankItem);
 
-        moneyIslandBank.setNumber(moneyIslandBank.getNumber() + vaultReward);
+        IridiumSkyblock.getInstance().getEconomy().depositPlayer(player, vaultReward);
         crystalIslandBank.setNumber(crystalIslandBank.getNumber() + crystalReward);
 
         player.sendMessage(
