@@ -51,7 +51,9 @@ public class IslandBankGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        Optional<BankItem> bankItemOptional = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
+        Optional<BankItem> bankItemOptional = IridiumSkyblock.getInstance().getBankItemList().stream()
+                .filter(item -> item.getItem().slot == event.getSlot())
+                .findFirst();
         if (!bankItemOptional.isPresent()) return;
 
         BankItem bankItem = bankItemOptional.get();
