@@ -51,15 +51,26 @@ public class IslandBankGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
-        if (!bankItem.isPresent()) return;
+        Optional<BankItem> bankItemOptional = IridiumSkyblock.getInstance().getBankItemList().stream()
+                .filter(item -> item.getItem().slot == event.getSlot())
+                .findFirst();
+        if (!bankItemOptional.isPresent()) return;
+
+        BankItem bankItem = bankItemOptional.get();
+        IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(getIsland(), bankItem);
 
         switch (event.getClick()) {
             case LEFT:
-                IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.getName(), String.valueOf(bankItem.getDefaultAmount())});
+                break;
+            case SHIFT_LEFT:
+                IridiumSkyblock.getInstance().getCommands().withdrawCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.getName(), String.valueOf(islandBank.getNumber())});
                 break;
             case RIGHT:
-                IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.get().getName(), String.valueOf(bankItem.get().getDefaultAmount())});
+                IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.getName(), String.valueOf(bankItem.getDefaultAmount())});
+                break;
+            case SHIFT_RIGHT:
+                IridiumSkyblock.getInstance().getCommands().depositCommand.execute(event.getWhoClicked(), new String[]{"", bankItem.getName(), String.valueOf(islandBank.getNumber())});
                 break;
         }
 
