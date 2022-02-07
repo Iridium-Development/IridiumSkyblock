@@ -807,12 +807,13 @@ public class IslandManager {
      * @return The daily missions
      */
     public synchronized Map<String, Mission> getDailyIslandMissions(@NotNull Island island) {
-        Map<String, Mission> missions = new HashMap<>();
+        Map<String, Mission> missions = new LinkedHashMap<>();
 
         IntStream.range(0, IridiumSkyblock.getInstance().getMissions().dailySlots.size())
                 .boxed()
                 .map(i -> getDailyIslandMission(island, i))
-                .forEach(mission ->
+                .sorted(Comparator.comparingInt(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getItem().slot))
+                .forEachOrdered(mission ->
                         missions.put(mission, IridiumSkyblock.getInstance().getMissionsList().get(mission))
                 );
 
