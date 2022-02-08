@@ -812,7 +812,10 @@ public class IslandManager {
         IntStream.range(0, IridiumSkyblock.getInstance().getMissions().dailySlots.size())
                 .boxed()
                 .map(i -> getDailyIslandMission(island, i))
-                .sorted(Comparator.comparingInt(mission -> IridiumSkyblock.getInstance().getMissionsList().get(mission).getItem().slot))
+                .sorted(Comparator.comparingInt(mission -> {
+                    Integer slot = IridiumSkyblock.getInstance().getMissionsList().get(mission).getItem().slot;
+                    return slot == null ? 0 : slot;
+                }))
                 .forEachOrdered(mission ->
                         missions.put(mission, IridiumSkyblock.getInstance().getMissionsList().get(mission))
                 );
