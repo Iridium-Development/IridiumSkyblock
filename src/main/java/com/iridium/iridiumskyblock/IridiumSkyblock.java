@@ -199,7 +199,9 @@ public class IridiumSkyblock extends IridiumCore {
         Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         // Auto recalculate islands
-        if (getConfiguration().islandRecalculateInterval > 0) {
+        if (false && getConfiguration().islandRecalculateInterval > 0) { // Faisons un calcul vite fait !
+            // il y a 10k ile pour 20 secondes à chaque fois. 20 seconde x 10000 = 200000 secondes soit 55 heures !
+            // Si un restart est fait toutes les jours, les iles ne seront pas toutes recalculés et de ce fait, on charge des chunks pour rien !
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
                 ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getAllIslandID().listIterator();
 
