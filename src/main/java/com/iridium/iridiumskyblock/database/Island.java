@@ -322,6 +322,7 @@ public final class Island extends DatabaseObject {
         return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);
     }
 
+    Cache<Location> locationCachePos1 = new Cache<>(5000);
     /**
      * Returns the first corner point Location of this Island.
      * Is smaller than {@link Island#getPos2(World)}.
@@ -330,10 +331,13 @@ public final class Island extends DatabaseObject {
      * @return The Location of the first corner point
      */
     public Location getPos1(World world) {
-        double size = getSize() / 2.00;
-        return getCenter(world).subtract(new Location(world, size, 0, size));
+        return locationCachePos1.getCache(() -> {
+            double size = getSize() / 2.00;
+            return getCenter(world).subtract(new Location(world, size, 0, size));
+        });
     }
 
+    Cache<Location> locationCachePos2 = new Cache<>(5000);
     /**
      * Returns the second corner point Location of this Island.
      * Is greater than {@link Island#getPos1(World)}.
@@ -342,8 +346,10 @@ public final class Island extends DatabaseObject {
      * @return The Location of the second corner point
      */
     public Location getPos2(World world) {
-        double size = getSize() / 2.00;
-        return getCenter(world).add(new Location(world, size, 0, size));
+        return locationCachePos2.getCache(() -> {
+            double size = getSize() / 2.00;
+            return getCenter(world).add(new Location(world, size, 0, size));
+        });
     }
 
     /**
