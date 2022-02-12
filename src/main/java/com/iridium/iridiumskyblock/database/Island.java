@@ -331,9 +331,13 @@ public final class Island extends DatabaseObject {
      * @return The Location of the first corner point
      */
     public Location getPos1(World world) {
+        double size = getSize() / 2.00;
+        return getCenter(world).subtract(new Location(world, size, 0, size));
+    }
+    public Location getPos1() {
         return locationCachePos1.getCache(() -> {
             double size = getSize() / 2.00;
-            return getCenter(world).subtract(new Location(world, size, 0, size));
+            return getCenter(null).subtract(new Location(null, size, 0, size));
         });
     }
 
@@ -346,9 +350,13 @@ public final class Island extends DatabaseObject {
      * @return The Location of the second corner point
      */
     public Location getPos2(World world) {
+        double size = getSize() / 2.00;
+        return getCenter(world).add(new Location(world, size, 0, size));
+    }
+    public Location getPos2() {
         return locationCachePos2.getCache(() -> {
             double size = getSize() / 2.00;
-            return getCenter(world).add(new Location(world, size, 0, size));
+            return getCenter(null).add(new Location(null, size, 0, size));
         });
     }
 
@@ -397,8 +405,8 @@ public final class Island extends DatabaseObject {
      * @return Whether or not the coordinates are in this island
      */
     public boolean isInIsland(int x, int z) {
-        Location pos1 = getPos1(null);
-        Location pos2 = getPos2(null);
+        Location pos1 = getPos1();
+        Location pos2 = getPos2();
 
         return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
     }

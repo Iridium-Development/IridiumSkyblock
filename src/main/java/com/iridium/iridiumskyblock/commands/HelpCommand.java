@@ -41,8 +41,7 @@ public class HelpCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] arguments) {
         List<Command> availableCommands = IridiumSkyblock.getInstance().getCommandManager().commands.stream()
-                .filter(command -> sender.hasPermission(command.permission) || command.permission.isEmpty())
-                .collect(Collectors.toList());
+                .filter(command -> sender.hasPermission(command.permission) || command.permission.isEmpty()).toList();
 
         int page = 1;
         int maxPage = (int) Math.ceil(availableCommands.size() / 8.0);
