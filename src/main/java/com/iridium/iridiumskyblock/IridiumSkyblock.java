@@ -4,13 +4,13 @@ import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.gui.GUI;
-import com.iridium.iridiumskyblock.gui.IslandCustomAmountBankGUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.ClipPlaceholderAPI;
@@ -81,8 +81,6 @@ public class IridiumSkyblock extends IridiumCore {
     private Border border;
     private Placeholders placeholders;
     private IslandSettings islandSettings;
-
-    private IslandCustomAmountBankGUI islandCustomAmountBankGUI;
 
     private ChunkGenerator chunkGenerator;
 
@@ -234,8 +232,6 @@ public class IridiumSkyblock extends IridiumCore {
                         .checkNow();
             }
         }
-
-        this.islandCustomAmountBankGUI = new IslandCustomAmountBankGUI();
 
         getLogger().info("----------------------------------------");
         getLogger().info("");
@@ -639,7 +635,4 @@ public class IridiumSkyblock extends IridiumCore {
         return configuration.numberFormatter;
     }
 
-    public IslandCustomAmountBankGUI getIslandCustomAmountBankGUI() {
-        return this.islandCustomAmountBankGUI;
-    }
 }
