@@ -44,6 +44,7 @@ public class PlayerTeleportListener implements Listener {
         } else {
             event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIslandFound
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    
             if (!event.getPlayer().hasPermission("iridiumskyblock.locationisland.bypass")) event.setCancelled(true); // Unsafe Teleportation
         }
     }
