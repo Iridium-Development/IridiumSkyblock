@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBank;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,20 @@ public class IslandBankGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getItem().slot == event.getSlot()).findFirst();
         if (!bankItem.isPresent()) return;
+
+        if (event.isShiftClick()) {
+            switch (event.getClick()) {
+                case LEFT:
+                case SHIFT_LEFT:
+                    new IslandCustomAmountBankGUI().openInventory((Player) event.getWhoClicked(), this.getIsland(), bankItem.get(), false);
+                    break;
+                case RIGHT:
+                case SHIFT_RIGHT:
+                    new IslandCustomAmountBankGUI().openInventory((Player) event.getWhoClicked(), this.getIsland(), bankItem.get(), true);
+                    break;
+            }
+            return;
+        }
 
         switch (event.getClick()) {
             case LEFT:
