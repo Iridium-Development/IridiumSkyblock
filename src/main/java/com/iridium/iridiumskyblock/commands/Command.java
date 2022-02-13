@@ -84,7 +84,11 @@ public abstract class Command {
 
     Optional<Command> getChildByName(String name) {
         return childs.stream()
-            .filter(command -> command.aliases.contains(name.toLowerCase()))
+            .filter(command -> command.aliases.stream()
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList())
+                    .contains(name.toLowerCase())
+            )
             .findAny();
     }
 
