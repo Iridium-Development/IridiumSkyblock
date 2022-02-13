@@ -19,7 +19,6 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://hub.jeff-media.com/nexus/repository/jeff-media-public/")
-    maven("https://github.com/TheBlackEntity/VirtualAnvil/raw/repository")
 }
 
 dependencies {
@@ -31,7 +30,6 @@ dependencies {
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
     implementation("de.jeff_media:SpigotUpdateChecker:1.3.0")
-    implementation("me.entity303:VirtualAnvil:1.0-SNAPSHOT")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.22")
