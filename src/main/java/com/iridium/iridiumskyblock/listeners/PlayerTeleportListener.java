@@ -27,6 +27,7 @@ public class PlayerTeleportListener implements Listener {
                         .replace("%owner%", island.getOwner().getName())
                         .replace("%name%", island.getName())
                 ));
+                
                 event.setCancelled(true);
             } else {
                 if (island.isVisitable() || (user.isBypassing() || island.getMembers().contains(user) || island.getOwner().equals(user))) {
