@@ -7,13 +7,15 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandLog;
 import com.iridium.iridiumskyblock.database.User;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * Command which deposits a currency into the Island bank.
@@ -80,9 +82,16 @@ public class DepositCommand extends Command {
      */
     @Override
     public List<String> onTabComplete(CommandSender commandSender, org.bukkit.command.Command command, String label, String[] args) {
-        return IridiumSkyblock.getInstance().getBankItemList().stream()
-            .map(BankItem::getName)
-            .collect(Collectors.toList());
+        if (args.length == 2) {
+            List<String> possible = IridiumSkyblock.getInstance().getBankItemList().stream()
+                    .map(BankItem::getName)
+                    .collect(Collectors.toList());
+
+            List<String> actualTab = possible.stream().filter(s -> s.toLowerCase(Locale.ROOT).startsWith(args[1].toLowerCase(Locale.ROOT))).collect(Collectors.toList());
+            return actualTab.isEmpty() ? possible : actualTab;
+        }
+
+        return Collections.emptyList();
     }
 
 }
