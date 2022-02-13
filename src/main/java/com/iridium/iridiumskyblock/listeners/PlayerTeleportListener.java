@@ -31,9 +31,17 @@ public class PlayerTeleportListener implements Listener {
                 ));
                 event.setCancelled(true);
             } else {
-                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () ->
-                                PlayerUtils.sendBorder(event.getPlayer(), island)
-                        , 1);
+                if (island.isVisitable() || (user.isBypassing() || island.getMembers().contains(user))) {
+                    Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () ->
+                                    PlayerUtils.sendBorder(event.getPlayer(), island)
+                            , 1);
+                } else {
+                    event.setCancelled(true);
+                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%owner%", island.getOwner().getName())
+                            .replace("%name%", island.getName())));
+                }
             }
         } else {
             event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIslandFound
