@@ -25,13 +25,14 @@ public class PlayerTeleportListener implements Listener {
         if (islandOptional.isPresent()) {
             Island island = islandOptional.get();
             if (!player.hasPermission("iridiumskyblock.bypassban") && IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island, user)) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                        .replace("%owner%", island.getOwner().getName())
-                        .replace("%name%", island.getName())
-                ));
-                
-                event.setCancelled(true);
+                if (!user.isBypassing()) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%owner%", island.getOwner().getName())
+                            .replace("%name%", island.getName())
+                    ));
+                    event.setCancelled(true);
+                }
             } else {
                 if (island.isVisitable() || (user.isBypassing() || island.getMembers().contains(user) || island.getOwner().equals(user))) {
                     Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () ->
