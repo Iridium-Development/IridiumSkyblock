@@ -74,8 +74,8 @@ public final class Island extends DatabaseObject {
     private Integer size;
     
     // Cache Position Island Reset every 5 seconds
-    private Cache<Location> locationCachePos1 = new Cache<>(5000);
-    private Cache<Location> locationCachePos2 = new Cache<>(5000);
+    private final Cache<Location> locationCachePos1 = new Cache<>(5000);
+    private final Cache<Location> locationCachePos2 = new Cache<>(5000);
 
     public Island(String name, int id) {
         this(name, IridiumSkyblock.getInstance().getSchematics().schematics.values().stream().findFirst().get());
