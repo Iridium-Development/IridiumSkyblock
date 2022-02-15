@@ -67,7 +67,7 @@ public class IridiumSkyblockAPI {
      * Adds an Island upgrade.
      *
      * @param upgradeName The name of the upgrade (used for storage purposes)
-     * @param upgrade     the upgrade item
+     * @param upgrade     Ihe upgrade item
      * @since 3.0.0
      */
     public void addUpgrade(@NotNull String upgradeName, @NotNull Upgrade<?> upgrade) {
@@ -89,7 +89,7 @@ public class IridiumSkyblockAPI {
      * Adds an Island permission.
      *
      * @param permission The specified Permission
-     * @param key        the unique key associated with this permission
+     * @param key        Ihe unique key associated with this permission
      * @since 3.0.0
      */
     public void addPermission(@NotNull Permission permission, @NotNull String key) {
@@ -154,7 +154,7 @@ public class IridiumSkyblockAPI {
      * Gets a permission object from name.
      *
      * @param permissionKey The permission key
-     * @return the permission
+     * @return The permission
      * @since 3.0.0
      */
     public @NotNull Optional<Permission> getPermissions(@NotNull String permissionKey) {
@@ -165,7 +165,7 @@ public class IridiumSkyblockAPI {
      * Gets a permission object from name.
      *
      * @param permissionType The permission key
-     * @return the permission
+     * @return The permission
      * @since 3.0.4
      */
     public @NotNull Optional<Permission> getPermissions(@NotNull PermissionType permissionType) {
@@ -179,7 +179,7 @@ public class IridiumSkyblockAPI {
      * @param user       The Specified user
      * @param permission The Specified permission
      * @param key        The permission key
-     * @return true if the permission is allowed
+     * @return true If the permission is allowed
      * @since 3.0.0
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull Permission permission, @NotNull String key) {
@@ -192,7 +192,7 @@ public class IridiumSkyblockAPI {
      * @param island     The specified Island
      * @param user       The specified user
      * @param permissionType The specified permission type
-     * @return true if the permission is allowed
+     * @return true If the permission is allowed
      * @since 3.0.4
      */
     public boolean getIslandPermission(@NotNull Island island, @NotNull User user, @NotNull PermissionType permissionType) {
@@ -204,7 +204,7 @@ public class IridiumSkyblockAPI {
      *
      * @param island  The specified Island
      * @param upgrade The specified upgrade's name
-     * @return the Island upgrade
+     * @return The Island upgrade
      * @since 3.0.0
      */
     public @NotNull IslandUpgrade getIslandUpgrade(@NotNull Island island, @NotNull String upgrade) {
@@ -216,7 +216,7 @@ public class IridiumSkyblockAPI {
      *
      * @param island  The specified Island
      * @param booster The name of the booster
-     * @return the booster of this Island
+     * @return The booster of this Island
      * @since 3.0.0
      */
     public @NotNull IslandBooster getIslandBooster(@NotNull Island island, @NotNull String booster) {
@@ -227,7 +227,7 @@ public class IridiumSkyblockAPI {
      * Gets all entities on an Island.
      *
      * @param island The specified Island
-     * @return all entities on that Island
+     * @return All entities on that Island
      * @since 3.0.0
      */
     public @NotNull CompletableFuture<List<Entity>> getEntities(@NotNull Island island, @NotNull World... worlds) {
@@ -238,7 +238,7 @@ public class IridiumSkyblockAPI {
      * Gets a list of Islands sorted by SortType.
      *
      * @param sortType How we are sorting the Islands
-     * @return sorted list of all Islands
+     * @return Sorted list of all Islands
      * @since 3.0.0
      */
     public @NotNull List<Island> getIslands(@NotNull IslandManager.SortType sortType) {
@@ -248,7 +248,7 @@ public class IridiumSkyblockAPI {
     /**
      * Returns the overworld.
      *
-     * @return the main Skyblock {@link World}, might be null if some third-party plugin deleted it
+     * @return The main Skyblock {@link World}, might be null if some third-party plugin deleted it
      * @since 3.0.0
      */
     public @Nullable World getWorld() {
@@ -279,7 +279,7 @@ public class IridiumSkyblockAPI {
      * Returns whether the specified world is from IridiumSkyblock.
      *
      * @param world The world that should be checked
-     * @return true if it is a world used by IridiumSkyblock
+     * @return true If it is a world used by IridiumSkyblock
      * @since 3.0.7
      */
     public boolean isIslandWorld(@NotNull World world) {
@@ -290,7 +290,7 @@ public class IridiumSkyblockAPI {
      * Returns if this is the overworld of IridiumSkyblock.
      *
      * @param world The world that should be checked
-     * @return true if this is the overworld of IridiumSkyblock
+     * @return true If this is the overworld of IridiumSkyblock
      * @since 3.1.3
      */
     public boolean isIslandOverWorld(@NotNull World world) {
@@ -301,7 +301,7 @@ public class IridiumSkyblockAPI {
      * Returns if this is the nether world of IridiumSkyblock.
      *
      * @param world The world that should be checked
-     * @return true if this is the nether world of IridiumSkyblock
+     * @return true If this is the nether world of IridiumSkyblock
      * @since 3.1.3
      */
     public boolean isIslandNether(@NotNull World world) {
@@ -312,7 +312,7 @@ public class IridiumSkyblockAPI {
      * Returns if this is the end world of IridiumSkyblock.
      *
      * @param world The world that should be checked
-     * @return true if this is the end world of IridiumSkyblock
+     * @return true If this is the end world of IridiumSkyblock
      * @since 3.1.3
      */
     public boolean isIslandEnd(@NotNull World world) {
