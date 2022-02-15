@@ -67,7 +67,7 @@ public class IridiumSkyblockAPI {
      * Adds an Island upgrade.
      *
      * @param upgradeName The name of the upgrade (used for storage purposes)
-     * @param upgrade     Ihe upgrade item
+     * @param upgrade     The upgrade item
      * @since 3.0.0
      */
     public void addUpgrade(@NotNull String upgradeName, @NotNull Upgrade<?> upgrade) {
@@ -89,7 +89,7 @@ public class IridiumSkyblockAPI {
      * Adds an Island permission.
      *
      * @param permission The specified Permission
-     * @param key        Ihe unique key associated with this permission
+     * @param key        The unique key associated with this permission
      * @since 3.0.0
      */
     public void addPermission(@NotNull Permission permission, @NotNull String key) {
