@@ -196,7 +196,7 @@ public class IridiumSkyblock extends IridiumCore {
         registerPlaceholderSupport();
 
         // Send island border to all players
-        Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
+        Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation(), false).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         // Auto recalculate islands
         if (false && getConfiguration().islandRecalculateInterval > 0) { // Faisons un calcul vite fait !
@@ -749,7 +749,6 @@ public class IridiumSkyblock extends IridiumCore {
             for (Player player : players) {
                 if (!player.isOnline()) continue; // Check au cas où !
                 try {
-                    if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) continue;
                     User playerUser = User.of(player);
                     Optional<Island> island = getInstance().getIslandManager().getIslandViaPlayerLocation(player, playerUser);
                     if (island.isEmpty()) {

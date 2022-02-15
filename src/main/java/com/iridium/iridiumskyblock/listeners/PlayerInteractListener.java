@@ -62,7 +62,7 @@ public class PlayerInteractListener implements Listener {
             }
         });
         if (event.getClickedBlock() == null) return;
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation()).ifPresent(island -> {
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getClickedBlock().getLocation(), true).ifPresent(island -> {
 
             XMaterial material = XMaterial.matchXMaterial(event.getClickedBlock().getType());
             String materialName = material.name();
@@ -133,7 +133,7 @@ public class PlayerInteractListener implements Listener {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getRightClicked().getLocation());
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getRightClicked().getLocation(), true);
         if (island.isEmpty()) return;
 
         if (IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.INTERACT_ENTITIES)) {

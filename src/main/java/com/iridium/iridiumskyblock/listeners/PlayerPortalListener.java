@@ -29,7 +29,7 @@ public class PlayerPortalListener implements Listener {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getPlayer().getWorld())) return;
         IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
 
-        final Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom());
+        final Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getFrom(), true);
         if (island.isEmpty())
             return;
 

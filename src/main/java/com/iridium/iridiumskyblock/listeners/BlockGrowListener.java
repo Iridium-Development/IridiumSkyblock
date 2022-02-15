@@ -26,7 +26,7 @@ public class BlockGrowListener implements Listener {
     public void monitorBlockGrow(BlockGrowEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
-                IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
+                IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true).ifPresent(island -> {
                     XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());
                     if (event.getNewState().getBlock().getBlockData() instanceof Ageable ageable) {
                         IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island, "farming");
@@ -48,7 +48,7 @@ public class BlockGrowListener implements Listener {
     public void onBlockFertilizeEvent(BlockFertilizeEvent event) {
         if (event.isCancelled()) return;
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true);
         if (island.isPresent()) {
             if (event.getPlayer() == null) return;
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer()), PermissionType.INTERACT)) {

@@ -47,7 +47,7 @@ public class BlockFormListener implements Listener {
         XMaterial newMaterial = XMaterial.matchXMaterial(event.getNewState().getType());
         // Custom basalt generators should only work in nether
         if (newMaterial == XMaterial.COBBLESTONE || newMaterial == XMaterial.STONE || newMaterial == XMaterial.BASALT) {
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getNewState().getLocation());
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getNewState().getLocation(), true);
             if (island.isPresent()) {
                 int upgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "generator").getLevel();
                 RandomAccessList<XMaterial> randomMaterialList = switch (event.getBlock().getWorld().getEnvironment()) {

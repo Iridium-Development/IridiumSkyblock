@@ -37,7 +37,7 @@ public class BucketListener implements Listener {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true);
 
         if (island.isEmpty()) {
             if (IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlockClicked().getWorld())) {
@@ -67,7 +67,7 @@ public class BucketListener implements Listener {
         }
 
         Location location = event.getClickedBlock().getLocation();
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(location);
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(location, true);
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
 
         if (island.isPresent()) {
