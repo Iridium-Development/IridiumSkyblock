@@ -14,7 +14,6 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -26,7 +25,10 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Represents an Island of IridiumSkyblock.
@@ -71,6 +73,10 @@ public final class Island extends DatabaseObject {
 
     // Cache
     private Integer size;
+
+    // Cache Position Island Reset every 5 seconds
+    private final Cache<Location> locationCachePos1 = new Cache<>(5000);
+    private final Cache<Location> locationCachePos2 = new Cache<>(5000);
 
     /**
      * The default constructor.
@@ -322,7 +328,6 @@ public final class Island extends DatabaseObject {
         return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);
     }
 
-    Cache<Location> locationCachePos1 = new Cache<>(5000);
     /**
      * Returns the first corner point Location of this Island.
      * Is smaller than {@link Island#getPos2(World)}.
@@ -331,17 +336,15 @@ public final class Island extends DatabaseObject {
      * @return The Location of the first corner point
      */
     public Location getPos1(World world) {
+        if (world == null) {
+            return locationCachePos1.getCache(() -> {
+                double size = getSize() / 2.00;
+                return getCenter(null).subtract(new Location(null, size, 0, size));
+            });
+        }
         double size = getSize() / 2.00;
         return getCenter(world).subtract(new Location(world, size, 0, size));
     }
-    public Location getPos1() {
-        return locationCachePos1.getCache(() -> {
-            double size = getSize() / 2.00;
-            return getCenter(null).subtract(new Location(null, size, 0, size));
-        });
-    }
-
-    Cache<Location> locationCachePos2 = new Cache<>(5000);
     /**
      * Returns the second corner point Location of this Island.
      * Is greater than {@link Island#getPos1(World)}.
@@ -350,14 +353,14 @@ public final class Island extends DatabaseObject {
      * @return The Location of the second corner point
      */
     public Location getPos2(World world) {
+        if (world == null) {
+            return locationCachePos2.getCache(() -> {
+                double size = getSize() / 2.00;
+                return getCenter(null).add(new Location(null, size, 0, size));
+            });
+        }
         double size = getSize() / 2.00;
         return getCenter(world).add(new Location(world, size, 0, size));
-    }
-    public Location getPos2() {
-        return locationCachePos2.getCache(() -> {
-            double size = getSize() / 2.00;
-            return getCenter(null).add(new Location(null, size, 0, size));
-        });
     }
 
     /**
@@ -405,8 +408,8 @@ public final class Island extends DatabaseObject {
      * @return Whether or not the coordinates are in this island
      */
     public boolean isInIsland(int x, int z) {
-        Location pos1 = getPos1();
-        Location pos2 = getPos2();
+        Location pos1 = getPos1(null);
+        Location pos2 = getPos2(null);
 
         return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
     }
