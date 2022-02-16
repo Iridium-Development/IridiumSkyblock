@@ -355,6 +355,7 @@ public final class Island extends DatabaseObject {
                 return getCenter(null).subtract(new Location(null, size, 0, size));
             });
         }
+        
         double size = getSize() / 2.00;
         return getCenter(world).subtract(new Location(world, size, 0, size));
     }
