@@ -27,7 +27,7 @@ public class BlockPistonListener implements Listener {
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
 
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true).ifPresent(island -> {
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             for (Block block : event.getBlocks()) {
                 int[] offset = offsets.get(event.getDirection());
                 if (!island.isInIsland(block.getLocation().add(offset[0], offset[1], offset[2]))) {
@@ -43,7 +43,7 @@ public class BlockPistonListener implements Listener {
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
 
-        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true).ifPresent(island -> {
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             for (Block block : event.getBlocks()) {
                 if (!island.isInIsland(block.getLocation())) {
                     event.setCancelled(true);

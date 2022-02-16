@@ -538,14 +538,9 @@ public class IslandManager {
             }
         }
 
-        Optional<Island> island = getIslandViaLocation(player.getLocation(), true);
+        Optional<Island> island = getIslandViaLocation(player.getLocation());
         island.ifPresent(user::setCurrentIslandVisiting);
         return island;
-    }
-
-    @Deprecated
-    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
-        return this.getIslandViaLocation(location, false);
     }
 
     /**
@@ -554,10 +549,8 @@ public class IslandManager {
      * @param location The locations the island is in
      * @return Optional of the island at the locations, empty if there is none
      */
-    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location, boolean isCheckedIslandWorld) {
-        if (!isCheckedIslandWorld) {
-            if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return Optional.empty();
-        }
+    public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
+        if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return Optional.empty();
         List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands();
         for (Island island : islandList) {
             if (island == null) continue;

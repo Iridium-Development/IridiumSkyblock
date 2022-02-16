@@ -20,7 +20,7 @@ public class StructureGrowListener implements Listener {
         if (event.isCancelled()) return;
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getWorld())) return;
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation(), true);
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation());
 
             if (optionalIsland.isPresent()) {
                 TreeType treeType = event.getSpecies();
@@ -35,7 +35,7 @@ public class StructureGrowListener implements Listener {
         if (event.isCancelled()) return;
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true);
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
 
             if (optionalIsland.isPresent()) {
                 Island island = optionalIsland.get();
@@ -49,7 +49,7 @@ public class StructureGrowListener implements Listener {
         if (event.isCancelled()) return;
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true);
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
 
             if (optionalIsland.isPresent()) {
                 Island island = optionalIsland.get();

@@ -28,7 +28,7 @@ public class PlayerRespawnListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void monitorRespawn(PlayerRespawnEvent event) {
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getRespawnLocation(), false);
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getRespawnLocation());
         island.ifPresent(targetIsland -> PlayerUtils.sendBorder(event.getPlayer(), targetIsland));
     }
 

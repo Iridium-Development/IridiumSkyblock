@@ -17,7 +17,7 @@ public class EntityPickupItemListener implements Listener {
     public void onEntityPickupItem(EntityPickupItemEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getEntity().getWorld())) return;
         if (event.getEntity() instanceof Player player) {
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getItem().getLocation(), true);
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getItem().getLocation());
             if (island.isEmpty()) return;
 
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), IridiumSkyblock.getInstance().getUserManager().getUser(player), PermissionType.PICKUP_ITEMS)) {

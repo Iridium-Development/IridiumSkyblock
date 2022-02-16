@@ -16,7 +16,7 @@ public class BlockFromToListener implements Listener {
         if (true) return;
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
         if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.LAVA) {
-            IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true).ifPresent(island -> {
+            IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
                 if (!island.isInIsland(event.getToBlock().getLocation())) {
                     event.setCancelled(true);
                     return;

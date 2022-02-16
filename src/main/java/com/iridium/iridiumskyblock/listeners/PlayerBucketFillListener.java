@@ -20,7 +20,7 @@ public class PlayerBucketFillListener implements Listener {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld())) return;
         if (event.getItemStack() == null) return;
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation(), true);
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(player.getLocation());
 
             if (optionalIsland.isPresent()) {
                 Island island = optionalIsland.get();

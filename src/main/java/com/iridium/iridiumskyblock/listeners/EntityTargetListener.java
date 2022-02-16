@@ -26,7 +26,7 @@ public class EntityTargetListener implements Listener {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getEntity().getWorld())) return;
         if (IridiumSkyblock.getInstance().getConfiguration().pvpSettings.mobsVisitorTargeting) return;
 
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation(), true);
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
         if (island.isEmpty()) return;
         if (event.getTarget() == null || !(event.getTarget() instanceof Player targetPlayer)) return;
 

@@ -26,7 +26,7 @@ public class BlockBreakListener implements Listener {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true);
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
         if (island.isEmpty()) {
             event.setCancelled(true);
             return;
@@ -92,7 +92,7 @@ public class BlockBreakListener implements Listener {
             if (remover == null) return;
             Entity itemFrame_Painting = event.getEntity();
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(remover);
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame_Painting.getLocation(), true);
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(itemFrame_Painting.getLocation());
             if (island.isEmpty()) return;
             if (!IridiumSkyblock.getInstance().getIslandManager().getIslandPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
                 event.setCancelled(true);

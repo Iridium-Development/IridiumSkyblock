@@ -19,7 +19,7 @@ public class PlayerHarvestBlockListener implements Listener {
         if (event.isCancelled()) return;
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getHarvestedBlock().getWorld())) return;
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
-            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getPlayer().getLocation(), true);
+            Optional<Island> optionalIsland = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getPlayer().getLocation());
 
             if (optionalIsland.isPresent()) {
                 Island island = optionalIsland.get();

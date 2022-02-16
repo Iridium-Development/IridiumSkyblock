@@ -21,7 +21,7 @@ public class SpawnerSpawnListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onCreatureSpawn(SpawnerSpawnEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getLocation().getWorld())) return;
-        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation(), true);
+        Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getLocation());
         if (island.isPresent()) {
             IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), "spawner");
             if (islandBooster.isActive()) {

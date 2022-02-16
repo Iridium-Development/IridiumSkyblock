@@ -20,7 +20,7 @@ public class PotionBrewListener implements Listener {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
         // Delay the check so the new potion is checked
         Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () -> {
-            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation(), true);
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
 
             for (int i = 0; i < 3; i++) {
                 ItemStack itemStack = event.getContents().getItem(i);
