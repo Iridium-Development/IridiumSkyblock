@@ -2,12 +2,15 @@ package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
 
+import java.util.UUID;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Placeholders {
 
     // Island Placeholders.
     public String islandName = "N/A";
     public String islandOwner = "N/A";
+    public String islandOwnerUuid = UUID.randomUUID().toString();
     public String islandRank = "0";
     public String islandLevel = "0";
     public String islandValue = "0";

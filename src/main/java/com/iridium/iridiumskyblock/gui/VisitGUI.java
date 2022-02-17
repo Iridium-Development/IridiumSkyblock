@@ -1,9 +1,13 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.Cache;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
+import com.iridium.iridiumskyblock.configs.inventories.SingleItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,6 +24,7 @@ public class VisitGUI extends GUI {
 
     private final int page;
     private final User viewer;
+    private final Cache<List<Island>> islandsVisitCache = new Cache<>(60*1000); // 1 minute
 
     /**
      * The default constructor.
@@ -43,13 +48,16 @@ public class VisitGUI extends GUI {
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         int elementsPerPage = inventory.getSize() - 9;
-        List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream()
+        List<Island> islands = islandsVisitCache.getCache(() -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream()
                 .filter(island -> viewer.isBypassing() || island.isVisitable())
                 .skip((long) (page - 1) * elementsPerPage)
-                .limit(elementsPerPage).toList();
+                .limit(elementsPerPage).toList());
         AtomicInteger slot = new AtomicInteger(0);
+        SingleItemGUI visitGUI = IridiumSkyblock.getInstance().getInventories().visitGUI;
         for (Island island : islands) {
-            inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
+            Item headPlayerItem = new Item(XMaterial.PLAYER_HEAD, 1, visitGUI.title, visitGUI.item.displayName, island.getOwner().getUuid(),
+                    visitGUI.item.lore);
+            inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(headPlayerItem, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
         }
     }
 

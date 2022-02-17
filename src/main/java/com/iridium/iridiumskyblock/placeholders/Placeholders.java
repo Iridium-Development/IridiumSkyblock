@@ -46,6 +46,9 @@ public class Placeholders {
                 .put(startKey + "_owner", player ->
                         islandGetter.getIsland(player).map(island -> island.getOwner().getName()).orElse(placeholdersConfig.islandOwner)
                 )
+                .put(startKey + "_owner_uuid", player ->
+                    islandGetter.getIsland(player).map(island -> island.getOwner().getUuid().toString()).orElse(placeholdersConfig.islandOwnerUuid)
+                )
                 .put(startKey + "_rank", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(placeholdersConfig.islandRank)
                 )
