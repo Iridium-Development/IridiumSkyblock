@@ -1,9 +1,10 @@
 package com.iridium.iridiumskyblock.generators;
 
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Random;
  * Class which handles the {@link World} generation of IridiumSkyblock.
  * Creates an empty void world.
  */
-public class SkyblockGenerator extends ChunkGenerator {
+public class SkyblockGenerator extends IridiumChunkGenerator {
 
     public byte[][] blockSections;
 
@@ -71,6 +72,18 @@ public class SkyblockGenerator extends ChunkGenerator {
     @Override
     public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
         return Collections.emptyList();
+    }
+
+    /**
+     * Returns what a made with this generator is mainly consisting of.<p>
+     * Used for performance improvements.
+     *
+     * @param world the world that should be checked
+     * @return the most used material of the chunk generator in this generator
+     */
+    @Override
+    public XMaterial getMainMaterial(@Nullable World world) {
+        return XMaterial.AIR;
     }
 
 }

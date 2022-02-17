@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.IslandUpgrade;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.generators.GeneratorType;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -317,6 +318,16 @@ public class IridiumSkyblockAPI {
      */
     public boolean isIslandEnd(@NotNull World world) {
         return iridiumSkyblock.getIslandManager().isIslandEnd(world);
+    }
+
+    /**
+     * Returns which chunk generator IridiumSkyblock is using for world generation.
+     *
+     * @return the generator IridiumSkyblock uses
+     * @since 3.2.6
+     */
+    public GeneratorType getGeneratorType() {
+        return IridiumSkyblock.getInstance().getConfiguration().generatorSettings.generatorType;
     }
 
 }

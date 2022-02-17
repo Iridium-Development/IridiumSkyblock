@@ -17,6 +17,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.configs.Configuration.IslandRegenSettings;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
+import com.iridium.iridiumskyblock.generators.GeneratorType;
 import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -856,14 +857,17 @@ public class IslandManager {
     private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
         chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
             World world = Bukkit.getWorld(chunk.getWorldName());
+            boolean oceanWorld = IridiumSkyblockAPI.getInstance().getGeneratorType() == GeneratorType.OCEAN;
             int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
+
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
-                            if (material.equals(XMaterial.AIR)) continue;
+                            if (material == XMaterial.AIR) continue;
+                            if (oceanWorld && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) return;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
                             islandBlock.setAmount(islandBlock.getAmount() + 1);
@@ -873,10 +877,10 @@ public class IslandManager {
             }
         });
         
-        if (!Bukkit.isPrimaryThread()) {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
-        } else {
+        if (Bukkit.isPrimaryThread()) {
             getAllTileInIsland(island, chunks);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
         }
     }
     
