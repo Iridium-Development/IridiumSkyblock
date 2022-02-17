@@ -49,8 +49,11 @@ public class VisitGUI extends GUI {
                 .limit(elementsPerPage)
                 .collect(Collectors.toList());
         AtomicInteger slot = new AtomicInteger(0);
+        SingleItemGUI visitGUI = IridiumSkyblock.getInstance().getInventories().visitGUI;
         for (Island island : islands) {
-            inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitGUI.item, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
+            Item headPlayerItem = new Item(XMaterial.PLAYER_HEAD, 1, visitGUI.title, island.getOwner().getName(), island.getOwner().getUuid(),
+                    visitGUI.item.lore);
+            inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(headPlayerItem, new PlaceholderBuilder().applyIslandPlaceholders(island).build()));
         }
     }
 
