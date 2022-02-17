@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import lombok.Getter;
@@ -42,7 +43,8 @@ public final class Island extends DatabaseObject {
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
 
-    @DatabaseField(columnName = "name", unique = true)
+    // 190 is oddly specific but necessary to support older databases
+    @DatabaseField(columnName = "name", unique = true, width = 190)
     private String name;
 
     /*
