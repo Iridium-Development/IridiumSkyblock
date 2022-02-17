@@ -51,7 +51,7 @@ public final class Island extends DatabaseObject {
     The islands home relative to the island center as a string.
     Format: x,y,z,pitch,yaw
     */
-    @DatabaseField(columnName = "home")
+    @DatabaseField(columnName = "home", width = 190)
     private @NotNull String home;
 
     @DatabaseField(columnName = "visit")
