@@ -18,7 +18,7 @@ public enum GeneratorType {
      *
      * @param chunkGenerator The ChunkGenerator for this generator
      */
-    GeneratorType(Supplier<? extends ChunkGenerator> chunkGenerator) {
+    GeneratorType(Supplier<? extends IridiumChunkGenerator> chunkGenerator) {
         this.chunkGenerator = chunkGenerator.get();
     }
 
