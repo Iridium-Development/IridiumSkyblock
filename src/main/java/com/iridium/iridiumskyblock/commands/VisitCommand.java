@@ -51,7 +51,7 @@ public class VisitCommand extends Command {
             return false;
         }
 
-        if (!targetUser.getIsland().get().isVisitable() && !player.hasPermission("iridiumskyblock.visitbypass")) {
+        if (!targetUser.getIsland().get().isVisitable() && !user.isBypassing()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
