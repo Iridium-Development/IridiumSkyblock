@@ -217,20 +217,6 @@ public class IridiumSkyblock extends IridiumCore {
             }, 0, getConfiguration().islandRecalculateInterval * 20L);
         }
 
-        // Automatically update all inventories
-        Bukkit.getScheduler().runTaskTimer(this, () -> Bukkit.getServer().getOnlinePlayers().forEach(player -> {
-            try {
-                InventoryHolder inventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
-                if (inventoryHolder instanceof GUI gui) {
-                    gui.addContent(player.getOpenInventory().getTopInventory());
-                }
-            } catch (Exception e) {
-                logger.log(Level.SEVERE, "Error : IridiumSkyblock#runTaskTimer#inventoryHolder");
-                e.printStackTrace();
-            }
-
-        }), 0, 20);
-
         // Register worlds with multiverse
         if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
             Bukkit.getScheduler().runTaskLater(this, () -> {
