@@ -33,7 +33,7 @@ public class PlayerTeleportListener implements Listener {
                     event.setCancelled(true);
                 }
             } else {
-                if (island.isVisitable() || (user.isBypassing() || island.getMembers().contains(user))) {
+                if (event.getPlayer().hasPermission("iridiumskyblock.teleportisland.bypass") || island.isVisitable() || (user.isBypassing() || island.getMembers().contains(user))) {
                     Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () ->
                                     PlayerUtils.sendBorder(event.getPlayer(), island)
                             , 1);
