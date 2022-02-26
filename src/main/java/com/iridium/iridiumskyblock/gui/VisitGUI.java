@@ -48,7 +48,7 @@ public class VisitGUI extends GUI {
         inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
 
         int elementsPerPage = inventory.getSize() - 9;
-        List<Island> islands = islandsVisitCache.getCache(() -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream()
+        List<Island> islands = islandsVisitCache.getCache(() -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslandsCollections().stream()
                 .filter(island -> viewer.isBypassing() || island.isVisitable())
                 .skip((long) (page - 1) * elementsPerPage)
                 .limit(elementsPerPage).toList());
@@ -69,9 +69,8 @@ public class VisitGUI extends GUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream()
-                .filter(Island::isVisitable)
-                .collect(Collectors.toList());
+        List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslandsCollections().stream()
+                .filter(Island::isVisitable).toList();
         if (event.getSlot() == getInventory().getSize() - 7) {
             if (page > 1) {
                 event.getWhoClicked().openInventory(new VisitGUI(page - 1, viewer).getInventory());

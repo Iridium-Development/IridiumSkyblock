@@ -55,6 +55,9 @@ public class IslandTableManager extends TableManager<Island, Integer> {
         return Optional.of(island);
     }
 
+    public Collection<Island> getAllIslandsCollections() {
+        return islandMapByID.values();
+    }
 
     public List<Island> getAllIslands() {
         return islandMapByID.values().stream().filter(Objects::nonNull).toList();

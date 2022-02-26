@@ -47,8 +47,9 @@ import java.util.stream.IntStream;
  */
 public class IslandManager {
 
-    public final Cache<List<Island>> islandValueSortCache = new Cache<>(5000);
-    public final Cache<List<Island>> islandLevelSortCache = new Cache<>(5000);
+    public final Cache<List<Island>> islandValueSortCache = new Cache<>(60000);
+    public final Cache<List<Island>> islandLevelSortCache = new Cache<>(60000);
+    public final Cache<List<Island>> islandNoTypeCache = new Cache<>(60000);
 
     public void clearIslandCache() {
         islandLevelSortCache.clearCache();
@@ -551,7 +552,7 @@ public class IslandManager {
      */
     public @NotNull Optional<Island> getIslandViaLocation(@NotNull Location location) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(location.getWorld())) return Optional.empty();
-        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands();
+        Collection<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslandsCollections();
         for (Island island : islandList) {
             if (island == null) continue;
             if (island.isInIsland(location)) return Optional.of(island);
@@ -1112,17 +1113,21 @@ public class IslandManager {
      * @return The sorted list of islands
      */
     public List<Island> getIslands(SortType sortType) {
-        if (sortType == SortType.VALUE) {
-            return islandValueSortCache.getCache(() ->
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList())
-            );
+        switch (sortType) {
+            case VALUE ->  {
+                return islandValueSortCache.getCache(() ->
+                        IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslandsCollections().stream().sorted(Comparator.comparing(Island::getValue).reversed()).collect(Collectors.toList())
+                );
+            }
+            case LEVEL -> {
+                return islandLevelSortCache.getCache(() ->
+                        IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslandsCollections().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList())
+                );
+            }
+            default -> {
+                return islandNoTypeCache.getCache(() -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslandsCollections().stream().toList());
+            }
         }
-        if (sortType == SortType.LEVEL) {
-            return islandLevelSortCache.getCache(() ->
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands().stream().sorted(Comparator.comparing(Island::getExperience).reversed()).collect(Collectors.toList())
-            );
-        }
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands();
     }
 
     /**

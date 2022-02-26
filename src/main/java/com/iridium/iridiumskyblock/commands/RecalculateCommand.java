@@ -8,10 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Command which display plugin information to the user.
@@ -42,7 +39,7 @@ public class RecalculateCommand extends Command {
         }
 
         int interval = 1;
-        List<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslands();
+        Collection<Island> islandList = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getAllIslandsCollections();
         int seconds = (islandList.size() * interval / 20) % 60;
         int minutes = (islandList.size() * interval / 20) / 60;
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingIslands
@@ -53,7 +50,7 @@ public class RecalculateCommand extends Command {
         );
 
         bukkitTask = Bukkit.getScheduler().runTaskTimer(IridiumSkyblock.getInstance(), new Runnable() {
-            final Iterator<Island> islands = islandList.listIterator();
+            final Iterator<Island> islands = islandList.iterator();
 
             @Override
             public void run() {
