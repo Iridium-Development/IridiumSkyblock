@@ -83,7 +83,8 @@ public class IslandBiomeGUI extends IslandGUI {
         if (event.getSlot() + 1 <= biomes.size()) {
             int index = ((size - 9) * (page - 1)) + event.getSlot();
             if (biomes.size() > index) {
-                IridiumSkyblock.getInstance().getCommands().biomeCommand.execute(player, new String[]{"", biomes.get(index).toString()});
+                //IridiumSkyblock.getInstance().getCommands().biomeCommand.execute(player, new String[]{"", biomes.get(index).toString()});
+                biomes.get(index).setBiome(player.getLocation().getChunk());
                 player.closeInventory();
                 cooldownProvider.applyCooldown(player);
             }
