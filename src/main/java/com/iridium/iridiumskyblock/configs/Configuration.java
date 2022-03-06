@@ -61,7 +61,7 @@ public class Configuration {
 
     public boolean allowPlayerTakeCrystalItem = true;
 
-    public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
+    public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"), null);
 
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
 
@@ -105,7 +105,7 @@ public class Configuration {
                     "&b&l* &b200 Island Money",
                     "",
                     "&b&l[!] &bLeft click to redeem"
-            )), Collections.emptyList(), 0, 5, 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
+            ), null), Collections.emptyList(), 0, 5, 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
 
             .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
                     "&7Island Level %island_level% Rewards:",
@@ -113,7 +113,7 @@ public class Configuration {
                     "&b&l* &b2000 Island Money",
                     "",
                     "&b&l[!] &bLeft click to redeem"
-            )), Collections.emptyList(), 0, 15, 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
+            ), null), Collections.emptyList(), 0, 15, 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
             .build();
 
     /**
