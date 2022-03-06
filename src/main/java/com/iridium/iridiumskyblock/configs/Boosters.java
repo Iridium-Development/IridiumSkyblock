@@ -19,7 +19,7 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600, "Farming", true, true);
+    ), null), 15, 10000, 3600, "Farming", true, true);
 
     public Booster spawnerBooster = new Booster(new Item(XMaterial.SPAWNER, 12, 1, "&b&lSpawner Booster", Arrays.asList(
             "&7Spawners too slow? Buy this",
@@ -30,7 +30,7 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600, "Spawner", true, true);
+    ), null), 15, 10000, 3600, "Spawner", true, true);
 
     public Booster experienceBooster = new Booster(new Item(XMaterial.EXPERIENCE_BOTTLE, 14, 1, "&b&lExperience Booster", Arrays.asList(
             "&7Gaining Experience too slow? Buy this",
@@ -41,7 +41,7 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600, "Experience", true, true);
+    ), null), 15, 10000, 3600, "Experience", true, true);
 
     public Booster flightBooster = new Booster(new Item(XMaterial.FEATHER, 16, 1, "&b&lFlight Booster", Arrays.asList(
             "&7Keep falling off your island? Buy this",
@@ -52,6 +52,6 @@ public class Boosters {
             "&b&l * &7Booster Cost: &b%crystalcost% Crystals and $%vaultcost%",
             "",
             "&b&l[!] &bRight Click to Purchase this Booster."
-    )), 15, 10000, 3600, "Flight", true, true);
+    ), null), 15, 10000, 3600, "Flight", true, true);
 
 }
