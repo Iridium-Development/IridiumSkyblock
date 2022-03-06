@@ -25,12 +25,12 @@ import java.util.Map;
 public class Shop {
 
     public Map<String, ShopCategoryConfig> categories = ImmutableMap.<String, ShopCategoryConfig>builder()
-            .put("Blocks", new ShopCategoryConfig(new Item(XMaterial.GRASS_BLOCK, 12, 1, "&9&lBlocks", Collections.emptyList()), 6))
-            .put("Food", new ShopCategoryConfig(new Item(XMaterial.COOKED_CHICKEN, 13, 1, "&9&lFood", Collections.emptyList()), 4))
-            .put("Ores", new ShopCategoryConfig(new Item(XMaterial.GOLD_INGOT, 14, 1, "&9&lOres", Collections.emptyList()), 4))
-            .put("Farming", new ShopCategoryConfig(new Item(XMaterial.WHEAT, 21, 1, "&9&lFarming", Collections.emptyList()), 5))
-            .put("Mob Drops", new ShopCategoryConfig(new Item(XMaterial.SPIDER_EYE, 22, 1, "&9&lMob Drops", Collections.emptyList()), 5))
-            .put("Miscellaneous", new ShopCategoryConfig(new Item(XMaterial.SADDLE, 23, 1, "&9&lMiscellaneous", Collections.emptyList()), 4))
+            .put("Blocks", new ShopCategoryConfig(new Item(XMaterial.GRASS_BLOCK, 12, 1, "&9&lBlocks", Collections.emptyList(), null), 6))
+            .put("Food", new ShopCategoryConfig(new Item(XMaterial.COOKED_CHICKEN, 13, 1, "&9&lFood", Collections.emptyList(), null), 4))
+            .put("Ores", new ShopCategoryConfig(new Item(XMaterial.GOLD_INGOT, 14, 1, "&9&lOres", Collections.emptyList(), null), 4))
+            .put("Farming", new ShopCategoryConfig(new Item(XMaterial.WHEAT, 21, 1, "&9&lFarming", Collections.emptyList(), null), 5))
+            .put("Mob Drops", new ShopCategoryConfig(new Item(XMaterial.SPIDER_EYE, 22, 1, "&9&lMob Drops", Collections.emptyList(), null), 5))
+            .put("Miscellaneous", new ShopCategoryConfig(new Item(XMaterial.SADDLE, 23, 1, "&9&lMiscellaneous", Collections.emptyList(), null), 4))
             .build();
 
     public Map<String, List<ShopItem>> items = ImmutableMap.<String, List<ShopItem>>builder()
