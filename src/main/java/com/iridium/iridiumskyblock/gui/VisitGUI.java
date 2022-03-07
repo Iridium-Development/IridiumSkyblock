@@ -63,7 +63,7 @@ public class VisitGUI extends GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         List<Island> islands = IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream()
-                .filter(Island::isVisitable)
+                .filter(island -> viewer.isBypassing() || island.isVisitable())
                 .collect(Collectors.toList());
         if (event.getSlot() == getInventory().getSize() - 7) {
             if (page > 1) {
