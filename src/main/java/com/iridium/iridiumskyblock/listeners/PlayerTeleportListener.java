@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
@@ -26,7 +27,7 @@ public class PlayerTeleportListener implements Listener {
                                 .replace("%name%", island.getName())
                         ));
                         event.setCancelled(true);
-                    } else if (!island.canVisit(user)) {
+                    } else if (!IridiumSkyblockAPI.getInstance().canVisitIsland(user, island)) {
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         event.setCancelled(true);
                     } else {
