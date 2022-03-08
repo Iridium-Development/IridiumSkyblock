@@ -867,7 +867,7 @@ public class IslandManager {
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
                             if (material == XMaterial.AIR) continue;
-                            if (!ignoreMainMaterial && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) return;
+                            if (!ignoreMainMaterial && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) continue;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
                             islandBlock.setAmount(islandBlock.getAmount() + 1);
