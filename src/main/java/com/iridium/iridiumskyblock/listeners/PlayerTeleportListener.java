@@ -26,7 +26,7 @@ public class PlayerTeleportListener implements Listener {
                                 .replace("%name%", island.getName())
                         ));
                         event.setCancelled(true);
-                    } else if (!island.isVisitable() && (!user.isBypassing() || !player.hasPermission("iridiumskyblock.visitbypass"))) {
+                    } else if (!island.hasAccess(user)) {
                         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         event.setCancelled(true);
                     } else {
