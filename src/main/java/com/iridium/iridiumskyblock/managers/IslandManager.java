@@ -857,7 +857,7 @@ public class IslandManager {
     private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
         chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
             World world = Bukkit.getWorld(chunk.getWorldName());
-            boolean oceanWorld = IridiumSkyblockAPI.getInstance().getGeneratorType() == GeneratorType.OCEAN;
+            boolean ignoreMainMaterial = IridiumSkyblock.getInstance().getChunkGenerator().ignoreMainMaterial();
             int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
 
             for (int x = 0; x < 16; x++) {
@@ -867,7 +867,7 @@ public class IslandManager {
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
                             if (material == XMaterial.AIR) continue;
-                            if (oceanWorld && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) return;
+                            if (!ignoreMainMaterial && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) return;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
                             islandBlock.setAmount(islandBlock.getAmount() + 1);

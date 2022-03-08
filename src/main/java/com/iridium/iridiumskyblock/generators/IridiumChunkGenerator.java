@@ -19,4 +19,14 @@ public abstract class IridiumChunkGenerator extends ChunkGenerator {
      */
     public abstract XMaterial getMainMaterial(@Nullable World world);
 
+    /**
+     * Returns whether the main material returned by {@link IridiumChunkGenerator#getMainMaterial(World)}
+     * should be ignored.
+     *
+     * @return if the main material should be ignored
+     */
+    public boolean ignoreMainMaterial() {
+        return getMainMaterial(null) == XMaterial.AIR;
+    }
+
 }
