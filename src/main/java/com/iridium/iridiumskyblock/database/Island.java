@@ -503,7 +503,7 @@ public final class Island extends DatabaseObject {
         this.size = size;
     }
 
-    public boolean hasAccess(User user) {
+    public boolean canVisit(User user) {
         if (user.getPlayer() == null) return false;
 
         return this.isVisitable() || user.isBypassing() || user.getPlayer().hasPermission("iridiumskyblock.visitbypass") || this.getMembers().contains(user) || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(this, user).isPresent();
