@@ -23,10 +23,11 @@ public class PlayerTeleportListener implements Listener {
                                 .replace("%name%", island.getName())
                         ));
                         event.setCancelled(true);
+                    } else if (!island.isVisitable() && (!user.isBypassing() || !player.hasPermission("iridiumskyblock.visitbypass"))) {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        event.setCancelled(true);
                     } else {
-                        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () ->
-                                        PlayerUtils.sendBorder(event.getPlayer(), island)
-                                , 1);
+                        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> PlayerUtils.sendBorder(event.getPlayer(), island), 1);
                     }
                 }
         );

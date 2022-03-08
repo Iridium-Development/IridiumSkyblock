@@ -51,12 +51,22 @@ public class VisitCommand extends Command {
             return false;
         }
 
-        if (!targetUser.getIsland().get().isVisitable() && !user.isBypassing()) {
+        Island island = targetUser.getIsland().get();
+        if (!island.isVisitable() && (!user.isBypassing() || !player.hasPermission("iridiumskyblock.visitbypass"))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
-        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, targetUser.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
+        if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island, user)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%owner%", island.getOwner().getName())
+                    .replace("%name%", island.getName())
+            ));
+            return false;
+        }
+
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island, IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
         return true;
     }
 
