@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
  */
 public class IridiumSkyblockAPI {
 
-    private static IridiumSkyblockAPI instance;
+    private static final IridiumSkyblockAPI instance;
     private final IridiumSkyblock iridiumSkyblock;
 
     static {
