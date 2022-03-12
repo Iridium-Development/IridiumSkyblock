@@ -2,6 +2,8 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -51,12 +53,22 @@ public class VisitCommand extends Command {
             return false;
         }
 
-        if (!targetUser.getIsland().get().isVisitable() && !player.hasPermission("iridiumskyblock.visitbypass")) {
+        Island island = targetUser.getIsland().get();
+        if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island, user)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%owner%", island.getOwner().getName())
+                    .replace("%name%", island.getName())
+            ));
+            return false;
+        }
+
+        if (!IridiumSkyblockAPI.getInstance().canVisitIsland(user, island)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
-        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, targetUser.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island, IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
         return true;
     }
 
