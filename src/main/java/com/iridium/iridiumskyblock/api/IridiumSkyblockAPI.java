@@ -319,4 +319,20 @@ public class IridiumSkyblockAPI {
         return iridiumSkyblock.getIslandManager().isIslandEnd(world);
     }
 
+    /**
+     * Returns whether the specified player can visit the provided Island.<p>
+     *
+     * @param user the user
+     * @param island the Island
+     * @return true if the user can visit the Island
+     * @since 3.2.7
+     */
+    public boolean canVisitIsland(@NotNull User user, @NotNull Island island) {
+        if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island, user)) {
+            return false;
+        }
+
+        return island.isVisitable() || user.isBypassing() || user.getPlayer().hasPermission("iridiumskyblock.visitbypass") || island.getMembers().contains(user) || IridiumSkyblock.getInstance().getIslandManager().getIslandTrusted(island, user).isPresent();
+    }
+
 }
