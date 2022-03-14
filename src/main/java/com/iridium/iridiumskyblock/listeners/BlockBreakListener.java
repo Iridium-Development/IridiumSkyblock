@@ -64,7 +64,9 @@ public class BlockBreakListener implements Listener {
             if (islandBooster.isActive()) {
                 event.setExpToDrop(event.getExpToDrop() * 2);
             }
+        });
 
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
             if (islandBlocks.getAmount() > 0) {
                 islandBlocks.setAmount(islandBlocks.getAmount() - 1);
