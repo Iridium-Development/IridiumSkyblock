@@ -161,6 +161,8 @@ public class Inventories {
 
     public BlockValuesInventoryConfig blockValue = new BlockValuesInventoryConfig(27, "&7Block Values", background1, Collections.singletonList("&bValue per block: &7%value%"));
 
+    public BlockValuesInventoryConfig blockLimit = new BlockValuesInventoryConfig(27, "&7Block Limits", background1, Collections.singletonList("&bBlocks per island: &7%value%"));
+
     public SingleItemGUI islandInvitesGUI = new SingleItemGUI(27, "&7Island Invites", background1, new Item(XMaterial.PLAYER_HEAD, 0, 1, "&b&l%player_name%", "%player_name%", Arrays.asList(
             "&7Invited By: %inviter%",
             "&7Time: %time%",
