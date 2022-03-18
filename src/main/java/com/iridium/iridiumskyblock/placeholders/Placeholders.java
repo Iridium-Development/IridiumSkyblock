@@ -178,7 +178,7 @@ public class Placeholders {
         HashMap<String, Placeholder> hashmap = new HashMap<>();
         
         for (int i = 1; i <= 20; i++) {
-            //To have an effectively final variable
+            // To have an effectively final variable
             final int ci = i;    
             hashmap.putAll(getIslandPlaceholders("island_top_" + i, player ->
             {
