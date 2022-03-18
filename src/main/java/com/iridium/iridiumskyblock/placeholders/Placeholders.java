@@ -179,7 +179,7 @@ public class Placeholders {
         
         for (int i = 1; i <= 20; i++) {
             // To have an effectively final variable
-            final int ci = i;    
+            final int index = i;    
             hashmap.putAll(getIslandPlaceholders("island_top_" + i, player ->
             {
                 // Island manager caches this
