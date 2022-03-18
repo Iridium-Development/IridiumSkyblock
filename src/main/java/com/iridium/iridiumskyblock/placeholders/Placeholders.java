@@ -182,7 +182,7 @@ public class Placeholders {
             final int ci = i;    
             hashmap.putAll(getIslandPlaceholders("island_top_" + i, player ->
             {
-                //Remove global caching of the list, no need for a local cache the island manager caches it.
+                // Island manager caches this
                 List<Island> topIslands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
                 Optional<Island> island = Optional.ofNullable(topIslands.size() > ci ? topIslands.get(ci - 1) : null);
                 return island;
