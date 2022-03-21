@@ -324,7 +324,7 @@ public class IridiumSkyblockAPI {
      * Returns which chunk generator IridiumSkyblock is using for world generation.
      *
      * @return the generator IridiumSkyblock uses
-     * @since 3.2.6
+     * @since 3.2.7
      */
     public GeneratorType getGeneratorType() {
         return IridiumSkyblock.getInstance().getConfiguration().generatorSettings.generatorType;
