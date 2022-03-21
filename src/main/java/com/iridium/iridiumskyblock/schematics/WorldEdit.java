@@ -3,6 +3,8 @@ package com.iridium.iridiumskyblock.schematics;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.extension.platform.Capability;
+import com.sk89q.worldedit.extension.platform.Platform;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
@@ -23,6 +25,14 @@ public class WorldEdit implements SchematicPaster {
 
     private static final HashMap<File, ClipboardFormat> cachedClipboardFormat = new HashMap<>();
 
+    public static boolean isWorking()
+    {
+        final Platform platform = com.sk89q.worldedit.WorldEdit.getInstance().getPlatformManager().queryCapability(Capability.WORLD_EDITING);
+        int liveDataVersion = platform.getDataVersion();
+
+        return liveDataVersion != -1;
+    }
+    
     @Override
     public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         try {
