@@ -30,10 +30,10 @@ public class SchematicManager {
         File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
         SchematicPaster schematicPaster = worldEdit || fawe ? new WorldEdit() : new Schematic();
         
-        if ((worldEdit||fawe) && !WorldEdit.isWorking())
+        if ((worldEdit || fawe) && !WorldEdit.isWorking())
         {
             IridiumSkyblock.getInstance().getLogger().warning("WorldEdit version doesn't support minecraft version, falling back to default integration");
-            schematicPaster=new Schematic();
+            schematicPaster = new Schematic();
         }
 
         this.schematicPaster = schematicPaster;
