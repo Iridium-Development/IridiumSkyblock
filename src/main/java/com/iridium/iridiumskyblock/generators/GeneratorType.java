@@ -11,14 +11,14 @@ public enum GeneratorType {
     SKYBLOCK(SkyblockGenerator::new),
     OCEAN(OceanGenerator::new);
 
-    private ChunkGenerator chunkGenerator;
+    private IridiumChunkGenerator chunkGenerator;
 
     /**
      * The default constructor.
      *
      * @param chunkGenerator The ChunkGenerator for this generator
      */
-    GeneratorType(Supplier<? extends ChunkGenerator> chunkGenerator) {
+    GeneratorType(Supplier<? extends IridiumChunkGenerator> chunkGenerator) {
         this.chunkGenerator = chunkGenerator.get();
     }
 
@@ -27,7 +27,7 @@ public enum GeneratorType {
      *
      * @return The ChunkGenerator
      */
-    public ChunkGenerator getChunkGenerator() {
+    public IridiumChunkGenerator getChunkGenerator() {
         return chunkGenerator;
     }
 

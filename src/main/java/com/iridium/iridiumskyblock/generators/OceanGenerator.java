@@ -7,10 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
-import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Random;
@@ -19,7 +19,7 @@ import java.util.Random;
  * Class which handles the {@link World} generation of IridiumSkyblock.
  * Creates an ocean world.
  */
-public class OceanGenerator extends ChunkGenerator {
+public class OceanGenerator extends IridiumChunkGenerator {
 
     /**
      * Generates an ocean.
@@ -150,6 +150,20 @@ public class OceanGenerator extends ChunkGenerator {
     @Override
     public boolean canSpawn(@NotNull World world, int x, int z) {
         return true;
+    }
+
+    /**
+     * Returns what a made with this generator is mainly consisting of.<p>
+     * Used for performance improvements.
+     *
+     * @param world the world that should be checked
+     * @return the most used material of the chunk generator in this generator
+     */
+    @Override
+    public XMaterial getMainMaterial(@Nullable World world) {
+        if (world == null) return XMaterial.WATER;
+
+        return world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
     }
 
 }

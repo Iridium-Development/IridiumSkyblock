@@ -856,14 +856,17 @@ public class IslandManager {
     private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
         chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
             World world = Bukkit.getWorld(chunk.getWorldName());
+            boolean ignoreMainMaterial = IridiumSkyblock.getInstance().getChunkGenerator().ignoreMainMaterial();
             int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
+
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
-                            if (material.equals(XMaterial.AIR)) continue;
+                            if (material == XMaterial.AIR) continue;
+                            if (!ignoreMainMaterial && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) continue;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
                             islandBlock.setAmount(islandBlock.getAmount() + 1);
@@ -873,10 +876,10 @@ public class IslandManager {
             }
         });
         
-        if (!Bukkit.isPrimaryThread()) {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
-        } else {
+        if (Bukkit.isPrimaryThread()) {
             getAllTileInIsland(island, chunks);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
         }
     }
     
