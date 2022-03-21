@@ -21,6 +21,7 @@ public class UserBuilder {
 
     public UserBuilder withIsland(Island island) {
         user.setIsland(island);
+        user.setIslandRank(IslandRank.MEMBER);
         return this;
     }
 
@@ -34,12 +35,8 @@ public class UserBuilder {
         return this;
     }
 
-    public PlayerMock buildPlayer() {
+    public PlayerMock build() {
         return playerMock;
-    }
-
-    public User buildUser() {
-        return user;
     }
 
 }

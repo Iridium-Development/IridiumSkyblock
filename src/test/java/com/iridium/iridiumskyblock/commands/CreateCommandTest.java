@@ -34,7 +34,7 @@ class CreateCommandTest {
 
     @Test
     public void executeNoArgs() {
-        PlayerMock playerMock = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock playerMock = new UserBuilder(serverMock).build();
         serverMock.dispatchCommand(playerMock, "is create");
         assertTrue(playerMock.getOpenInventory().getTopInventory().getHolder() instanceof IslandCreateGUI);
         IslandCreateGUI islandCreateGUI = (IslandCreateGUI) playerMock.getOpenInventory().getTopInventory().getHolder();
@@ -43,7 +43,7 @@ class CreateCommandTest {
 
     @Test
     public void executeWithName() {
-        PlayerMock playerMock = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock playerMock = new UserBuilder(serverMock).build();
         serverMock.dispatchCommand(playerMock, "is create IslandName");
         assertTrue(playerMock.getOpenInventory().getTopInventory().getHolder() instanceof IslandCreateGUI);
         IslandCreateGUI islandCreateGUI = (IslandCreateGUI) playerMock.getOpenInventory().getTopInventory().getHolder();
@@ -52,21 +52,21 @@ class CreateCommandTest {
 
     @Test
     public void executeWithSchematic() {
-        PlayerMock playerMock = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock playerMock = new UserBuilder(serverMock).build();
         serverMock.dispatchCommand(playerMock, "is create IslandName " + TestingHelper.getSchematicKey());
         playerMock.assertSaid(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 
     @Test
     public void executeWithInvalidSchematic() {
-        PlayerMock playerMock = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock playerMock = new UserBuilder(serverMock).build();
         serverMock.dispatchCommand(playerMock, "is create IslandName invalidSchematic");
         playerMock.assertSaid(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandSchematicNotFound.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
 
     @Test
     public void executeWithExistingIsland() {
-        PlayerMock playerMock = new UserBuilder(serverMock).withIsland(new IslandBuilder().build()).buildPlayer();
+        PlayerMock playerMock = new UserBuilder(serverMock).withIsland(new IslandBuilder().build()).build();
         serverMock.dispatchCommand(playerMock, "is create IslandName " + TestingHelper.getSchematicKey());
         playerMock.assertSaid(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }
@@ -74,7 +74,7 @@ class CreateCommandTest {
     @Test
     public void executeWithExistingIslandName() {
         new IslandBuilder("IslandName").build();
-        PlayerMock playerMock = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock playerMock = new UserBuilder(serverMock).build();
         serverMock.dispatchCommand(playerMock, "is create IslandName " + TestingHelper.getSchematicKey());
         playerMock.assertSaid(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
     }

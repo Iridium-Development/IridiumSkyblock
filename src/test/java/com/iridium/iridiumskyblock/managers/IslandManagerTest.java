@@ -14,6 +14,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Comparator;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class IslandManagerTest {
@@ -35,7 +38,7 @@ class IslandManagerTest {
     @Test
     public void getIslandInvite() {
         Island island = new IslandBuilder().build();
-        User user = new UserBuilder(serverMock).withIsland(island).buildUser();
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(new UserBuilder(serverMock).withIsland(island).build());
 
         assertFalse(IridiumSkyblock.getInstance().getIslandManager().getIslandInvite(island, user).isPresent());
         IslandInvite islandInvite = new IslandInvite(island, user, user);
@@ -46,7 +49,7 @@ class IslandManagerTest {
     @Test
     public void teleportYourIslandHome() {
         Island island = new IslandBuilder().build();
-        PlayerMock player = new UserBuilder(serverMock).withIsland(island).buildPlayer();
+        PlayerMock player = new UserBuilder(serverMock).withIsland(island).build();
         IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island, 0);
         assertEquals(island.getHome(), player.getLocation());
         player.assertSaid(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -55,7 +58,7 @@ class IslandManagerTest {
     @Test
     public void teleportOtherIslandHomePublic() {
         Island island = new IslandBuilder().build();
-        PlayerMock player = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock player = new UserBuilder(serverMock).build();
         IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island, 0);
         assertEquals(island.getHome(), player.getLocation());
         player.assertSaid(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHomeOther.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%owner%", island.getOwner().getName())));
@@ -64,7 +67,7 @@ class IslandManagerTest {
     @Test
     public void teleportOtherIslandHomeTrusted() {
         Island island = new IslandBuilder().build();
-        PlayerMock player = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock player = new UserBuilder(serverMock).build();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
 
         island.setVisitable(false);
@@ -78,7 +81,7 @@ class IslandManagerTest {
     @Test
     public void teleportOtherIslandHomeBypassing() {
         Island island = new IslandBuilder().build();
-        PlayerMock player = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock player = new UserBuilder(serverMock).build();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
 
         island.setVisitable(false);
@@ -92,7 +95,7 @@ class IslandManagerTest {
     @Test
     public void teleportIslandHomePrivate() {
         Island island = new IslandBuilder().build();
-        PlayerMock player = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock player = new UserBuilder(serverMock).build();
 
         island.setVisitable(false);
 
@@ -104,7 +107,7 @@ class IslandManagerTest {
     @Test
     public void teleportIslandHomeBanned() {
         Island island = new IslandBuilder().build();
-        PlayerMock player = new UserBuilder(serverMock).buildPlayer();
+        PlayerMock player = new UserBuilder(serverMock).build();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().addEntry(new IslandBan(island, user, user));
 
@@ -120,7 +123,7 @@ class IslandManagerTest {
     @Test
     public void teleportIslandWarp() {
         Island island = new IslandBuilder().build();
-        PlayerMock player = new UserBuilder(serverMock).withIsland(island).buildPlayer();
+        PlayerMock player = new UserBuilder(serverMock).withIsland(island).build();
         Location location = new Location(player.getWorld(), 100, 100, 100);
         IslandWarp islandWarp = new IslandWarp(island, location, "test");
 
@@ -154,10 +157,16 @@ class IslandManagerTest {
     @Test
     public void getIslandMembers() {
         Island island = new IslandBuilder().build();
-        User user1 = new UserBuilder(serverMock).withIsland(island).buildUser();
-        User user2 = new UserBuilder(serverMock).withIsland(island).buildUser();
-        assertEquals(2, IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).size());
-        assertTrue(IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).contains(user1));
-        assertTrue(IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island).contains(user2));
+
+        User user1 = IridiumSkyblock.getInstance().getUserManager().getUser(new UserBuilder(serverMock).withIsland(island).build());
+        User user2 = IridiumSkyblock.getInstance().getUserManager().getUser(new UserBuilder(serverMock).withIsland(island).build());
+        User user3 = IridiumSkyblock.getInstance().getUserManager().getUser(new UserBuilder(serverMock).withIsland(island).build());
+
+        List<User> users = IridiumSkyblock.getInstance().getIslandManager().getIslandMembers(island)
+                .stream()
+                .sorted(Comparator.comparing(User::getName))
+                .toList();
+
+        assertEquals(List.of(user1, user2, user3), users);
     }
 }
