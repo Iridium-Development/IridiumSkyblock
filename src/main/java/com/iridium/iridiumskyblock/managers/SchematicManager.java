@@ -28,7 +28,13 @@ public class SchematicManager {
 
     public SchematicManager() {
         File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
-        this.schematicPaster = worldEdit || fawe ? new WorldEdit() : new Schematic();
+        boolean isWorldEditBroken = (worldEdit||fawe)?!WorldEdit.isWorking():false;
+        if (isWorldEditBroken)
+        {
+            IridiumSkyblock.getInstance().getLogger().warning("WorldEdit version doesn't support minecraft version, falling back to default integration");
+        }
+
+        this.schematicPaster = ((worldEdit || fawe)&&!isWorldEditBroken) ? new WorldEdit() : new Schematic();
         this.schematicFiles = new HashMap<>();
         for (File file : parent.listFiles()) {
             schematicFiles.put(file.getName(), file);
