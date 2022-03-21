@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "3.2.5"
+version = "3.2.6"
 description = "IridiumSkyblock"
 
 repositories {
@@ -24,8 +24,8 @@ repositories {
 dependencies {
     // Dependencies that we want to shade in
     implementation("org.jetbrains:annotations:22.0.0")
-    implementation("com.iridium:IridiumCore:1.5.1")
-    implementation("org.bstats:bstats-bukkit:2.2.1")
+    implementation("com.iridium:IridiumCore:1.5.3")
+    implementation("org.bstats:bstats-bukkit:3.0.0")
     implementation("com.github.Redempt:Crunch:1.0.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
@@ -53,7 +53,7 @@ dependencies {
     // Test dependencies
     testImplementation(platform("org.junit:junit-bom:5.7.0"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("org.mockito:mockito-inline:4.2.0")
+    testImplementation("org.mockito:mockito-inline:4.3.1")
     testImplementation("com.github.seeseemelk:MockBukkit-v1.18:1.15.0")
 }
 

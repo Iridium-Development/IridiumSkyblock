@@ -63,7 +63,9 @@ public class BlockPlaceListener implements Listener {
 
         user.getIsland().ifPresent(island -> {
             IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "PLACE", material.name(), 1);
+        });
 
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
             islandBlocks.setAmount(islandBlocks.getAmount() + 1);
             if (event.getBlock().getState() instanceof CreatureSpawner) {
@@ -71,7 +73,6 @@ public class BlockPlaceListener implements Listener {
                 IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
                 islandSpawners.setAmount(islandSpawners.getAmount() + 1);
             }
-
         });
     }
 
