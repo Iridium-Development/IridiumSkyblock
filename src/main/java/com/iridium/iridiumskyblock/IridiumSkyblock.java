@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.generators.IridiumChunkGenerator;
 import com.iridium.iridiumskyblock.gui.GUI;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
@@ -82,7 +83,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Placeholders placeholders;
     private IslandSettings islandSettings;
 
-    private ChunkGenerator chunkGenerator;
+    private IridiumChunkGenerator chunkGenerator;
 
     private List<BankItem> bankItemList;
     private Map<String, Permission> permissionList;
