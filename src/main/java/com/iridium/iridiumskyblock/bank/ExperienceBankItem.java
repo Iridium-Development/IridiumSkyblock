@@ -38,8 +38,6 @@ public class ExperienceBankItem extends BankItem {
      */
     @Override
     public double withdraw(Player player, Number amount) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
@@ -49,13 +47,13 @@ public class ExperienceBankItem extends BankItem {
                 islandBank.setNumber(islandBank.getNumber() - experience);
                 PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) + experience);
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(experience))
                         .replace("%type%", getDisplayName())
                 );
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())
                 );
             }
@@ -74,8 +72,6 @@ public class ExperienceBankItem extends BankItem {
      */
     @Override
     public double deposit(Player player, Number amount) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
@@ -84,13 +80,13 @@ public class ExperienceBankItem extends BankItem {
                 islandBank.setNumber(islandBank.getNumber() + experience);
                 PlayerUtils.setTotalExperience(player, PlayerUtils.getTotalExperience(player) - experience);
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(experience))
                         .replace("%type%", getDisplayName())
                 );
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())
                 );
             }

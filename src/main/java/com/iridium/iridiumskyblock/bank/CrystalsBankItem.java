@@ -38,8 +38,6 @@ public class CrystalsBankItem extends BankItem {
      */
     @Override
     public double withdraw(Player player, Number amount) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
@@ -51,13 +49,13 @@ public class CrystalsBankItem extends BankItem {
                         player.getWorld().dropItem(player.getLocation(), itemStack)
                 );
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(crystals))
                         .replace("%type%", getDisplayName())
                 );
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%type%", getDisplayName())
                 );
             }
@@ -109,7 +107,7 @@ public class CrystalsBankItem extends BankItem {
 
         if (depositAmount == 0) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                     .replace("%type%", getDisplayName())
             );
             return 0;

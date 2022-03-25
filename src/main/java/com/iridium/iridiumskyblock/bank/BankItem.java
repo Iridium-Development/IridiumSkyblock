@@ -1,11 +1,17 @@
 package com.iridium.iridiumskyblock.bank;
 
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.Optional;
 
 /**
  * Represents a type of currency in the bank.
@@ -15,12 +21,18 @@ import org.bukkit.entity.Player;
 @Getter
 public abstract class BankItem {
 
+
     private String name;
     @Setter
     private String displayName;
     private double defaultAmount;
     private boolean enabled;
     private Item item;
+
+    //Added initialization to achive pull up refactoring
+    private OfflinePlayer player=this.getPlayer();
+    User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+    Optional<Island> island = user.getIsland();
 
     /**
      * The default constructor.
