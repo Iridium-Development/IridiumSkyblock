@@ -23,8 +23,8 @@ public class Commands {
     public ChatCommand chatCommand = new ChatCommand();
     public ClearDataCommand clearDataCommand = new ClearDataCommand();
     public CreateCommand createCommand = new CreateCommand();
-    public DeleteCommand deleteCommand = new DeleteCommand();
-    public DeleteWarpCommand deleteWarpCommand = new DeleteWarpCommand();
+    public DeleteIslandCommand deleteIslandCommand = new DeleteIslandCommand();
+    public DeleteIslandWarpCommand deleteIslandWarpCommand = new DeleteIslandWarpCommand();
     public DemoteCommand demoteCommand = new DemoteCommand();
     public DepositCommand depositCommand = new DepositCommand();
     public EditWarpCommand editWarpCommand = new EditWarpCommand();
