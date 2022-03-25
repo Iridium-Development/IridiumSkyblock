@@ -181,4 +181,11 @@ public final class User extends DatabaseObject {
     public void setTeleportingTask(BukkitTask teleportingTask) {
         this.teleportingTask = teleportingTask;
     }
+
+    //moved method
+    public User withIsland(Island island) {
+        this.setIsland(island);
+        this.setIslandRank(IslandRank.MEMBER);
+        return this;
+    }
 }

@@ -19,9 +19,10 @@ public class UserBuilder {
         this.user = IridiumSkyblock.getInstance().getUserManager().getUser(playerMock);
     }
 
+
     public UserBuilder withIsland(Island island) {
-        user.setIsland(island);
-        user.setIslandRank(IslandRank.MEMBER);
+        //method moved from here
+        this.user.withIsland(island);
         return this;
     }
 
