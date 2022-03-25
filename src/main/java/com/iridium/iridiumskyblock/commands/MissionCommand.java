@@ -6,9 +6,7 @@ import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.Mission.MissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.gui.DailyIslandMissionsGUI;
 import com.iridium.iridiumskyblock.gui.InventoryConfigGUI;
-import com.iridium.iridiumskyblock.gui.IslandMissionsGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,6 +18,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class MissionCommand extends Command {
+    // replace condition with polymorphism
+    private final IslandMissionInventory islandMissionInventory = new IslandMissionInventory();
+    private final DailyIslandMissionInventory dailyIslandMissionInventory = new DailyIslandMissionInventory();
+    private final InvalidMissionType invalidMissionType = new InvalidMissionType();
+
 
     /**
      * The default constructor.
@@ -50,18 +53,19 @@ public class MissionCommand extends Command {
             player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().missionSelectGUI, player.getOpenInventory().getTopInventory()).getInventory());
             return true;
         }
-        switch (Mission.MissionType.getMission(args[1])) {
-            case ONCE:
-                player.openInventory(new IslandMissionsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
-                return true;
-            case DAILY:
-                player.openInventory(new DailyIslandMissionsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
-                return true;
-            default:
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invalidMissionType.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                return false;
+
+        MissionType mission = MissionType.getMission(args[1]);
+        if (mission == MissionType.ONCE) {
+            return islandMissionInventory.openPlayerInventory(player, island);
         }
+
+        else if (mission == MissionType.DAILY) {
+            return dailyIslandMissionInventory.openPlayerInventory(player, island);
+        }
+
+        return invalidMissionType.openPlayerInventory(player);
     }
+
 
     /**
      * Handles tab-completion for this command.
