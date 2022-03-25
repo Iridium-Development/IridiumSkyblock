@@ -72,7 +72,7 @@ public class IslandWarpsGUI extends IslandGUI {
                         IridiumSkyblock.getInstance().getCommands().warpsCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
                         break;
                     case RIGHT:
-                        IridiumSkyblock.getInstance().getCommands().deleteWarpCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
+                        IridiumSkyblock.getInstance().getCommands().deleteIslandWarpCommand.execute(event.getWhoClicked(), new String[]{"", islandWarp.getName()});
                         break;
                 }
                 addContent(event.getInventory());
