@@ -50,15 +50,20 @@ public class BlockData {
         BlockState blockState = block.getState();
         Material mat = material.parseMaterial();
         if (mat != null) {
-            blockState.setType(mat);
-            blockState.setRawData(data);
-            blockState.update(true, true);
+            settingBlock(block, blockState, mat);
+        }
+    }
 
-            // We gotta create a new BlockState because the old one is still air and wont be instance of container
-            if (block.getState() instanceof InventoryHolder && inventory != null) {
-                InventoryHolder inventoryHolder = (InventoryHolder) block.getState();
-                inventoryHolder.getInventory().setContents(inventory.stream().map(item -> item != null ? ItemStackUtils.deserialize(item) : null).toArray(ItemStack[]::new));
-            }
+    //extracted method
+    private void settingBlock(Block block, BlockState blockState, Material mat) {
+        blockState.setType(mat);
+        blockState.setRawData(data);
+        blockState.update(true, true);
+
+        // We gotta create a new BlockState because the old one is still air and wont be instance of container
+        if (block.getState() instanceof InventoryHolder && inventory != null) {
+            InventoryHolder inventoryHolder = (InventoryHolder) block.getState();
+            inventoryHolder.getInventory().setContents(inventory.stream().map(item -> item != null ? ItemStackUtils.deserialize(item) : null).toArray(ItemStack[]::new));
         }
     }
 
