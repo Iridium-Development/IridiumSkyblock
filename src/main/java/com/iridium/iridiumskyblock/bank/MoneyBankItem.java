@@ -37,6 +37,8 @@ public class MoneyBankItem extends BankItem {
      */
     @Override
     public double withdraw(Player player, Number amount) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
@@ -70,6 +72,8 @@ public class MoneyBankItem extends BankItem {
      */
     @Override
     public double deposit(Player player, Number amount) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        Optional<Island> island = user.getIsland();
 
         if (island.isPresent()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
