@@ -1,54 +1,66 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumcore.utils.InventoryUtils;
+import com.iridium.iridiumcore.gui.PagedGUI;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
-import com.iridium.iridiumcore.utils.Placeholder;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
+import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandReward;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Collection;
 
-public class IslandRewardsGUI extends IslandGUI {
+public class IslandRewardsGUI extends PagedGUI<IslandReward> {
+
+    private final Island island;
 
     public IslandRewardsGUI(Island island, Inventory previousInventory) {
-        super(IridiumSkyblock.getInstance().getInventories().islandReward, previousInventory, island);
+        super(1,
+                IridiumSkyblock.getInstance().getInventories().islandReward.size,
+                IridiumSkyblock.getInstance().getInventories().islandReward.background,
+                IridiumSkyblock.getInstance().getInventories().previousPage,
+                IridiumSkyblock.getInstance().getInventories().nextPage,
+                previousInventory,
+                IridiumSkyblock.getInstance().getInventories().backButton
+        );
+        this.island = island;
+    }
+
+    @NotNull
+    @Override
+    public Inventory getInventory() {
+        NoItemGUI noItemGUI = IridiumSkyblock.getInstance().getInventories().islandReward;
+        Inventory inventory = Bukkit.createInventory(this, getSize(), StringUtils.color(noItemGUI.title));
+        addContent(inventory);
+        return inventory;
     }
 
     @Override
-    public void addContent(Inventory inventory) {
-        inventory.clear();
+    public Collection<IslandReward> getPageObjects() {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island);
+    }
 
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandReward.background);
-
-        List<Placeholder> placeholders = new PlaceholderBuilder().applyIslandPlaceholders(getIsland()).build();
-        
-        int maxSize = inventory.getSize() - 1; // slot 0
-        
-        AtomicInteger atomicInteger = new AtomicInteger(0);
-        for (IslandReward islandReward : IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(getIsland())) {
-            if (atomicInteger.get() > maxSize) break;
-            inventory.setItem(atomicInteger.getAndIncrement(), ItemStackUtils.makeItem(islandReward.getReward().item, placeholders));
-        }
-
-        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
-            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
-        }
+    @Override
+    public ItemStack getItemStack(IslandReward islandReward) {
+        return ItemStackUtils.makeItem(islandReward.getReward().item, new PlaceholderBuilder()
+                .applyIslandPlaceholders(island)
+                .build()
+        );
     }
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        List<IslandReward> islandRewards = IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(getIsland());
-        if (islandRewards.size() > event.getSlot()) {
-            IslandReward islandReward = islandRewards.get(event.getSlot());
-            islandReward.getReward().claim((Player) event.getWhoClicked(), getIsland());
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().delete(islandReward);
-            event.getWhoClicked().closeInventory();
-        }
+        IslandReward islandReward = getItem(event.getSlot());
+        if (islandReward == null) return;
+        islandReward.getReward().claim((Player) event.getWhoClicked(), island);
+        IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().delete(islandReward);
+        event.getWhoClicked().closeInventory();
     }
 }

@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandRewardsGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -43,7 +44,8 @@ public class RewardsCommand extends Command {
             return false;
         }
 
-        player.openInventory(new IslandRewardsGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
+        Inventory previousInventory = IridiumSkyblock.getInstance().getConfiguration().backButtons ? player.getOpenInventory().getTopInventory() : null;
+        player.openInventory(new IslandRewardsGUI(island.get(), previousInventory).getInventory());
         return true;
     }
 

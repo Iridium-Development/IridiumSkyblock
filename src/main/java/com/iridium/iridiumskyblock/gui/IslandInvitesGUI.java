@@ -1,61 +1,66 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumcore.utils.InventoryUtils;
+import com.iridium.iridiumcore.gui.PagedGUI;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
+import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
 import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * GUI which allows users to manage invites.
  */
-public class IslandInvitesGUI extends IslandGUI {
+public class IslandInvitesGUI extends PagedGUI<IslandInvite> {
 
-    private final Map<Integer, String> invites;
+    private final Island island;
 
-    /**
-     * The default constructor.
-     *
-     * @param island The Island this GUI belongs to
-     */
-    public IslandInvitesGUI(@NotNull Island island, Inventory previousInventory) {
-        super(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI, previousInventory, island);
-        invites = new HashMap<>();
+    public IslandInvitesGUI(Island island, Inventory previousInventory) {
+        super(1,
+                IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.size,
+                IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.background,
+                IridiumSkyblock.getInstance().getInventories().previousPage,
+                IridiumSkyblock.getInstance().getInventories().nextPage,
+                previousInventory,
+                IridiumSkyblock.getInstance().getInventories().backButton
+        );
+        this.island = island;
+    }
+
+    @NotNull
+    @Override
+    public Inventory getInventory() {
+        NoItemGUI noItemGUI = IridiumSkyblock.getInstance().getInventories().islandInvitesGUI;
+        Inventory inventory = Bukkit.createInventory(this, getSize(), StringUtils.color(noItemGUI.title));
+        addContent(inventory);
+        return inventory;
     }
 
     @Override
-    public void addContent(Inventory inventory) {
-        List<IslandInvite> islandInvites = IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(getIsland());
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
+    public Collection<IslandInvite> getPageObjects() {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island);
+    }
 
-        AtomicInteger slot = new AtomicInteger(0);
-        for (int i = 0; i < islandInvites.size(); i++) {
-            Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-                int itemSlot = slot.getAndIncrement();
-                List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(islandInvites.get(itemSlot).getUser()).applyIslandPlaceholders(getIsland()).build();
-                placeholderList.add(new Placeholder("inviter", islandInvites.get(itemSlot).getInviter().getName()));
-                placeholderList.add(new Placeholder("time", islandInvites.get(itemSlot).getTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
-                inventory.setItem(itemSlot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList));
-                invites.put(itemSlot, islandInvites.get(itemSlot).getUser().getName());
-            });
-        }
-
-        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
-            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
-        }
+    @Override
+    public ItemStack getItemStack(IslandInvite islandInvite) {
+        List<Placeholder> placeholderList = new PlaceholderBuilder()
+                .applyPlayerPlaceholders(islandInvite.getUser())
+                .applyIslandPlaceholders(island)
+                .build();
+        placeholderList.add(new Placeholder("inviter", islandInvite.getInviter().getName()));
+        placeholderList.add(new Placeholder("time", islandInvite.getTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))));
+        return ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().islandInvitesGUI.item, placeholderList);
     }
 
     /**
@@ -66,10 +71,10 @@ public class IslandInvitesGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (invites.containsKey(event.getSlot())) {
-            IridiumSkyblock.getInstance().getCommands().unInviteCommand.execute(event.getWhoClicked(), new String[]{"", invites.get(event.getSlot())});
-            event.getWhoClicked().openInventory(getInventory());
-        }
+        super.onInventoryClick(event);
+        IslandInvite islandInvite = getItem(event.getSlot());
+        if (islandInvite == null) return;
+        IridiumSkyblock.getInstance().getCommands().unInviteCommand.execute(event.getWhoClicked(), new String[]{"", islandInvite.getUser().getName()});
+        addContent(event.getInventory());
     }
-
 }

@@ -13,6 +13,7 @@ import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -53,7 +54,8 @@ public class TrustCommand extends Command {
         }
 
         if (args.length != 2) {
-            player.openInventory(new IslandTrustedGUI(island.get()).getInventory());
+            Inventory previousInventory = IridiumSkyblock.getInstance().getConfiguration().backButtons ? player.getOpenInventory().getTopInventory() : null;
+            player.openInventory(new IslandTrustedGUI(island.get(), previousInventory).getInventory());
             return true;
         }
 
