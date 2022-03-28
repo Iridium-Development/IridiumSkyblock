@@ -1,60 +1,63 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumcore.utils.InventoryUtils;
+import com.iridium.iridiumcore.gui.PagedGUI;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.PlaceholderBuilder;
+import com.iridium.iridiumskyblock.configs.inventories.NoItemGUI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * GUI which displays players on island
  */
-public class IslandVisitorsGUI extends IslandGUI {
+public class IslandVisitorsGUI extends PagedGUI<User> {
 
-    private final int page;
-    private final List<User> visitors;
+    private final Island island;
 
-    /**
-     * The default constructor.
-     *
-     * @param island The Island this GUI belongs to
-     */
-    public IslandVisitorsGUI(int page, @NotNull Island island) {
-        super(IridiumSkyblock.getInstance().getInventories().visitorsGUI, null, island);
-        this.page = page;
-        this.visitors = new ArrayList<>();
+    public IslandVisitorsGUI(Island island, Inventory previousInventory) {
+        super(1,
+                IridiumSkyblock.getInstance().getInventories().visitorsGUI.size,
+                IridiumSkyblock.getInstance().getInventories().visitorsGUI.background,
+                IridiumSkyblock.getInstance().getInventories().previousPage,
+                IridiumSkyblock.getInstance().getInventories().nextPage,
+                previousInventory,
+                IridiumSkyblock.getInstance().getInventories().backButton
+        );
+        this.island = island;
+    }
+
+    @NotNull
+    @Override
+    public Inventory getInventory() {
+        NoItemGUI noItemGUI = IridiumSkyblock.getInstance().getInventories().visitorsGUI;
+        Inventory inventory = Bukkit.createInventory(this, getSize(), StringUtils.color(noItemGUI.title));
+        addContent(inventory);
+        return inventory;
     }
 
     @Override
-    public void addContent(Inventory inventory) {
-        inventory.clear();
-        InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
+    public Collection<User> getPageObjects() {
+        return IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(island);
+    }
 
-        inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
-        inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
-
-        final long elementsPerPage = inventory.getSize() - 9;
-        AtomicInteger slot = new AtomicInteger(0);
-
-        IridiumSkyblock.getInstance().getIslandManager().getPlayersOnIsland(getIsland()).stream()
-                .filter(user -> user.getIsland().map(Island::getId).orElse(0) != getIsland().getId())
-                .skip((page - 1) * elementsPerPage)
-                .limit(elementsPerPage)
-                .forEachOrdered(user -> {
-                    visitors.add(user);
-                    List<Placeholder> placeholderList = new PlaceholderBuilder().applyPlayerPlaceholders(user).applyIslandPlaceholders(getIsland()).build();
-                    inventory.setItem(slot.getAndIncrement(), ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitorsGUI.item, placeholderList));
-                });
+    @Override
+    public ItemStack getItemStack(User user) {
+        List<Placeholder> placeholderList = new PlaceholderBuilder()
+                .applyPlayerPlaceholders(user)
+                .applyIslandPlaceholders(island)
+                .build();
+        return ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().visitorsGUI.item, placeholderList);
     }
 
     /**
@@ -65,25 +68,13 @@ public class IslandVisitorsGUI extends IslandGUI {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        final int size = IridiumSkyblock.getInstance().getInventories().bansGUI.size;
-        Player player = (Player) event.getWhoClicked();
-        if (event.getSlot() == size - 7 && page > 1) {
-            player.openInventory(new IslandVisitorsGUI(page - 1, getIsland()).getInventory());
-            return;
+        User visitor = getItem(event.getSlot());
+        if (visitor == null) return;
+        if (event.isLeftClick()) {
+            IridiumSkyblock.getInstance().getCommands().expelCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
+        } else if (event.isRightClick()) {
+            IridiumSkyblock.getInstance().getCommands().banCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
         }
-
-        if (event.getSlot() == size - 3 && (size - 9) * page < visitors.size()) {
-            player.openInventory(new IslandVisitorsGUI(page + 1, getIsland()).getInventory());
-            return;
-        }
-        if (visitors.size() > event.getSlot()) {
-            User visitor = visitors.get(event.getSlot());
-            if (event.isLeftClick()) {
-                IridiumSkyblock.getInstance().getCommands().expelCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
-            } else if (event.isRightClick()) {
-                IridiumSkyblock.getInstance().getCommands().banCommand.execute(event.getWhoClicked(), new String[]{"", visitor.getName()});
-            }
-            addContent(event.getInventory());
-        }
+        addContent(event.getInventory());
     }
 }
