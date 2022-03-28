@@ -10,6 +10,7 @@ public class InventoryClickListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onInventoryClick(InventoryClickEvent event) {
+        //Old Inventories
         if (event.getClickedInventory() != null && event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof GUI) {
             event.setCancelled(true);
             if (event.getClickedInventory() == event.getInventory()) {
@@ -19,6 +20,14 @@ public class InventoryClickListener implements Listener {
                 } else {
                     gui.onInventoryClick(event);
                 }
+            }
+        }
+
+        // New Inventories with IridiumCore
+        if (event.getClickedInventory() != null && event.getInventory().getHolder() != null && event.getInventory().getHolder() instanceof com.iridium.iridiumcore.gui.GUI) {
+            event.setCancelled(true);
+            if (event.getClickedInventory() == event.getInventory()) {
+                ((com.iridium.iridiumcore.gui.GUI) event.getInventory().getHolder()).onInventoryClick(event);
             }
         }
     }
