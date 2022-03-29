@@ -68,6 +68,7 @@ public class IslandVisitorsGUI extends PagedGUI<User> {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        super.onInventoryClick(event);
         User visitor = getItem(event.getSlot());
         if (visitor == null) return;
         if (event.isLeftClick()) {

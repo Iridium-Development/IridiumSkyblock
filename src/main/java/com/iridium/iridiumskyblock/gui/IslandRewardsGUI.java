@@ -57,6 +57,7 @@ public class IslandRewardsGUI extends PagedGUI<IslandReward> {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        super.onInventoryClick(event);
         IslandReward islandReward = getItem(event.getSlot());
         if (islandReward == null) return;
         islandReward.getReward().claim((Player) event.getWhoClicked(), island);

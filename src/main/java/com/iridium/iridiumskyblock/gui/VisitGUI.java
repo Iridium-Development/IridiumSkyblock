@@ -65,6 +65,7 @@ public class VisitGUI extends PagedGUI<Island> {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        super.onInventoryClick(event);
         Island island = getItem(event.getSlot());
         if (island == null) return;
         IridiumSkyblock.getInstance().getCommands().visitCommand.execute(event.getWhoClicked(), new String[]{"", island.getOwner().getName()});

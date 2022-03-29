@@ -69,6 +69,7 @@ public class IslandTrustedGUI extends PagedGUI<IslandTrusted> {
      */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        super.onInventoryClick(event);
         IslandTrusted islandTrusted = getItem(event.getSlot());
         if (islandTrusted == null) return;
         IridiumSkyblock.getInstance().getCommands().unTrustCommand.execute(event.getWhoClicked(), new String[]{"", islandTrusted.getUser().getName()});
