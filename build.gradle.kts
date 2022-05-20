@@ -32,7 +32,7 @@ dependencies {
     implementation("de.jeff_media:SpigotUpdateChecker:1.3.0")
 
     // Other dependencies that are not required or already available at runtime
-    compileOnly("org.projectlombok:lombok:1.18.22")
+    compileOnly("org.projectlombok:lombok:1.18.24")
     compileOnly("org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
@@ -48,7 +48,7 @@ dependencies {
     compileOnly("com.sk89q:WorldEdit:7.2.6")
 
     // Enable lombok annotation processing
-    annotationProcessor("org.projectlombok:lombok:1.18.22")
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
 
     // Test dependencies
     testImplementation(platform("org.junit:junit-bom:5.7.0"))
