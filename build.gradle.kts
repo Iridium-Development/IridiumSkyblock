@@ -15,10 +15,12 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://ci.ender.zone/plugin/repository/everything/")
     maven("https://jitpack.io")
+    maven("https://redempt.dev")
     maven("https://nexus.iridiumdevelopment.net/repository/maven-releases/")
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://hub.jeff-media.com/nexus/repository/jeff-media-public/")
+    maven("https://maven.enginehub.org/repo/")
 }
 
 dependencies {
@@ -26,7 +28,7 @@ dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
     implementation("com.iridium:IridiumCore:1.6.6")
     implementation("org.bstats:bstats-bukkit:3.0.0")
-    implementation("com.github.Redempt:Crunch:1.0.0")
+    implementation("com.github.Redempt:Crunch:1.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
     implementation("de.jeff_media:SpigotUpdateChecker:1.3.0")
@@ -44,8 +46,8 @@ dependencies {
     compileOnly("dev.rosewood:rosestacker:1.4.2")
     compileOnly("com.github.OmerBenGera:WildStackerAPI:master")
     compileOnly("com.songoda:UltimateStacker:2.1.7")
-    compileOnly("com.songoda:EpicSpawners:7.0.8")
-    compileOnly("com.sk89q:WorldEdit:7.2.6")
+    compileOnly("com.songoda:EpicSpawners:7.1.2")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.6-SNAPSHOT")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.22")
