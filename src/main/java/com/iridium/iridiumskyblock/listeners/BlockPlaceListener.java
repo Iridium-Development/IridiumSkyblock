@@ -30,7 +30,7 @@ public class BlockPlaceListener implements Listener {
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation());
         if (!island.isPresent()) {
             World world = event.getBlock().getLocation().getWorld();
-            if (Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getWorld()) || Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getNetherWorld()) || Objects.equals(world, IridiumSkyblock.getInstance().getIslandManager().getEndWorld())) {
+            if (IridiumSkyblockAPI.getInstance().isIslandWorld(world)) {
                 if (!user.isBypassing()) event.setCancelled(true);
             }
             return;
@@ -63,15 +63,11 @@ public class BlockPlaceListener implements Listener {
 
         user.getIsland().ifPresent(island -> {
             IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(island, "PLACE", material.name(), 1);
+        });
 
+        IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             IslandBlocks islandBlocks = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
             islandBlocks.setAmount(islandBlocks.getAmount() + 1);
-            if (event.getBlock().getState() instanceof CreatureSpawner) {
-                CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
-                IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());
-                islandSpawners.setAmount(islandSpawners.getAmount() + 1);
-            }
-
             if (event.getBlock().getState() instanceof CreatureSpawner) {
                 CreatureSpawner creatureSpawner = (CreatureSpawner) event.getBlock().getState();
                 IslandSpawners islandSpawners = IridiumSkyblock.getInstance().getIslandManager().getIslandSpawners(island, creatureSpawner.getSpawnedType());

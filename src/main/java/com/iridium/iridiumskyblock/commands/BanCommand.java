@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -53,7 +54,8 @@ public class BanCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new IslandBansGUI(1, island.get(), player.getOpenInventory().getTopInventory()).getInventory());
+            Inventory previousInventory = IridiumSkyblock.getInstance().getConfiguration().backButtons ? player.getOpenInventory().getTopInventory() : null;
+            player.openInventory(new IslandBansGUI(island.get(), previousInventory).getInventory());
             return false;
         }
 

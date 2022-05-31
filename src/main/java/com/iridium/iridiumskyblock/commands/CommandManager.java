@@ -207,7 +207,13 @@ public class CommandManager implements CommandExecutor, TabCompleter {
                 Command executingCommand = findExecutingCommand(command, args);
                 if (hasPermissions(commandSender, executingCommand)) {
                     List<String> tabCompletion = new ArrayList<>(executingCommand.onTabComplete(commandSender, cmd, label, args));
-                    tabCompletion.addAll(executingCommand.getChildNames());
+
+                    // Add all child commands the CommandSender has permissions for
+                    executingCommand.childs.stream()
+                            .filter(subCommand -> hasPermissions(commandSender, subCommand))
+                            .map(subCommand -> subCommand.aliases.get(0))
+                            .forEach(tabCompletion::add);
+
                     return filterTabCompletionResults(tabCompletion, args);
                 }
             }

@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -50,7 +51,8 @@ public class ExpelCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new IslandVisitorsGUI(1, island.get()).getInventory());
+            Inventory previousInventory = IridiumSkyblock.getInstance().getConfiguration().backButtons ? player.getOpenInventory().getTopInventory() : null;
+            player.openInventory(new IslandVisitorsGUI(island.get(), previousInventory).getInventory());
             return true;
         }
 

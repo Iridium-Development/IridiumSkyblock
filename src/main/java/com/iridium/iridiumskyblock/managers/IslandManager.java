@@ -11,7 +11,6 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.*;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
-import com.iridium.iridiumskyblock.api.IslandCreateEvent;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandRegenEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
@@ -65,8 +64,7 @@ public class IslandManager {
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
-        //TODO
-//        Bukkit.createWorld(worldCreator);
+        Bukkit.createWorld(worldCreator);
     }
 
     /**
@@ -202,41 +200,6 @@ public class IslandManager {
     }
 
     /**
-     * Creates an island for a specific Player and then teleports them to the island home.
-     *
-     * @param player          The owner of the island
-     * @param name            The name of  the island
-     * @param schematicConfig The schematic of the island
-     * @return True if the island has been created successfully
-     */
-    public boolean makeIsland(Player player, String name, Schematics.SchematicConfig schematicConfig) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        if (user.getIsland().isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().alreadyHaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
-        }
-
-        if (name != null && getIslandByName(name).isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
-        }
-
-        IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name, schematicConfig);
-        Bukkit.getPluginManager().callEvent(islandCreateEvent);
-        if (islandCreateEvent.isCancelled()) return false;
-
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        createIsland(player, islandCreateEvent.getIslandName(), islandCreateEvent.getSchematicConfig()).thenAccept(island ->
-                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                    teleportHome(player, island);
-                    IridiumSkyblock.getInstance().getNms().sendTitle(player, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
-                })
-        );
-
-        return true;
-    }
-
-    /**
      * Creates an Island for the specified player with the provided name.
      *
      * @param player    The owner of the Island
@@ -244,7 +207,7 @@ public class IslandManager {
      * @param schematic The schematic of the Island
      * @return The island being created
      */
-    private @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, String name, @NotNull Schematics.SchematicConfig schematic) {
+    public @NotNull CompletableFuture<Island> createIsland(@NotNull Player player, String name, @NotNull Schematics.SchematicConfig schematic) {
         clearIslandCache();
         CompletableFuture<Island> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
@@ -745,20 +708,22 @@ public class IslandManager {
      * @param island The specified Island
      */
     private void deleteIslanDatabasedEntries(@NotNull Island island) {
+        DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBanTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBankTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandBoosterTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandMissionTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandRewardTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandUpgradeTableManager()::delete);
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().getEntries(island).forEach(IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager()::delete);
+            databaseManager.getIslandTableManager().delete(island);
+            databaseManager.getIslandBanTableManager().getEntries(island).forEach(databaseManager.getIslandBanTableManager()::delete);
+            databaseManager.getIslandBankTableManager().getEntries(island).forEach(databaseManager.getIslandBankTableManager()::delete);
+            databaseManager.getIslandBlocksTableManager().getEntries(island).forEach(databaseManager.getIslandBlocksTableManager()::delete);
+            databaseManager.getIslandBoosterTableManager().getEntries(island).forEach(databaseManager.getIslandBoosterTableManager()::delete);
+            databaseManager.getIslandInviteTableManager().getEntries(island).forEach(databaseManager.getIslandInviteTableManager()::delete);
+            databaseManager.getIslandLogTableManager().getEntries(island).forEach(databaseManager.getIslandLogTableManager()::delete);
+            databaseManager.getIslandMissionTableManager().getEntries(island).forEach(databaseManager.getIslandMissionTableManager()::delete);
+            databaseManager.getIslandRewardTableManager().getEntries(island).forEach(databaseManager.getIslandRewardTableManager()::delete);
+            databaseManager.getIslandSpawnersTableManager().getEntries(island).forEach(databaseManager.getIslandSpawnersTableManager()::delete);
+            databaseManager.getIslandTrustedTableManager().getEntries(island).forEach(databaseManager.getIslandTrustedTableManager()::delete);
+            databaseManager.getIslandUpgradeTableManager().getEntries(island).forEach(databaseManager.getIslandUpgradeTableManager()::delete);
+            databaseManager.getIslandWarpTableManager().getEntries(island).forEach(databaseManager.getIslandWarpTableManager()::delete);
+            databaseManager.getIslandSettingTableManager().getEntries(island).forEach(databaseManager.getIslandSettingTableManager()::delete);
         });
     }
 
@@ -842,12 +807,16 @@ public class IslandManager {
      * @return The daily missions
      */
     public synchronized Map<String, Mission> getDailyIslandMissions(@NotNull Island island) {
-        Map<String, Mission> missions = new HashMap<>();
+        Map<String, Mission> missions = new LinkedHashMap<>();
 
         IntStream.range(0, IridiumSkyblock.getInstance().getMissions().dailySlots.size())
                 .boxed()
                 .map(i -> getDailyIslandMission(island, i))
-                .forEach(mission ->
+                .sorted(Comparator.comparingInt(mission -> {
+                    Integer slot = IridiumSkyblock.getInstance().getMissionsList().get(mission).getItem().slot;
+                    return slot == null ? 0 : slot;
+                }))
+                .forEachOrdered(mission ->
                         missions.put(mission, IridiumSkyblock.getInstance().getMissionsList().get(mission))
                 );
 
@@ -855,11 +824,13 @@ public class IslandManager {
     }
 
     public int getIslandBlockAmount(Island island, XMaterial material) {
-        return getIslandBlock(island, material).getAmount() + IridiumSkyblock.getInstance().getStackerSupport().getExtraBlocks(island, material);
+        int extraAmount = getPlayersOnIsland(island).size() == 0 ? getIslandBlock(island, material).getExtraAmount() : IridiumSkyblock.getInstance().getStackerSupport().getExtraBlocks(island, material);
+        return getIslandBlock(island, material).getAmount() + extraAmount;
     }
 
     public int getIslandSpawnerAmount(Island island, EntityType entityType) {
-        return getIslandSpawners(island, entityType).getAmount() + IridiumSkyblock.getInstance().getStackerSupport().getExtraSpawners(island, entityType);
+        int extraAmount = getPlayersOnIsland(island).size() == 0 ? getIslandSpawners(island, entityType).getExtraAmount() : IridiumSkyblock.getInstance().getStackerSupport().getExtraSpawners(island, entityType);
+        return getIslandSpawners(island, entityType).getAmount() + extraAmount;
     }
 
     /**
@@ -885,14 +856,17 @@ public class IslandManager {
     private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks) {
         chunks.stream().map(chunk -> chunk.getChunkSnapshot(true, false, false)).forEach(chunk -> {
             World world = Bukkit.getWorld(chunk.getWorldName());
+            boolean ignoreMainMaterial = IridiumSkyblock.getInstance().getChunkGenerator().ignoreMainMaterial();
             int maxHeight = world == null ? 255 : world.getMaxHeight() - 1;
+
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
-                            if (material.equals(XMaterial.AIR)) continue;
+                            if (material == XMaterial.AIR) continue;
+                            if (!ignoreMainMaterial && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) continue;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);
                             islandBlock.setAmount(islandBlock.getAmount() + 1);
@@ -901,6 +875,15 @@ public class IslandManager {
                 }
             }
         });
+        
+        if (Bukkit.isPrimaryThread()) {
+            getAllTileInIsland(island, chunks);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> getAllTileInIsland(island, chunks));
+        }
+    }
+    
+    private void getAllTileInIsland(Island island, List<Chunk> chunks) {
         chunks.forEach(chunk -> {
             for (BlockState blockState : chunk.getTileEntities()) {
                 if (!(blockState instanceof CreatureSpawner)) continue;

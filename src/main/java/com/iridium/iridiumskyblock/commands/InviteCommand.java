@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -49,7 +50,8 @@ public class InviteCommand extends Command {
         }
 
         if (args.length == 1) {
-            player.openInventory(new IslandInvitesGUI(island.get(), player.getOpenInventory().getTopInventory()).getInventory());
+            Inventory previousInventory = IridiumSkyblock.getInstance().getConfiguration().backButtons ? player.getOpenInventory().getTopInventory() : null;
+            player.openInventory(new IslandInvitesGUI(island.get(), previousInventory).getInventory());
             return true;
         }
 

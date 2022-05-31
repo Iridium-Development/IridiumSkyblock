@@ -46,7 +46,7 @@ public class RenameCommand extends Command {
 
         String name = String.join(" ", Arrays.asList(args).subList(1, args.length));
         if (!user.getIslandRank().equals(IslandRank.OWNER)) {
-            player.sendMessage(IridiumSkyblock.getInstance().getMessages().cannotChangeName.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotChangeName.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)));
             return false;
         }
 
@@ -69,7 +69,7 @@ public class RenameCommand extends Command {
         }
         
         if (IridiumSkyblock.getInstance().getIslandManager().getIslandByName(name).isPresent()) {
-            player.sendMessage(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandWithNameAlreadyExists.replace("%prefix%", (IridiumSkyblock.getInstance().getConfiguration()).prefix)));
             return false;
         }
 

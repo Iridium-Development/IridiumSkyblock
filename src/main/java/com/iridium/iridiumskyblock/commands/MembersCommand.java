@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandMembersGUI;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -44,7 +45,8 @@ public class MembersCommand extends Command {
             return false;
         }
 
-        player.openInventory(new IslandMembersGUI(island.get()).getInventory());
+        Inventory previousInventory = IridiumSkyblock.getInstance().getConfiguration().backButtons ? player.getOpenInventory().getTopInventory() : null;
+        player.openInventory(new IslandMembersGUI(island.get(), previousInventory).getInventory());
         return true;
     }
 

@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -39,14 +40,14 @@ public class IslandRegenGUI extends SchematicGUI {
      * @param schematicConfig The data of the selected schematic
      */
     @Override
-    public void selectSchematic(Schematics.SchematicConfig schematicConfig) {
+    public void selectSchematic(Map.Entry<String, Schematics.SchematicConfig> schematicConfig) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
         IslandRegenSettings regenSettings = IridiumSkyblock.getInstance().getConfiguration().regenSettings;
         if (island.isPresent()) {
             if (PlayerUtils.pay(player, island.get(), regenSettings.crystalPrice, regenSettings.moneyPrice)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig);
+                IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.getValue());
                 cooldownProvider.applyCooldown(player);
             } else {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

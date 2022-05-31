@@ -2,18 +2,20 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.VisitGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
-
-import java.time.Duration;
-import java.util.Collections;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+
+import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Command which opens visitable islands or visits an island.
@@ -40,7 +42,8 @@ public class VisitCommand extends Command {
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         if (args.length != 2) {
-            player.openInventory(new VisitGUI(1, user).getInventory());
+            Inventory previousInventory = IridiumSkyblock.getInstance().getConfiguration().backButtons ? player.getOpenInventory().getTopInventory() : null;
+            player.openInventory(new VisitGUI(user, previousInventory).getInventory());
             return true;
         }
 
@@ -51,12 +54,22 @@ public class VisitCommand extends Command {
             return false;
         }
 
-        if (!targetUser.getIsland().get().isVisitable() && !player.hasPermission("iridiumskyblock.visitbypass")) {
+        Island island = targetUser.getIsland().get();
+        if (IridiumSkyblock.getInstance().getIslandManager().isBannedOnIsland(island, user)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%owner%", island.getOwner().getName())
+                    .replace("%name%", island.getName())
+            ));
+            return false;
+        }
+
+        if (!IridiumSkyblockAPI.getInstance().canVisitIsland(user, island)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
 
-        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, targetUser.getIsland().get(), IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
+        IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island, IridiumSkyblock.getInstance().getConfiguration().teleportDelay);
         return true;
     }
 

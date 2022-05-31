@@ -84,14 +84,11 @@ public abstract class Command {
 
     Optional<Command> getChildByName(String name) {
         return childs.stream()
-            .filter(command -> command.aliases.contains(name.toLowerCase()))
+            .filter(command -> command.aliases.stream()
+                    .map(String::toLowerCase)
+                    .anyMatch(commandName -> commandName.equalsIgnoreCase(name))
+            )
             .findAny();
-    }
-
-    public List<String> getChildNames() {
-        return childs.stream()
-            .map(command -> command.aliases.get(0))
-            .collect(Collectors.toList());
     }
 
     /**
