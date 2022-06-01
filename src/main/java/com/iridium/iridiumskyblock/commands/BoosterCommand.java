@@ -4,6 +4,9 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.commands.booster.GiveCommand;
+import com.iridium.iridiumskyblock.commands.booster.RemoveCommand;
+import com.iridium.iridiumskyblock.commands.booster.SetCommand;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBooster;
 import com.iridium.iridiumskyblock.database.IslandLog;
@@ -22,11 +25,20 @@ import java.util.Optional;
 
 public class BoosterCommand extends Command {
 
+    public GiveCommand giveCommand;
+    public RemoveCommand removeCommand;
+    public SetCommand setCommand;
+
     /**
      * The default constructor.
      */
     public BoosterCommand() {
         super(Arrays.asList("booster", "boosters"), "Open the Island Boosters Menu", "%prefix% &7/is booster <name>", "", true, Duration.ZERO);
+        this.giveCommand = new GiveCommand();
+        this.removeCommand = new RemoveCommand();
+        this.setCommand = new SetCommand();
+
+        addChilds(giveCommand, removeCommand, setCommand);
     }
 
     /**
