@@ -1,7 +1,6 @@
 package com.iridium.iridiumskyblock.commands.booster;
 
 import com.iridium.iridiumcore.utils.StringUtils;
-import com.iridium.iridiumskyblock.Booster;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.commands.Command;
 import com.iridium.iridiumskyblock.database.Island;
@@ -36,7 +35,6 @@ public class SetCommand extends Command {
             if (island.isPresent()) {
                 String boosterName = args[3];
                 if (IridiumSkyblock.getInstance().getBoosterList().containsKey(boosterName)) {
-                    Booster booster = IridiumSkyblock.getInstance().getBoosterList().get(boosterName);
                     IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), boosterName);
                     islandBooster.setTime(LocalDateTime.now().plusSeconds(Long.parseLong(args[4])));
                     sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().setBooster
