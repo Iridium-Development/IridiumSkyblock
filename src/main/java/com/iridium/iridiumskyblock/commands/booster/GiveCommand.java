@@ -40,10 +40,10 @@ public class GiveCommand extends Command {
                     Booster booster = IridiumSkyblock.getInstance().getBoosterList().get(boosterName);
                     IslandBooster islandBooster = IridiumSkyblock.getInstance().getIslandManager().getIslandBooster(island.get(), boosterName);
                     islandBooster.setTime(LocalDateTime.now().plusSeconds(Long.parseLong(args[4]) + (islandBooster.isActive() && booster.stackable ? islandBooster.getRemainingTime() : 0)));
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().giveBooster)
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().giveBooster
                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                             .replace("%booster%", boosterName)
-                            .replace("%player%", args[2]));
+                            .replace("%player%", args[2])));
 
                     island.get().getMembers()
                             .stream()
