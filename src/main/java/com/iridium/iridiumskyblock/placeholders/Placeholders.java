@@ -49,11 +49,17 @@ public class Placeholders {
                 .put(startKey + "_rank", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getRank())).orElse(placeholdersConfig.islandRank)
                 )
+                .put(startKey + "_rank_raw", player ->
+                        String.valueOf(islandGetter.getIsland(player).map(Island::getRank).orElse(Integer.valueOf(placeholdersConfig.islandRank)))
+                )
                 .put(startKey + "_level", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getLevel())).orElse(placeholdersConfig.islandLevel)
                 )
                 .put(startKey + "_value", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedValue).orElse(placeholdersConfig.islandValue)
+                )
+                .put(startKey + "_value_raw", player ->
+                        String.valueOf(islandGetter.getIsland(player).map(Island::getValue).orElse(Double.valueOf(placeholdersConfig.islandValue)))
                 )
                 .put(startKey + "_extravalue", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExtraValue())).orElse(placeholdersConfig.islandExtraValue)
@@ -81,6 +87,9 @@ public class Placeholders {
                 )
                 .put(startKey + "_experience", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedExperience).orElse(placeholdersConfig.islandExperience)
+                )
+                .put(startKey + "_experience_raw", player ->
+                        String.valueOf(islandGetter.getIsland(player).map(Island::getExperience).orElse(Integer.valueOf(placeholdersConfig.islandExperience)))
                 )
                 .put(startKey + "_experience_required", player ->
                         islandGetter.getIsland(player).map(island -> IridiumSkyblock.getInstance().getNumberFormatter().format(island.getExperienceRequiredToLevelUp())).orElse(placeholdersConfig.islandExperienceRequired)
@@ -114,11 +123,20 @@ public class Placeholders {
                 .put(startKey + "_bank_experience", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedBankExperience).orElse(placeholdersConfig.islandBankExperience)
                 )
+                .put(startKey + "_bank_experience_raw", player ->
+                        String.valueOf(islandGetter.getIsland(player).map(Island::getExperience).orElse(Integer.valueOf(placeholdersConfig.islandBankExperience)))
+                )
                 .put(startKey + "_bank_crystals", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedCrystals).orElse(placeholdersConfig.islandBankCrystals)
                 )
+                .put(startKey + "_bank_crystals_raw", player ->
+                        String.valueOf(islandGetter.getIsland(player).map(Island::getCrystals).orElse(Integer.valueOf(placeholdersConfig.islandBankCrystals)))
+                )
                 .put(startKey + "_bank_money", player ->
                         islandGetter.getIsland(player).map(Island::getFormattedMoney).orElse(placeholdersConfig.islandBankMoney)
+                )
+                .put(startKey + "_bank_money_raw", player ->
+                        String.valueOf(islandGetter.getIsland(player).map(Island::getMoney).orElse(Double.valueOf(placeholdersConfig.islandBankMoney)))
                 )
 
                 // Island Upgrade Placeholders
@@ -184,8 +202,7 @@ public class Placeholders {
             {
                 // Island manager caches this
                 List<Island> topIslands = IridiumSkyblock.getInstance().getIslandManager().getIslands(IslandManager.SortType.VALUE);
-                Optional<Island> island = Optional.ofNullable(topIslands.size() >= index ? topIslands.get(index - 1) : null);
-                return island;
+                return Optional.ofNullable(topIslands.size() >= index ? topIslands.get(index - 1) : null);
             }));
         }
         return hashmap;
