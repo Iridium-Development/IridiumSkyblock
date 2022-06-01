@@ -37,7 +37,7 @@ public class RemoveCommand extends Command {
                     try {
                         IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
                         islandBank.setNumber(Math.max(islandBank.getNumber() - Double.parseDouble(args[4]), 0));
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().removedBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().removedBank.replace("%player%", args[2]).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         return true;
                     } catch (NumberFormatException exception) {
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
