@@ -125,10 +125,10 @@ public class Messages {
     public String cannotAfford = "%prefix% &7You cannot afford this.";
     public String unknownUpgrade = "%prefix% &7Unknown Island upgrade.";
     public String unknownBooster = "%prefix% &7Unknown Island booster.";
-    public String giveBooster = "%prefix% &7You have given %player%'s island a %booster% Booster.";
-    public String setBooster = "%prefix% &7You changed %player%'s island's %booster% Booster to %time% seconds.";
-    public String removeBooster = "%prefix% &7You disabled %player%'s island's %booster% Booster.";
-    public String receiveBooster = "%prefix% &7Your island received a %booster% Booster.";
+    public String giveBooster = "%prefix% &7You have given %player%'s Island a %booster% Booster.";
+    public String setBooster = "%prefix% &7You changed %player%'s Island's %booster% Booster to %time% seconds.";
+    public String removeBooster = "%prefix% &7You disabled %player%'s Island's %booster% Booster.";
+    public String receiveBooster = "%prefix% &7Your Island received a %booster% Booster.";
     public String successfullyBoughtBooster = "%prefix% &7You have successfully bought the %booster% Booster &r&7for $%vault_cost% and %crystal_cost% Crystals.";
     public String successfullyBoughtUpgrade = "%prefix% &7You have successfully bought the %upgrade% Upgrade &r&7for $%vault_cost% and %crystal_cost% Crystals.";
     public String unknownWarp = "%prefix% &7Unknown Island warp.";
