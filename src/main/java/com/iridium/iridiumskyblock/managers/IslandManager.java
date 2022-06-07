@@ -62,7 +62,7 @@ public class IslandManager {
      */
     public void createWorld(World.Environment environment, String name) {
         WorldCreator worldCreator = new WorldCreator(name)
-                .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
+                //.generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
         Bukkit.createWorld(worldCreator);
     }

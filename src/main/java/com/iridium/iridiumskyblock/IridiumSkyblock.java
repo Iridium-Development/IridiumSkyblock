@@ -153,12 +153,7 @@ public class IridiumSkyblock extends IridiumCore {
         // Initialize the manager classes (bad) and create the world
         this.islandManager = new IslandManager();
         this.userManager = new UserManager();
-        this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
-        this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
-        this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
-
         this.databaseManager = new DatabaseManager();
-        // Try to connect to the database
         try {
             databaseManager.init();
         } catch (SQLException exception) {
@@ -167,6 +162,13 @@ public class IridiumSkyblock extends IridiumCore {
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
+
+        this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
+        this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
+        this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
+
+        // Try to connect to the database
+      
 
         this.missionManager = new MissionManager();
 
