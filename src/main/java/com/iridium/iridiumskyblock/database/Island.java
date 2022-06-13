@@ -42,14 +42,15 @@ public final class Island extends DatabaseObject {
     @DatabaseField(columnName = "id", generatedId = true, canBeNull = false)
     private int id;
 
-    @DatabaseField(columnName = "name", unique = true)
+    // 190 is oddly specific but necessary to support older databases
+    @DatabaseField(columnName = "name", unique = true, width = 190)
     private String name;
 
     /*
     The islands home relative to the island center as a string.
     Format: x,y,z,pitch,yaw
     */
-    @DatabaseField(columnName = "home")
+    @DatabaseField(columnName = "home", width = 190)
     private @NotNull String home;
 
     @DatabaseField(columnName = "visit")
