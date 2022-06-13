@@ -9,9 +9,7 @@ import com.iridium.iridiumskyblock.database.IslandReward;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public class MissionManager {
 
@@ -24,6 +22,11 @@ public class MissionManager {
      * @param amount      The amount we are incrementing by
      */
     public void handleMissionUpdates(@NotNull Island island, @NotNull String missionType, @NotNull String identifier, int amount) {
+
+        if (!this.isPermittedMission(island, missionType, identifier)) {
+            return;
+        }
+
         incrementMission(island, missionType + ":" + identifier, amount);
 
         incrementMission(island, missionType + ":ANY", amount);
@@ -33,6 +36,23 @@ public class MissionManager {
                 incrementMission(island, missionType + ":" + itemList.getKey(), amount);
             }
         }
+    }
+
+    private boolean isPermittedMission(@NotNull Island island,@NotNull String missionType,@NotNull String identifier) {
+        List<Mission> allowedMissions = new ArrayList<>();
+
+        IridiumSkyblock.getInstance().getMissionsList().forEach((k, v) -> {
+            if (v.getMissionType().equals(Mission.MissionType.ONCE)) allowedMissions.add(v);
+        });
+        allowedMissions.addAll(IridiumSkyblock.getInstance().getIslandManager().getDailyIslandMissions(island).values());
+
+        return allowedMissions.stream().anyMatch(mission -> {
+            List<String> mis = mission.getMissions().stream().filter(single -> {
+                String[] target = single.split(":");
+                return target[0].equalsIgnoreCase(missionType) && target[1].equalsIgnoreCase(identifier);
+            }).toList();
+            return mis.size() > 0;
+        });
     }
 
     /**
