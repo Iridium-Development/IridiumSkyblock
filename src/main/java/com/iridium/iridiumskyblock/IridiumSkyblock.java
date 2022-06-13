@@ -289,8 +289,8 @@ public class IridiumSkyblock extends IridiumCore {
             public void run() {
                 databaseManager.getIslandMissionTableManager().delete(
                         databaseManager.getIslandMissionTableManager().getEntries().stream()
-                                .filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY)
-                                .collect(Collectors.toList())
+                                .filter(islandMission -> islandMission.getType().equals(Mission.MissionType.DAILY))
+                                .toList()
                 );
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> resetIslandMissions());
             }
