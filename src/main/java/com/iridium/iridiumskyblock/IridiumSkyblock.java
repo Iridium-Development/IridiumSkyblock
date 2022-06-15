@@ -2,7 +2,7 @@ package com.iridium.iridiumskyblock;
 
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.IridiumCore;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
@@ -264,7 +264,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
         return new StackerSupport() {
             @Override
-            public int getExtraBlocks(Island island, XMaterial material) {
+            public int getExtraBlocks(Island island, IridiumMaterial material) {
                 return 0;
             }
 

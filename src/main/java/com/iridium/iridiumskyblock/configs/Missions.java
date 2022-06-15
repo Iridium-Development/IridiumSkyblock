@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.support.material.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumskyblock.Mission;
 import com.iridium.iridiumskyblock.Reward;
@@ -22,7 +22,7 @@ public class Missions {
 
     public Map<String, Mission> missions = ImmutableMap.<String, Mission>builder()
             //DAILY MISSIONS
-            .put("farmer", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lFarmer",
+            .put("farmer", new Mission(new Item(IridiumMaterial.SUGAR_CANE, 1, "&b&lFarmer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -35,7 +35,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Arrays.asList("GROW:SUGAR_CANE:10", "GROW:WHEAT:10", "GROW:CARROTS:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lFarmer Reward",
+                    )), Arrays.asList("GROW:SUGAR_CANE:10", "GROW:WHEAT:10", "GROW:CARROTS:10"), Mission.MissionType.DAILY, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lFarmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -48,7 +48,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("hunter", new Mission(new Item(XMaterial.BONE, 1, "&b&lHunter",
+            .put("hunter", new Mission(new Item(IridiumMaterial.BONE, 1, "&b&lHunter",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -61,7 +61,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lHunter Reward",
+                    )), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.DAILY, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lHunter Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -74,7 +74,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("baker", new Mission(new Item(XMaterial.BREAD, 1, "&b&lBaker",
+            .put("baker", new Mission(new Item(IridiumMaterial.BREAD, 1, "&b&lBaker",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -85,7 +85,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("CRAFT:BREAD:64"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lBaker Reward",
+                    )), Collections.singletonList("CRAFT:BREAD:64"), Mission.MissionType.DAILY, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lBaker Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -98,7 +98,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("miner", new Mission(new Item(XMaterial.GOLD_ORE, 1, "&b&lMiner",
+            .put("miner", new Mission(new Item(IridiumMaterial.GOLD_ORE, 1, "&b&lMiner",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -111,7 +111,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Arrays.asList("MINE:IRON_ORE:15", "MINE:COAL_ORE:30", "MINE:DIAMOND_ORE:1"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMiner Reward",
+                    )), Arrays.asList("MINE:IRON_ORE:15", "MINE:COAL_ORE:30", "MINE:DIAMOND_ORE:1"), Mission.MissionType.DAILY, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lMiner Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -124,7 +124,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("fisherman", new Mission(new Item(XMaterial.FISHING_ROD, 1, "&b&lFisherman",
+            .put("fisherman", new Mission(new Item(IridiumMaterial.FISHING_ROD, 1, "&b&lFisherman",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -135,7 +135,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("FISH:ANY:10"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lFisherman Reward",
+                    )), Collections.singletonList("FISH:ANY:10"), Mission.MissionType.DAILY, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lFisherman Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -148,7 +148,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("blacksmith", new Mission(new Item(XMaterial.IRON_INGOT, 1, "&b&lBlacksmith",
+            .put("blacksmith", new Mission(new Item(IridiumMaterial.IRON_INGOT, 1, "&b&lBlacksmith",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -160,7 +160,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Arrays.asList("SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_GOLD.name() : XMaterial.GOLD_ORE.name()) + ":15"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lBlacksmith Reward",
+                    )), Arrays.asList("SMELT:" + (IridiumMaterial.supports(17) ? IridiumMaterial.RAW_IRON.name() : IridiumMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (IridiumMaterial.supports(17) ? IridiumMaterial.RAW_GOLD.name() : IridiumMaterial.GOLD_ORE.name()) + ":15"), Mission.MissionType.DAILY, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lBlacksmith Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -173,7 +173,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("potionbrewer", new Mission(new Item(XMaterial.POTION, 1, "&b&lPotion Brewer",
+            .put("potionbrewer", new Mission(new Item(IridiumMaterial.POTION, 1, "&b&lPotion Brewer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -186,7 +186,7 @@ public class Missions {
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
-            ), Arrays.asList("BREW:SPEED:2:3", "BREW:STRENGTH:2:3"), Mission.MissionType.DAILY, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lPotionBrewer Reward",
+            ), Arrays.asList("BREW:SPEED:2:3", "BREW:STRENGTH:2:3"), Mission.MissionType.DAILY, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lPotionBrewer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -200,7 +200,7 @@ public class Missions {
             )))
 
             //QUESTS
-            .put("lumberjack", new Mission(new Item(XMaterial.OAK_LOG, 1, "&b&lLumberjack",
+            .put("lumberjack", new Mission(new Item(IridiumMaterial.OAK_LOG, 1, "&b&lLumberjack",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -213,7 +213,7 @@ public class Missions {
                             "&b&l* &7$1000"
                     )
             ), Collections.singletonList("MINE:LOGS:16"), Mission.MissionType.ONCE,
-                    new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lLumberjack Reward",
+                    new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lLumberjack Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
                                     "&b&l* &75 Island Crystals",
@@ -226,7 +226,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("crafting", new Mission(new Item(XMaterial.CRAFTING_TABLE, 1, "&b&lCrafting",
+            .put("crafting", new Mission(new Item(IridiumMaterial.CRAFTING_TABLE, 1, "&b&lCrafting",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -241,7 +241,7 @@ public class Missions {
                             "&b&l* &7$1000"
                     )
             ), Arrays.asList("CRAFT:CRAFTING_TABLE:1", "CRAFT:FURNACE:4", "CRAFT:CHEST:4"), Mission.MissionType.ONCE,
-                    new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCrafting Reward",
+                    new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lCrafting Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
                                     "&b&l* &75 Island Crystals",
@@ -254,7 +254,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("mining", new Mission(new Item(XMaterial.COBBLESTONE, 1, "&b&lMiner",
+            .put("mining", new Mission(new Item(IridiumMaterial.COBBLESTONE, 1, "&b&lMiner",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -267,7 +267,7 @@ public class Missions {
                             "&b&l* &7$1000"
                     )
             ), Collections.singletonList("MINE:COBBLESTONE:100"), Mission.MissionType.ONCE,
-                    new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
+                    new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
                                     "&b&l* &75 Island Crystals",
@@ -280,7 +280,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("killMobs", new Mission(new Item(XMaterial.DIAMOND_SWORD, 1, "&b&lHunter",
+            .put("killMobs", new Mission(new Item(IridiumMaterial.DIAMOND_SWORD, 1, "&b&lHunter",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -293,7 +293,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lHunter Reward",
+                    )), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), Mission.MissionType.ONCE, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lHunter Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -306,7 +306,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("wheat", new Mission(new Item(XMaterial.WHEAT, 1, "&b&lWheat Farmer",
+            .put("wheat", new Mission(new Item(IridiumMaterial.WHEAT, 1, "&b&lWheat Farmer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -317,7 +317,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("GROW:WHEAT:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lWheat Farmer Reward",
+                    )), Collections.singletonList("GROW:WHEAT:64"), Mission.MissionType.ONCE, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lWheat Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -330,7 +330,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("carrots", new Mission(new Item(XMaterial.CARROT, 1, "&b&lCarrot Farmer",
+            .put("carrots", new Mission(new Item(IridiumMaterial.CARROT, 1, "&b&lCarrot Farmer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -341,7 +341,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("GROW:CARROTS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCarrot Farmer Reward",
+                    )), Collections.singletonList("GROW:CARROTS:64"), Mission.MissionType.ONCE, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lCarrot Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -354,7 +354,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("melon", new Mission(new Item(XMaterial.MELON_SLICE, 1, "&b&lMelon Farmer",
+            .put("melon", new Mission(new Item(IridiumMaterial.MELON_SLICE, 1, "&b&lMelon Farmer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -365,7 +365,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("GROW:MELON:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMelon Farmer Reward",
+                    )), Collections.singletonList("GROW:MELON:64"), Mission.MissionType.ONCE, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lMelon Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -378,7 +378,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("sugarcane", new Mission(new Item(XMaterial.SUGAR_CANE, 1, "&b&lSugar Cane Farmer",
+            .put("sugarcane", new Mission(new Item(IridiumMaterial.SUGAR_CANE, 1, "&b&lSugar Cane Farmer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -389,7 +389,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("GROW:SUGAR_CANE:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lSugar Cane Farmer Reward",
+                    )), Collections.singletonList("GROW:SUGAR_CANE:64"), Mission.MissionType.ONCE, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lSugar Cane Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -402,7 +402,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("cactus", new Mission(new Item(XMaterial.CACTUS, 1, "&b&lCactus Farmer",
+            .put("cactus", new Mission(new Item(IridiumMaterial.CACTUS, 1, "&b&lCactus Farmer",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -413,7 +413,7 @@ public class Missions {
                             "&b&lRewards",
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
-                    )), Collections.singletonList("GROW:CACTUS:64"), Mission.MissionType.ONCE, new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lCactus Farmer Reward",
+                    )), Collections.singletonList("GROW:CACTUS:64"), Mission.MissionType.ONCE, new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lCactus Farmer Reward",
                     Arrays.asList(
                             "&b&l Rewards",
                             "&b&l* &75 Island Crystals",
@@ -426,7 +426,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("iron", new Mission(new Item(XMaterial.IRON_ORE, 1, "&b&lMine & Smelt Iron",
+            .put("iron", new Mission(new Item(IridiumMaterial.IRON_ORE, 1, "&b&lMine & Smelt Iron",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -439,8 +439,8 @@ public class Missions {
                             "&b&l* &75 Island Crystals",
                             "&b&l* &7$1000"
                     )
-            ), Arrays.asList("MINE:IRON_ORE:32", "SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":32"), Mission.MissionType.ONCE,
-                    new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
+            ), Arrays.asList("MINE:IRON_ORE:32", "SMELT:" + (IridiumMaterial.supports(17) ? IridiumMaterial.RAW_IRON.name() : IridiumMaterial.IRON_ORE.name()) + ":32"), Mission.MissionType.ONCE,
+                    new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
                                     "&b&l* &75 Island Crystals",
@@ -453,7 +453,7 @@ public class Missions {
                     "&7/is rewards to redeem rewards"
             )))
 
-            .put("diamonds", new Mission(new Item(XMaterial.DIAMOND_ORE, 1, "&b&lMine Diamonds",
+            .put("diamonds", new Mission(new Item(IridiumMaterial.DIAMOND_ORE, 1, "&b&lMine Diamonds",
                     Arrays.asList(
                             "&7Complete Island Missions to gain rewards",
                             "&7Which can be used to purchase Island Upgrades",
@@ -466,7 +466,7 @@ public class Missions {
                             "&b&l* &7$1000"
                     )
             ), Collections.singletonList("MINE:DIAMOND_ORE:5"), Mission.MissionType.ONCE,
-                    new Reward(new Item(XMaterial.DIAMOND, 1, "&b&lMining Reward",
+                    new Reward(new Item(IridiumMaterial.DIAMOND, 1, "&b&lMining Reward",
                             Arrays.asList(
                                     "&b&l Rewards",
                                     "&b&l* &75 Island Crystals",

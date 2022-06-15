@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.bank;
 
-import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.support.material.Item;
 import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

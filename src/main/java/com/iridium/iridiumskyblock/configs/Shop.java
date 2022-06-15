@@ -1,10 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcore.Background;
-import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.support.material.Background;
+import com.iridium.iridiumskyblock.support.material.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumskyblock.shop.ShopItem;
 import com.iridium.iridiumskyblock.shop.ShopItem.BuyCost;
@@ -25,12 +25,12 @@ import java.util.Map;
 public class Shop {
 
     public Map<String, ShopCategoryConfig> categories = ImmutableMap.<String, ShopCategoryConfig>builder()
-            .put("Blocks", new ShopCategoryConfig(new Item(XMaterial.GRASS_BLOCK, 12, 1, "&9&lBlocks", Collections.emptyList()), 6))
-            .put("Food", new ShopCategoryConfig(new Item(XMaterial.COOKED_CHICKEN, 13, 1, "&9&lFood", Collections.emptyList()), 4))
-            .put("Ores", new ShopCategoryConfig(new Item(XMaterial.GOLD_INGOT, 14, 1, "&9&lOres", Collections.emptyList()), 4))
-            .put("Farming", new ShopCategoryConfig(new Item(XMaterial.WHEAT, 21, 1, "&9&lFarming", Collections.emptyList()), 5))
-            .put("Mob Drops", new ShopCategoryConfig(new Item(XMaterial.SPIDER_EYE, 22, 1, "&9&lMob Drops", Collections.emptyList()), 5))
-            .put("Miscellaneous", new ShopCategoryConfig(new Item(XMaterial.SADDLE, 23, 1, "&9&lMiscellaneous", Collections.emptyList()), 4))
+            .put("Blocks", new ShopCategoryConfig(new Item(IridiumMaterial.GRASS_BLOCK, 12, 1, "&9&lBlocks", Collections.emptyList()), 6))
+            .put("Food", new ShopCategoryConfig(new Item(IridiumMaterial.COOKED_CHICKEN, 13, 1, "&9&lFood", Collections.emptyList()), 4))
+            .put("Ores", new ShopCategoryConfig(new Item(IridiumMaterial.GOLD_INGOT, 14, 1, "&9&lOres", Collections.emptyList()), 4))
+            .put("Farming", new ShopCategoryConfig(new Item(IridiumMaterial.WHEAT, 21, 1, "&9&lFarming", Collections.emptyList()), 5))
+            .put("Mob Drops", new ShopCategoryConfig(new Item(IridiumMaterial.SPIDER_EYE, 22, 1, "&9&lMob Drops", Collections.emptyList()), 5))
+            .put("Miscellaneous", new ShopCategoryConfig(new Item(IridiumMaterial.SADDLE, 23, 1, "&9&lMiscellaneous", Collections.emptyList()), 4))
             .build();
 
     public Map<String, List<ShopItem>> items = ImmutableMap.<String, List<ShopItem>>builder()
@@ -38,7 +38,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lGrass Block",
                             "",
-                            XMaterial.GRASS_BLOCK,
+                            IridiumMaterial.GRASS_BLOCK,
                             1,
                             10,
                             new BuyCost(100, 0),
@@ -47,7 +47,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lDirt Block",
                             "",
-                            XMaterial.DIRT,
+                            IridiumMaterial.DIRT,
                             10,
                             11,
                             new BuyCost(50, 0),
@@ -56,7 +56,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lGravel",
                             "",
-                            XMaterial.GRAVEL,
+                            IridiumMaterial.GRAVEL,
                             10,
                             12,
                             new BuyCost(100, 0),
@@ -65,7 +65,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lGranite",
                             "",
-                            XMaterial.GRANITE,
+                            IridiumMaterial.GRANITE,
                             10,
                             13,
                             new BuyCost(100, 0),
@@ -74,7 +74,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lDiorite",
                             "",
-                            XMaterial.DIORITE,
+                            IridiumMaterial.DIORITE,
                             10,
                             14,
                             new BuyCost(100, 0),
@@ -83,7 +83,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lAndesite",
                             "",
-                            XMaterial.ANDESITE,
+                            IridiumMaterial.ANDESITE,
                             10,
                             15,
                             new BuyCost(100, 0),
@@ -92,7 +92,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lOak Log",
                             "",
-                            XMaterial.OAK_LOG,
+                            IridiumMaterial.OAK_LOG,
                             16,
                             16,
                             new BuyCost(100, 0),
@@ -101,7 +101,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSpruce Log",
                             "",
-                            XMaterial.SPRUCE_LOG,
+                            IridiumMaterial.SPRUCE_LOG,
                             16,
                             19,
                             new BuyCost(100, 0),
@@ -110,7 +110,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBirch Log",
                             "",
-                            XMaterial.BIRCH_LOG,
+                            IridiumMaterial.BIRCH_LOG,
                             16,
                             20,
                             new BuyCost(100, 0),
@@ -119,7 +119,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lJungle Log",
                             "",
-                            XMaterial.JUNGLE_LOG,
+                            IridiumMaterial.JUNGLE_LOG,
                             16,
                             21,
                             new BuyCost(100, 0),
@@ -128,7 +128,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lAcacia Log",
                             "",
-                            XMaterial.ACACIA_LOG,
+                            IridiumMaterial.ACACIA_LOG,
                             16,
                             22,
                             new BuyCost(100, 0),
@@ -137,7 +137,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lDark Oak Log",
                             "",
-                            XMaterial.DARK_OAK_LOG,
+                            IridiumMaterial.DARK_OAK_LOG,
                             16,
                             23,
                             new BuyCost(100, 0),
@@ -146,7 +146,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSnow Block",
                             "",
-                            XMaterial.SNOW_BLOCK,
+                            IridiumMaterial.SNOW_BLOCK,
                             16,
                             24,
                             new BuyCost(200, 0),
@@ -155,7 +155,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lIce",
                             "",
-                            XMaterial.ICE,
+                            IridiumMaterial.ICE,
                             8,
                             25,
                             new BuyCost(300, 0),
@@ -164,7 +164,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lPacked Ice",
                             "",
-                            XMaterial.PACKED_ICE,
+                            IridiumMaterial.PACKED_ICE,
                             8,
                             28,
                             new BuyCost(300, 0),
@@ -173,7 +173,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSponge",
                             "",
-                            XMaterial.SPONGE,
+                            IridiumMaterial.SPONGE,
                             4,
                             29,
                             new BuyCost(1000, 0),
@@ -182,7 +182,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSand",
                             "",
-                            XMaterial.SAND,
+                            IridiumMaterial.SAND,
                             8,
                             30,
                             new BuyCost(100, 0),
@@ -191,7 +191,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSandstone",
                             "",
-                            XMaterial.SANDSTONE,
+                            IridiumMaterial.SANDSTONE,
                             16,
                             31,
                             new BuyCost(80, 0),
@@ -200,7 +200,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lClay Ball",
                             "",
-                            XMaterial.CLAY_BALL,
+                            IridiumMaterial.CLAY_BALL,
                             32,
                             32,
                             new BuyCost(70, 0),
@@ -209,7 +209,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lObsidian",
                             "",
-                            XMaterial.OBSIDIAN,
+                            IridiumMaterial.OBSIDIAN,
                             4,
                             33,
                             new BuyCost(250, 0),
@@ -218,7 +218,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lGlowstone",
                             "",
-                            XMaterial.GLOWSTONE,
+                            IridiumMaterial.GLOWSTONE,
                             8,
                             34,
                             new BuyCost(125, 0),
@@ -227,7 +227,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lEnd Stone",
                             "",
-                            XMaterial.END_STONE,
+                            IridiumMaterial.END_STONE,
                             4,
                             39,
                             new BuyCost(250, 0),
@@ -236,7 +236,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lPrismarine",
                             "",
-                            XMaterial.PRISMARINE,
+                            IridiumMaterial.PRISMARINE,
                             16,
                             40,
                             new BuyCost(200, 0),
@@ -245,7 +245,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lWool",
                             "",
-                            XMaterial.WHITE_WOOL,
+                            IridiumMaterial.WHITE_WOOL,
                             8,
                             41,
                             new BuyCost(50, 0),
@@ -256,7 +256,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lApple",
                             "",
-                            XMaterial.APPLE,
+                            IridiumMaterial.APPLE,
                             10,
                             11,
                             new BuyCost(50, 0),
@@ -265,7 +265,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lEnchanted Golden Apple",
                             "",
-                            XMaterial.ENCHANTED_GOLDEN_APPLE,
+                            IridiumMaterial.ENCHANTED_GOLDEN_APPLE,
                             3,
                             12,
                             new BuyCost(1000, 0),
@@ -274,7 +274,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCarrot",
                             "",
-                            XMaterial.CARROT,
+                            IridiumMaterial.CARROT,
                             10,
                             13,
                             new BuyCost(100, 0),
@@ -283,7 +283,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBaked Potato",
                             "",
-                            XMaterial.BAKED_POTATO,
+                            IridiumMaterial.BAKED_POTATO,
                             10,
                             14,
                             new BuyCost(150, 0),
@@ -292,7 +292,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBread",
                             "",
-                            XMaterial.BREAD,
+                            IridiumMaterial.BREAD,
                             10,
                             15,
                             new BuyCost(50, 0),
@@ -301,7 +301,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCookie",
                             "",
-                            XMaterial.COOKIE,
+                            IridiumMaterial.COOKIE,
                             5,
                             20,
                             new BuyCost(130, 0),
@@ -310,7 +310,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCooked Porkchop",
                             "",
-                            XMaterial.COOKED_PORKCHOP,
+                            IridiumMaterial.COOKED_PORKCHOP,
                             10,
                             21,
                             new BuyCost(100, 0),
@@ -319,7 +319,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCooked Beef",
                             "",
-                            XMaterial.COOKED_BEEF,
+                            IridiumMaterial.COOKED_BEEF,
                             10,
                             22,
                             new BuyCost(100, 0),
@@ -328,7 +328,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCooked Mutton",
                             "",
-                            XMaterial.COOKED_MUTTON,
+                            IridiumMaterial.COOKED_MUTTON,
                             10,
                             23,
                             new BuyCost(100, 0),
@@ -337,7 +337,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCooked Rabbit",
                             "",
-                            XMaterial.COOKED_RABBIT,
+                            IridiumMaterial.COOKED_RABBIT,
                             10,
                             24,
                             new BuyCost(100, 0),
@@ -349,7 +349,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCoal",
                             "",
-                            XMaterial.COAL,
+                            IridiumMaterial.COAL,
                             16,
                             11,
                             new BuyCost(100, 0),
@@ -358,7 +358,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lRedstone",
                             "",
-                            XMaterial.REDSTONE,
+                            IridiumMaterial.REDSTONE,
                             16,
                             12,
                             new BuyCost(150, 0),
@@ -367,7 +367,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lLapis Lazuli",
                             "",
-                            XMaterial.LAPIS_LAZULI,
+                            IridiumMaterial.LAPIS_LAZULI,
                             16,
                             13,
                             new BuyCost(150, 0),
@@ -376,7 +376,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lIron Ingot",
                             "",
-                            XMaterial.IRON_INGOT,
+                            IridiumMaterial.IRON_INGOT,
                             8,
                             14,
                             new BuyCost(200, 0),
@@ -385,7 +385,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lGold Ingot",
                             "",
-                            XMaterial.GOLD_INGOT,
+                            IridiumMaterial.GOLD_INGOT,
                             8,
                             15,
                             new BuyCost(200, 0),
@@ -394,7 +394,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lDiamond",
                             "",
-                            XMaterial.DIAMOND,
+                            IridiumMaterial.DIAMOND,
                             8,
                             21,
                             new BuyCost(1000, 0),
@@ -403,7 +403,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lEmerald",
                             "",
-                            XMaterial.EMERALD,
+                            IridiumMaterial.EMERALD,
                             8,
                             22,
                             new BuyCost(200, 0),
@@ -412,7 +412,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lQuartz",
                             "",
-                            XMaterial.QUARTZ,
+                            IridiumMaterial.QUARTZ,
                             64,
                             23,
                             new BuyCost(100, 0),
@@ -424,7 +424,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lWheat Seeds",
                             "",
-                            XMaterial.WHEAT_SEEDS,
+                            IridiumMaterial.WHEAT_SEEDS,
                             16,
                             10,
                             new BuyCost(130, 0),
@@ -433,7 +433,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lPumpkin Seeds",
                             "",
-                            XMaterial.PUMPKIN_SEEDS,
+                            IridiumMaterial.PUMPKIN_SEEDS,
                             16,
                             11,
                             new BuyCost(150, 0),
@@ -442,7 +442,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lMelon Seeds",
                             "",
-                            XMaterial.MELON_SEEDS,
+                            IridiumMaterial.MELON_SEEDS,
                             16,
                             12,
                             new BuyCost(250, 0),
@@ -451,7 +451,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lNether Wart",
                             "",
-                            XMaterial.NETHER_WART,
+                            IridiumMaterial.NETHER_WART,
                             4,
                             13,
                             new BuyCost(100, 0),
@@ -460,7 +460,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSugar Cane",
                             "",
-                            XMaterial.SUGAR_CANE,
+                            IridiumMaterial.SUGAR_CANE,
                             16,
                             14,
                             new BuyCost(150, 0),
@@ -469,7 +469,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lWheat",
                             "",
-                            XMaterial.WHEAT,
+                            IridiumMaterial.WHEAT,
                             16,
                             15,
                             new BuyCost(50, 0),
@@ -478,7 +478,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lPumpkin",
                             "",
-                            XMaterial.PUMPKIN,
+                            IridiumMaterial.PUMPKIN,
                             16,
                             16,
                             new BuyCost(150, 0),
@@ -487,7 +487,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lMelon Slice",
                             "",
-                            XMaterial.MELON_SLICE,
+                            IridiumMaterial.MELON_SLICE,
                             16,
                             19,
                             new BuyCost(150, 0),
@@ -496,7 +496,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lCactus",
                             "",
-                            XMaterial.CACTUS,
+                            IridiumMaterial.CACTUS,
                             8,
                             20,
                             new BuyCost(80, 0),
@@ -505,7 +505,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lOak Sapling",
                             "",
-                            XMaterial.OAK_SAPLING,
+                            IridiumMaterial.OAK_SAPLING,
                             4,
                             21,
                             new BuyCost(20, 0),
@@ -514,7 +514,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSpruce Sapling",
                             "",
-                            XMaterial.SPRUCE_SAPLING,
+                            IridiumMaterial.SPRUCE_SAPLING,
                             4,
                             22,
                             new BuyCost(20, 0),
@@ -523,7 +523,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBirch Sapling",
                             "",
-                            XMaterial.BIRCH_SAPLING,
+                            IridiumMaterial.BIRCH_SAPLING,
                             4,
                             23,
                             new BuyCost(20, 0),
@@ -532,7 +532,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lJungle Sapling",
                             "",
-                            XMaterial.JUNGLE_SAPLING,
+                            IridiumMaterial.JUNGLE_SAPLING,
                             4,
                             24,
                             new BuyCost(150, 0),
@@ -541,7 +541,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lAcacia Sapling",
                             "",
-                            XMaterial.ACACIA_SAPLING,
+                            IridiumMaterial.ACACIA_SAPLING,
                             4,
                             25,
                             new BuyCost(20, 0),
@@ -550,7 +550,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lDark Oak Sapling",
                             "",
-                            XMaterial.DARK_OAK_SAPLING,
+                            IridiumMaterial.DARK_OAK_SAPLING,
                             4,
                             30,
                             new BuyCost(150, 0),
@@ -559,7 +559,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBrown Mushroom",
                             "",
-                            XMaterial.BROWN_MUSHROOM,
+                            IridiumMaterial.BROWN_MUSHROOM,
                             8,
                             31,
                             new BuyCost(60, 0),
@@ -568,7 +568,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lRed Mushroom",
                             "",
-                            XMaterial.RED_MUSHROOM,
+                            IridiumMaterial.RED_MUSHROOM,
                             8,
                             32,
                             new BuyCost(60, 0),
@@ -580,7 +580,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lRotten Flesh",
                             "",
-                            XMaterial.ROTTEN_FLESH,
+                            IridiumMaterial.ROTTEN_FLESH,
                             16,
                             10,
                             new BuyCost(20, 0),
@@ -589,7 +589,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBone",
                             "",
-                            XMaterial.BONE,
+                            IridiumMaterial.BONE,
                             16,
                             11,
                             new BuyCost(100, 0),
@@ -598,7 +598,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lGunpowder",
                             "",
-                            XMaterial.GUNPOWDER,
+                            IridiumMaterial.GUNPOWDER,
                             16,
                             12,
                             new BuyCost(30, 0),
@@ -607,7 +607,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lString",
                             "",
-                            XMaterial.STRING,
+                            IridiumMaterial.STRING,
                             16,
                             13,
                             new BuyCost(80, 0),
@@ -616,7 +616,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lArrow",
                             "",
-                            XMaterial.ARROW,
+                            IridiumMaterial.ARROW,
                             16,
                             14,
                             new BuyCost(75, 0),
@@ -625,7 +625,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSpider Eye",
                             "",
-                            XMaterial.SPIDER_EYE,
+                            IridiumMaterial.SPIDER_EYE,
                             16,
                             15,
                             new BuyCost(50, 0),
@@ -634,7 +634,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lEnder Pearl",
                             "",
-                            XMaterial.ENDER_PEARL,
+                            IridiumMaterial.ENDER_PEARL,
                             3,
                             16,
                             new BuyCost(75, 0),
@@ -643,7 +643,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSlime Ball",
                             "",
-                            XMaterial.SLIME_BALL,
+                            IridiumMaterial.SLIME_BALL,
                             16,
                             19,
                             new BuyCost(200, 0),
@@ -652,7 +652,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lPrismarine Crystals",
                             "",
-                            XMaterial.PRISMARINE_CRYSTALS,
+                            IridiumMaterial.PRISMARINE_CRYSTALS,
                             16,
                             20,
                             new BuyCost(50, 0),
@@ -661,7 +661,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lPrismarine Shard",
                             "",
-                            XMaterial.PRISMARINE_SHARD,
+                            IridiumMaterial.PRISMARINE_SHARD,
                             16,
                             21,
                             new BuyCost(50, 0),
@@ -670,7 +670,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBlaze Rod",
                             "",
-                            XMaterial.BLAZE_ROD,
+                            IridiumMaterial.BLAZE_ROD,
                             4,
                             22,
                             new BuyCost(250, 0),
@@ -679,7 +679,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lMagma Cream",
                             "",
-                            XMaterial.MAGMA_CREAM,
+                            IridiumMaterial.MAGMA_CREAM,
                             4,
                             23,
                             new BuyCost(150, 0),
@@ -688,7 +688,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lGhast Tear",
                             "",
-                            XMaterial.GHAST_TEAR,
+                            IridiumMaterial.GHAST_TEAR,
                             4,
                             24,
                             new BuyCost(200, 0),
@@ -697,7 +697,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lLeather",
                             "",
-                            XMaterial.LEATHER,
+                            IridiumMaterial.LEATHER,
                             8,
                             25,
                             new BuyCost(50, 0),
@@ -706,7 +706,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lRabbit Foot",
                             "",
-                            XMaterial.RABBIT_FOOT,
+                            IridiumMaterial.RABBIT_FOOT,
                             4,
                             30,
                             new BuyCost(250, 0),
@@ -715,7 +715,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lInk Sack",
                             "",
-                            XMaterial.INK_SAC,
+                            IridiumMaterial.INK_SAC,
                             8,
                             31,
                             new BuyCost(50, 0),
@@ -724,7 +724,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lFeather",
                             "",
-                            XMaterial.FEATHER,
+                            IridiumMaterial.FEATHER,
                             16,
                             32,
                             new BuyCost(30, 0),
@@ -736,7 +736,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lBucket",
                             "",
-                            XMaterial.BUCKET,
+                            IridiumMaterial.BUCKET,
                             1,
                             12,
                             new BuyCost(100, 0),
@@ -745,7 +745,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lWater Bucket",
                             "",
-                            XMaterial.WATER_BUCKET,
+                            IridiumMaterial.WATER_BUCKET,
                             1,
                             13,
                             new BuyCost(200, 0),
@@ -754,7 +754,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lLava Bucket",
                             "",
-                            XMaterial.LAVA_BUCKET,
+                            IridiumMaterial.LAVA_BUCKET,
                             1,
                             14,
                             new BuyCost(200, 0),
@@ -763,7 +763,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lName Tag",
                             "",
-                            XMaterial.NAME_TAG,
+                            IridiumMaterial.NAME_TAG,
                             1,
                             21,
                             new BuyCost(200, 0),
@@ -772,7 +772,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lSaddle",
                             "",
-                            XMaterial.SADDLE,
+                            IridiumMaterial.SADDLE,
                             1,
                             22,
                             new BuyCost(300, 0),
@@ -781,7 +781,7 @@ public class Shop {
                     new ShopItem(
                             "&9&lEnd Portal Frame",
                             "",
-                            XMaterial.END_PORTAL_FRAME,
+                            IridiumMaterial.END_PORTAL_FRAME,
                             Arrays.asList("&5&lVisit the end!", " "),
                             null,
                             1,

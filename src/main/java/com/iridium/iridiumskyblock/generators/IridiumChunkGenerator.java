@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.generators;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import org.bukkit.World;
 import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +17,7 @@ public abstract class IridiumChunkGenerator extends ChunkGenerator {
      * @param world the world that should be checked
      * @return the most used material of the chunk generator in this generator
      */
-    public abstract XMaterial getMainMaterial(@Nullable World world);
+    public abstract IridiumMaterial getMainMaterial(@Nullable World world);
 
     /**
      * Returns whether the main material returned by {@link IridiumChunkGenerator#getMainMaterial(World)}
@@ -26,7 +26,7 @@ public abstract class IridiumChunkGenerator extends ChunkGenerator {
      * @return if the main material should be ignored
      */
     public boolean ignoreMainMaterial() {
-        return getMainMaterial(null) == XMaterial.AIR;
+        return getMainMaterial(null) == IridiumMaterial.AIR;
     }
 
 }

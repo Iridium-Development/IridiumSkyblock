@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.configs.inventories;
 
-import com.iridium.iridiumcore.Background;
-import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.support.material.Background;
+import com.iridium.iridiumskyblock.support.material.Item;
 import lombok.NoArgsConstructor;
 
 import java.util.Map;

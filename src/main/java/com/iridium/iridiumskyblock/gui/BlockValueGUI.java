@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.gui;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.utils.InventoryUtils;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.BlockValues.ValuableBlock;
@@ -49,7 +49,7 @@ public class BlockValueGUI extends GUI {
             IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet().stream()
                     .filter(valuableBlockEntry -> (page == 1 ? valuableBlockEntry.getValue().page <= 1 : valuableBlockEntry.getValue().page == page))
                     .forEachOrdered(valuableBlock -> {
-                        XMaterial material = valuableBlock.getKey();
+                        IridiumMaterial material = valuableBlock.getKey();
                         ValuableBlock blockInfo = valuableBlock.getValue();
                         ItemStack blockItem = ItemStackUtils.makeItem(material, 1, StringUtils.color(blockInfo.name), getColoredValueLore(blockInfo.value));
                         inventory.setItem(blockInfo.slot, blockItem);
@@ -60,7 +60,7 @@ public class BlockValueGUI extends GUI {
                     .filter(valuableSpawnerEntry -> (page == 1 ? valuableSpawnerEntry.getValue().page <= 1 : valuableSpawnerEntry.getValue().page == page))
                     .forEachOrdered(valuableSpawner -> {
                         ValuableBlock spawnerInfo = valuableSpawner.getValue();
-                        ItemStack spawnerItem = ItemStackUtils.makeItem(XMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
+                        ItemStack spawnerItem = ItemStackUtils.makeItem(IridiumMaterial.SPAWNER, 1, StringUtils.color(spawnerInfo.name), getColoredValueLore(spawnerInfo.value));
                         inventory.setItem(spawnerInfo.slot, spawnerItem);
                     });
         }

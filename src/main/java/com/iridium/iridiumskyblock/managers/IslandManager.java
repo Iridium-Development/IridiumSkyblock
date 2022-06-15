@@ -5,8 +5,8 @@ import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XBiome;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.*;
@@ -552,7 +552,7 @@ public class IslandManager {
      * @param material The specified Material
      * @return The IslandBlock
      */
-    public synchronized IslandBlocks getIslandBlock(@NotNull Island island, @NotNull XMaterial material) {
+    public synchronized IslandBlocks getIslandBlock(@NotNull Island island, @NotNull IridiumMaterial material) {
         Optional<IslandBlocks> islandBlocksOptional = IridiumSkyblock.getInstance().getDatabaseManager().getIslandBlocksTableManager().getEntry(new IslandBlocks(island, material));
         if (islandBlocksOptional.isPresent()) {
             return islandBlocksOptional.get();
@@ -823,7 +823,7 @@ public class IslandManager {
         return missions;
     }
 
-    public int getIslandBlockAmount(Island island, XMaterial material) {
+    public int getIslandBlockAmount(Island island, IridiumMaterial material) {
         int extraAmount = getPlayersOnIsland(island).size() == 0 ? getIslandBlock(island, material).getExtraAmount() : IridiumSkyblock.getInstance().getStackerSupport().getExtraBlocks(island, material);
         return getIslandBlock(island, material).getAmount() + extraAmount;
     }
@@ -864,8 +864,8 @@ public class IslandManager {
                     if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
-                            XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
-                            if (material == XMaterial.AIR) continue;
+                            IridiumMaterial material = IridiumMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
+                            if (material == IridiumMaterial.AIR) continue;
                             if (!ignoreMainMaterial && material == IridiumSkyblock.getInstance().getChunkGenerator().getMainMaterial(world)) continue;
 
                             IslandBlocks islandBlock = IridiumSkyblock.getInstance().getIslandManager().getIslandBlock(island, material);

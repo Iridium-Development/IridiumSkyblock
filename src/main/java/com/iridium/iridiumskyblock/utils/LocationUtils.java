@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.utils;
 
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -20,10 +21,10 @@ import java.util.stream.Stream;
 public class LocationUtils {
 
     private static final List<Material> unsafeBlocks = Stream.of(
-            XMaterial.END_PORTAL,
-            XMaterial.WATER,
-            XMaterial.LAVA
-    ).map(XMaterial::parseMaterial).collect(Collectors.toList());
+            IridiumMaterial.END_PORTAL,
+            IridiumMaterial.WATER,
+            IridiumMaterial.LAVA
+    ).map(IridiumMaterial::parseMaterial).collect(Collectors.toList());
 
     /**
      * Is a location safe to teleport a player to

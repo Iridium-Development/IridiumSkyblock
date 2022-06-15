@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.bank;
 
-import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.support.material.Item;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;

@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.generators;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import org.bukkit.Material;
@@ -39,8 +39,8 @@ public class OceanGenerator extends IridiumChunkGenerator {
         final ChunkData chunkData = createChunkData(world);
         generator.setScale(0.005D);
 
-        XMaterial bottomMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorBottomMaterial;
-        XMaterial topMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorTopMaterial;
+        IridiumMaterial bottomMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorBottomMaterial;
+        IridiumMaterial topMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorTopMaterial;
         int waterHeight = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.waterHeight;
         int maxOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.maxOceanFloorLevel;
         int minOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.minOceanFloorLevel;
@@ -51,7 +51,7 @@ public class OceanGenerator extends IridiumChunkGenerator {
 
                 // Generate layer of bedrock
                 chunkData.setBlock(x, LocationUtils.getMinHeight(world), z,
-                        Objects.requireNonNull(XMaterial.BEDROCK.parseMaterial())
+                        Objects.requireNonNull(IridiumMaterial.BEDROCK.parseMaterial())
                 );
 
                 // Generate gravel layer
@@ -67,7 +67,7 @@ public class OceanGenerator extends IridiumChunkGenerator {
                 );
 
                 // Generate water or lava on top of the floor
-                XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
+                IridiumMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? IridiumMaterial.LAVA : IridiumMaterial.WATER;
                 for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
                     chunkData.setBlock(x, y, z, Objects.requireNonNull(oceanMaterial.parseMaterial()));
                 }
@@ -81,8 +81,8 @@ public class OceanGenerator extends IridiumChunkGenerator {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
         generator.setScale(0.005D);
 
-        XMaterial bottomMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorBottomMaterial;
-        XMaterial topMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorTopMaterial;
+        IridiumMaterial bottomMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorBottomMaterial;
+        IridiumMaterial topMaterial = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.oceanFloorTopMaterial;
         int waterHeight = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.waterHeight;
         int maxOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.maxOceanFloorLevel;
         int minOceanFloorLevel = IridiumSkyblock.getInstance().getConfiguration().generatorSettings.minOceanFloorLevel;
@@ -91,7 +91,7 @@ public class OceanGenerator extends IridiumChunkGenerator {
         int minHeightWorld = LocationUtils.getMinHeight(world);
 
         // Generate layer of bedrock
-        if (world.getBlockAt(x, minHeightWorld, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
+        if (world.getBlockAt(x, minHeightWorld, z).getType() != IridiumMaterial.BEDROCK.parseMaterial()) {
             if (world.getBlockAt(x, minHeightWorld, z).getState() instanceof InventoryHolder) {
                 ((InventoryHolder) world.getBlockAt(x, minHeightWorld, z).getState()).getInventory().clear();
             }
@@ -118,7 +118,7 @@ public class OceanGenerator extends IridiumChunkGenerator {
         }
 
         // Generate water or lava on top of the floor
-        XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
+        IridiumMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? IridiumMaterial.LAVA : IridiumMaterial.WATER;
         for (int y = currentFloorHeight + 1; y <= waterHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != oceanMaterial.parseMaterial() && oceanMaterial.parseMaterial() != null) {
@@ -162,10 +162,10 @@ public class OceanGenerator extends IridiumChunkGenerator {
      * @return the most used material of the chunk generator in this generator
      */
     @Override
-    public XMaterial getMainMaterial(@Nullable World world) {
-        if (world == null) return XMaterial.WATER;
+    public IridiumMaterial getMainMaterial(@Nullable World world) {
+        if (world == null) return IridiumMaterial.WATER;
 
-        return world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
+        return world.getEnvironment() == Environment.NETHER ? IridiumMaterial.LAVA : IridiumMaterial.WATER;
     }
 
     @Override

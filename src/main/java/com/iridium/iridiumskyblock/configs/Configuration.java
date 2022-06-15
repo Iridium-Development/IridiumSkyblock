@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.support.material.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.Reward;
@@ -58,7 +58,7 @@ public class Configuration {
     public int minIslandName = 3;
     public int teleportDelay = 0;
 
-    public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
+    public Item islandCrystal = new Item(IridiumMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
 
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
 
@@ -96,7 +96,7 @@ public class Configuration {
      * 5 will give the reward to levels 5 10 15 20 25 ect since they are divisible by 5
      */
     public Map<Integer, Reward> islandLevelRewards = ImmutableMap.<Integer, Reward>builder()
-            .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+            .put(1, new Reward(new Item(IridiumMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
                     "&7Island Level %island_level% Rewards:",
                     "&b&l* &b5 Island Crystals",
                     "&b&l* &b200 Island Money",
@@ -104,7 +104,7 @@ public class Configuration {
                     "&b&l[!] &bLeft click to redeem"
             )), Collections.emptyList(), 0, 5, 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
 
-            .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+            .put(5, new Reward(new Item(IridiumMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
                     "&7Island Level %island_level% Rewards:",
                     "&b&l* &b15 Island Crystals",
                     "&b&l* &b2000 Island Money",
@@ -125,8 +125,8 @@ public class Configuration {
         public int waterHeight = 93;
         public int minOceanFloorLevel = 10;
         public int maxOceanFloorLevel = 25;
-        public XMaterial oceanFloorBottomMaterial = XMaterial.GRAVEL;
-        public XMaterial oceanFloorTopMaterial = XMaterial.SAND;
+        public IridiumMaterial oceanFloorBottomMaterial = IridiumMaterial.GRAVEL;
+        public IridiumMaterial oceanFloorTopMaterial = IridiumMaterial.SAND;
 
     }
 

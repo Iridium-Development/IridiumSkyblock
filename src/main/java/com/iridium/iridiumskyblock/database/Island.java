@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumcore.Color;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumskyblock.Cache;
 import com.iridium.iridiumskyblock.DatabaseObject;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -236,7 +236,7 @@ public final class Island extends DatabaseObject {
         return valueCache.getCache(() -> {
             double value = extraValue;
 
-            for (Map.Entry<XMaterial, BlockValues.ValuableBlock> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {
+            for (Map.Entry<IridiumMaterial, BlockValues.ValuableBlock> valuableBlock : IridiumSkyblock.getInstance().getBlockValues().blockValues.entrySet()) {
                 value += IridiumSkyblock.getInstance().getIslandManager().getIslandBlockAmount(this, valuableBlock.getKey()) * valuableBlock.getValue().value;
             }
 
@@ -254,7 +254,7 @@ public final class Island extends DatabaseObject {
      * @param material The material
      * @return The value of this block on the island, 0 if it isn't valuable
      */
-    public double getValueOf(XMaterial material) {
+    public double getValueOf(IridiumMaterial material) {
         return IridiumSkyblock.getInstance().getBlockValues().blockValues.getOrDefault(material, new BlockValues.ValuableBlock(0, "", 0, 0)).value;
     }
 

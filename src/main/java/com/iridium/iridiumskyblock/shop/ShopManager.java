@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.shop;
 
-import com.iridium.iridiumcore.utils.InventoryUtils;
+import com.iridium.iridiumskyblock.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;

@@ -1,5 +1,5 @@
 package com.iridium.iridiumskyblock;
-import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.support.material.Item;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

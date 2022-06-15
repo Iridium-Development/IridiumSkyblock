@@ -1,7 +1,7 @@
 package com.iridium.iridiumskyblock;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
+import com.iridium.iridiumskyblock.utils.ItemStackUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bukkit.Material;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class BlockData {
 
-    private XMaterial material;
+    private IridiumMaterial material;
     private byte data;
     private List<String> inventory;
 
@@ -32,7 +32,7 @@ public class BlockData {
      * @param block The block whose data should be represented by this class
      */
     public BlockData(Block block) {
-        this.material = XMaterial.matchXMaterial(block.getType());
+        this.material = IridiumMaterial.matchXMaterial(block.getType());
         this.data = block.getData();
 
         if (block.getState() instanceof InventoryHolder) {

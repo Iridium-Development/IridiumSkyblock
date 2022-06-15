@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.support.material.IridiumMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
@@ -22,7 +22,7 @@ public class EnchantItemListener implements Listener {
         Player player = event.getEnchanter();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
-        XMaterial material = XMaterial.matchXMaterial(event.getItem().getType());
+        IridiumMaterial material = IridiumMaterial.matchXMaterial(event.getItem().getType());
 
         island.ifPresent(value -> IridiumSkyblock.getInstance().getMissionManager().handleMissionUpdates(value, "ENCHANT", material.name(), 1));
     }
