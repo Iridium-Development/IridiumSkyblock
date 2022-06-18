@@ -37,7 +37,12 @@ public class CooldownProvider<T> {
      * @return  True if the entity has a valid cooldown
      */
     public boolean isOnCooldown(T t) {
-        return cooldownTimes.containsKey(t) && cooldownTimes.get(t).toMillis() > System.currentTimeMillis();
+        if (cooldownTimes.containsKey(t) && cooldownTimes.get(t).toMillis() > System.currentTimeMillis()) {
+            return true;
+        }
+        
+        cooldownTimes.remove(t);
+        return false;
     }
 
     /**
