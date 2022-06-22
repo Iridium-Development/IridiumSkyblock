@@ -4,6 +4,9 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang.NotImplementedException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides various cooldown features.
@@ -16,6 +19,7 @@ public class CooldownProvider<T> {
     private final String name; // Required for database support
     private final Duration duration;
     private final boolean persistent; // Required for database support
+    private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(10);
 
     /**
      * The default constructor.
@@ -65,7 +69,19 @@ public class CooldownProvider<T> {
      * @param t The entity which should be checked
      */
     public void applyCooldown(T t) {
-        cooldownTimes.put(t, duration.plusMillis(System.currentTimeMillis()));
+        Duration newDuration = duration.plusMillis(System.currentTimeMillis());
+        cooldownTimes.put(t, newDuration);
+
+        startTimer(t, newDuration);
+    }
+	
+    private void startTimer(T t, Duration duration) {
+        executor.schedule(() -> {
+            Duration newDuration = getRemainingTime(t);
+            if (!newDuration.isZero() && !newDuration.isNegative()) {
+                startTimer(t, newDuration);
+            }
+        }, duration.getSeconds() + 1, TimeUnit.SECONDS);
     }
 
     /**
