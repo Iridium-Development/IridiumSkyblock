@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.upgrades.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Upgrades {
@@ -62,33 +63,39 @@ public class Upgrades {
                     "&b&l * &7Current Level: &b%level%",
                     "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
                     "",
-                    "&b&l[!] &bLeft Click to Purchase this Upgrade"
+                    "&b&l[!] &bLeft Click to Purchase this Upgrade",
+                    "&b&l[!] &bRight Click for details of limits"
             )), ImmutableMap.<Integer, BlockLimitUpgrade>builder()
-            .put(1, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
-                    .put(XMaterial.HOPPER, 15)
-                    .put(XMaterial.PISTON, 10)
-                    .put(XMaterial.SPAWNER, 10)
-                    .build()))
-            .put(2, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
-                    .put(XMaterial.HOPPER, 20)
-                    .put(XMaterial.PISTON, 15)
-                    .put(XMaterial.SPAWNER, 15)
-                    .build()))
-            .put(3, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
-                    .put(XMaterial.HOPPER, 25)
-                    .put(XMaterial.PISTON, 20)
-                    .put(XMaterial.SPAWNER, 20)
-                    .build()))
-            .put(4, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
-                    .put(XMaterial.HOPPER, 30)
-                    .put(XMaterial.PISTON, 25)
-                    .put(XMaterial.SPAWNER, 25)
-                    .build()))
-            .put(5, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, Integer>builder()
-                    .put(XMaterial.HOPPER, 40)
-                    .put(XMaterial.PISTON, 30)
-                    .put(XMaterial.SPAWNER, 30)
-                    .build()))
+            .put(1, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, BlockLimitUpgrade.LimitedBlock>builder()
+                    .put(XMaterial.HOPPER, new BlockLimitUpgrade.LimitedBlock(15, "&b&lHopper", 1, 10))
+                    .put(XMaterial.PISTON, new BlockLimitUpgrade.LimitedBlock(10, "&b&lPiston", 1, 11))
+                    .put(XMaterial.SPAWNER, new BlockLimitUpgrade.LimitedBlock(10, "&b&lSpawner", 1, 12))
+                    .build(), 1,
+                    new Item(XMaterial.GOLD_BLOCK, 10, 1, "&b&lLevel 1", Collections.emptyList())))
+            .put(2, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, BlockLimitUpgrade.LimitedBlock>builder()
+                    .put(XMaterial.HOPPER, new BlockLimitUpgrade.LimitedBlock(20, "&b&lHopper", 1, 10))
+                    .put(XMaterial.PISTON, new BlockLimitUpgrade.LimitedBlock(15, "&b&lPiston", 1, 11))
+                    .put(XMaterial.SPAWNER, new BlockLimitUpgrade.LimitedBlock(15, "&b&lSpawner", 1, 12))
+                    .build(), 1,
+                    new Item(XMaterial.GOLD_BLOCK, 11, 1, "&b&lLevel 2", Collections.emptyList())))
+            .put(3, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, BlockLimitUpgrade.LimitedBlock>builder()
+                    .put(XMaterial.HOPPER, new BlockLimitUpgrade.LimitedBlock(25, "&b&lHopper", 1, 10))
+                    .put(XMaterial.PISTON, new BlockLimitUpgrade.LimitedBlock(20, "&b&lPiston", 1, 11))
+                    .put(XMaterial.SPAWNER, new BlockLimitUpgrade.LimitedBlock(20, "&b&lSpawner", 1, 12))
+                    .build(), 1,
+                    new Item(XMaterial.GOLD_BLOCK, 12, 1, "&b&lLevel 3", Collections.emptyList())))
+            .put(4, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, BlockLimitUpgrade.LimitedBlock>builder()
+                    .put(XMaterial.HOPPER, new BlockLimitUpgrade.LimitedBlock(30, "&b&lHopper", 1, 10))
+                    .put(XMaterial.PISTON, new BlockLimitUpgrade.LimitedBlock(25, "&b&lPiston", 1, 11))
+                    .put(XMaterial.SPAWNER, new BlockLimitUpgrade.LimitedBlock(25, "&b&lSpawner", 1, 12))
+                    .build(), 1,
+                    new Item(XMaterial.GOLD_BLOCK, 13, 1, "&b&lLevel 4", Collections.emptyList())))
+            .put(5, new BlockLimitUpgrade(1000, 15, ImmutableMap.<XMaterial, BlockLimitUpgrade.LimitedBlock>builder()
+                    .put(XMaterial.HOPPER, new BlockLimitUpgrade.LimitedBlock(40, "&b&lHopper", 1, 10))
+                    .put(XMaterial.PISTON, new BlockLimitUpgrade.LimitedBlock(30, "&b&lPiston", 1, 11))
+                    .put(XMaterial.SPAWNER, new BlockLimitUpgrade.LimitedBlock(30, "&b&lSpawner", 1, 12))
+                    .build(), 1,
+                    new Item(XMaterial.GOLD_BLOCK, 14, 1, "&b&lLevel 5", Collections.emptyList())))
             .build());
 
     public Upgrade<WarpsUpgrade> warpsUpgrade = new Upgrade<>(true, "Warps",

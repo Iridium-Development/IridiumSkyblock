@@ -72,8 +72,12 @@ public class IslandUpgradesGUI extends IslandGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Upgrade<?>> upgrade : IridiumSkyblock.getInstance().getUpgradesList().entrySet()) {
             if (event.getSlot() == upgrade.getValue().item.slot) {
-                IridiumSkyblock.getInstance().getCommands().upgradesCommand.execute(event.getWhoClicked(), new String[]{"", upgrade.getKey()});
-                addContent(event.getInventory());
+                if (upgrade.getKey().equals("blocklimit") && event.getClick().isRightClick()) {
+                    event.getWhoClicked().openInventory(new BlockLimitSelectLevelGUI(event.getWhoClicked().getOpenInventory().getTopInventory()).getInventory());
+                } else {
+                    IridiumSkyblock.getInstance().getCommands().upgradesCommand.execute(event.getWhoClicked(), new String[]{"", upgrade.getKey()});
+                    addContent(event.getInventory());
+                }
             }
         }
     }

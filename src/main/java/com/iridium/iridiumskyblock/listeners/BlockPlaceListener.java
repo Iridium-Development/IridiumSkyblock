@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandBlocks;
 import com.iridium.iridiumskyblock.database.IslandSpawners;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.upgrades.BlockLimitUpgrade.LimitedBlock;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.World;
 import org.bukkit.block.CreatureSpawner;
@@ -44,7 +45,7 @@ public class BlockPlaceListener implements Listener {
         }
 
         int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island.get(), "blocklimit").getLevel();
-        int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, 0);
+        int blockLimit = IridiumSkyblock.getInstance().getUpgrades().blockLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(material, new LimitedBlock(0, "", 0, 0)).value;
 
         if (blockLimit > 0 && IridiumSkyblock.getInstance().getIslandManager().getIslandBlockAmount(island.get(), material) >= blockLimit) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().blockLimitReached
