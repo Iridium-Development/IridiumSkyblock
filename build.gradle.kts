@@ -10,7 +10,9 @@ description = "IridiumSkyblock"
 
 repositories {
     mavenCentral()
-    maven("https://repo.mvdw-software.com/content/groups/public/")
+    maven("http://repo.mvdw-software.com/content/groups/public/") {
+        isAllowInsecureProtocol = true
+    }
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://ci.ender.zone/plugin/repository/everything/")
