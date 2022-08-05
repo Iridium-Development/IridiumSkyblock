@@ -499,7 +499,7 @@ public class IridiumSkyblock extends IridiumCore {
         if (commandManager != null)
             commandManager.reloadCommands();
 
-        if (schematicManager != null) schematicManager.schematicPaster.clearCache();
+        if (schematicManager != null) schematicManager.reload();
 
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);
