@@ -1,24 +1,19 @@
+
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumteams.managers.IridiumUserManager;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * Class which handles users.
- */
-public class UserManager {
+public class UserManager implements IridiumUserManager<Island, User> {
 
-    /**
-     * Gets a {@link User}'s info. Creates one if he doesn't exist.
-     *
-     * @param offlinePlayer The player who's data should be fetched
-     * @return The user data
-     */
+    @Override
     public @NotNull User getUser(@NotNull OfflinePlayer offlinePlayer) {
         Optional<User> userOptional = getUserByUUID(offlinePlayer.getUniqueId());
         if (userOptional.isPresent()) {
@@ -31,14 +26,7 @@ public class UserManager {
         }
     }
 
-    /**
-     * Finds an User by his {@link UUID}.
-     *
-     * @param uuid The uuid of the onlyForPlayers
-     * @return the User class of the onlyForPlayers
-     */
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(uuid);
     }
-
 }

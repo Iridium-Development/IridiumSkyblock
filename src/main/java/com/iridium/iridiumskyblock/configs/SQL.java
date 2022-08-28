@@ -1,10 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
-import com.iridium.iridiumskyblock.managers.DatabaseManager;
 
 /**
- * The SQL database connection file used by IridiumSkyblock (sql.yml).
+ * The SQL database connection file used by IridiumFactions (sql.yml).
  * Is deserialized automatically on plugin startup and reload.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -20,14 +19,9 @@ public class SQL {
 
     /**
      * Represents a Driver of a database.
-     * Used in the {@link DatabaseManager}.
      */
     public enum Driver {
         MYSQL,
-        MARIADB,
-        SQLSERVER,
-        POSTGRESQL,
-        H2,
         SQLITE
     }
 
