@@ -6,7 +6,9 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumteams.configs.inventories.InventoryConfig;
+import com.iridium.iridiumteams.configs.inventories.SingleItemGUI;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 
@@ -26,6 +28,11 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             .put("is delete", new Item(XMaterial.BARRIER, 33, 1, "&9&lDelete Island", Collections.singletonList("&7Delete your island")))
             .build()
     );
+
+    public SingleItemGUI visitGUI = new SingleItemGUI(54, "&7Visit an Island", background1, new Item(XMaterial.PLAYER_HEAD, 1, "&9&l%island_name%", "%island_owner%", Arrays.asList(
+            "&9Created: &7%island_create%",
+            "&9Owner: &7%island_owner%"
+    )));
 
     public Inventories() {
         super("Island", "&9");

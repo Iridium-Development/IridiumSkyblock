@@ -13,8 +13,6 @@ import com.iridium.iridiumskyblock.placeholders.IslandPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
 import com.iridium.iridiumteams.IridiumTeams;
-import com.iridium.iridiumteams.configs.BankItems;
-import com.iridium.iridiumteams.configs.Missions;
 import com.iridium.iridiumteams.managers.MissionManager;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
@@ -168,6 +166,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         return this.chunkGenerator;
+    }
+
+    public IslandManager getIslandManager() {
+        return teamManager;
     }
 
     public static IridiumSkyblock getInstance() {

@@ -15,6 +15,12 @@ public class CommandManager extends com.iridium.iridiumteams.managers.CommandMan
     }
 
     @Override
+    public void registerCommands() {
+        super.registerCommands();
+        registerCommand(IridiumSkyblock.getInstance().getCommands().visitCommand);
+    }
+
+    @Override
     public void noArgsDefault(@NotNull CommandSender commandSender) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;

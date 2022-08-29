@@ -21,7 +21,7 @@ dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:1.5.5")
+    implementation("com.iridium:IridiumTeams:1.5.6")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.22")
@@ -34,7 +34,8 @@ dependencies {
     // Test dependencies
     testImplementation(platform("org.junit:junit-bom:5.7.0"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:1.24.1")
+    testImplementation("com.github.seeseemelk:MockBukkit-v1.18:2.26.0")
+    testImplementation("com.github.MilkBowl:VaultAPI:1.7")
 }
 
 tasks {

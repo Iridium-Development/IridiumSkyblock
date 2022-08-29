@@ -24,7 +24,7 @@ public class User extends IridiumUser<Island> {
     }
 
     public Optional<Island> getIsland(){
-        return null;
+        return IridiumSkyblock.getInstance().getTeamManager().getTeamViaID(getTeamID());
     }
 
     public Optional<Island> getCurrentIsland() {

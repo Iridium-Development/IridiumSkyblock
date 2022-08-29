@@ -9,6 +9,7 @@ import com.iridium.iridiumteams.PlaceholderBuilder;
 import com.iridium.iridiumteams.Rank;
 import org.bukkit.entity.EntityType;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +36,7 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
                         .findFirst()
                         .map(User::getName)
                         .orElse("N/A")),
+                new Placeholder("island_create", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))),
                 new Placeholder("island_description", island.getDescription()),
                 new Placeholder("island_value", String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamValue(island))),
                 new Placeholder("island_level", String.valueOf(island.getLevel())),
@@ -61,6 +63,7 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
                 new Placeholder("island_name", "N/A"),
                 new Placeholder("island_owner", "N/A"),
                 new Placeholder("island_description", "N/A"),
+                new Placeholder("island_create", "N/A"),
                 new Placeholder("island_value", "N/A"),
                 new Placeholder("island_level", "N/A"),
                 new Placeholder("island_experience", "N/A"),
