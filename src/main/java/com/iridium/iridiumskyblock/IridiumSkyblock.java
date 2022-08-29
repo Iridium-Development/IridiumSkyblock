@@ -3,6 +3,8 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.generators.VoidGenerator;
+import com.iridium.iridiumskyblock.listeners.PlayerMoveListener;
 import com.iridium.iridiumskyblock.managers.CommandManager;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -17,6 +19,8 @@ import com.iridium.iridiumteams.managers.MissionManager;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -24,10 +28,6 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import java.io.File;
 import java.sql.SQLException;
 
-/**
- * The main class of this plugin which handles initialization
- * and shutdown of the plugin.
- */
 @Getter
 public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
@@ -58,6 +58,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     private Economy economy;
 
+    private ChunkGenerator chunkGenerator;
+
     public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
         instance = this;
@@ -65,6 +67,12 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     public IridiumSkyblock() {
         instance = this;
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        this.chunkGenerator = new VoidGenerator();
     }
 
     @Override
@@ -90,6 +98,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.teamChatPlaceholderBuilder = new TeamChatPlaceholderBuilder();
 
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
+
+        this.teamManager.createWorld(World.Environment.NORMAL, configuration.worldName);
+        this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
+        this.teamManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
         super.onEnable();
     }
 
@@ -100,6 +112,12 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
             return null;
         }
         return economyProvider.getProvider();
+    }
+
+    @Override
+    public void registerListeners() {
+        super.registerListeners();
+        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
     }
 
     @Override
@@ -145,6 +163,11 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getDatabaseManager().getTeamSpawnerTableManager().save();
         getDatabaseManager().getTeamMissionTableManager().save();
         getDatabaseManager().getTeamRewardsTableManager().save();
+    }
+
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+        return this.chunkGenerator;
     }
 
     public static IridiumSkyblock getInstance() {
