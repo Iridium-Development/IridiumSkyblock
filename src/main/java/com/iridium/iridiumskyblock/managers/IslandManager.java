@@ -1,7 +1,10 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumcore.Color;
+import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
+import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -15,6 +18,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
@@ -27,7 +31,6 @@ public class IslandManager extends TeamManager<Island, User> {
     public IslandManager() {
         super(IridiumSkyblock.getInstance());
     }
-
     public void createWorld(World.Environment environment, String name) {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
         WorldCreator worldCreator = new WorldCreator(name)
@@ -358,5 +361,24 @@ public class IslandManager extends TeamManager<Island, User> {
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, Color.BLUE, island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
         });
+    }
+
+    public ItemStack getIslandCrystal(int amount) {
+        ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
+                new Placeholder("amount", String.valueOf(amount))
+        ));
+        NBTItem nbtItem = new NBTItem(itemStack);
+        NBTCompound nbtCompound = nbtItem.getOrCreateCompound("iridiumskyblock");
+        nbtCompound.setInteger("islandCrystals", amount);
+        return nbtItem.getItem();
+    }
+
+    public int getIslandCrystals(ItemStack itemStack) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
+        NBTCompound nbtCompound = new NBTItem(itemStack).getOrCreateCompound("iridiumskyblock");
+        if (nbtCompound.hasKey("islandCrystals")) {
+            return nbtCompound.getInteger("islandCrystals");
+        }
+        return 0;
     }
 }

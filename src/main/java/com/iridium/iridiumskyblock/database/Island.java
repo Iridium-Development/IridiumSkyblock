@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.enhancements.SizeEnhancementData;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumteams.database.Team;
 import lombok.NoArgsConstructor;
@@ -86,7 +87,13 @@ public class Island extends Team {
     }
 
     public int getSize() {
-        return 150;
+        int sizeLevel = IridiumSkyblock.getInstance().getTeamManager().getTeamEnhancement(this, "size").getLevel();
+        SizeEnhancementData sizeEnhancementData = IridiumSkyblock.getInstance().getEnhancements().sizeEnhancement.levels.get(sizeLevel);
+        if (sizeEnhancementData == null) {
+            IridiumSkyblock.getInstance().getLogger().warning("size enhancement for level " + sizeLevel + " is null, defaulting to 50");
+            return 50;
+        }
+        return sizeEnhancementData.size;
     }
 
     public boolean isInIsland(Location location) {

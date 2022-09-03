@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
+import com.iridium.iridiumskyblock.listeners.PlayerJoinListener;
 import com.iridium.iridiumskyblock.listeners.PlayerMoveListener;
 import com.iridium.iridiumskyblock.managers.CommandManager;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
@@ -78,6 +79,11 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         instance = this;
 
         this.teamManager = new IslandManager();
+
+        this.teamManager.createWorld(World.Environment.NORMAL, configuration.worldName);
+        this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
+        this.teamManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
+
         this.userManager = new UserManager();
         this.commandManager = new CommandManager("iridiumskyblock");
         this.databaseManager = new DatabaseManager();
@@ -96,10 +102,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.teamChatPlaceholderBuilder = new TeamChatPlaceholderBuilder();
 
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
-
-        this.teamManager.createWorld(World.Environment.NORMAL, configuration.worldName);
-        this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
-        this.teamManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
         super.onEnable();
     }
 
@@ -116,6 +118,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     public void registerListeners() {
         super.registerListeners();
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
     }
 
     @Override
@@ -156,11 +159,30 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getDatabaseManager().getIslandTableManager().save();
         getDatabaseManager().getInvitesTableManager().save();
         getDatabaseManager().getPermissionsTableManager().save();
+        getDatabaseManager().getBankTableManager().save();
         getDatabaseManager().getEnhancementTableManager().save();
         getDatabaseManager().getTeamBlockTableManager().save();
         getDatabaseManager().getTeamSpawnerTableManager().save();
+        getDatabaseManager().getTeamWarpTableManager().save();
         getDatabaseManager().getTeamMissionTableManager().save();
+        getDatabaseManager().getTeamMissionDataTableManager().save();
         getDatabaseManager().getTeamRewardsTableManager().save();
+    }
+
+    @Override
+    public void initializeBankItem() {
+        super.initializeBankItem();
+        addBankItem(getBankItems().crystalsBankItem);
+    }
+
+    @Override
+    public void initializeEnhancements() {
+        super.initializeEnhancements();
+        addEnhancement("size", getEnhancements().sizeEnhancement);
+        addEnhancement("members", getEnhancements().membersEnhancement);
+        addEnhancement("warps", getEnhancements().warpsEnhancement);
+        addEnhancement("void", getEnhancements().voidEnhancement);
+        addEnhancement("generator", getEnhancements().generatorEnhancement);
     }
 
     @Override
