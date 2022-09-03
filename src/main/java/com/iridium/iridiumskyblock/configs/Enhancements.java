@@ -3,7 +3,9 @@ package com.iridium.iridiumskyblock.configs;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumskyblock.enhancements.*;
+import com.iridium.iridiumskyblock.enhancements.GeneratorEnhancementData;
+import com.iridium.iridiumskyblock.enhancements.SizeEnhancementData;
+import com.iridium.iridiumskyblock.enhancements.VoidEnhancementData;
 import com.iridium.iridiumteams.enhancements.Enhancement;
 import com.iridium.iridiumteams.enhancements.EnhancementType;
 
@@ -38,52 +40,6 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             .put(2, new SizeEnhancementData(10, 10000, new HashMap<>(), 100))
             .put(3, new SizeEnhancementData(10, 10000, new HashMap<>(), 125))
             .put(4, new SizeEnhancementData(15, 10000, new HashMap<>(), 150))
-            .build());
-
-    public Enhancement<MembersEnhancementData> membersEnhancement = new Enhancement<>(true, EnhancementType.UPGRADE, new Item(XMaterial.PLAYER_HEAD, 11, 1, "&9&lMember Upgrade", "Peaches_MLG", Arrays.asList(
-            "&7Need more members? Buy this",
-            "&7upgrade to increase your member count.",
-            "",
-            "&9&lInformation:",
-            "&9&l * &7Current Level: &9%current_level%",
-            "&9&l * &7Current Members: &9%members% Members",
-            "&9&l * &7Upgrade Cost: &9%cost%",
-            "&9&lLevels:",
-            "&9&l * &7Level 1: &95 Members",
-            "&9&l * &7Level 2: &910 Members",
-            "&9&l * &7Level 3: &915 Members",
-            "&9&l * &7Level 4: &920 Members",
-            "",
-            "&9&l[!] " + "&9Left Click to Purchase Level %next_level%."
-    )), new ImmutableMap.Builder<Integer, MembersEnhancementData>()
-            .put(0, new MembersEnhancementData(5, 10000, new HashMap<>(), 5))
-            .put(1, new MembersEnhancementData(5, 10000, new HashMap<>(), 10))
-            .put(2, new MembersEnhancementData(10, 10000, new HashMap<>(), 15))
-            .put(3, new MembersEnhancementData(15, 10000, new HashMap<>(), 20))
-            .build());
-
-    public Enhancement<WarpsEnhancementData> warpsEnhancement = new Enhancement<>(true, EnhancementType.UPGRADE, new Item(XMaterial.END_PORTAL_FRAME, 13, 1, "&9&lWarps Upgrade", Arrays.asList(
-            "&7Need more members? Buy this",
-            "&7upgrade to increase your member count.",
-            "",
-            "&9&lInformation:",
-            "&9&l * &7Current Level: &9%current_level%",
-            "&9&l * &7Current Warps: &9%warps% Warps",
-            "&9&l * &7Upgrade Cost: &9%cost%",
-            "&9&lLevels:",
-            "&9&l * &7Level 1: &91 Warps",
-            "&9&l * &7Level 2: &93 Warps",
-            "&9&l * &7Level 3: &95 Warps",
-            "&9&l * &7Level 4: &97 Warps",
-            "&9&l * &7Level 5: &99 Warps",
-            "",
-            "&9&l[!] " + "&9Left Click to Purchase Level %next_level%."
-    )), new ImmutableMap.Builder<Integer, WarpsEnhancementData>()
-            .put(0, new WarpsEnhancementData(5, 10000, new HashMap<>(), 1))
-            .put(1, new WarpsEnhancementData(5, 10000, new HashMap<>(), 3))
-            .put(2, new WarpsEnhancementData(10, 10000, new HashMap<>(), 5))
-            .put(3, new WarpsEnhancementData(15, 10000, new HashMap<>(), 7))
-            .put(4, new WarpsEnhancementData(15, 10000, new HashMap<>(), 9))
             .build());
 
     public Enhancement<VoidEnhancementData> voidEnhancement = new Enhancement<>(true, EnhancementType.UPGRADE, new Item(XMaterial.RED_BED, 15, 1, "&9&lVoid Upgrade", Arrays.asList(

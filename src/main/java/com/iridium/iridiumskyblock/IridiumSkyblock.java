@@ -181,8 +181,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     public void initializeEnhancements() {
         super.initializeEnhancements();
         addEnhancement("size", getEnhancements().sizeEnhancement);
-        addEnhancement("members", getEnhancements().membersEnhancement);
-        addEnhancement("warps", getEnhancements().warpsEnhancement);
         addEnhancement("void", getEnhancements().voidEnhancement);
         addEnhancement("generator", getEnhancements().generatorEnhancement);
     }
