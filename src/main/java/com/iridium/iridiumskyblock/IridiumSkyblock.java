@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
+import com.iridium.iridiumskyblock.listeners.BlockFormListener;
 import com.iridium.iridiumskyblock.listeners.PlayerJoinListener;
 import com.iridium.iridiumskyblock.listeners.PlayerMoveListener;
 import com.iridium.iridiumskyblock.managers.CommandManager;
@@ -119,6 +120,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         super.registerListeners();
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
     }
 
     @Override

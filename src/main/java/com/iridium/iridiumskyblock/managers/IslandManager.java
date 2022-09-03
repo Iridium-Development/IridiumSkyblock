@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;

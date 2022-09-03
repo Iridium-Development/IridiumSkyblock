@@ -119,13 +119,6 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             "&9&lInformation:",
             "&9&l * &7Current Level: &9%current_level%",
             "&9&l * &7Upgrade Cost: &9%cost%",
-            "&9&lLevels:",
-            "&9&l * &7Level 1: &9No Void Teleport",
-            "&9&l * &7Level 2: &9100% Item Loss",
-            "&9&l * &7Level 3: &975% Item Loss",
-            "&9&l * &7Level 4: &950% Item Loss",
-            "&9&l * &7Level 5: &925% Item Loss",
-            "&9&l * &7Level 6: &90% Item Loss",
             "",
             "&9&l[!] " + "&9Left Click to Purchase Level %next_level%."
     )), new ImmutableMap.Builder<Integer, GeneratorEnhancementData>()
