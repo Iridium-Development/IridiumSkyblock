@@ -99,6 +99,7 @@ public class IslandManager extends TeamManager<Island, User> {
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 island.getHome().getBlock().setType(Material.BEDROCK);
                 owner.teleport(island.getHome());
+                IridiumSkyblock.getInstance().getNms().sendTitle(owner, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
             });
 
             return island;

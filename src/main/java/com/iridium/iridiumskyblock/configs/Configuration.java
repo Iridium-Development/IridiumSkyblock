@@ -15,6 +15,8 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
         super("&9", "Island", "IridiumSkyblock");
     }
 
+    public String islandCreateTitle = "&b&lIsland Created";
+    public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String defaultDescription = "Default island description :c";
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
