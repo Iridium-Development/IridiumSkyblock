@@ -8,6 +8,7 @@ import com.iridium.iridiumskyblock.schematics.SchematicPaster;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.io.File;
@@ -15,23 +16,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Class which handles schematics and pastes them.
- */
 public class SchematicManager {
 
     public final SchematicPaster schematicPaster;
     public final Map<String, File> schematicFiles;
 
     private final boolean worldEdit = Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
-    private final boolean fawe = Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit");
 
     public SchematicManager() {
         File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
-        SchematicPaster schematicPaster = worldEdit || fawe ? new WorldEdit() : new Schematic();
-        
-        if ((worldEdit || fawe) && !WorldEdit.isWorking())
-        {
+        SchematicPaster schematicPaster = worldEdit ? new WorldEdit() : new Schematic();
+
+        if ((worldEdit) && !WorldEdit.isWorking()) {
             IridiumSkyblock.getInstance().getLogger().warning("WorldEdit version doesn't support minecraft version, falling back to default integration");
             schematicPaster = new Schematic();
         }
@@ -43,26 +39,35 @@ public class SchematicManager {
         }
     }
 
-    /**
-     * Pastes the island schematic at the designated island.
-     *
-     * @param island     The island you want the schematic to be pasted at
-     * @param schematics A map of worlds to schematics we need to paste
-     * @return A completable future of when its finished pasting
-     */
-    public CompletableFuture<Void> pasteSchematic(final Island island, Map<World, Schematics.SchematicWorld> schematics) {
-        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
-        for (Map.Entry<World, Schematics.SchematicWorld> schematic : schematics.entrySet()) {
-            Location location = island.getCenter(schematic.getKey());
-            location.add(0, schematic.getValue().islandHeight, 0);
-            File file = schematicFiles.getOrDefault(schematic.getValue().schematicID, schematicFiles.values().stream().findFirst().get());
-            if (fawe) {
-                Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> schematicPaster.paste(file, location, schematic.getValue().ignoreAirBlocks, completableFuture));
-            } else {
-                schematicPaster.paste(file, location, schematic.getValue().ignoreAirBlocks, completableFuture);
+    public CompletableFuture<Void> pasteSchematic(Island island, Schematics.SchematicConfig schematic) {
+        return CompletableFuture.runAsync(() -> {
+            if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.NORMAL, true)) {
+                pasteSchematic(island, schematic.overworld, IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NORMAL)).join();
             }
-        }
+            if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.NETHER, true)) {
+                pasteSchematic(island, schematic.nether, IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NETHER)).join();
+            }
+            if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.THE_END, true)) {
+                pasteSchematic(island, schematic.end, IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.THE_END)).join();
+            }
+        });
+    }
+
+    private CompletableFuture<Void> pasteSchematic(Island island, Schematics.SchematicWorld schematic, World world) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        Location location = island.getCenter(world);
+        location.add(0, schematic.islandHeight, 0);
+        File file = schematicFiles.getOrDefault(schematic.schematicID, schematicFiles.values().stream().findFirst().orElse(null));
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            if (file == null) {
+                location.getBlock().setType(Material.BEDROCK);
+                IridiumSkyblock.getInstance().getLogger().warning("Could not find schematic " + schematic.schematicID);
+            } else {
+                schematicPaster.paste(file, location, schematic.ignoreAirBlocks, completableFuture);
+            }
+        });
         return completableFuture;
     }
+
 
 }

@@ -1,61 +1,59 @@
 package com.iridium.iridiumskyblock.gui;
 
+import com.iridium.iridiumcore.gui.BackGUI;
 import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
+import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
+import org.bukkit.Bukkit;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Allows users to select a schematic.
- * Extended by {@link IslandRegenGUI} and {@link IslandCreateGUI}.
- */
-public abstract class SchematicGUI extends GUI {
+public abstract class SchematicGUI extends BackGUI {
 
-    private final Map<Integer, Map.Entry<String, Schematics.SchematicConfig>> schematics = new HashMap<>();
+    public SchematicGUI(Inventory previousInventory) {
+        super(
+                IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.background,
+                previousInventory,
+                IridiumSkyblock.getInstance().getInventories().backButton
+        );
+    }
 
-    public SchematicGUI() {
-        super(IridiumSkyblock.getInstance().getInventories().islandSchematicGUI);
+    @NotNull
+    @Override
+    public Inventory getInventory() {
+        NoItemGUI noItemGUI = IridiumSkyblock.getInstance().getInventories().islandSchematicGUI;
+        Inventory inventory = Bukkit.createInventory(this, noItemGUI.size, StringUtils.color(noItemGUI.title));
+        addContent(inventory);
+        return inventory;
     }
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.background);
+        super.addContent(inventory);
 
         for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
             inventory.setItem(entry.getValue().item.slot, ItemStackUtils.makeItem(entry.getValue().item));
-            schematics.put(entry.getValue().item.slot, entry);
-        }
-
-        if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
-            inventory.setItem(inventory.getSize() + IridiumSkyblock.getInstance().getInventories().backButton.slot, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().backButton));
         }
     }
 
-    /**
-     * Called when there is a click in this GUI.
-     * Cancelled automatically.
-     *
-     * @param event The InventoryClickEvent provided by Bukkit
-     */
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        if (!schematics.containsKey(event.getSlot())) return;
-        selectSchematic(schematics.get(event.getSlot()));
-        event.getWhoClicked().closeInventory();
+        super.onInventoryClick(event);
+
+        for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+            if (entry.getValue().item.slot != event.getSlot()) continue;
+            selectSchematic(entry.getKey());
+            event.getWhoClicked().closeInventory();
+        }
     }
 
-    /**
-     * Executed when the player selects the Island schematic.
-     *
-     * @param schematicConfig The data of the selected schematic
-     */
-    public abstract void selectSchematic(Map.Entry<String, Schematics.SchematicConfig> schematicConfig);
+    public abstract void selectSchematic(String schematic);
 
 }
