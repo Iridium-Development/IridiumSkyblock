@@ -20,7 +20,6 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public String defaultDescription = "Default island description :c";
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
-
     public int distance = 151;
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&9*** &9&lIsland Crystal &9***", Arrays.asList(
             "",

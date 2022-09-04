@@ -109,7 +109,7 @@ public class Island extends Team {
     public boolean isInIsland(Location location) {
         IslandManager islandManager = IridiumSkyblock.getInstance().getTeamManager();
         World world = location.getWorld();
-        if (Objects.equals(world, islandManager.getWorld())) {
+        if (islandManager.isInSkyblockWorld(world)) {
             return isInIsland(location.getBlockX(), location.getBlockZ());
         } else {
             return false;

@@ -6,6 +6,7 @@ import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.CreateGUI;
@@ -22,11 +23,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class IslandManager extends TeamManager<Island, User> {
 
@@ -88,7 +91,7 @@ public class IslandManager extends TeamManager<Island, User> {
         owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
         return CompletableFuture.supplyAsync(() -> {
             //TODO what if they close the GUI, the completable future will never finish, will this cause memory leaks?
-            String schematicName = schematicNameCompletableFuture.join();
+            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematicNameCompletableFuture.join());
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Island island = new Island(name);
@@ -96,13 +99,13 @@ public class IslandManager extends TeamManager<Island, User> {
 
             IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
 
-            island.setHome(island.getCenter(getWorld()).add(0, 100, 0));
+            island.setHome(island.getCenter(getWorld(World.Environment.NORMAL)).add(0, 100, 0));
 
             user.setTeam(island);
             user.setUserRank(Rank.OWNER.getId());
 
+            IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                island.getHome().getBlock().setType(Material.BEDROCK);
                 owner.teleport(island.getHome());
                 IridiumSkyblock.getInstance().getNms().sendTitle(owner, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
             });
@@ -213,7 +216,7 @@ public class IslandManager extends TeamManager<Island, User> {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
         Map<EntityType, Integer> teamSpawners = new HashMap<>();
         return CompletableFuture.runAsync(() -> {
-            List<Chunk> chunks = getIslandChunks(island, getWorld()).join();
+            List<Chunk> chunks = getIslandChunks(island).join();
             for (Chunk chunk : chunks) {
                 ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
                 for (int x = 0; x < 16; x++) {
@@ -257,21 +260,26 @@ public class IslandManager extends TeamManager<Island, User> {
         return completableFuture;
     }
 
-    public CompletableFuture<List<Chunk>> getIslandChunks(Island island, World world) {
+    public CompletableFuture<List<Chunk>> getIslandChunks(Island island) {
+        List<World> worlds = Stream.of(getWorld(World.Environment.NORMAL), getWorld(World.Environment.NETHER), getWorld(World.Environment.THE_END))
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         return CompletableFuture.supplyAsync(() -> {
             List<CompletableFuture<Chunk>> chunks = new ArrayList<>();
 
-            Location pos1 = island.getPosition1(world);
-            Location pos2 = island.getPosition2(world);
+            for (World world : worlds) {
+                Location pos1 = island.getPosition1(world);
+                Location pos2 = island.getPosition2(world);
 
-            int minX = pos1.getBlockX() >> 4;
-            int minZ = pos1.getBlockZ() >> 4;
-            int maxX = pos2.getBlockX() >> 4;
-            int maxZ = pos2.getBlockZ() >> 4;
+                int minX = pos1.getBlockX() >> 4;
+                int minZ = pos1.getBlockZ() >> 4;
+                int maxX = pos2.getBlockX() >> 4;
+                int maxZ = pos2.getBlockZ() >> 4;
 
-            for (int x = minX; x <= maxX; x++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    chunks.add(IridiumSkyblock.getInstance().getMultiVersion().getChunkAt(pos1.getWorld(), x, z));
+                for (int x = minX; x <= maxX; x++) {
+                    for (int z = minZ; z <= maxZ; z++) {
+                        chunks.add(IridiumSkyblock.getInstance().getMultiVersion().getChunkAt(pos1.getWorld(), x, z));
+                    }
                 }
             }
             return chunks.stream().map(CompletableFuture::join).collect(Collectors.toList());
@@ -361,8 +369,22 @@ public class IslandManager extends TeamManager<Island, User> {
         IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().delete(teamReward);
     }
 
-    public World getWorld() {
-        return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName);
+    public @Nullable World getWorld(World.Environment environment) {
+        if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true))
+            return null;
+        switch (environment) {
+            case NORMAL:
+                return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName);
+            case NETHER:
+                return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether");
+            case THE_END:
+                return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
+        }
+        return null;
+    }
+
+    public boolean isInSkyblockWorld(World world) {
+        return Objects.equals(world, getWorld(World.Environment.NORMAL)) || Objects.equals(world, getWorld(World.Environment.NETHER)) || Objects.equals(world, getWorld(World.Environment.THE_END));
     }
 
     public void sendIslandBorder(Player player) {

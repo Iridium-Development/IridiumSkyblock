@@ -5,10 +5,7 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
 import com.iridium.iridiumskyblock.listeners.*;
-import com.iridium.iridiumskyblock.managers.CommandManager;
-import com.iridium.iridiumskyblock.managers.DatabaseManager;
-import com.iridium.iridiumskyblock.managers.IslandManager;
-import com.iridium.iridiumskyblock.managers.UserManager;
+import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.IslandPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
@@ -24,8 +21,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.Objects;
 
 @Getter
 public class IridiumSkyblock extends IridiumTeams<Island, User> {
@@ -55,6 +58,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
     private MissionManager<Island, User> missionManager;
+    private SchematicManager schematicManager;
 
     private Economy economy;
 
@@ -85,6 +89,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
         this.teamManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
 
+        this.schematicManager = new SchematicManager();
         this.userManager = new UserManager();
         this.commandManager = new CommandManager("iridiumskyblock");
         this.databaseManager = new DatabaseManager();
@@ -166,6 +171,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(top);
         getPersist().save(missions);
         getPersist().save(schematics);
+        saveSchematics();
     }
 
     @Override
@@ -196,6 +202,43 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         addEnhancement("size", getEnhancements().sizeEnhancement);
         addEnhancement("void", getEnhancements().voidEnhancement);
         addEnhancement("generator", getEnhancements().generatorEnhancement);
+    }
+
+    private void saveSchematics() {
+        File schematicFolder = new File(getDataFolder(), "schematics");
+        if (!schematicFolder.exists()) {
+            schematicFolder.mkdir();
+        }
+
+        // Return if there are already schematics in the schematics folder
+        if (Objects.requireNonNull(schematicFolder.list()).length != 0) {
+            return;
+        }
+
+        saveFile(schematicFolder, "desert.schem");
+        saveFile(schematicFolder, "mushroom.schem");
+        saveFile(schematicFolder, "jungle.schem");
+        saveFile(schematicFolder, "desert_nether.schem");
+        saveFile(schematicFolder, "mushroom_nether.schem");
+        saveFile(schematicFolder, "jungle_nether.schem");
+        saveFile(schematicFolder, "desert_end.schem");
+        saveFile(schematicFolder, "mushroom_end.schem");
+        saveFile(schematicFolder, "jungle_end.schem");
+    }
+
+    private void saveFile(File parent, String name) {
+        File file = new File(parent, name);
+        if (!file.exists()) {
+            try {
+                InputStream source = getResource(name);
+                Path target = file.toPath();
+
+                if (source == null) return;
+                Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException exception) {
+                getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
+            }
+        }
     }
 
     @Override
