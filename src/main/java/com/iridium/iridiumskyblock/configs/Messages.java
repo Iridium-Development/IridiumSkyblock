@@ -7,4 +7,5 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     }
 
     public String VoidTeleport = "%prefix% &7You have fallen off your island. Teleporting home...";
+    public String netherIslandsDisabled = "%prefix% &7Nether islands have been disabled.";
 }
