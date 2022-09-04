@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.enhancements.SizeEnhancementData;
 import com.iridium.iridiumskyblock.managers.IslandManager;
+import com.iridium.iridiumteams.Rank;
 import com.iridium.iridiumteams.database.Team;
 import com.j256.ormlite.field.DatabaseField;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -125,5 +127,16 @@ public class Island extends Team {
     public void setColor(Color color) {
         this.color = color;
         IridiumSkyblock.getInstance().getTeamManager().getMembersOnIsland(this).forEach(user -> IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(user.getPlayer()));
+    }
+
+    @Override
+    public @NotNull String getName() {
+        if (super.getName() != null) return super.getName();
+        String ownerName = IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(this).stream()
+                .filter(user -> user.getUserRank() == Rank.OWNER.getId())
+                .findFirst()
+                .map(User::getName)
+                .orElse("N/A");
+        return ownerName + "'s Island";
     }
 }

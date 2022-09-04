@@ -31,7 +31,11 @@ public class CommandManager extends com.iridium.iridiumteams.managers.CommandMan
                 player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
                 return;
             }
-            Bukkit.getServer().dispatchCommand(commandSender, "is help");
+            if (IridiumSkyblock.getInstance().getConfiguration().createRequiresName) {
+                Bukkit.getServer().dispatchCommand(commandSender, "is help");
+                return;
+            }
+            Bukkit.getServer().dispatchCommand(commandSender, "is create");
         }
     }
 }

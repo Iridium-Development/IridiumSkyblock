@@ -14,6 +14,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
 
     public Configuration() {
         super("&9", "Island", "IridiumSkyblock");
+        this.createRequiresName = false;
     }
 
     public String islandCreateTitle = "&b&lIsland Created";
@@ -33,7 +34,6 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
             .put(World.Environment.NETHER, true)
             .put(World.Environment.THE_END, true)
             .build();
-
 
 
     public Color defaultBorderColor = Color.BLUE;
