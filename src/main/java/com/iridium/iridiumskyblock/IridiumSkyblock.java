@@ -4,9 +4,7 @@ import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
-import com.iridium.iridiumskyblock.listeners.BlockFormListener;
-import com.iridium.iridiumskyblock.listeners.PlayerJoinListener;
-import com.iridium.iridiumskyblock.listeners.PlayerMoveListener;
+import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.CommandManager;
 import com.iridium.iridiumskyblock.managers.DatabaseManager;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -27,6 +25,7 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Comparator;
 
 @Getter
 public class IridiumSkyblock extends IridiumTeams<Island, User> {
@@ -103,6 +102,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.teamChatPlaceholderBuilder = new TeamChatPlaceholderBuilder();
 
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
+
+        Bukkit.getServer().getOnlinePlayers().forEach(player -> getIslandManager().sendIslandBorder(player));
         super.onEnable();
     }
 
@@ -121,6 +122,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
+        Bukkit.getPluginManager().registerEvents(new EnhancementUpdateListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
     }
 
     @Override
@@ -137,6 +140,13 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.top = getPersist().load(Top.class);
         this.missions = getPersist().load(Missions.class);
         super.loadConfigs();
+
+        int maxSize = enhancements.sizeEnhancement.levels.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).map(sizeEnhancementData -> sizeEnhancementData.size).orElse(150);
+        if (configuration.distance <= maxSize) {
+            getLogger().warning("Distance: " + configuration.distance + " Is too low, must be higher than the maximum island size " + maxSize);
+            configuration.distance = maxSize + 1;
+            getLogger().warning("New Distance set to: " + configuration.distance);
+        }
     }
 
     @Override

@@ -32,6 +32,7 @@ public class IslandManager extends TeamManager<Island, User> {
     public IslandManager() {
         super(IridiumSkyblock.getInstance());
     }
+
     public void createWorld(World.Environment environment, String name) {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
         WorldCreator worldCreator = new WorldCreator(name)
@@ -381,5 +382,12 @@ public class IslandManager extends TeamManager<Island, User> {
             return nbtCompound.getInteger("islandCrystals");
         }
         return 0;
+    }
+
+    public List<User> getMembersOnIsland(Island island) {
+        return Bukkit.getServer().getOnlinePlayers().stream()
+                .map(player -> IridiumSkyblock.getInstance().getUserManager().getUser(player))
+                .filter(user -> user.getCurrentIsland().map(Island::getId).orElse(-1) == island.getId())
+                .collect(Collectors.toList());
     }
 }
