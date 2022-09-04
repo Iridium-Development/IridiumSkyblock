@@ -209,6 +209,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     public void initializePermissions() {
         super.initializePermissions();
         addPermission("border", getPermissions().border);
+        addPermission("regen", getPermissions().regen);
     }
 
     private void saveSchematics() {

@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
+ import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
@@ -16,11 +16,14 @@ import com.iridium.iridiumteams.database.*;
 import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionType;
+import com.iridium.iridiumteams.utils.LocationUtils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -90,8 +93,6 @@ public class IslandManager extends TeamManager<Island, User> {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
         owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
         return CompletableFuture.supplyAsync(() -> {
-            //TODO what if they close the GUI, the completable future will never finish, will this cause memory leaks?
-            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematicNameCompletableFuture.join());
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Island island = new Island(name);
@@ -104,7 +105,8 @@ public class IslandManager extends TeamManager<Island, User> {
             user.setTeam(island);
             user.setUserRank(Rank.OWNER.getId());
 
-            IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
+            //TODO what if they close the GUI, the completable future will never finish, will this cause memory leaks?
+            generateIsland(island, schematicNameCompletableFuture.join()).join();
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 owner.teleport(island.getHome());
                 IridiumSkyblock.getInstance().getNms().sendTitle(owner, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
@@ -115,6 +117,63 @@ public class IslandManager extends TeamManager<Island, User> {
             throwable.printStackTrace();
             return null;
         });
+    }
+
+    public CompletableFuture<Void> generateIsland(Island island, String schematic) {
+        return CompletableFuture.runAsync(() -> {
+            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
+            deleteIslandBlocks(island).join();
+            IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
+        });
+    }
+
+    public CompletableFuture<Void> deleteIslandBlocks(Island island) {
+        return CompletableFuture.runAsync(() -> {
+            List<CompletableFuture<Void>> completableFutures = Arrays.asList(
+                    deleteIslandBlocks(island, getWorld(World.Environment.NORMAL)),
+                    deleteIslandBlocks(island, getWorld(World.Environment.NORMAL)),
+                    deleteIslandBlocks(island, getWorld(World.Environment.NORMAL))
+            );
+            completableFutures.forEach(CompletableFuture::join);
+        });
+    }
+
+    private CompletableFuture<Void> deleteIslandBlocks(Island island, World world) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        if (world == null) {
+            completableFuture.complete(null);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, world.getMaxHeight(), completableFuture, 0));
+        }
+        return completableFuture;
+    }
+
+    private void deleteIslandBlocks(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+        if (world == null) return;
+        Location pos1 = island.getPosition1(world);
+        Location pos2 = island.getPosition2(world);
+
+        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
+            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
+                Block block = world.getBlockAt(x, y, z);
+                if (block.getType() != Material.AIR) {
+                    if (block.getState() instanceof InventoryHolder) {
+                        ((InventoryHolder) block.getState()).getInventory().clear();
+                    }
+                    block.setType(Material.AIR, false);
+                }
+            }
+        }
+
+        if (y <= LocationUtils.getMinHeight(world)) {
+            completableFuture.complete(null);
+        } else {
+            if (delay < 1) {
+                deleteIslandBlocks(island, world, y - 1, completableFuture, delay);
+            } else {
+                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, y - 1, completableFuture, delay), delay);
+            }
+        }
     }
 
     @Override

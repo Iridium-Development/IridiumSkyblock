@@ -19,6 +19,7 @@ public class CommandManager extends com.iridium.iridiumteams.managers.CommandMan
         super.registerCommands();
         registerCommand(IridiumSkyblock.getInstance().getCommands().visitCommand);
         registerCommand(IridiumSkyblock.getInstance().getCommands().borderCommand);
+        registerCommand(IridiumSkyblock.getInstance().getCommands().regenCommand);
     }
 
     @Override
