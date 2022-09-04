@@ -12,6 +12,7 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://ci.ender.zone/plugin/repository/everything/")
     maven("https://nexus.iridiumdevelopment.net/repository/maven-releases/")
+    maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://jitpack.io")
     mavenCentral()
 }
@@ -27,6 +28,7 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.22")
     compileOnly("org.spigotmc:spigot-api:1.19.1-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.22")

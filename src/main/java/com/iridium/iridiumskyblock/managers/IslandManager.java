@@ -9,6 +9,7 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumteams.Rank;
 import com.iridium.iridiumteams.database.*;
 import com.iridium.iridiumteams.managers.TeamManager;
@@ -110,6 +111,8 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public void deleteTeam(Island island, User user) {
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
+
+        getMembersOnIsland(island).forEach(member -> PlayerUtils.teleportSpawn(member.getPlayer()));
     }
 
     @Override
