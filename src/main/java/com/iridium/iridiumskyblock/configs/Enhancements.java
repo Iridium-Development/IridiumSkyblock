@@ -16,6 +16,15 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
 
     public Enhancements() {
         super("&9");
+        this.membersEnhancement.item.slot = 11;
+        this.warpsEnhancement.item.slot = 12;
+        this.sizeEnhancement.item.slot = 13;
+        this.voidEnhancement.item.slot = 14;
+        this.generatorEnhancement.item.slot = 15;
+        this.potionEnhancements.get("haste").item.slot = 21;
+        this.potionEnhancements.get("speed").item.slot = 22;
+        this.potionEnhancements.get("jump").item.slot = 23;
+        this.potionEnhancements.get("regeneration").item.slot = 31;
     }
 
     public Enhancement<SizeEnhancementData> sizeEnhancement = new Enhancement<>(true, EnhancementType.UPGRADE, new Item(XMaterial.GRASS_BLOCK, 9, 1, "&9&lSize Upgrade", Arrays.asList(

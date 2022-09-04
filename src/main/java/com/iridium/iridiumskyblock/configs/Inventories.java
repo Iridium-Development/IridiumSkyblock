@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
+
     @JsonIgnore
     private final Background background1 = new Background(ImmutableMap.<Integer, Item>builder().build());
     @JsonIgnore
@@ -61,5 +62,7 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
 
     public Inventories() {
         super("Island", "&9");
+        this.upgradesGUI.size = 45;
+        this.upgradesGUI.background = background1;
     }
 }
