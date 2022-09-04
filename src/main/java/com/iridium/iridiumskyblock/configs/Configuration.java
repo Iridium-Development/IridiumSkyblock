@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
 import com.google.common.collect.ImmutableMap;
+import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import org.bukkit.World;
@@ -31,6 +32,16 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
             .put(World.Environment.NORMAL, true)
             .put(World.Environment.NETHER, true)
             .put(World.Environment.THE_END, true)
+            .build();
+
+
+
+    public Color defaultBorderColor = Color.BLUE;
+    public Map<Color, Boolean> enabledBorders = new ImmutableMap.Builder<Color, Boolean>()
+            .put(Color.BLUE, true)
+            .put(Color.RED, true)
+            .put(Color.GREEN, true)
+            .put(Color.OFF, true)
             .build();
 
 }

@@ -13,7 +13,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Getter
@@ -26,7 +25,7 @@ public class Island extends Team {
         setName(name);
         setDescription(IridiumSkyblock.getInstance().getConfiguration().defaultDescription);
         setCreateTime(LocalDateTime.now());
-        this.color = Color.BLUE;
+        this.color = IridiumSkyblock.getInstance().getConfiguration().defaultBorderColor;
     }
 
     public Island(int id) {
@@ -121,5 +120,10 @@ public class Island extends Team {
         Location pos2 = getPosition2(null);
 
         return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+        IridiumSkyblock.getInstance().getTeamManager().getMembersOnIsland(this).forEach(user -> IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(user.getPlayer()));
     }
 }

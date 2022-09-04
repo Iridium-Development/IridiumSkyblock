@@ -36,9 +36,7 @@ public abstract class SchematicGUI extends BackGUI {
 
     @Override
     public void addContent(Inventory inventory) {
-        inventory.clear();
-
-        InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.background);
+        super.addContent(inventory);
 
         for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
             inventory.setItem(entry.getValue().item.slot, ItemStackUtils.makeItem(entry.getValue().item));
@@ -47,6 +45,8 @@ public abstract class SchematicGUI extends BackGUI {
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        super.onInventoryClick(event);
+
         for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
             if (entry.getValue().item.slot != event.getSlot()) continue;
             selectSchematic(entry.getKey());

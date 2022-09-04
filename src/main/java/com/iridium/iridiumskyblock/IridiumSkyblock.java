@@ -205,6 +205,12 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         addEnhancement("generator", getEnhancements().generatorEnhancement);
     }
 
+    @Override
+    public void initializePermissions() {
+        super.initializePermissions();
+        addPermission("border", getPermissions().border);
+    }
+
     private void saveSchematics() {
         File schematicFolder = new File(getDataFolder(), "schematics");
         if (!schematicFolder.exists()) {
