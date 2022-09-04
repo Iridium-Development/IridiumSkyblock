@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
@@ -9,6 +8,7 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.CreateGUI;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumteams.Rank;
 import com.iridium.iridiumteams.database.*;
@@ -84,7 +84,12 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public CompletableFuture<Island> createTeam(@NotNull Player owner, @NotNull String name) {
+        CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
+        owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
         return CompletableFuture.supplyAsync(() -> {
+            //TODO what if they close the GUI, the completable future will never finish, will this cause memory leaks?
+            String schematicName = schematicNameCompletableFuture.join();
+
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Island island = new Island(name);
 
@@ -365,7 +370,7 @@ public class IslandManager extends TeamManager<Island, User> {
         user.getCurrentIsland().ifPresent(island -> {
             final Location centre = island.getCenter(player.getWorld()).clone();
 
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, Color.BLUE, island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
         });
     }
 

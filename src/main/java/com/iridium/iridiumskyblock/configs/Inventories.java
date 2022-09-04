@@ -6,15 +6,27 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumteams.configs.inventories.InventoryConfig;
+import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import com.iridium.iridiumteams.configs.inventories.SingleItemGUI;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 
 public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
     @JsonIgnore
-    private final Background background1 = new Background(new HashMap<>());
+    private final Background background1 = new Background(ImmutableMap.<Integer, Item>builder().build());
+    @JsonIgnore
+    private final Background background2 = new Background(ImmutableMap.<Integer, Item>builder()
+            .put(9, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(10, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(11, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(12, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(13, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(14, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(15, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(16, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .put(17, new Item(XMaterial.LIGHT_GRAY_STAINED_GLASS_PANE, 1, " ", Collections.emptyList()))
+            .build());
 
     public InventoryConfig islandMenu = new InventoryConfig(45, "&7Island Menu", background1, ImmutableMap.<String, Item>builder()
             .put("is home", new Item(XMaterial.WHITE_BED, 13, 1, "&9&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
@@ -33,6 +45,8 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             "&9Created: &7%island_create%",
             "&9Owner: &7%island_owner%"
     )));
+
+    public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic", background2);
 
     public Inventories() {
         super("Island", "&9");

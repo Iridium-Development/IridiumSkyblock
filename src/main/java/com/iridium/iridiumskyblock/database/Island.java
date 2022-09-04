@@ -1,10 +1,14 @@
 package com.iridium.iridiumskyblock.database;
 
+import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.enhancements.SizeEnhancementData;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumteams.database.Team;
+import com.j256.ormlite.field.DatabaseField;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -12,11 +16,17 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @NoArgsConstructor
+@Getter
+@Setter
 public class Island extends Team {
+    @DatabaseField(columnName = "color", canBeNull = false)
+    private Color color;
+
     public Island(String name) {
         setName(name);
         setDescription(IridiumSkyblock.getInstance().getConfiguration().defaultDescription);
         setCreateTime(LocalDateTime.now());
+        this.color = Color.BLUE;
     }
 
     public Island(int id) {
