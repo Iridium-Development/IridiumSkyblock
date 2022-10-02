@@ -43,7 +43,7 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             .put("is home", new Item(XMaterial.WHITE_BED, 13, 1, "&9&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
             .put("is members", new Item(XMaterial.PLAYER_HEAD, 14, 1, "&9&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island members")))
             .put("is warps", new Item(XMaterial.END_PORTAL_FRAME, 20, 1, "&9&lIsland Warps", Collections.singletonList("&7View your island warps")))
-            .put("is upgrade", new Item(XMaterial.DIAMOND, 21, 1, "&9&lIsland Upgrades", Collections.singletonList("&7View your island upgrades")))
+            .put("is upgrades", new Item(XMaterial.DIAMOND, 21, 1, "&9&lIsland Upgrades", Collections.singletonList("&7View your island upgrades")))
             .put("is missions", new Item(XMaterial.IRON_SWORD, 22, 1, "&9&lIsland Missions", Collections.singletonList("&7View your island missions")))
             .put("is border", new Item(XMaterial.BEACON, 24, 1, "&9&lIsland Border", Collections.singletonList("&7Change your island border")))
             .put("is bank", new Item(XMaterial.PLAYER_HEAD, 30, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODM4MWM1MjlkNTJlMDNjZDc0YzNiZjM4YmI2YmEzZmRlMTMzN2FlOWJmNTAzMzJmYWE4ODllMGEyOGU4MDgxZiJ9fX0", 1, "&9&lIsland Bank", Collections.singletonList("&7View your island bank")))
