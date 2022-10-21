@@ -48,6 +48,7 @@ public class CrystalsBankItem extends BankItem {
 
         for (int slot = 0; slot < inventory.getContents().length; slot++) {
             ItemStack itemStack = inventory.getContents()[slot];
+            if (itemStack == null) continue;
             int crystalsPerItem = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack);
             int itemStackAmount = itemStack.getAmount();
 
