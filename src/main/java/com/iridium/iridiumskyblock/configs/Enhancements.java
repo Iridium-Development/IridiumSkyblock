@@ -57,7 +57,6 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             "",
             "&9&lInformation:",
             "&9&l * &7Current Level: &9%current_level%",
-            "&9&l * &7Current Warps: &9%warps% Warps",
             "&9&l * &7Upgrade Cost: &9%cost%",
             "&9&lLevels:",
             "&9&l * &7Level 1: &9No Void Teleport",
