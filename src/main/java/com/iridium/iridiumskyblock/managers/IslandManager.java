@@ -77,6 +77,12 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public Optional<Island> getTeamViaPlayerLocation(Player player) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        return user.getCurrentIsland();
+    }
+
+    @Override
     public List<Island> getTeams() {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
@@ -447,8 +453,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public void sendIslandBorder(Player player) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        user.getCurrentIsland().ifPresent(island -> {
+        getTeamViaPlayerLocation(player).ifPresent(island -> {
             final Location centre = island.getCenter(player.getWorld()).clone();
 
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
