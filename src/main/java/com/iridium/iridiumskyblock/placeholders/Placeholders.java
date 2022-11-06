@@ -29,13 +29,12 @@ public class Placeholders {
             )
             .putAll(getIslandPlaceholders("current", player ->
                     IridiumSkyblock.getInstance().getIslandManager().getIslandViaPlayerLocation(player))
-            )
-            .putAll(getIslandTopPlaceholders())
-
-            .put("player_rank", player -> {
+            ) .put("player_rank", player -> {
                 User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
                 return user.getIslandRank().getDisplayName();
-            })
+            }).build();
+    public static Map<String, Placeholder> placeholders_np = ImmutableMap.<String, Placeholder>builder()
+            .putAll(getIslandTopPlaceholders())
             .build();
 
     private static Map<String, Placeholder> getIslandPlaceholders(String startKey, IslandGetter islandGetter) {
