@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumskyblock.SortedList;
+import com.iridium.iridiumteams.database.DatabaseObject;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class TableManager<T, S> {
+public class TableManager<T extends DatabaseObject, S> {
     private final SortedList<T> entries;
     private final Dao<T, S> dao;
     private final Comparator<T> comparator;
@@ -26,13 +27,16 @@ public class TableManager<T, S> {
         this.dao = DaoManager.createDao(connectionSource, clazz);
         this.dao.setAutoCommit(getDatabaseConnection(), false);
         this.entries.addAll(dao.queryForAll());
+        this.entries.forEach(t -> t.setChanged(false));
     }
 
     public void save() {
         try {
             List<T> entryList = new ArrayList<>(entries);
             for (T t : entryList) {
+                if(t.isChanged())continue;
                 dao.createOrUpdate(t);
+                t.setChanged(false);
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException throwables) {
