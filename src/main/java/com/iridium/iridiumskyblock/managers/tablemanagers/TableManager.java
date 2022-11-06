@@ -34,7 +34,7 @@ public class TableManager<T extends DatabaseObject, S> {
         try {
             List<T> entryList = new ArrayList<>(entries);
             for (T t : entryList) {
-                if(t.isChanged())continue;
+                if(!t.isChanged())continue;
                 dao.createOrUpdate(t);
                 t.setChanged(false);
             }
