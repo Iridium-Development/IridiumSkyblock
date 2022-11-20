@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.0.0-b2.1"
+version = "4.0.0-b3"
 description = "IridiumSkyblock"
 
 repositories {
@@ -23,7 +23,7 @@ dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:1.6.4")
+    implementation("com.iridium:IridiumTeams:1.6.7")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.24")

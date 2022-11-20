@@ -11,6 +11,7 @@ import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.managers.MissionManager;
+import com.iridium.iridiumteams.managers.ShopManager;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -32,9 +33,7 @@ import java.util.Objects;
 
 @Getter
 public class IridiumSkyblock extends IridiumTeams<Island, User> {
-
     private static IridiumSkyblock instance;
-
 
     private Configuration configuration;
     private Messages messages;
@@ -48,6 +47,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private SQL sql;
     private Missions missions;
     private Schematics schematics;
+    private Shop shop;
 
     private IslandPlaceholderBuilder teamsPlaceholderBuilder;
     private UserPlaceholderBuilder userPlaceholderBuilder;
@@ -59,6 +59,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private DatabaseManager databaseManager;
     private MissionManager<Island, User> missionManager;
     private SchematicManager schematicManager;
+    private ShopManager<Island, User> shopManager;
 
     private Economy economy;
 
@@ -94,6 +95,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.commandManager = new CommandManager("iridiumskyblock");
         this.databaseManager = new DatabaseManager();
         this.missionManager = new MissionManager<>(this);
+        this.shopManager = new ShopManager<>(this);
         try {
             databaseManager.init();
         } catch (SQLException exception) {
@@ -147,6 +149,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.top = getPersist().load(Top.class);
         this.missions = getPersist().load(Missions.class);
         this.schematics = getPersist().load(Schematics.class);
+        this.shop = getPersist().load(Shop.class);
         super.loadConfigs();
 
         int maxSize = enhancements.sizeEnhancement.levels.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).map(sizeEnhancementData -> sizeEnhancementData.size).orElse(150);
@@ -172,6 +175,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(top);
         getPersist().save(missions);
         getPersist().save(schematics);
+        getPersist().save(shop);
         saveSchematics();
     }
 
