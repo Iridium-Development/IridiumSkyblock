@@ -1,22 +1,23 @@
 package com.iridium.iridiumskyblock.managers;
 
- import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
+import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.CreateGUI;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumteams.Rank;
 import com.iridium.iridiumteams.database.*;
 import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionType;
-import com.iridium.iridiumteams.utils.LocationUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -95,7 +96,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public CompletableFuture<Island> createTeam(@NotNull Player owner, @NotNull String name) {
+    public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
         owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
         return CompletableFuture.supplyAsync(() -> {
@@ -484,5 +485,19 @@ public class IslandManager extends TeamManager<Island, User> {
                 .map(player -> IridiumSkyblock.getInstance().getUserManager().getUser(player))
                 .filter(user -> user.getCurrentIsland().map(Island::getId).orElse(-1) == island.getId())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean teleport(Player player, Location location, Island team) {
+        Location safeLocation = LocationUtils.getSafeLocation(location, team);
+        if (safeLocation == null) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSafeLocation
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            return false;
+        }
+        player.setFallDistance(0.0F);
+        player.teleport(safeLocation);
+        return true;
     }
 }

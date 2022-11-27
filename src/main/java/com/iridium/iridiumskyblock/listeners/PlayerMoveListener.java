@@ -21,10 +21,11 @@ public class PlayerMoveListener implements Listener {
             if (event.getPlayer().getLocation().getY() < LocationUtils.getMinHeight(event.getPlayer().getWorld())) {
                 VoidEnhancementData voidEnhancementData = IridiumSkyblock.getInstance().getEnhancements().voidEnhancement.levels.get(IridiumSkyblock.getInstance().getTeamManager().getTeamEnhancement(island, "void").getLevel());
                 if (voidEnhancementData != null && voidEnhancementData.enabled) {
-                    event.getPlayer().teleport(island.getHome());
-                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().VoidTeleport
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    ));
+                    if (IridiumSkyblock.getInstance().getTeamManager().teleport(event.getPlayer(), island.getHome(), island)) {
+                        event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().voidTeleport
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                        ));
+                    }
                 }
             }
         });
