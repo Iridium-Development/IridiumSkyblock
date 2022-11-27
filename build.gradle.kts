@@ -23,7 +23,7 @@ dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:1.7.1")
+    implementation("com.iridium:IridiumTeams:1.7.2")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.24")

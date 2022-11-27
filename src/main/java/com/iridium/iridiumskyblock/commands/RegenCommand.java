@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.RegenGUI;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.commands.Command;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -43,13 +44,20 @@ public class RegenCommand extends Command<Island, User> {
             return;
         }
 
-        IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig.get());
         IridiumSkyblock.getInstance().getIslandManager().getTeamMembers(island).stream()
                 .map(User::getPlayer)
                 .filter(Objects::nonNull)
                 .forEach(member -> member.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 )));
+
+        IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig.get()).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            if (IridiumSkyblock.getInstance().getTeamManager().teleport(player, island.getHome(), island)) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                ));
+            }
+        }));
     }
 
     @Override
