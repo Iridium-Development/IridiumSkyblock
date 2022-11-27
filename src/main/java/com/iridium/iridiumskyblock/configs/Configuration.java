@@ -10,8 +10,6 @@ import java.util.Arrays;
 import java.util.Map;
 
 public class Configuration extends com.iridium.iridiumteams.configs.Configuration {
-
-
     public Configuration() {
         super("&9", "Island", "IridiumSkyblock");
         this.createRequiresName = false;
@@ -22,6 +20,8 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public String defaultDescription = "Default island description :c";
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
+
+    public boolean obsidianBucket = true;
     public int distance = 151;
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&9*** &9&lIsland Crystal &9***", Arrays.asList(
             "",
