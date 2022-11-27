@@ -51,13 +51,13 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
                 new Placeholder("island_members_count", String.valueOf(users.size()))
         ));
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
-            placeholderList.add(new Placeholder("island_bank_" + bankItem.getName(), String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island, bankItem.getName()).getNumber())));
+            placeholderList.add(new Placeholder("island_bank_" + bankItem.getName().toLowerCase(), String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island, bankItem.getName()).getNumber())));
         }
         for (XMaterial xMaterial : XMaterial.values()) {
-            placeholderList.add(new Placeholder("island_" + xMaterial.name().toUpperCase() + "_AMOUNT", String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamBlock(island, xMaterial).getAmount())));
+            placeholderList.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamBlock(island, xMaterial).getAmount())));
         }
         for (EntityType entityType : EntityType.values()) {
-            placeholderList.add(new Placeholder("island_" + entityType.name().toUpperCase() + "_AMOUNT", String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamSpawners(island, entityType).getAmount())));
+            placeholderList.add(new Placeholder("island_" + entityType.name().toLowerCase() + "_amount", String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamSpawners(island, entityType).getAmount())));
         }
         return placeholderList;
     }
@@ -80,13 +80,13 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
                 new Placeholder("island_members_count", "N/A")
         ));
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
-            placeholderList.add(new Placeholder("island_bank_" + bankItem.getName(), "N/A"));
+            placeholderList.add(new Placeholder("island_bank_" + bankItem.getName().toLowerCase(), "N/A"));
         }
         for (XMaterial xMaterial : XMaterial.values()) {
-            placeholderList.add(new Placeholder("island_" + xMaterial.name().toUpperCase() + "_AMOUNT", "N/A"));
+            placeholderList.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", "N/A"));
         }
         for (EntityType entityType : EntityType.values()) {
-            placeholderList.add(new Placeholder("island_" + entityType.name().toUpperCase() + "_AMOUNT", "N/A"));
+            placeholderList.add(new Placeholder("island_" + entityType.name().toLowerCase() + "_amount", "N/A"));
         }
         return placeholderList;
     }
