@@ -78,6 +78,7 @@ public class OceanGenerator extends IridiumChunkGenerator {
     }
 
     public void generateWater(World world, int x, int z) {
+        if(world==null) return;
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
         generator.setScale(0.005D);
 

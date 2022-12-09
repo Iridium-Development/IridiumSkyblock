@@ -116,6 +116,7 @@ public class DatabaseManager {
         } catch (FileAlreadyExistsException exception) {
             try {
                 int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
+                System.out.println(oldVersion);
                 if (oldVersion != version) {
                     DataConverter.updateDatabaseData(oldVersion, version, connectionSource, driver);
                     Files.delete(versionFile);

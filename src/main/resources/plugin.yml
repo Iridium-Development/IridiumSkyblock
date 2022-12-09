@@ -12,7 +12,6 @@ softdepend:
   - "EssentialsSpawn"
   - "RoseStacker"
   - "WorldEdit"
-loadbefore:
   - "Multiverse-Core"
 commands:
   iridiumskyblock:

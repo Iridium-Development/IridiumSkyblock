@@ -163,12 +163,9 @@ public class IridiumSkyblock extends IridiumCore {
             return;
         }
 
-        this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
-        this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
-        this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
+        islandManager.reload();
 
         // Try to connect to the database
-      
 
         this.missionManager = new MissionManager();
 
@@ -185,19 +182,23 @@ public class IridiumSkyblock extends IridiumCore {
         registerPlaceholderSupport();
 
         // Send island border to all players
-        Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation()).ifPresent(island -> PlayerUtils.sendBorder(player, island)));
+        Bukkit.getOnlinePlayers().forEach(player -> getIslandManager().getIslandViaLocation(player.getLocation())
+                .ifPresent(island -> PlayerUtils.sendBorder(player, island)));
 
         // Auto recalculate islands
         if (getConfiguration().islandRecalculateInterval > 0) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream()
+                        .map(Island::getId).collect(Collectors.toList()).listIterator();
 
                 @Override
                 public void run() {
                     if (!islands.hasNext()) {
-                        islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
+                        islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId)
+                                .collect(Collectors.toList()).listIterator();
                     } else {
-                        getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
+                        getIslandManager().getIslandById(islands.next())
+                                .ifPresent(island -> getIslandManager().recalculateIsland(island));
                     }
                 }
 
@@ -211,15 +212,6 @@ public class IridiumSkyblock extends IridiumCore {
                 ((GUI) inventoryHolder).addContent(player.getOpenInventory().getTopInventory());
             }
         }), 0, 20);
-
-        // Register worlds with multiverse
-        if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
-            Bukkit.getScheduler().runTaskLater(this, () -> {
-                registerMultiverse(islandManager.getWorld());
-                registerMultiverse(islandManager.getNetherWorld());
-                registerMultiverse(islandManager.getEndWorld());
-            }, 1);
-        }
 
         resetIslandMissions();
 
@@ -248,20 +240,26 @@ public class IridiumSkyblock extends IridiumCore {
         Plugin MVDWPlaceholderAPI = getServer().getPluginManager().getPlugin("MVdWPlaceholderAPI");
         if (MVDWPlaceholderAPI != null && MVDWPlaceholderAPI.isEnabled()) {
             new MVDWPlaceholderAPI();
-            getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with MVDWPlaceholderAPI.");
+            getLogger().info("Successfully registered "
+                    + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size()
+                    + " placeholders with MVDWPlaceholderAPI.");
         }
 
         Plugin PlaceholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (PlaceholderAPI != null && PlaceholderAPI.isEnabled()) {
             if (new ClipPlaceholderAPI().register()) {
-                getLogger().info("Successfully registered " + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size() + " placeholders with PlaceholderAPI.");
+                getLogger().info("Successfully registered "
+                        + com.iridium.iridiumskyblock.placeholders.Placeholders.placeholders.size()
+                        + " placeholders with PlaceholderAPI.");
             }
         }
     }
 
     private StackerSupport registerBlockStackerSupport() {
-        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker")) return new RoseStackerSupport();
-        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker")) return new WildStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("RoseStacker"))
+            return new RoseStackerSupport();
+        if (Bukkit.getPluginManager().isPluginEnabled("WildStacker"))
+            return new WildStackerSupport();
         return new StackerSupport() {
             @Override
             public int getExtraBlocks(Island island, XMaterial material) {
@@ -292,8 +290,7 @@ public class IridiumSkyblock extends IridiumCore {
                 databaseManager.getIslandMissionTableManager().delete(
                         databaseManager.getIslandMissionTableManager().getEntries().stream()
                                 .filter(islandMission -> islandMission.getType() == Mission.MissionType.DAILY)
-                                .collect(Collectors.toList())
-                );
+                                .collect(Collectors.toList()));
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> resetIslandMissions());
             }
         }, c.getTime());
@@ -379,7 +376,8 @@ public class IridiumSkyblock extends IridiumCore {
      * @return Vault's economy interface, null if none is found
      */
     private Economy setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
+                .getRegistration(Economy.class);
         if (economyProvider == null) {
             getLogger().warning("You do not have an economy plugin installed (like Essentials)");
             return null;
@@ -392,9 +390,11 @@ public class IridiumSkyblock extends IridiumCore {
      *
      * @param world The specified World
      */
-    private void registerMultiverse(World world) {
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv import " + world.getName() + " normal -g " + getName());
-        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "mv modify set generator " + getName() + " " + world.getName());
+    public void registerMultiverse(World world) {
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                "mv import " + world.getName() + " normal -g " + getName());
+        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                "mv modify set generator " + getName() + " " + world.getName());
     }
 
     /**
@@ -410,7 +410,8 @@ public class IridiumSkyblock extends IridiumCore {
             }
         }
 
-        int maxSize = upgrades.sizeUpgrade.upgrades.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).get().size;
+        int maxSize = upgrades.sizeUpgrade.upgrades.values().stream()
+                .max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).get().size;
         if (configuration.distance <= maxSize) {
             configuration.distance = maxSize + 1;
         }
@@ -426,24 +427,36 @@ public class IridiumSkyblock extends IridiumCore {
         initializeSettingsList();
 
         for (Permission permission : permissionList.values()) {
-            if (permission.getPage() == 0) permission.setPage(1);
+            if (permission.getPage() == 0)
+                permission.setPage(1);
         }
 
-        if (bankItems.crystalsBankItem.getDisplayName() == null) bankItems.crystalsBankItem.setDisplayName("Crystal");
+        if (bankItems.crystalsBankItem.getDisplayName() == null)
+            bankItems.crystalsBankItem.setDisplayName("Crystal");
         if (bankItems.experienceBankItem.getDisplayName() == null)
             bankItems.experienceBankItem.setDisplayName("Experience");
-        if (bankItems.moneyBankItem.getDisplayName() == null) bankItems.moneyBankItem.setDisplayName("Money");
+        if (bankItems.moneyBankItem.getDisplayName() == null)
+            bankItems.moneyBankItem.setDisplayName("Money");
 
-        if (boosters.experienceBooster.name == null) boosters.experienceBooster.name = "Experience";
-        if (boosters.farmingBooster.name == null) boosters.experienceBooster.name = "Farming";
-        if (boosters.flightBooster.name == null) boosters.experienceBooster.name = "Flight";
-        if (boosters.spawnerBooster.name == null) boosters.experienceBooster.name = "Spawner";
+        if (boosters.experienceBooster.name == null)
+            boosters.experienceBooster.name = "Experience";
+        if (boosters.farmingBooster.name == null)
+            boosters.experienceBooster.name = "Farming";
+        if (boosters.flightBooster.name == null)
+            boosters.experienceBooster.name = "Flight";
+        if (boosters.spawnerBooster.name == null)
+            boosters.experienceBooster.name = "Spawner";
 
-        if (upgrades.warpsUpgrade.name == null) upgrades.warpsUpgrade.name = "Warps";
-        if (upgrades.sizeUpgrade.name == null) upgrades.sizeUpgrade.name = "Size";
-        if (upgrades.blockLimitUpgrade.name == null) upgrades.blockLimitUpgrade.name = "Block Limit";
-        if (upgrades.memberUpgrade.name == null) upgrades.memberUpgrade.name = "Members";
-        if (upgrades.oresUpgrade.name == null) upgrades.oresUpgrade.name = "Ore Generator";
+        if (upgrades.warpsUpgrade.name == null)
+            upgrades.warpsUpgrade.name = "Warps";
+        if (upgrades.sizeUpgrade.name == null)
+            upgrades.sizeUpgrade.name = "Size";
+        if (upgrades.blockLimitUpgrade.name == null)
+            upgrades.blockLimitUpgrade.name = "Block Limit";
+        if (upgrades.memberUpgrade.name == null)
+            upgrades.memberUpgrade.name = "Members";
+        if (upgrades.oresUpgrade.name == null)
+            upgrades.oresUpgrade.name = "Ore Generator";
 
         this.bankItemList = new ArrayList<>();
         if (bankItems.crystalsBankItem.isEnabled()) {
@@ -458,12 +471,18 @@ public class IridiumSkyblock extends IridiumCore {
 
         for (Map.Entry<String, Schematics.SchematicConfig> schematics : schematics.schematics.entrySet()) {
             Schematics.SchematicConfig schematic = schematics.getValue();
-            if (schematic.overworld.islandHeight == null) schematic.overworld.islandHeight = 90.0;
-            if (schematic.overworld.ignoreAirBlocks == null) schematic.overworld.ignoreAirBlocks = true;
-            if (schematic.nether.islandHeight == null) schematic.nether.islandHeight = 90.0;
-            if (schematic.nether.ignoreAirBlocks == null) schematic.nether.ignoreAirBlocks = true;
-            if (schematic.end.islandHeight == null) schematic.end.islandHeight = 90.0;
-            if (schematic.end.ignoreAirBlocks == null) schematic.end.ignoreAirBlocks = true;
+            if (schematic.overworld.islandHeight == null)
+                schematic.overworld.islandHeight = 90.0;
+            if (schematic.overworld.ignoreAirBlocks == null)
+                schematic.overworld.ignoreAirBlocks = true;
+            if (schematic.nether.islandHeight == null)
+                schematic.nether.islandHeight = 90.0;
+            if (schematic.nether.ignoreAirBlocks == null)
+                schematic.nether.ignoreAirBlocks = true;
+            if (schematic.end.islandHeight == null)
+                schematic.end.islandHeight = 90.0;
+            if (schematic.end.ignoreAirBlocks == null)
+                schematic.end.ignoreAirBlocks = true;
         }
 
         this.missionsList = new HashMap<>(missions.missions);
@@ -499,7 +518,10 @@ public class IridiumSkyblock extends IridiumCore {
         if (commandManager != null)
             commandManager.reloadCommands();
 
-        if (schematicManager != null) schematicManager.reload();
+        if (schematicManager != null)
+            schematicManager.reload();
+        if (islandManager != null)
+            islandManager.reload();
 
         IridiumSkyblockReloadEvent reloadEvent = new IridiumSkyblockReloadEvent();
         Bukkit.getPluginManager().callEvent(reloadEvent);
@@ -598,7 +620,8 @@ public class IridiumSkyblock extends IridiumCore {
                 InputStream source = getResource(name);
                 Path target = file.toPath();
 
-                if (source == null) return;
+                if (source == null)
+                    return;
                 Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException exception) {
                 getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
