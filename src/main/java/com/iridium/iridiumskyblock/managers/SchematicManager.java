@@ -27,7 +27,7 @@ public class SchematicManager {
     private final boolean fawe = Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit");
 
     public SchematicManager() {
-        File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
+        
         SchematicPaster schematicPaster = worldEdit || fawe ? new WorldEdit() : new Schematic();
         
         if ((worldEdit || fawe) && !WorldEdit.isWorking())
@@ -38,11 +38,24 @@ public class SchematicManager {
 
         this.schematicPaster = schematicPaster;
         this.schematicFiles = new HashMap<>();
+        File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
         for (File file : parent.listFiles()) {
             schematicFiles.put(file.getName(), file);
         }
     }
-
+    public void reload()
+    {
+        loadCache();
+        schematicPaster.clearCache();
+    }
+    public void loadCache()
+    {
+        schematicFiles.clear();
+        File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
+        for (File file : parent.listFiles()) {
+            schematicFiles.put(file.getName(), file);
+        }
+    }
     /**
      * Pastes the island schematic at the designated island.
      *
@@ -52,6 +65,7 @@ public class SchematicManager {
      */
     public CompletableFuture<Void> pasteSchematic(final Island island, Map<World, Schematics.SchematicWorld> schematics) {
         CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        
         for (Map.Entry<World, Schematics.SchematicWorld> schematic : schematics.entrySet()) {
             Location location = island.getCenter(schematic.getKey());
             location.add(0, schematic.getValue().islandHeight, 0);

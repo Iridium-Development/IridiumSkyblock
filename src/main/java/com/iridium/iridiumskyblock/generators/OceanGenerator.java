@@ -11,6 +11,8 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.bukkit.generator.BiomeProvider;
+import org.bukkit.generator.WorldInfo;
 
 import java.util.Objects;
 import java.util.Random;
@@ -164,6 +166,11 @@ public class OceanGenerator extends IridiumChunkGenerator {
         if (world == null) return XMaterial.WATER;
 
         return world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
+    }
+
+    @Override
+    public BiomeProvider getDefaultBiomeProvider(WorldInfo worldInfo) {
+        return null;
     }
 
 }

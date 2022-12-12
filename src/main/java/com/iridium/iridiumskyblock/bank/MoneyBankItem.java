@@ -8,6 +8,8 @@ import com.iridium.iridiumskyblock.database.IslandBank;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandBankGUI;
 import lombok.NoArgsConstructor;
+import net.milkbowl.vault.economy.EconomyResponse;
+
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -23,7 +25,8 @@ public class MoneyBankItem extends BankItem {
      * The default constructor.
      *
      * @param defaultAmount The default withdrawal amount of this item
-     * @param item          The Item which represents this bank item in the {@link IslandBankGUI}
+     * @param item          The Item which represents this bank item in the
+     *                      {@link IslandBankGUI}
      */
     public MoneyBankItem(double defaultAmount, Item item) {
         super("money", "Money", defaultAmount, true, item);
@@ -49,17 +52,17 @@ public class MoneyBankItem extends BankItem {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankWithdrew
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
                         .replace("%amount%", String.valueOf(money))
-                        .replace("%type%", getDisplayName())
-                );
+                        .replace("%type%", getDisplayName()));
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", getDisplayName())
-                );
+                player.sendMessage(StringUtils
+                        .color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToWithdrew
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%type%", getDisplayName()));
             }
             return money;
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
         return 0;
     }
@@ -77,24 +80,32 @@ public class MoneyBankItem extends BankItem {
 
         if (island.isPresent()) {
             IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), this);
-            double money = Math.min(amount.doubleValue(), IridiumSkyblock.getInstance().getEconomy().getBalance(player));
+            double money = Math.min(amount.doubleValue(),
+                    IridiumSkyblock.getInstance().getEconomy().getBalance(player));
             if (money > 0) {
-                islandBank.setNumber(islandBank.getNumber() + money);
-                IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, money);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%amount%", String.valueOf(money))
-                        .replace("%type%", getDisplayName())
-                );
+                if (IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player,
+                        money).type == EconomyResponse.ResponseType.SUCCESS) {
+                    islandBank.setNumber(islandBank.getNumber() + money);
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                            .replace("%amount%", String.valueOf(money))
+                            .replace("%type%", getDisplayName()));
+                } else {
+                    player.sendMessage(StringUtils
+                            .color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                            .replace("%type%", getDisplayName()).replace("%economy",IridiumSkyblock.getInstance().getEconomy().getName()));
+                }
             } else {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%type%", getDisplayName())
-                );
+                player.sendMessage(StringUtils
+                        .color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                        .replace("%type%", getDisplayName()).replace("%economy",IridiumSkyblock.getInstance().getEconomy().getName()));
             }
             return money;
         } else {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         }
         return 0;
     }
