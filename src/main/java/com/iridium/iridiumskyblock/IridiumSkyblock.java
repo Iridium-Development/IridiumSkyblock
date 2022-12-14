@@ -91,7 +91,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Map<String, Mission> missionsList;
     private Map<String, Upgrade<?>> upgradesList;
     private Map<String, Booster> boosterList;
-
+    private PlayerTrackListener track;
     private Economy economy;
 
     private StackerSupport stackerSupport;
@@ -135,6 +135,14 @@ public class IridiumSkyblock extends IridiumCore {
 
         // Initialize the ChunkGenerator
         this.chunkGenerator = configuration.generatorSettings.generatorType.getChunkGenerator();
+    }
+
+    @Override
+    public void onDisable() {
+        // TODO Auto-generated method stub
+        super.onDisable();
+        if (track != null)
+            track.disable();
     }
 
     /**
@@ -345,6 +353,7 @@ public class IridiumSkyblock extends IridiumCore {
         pluginManager.registerEvents(new SpawnerSpawnListener(), this);
         pluginManager.registerEvents(new VehicleDamageListener(), this);
         pluginManager.registerEvents(new BlockBurnListener(), this);
+        pluginManager.registerEvents(new PlayerTrackListener(this), this);
     }
 
     /**
