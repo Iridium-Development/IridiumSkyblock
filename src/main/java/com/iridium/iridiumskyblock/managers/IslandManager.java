@@ -208,6 +208,7 @@ public class IslandManager {
      */
     private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
+        IridiumSkyblock.getInstance().getTrack().track(player, island);
         PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island),
                 PlayerTeleportEvent.TeleportCause.PLUGIN);
 
