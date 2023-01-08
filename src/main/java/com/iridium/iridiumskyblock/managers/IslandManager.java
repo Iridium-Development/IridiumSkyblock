@@ -183,7 +183,7 @@ public class IslandManager {
         }
         return true;
     }
-    
+
     /**
      * Teleports a player to the Island's home
      *
@@ -255,6 +255,8 @@ public class IslandManager {
             user.setIsland(island);
             user.setIslandRank(IslandRank.OWNER);
 
+            IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().save(user);
+            
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(),
                     () -> pasteSchematic(island, schematic).thenRun(() -> completableFuture.complete(island)));
         });
