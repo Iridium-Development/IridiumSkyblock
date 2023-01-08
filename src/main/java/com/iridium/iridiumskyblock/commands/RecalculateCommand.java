@@ -53,23 +53,34 @@ public class RecalculateCommand extends Command {
                 .replace("%amount%", String.valueOf(islandList.size()))
         );
 
-        bukkitTask = Bukkit.getScheduler().runTaskTimer(IridiumSkyblock.getInstance(), new Runnable() {
-            final ListIterator<Integer> islands = islandList.stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-
+        bukkitTask = Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), new Runnable() {
+            final ListIterator<Integer> islands = islandList.stream().map(Island::getId).collect(Collectors.toList())
+                    .listIterator();
+            long start=0;
             @Override
             public void run() {
+                start = System.currentTimeMillis();
+                runOnce();
+            }
+
+            public void runOnce() {
                 if (islands.hasNext()) {
-                    IridiumSkyblock.getInstance().getIslandManager().getIslandById(islands.next()).ifPresent(island ->
-                            IridiumSkyblock.getInstance().getIslandManager().recalculateIsland(island)
-                    );
+                    IridiumSkyblock.getInstance().getIslandManager().getIslandById(islands.next())
+                            .ifPresent(island -> IridiumSkyblock.getInstance().getIslandManager()
+                                    .recalculateIslandAsync(island).thenRun(() -> {
+                                        runOnce();
+                                    }));
                 } else {
                     bukkitTask.cancel();
                     bukkitTask = null;
-                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingFinished.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    IridiumSkyblock.getInstance().getLogger().info("recalculation finished in "+(System.currentTimeMillis()-start)+" milliseconds");
+
+                    sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().calculatingFinished
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 }
             }
 
-        }, 0, interval);
+        }, interval);
         return true;
     }
 
