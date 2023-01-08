@@ -45,6 +45,7 @@ public class Configuration {
     public boolean islandMenu = true;
     public boolean backButtons = true;
     public boolean createIslandOnHome = true;
+    public boolean putBackOnIslandLeave = false;
 
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
@@ -58,6 +59,7 @@ public class Configuration {
     public int maxIslandName = 16;
     public int minIslandName = 3;
     public int teleportDelay = 0;
+    public int trackTicks = 20;
 
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
 

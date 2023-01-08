@@ -163,9 +163,36 @@ public class IslandManager {
      *
      * @param player The player we are teleporting
      * @param island The island we are teleporting them to
+     * @param delay  How long the player should stand still for before teleporting
+     */
+    public boolean enterIsland(@NotNull Player player, @NotNull Island island) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        if (isBannedOnIsland(island, user)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenBanned
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%owner%", island.getOwner().getName())
+                    .replace("%name%", island.getName())));
+            return false;
+        }
+        boolean trusted = getIslandTrusted(island, user).isPresent();
+        boolean inIsland = user.getIsland().map(Island::getId).orElse(0) == island.getId();
+        if (!island.isVisitable() && !inIsland && !trusted && !user.isBypassing()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().islandIsPrivate
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+            return false;
+        }
+        return true;
+    }
+    
+    /**
+     * Teleports a player to the Island's home
+     *
+     * @param player The player we are teleporting
+     * @param island The island we are teleporting them to
      */
     private void teleportHome(@NotNull Player player, @NotNull Island island) {
         player.setFallDistance(0);
+        IridiumSkyblock.getInstance().getTrack().track(player, island);
         PaperLib.teleportAsync(player, LocationUtils.getSafeLocation(island.getHome(), island),
                 PlayerTeleportEvent.TeleportCause.PLUGIN);
 
