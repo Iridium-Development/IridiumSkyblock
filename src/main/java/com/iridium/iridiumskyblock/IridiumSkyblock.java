@@ -190,18 +190,35 @@ public class IridiumSkyblock extends IridiumCore {
         // Auto recalculate islands
         if (getConfiguration().islandRecalculateInterval > 0) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
-                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-
+                ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream()
+                        .map(Island::getId).collect(Collectors.toList()).listIterator();
+                long start = 0;
                 @Override
                 public void run() {
-                    if (!islands.hasNext()) {
-                        islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId).collect(Collectors.toList()).listIterator();
-                    } else {
-                        getIslandManager().getIslandById(islands.next()).ifPresent(island -> getIslandManager().recalculateIsland(island));
+                    islands = getDatabaseManager().getIslandTableManager().getEntries().stream().map(Island::getId)
+                            .collect(Collectors.toList()).listIterator();
+                    if (islands.hasNext()) {
+                        start=System.currentTimeMillis();
+                        //IridiumSkyblock.getInstance().getLogger().info("recalculation started at "+System.currentTimeMillis());
+
+                        runOnce();
                     }
                 }
 
-            }, 0, getConfiguration().islandRecalculateInterval * 20L);
+                public void runOnce() {
+                    if (islands.hasNext()) {
+                        getIslandManager().getIslandById(islands.next())
+                                .ifPresent(island -> {
+                                    getIslandManager().recalculateIslandAsync(island).thenRun(() -> {
+                                        runOnce();
+                                    });
+                                });
+                    } else {
+                       // IridiumSkyblock.getInstance().getLogger().info("recalculation finished in "+(System.currentTimeMillis()-start)+" milliseconds");
+                    }
+                }
+
+            }, 0, getConfiguration().islandRecalculateInterval * 60 * 20L);
         }
 
         // Automatically update all inventories

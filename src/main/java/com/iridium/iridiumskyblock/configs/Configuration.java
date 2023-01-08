@@ -54,6 +54,7 @@ public class Configuration {
 
     public int distance = 151;
     public int islandRecalculateInterval = 5;
+    public int chunkPerTickRecalculation = 1;
     public int maxIslandName = 16;
     public int minIslandName = 3;
     public int teleportDelay = 0;
