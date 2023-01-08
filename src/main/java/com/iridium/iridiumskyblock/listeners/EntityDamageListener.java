@@ -127,7 +127,7 @@ public class EntityDamageListener implements Listener {
 
         List<EntityDamageEvent.DamageCause> preventCauses = isMember ? pvpSettings.membersPreventedDamages : pvpSettings.visitorsPreventedDamages;
 
-        if (preventCauses.contains(event.getCause())) {
+        if (preventCauses == null || (event.getCause() != null && preventCauses.contains(event.getCause()))) {
             event.setCancelled(true);
         }
     }
