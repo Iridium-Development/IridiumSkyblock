@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.0.0-b5"
+version = "4.0.0-b6"
 description = "IridiumSkyblock"
 
 repositories {
@@ -23,7 +23,7 @@ dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:1.7.6.9")
+    implementation("com.iridium:IridiumTeams:1.7.6.10")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.24")
@@ -44,7 +44,8 @@ tasks {
     }
 
     shadowJar {
-        fun relocate(origin: String) = relocate(origin, "com.iridium.iridiumskyblock.dependencies${origin.substring(origin.lastIndexOf('.'))}")
+        fun relocate(origin: String) =
+            relocate(origin, "com.iridium.iridiumskyblock.dependencies${origin.substring(origin.lastIndexOf('.'))}")
 
         // Remove the archive classifier suffix
         archiveClassifier.set("")
