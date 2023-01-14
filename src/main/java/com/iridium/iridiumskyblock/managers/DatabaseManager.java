@@ -42,6 +42,7 @@ public class DatabaseManager {
     private ForeignIslandTableManager<TeamMission, Integer> teamMissionTableManager;
     private TableManager<TeamMissionData, Integer> teamMissionDataTableManager;
     private ForeignIslandTableManager<TeamReward, Integer> teamRewardsTableManager;
+    private ForeignIslandTableManager<TeamSetting, Integer> teamSettingsTableManager;
 
     public void init() throws SQLException {
         LoggerFactory.setLogBackendFactory(new NullLogBackend.NullLogBackendFactory());
@@ -74,6 +75,7 @@ public class DatabaseManager {
         this.teamMissionTableManager = new ForeignIslandTableManager<>(connectionSource, TeamMission.class, Comparator.comparing(TeamMission::getTeamID).thenComparing(TeamMission::getMissionName));
         this.teamMissionDataTableManager = new TableManager<>(connectionSource, TeamMissionData.class, Comparator.comparing(TeamMissionData::getMissionID).thenComparing(TeamMissionData::getMissionIndex));
         this.teamRewardsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamReward.class, Comparator.comparing(TeamReward::getTeamID));
+        this.teamSettingsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamSetting.class, Comparator.comparing(TeamSetting::getTeamID).thenComparing(TeamSetting::getSetting));
     }
 
     /**
