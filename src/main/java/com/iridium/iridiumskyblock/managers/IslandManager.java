@@ -14,6 +14,7 @@ import com.iridium.iridiumskyblock.gui.CreateGUI;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import com.iridium.iridiumteams.Rank;
+import com.iridium.iridiumteams.Setting;
 import com.iridium.iridiumteams.database.*;
 import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
@@ -262,6 +263,20 @@ public class IslandManager extends TeamManager<Island, User> {
             TeamBlock block = new TeamBlock(island, xMaterial, 0);
             IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().addEntry(block);
             return block;
+        }
+    }
+
+    @Override
+    public synchronized TeamSetting getTeamSetting(Island island, String settingKey) {
+        Setting settingConfig = IridiumSkyblock.getInstance().getSettingsList().get(settingKey);
+        String defaultValue = settingConfig == null ? "" : settingConfig.getDefaultValue();
+        Optional<TeamSetting> teamSetting = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSettingsTableManager().getEntry(new TeamSetting(island, settingKey, defaultValue));
+        if (teamSetting.isPresent()) {
+            return teamSetting.get();
+        } else {
+            TeamSetting setting = new TeamSetting(island, settingKey, defaultValue);
+            IridiumSkyblock.getInstance().getDatabaseManager().getTeamSettingsTableManager().addEntry(setting);
+            return setting;
         }
     }
 

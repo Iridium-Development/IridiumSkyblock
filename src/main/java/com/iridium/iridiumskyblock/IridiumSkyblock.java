@@ -48,6 +48,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Missions missions;
     private Schematics schematics;
     private Shop shop;
+    private Settings settings;
 
     private IslandPlaceholderBuilder teamsPlaceholderBuilder;
     private UserPlaceholderBuilder userPlaceholderBuilder;
@@ -151,6 +152,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.missions = getPersist().load(Missions.class);
         this.schematics = getPersist().load(Schematics.class);
         this.shop = getPersist().load(Shop.class);
+        this.settings = getPersist().load(Settings.class);
         super.loadConfigs();
 
         int maxSize = enhancements.sizeEnhancement.levels.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).map(sizeEnhancementData -> sizeEnhancementData.size).orElse(150);
@@ -177,6 +179,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(missions);
         getPersist().save(schematics);
         getPersist().save(shop);
+        getPersist().save(settings);
         saveSchematics();
     }
 
@@ -194,6 +197,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getDatabaseManager().getTeamMissionTableManager().save();
         getDatabaseManager().getTeamMissionDataTableManager().save();
         getDatabaseManager().getTeamRewardsTableManager().save();
+        getDatabaseManager().getTeamSettingsTableManager().save();
     }
 
     @Override
