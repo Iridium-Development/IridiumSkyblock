@@ -85,6 +85,14 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public void sendTeamTitle(Player player, Island island) {
+        List<Placeholder> placeholders = IridiumSkyblock.getInstance().getTeamsPlaceholderBuilder().getPlaceholders(island);
+        String top = StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getConfiguration().islandTitleTop, placeholders);
+        String bottom = StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getConfiguration().islandTitleBottom, placeholders);
+        IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(top), StringUtils.color(bottom), 20, 40, 20);
+    }
+
+    @Override
     public List<Island> getTeams() {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
