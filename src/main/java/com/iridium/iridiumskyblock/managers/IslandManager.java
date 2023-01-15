@@ -62,6 +62,7 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public Optional<Island> getTeamViaLocation(Location location) {
+        if (!isInSkyblockWorld(location.getWorld())) return Optional.empty();
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island ->
                 island.isInIsland(location)
         ).findFirst();
