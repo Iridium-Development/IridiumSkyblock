@@ -80,7 +80,7 @@ public class IslandBiomeGUI extends IslandGUI {
             return;
         }
 
-        if (event.getSlot() + 1 <= biomes.size()) {
+        if (event.getSlot() + 1 <= biomes.size() && event.getSlot() < size - 9) {
             int index = ((size - 9) * (page - 1)) + event.getSlot();
             if (biomes.size() > index) {
                 IridiumSkyblock.getInstance().getCommands().biomeCommand.execute(player, new String[]{"", biomes.get(index).toString()});
