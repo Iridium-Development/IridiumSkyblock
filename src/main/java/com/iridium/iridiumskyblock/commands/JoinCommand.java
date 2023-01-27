@@ -54,8 +54,7 @@ public class JoinCommand extends Command {
             return false;
         }
 
-        OfflinePlayer offlinePlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(offlinePlayer);
+        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(args[1]);
         Optional<Island> island = offlinePlayerUser.getIsland();
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

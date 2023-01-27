@@ -38,8 +38,7 @@ public class AddCommand extends Command {
             return false;
         }
 
-        OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(args[2]);
         Optional<Island> optionalIsland = user.getIsland();
         if (!optionalIsland.isPresent()) {
             sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -58,7 +57,7 @@ public class AddCommand extends Command {
         island.setExtraValue(island.getExtraValue() + amount);
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().extraValueSet
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                .replace("%player%", player.getName())
+                .replace("%player%", user.getName())
                 .replace("%amount%", String.valueOf(island.getExtraValue()))));
         return true;
     }
