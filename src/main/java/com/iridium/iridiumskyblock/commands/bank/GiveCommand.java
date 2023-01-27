@@ -29,8 +29,7 @@ public class GiveCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length == 5) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(args[2]);
-            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(args[2]);
             Optional<Island> island = user.getIsland();
             if (island.isPresent()) {
                 Optional<BankItem> bankItem = IridiumSkyblock.getInstance().getBankItemList().stream().filter(item -> item.getName().equalsIgnoreCase(args[3])).findFirst();
@@ -38,7 +37,7 @@ public class GiveCommand extends Command {
                     try {
                         IslandBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getIslandBank(island.get(), bankItem.get());
                         islandBank.setNumber(islandBank.getNumber() + Double.parseDouble(args[4]));
-                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().gaveBank.replace("%player%", player.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().gaveBank.replace("%player%", user.getName()).replace("%amount%", args[4]).replace("%item%", bankItem.get().getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                         return true;
                     } catch (NumberFormatException exception) {
                         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notANumber.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));

@@ -119,6 +119,17 @@ public class IridiumSkyblockAPI {
     }
 
     /**
+     * Gets a {@link User}'s info. Creates one if they don't exist.
+     *
+     * @param offlinePlayer The player who's data should be fetched
+     * @return the user data
+     * @since 3.2.10
+     */
+    public @NotNull User getUser(@NotNull String offlinePlayer) {
+        return iridiumSkyblock.getUserManager().getUser(offlinePlayer);
+    }
+
+    /**
      * Finds an Island by its id.
      *
      * @param id The id of the Island

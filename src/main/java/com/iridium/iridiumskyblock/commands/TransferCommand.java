@@ -51,8 +51,7 @@ public class TransferCommand extends Command {
         }
 
         User islandOwner = island.get().getOwner();
-        OfflinePlayer targetPlayer = Bukkit.getServer().getOfflinePlayer(args[1]);
-        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(args[1]);
 
         if (!user.getIslandRank().equals(IslandRank.OWNER) && !user.isBypassing()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTransferOwnership.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -64,7 +63,7 @@ public class TransferCommand extends Command {
             return false;
         }
 
-        if (islandOwner.getUuid().equals(targetPlayer.getUniqueId())) {
+        if (islandOwner.getUuid().equals(user.getUuid())) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTransferYourself.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }

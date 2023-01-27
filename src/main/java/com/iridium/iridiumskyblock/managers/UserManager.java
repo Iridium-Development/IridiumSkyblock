@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 /**
  * Class which handles users.
  */
@@ -32,6 +34,27 @@ public class UserManager {
     }
 
     /**
+     * Gets a {@link User}'s info. Creates one if he doesn't exist.
+     *
+     * @param offlinePlayer The player who's data should be fetched
+     * @return The user data
+     */
+    public @Nullable User getUser(@NotNull String name) {
+        Optional<User> userOptional = getUserByName(name);
+        if (userOptional.isPresent()) {
+            return userOptional.orElse(null);
+        } else {
+            User user = new User(UUID.randomUUID(), name);
+            org.bukkit.OfflinePlayer offlinePlayer = org.bukkit.Bukkit.getOfflinePlayer(name);
+            if (offlinePlayer != null) {
+                user = new User(offlinePlayer.getUniqueId(), name);
+                IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
+            }
+            return user;
+        }
+    }
+
+    /**
      * Finds an User by his {@link UUID}.
      *
      * @param uuid The uuid of the onlyForPlayers
@@ -39,6 +62,16 @@ public class UserManager {
      */
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(uuid);
+    }
+
+    /**
+     * Finds an User by his {@link UUID}.
+     *
+     * @param uuid The uuid of the onlyForPlayers
+     * @return the User class of the onlyForPlayers
+     */
+    public Optional<User> getUserByName(@NotNull String name) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(name);
     }
 
 }

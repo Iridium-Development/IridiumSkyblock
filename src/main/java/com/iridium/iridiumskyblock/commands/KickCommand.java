@@ -53,8 +53,7 @@ public class KickCommand extends Command {
             return false;
         }
 
-        OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(args[1]);
-        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer);
+        User targetUser = IridiumSkyblock.getInstance().getUserManager().getUser(args[1]);
         if (!island.get().equals(targetUser.getIsland().orElse(null))) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
@@ -68,6 +67,7 @@ public class KickCommand extends Command {
         UserKickEvent userKickEvent = new UserKickEvent(island.get(), targetUser, user);
         Bukkit.getPluginManager().callEvent(userKickEvent);
         if (userKickEvent.isCancelled()) return false;
+        OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(user.getUuid());
 
         if (targetPlayer instanceof Player) {
             ((Player) targetPlayer).sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
