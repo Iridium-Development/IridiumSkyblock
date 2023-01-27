@@ -4,6 +4,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.schematics.Schematic;
+import com.iridium.iridiumskyblock.schematics.SchematicAsync;
 import com.iridium.iridiumskyblock.schematics.SchematicPaster;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.bukkit.World;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -20,23 +22,29 @@ import java.util.concurrent.CompletableFuture;
  */
 public class SchematicManager {
 
-    public final SchematicPaster schematicPaster;
+    public SchematicPaster schematicPaster;
     public final Map<String, File> schematicFiles;
+    public final TreeMap<String, SchematicPaster> availablePasters;
 
     private final boolean worldEdit = Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
     private final boolean fawe = Bukkit.getPluginManager().isPluginEnabled("FastAsyncWorldEdit") || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit");
 
     public SchematicManager() {
         
-        SchematicPaster schematicPaster = worldEdit || fawe ? new WorldEdit() : new Schematic();
-        
-        if ((worldEdit || fawe) && !WorldEdit.isWorking())
-        {
-            IridiumSkyblock.getInstance().getLogger().warning("WorldEdit version doesn't support minecraft version, falling back to default integration");
-            schematicPaster = new Schematic();
-        }
+        availablePasters = new TreeMap<>();
+        availablePasters.put("internal", new Schematic());
+        availablePasters.put("internalAsync", new SchematicAsync());
+        if ((worldEdit || fawe) && WorldEdit.isWorking())
+            availablePasters.put("worldedit", new WorldEdit());
 
-        this.schematicPaster = schematicPaster;
+            if ((worldEdit || fawe) && !WorldEdit.isWorking())
+            {
+                IridiumSkyblock.getInstance().getLogger().warning("WorldEdit version doesn't support minecraft version, disabling WorldEdit integration");
+            }
+    
+            schematicPaster = availablePasters.lastEntry().getValue();
+            setPasterFromConfig();
+
         this.schematicFiles = new HashMap<>();
         File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
         for (File file : parent.listFiles()) {
@@ -46,7 +54,19 @@ public class SchematicManager {
     public void reload()
     {
         loadCache();
+        setPasterFromConfig();
         schematicPaster.clearCache();
+    }
+    private void setPasterFromConfig()
+    {
+        String paster = IridiumSkyblock.getInstance().getConfiguration().paster;
+        if(availablePasters.containsKey(paster))
+            this.schematicPaster = availablePasters.get(paster);
+        else
+        {
+            IridiumSkyblock.getInstance().getLogger().warning("Configuration error, selected paster ["+paster+"] is not available, available choices are "+availablePasters.keySet());
+            this.schematicPaster = availablePasters.lastEntry().getValue();
+        }
     }
     public void loadCache()
     {

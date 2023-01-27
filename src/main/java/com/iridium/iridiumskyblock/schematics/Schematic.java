@@ -24,7 +24,9 @@ public class Schematic implements SchematicPaster {
     public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         SchematicData schematicData;
         try {
-            schematicData = schematicCache.getOrDefault(file, SchematicData.loadSchematic(file));
+            schematicData = schematicCache.getOrDefault(file, null);
+            if (schematicData==null)
+                schematicData = SchematicData.loadSchematic(file); 
             schematicCache.put(file, schematicData);
         } catch (IOException e) {
             e.printStackTrace();
