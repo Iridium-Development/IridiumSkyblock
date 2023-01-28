@@ -560,7 +560,7 @@ public class IridiumSkyblock extends IridiumCore {
             upgradesList.put("blocklimit", upgrades.blockLimitUpgrade);
         if (upgrades.entityLimitUpgrade.enabled) {
             upgradesList.put("entitylimit", upgrades.entityLimitUpgrade);
-            Boolean reloadSuccess = true;
+            boolean reloadSuccess = true;
             HashSet<EntityType> newEntityWithUpgradableLimits = new HashSet<>();
             for (EntityLimitUpgrade upgradeEntry : upgrades.entityLimitUpgrade.upgrades.values()) {
                 for (EntityType entityType : upgradeEntry.limits.keySet()) {
