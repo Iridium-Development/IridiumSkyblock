@@ -1,10 +1,14 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.SettingType;
 import com.iridium.iridiumskyblock.database.IslandSetting;
+import com.iridium.iridiumskyblock.database.User;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -23,7 +27,22 @@ public class EntitySpawnListener implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            event.getEntity().setMetadata("island_spawned", new FixedMetadataValue(IridiumSkyblock.getInstance(), island.getId()));
+
+            if (!IridiumSkyblock.getInstance().getIslandManager().checkEntityLimit(island, event.getEntity())) {
+                int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, "entitylimit").getLevel();
+                int entityLimit = IridiumSkyblock.getInstance().getUpgrades().entityLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(event.getEntityType(), 0);
+
+                for (User user: island.getMembers()) {
+                    Player player = user.getPlayer();
+                    if (player == null || !player.isOnline())
+                        continue;
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().entityLimitReached
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix).replace("%limit%", String.valueOf(entityLimit)).replace("%entity%", WordUtils.capitalizeFully(event.getEntityType().name().toLowerCase().replace("_", " ")))));
+                }
+                event.setCancelled(true);
+            } else {
+                event.getEntity().setMetadata("island_spawned", new FixedMetadataValue(IridiumSkyblock.getInstance(), island.getId()));
+            }
         });
     }
 

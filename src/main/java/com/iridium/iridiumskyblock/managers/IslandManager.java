@@ -18,6 +18,7 @@ import com.iridium.iridiumskyblock.configs.Configuration.IslandRegenSettings;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.generators.OceanGenerator;
+import com.iridium.iridiumskyblock.utils.ConcurrentHashSet;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import org.bukkit.*;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -49,6 +51,7 @@ public class IslandManager {
 
     public final Cache<List<Island>> islandValueSortCache = new Cache<>(5000);
     public final Cache<List<Island>> islandLevelSortCache = new Cache<>(5000);
+    private final ConcurrentHashMap<Integer, ConcurrentHashSet<Entity>[]> entities = new ConcurrentHashMap<>();
 
     public void clearIslandCache() {
         islandLevelSortCache.clearCache();
@@ -163,7 +166,6 @@ public class IslandManager {
      *
      * @param player The player we are teleporting
      * @param island The island we are teleporting them to
-     * @param delay  How long the player should stand still for before teleporting
      */
     public boolean enterIsland(@NotNull Player player, @NotNull Island island) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -646,6 +648,88 @@ public class IslandManager {
         IslandSpawners islandSpawners = new IslandSpawners(island, spawnerType);
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandSpawnersTableManager().addEntry(islandSpawners);
         return islandSpawners;
+    }
+
+    /**
+     * Calculates the number of entities on the specified island from the chunk data and saves it to memory.
+     *
+     * @param island The specified Island
+     */
+    public ConcurrentHashSet<Entity>[] initializeIslandEntityCounter(@NotNull Island island) {
+        if (!IridiumSkyblock.getInstance().getWorldLoaded()) return null;
+
+        ConcurrentHashSet<Entity>[] entityCounter = entities.get(island.getId());
+        if (entityCounter == null) {
+            HashMap<EntityType, Integer> entityWithUpgradableLimits =  IridiumSkyblock.getInstance().getEntityWithUpgradableLimits();
+            int entityWithUpgradableLimitsCount = IridiumSkyblock.getInstance().getEntityWithUpgradableLimits().size();
+            ConcurrentHashSet<Entity>[] newEntityCounter = new ConcurrentHashSet[entityWithUpgradableLimitsCount];
+            for (int i = 0; i < entityWithUpgradableLimitsCount; ++i)
+                newEntityCounter[i] = new ConcurrentHashSet<>();
+
+            ConcurrentHashSet<Entity>[] result = entities.putIfAbsent(island.getId(), newEntityCounter);
+            if (result == null) {
+                getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entitiesOnIsland -> {
+                    for (Entity entity : entitiesOnIsland) {
+                        Integer entityTypeId = entityWithUpgradableLimits.get(entity.getType());
+                        if (entityTypeId != null)
+                            newEntityCounter[entityTypeId].add(entity);
+                    }
+                });
+                return newEntityCounter;
+            } else {
+                return result;
+            }
+        }
+        return entityCounter;
+    }
+
+    /**
+     * Check the island entity limits to determine if the entity should be allowed to spawn.
+     *
+     * @param island The specified Island
+     * @param entity The entity to be added.
+     * @return Whether the entity should be allowed to spawn.
+     */
+    public Boolean checkEntityLimit(@NotNull Island island, @NotNull Entity entity) {
+        Integer entityTypeId = IridiumSkyblock.getInstance().getEntityWithUpgradableLimits().get(entity.getType());
+        if (entityTypeId != null) {
+            int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, "entitylimit").getLevel();
+            int entityLimit = IridiumSkyblock.getInstance().getUpgrades().entityLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(entity.getType(), 0);
+
+            if (entityLimit <= 0)
+                return true;
+
+            ConcurrentHashSet<Entity> entitiesOnIsland = initializeIslandEntityCounter(island)[entityTypeId];
+            if (entitiesOnIsland.size() < entityLimit) {
+                entitiesOnIsland.add(entity);
+                return true;
+            } else if (entitiesOnIsland.contains(entity)) {
+                return true;
+            } else {
+                entitiesOnIsland.removeIf(e -> !e.isValid() || e.isDead());
+                if (entitiesOnIsland.size() < entityLimit) {
+                    entitiesOnIsland.add(entity);
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Called on entity despawn to update the currently recorded entity.
+     *
+     * @param island The specified Island
+     * @param entity Entities that need to be removed.
+     */
+    public void onEntityRemoved(@NotNull Island island, @NotNull Entity entity) {
+        Integer entityTypeId = IridiumSkyblock.getInstance().getEntityWithUpgradableLimits().get(entity.getType());
+        if (entityTypeId != null) {
+            ConcurrentHashSet<Entity> entitiesOnIsland = initializeIslandEntityCounter(island)[entityTypeId];
+            entitiesOnIsland.remove(entity);
+        }
     }
 
     /**

@@ -6,13 +6,15 @@ import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnorePrope
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Upgrade;
 import com.iridium.iridiumskyblock.upgrades.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Upgrades {
     public Upgrade<SizeUpgrade> sizeUpgrade = new Upgrade<>(true, "Size",
-            new Item(XMaterial.GRASS_BLOCK, 11, 1, "&b&lIsland Size", Arrays.asList(
+            new Item(XMaterial.GRASS_BLOCK, 10, 1, "&b&lIsland Size", Arrays.asList(
                     "&7Need more room to expand? Buy this",
                     "&7upgrade to increase your island size.",
                     "",
@@ -33,7 +35,7 @@ public class Upgrades {
             .build());
 
     public Upgrade<MemberUpgrade> memberUpgrade = new Upgrade<>(true, "Member",
-            new Item(XMaterial.ARMOR_STAND, 12, 1, "&b&lIsland Members", Arrays.asList(
+            new Item(XMaterial.ARMOR_STAND, 11, 1, "&b&lIsland Members", Arrays.asList(
                     "&7Need more members? Buy this",
                     "&7upgrade to increase your member count.",
                     "",
@@ -54,7 +56,7 @@ public class Upgrades {
             .build());
 
     public Upgrade<BlockLimitUpgrade> blockLimitUpgrade = new Upgrade<>(true, "Block Limit",
-            new Item(XMaterial.HOPPER, 13, 1, "&b&lIsland Block Limits", Arrays.asList(
+            new Item(XMaterial.HOPPER, 12, 1, "&b&lIsland Block Limits", Arrays.asList(
                     "&7Need to place more blocks? Buy this",
                     "&7upgrade to increase the amount of blocks you can place.",
                     "",
@@ -88,6 +90,44 @@ public class Upgrades {
                     .put(XMaterial.HOPPER, 40)
                     .put(XMaterial.PISTON, 30)
                     .put(XMaterial.SPAWNER, 30)
+                    .build()))
+            .build());
+
+    public Upgrade<EntityLimitUpgrade> entityLimitUpgrade = new Upgrade<>(true, "Entity Limit",
+            new Item(XMaterial.TNT, 13, 1, "&b&lIsland Entity Limits", Arrays.asList(
+                    "&7Need to have more entities? Buy this",
+                    "&7upgrade to increase the number of entities you can have on your island.",
+                    "",
+                    "&b&lInformation:",
+                    "&b&l * &7Current Level: &b%level%",
+                    "&b&l * &7Upgrade Cost: &b%crystalscost% Crystals and $%vaultcost%",
+                    "",
+                    "&b&l[!] &bLeft Click to Purchase this Upgrade"
+            )), ImmutableMap.<Integer, EntityLimitUpgrade>builder()
+            .put(1, new EntityLimitUpgrade(1000, 15, ImmutableMap.<EntityType, Integer>builder()
+                    .put(EntityType.PRIMED_TNT, 2)
+                    .put(EntityType.VILLAGER, 3)
+                    .put(EntityType.MINECART_HOPPER, 1)
+                    .build()))
+            .put(2, new EntityLimitUpgrade(1000, 15, ImmutableMap.<EntityType, Integer>builder()
+                    .put(EntityType.PRIMED_TNT, 3)
+                    .put(EntityType.VILLAGER, 6)
+                    .put(EntityType.MINECART_HOPPER, 2)
+                    .build()))
+            .put(3, new EntityLimitUpgrade(1000, 15, ImmutableMap.<EntityType, Integer>builder()
+                    .put(EntityType.PRIMED_TNT, 4)
+                    .put(EntityType.VILLAGER, 10)
+                    .put(EntityType.MINECART_HOPPER, 5)
+                    .build()))
+            .put(4, new EntityLimitUpgrade(1000, 15, ImmutableMap.<EntityType, Integer>builder()
+                    .put(EntityType.PRIMED_TNT, 5)
+                    .put(EntityType.VILLAGER, 15)
+                    .put(EntityType.MINECART_HOPPER, 15)
+                    .build()))
+            .put(5, new EntityLimitUpgrade(1000, 15, ImmutableMap.<EntityType, Integer>builder()
+                    .put(EntityType.PRIMED_TNT, 6)
+                    .put(EntityType.VILLAGER, 30)
+                    .put(EntityType.MINECART_HOPPER, 0)
                     .build()))
             .build());
 

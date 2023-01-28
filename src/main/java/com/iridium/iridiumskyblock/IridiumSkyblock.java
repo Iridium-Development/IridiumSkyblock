@@ -20,6 +20,7 @@ import com.iridium.iridiumskyblock.shop.ShopManager;
 import com.iridium.iridiumskyblock.support.RoseStackerSupport;
 import com.iridium.iridiumskyblock.support.StackerSupport;
 import com.iridium.iridiumskyblock.support.WildStackerSupport;
+import com.iridium.iridiumskyblock.upgrades.EntityLimitUpgrade;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
 import de.jeff_media.updatechecker.UpdateChecker;
 import lombok.Getter;
@@ -58,6 +59,8 @@ public class IridiumSkyblock extends IridiumCore {
 
     private static IridiumSkyblock instance;
 
+    private Boolean worldLoaded = false;
+
     private CommandManager commandManager;
     private DatabaseManager databaseManager;
     private IslandManager islandManager;
@@ -90,6 +93,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Map<String, Setting> settingsList;
     private Map<String, Mission> missionsList;
     private Map<String, Upgrade<?>> upgradesList;
+    private HashMap<EntityType, Integer> entityWithUpgradableLimits = new HashMap<>();
     private Map<String, Booster> boosterList;
 
     private Economy economy;
@@ -168,6 +172,7 @@ public class IridiumSkyblock extends IridiumCore {
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
         this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
         this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
+        worldLoaded = true;
 
         // Try to connect to the database
 
@@ -246,6 +251,18 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         resetIslandMissions();
+
+        // Handle Entity Limit Upgrade
+        if (upgrades.entityLimitUpgrade.enabled) {
+            int count = 0;
+            for (EntityLimitUpgrade upgradeEntry : upgrades.entityLimitUpgrade.upgrades.values()) {
+                for (EntityType entityType : upgradeEntry.limits.keySet()) {
+                    if (!entityWithUpgradableLimits.containsKey(entityType)) {
+                        entityWithUpgradableLimits.put(entityType, count++);
+                    }
+                }
+            }
+        }
 
         if (!isTesting()) {
             Metrics metrics = new Metrics(this, 5825);
@@ -358,14 +375,18 @@ public class IridiumSkyblock extends IridiumCore {
         pluginManager.registerEvents(new BlockPlaceListener(), this);
         pluginManager.registerEvents(new BlockSpreadListener(), this);
         pluginManager.registerEvents(new BucketListener(), this);
+        pluginManager.registerEvents(new ChunkLoadListener(), this);
         pluginManager.registerEvents(new EnchantItemListener(), this);
         pluginManager.registerEvents(new EntityChangeBlockListener(), this);
         pluginManager.registerEvents(new EntityDamageListener(), this);
         pluginManager.registerEvents(new EntityDeathListener(), this);
+        pluginManager.registerEvents(new EntityEnterBlockListener(), this);
         pluginManager.registerEvents(new EntityExplodeListener(), this);
         pluginManager.registerEvents(new EntityPickupItemListener(), this);
+        pluginManager.registerEvents(new EntityPlaceListener(), this);
         pluginManager.registerEvents(new EntitySpawnListener(), this);
         pluginManager.registerEvents(new EntityTargetListener(), this);
+        pluginManager.registerEvents(new EntityUnleashListener(), this);
         pluginManager.registerEvents(new FurnaceSmeltListener(), this);
         pluginManager.registerEvents(new InventoryClickListener(), this);
         pluginManager.registerEvents(new ItemCraftListener(), this);
@@ -492,6 +513,8 @@ public class IridiumSkyblock extends IridiumCore {
             upgrades.sizeUpgrade.name = "Size";
         if (upgrades.blockLimitUpgrade.name == null)
             upgrades.blockLimitUpgrade.name = "Block Limit";
+        if (upgrades.entityLimitUpgrade.name == null)
+            upgrades.entityLimitUpgrade.name = "Entity Limit";
         if (upgrades.memberUpgrade.name == null)
             upgrades.memberUpgrade.name = "Members";
         if (upgrades.oresUpgrade.name == null)
@@ -535,6 +558,22 @@ public class IridiumSkyblock extends IridiumCore {
             upgradesList.put("warp", upgrades.warpsUpgrade);
         if (upgrades.blockLimitUpgrade.enabled)
             upgradesList.put("blocklimit", upgrades.blockLimitUpgrade);
+        if (upgrades.entityLimitUpgrade.enabled) {
+            upgradesList.put("entitylimit", upgrades.entityLimitUpgrade);
+            Boolean reloadSuccess = true;
+            HashSet<EntityType> newEntityWithUpgradableLimits = new HashSet<>();
+            for (EntityLimitUpgrade upgradeEntry : upgrades.entityLimitUpgrade.upgrades.values()) {
+                for (EntityType entityType : upgradeEntry.limits.keySet()) {
+                    if (!entityWithUpgradableLimits.containsKey(entityType))
+                        reloadSuccess = false;
+                    newEntityWithUpgradableLimits.add(entityType);
+                }
+            }
+            entityWithUpgradableLimits.keySet().retainAll(newEntityWithUpgradableLimits);
+            if (!reloadSuccess) {
+                getLogger().warning("Cannot add new entity restrictions at runtime, please restart the server to apply all changes.");
+            }
+        }
         if (upgrades.oresUpgrade.enabled) {
             upgradesList.put("generator", upgrades.oresUpgrade);
             BlockFormListener.generateOrePossibilities();
