@@ -160,6 +160,8 @@ public class IridiumSkyblock extends IridiumCore {
         this.islandManager = new IslandManager();
         this.userManager = new UserManager();
         this.databaseManager = new DatabaseManager();
+
+        // Try to connect to the database
         try {
             databaseManager.init();
         } catch (SQLException exception) {
@@ -169,12 +171,22 @@ public class IridiumSkyblock extends IridiumCore {
             return;
         }
 
+        // Handle Entity Limit
+        if (upgrades.entityLimitUpgrade.enabled) {
+            int count = 0;
+            for (EntityLimitUpgrade upgradeEntry : upgrades.entityLimitUpgrade.upgrades.values()) {
+                for (EntityType entityType : upgradeEntry.limits.keySet()) {
+                    if (!entityWithUpgradableLimits.containsKey(entityType)) {
+                        entityWithUpgradableLimits.put(entityType, count++);
+                    }
+                }
+            }
+        }
+
         this.islandManager.createWorld(World.Environment.NORMAL, configuration.worldName);
         this.islandManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
         this.islandManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
         worldLoaded = true;
-
-        // Try to connect to the database
 
         this.missionManager = new MissionManager();
 
@@ -251,18 +263,6 @@ public class IridiumSkyblock extends IridiumCore {
         }
 
         resetIslandMissions();
-
-        // Handle Entity Limit Upgrade
-        if (upgrades.entityLimitUpgrade.enabled) {
-            int count = 0;
-            for (EntityLimitUpgrade upgradeEntry : upgrades.entityLimitUpgrade.upgrades.values()) {
-                for (EntityType entityType : upgradeEntry.limits.keySet()) {
-                    if (!entityWithUpgradableLimits.containsKey(entityType)) {
-                        entityWithUpgradableLimits.put(entityType, count++);
-                    }
-                }
-            }
-        }
 
         if (!isTesting()) {
             Metrics metrics = new Metrics(this, 5825);
