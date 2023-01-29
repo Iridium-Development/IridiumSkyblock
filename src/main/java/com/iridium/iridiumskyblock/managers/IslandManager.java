@@ -840,6 +840,8 @@ public class IslandManager {
         deleteIslandBlocks(island, getEndWorld(), 3);
         deleteIslanDatabasedEntries(island);
 
+        entities.remove(island.getId());
+
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
             if (player != null) {
                 if (IridiumSkyblock.getInstance().getConfiguration().deleteSettings.clearInventories) {
