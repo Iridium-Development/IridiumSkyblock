@@ -564,12 +564,16 @@ public class IridiumSkyblock extends IridiumCore {
             HashSet<EntityType> newEntityWithUpgradableLimits = new HashSet<>();
             for (EntityLimitUpgrade upgradeEntry : upgrades.entityLimitUpgrade.upgrades.values()) {
                 for (EntityType entityType : upgradeEntry.limits.keySet()) {
-                    if (!entityWithUpgradableLimits.containsKey(entityType))
+                    if (reloadSuccess && !entityWithUpgradableLimits.containsKey(entityType))
                         reloadSuccess = false;
                     newEntityWithUpgradableLimits.add(entityType);
                 }
             }
-            entityWithUpgradableLimits.keySet().retainAll(newEntityWithUpgradableLimits);
+            for (EntityType entityType : entityWithUpgradableLimits.keySet()) {
+                if (!newEntityWithUpgradableLimits.contains(entityType)) {
+                    entityWithUpgradableLimits.put(entityType, -1); // Disable entity types that do not require a limit
+                }
+            }
             if (!reloadSuccess) {
                 getLogger().warning("Cannot add new entity restrictions at runtime, please restart the server to apply all changes.");
             }

@@ -666,8 +666,8 @@ public class IslandManager {
             for (int i = 0; i < entityWithUpgradableLimitsCount; ++i)
                 newEntityCounter[i] = new ConcurrentHashSet<>();
 
-            ConcurrentHashSet<Entity>[] result = entities.putIfAbsent(island.getId(), newEntityCounter);
-            if (result == null) {
+            ConcurrentHashSet<Entity>[] addResult = entities.putIfAbsent(island.getId(), newEntityCounter);
+            if (addResult == null) {
                 getEntities(island, getWorld(), getNetherWorld(), getEndWorld()).thenAccept(entitiesOnIsland -> {
                     for (Entity entity : entitiesOnIsland) {
                         Integer entityTypeId = entityWithUpgradableLimits.get(entity.getType());
@@ -677,7 +677,7 @@ public class IslandManager {
                 });
                 return newEntityCounter;
             } else {
-                return result;
+                return addResult;
             }
         }
         return entityCounter;
@@ -692,7 +692,7 @@ public class IslandManager {
      */
     public Boolean checkEntityLimit(@NotNull Island island, @NotNull Entity entity) {
         Integer entityTypeId = IridiumSkyblock.getInstance().getEntityWithUpgradableLimits().get(entity.getType());
-        if (entityTypeId != null) {
+        if (entityTypeId != null && entityTypeId >= 0) {
             int limitUpgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getIslandUpgrade(island, "entitylimit").getLevel();
             int entityLimit = IridiumSkyblock.getInstance().getUpgrades().entityLimitUpgrade.upgrades.get(limitUpgradeLevel).limits.getOrDefault(entity.getType(), 0);
 
@@ -726,7 +726,7 @@ public class IslandManager {
      */
     public void onEntityRemoved(@NotNull Island island, @NotNull Entity entity) {
         Integer entityTypeId = IridiumSkyblock.getInstance().getEntityWithUpgradableLimits().get(entity.getType());
-        if (entityTypeId != null) {
+        if (entityTypeId != null && entityTypeId >= 0) {
             ConcurrentHashSet<Entity> entitiesOnIsland = initializeIslandEntityCounter(island)[entityTypeId];
             entitiesOnIsland.remove(entity);
         }
