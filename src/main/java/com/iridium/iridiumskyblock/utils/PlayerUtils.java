@@ -13,6 +13,8 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.jetbrains.annotations.NotNull;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
+import org.bukkit.WorldBorder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,8 +80,20 @@ public class PlayerUtils {
     public static void sendBorder(@NotNull Player player, @NotNull Island island) {
         final Location centre = island.getCenter(player.getWorld()).clone();
 
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
-    }
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(),
+                () -> {
+                    if (IridiumSkyblockAPI.getInstance().isIslandWorld(player.getWorld()))
+                    {
+                        IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(),
+                                island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre);
+                    }
+                    else
+                    {
+                        WorldBorder border = player.getWorld().getWorldBorder();
+                        IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(),
+                                border.getSize(), border.getCenter());
+                    }
+                }); }
 
     /**
      * Teleports the specified player to spawn.
