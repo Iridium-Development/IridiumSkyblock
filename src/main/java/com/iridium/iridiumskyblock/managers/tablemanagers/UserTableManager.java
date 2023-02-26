@@ -60,11 +60,8 @@ public class UserTableManager extends TableManager<User, Integer> {
     }
 
     public Optional<User> getUser(String name) {
-        int index = Collections.binarySearch(getEntries(), new User(UUID.randomUUID(), name.toUpperCase()), Comparator.comparing(usr->usr.getName().toUpperCase()));
-        if (index < 0) return Optional.empty();
-        return Optional.of(getEntries().get(index));
+        return getEntries().stream().filter(usr->usr.getName().toUpperCase().equalsIgnoreCase(name)).findAny();
     }
-
 
     /**
      * Gets all entries associated with an island
