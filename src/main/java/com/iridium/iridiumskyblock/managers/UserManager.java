@@ -2,9 +2,12 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.User;
+
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -45,7 +48,10 @@ public class UserManager {
             return userOptional.orElse(null);
         } else {
             User user = new User(UUID.randomUUID(), name);
-            org.bukkit.OfflinePlayer offlinePlayer = org.bukkit.Bukkit.getOfflinePlayer(name);
+            Optional<org.bukkit.OfflinePlayer> maybePlayer = Arrays.stream(Bukkit.getOfflinePlayers()).filter(x->x.getName().equalsIgnoreCase(name)).findAny();
+            org.bukkit.OfflinePlayer offlinePlayer =maybePlayer.orElseGet(()->{
+                return org.bukkit.Bukkit.getOfflinePlayer(name);
+            });
             if (offlinePlayer != null) {
                 user = new User(offlinePlayer.getUniqueId(), name);
                 IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().addEntry(user);
