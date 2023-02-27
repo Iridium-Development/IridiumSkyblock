@@ -83,7 +83,7 @@ public class InviteCommand extends Command {
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().addEntry(islandInvite);
         IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_INVITED, user, offlinePlayerUser, 0, "");
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-        String playerName = user.getName() != null ? user.getName() : args[1];
+        String playerName = offlinePlayerUser.getName() != null ? offlinePlayerUser.getName() : args[1];
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().invitedPlayer.replace("%player%", playerName).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
         // Send a message to all other members
