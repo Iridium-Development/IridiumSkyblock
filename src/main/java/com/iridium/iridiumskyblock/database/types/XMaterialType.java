@@ -29,7 +29,7 @@ public class XMaterialType extends StringType {
     @Override
     public Object javaToSqlArg(FieldType fieldType, Object object) throws SQLException {
         XMaterial material = (XMaterial) object;
-        return super.javaToSqlArg(fieldType, material.toString());
+        return super.javaToSqlArg(fieldType, material.name());
     }
     
 }

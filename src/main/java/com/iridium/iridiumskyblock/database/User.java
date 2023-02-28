@@ -77,14 +77,14 @@ public final class User extends DatabaseObject {
         this.island = island.getId();
     }
 
-
     /**
      * Returns the Island of this user.
      *
      * @return The user's Island
      */
     public @NotNull Optional<Island> getIsland() {
-        if (island == null) return Optional.empty();
+        if (island == null)
+            return Optional.empty();
         return IridiumSkyblock.getInstance().getIslandManager().getIslandById(island);
     }
 
@@ -98,11 +98,13 @@ public final class User extends DatabaseObject {
         this.island = island == null ? null : island.getId();
         setJoinTime(LocalDateTime.now());
         if (island != null) {
-            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().getEntry(new IslandTrusted(island, this, this)).ifPresent(trusted ->
-                    IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager().delete(trusted)
-            );
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandTrustedTableManager()
+                    .getEntry(new IslandTrusted(island, this, this)).ifPresent(trusted -> IridiumSkyblock.getInstance()
+                            .getDatabaseManager().getIslandTrustedTableManager().delete(trusted));
         }
         IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().resortIsland(this);
+        IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().save(this);
+
     }
 
     /**

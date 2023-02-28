@@ -48,7 +48,7 @@ public class LeaveCommand extends Command {
             return false;
         }
 
-        if (user.getIslandRank().equals(IslandRank.OWNER)) {
+        if (user.getIslandRank().equals(IslandRank.OWNER) && !user.isBypassing()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotLeaveIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -59,6 +59,8 @@ public class LeaveCommand extends Command {
             if (userLeaveEvent.isCancelled()) return;
 
             user.setIsland(null);
+            IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().save(user);
+
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
             for (User member : island.get().getMembers()) {
