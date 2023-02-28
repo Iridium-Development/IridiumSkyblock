@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.commands;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
@@ -44,7 +45,7 @@ public class TransferCommand extends Command {
 
         Player player = (Player) sender;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = user.getIsland();
+        Optional<Island> island = user.getIsland().or(()->IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation()));
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
@@ -58,7 +59,7 @@ public class TransferCommand extends Command {
             return false;
         }
 
-        if (!island.get().equals(targetUser.getIsland().orElse(null))) {
+        if (!island.get().equals(targetUser.getIsland().orElse(null)) && !user.isBypassing()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNotInYourIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -69,7 +70,12 @@ public class TransferCommand extends Command {
         }
 
         islandOwner.setIslandRank(IslandRank.CO_OWNER);
+        targetUser.setIsland(island.orElse(null));
         targetUser.setIslandRank(IslandRank.OWNER);
+        IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().save(islandOwner);
+        IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().save(targetUser);
+
+
         for (User member : island.get().getMembers()) {
             Player islandMember = Bukkit.getPlayer(member.getUuid());
             if (islandMember == null) continue;

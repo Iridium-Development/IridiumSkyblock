@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
 import com.iridium.iridiumskyblock.LogAction;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.UserJoinEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandInvite;
@@ -42,7 +43,7 @@ public class JoinCommand extends Command {
      */
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length != 2) {
+        if (args.length > 2) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
@@ -54,8 +55,10 @@ public class JoinCommand extends Command {
             return false;
         }
 
-        User offlinePlayerUser = IridiumSkyblock.getInstance().getUserManager().getUser(args[1]);
-        Optional<Island> island = offlinePlayerUser.getIsland();
+        User offlinePlayerUser =null;
+        if (args.length>1)
+            offlinePlayerUser=IridiumSkyblock.getInstance().getUserManager().getUser(args[1]);
+        Optional<Island> island = offlinePlayerUser!=null? offlinePlayerUser.getIsland(): IridiumSkyblockAPI.getInstance().getIslandViaLocation(player.getLocation());
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().userNoIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
@@ -89,6 +92,8 @@ public class JoinCommand extends Command {
 
         user.setIsland(island.get());
         user.setIslandRank(IslandRank.MEMBER);
+        IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().save(user);
+
         islandInvite.ifPresent(invite -> IridiumSkyblock.getInstance().getDatabaseManager().getIslandInviteTableManager().delete(invite));
         IridiumSkyblock.getInstance().getIslandManager().teleportHome(player, island.get(), 0);
 

@@ -305,6 +305,7 @@ public class IslandManager {
                             .replace("%player%", user.getName())
                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                     IridiumSkyblock.getInstance().getUserManager().getUser(player).setIsland(null);
+                    
                 }
             }
         });
