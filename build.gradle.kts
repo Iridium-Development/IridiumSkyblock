@@ -15,6 +15,7 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://jitpack.io")
     maven("https://maven.enginehub.org/repo/")
+    maven("https://repo.essentialsx.net/releases/")
     mavenCentral()
 }
 
@@ -26,20 +27,20 @@ dependencies {
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.jetbrains:annotations:24.0.0")
-    compileOnly("org.projectlombok:lombok:1.18.24")
-    compileOnly("org.spigotmc:spigot-api:1.19.1-R0.1-SNAPSHOT")
+    compileOnly("org.projectlombok:lombok:1.18.26")
+    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.6-SNAPSHOT")
+    compileOnly("net.essentialsx:EssentialsXSpawn:2.19.7")
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13")
 
     // Enable lombok annotation processing
-    annotationProcessor("org.projectlombok:lombok:1.18.22")
+    annotationProcessor("org.projectlombok:lombok:1.18.26")
 }
 
 tasks {
     // "Replace" the build task with the shadowJar task (probably bad but who cares)
     jar {
-        dependsOn("shadowJar")
+        dependsOn(shadowJar)
         enabled = false
     }
 
