@@ -1,5 +1,6 @@
 plugins {
     java
+    idea
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "8.1.0"
 }
@@ -23,13 +24,14 @@ dependencies {
     // Dependencies that we want to shade in
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:1.7.6.14")
+    implementation("com.iridium:IridiumTeams:1.7.6.15")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.jetbrains:annotations:24.0.0")
     compileOnly("org.projectlombok:lombok:1.18.26")
     compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    compileOnly("net.essentialsx:EssentialsX:2.19.7")
     compileOnly("net.essentialsx:EssentialsXSpawn:2.19.7")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13")
 
@@ -89,6 +91,7 @@ tasks {
 // Set the Java version and vendor
 java {
     toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
         vendor.set(JvmVendorSpec.ADOPTOPENJDK)
     }
 }
