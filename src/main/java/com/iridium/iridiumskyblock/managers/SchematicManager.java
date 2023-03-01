@@ -21,10 +21,9 @@ public class SchematicManager {
     public final SchematicPaster schematicPaster;
     public final Map<String, File> schematicFiles;
 
-    private final boolean worldEdit = Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
-
     public SchematicManager() {
         File parent = new File(IridiumSkyblock.getInstance().getDataFolder(), "schematics");
+        boolean worldEdit = Bukkit.getPluginManager().isPluginEnabled("WorldEdit");
         SchematicPaster schematicPaster = worldEdit ? new WorldEdit() : new Schematic();
 
         if ((worldEdit) && !WorldEdit.isWorking()) {

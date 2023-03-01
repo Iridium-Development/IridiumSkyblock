@@ -16,8 +16,8 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import org.bukkit.Location;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
@@ -37,7 +37,7 @@ public class WorldEdit implements SchematicPaster {
     public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         try {
             ClipboardFormat format = cachedClipboardFormat.getOrDefault(file, ClipboardFormats.findByFile(file));
-            ClipboardReader reader = format.getReader(new FileInputStream(file));
+            ClipboardReader reader = format.getReader(Files.newInputStream(file.toPath()));
             Clipboard clipboard = reader.read();
             int width = clipboard.getDimensions().getBlockX();
             int height = clipboard.getDimensions().getBlockY();

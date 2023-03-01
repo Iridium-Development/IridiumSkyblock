@@ -4,7 +4,7 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumteams.enhancements.EnhancementData;
 import lombok.NoArgsConstructor;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public class SizeEnhancementData extends EnhancementData {
 
     @Override
     public List<Placeholder> getPlaceholders() {
-        return Arrays.asList(
+        return Collections.singletonList(
                 new Placeholder("size", String.valueOf(size))
         );
     }

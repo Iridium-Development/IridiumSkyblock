@@ -78,7 +78,7 @@ public final class ByteArrayTag extends Tag {
 	if (name != null && !name.equals("")) {
 	    append = "(\"" + this.getName() + "\")";
 	}
-	return "TAG_Byte_Array" + append + ": " + hex.toString();
+	return "TAG_Byte_Array" + append + ": " + hex;
     }
 
 }

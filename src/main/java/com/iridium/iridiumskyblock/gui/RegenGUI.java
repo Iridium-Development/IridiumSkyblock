@@ -5,8 +5,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import java.util.concurrent.CompletableFuture;
-
 @Getter
 public class RegenGUI extends SchematicGUI {
     private final Player player;

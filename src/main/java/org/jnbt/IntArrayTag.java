@@ -84,7 +84,7 @@ public final class IntArrayTag extends Tag {
         if ((name != null) && !name.equals("")) {
             append = "(\"" + getName() + "\")";
         }
-        return "TAG_Int_Array" + append + ": " + integers.toString();
+        return "TAG_Int_Array" + append + ": " + integers;
     }
     
     /*
