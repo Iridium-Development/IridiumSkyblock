@@ -64,7 +64,7 @@ public class TransferCommand extends Command {
             return false;
         }
 
-        if (islandOwner.getUuid().equals(user.getUuid())) {
+        if (islandOwner.getUuid().equals(targetUser.getUuid())) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotTransferYourself.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
