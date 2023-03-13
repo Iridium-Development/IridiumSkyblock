@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import redempt.crunch.CompiledExpression;
@@ -337,6 +338,8 @@ public final class Island extends DatabaseObject {
             default:
                 throw new IllegalStateException("Could not find island location with ID: " + id);
         }
+        if(IridiumSkyblock.getInstance().getConfiguration().respectNetherRatio && world.getEnvironment() != Environment.NETHER)
+            location = location.multiply(8);
 
         return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);
     }
@@ -398,7 +401,7 @@ public final class Island extends DatabaseObject {
         IslandManager islandManager = IridiumSkyblock.getInstance().getIslandManager();
         World world = location.getWorld();
         if (Objects.equals(world, islandManager.getWorld()) || Objects.equals(world, islandManager.getNetherWorld()) || Objects.equals(world, islandManager.getEndWorld())) {
-            return isInIsland(location.getBlockX(), location.getBlockZ());
+            return isInIsland(location.getBlockX(), location.getBlockZ(), location.getWorld());
         } else {
             return false;
         }
@@ -409,11 +412,27 @@ public final class Island extends DatabaseObject {
      *
      * @param x The x coordinates
      * @param z The z coordinates
-     * @return Whether or not the coordinates are in this island
+     * @return Whether the coordinates are in this island
      */
+    @Deprecated
     public boolean isInIsland(int x, int z) {
         Location pos1 = getPos1(null);
         Location pos2 = getPos2(null);
+
+        return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
+    }
+
+    /**
+     * Returns if the provided x and z coordinates are inside this Island or not.
+     *
+     * @param x The x coordinates
+     * @param z The z coordinates
+     * @param world The world that this island is located in
+     * @return Whether the coordinates are in this island
+     */
+    public boolean isInIsland(int x, int z, World world) {
+        Location pos1 = getPos1(world);
+        Location pos2 = getPos2(world);
 
         return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
     }
