@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "3.2.10-hotfix-1.2.2"
+version = "3.2.11-SNAPSHOT"
 description = "IridiumSkyblock"
 
 repositories {
@@ -43,11 +43,11 @@ dependencies {
     compileOnly("be.maximvdw:MVdWPlaceholderAPI:2.1.1") {
         exclude("org.spigotmc")
     }
-    compileOnly("com.gc:AdvancedSpawners:1.2.6")
+    //compileOnly("com.gc:AdvancedSpawners:1.2.6")
     compileOnly("dev.rosewood:rosestacker:1.4.2")
     compileOnly("com.github.OmerBenGera:WildStackerAPI:master")
-    compileOnly("com.songoda:UltimateStacker:2.1.7")
-    compileOnly("com.songoda:EpicSpawners:7.1.2")
+    //compileOnly("com.songoda:UltimateStacker:2.1.7")
+    //compileOnly("com.songoda:EpicSpawners:7.1.2")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.6-SNAPSHOT")
 
     // Enable lombok annotation processing
