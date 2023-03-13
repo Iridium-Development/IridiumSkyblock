@@ -39,6 +39,7 @@ public class Configuration {
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
     public boolean netherIslands = true;
+    public boolean respectNetherRatio = false;
     public boolean endIslands = true;
     public boolean respawnOnIsland = true;
     public boolean obsidianBucket = true;
@@ -57,10 +58,13 @@ public class Configuration {
     public int distance = 151;
     public int islandRecalculateInterval = 5;
     public int chunkPerTickRecalculation = 1;
+    public int tickPerRecalculationStep = 1;
     public int maxIslandName = 16;
     public int minIslandName = 3;
     public int teleportDelay = 0;
     public int trackTicks = 20;
+    public int pasterLimitPerTick = 250000;
+    public int pasterDelayInTick = 1;
 
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
 
