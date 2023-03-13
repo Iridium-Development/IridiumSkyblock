@@ -163,7 +163,6 @@ public class IslandManager {
      *
      * @param player The player we are teleporting
      * @param island The island we are teleporting them to
-     * @param delay  How long the player should stand still for before teleporting
      */
     public boolean enterIsland(@NotNull Player player, @NotNull Island island) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
@@ -980,7 +979,7 @@ public class IslandManager {
 
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
+                    if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16), world)) {
                         final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                         for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                             XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
@@ -1014,6 +1013,7 @@ public class IslandManager {
      */
     private void recalculateIsland(@NotNull Island island, @NotNull List<Chunk> chunks, CompletableFuture<Void> ret) {
         ListIterator<Chunk> iterator = new ArrayList<>(chunks).listIterator();
+        int delay = IridiumSkyblock.getInstance().getConfiguration().tickPerRecalculationStep;
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -1037,7 +1037,7 @@ public class IslandManager {
                         XMaterial air = XMaterial.AIR;
                         for (int x = 0; x < 16; x++) {
                             for (int z = 0; z < 16; z++) {
-                                if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16))) {
+                                if (island.isInIsland(x + (chunk.getX() * 16), z + (chunk.getZ() * 16), world)) {
                                     final int maxy = Math.min(maxHeight, chunk.getHighestBlockYAt(x, z));
                                     for (int y = LocationUtils.getMinHeight(world); y <= maxy; y++) {
                                         XMaterial material = XMaterial.matchXMaterial(chunk.getBlockType(x, y, z));
@@ -1057,7 +1057,7 @@ public class IslandManager {
                         }
                     }
             }
-        }.runTaskTimer(IridiumSkyblock.getInstance(), 1, 1);
+        }.runTaskTimer(IridiumSkyblock.getInstance(), delay, delay);
     }
 
     private void getAllTileInIsland(Island island, List<Chunk> chunks) {
