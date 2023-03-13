@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.Cache;
 import com.iridium.iridiumskyblock.DatabaseObject;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.IslandRank;
+import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.configs.BlockValues;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.managers.IslandManager;
@@ -416,8 +417,8 @@ public final class Island extends DatabaseObject {
      */
     @Deprecated
     public boolean isInIsland(int x, int z) {
-        Location pos1 = getPos1(null);
-        Location pos2 = getPos2(null);
+        Location pos1 = getPos1(IridiumSkyblockAPI.getInstance().getWorld());
+        Location pos2 = getPos2(IridiumSkyblockAPI.getInstance().getWorld());
 
         return pos1.getX() <= x && pos1.getZ() <= z && pos2.getX() >= x && pos2.getZ() >= z;
     }
