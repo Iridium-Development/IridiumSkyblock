@@ -21,8 +21,6 @@ public class WildStackerSupport implements StackerSupport {
             if (material != XMaterial.matchXMaterial(stackedBarrel.getType())) continue;
 
             if (material == XMaterial.matchXMaterial(stackedBarrel.getType())) {
-                stackedBlocks--;
-            } else {
                 stackedBlocks += stackedBarrel.getStackAmount();
             }
         }
