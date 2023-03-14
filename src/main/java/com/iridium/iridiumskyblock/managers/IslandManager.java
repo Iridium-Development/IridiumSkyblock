@@ -275,6 +275,7 @@ public class IslandManager {
         if (islandRegenEvent.isCancelled())
             return;
 
+        CompletableFuture<Void> toComplete=new CompletableFuture<>();
         if (IridiumSkyblock.getInstance().getChunkGenerator() instanceof OceanGenerator) {
             OceanGenerator oceanGenerator = (OceanGenerator) IridiumSkyblock.getInstance().getChunkGenerator();
             for (int x = island.getPos1(getWorld()).getBlockX(); x <= island.getPos2(getWorld()).getBlockX(); x++) {
@@ -284,29 +285,37 @@ public class IslandManager {
                     oceanGenerator.generateWater(getEndWorld(), x, z);
                 }
             }
+            toComplete.complete(null);
         } else {
-            deleteIslandBlocks(island, getWorld(), 0).join();
-            deleteIslandBlocks(island, getNetherWorld(), 0).join();
-            deleteIslandBlocks(island, getEndWorld(), 0).join();
+            toComplete=CompletableFuture.allOf(
+                    deleteIslandBlocks(island, getWorld(), 0),
+                    deleteIslandBlocks(island, getNetherWorld(), 0),
+                    deleteIslandBlocks(island, getEndWorld(), 0));
         }
+
         IslandRegenSettings regenSettings = IridiumSkyblock.getInstance().getConfiguration().regenSettings;
-        getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
-            if (player != null) {
-                if (regenSettings.clearInventories)
-                    player.getInventory().clear();
-                if (regenSettings.clearEnderChests)
-                    player.getEnderChest().clear();
-                if (regenSettings.resetVaultBalances)
-                    IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player,
-                            IridiumSkyblock.getInstance().getEconomy().getBalance(player));
-                if (regenSettings.kickMembers) {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked
-                            .replace("%player%", user.getName())
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                    IridiumSkyblock.getInstance().getUserManager().getUser(player).setIsland(null);
-                    
+
+        toComplete.thenAccept((Void)->{
+            getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
+                if (player != null) {
+                    if (regenSettings.clearInventories)
+                        player.getInventory().clear();
+                    if (regenSettings.clearEnderChests)
+                        player.getEnderChest().clear();
+                    if (regenSettings.resetVaultBalances)
+                        IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player,
+                                IridiumSkyblock.getInstance().getEconomy().getBalance(player));
+                    if (regenSettings.kickMembers) {
+                        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveBeenKicked
+                                .replace("%player%", user.getName())
+                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        IridiumSkyblock.getInstance().getUserManager().getUser(player).setIsland(null);
+                    }
+                    PlayerUtils.teleportSpawn(player);
+
                 }
-            }
+
+            });
         });
 
         if (regenSettings.resetIslandBank) {
@@ -366,6 +375,11 @@ public class IslandManager {
             islandHome.setYaw(schematicConfig.yawHome);
             island.setHome(islandHome);
 
+            Player player = user.getPlayer();
+            if(player!=null){
+                teleportHome(player, island, 0);
+            }
+
             getEntities(island, getWorld(), getNetherWorld(), getEndWorld())
                     .thenAccept(entities -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                         for (Entity entity : entities) {
@@ -375,9 +389,9 @@ public class IslandManager {
                                 entity.remove();
                             }
                         }
-                    }));
-        });
-    }
+                    }))
+                ;});
+        };
 
     private CompletableFuture<Void> pasteSchematic(@NotNull Island island,
             @NotNull Schematics.SchematicConfig schematicConfig) {
@@ -754,7 +768,7 @@ public class IslandManager {
         deleteIslandBlocks(island, getWorld(), 3);
         deleteIslandBlocks(island, getNetherWorld(), 3);
         deleteIslandBlocks(island, getEndWorld(), 3);
-        deleteIslanDatabasedEntries(island);
+        deleteIslandDatabasedEntries(island);
 
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
             if (player != null) {
@@ -784,7 +798,7 @@ public class IslandManager {
      *
      * @param island The specified Island
      */
-    private void deleteIslanDatabasedEntries(@NotNull Island island) {
+    private void deleteIslandDatabasedEntries(@NotNull Island island) {
         DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             databaseManager.getIslandTableManager().delete(island);
