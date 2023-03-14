@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.IslandRegenGUI;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -62,7 +63,11 @@ public class RegenCommand extends Command {
             return false;
         }
 
-        IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.get());
+        player.openInventory(new ConfirmationGUI(() ->
+        {
+            IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.get());
+
+        },getCooldownProvider()).getInventory());
         return true;
     }
 
