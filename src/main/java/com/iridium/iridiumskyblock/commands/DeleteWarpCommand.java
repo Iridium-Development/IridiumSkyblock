@@ -6,6 +6,7 @@ import com.iridium.iridiumskyblock.PermissionType;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.IslandWarp;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.gui.ConfirmationGUI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -61,11 +62,16 @@ public class DeleteWarpCommand extends Command {
             return false;
         }
 
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().deletingWarp
-                .replace("%name%", islandWarp.get().getName())
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-        );
-        IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().delete(islandWarp.get());
+        player.openInventory(new ConfirmationGUI(() ->
+        {
+            IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().delete(islandWarp.get());
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().deletingWarp
+                    .replace("%name%", islandWarp.get().getName())
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+            );
+
+        },getCooldownProvider()).getInventory());
+
         return true;
     }
 
