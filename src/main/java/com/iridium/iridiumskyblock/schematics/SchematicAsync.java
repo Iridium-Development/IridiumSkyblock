@@ -43,13 +43,14 @@ public class SchematicAsync implements SchematicPaster {
 
         final SchematicData schematicDataF = schematicData;
         CompletableFuture<Void> cf = new CompletableFuture<>();
+        final int delay = IridiumSkyblock.getInstance().getConfiguration().pasterDelayInTick;
         (new BukkitRunnable() {
             int blockdataindex = 0;
             List<String> blockdatas = schematicDataF.palette.keySet().stream().collect(Collectors.toList());
 
             @Override
             public void run() {
-                int remaining = 250000;
+                int remaining = IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick;
 
                 while (remaining > 0 && blockdataindex < blockdatas.size()) {
                     String blockData = blockdatas.get(blockdataindex);
@@ -76,7 +77,7 @@ public class SchematicAsync implements SchematicPaster {
                     cf.complete(null);
                 }
             }
-        }).runTaskTimer(IridiumSkyblock.getInstance(), 1, 1);
+        }).runTaskTimer(IridiumSkyblock.getInstance(), delay, delay);
 
         cf.thenAccept(Void->{
             for (Tag tag : schematicDataF.tileEntities) {
