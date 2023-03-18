@@ -173,4 +173,11 @@ public class OceanGenerator extends IridiumChunkGenerator {
         return null;
     }
 
+    /**
+     * Populates the world with various growths and decor.
+     */
+    private void populate() {
+
+
+    }
 }
