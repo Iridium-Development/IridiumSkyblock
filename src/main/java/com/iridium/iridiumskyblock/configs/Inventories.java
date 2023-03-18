@@ -52,6 +52,9 @@ public class Inventories {
             .put("is permissions", new Item(XMaterial.WRITABLE_BOOK, 31, 1, "&b&lIsland Permissions", Collections.singletonList("&7View your island permissions")))
             .put("is trusted", new Item(XMaterial.NAME_TAG, 32, 1, "&b&lTrusted Members", Collections.singletonList("&7View your island's trusted members")))
             .put("is delete", new Item(XMaterial.BARRIER, 44, 1, "&b&lDelete Island", Collections.singletonList("&7Delete your island")))
+
+            .put("is shop", new Item(XMaterial.NETHER_STAR, 39, 1, "&b&lIsland Shop", Collections.singletonList("&7Open the Island Shop")))
+            .put("is biomes", new Item(XMaterial.POTTED_POPPY, 41, 1, "&b&lIsland Biome", Collections.singletonList("&7Change your island biome")))
             .build()
     );
 
