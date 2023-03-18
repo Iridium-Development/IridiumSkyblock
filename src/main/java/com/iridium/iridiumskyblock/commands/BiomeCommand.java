@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class BiomeCommand extends Command {
 
     private final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
