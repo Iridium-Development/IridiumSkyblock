@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * Command which allows admins to bypass Island restrictions.
@@ -38,7 +39,9 @@ public class ClearDataCommand extends Command {
         }
 
         Player player = (Player) sender;
-        player.openInventory(new ConfirmationGUI(() -> execute(player), getCooldownProvider()).getInventory());
+        /**new ConfirmationGUI(IridiumSkyblock.getInstance().getConfiguration().confirmation.warpDeletionPrompt, () ->
+                execute(player), getCooldownProvider()).open(player);
+         */
         // Return false because the cooldown is set by the ConfirmationGUI
         return false;
     }
