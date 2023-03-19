@@ -36,10 +36,12 @@ public class Configuration {
     public String paster = "worldedit";
 
     public boolean enableCheckVersion = true;
+    public boolean debugMessages = false;
     public boolean defaultIslandPublic = true;
     public boolean voidTeleport = true;
     public boolean netherIslands = true;
     public boolean respectNetherRatio = false;
+    public boolean netherExclusiveGenerator = true;
     public boolean endIslands = true;
     public boolean respawnOnIsland = true;
     public boolean obsidianBucket = true;
@@ -54,6 +56,10 @@ public class Configuration {
     public IslandDeleteSettings deleteSettings = new IslandDeleteSettings();
 
     public IslandDamageSettings pvpSettings = new IslandDamageSettings();
+
+    public PerformanceSettings performance = new PerformanceSettings();
+
+    public ConfirmationSettings confirmation = new ConfirmationSettings();
 
     public int distance = 151;
     public int islandRecalculateInterval = 5;
@@ -175,6 +181,39 @@ public class Configuration {
         public boolean clearEnderChests = false;
         public boolean resetVaultBalances = false;
 
+    }
+
+    /**
+     * The default settings for island delete.
+     */
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class PerformanceSettings {
+        public boolean disableWaterCheck = false;
+        public boolean disableIslandRecalculationTimer = false;
+        public boolean disableGrowth = false;
+        public boolean disablePiston = false;
+        public boolean disableSpread = false;
+        public boolean disableGenerator = false;
+        public boolean disableEndermanCheck = false;
+        public boolean disableEntitySpawnCheck = false;
+        public boolean disableFurnaceCheck = false;
+        public boolean disableSpawnerEntitySpawnCheck = false;
+        public boolean disableEntityTargettingCheck = false;
+        public boolean disableLeavesDecayCheck = false;
+    }
+
+    /**
+     * The default settings for showing confirmation prompts.
+     */
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ConfirmationSettings {
+        public boolean islandRegenPrompt = true;
+        public boolean warpDeletionPrompt = true;
+        public boolean clearDataPrompt = true;
+        public boolean islandDeletePrompt=true;
+        public boolean islandLeavePrompt=true;
     }
 
     @AllArgsConstructor

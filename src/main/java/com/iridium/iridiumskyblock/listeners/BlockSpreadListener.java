@@ -12,6 +12,7 @@ public class BlockSpreadListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent event) {
+        if (IridiumSkyblock.getInstance().getConfiguration().performance.disableSpread) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             if (event.getSource().getType() != Material.FIRE) return;
             IslandSetting leafDecaySettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.FIRE_SPREAD);

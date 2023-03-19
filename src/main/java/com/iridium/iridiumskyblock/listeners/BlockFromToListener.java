@@ -12,6 +12,7 @@ public class BlockFromToListener implements Listener {
 
     @EventHandler
     public void onBlockFromTo(BlockFromToEvent event) {
+        if (IridiumSkyblock.getInstance().getConfiguration().performance.disableWaterCheck) return;
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             if (event.getBlock().getType() == Material.WATER || event.getBlock().getType() == Material.LAVA) {
                 if(!island.isInIsland(event.getToBlock().getLocation())){
