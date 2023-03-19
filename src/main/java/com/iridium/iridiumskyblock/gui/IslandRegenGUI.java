@@ -51,15 +51,23 @@ public class IslandRegenGUI extends SchematicGUI {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    player.openInventory(new ConfirmationGUI(() -> {
-                        if (PlayerUtils.pay(player, island.get(), regenSettings.crystalPrice, regenSettings.moneyPrice)) {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.getValue());
-                            cooldownProvider.applyCooldown(player);
-                        } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        }
-                    }, getCooldownProvider()).getInventory());
+                    new ConfirmationGUI(IridiumSkyblock.getInstance().getConfiguration().confirmation.islandRegen,
+                            () -> {
+                                if (PlayerUtils.pay(player, island.get(), regenSettings.crystalPrice,
+                                        regenSettings.moneyPrice)) {
+                                    player.sendMessage(StringUtils
+                                            .color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland
+                                                    .replace("%prefix%",
+                                                            IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                                    IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(),
+                                            user, schematicConfig.getValue());
+                                    cooldownProvider.applyCooldown(player);
+                                } else {
+                                    player.sendMessage(StringUtils.color(
+                                            IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
+                                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                                }
+                            }, null).open(player);
                 }
             }.runTaskLater(IridiumSkyblock.getInstance(), 1);
         } else {

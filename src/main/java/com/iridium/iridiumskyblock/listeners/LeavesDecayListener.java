@@ -11,6 +11,8 @@ public class LeavesDecayListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
+        if(IridiumSkyblock.getInstance().getConfiguration().performance.disableLeavesDecayCheck) return;
+
         IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
             IslandSetting leafDecaySettings = IridiumSkyblock.getInstance().getIslandManager().getIslandSetting(island, SettingType.LEAF_DECAY);
             if (!leafDecaySettings.getBooleanValue()) {

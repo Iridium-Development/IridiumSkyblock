@@ -24,6 +24,7 @@ public class EntityTargetListener implements Listener {
     @EventHandler
     public void onEntityTargetEntity(EntityTargetLivingEntityEvent event) {
         if (IridiumSkyblock.getInstance().getConfiguration().pvpSettings.mobsVisitorTargeting) return;
+        if(IridiumSkyblock.getInstance().getConfiguration().performance.disableEntityTargettingCheck) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getEntity().getLocation());
         if (!island.isPresent()) return;
