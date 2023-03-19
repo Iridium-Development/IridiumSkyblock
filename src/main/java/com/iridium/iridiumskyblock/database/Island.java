@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.database;
 
 import com.iridium.iridiumcore.Color;
+import com.iridium.iridiumcore.dependencies.iridiumcolorapi.IridiumColorAPI;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.Cache;
 import com.iridium.iridiumskyblock.DatabaseObject;
@@ -339,7 +340,7 @@ public final class Island extends DatabaseObject {
             default:
                 throw new IllegalStateException("Could not find island location with ID: " + id);
         }
-        if(IridiumSkyblock.getInstance().getConfiguration().respectNetherRatio && world.getEnvironment() != Environment.NETHER)
+        if(IridiumSkyblock.getInstance().getConfiguration().respectNetherRatio && world !=null && world.getEnvironment() != Environment.NETHER)
             location = location.multiply(8);
 
         return location.multiply(IridiumSkyblock.getInstance().getConfiguration().distance);

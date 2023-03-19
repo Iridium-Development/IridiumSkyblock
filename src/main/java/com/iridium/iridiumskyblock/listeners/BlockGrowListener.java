@@ -21,6 +21,8 @@ public class BlockGrowListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void monitorBlockGrow(BlockGrowEvent event) {
         if (!IridiumSkyblockAPI.getInstance().isIslandWorld(event.getBlock().getWorld())) return;
+        if(IridiumSkyblock.getInstance().getConfiguration().performance.disableGrowth) return;
+
         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
                 IridiumSkyblock.getInstance().getIslandManager().getIslandViaLocation(event.getBlock().getLocation()).ifPresent(island -> {
                     XMaterial material = XMaterial.matchXMaterial(event.getBlock().getType());

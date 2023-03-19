@@ -62,15 +62,13 @@ public class DeleteWarpCommand extends Command {
             return false;
         }
 
-        player.openInventory(new ConfirmationGUI(() ->
-        {
+        new ConfirmationGUI(IridiumSkyblock.getInstance().getConfiguration().confirmation.warpDeletion,() -> {
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandWarpTableManager().delete(islandWarp.get());
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().deletingWarp
                     .replace("%name%", islandWarp.get().getName())
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
             );
-
-        },getCooldownProvider()).getInventory());
+        }, getCooldownProvider()).open(player);
 
         return true;
     }

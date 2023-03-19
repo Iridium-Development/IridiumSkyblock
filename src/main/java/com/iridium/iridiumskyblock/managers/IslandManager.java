@@ -15,6 +15,7 @@ import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandRegenEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
 import com.iridium.iridiumskyblock.configs.Configuration.IslandRegenSettings;
+import com.iridium.iridiumskyblock.configs.Configuration;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.*;
 import com.iridium.iridiumskyblock.generators.OceanGenerator;
@@ -768,7 +769,7 @@ public class IslandManager {
         deleteIslandBlocks(island, getWorld(), 3);
         deleteIslandBlocks(island, getNetherWorld(), 3);
         deleteIslandBlocks(island, getEndWorld(), 3);
-        deleteIslandDatabasedEntries(island);
+        deleteIslandDatabaseEntries(island);
 
         getIslandMembers(island).stream().map(User::getPlayer).forEach(player -> {
             if (player != null) {
@@ -798,7 +799,7 @@ public class IslandManager {
      *
      * @param island The specified Island
      */
-    private void deleteIslandDatabasedEntries(@NotNull Island island) {
+    private void deleteIslandDatabaseEntries(@NotNull Island island) {
         DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
             databaseManager.getIslandTableManager().delete(island);
@@ -1267,6 +1268,26 @@ public class IslandManager {
             return nbtCompound.getInteger("islandCrystals");
         }
         return 0;
+    }
+
+    public void reload() {
+        Configuration configuration = IridiumSkyblock.getInstance().getConfiguration();
+        this.createWorld(World.Environment.NORMAL, configuration.worldName);
+        if (configuration.netherIslands)
+            this.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
+        if (configuration.endIslands)
+            this.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
+
+        // Register worlds with multiverse
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
+            if (Bukkit.getPluginManager().isPluginEnabled("Multiverse-Core")) {
+                IridiumSkyblock.getInstance().registerMultiverse(getWorld());
+                if (configuration.netherIslands)
+                    IridiumSkyblock.getInstance().registerMultiverse(getNetherWorld());
+                if (configuration.endIslands)
+                    IridiumSkyblock.getInstance().registerMultiverse(getEndWorld());
+            }
+        }, 1);
     }
 
 }
