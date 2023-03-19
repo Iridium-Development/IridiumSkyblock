@@ -481,7 +481,7 @@ public class IridiumSkyblock extends IridiumCore {
      *
      * @param world The specified World
      */
-    private void registerMultiverse(World world) {
+    public void registerMultiverse(World world) {
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
                 "mv import " + world.getName() + " normal -g " + getName());
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
