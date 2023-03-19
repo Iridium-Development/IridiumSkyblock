@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,6 +18,7 @@ public class ConfirmationGUI extends GUI {
 
     private final @NotNull Runnable runnable;
     private final @NotNull CooldownProvider<CommandSender> cooldownProvider;
+    private final boolean required;
 
     /**
      * The default constructor.
@@ -24,14 +26,33 @@ public class ConfirmationGUI extends GUI {
      * @param runnable         The code that should be run when the user confirms his action
      * @param cooldownProvider The provider for cooldowns that should be started on success
      */
-    public  ConfirmationGUI(@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
+    public ConfirmationGUI(boolean required,@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
         super(IridiumSkyblock.getInstance().getInventories().confirmationGUI);
         this.runnable = runnable;
         this.cooldownProvider = cooldownProvider;
+        this.required = required;
+    }
+
+    public void open(Player player)
+    {
+        new BukkitRunnable() {
+            public void run(){
+                if (!required){
+                    runnable.run();
+                    cooldownProvider.applyCooldown(player);
+                    player.closeInventory();
+                }
+                else
+                {
+                    player.openInventory(getInventory());
+                }
+            }
+        }.runTaskLater(IridiumSkyblock.getInstance(), 1);
     }
 
     @Override
     public void addContent(Inventory inventory) {
+        if(!required) return;
         inventory.clear();
         InventoryUtils.fillInventory(inventory, getNoItemGUI().background);
 
