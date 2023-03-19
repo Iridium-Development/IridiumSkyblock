@@ -23,7 +23,7 @@ public class ConfirmationGUI extends GUI {
     /**
      * The default constructor.
      *
-     * @param runnable         The code that should be run when the user confirms his action
+     * @param runnable         The code that should be run when the user confirms their action
      * @param cooldownProvider The provider for cooldowns that should be started on success
      */
     public ConfirmationGUI(boolean required,@NotNull Runnable runnable, @NotNull CooldownProvider<CommandSender> cooldownProvider) {
