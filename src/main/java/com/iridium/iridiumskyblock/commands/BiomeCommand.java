@@ -17,12 +17,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class BiomeCommand extends Command {
 
     private final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
 
     public BiomeCommand() {
-        super(Collections.singletonList("biome"), "Change your island biome.", "%prefix% &7/is biome <biome>", "", true, Duration.ZERO);
+        super(Collections.singletonList("allBiomes"), "Change your island biome.", "%prefix% &7/is biome <biome>", "", true, Duration.ZERO);
     }
 
     @Override

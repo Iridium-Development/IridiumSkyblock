@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+@Deprecated
 public class IslandBiomeGUI extends IslandGUI {
 
     private final List<XBiome> biomes;
