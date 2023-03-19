@@ -38,7 +38,7 @@ public class ClearDataCommand extends Command {
         }
 
         Player player = (Player) sender;
-        player.openInventory(new ConfirmationGUI(() -> execute(player), getCooldownProvider()).getInventory());
+        new ConfirmationGUI(IridiumSkyblock.getInstance().getConfiguration().confirmation.clearDataPrompt,() -> execute(player), getCooldownProvider()).open(player);
         // Return false because the cooldown is set by the ConfirmationGUI
         return false;
     }

@@ -53,27 +53,14 @@ public class LeaveCommand extends Command {
             return false;
         }
 
-        player.openInventory(new ConfirmationGUI(() -> {
+        new ConfirmationGUI(IridiumSkyblock.getInstance().getConfiguration().confirmation.islandLeavePrompt,() -> {
             UserLeaveEvent userLeaveEvent = new UserLeaveEvent(island.get(), user);
             Bukkit.getPluginManager().callEvent(userLeaveEvent);
             if (userLeaveEvent.isCancelled()) return;
-
-            user.setIsland(null);
-            IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().save(user);
-
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().youHaveLeftIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-
-            for (User member : island.get().getMembers()) {
-                Player islandMember = Bukkit.getPlayer(member.getUuid());
-                if (islandMember != null) {
-                    islandMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().playerLeftIsland.replace("%player%", player.getName()).replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                }
-            }
-
             PlayerUtils.teleportSpawn(player);
             IslandLog islandLog = new IslandLog(island.get(), LogAction.USER_LEFT, user, null, 0, "");
             IridiumSkyblock.getInstance().getDatabaseManager().getIslandLogTableManager().addEntry(islandLog);
-        }, getCooldownProvider()).getInventory());
+        }, getCooldownProvider()).open(player);
 
         // Always return false because the cooldown is set by the ConfirmationGUI
         return false;

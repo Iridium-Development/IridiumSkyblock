@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,15 +50,24 @@ public class IslandRegenGUI extends SchematicGUI {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    player.openInventory(new ConfirmationGUI(() -> {
-                        if (PlayerUtils.pay(player, island.get(), regenSettings.crystalPrice, regenSettings.moneyPrice)) {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                            IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.getValue());
-                            cooldownProvider.applyCooldown(player);
-                        } else {
-                            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-                        }
-                    }, getCooldownProvider()).getInventory());
+                    new ConfirmationGUI(IridiumSkyblock.getInstance().getConfiguration().confirmation.islandRegenPrompt,
+                            () -> {
+
+                                if (PlayerUtils.pay(player, island.get(), regenSettings.crystalPrice,
+                                        regenSettings.moneyPrice)) {
+                                    player.sendMessage(StringUtils
+                                            .color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland
+                                                    .replace("%prefix%",
+                                                            IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                                    IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(),
+                                            user, schematicConfig.getValue());
+                                    cooldownProvider.applyCooldown(player);
+                                } else {
+                                    player.sendMessage(StringUtils.color(
+                                            IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
+                                                    IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                                }
+                            }, cooldownProvider).open(player);
                 }
             }.runTaskLater(IridiumSkyblock.getInstance(), 1);
         } else {

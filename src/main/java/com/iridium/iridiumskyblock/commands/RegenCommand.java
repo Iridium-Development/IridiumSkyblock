@@ -63,8 +63,12 @@ public class RegenCommand extends Command {
             return false;
         }
 
-        player.openInventory(new ConfirmationGUI(() ->
-                IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user, schematicConfig.get()),getCooldownProvider()).getInventory());
+        new ConfirmationGUI(IridiumSkyblock.getInstance().getConfiguration().confirmation.islandRegenPrompt, () -> {
+
+            IridiumSkyblock.getInstance().getIslandManager().regenerateIsland(island.get(), user,
+                    schematicConfig.get());
+
+        }, getCooldownProvider()).open(player);
         return true;
     }
 
