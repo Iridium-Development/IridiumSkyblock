@@ -162,6 +162,7 @@ public class Messages {
     public String islandLevel = "%prefix% &7Island Level %island_level% %island_experience%/%island_experienceRequired% Experience";
     public String dataReset = "%prefix% &7All data has been reset.";
     public String noShopCategory = "%prefix% &7There is no category with this name.";
+    public String noBiomeCategory = "%prefix% &7There is no category with this name.";
     public String inventoryFull = "%prefix% &7Your inventory is full!";
     public String noSuchItem = "%prefix% &7You don't have this item!";
     public String successfullyBought = "%prefix% &7You have successfully bought %amount%x %item% &r&7for $%vault_cost% and %crystal_cost% Crystals.";

@@ -39,19 +39,25 @@ public class Inventories {
             .build()
     );
 
-    public InventoryConfig islandMenu = new InventoryConfig(45, "&7Island Menu", background1, ImmutableMap.<String, Item>builder()
-            .put("is regen", new Item(XMaterial.GRASS_BLOCK, 12, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island")))
-            .put("is boosters", new Item(XMaterial.EXPERIENCE_BOTTLE, 23, 1, "&b&lIsland Boosters", Collections.singletonList("&7View your island boosters")))
-            .put("is home", new Item(XMaterial.WHITE_BED, 13, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
-            .put("is members", new Item(XMaterial.PLAYER_HEAD, 14, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island members")))
+    public InventoryConfig islandMenu = new InventoryConfig(54, "&7Island Menu", background1, ImmutableMap.<String, Item>builder()
+
+            .put("is trusted", new Item(XMaterial.NAME_TAG, 10, 1, "&b&lTrusted Members", Collections.singletonList("&7View your island's trusted members")))
+            .put("is members", new Item(XMaterial.PLAYER_HEAD, 11, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island members")))
+            .put("is permissions", new Item(XMaterial.WRITABLE_BOOK, 19, 1, "&b&lIsland Permissions", Collections.singletonList("&7View your island permissions")))
             .put("is warps", new Item(XMaterial.END_PORTAL_FRAME, 20, 1, "&b&lIsland Warps", Collections.singletonList("&7View your island warps")))
-            .put("is upgrade", new Item(XMaterial.DIAMOND, 21, 1, "&b&lIsland Upgrades", Collections.singletonList("&7View your island upgrades")))
-            .put("is missions", new Item(XMaterial.IRON_SWORD, 22, 1, "&b&lIsland Missions", Collections.singletonList("&7View your island missions")))
-            .put("is border", new Item(XMaterial.BEACON, 24, 1, "&b&lIsland Border", Collections.singletonList("&7Change your island border")))
-            .put("is bank", new Item(XMaterial.PLAYER_HEAD, 30, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODM4MWM1MjlkNTJlMDNjZDc0YzNiZjM4YmI2YmEzZmRlMTMzN2FlOWJmNTAzMzJmYWE4ODllMGEyOGU4MDgxZiJ9fX0", 1, "&b&lIsland Bank", Collections.singletonList("&7View your island bank")))
-            .put("is permissions", new Item(XMaterial.WRITABLE_BOOK, 31, 1, "&b&lIsland Permissions", Collections.singletonList("&7View your island permissions")))
-            .put("is trusted", new Item(XMaterial.NAME_TAG, 32, 1, "&b&lTrusted Members", Collections.singletonList("&7View your island's trusted members")))
-            .put("is delete", new Item(XMaterial.BARRIER, 44, 1, "&b&lDelete Island", Collections.singletonList("&7Delete your island")))
+
+            .put("is shop", new Item(XMaterial.NETHER_STAR, 30, 1, "&b&lIsland Shop", Collections.singletonList("&7Open the Island Shop")))
+            .put("is home", new Item(XMaterial.WHITE_BED, 22, 1, "&b&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
+            .put("is bank", new Item(XMaterial.PLAYER_HEAD, 32, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODM4MWM1MjlkNTJlMDNjZDc0YzNiZjM4YmI2YmEzZmRlMTMzN2FlOWJmNTAzMzJmYWE4ODllMGEyOGU4MDgxZiJ9fX0", 1, "&b&lIsland Bank", Collections.singletonList("&7View your island bank")))
+
+            .put("is biomes", new Item(XMaterial.GRASS_BLOCK, 15, 1, "&b&lIsland Biome", Collections.singletonList("&7Change your island biome")))
+            .put("is boosters", new Item(XMaterial.EXPERIENCE_BOTTLE, 16, 1, "&b&lIsland Boosters", Collections.singletonList("&7View your island boosters")))
+            .put("is missions", new Item(XMaterial.IRON_SWORD, 24, 1, "&b&lIsland Missions", Collections.singletonList("&7View your island missions")))
+            .put("is upgrade", new Item(XMaterial.DIAMOND, 25, 1, "&b&lIsland Upgrades", Collections.singletonList("&7View your island upgrades")))
+
+            .put("is border", new Item(XMaterial.BEACON, 44, 1, "&b&lIsland Border", Collections.singletonList("&7Change your island border")))
+            .put("is regen", new Item(XMaterial.CAMPFIRE, 52, 1, "&b&lIsland Regen", Collections.singletonList("&7Regenerate your island")))
+            .put("is delete", new Item(XMaterial.BARRIER, 53, 1, "&b&lDelete Island", Collections.singletonList("&7Delete your island")))
             .build()
     );
 
