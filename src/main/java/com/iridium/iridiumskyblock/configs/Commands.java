@@ -16,6 +16,7 @@ public class Commands {
     public BanCommand banCommand = new BanCommand();
     public BankCommand bankCommand = new BankCommand();
     public BiomeCommand biomeCommand = new BiomeCommand();
+    public BiomesCommand biomesCommand = new BiomesCommand();
     public BlockValueCommand blockValueCommand = new BlockValueCommand();
     public BoosterCommand boostersCommand = new BoosterCommand();
     public BorderCommand borderCommand = new BorderCommand();

@@ -7,6 +7,7 @@ import com.iridium.iridiumcore.utils.NumberFormatter;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockReloadEvent;
 import com.iridium.iridiumskyblock.bank.BankItem;
+import com.iridium.iridiumskyblock.biomes.BiomesManager;
 import com.iridium.iridiumskyblock.commands.CommandManager;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
@@ -67,6 +68,7 @@ public class IridiumSkyblock extends IridiumCore {
     private UserManager userManager;
     private SchematicManager schematicManager;
     private ShopManager shopManager;
+    private BiomesManager biomesManager;
 
     private Configuration configuration;
     private Messages messages;
@@ -81,6 +83,7 @@ public class IridiumSkyblock extends IridiumCore {
     private Boosters boosters;
     private Commands commands;
     private Shop shop;
+    private Biomes biomes;
     private Border border;
     private Placeholders placeholders;
     private IslandSettings islandSettings;
@@ -180,6 +183,9 @@ public class IridiumSkyblock extends IridiumCore {
         this.shopManager = new ShopManager();
         shopManager.reloadCategories();
 
+        this.biomesManager = new BiomesManager();
+        biomesManager.reloadCategories();
+        
         this.schematicManager = new SchematicManager();
 
         // Initialize Vault economy support
@@ -594,6 +600,7 @@ public class IridiumSkyblock extends IridiumCore {
         this.boosters = getPersist().load(Boosters.class);
         this.commands = getPersist().load(Commands.class);
         this.shop = getPersist().load(Shop.class);
+        this.biomes = getPersist().load(Biomes.class);
         this.border = getPersist().load(Border.class);
         this.placeholders = getPersist().load(Placeholders.class);
         this.islandSettings = getPersist().load(IslandSettings.class);
