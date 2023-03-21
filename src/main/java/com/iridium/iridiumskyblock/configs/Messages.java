@@ -166,6 +166,7 @@ public class Messages {
     public String inventoryFull = "%prefix% &7Your inventory is full!";
     public String noSuchItem = "%prefix% &7You don't have this item!";
     public String successfullyBought = "%prefix% &7You have successfully bought %amount%x %item% &r&7for $%vault_cost% and %crystal_cost% Crystals.";
+    public String successfullyBoughtBiome = "%prefix% &7You have successfully bought %item% &r&7for $%vault_cost% and %crystal_cost% Crystals.";
     public String successfullySold = "%prefix% &7You have successfully sold %amount%x %item% &r&7for $%vault_reward% and %crystal_reward% Crystals.";
     public String calculatingIslands = "%prefix% &7Calculating %amount% Players Islands, Estimated time: %minutes% Minutes and %seconds% Seconds";
     public String calculatingFinished = "%prefix% &7Calculating Players Islands Finished";

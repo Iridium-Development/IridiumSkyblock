@@ -124,13 +124,14 @@ public class BiomesManager {
 
         player.sendMessage(
                 StringUtils.color(
-                        IridiumSkyblock.getInstance().getMessages().successfullyBought
+                        IridiumSkyblock.getInstance().getMessages().successfullyBoughtBiome
                                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                                 .replace("%item%", StringUtils.color(biomeItem.name))
                                 .replace("%vault_cost%", String.valueOf(vaultCost))
                                 .replace("%crystal_cost%", String.valueOf(crystalCost))
                 )
         );
+        player.closeInventory();
     }
 
     /**
