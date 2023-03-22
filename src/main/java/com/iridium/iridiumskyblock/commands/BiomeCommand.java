@@ -22,7 +22,7 @@ public class BiomeCommand extends Command {
     private final IridiumSkyblock plugin = IridiumSkyblock.getInstance();
 
     public BiomeCommand() {
-        super(Collections.singletonList("biome"), "Change your island biome.", "%prefix% &7/is biome <biome>", "", true, Duration.ZERO);
+        super(Collections.singletonList("biome"), "Change your island biome.", "%prefix% &7/is biome <biome>", "", true, Duration.ZERO,false);
     }
 
     @Override
