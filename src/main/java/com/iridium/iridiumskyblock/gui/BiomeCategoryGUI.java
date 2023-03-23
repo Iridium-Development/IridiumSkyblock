@@ -44,7 +44,7 @@ public class BiomeCategoryGUI extends GUI {
     @Override
     public Inventory getInventory() {
         Inventory inventory = Bukkit.createInventory(this, category.size, StringUtils.color(IridiumSkyblock.getInstance().getBiomes().categoryTitle
-                .replace("%category_name%", category.name)
+                .replace("%biomecategory_name%", category.name)
         ));
 
         Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> addContent(inventory));
