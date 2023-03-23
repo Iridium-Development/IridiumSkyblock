@@ -200,6 +200,7 @@ public class IridiumSkyblock extends IridiumCore {
 
         // Auto recalculate islands
         // 3.2.11, moved into loadConfigs()
+        createRecalcTimer();
         //this.createRecalcTimer();
         if (getConfiguration().islandRecalculateInterval > 0) {
             Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
@@ -280,12 +281,13 @@ public class IridiumSkyblock extends IridiumCore {
     }
 
     private void createRecalcTimer() {
+        if (this.islandManager==null) return;
         if (this.islandRecalcTimer != null) {
             this.islandRecalcTimer.cancel();
             this.islandRecalcTimer = null;
         }
         if (getConfiguration().islandRecalculateInterval > 0) {
-            this.islandRecalcTimer = (new BukkitRunnable() {
+            new BukkitRunnable() {
                 ListIterator<Integer> islands = getDatabaseManager().getIslandTableManager().getEntries().stream()
                         .map(Island::getId).collect(Collectors.toList()).listIterator();
                 long start = 0;
@@ -316,7 +318,7 @@ public class IridiumSkyblock extends IridiumCore {
                                     + (System.currentTimeMillis() - start) + " milliseconds");
                     }
                 }
-            }).runTaskTimer(this, 0, getConfiguration().islandRecalculateInterval * 60 * 20L);
+            }.runTaskLater(this, 20);
         }
     }
 
