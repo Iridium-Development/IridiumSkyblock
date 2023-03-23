@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents an item in the shop.
+ * Represents a biome in the shop.
  */
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,17 +25,16 @@ public class BiomeItem {
     public String command;
     public int defaultAmount;
     public int slot;
-    public static BuyCost buyCost;
+    public BuyCost buyCost;
 
     /**
      * A short version of the default constructor.
      *
-     * @param name The name of the item in the shop
+     * @param name        The name of the item in the shop
      * @param displayName The name of the item when bought
-     * @param biome The biome being purchased
-     * @param defaultAmount The amount of the item
-     * @param slot The slot this item should be in
-     * @param buyCost The cost for buying this item
+     * @param biome       The biome being purchased
+     * @param slot        The slot this item should be in
+     * @param buyCost     The cost for buying this item
      */
     public BiomeItem(String name, String displayName, XBiome biome, XMaterial item, int defaultAmount, int slot, BuyCost buyCost) {
         this.name = name;

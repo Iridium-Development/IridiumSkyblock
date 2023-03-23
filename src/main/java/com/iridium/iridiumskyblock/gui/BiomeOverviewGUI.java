@@ -60,7 +60,7 @@ public class BiomeOverviewGUI extends GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         IridiumSkyblock.getInstance().getBiomesManager().getCategoryBySlot(event.getSlot()).ifPresent(biomeCategory ->
-                IridiumSkyblock.getInstance().getCommands().biomeCommand.execute(event.getWhoClicked(), new String[]{"", biomeCategory.name})
+                IridiumSkyblock.getInstance().getCommands().biomesCommand.execute(event.getWhoClicked(), new String[]{"", biomeCategory.name})
         );
     }
 

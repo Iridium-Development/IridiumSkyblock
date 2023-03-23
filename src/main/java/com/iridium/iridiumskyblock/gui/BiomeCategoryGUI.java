@@ -28,7 +28,7 @@ public class BiomeCategoryGUI extends GUI {
     /**
      * The default constructor.
      *
-     * @param category The category whose items should be displayed in this GUI
+     * @param category The category whose biomes should be displayed in this GUI
      */
     public BiomeCategoryGUI(BiomeCategory category, Inventory previousInventory) {
         super(previousInventory);
@@ -61,20 +61,20 @@ public class BiomeCategoryGUI extends GUI {
 
         InventoryUtils.fillInventory(inventory, IridiumSkyblock.getInstance().getBiomes().categoryBackground);
 
-        for (BiomeItem item : category.items) {
-            ItemStack itemStack = item.item.parseItem();
+        for (BiomeItem biomeItem : category.items) {
+            ItemStack itemStack = biomeItem.item.parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            itemStack.setAmount(item.defaultAmount);
-            itemMeta.setDisplayName(StringUtils.color(item.name));
+            itemStack.setAmount(biomeItem.defaultAmount);
+            itemMeta.setDisplayName(StringUtils.color(biomeItem.name));
 
-            List<String> lore = item.lore == null ? new ArrayList<>() : new ArrayList<>(StringUtils.color(item.lore));
-            addBiomeLore(lore, item);
+            List<String> lore = biomeItem.lore == null ? new ArrayList<>() : new ArrayList<>(StringUtils.color(biomeItem.lore));
+            addBiomeLore(lore, biomeItem);
 
             itemMeta.setLore(lore);
             itemStack.setItemMeta(itemMeta);
 
-            inventory.setItem(item.slot, itemStack);
+            inventory.setItem(biomeItem.slot, itemStack);
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
@@ -107,13 +107,13 @@ public class BiomeCategoryGUI extends GUI {
         }
     }
 
-    private void addBiomeLore(List<String> lore, BiomeItem item) {
-        if (item.isPurchasable()) {
+    private void addBiomeLore(List<String> lore, BiomeItem biomeItem) {
+        if (biomeItem.isPurchasable()) {
             lore.add(
                     StringUtils.color(IridiumSkyblock.getInstance().getBiomes().buyPriceLore
-                            .replace("%amount%", String.valueOf(item.defaultAmount))
-                            .replace("%buy_price_vault%", formatPrice(item.buyCost.vault))
-                            .replace("%buy_price_crystals%", formatPrice(item.buyCost.crystals))
+                            .replace("%amount%", String.valueOf(biomeItem.defaultAmount))
+                            .replace("%buy_price_vault%", formatPrice(biomeItem.buyCost.vault))
+                            .replace("%buy_price_crystals%", formatPrice(biomeItem.buyCost.crystals))
                     )
             );
         } else {
@@ -121,10 +121,7 @@ public class BiomeCategoryGUI extends GUI {
         }
 
         IridiumSkyblock.getInstance().getBiomes().biomeItemLore.stream()
-                .map(StringUtils::color)
-                .forEach(line -> lore.add(
-                        line.replace("%amount%", String.valueOf(item.defaultAmount))
-                ));
+                .map(StringUtils::color);
     }
 
     private String formatPrice(double value) {

@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.biomes;
 
-import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
@@ -10,6 +9,8 @@ import com.iridium.iridiumskyblock.api.BiomePurchaseEvent;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.utils.PlayerUtils;
+import com.iridium.iridiumcore.dependencies.xseries.XBiome;
+
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -89,7 +90,7 @@ public class BiomesManager {
      * @param biomeItem The Biome listing and its associated biome
      */
     public void buy(Player player, BiomeItem biomeItem) {
-        BuyCost buyCost = BiomeItem.buyCost;
+        BuyCost buyCost = biomeItem.buyCost;
         double vaultCost = calculateCost(biomeItem.defaultAmount, buyCost.vault);
         int crystalCost = (int) calculateCost(biomeItem.defaultAmount, buyCost.crystals);
         final Optional<Island> island = IridiumSkyblockAPI.getInstance().getUser(player).getIsland();
@@ -124,13 +125,14 @@ public class BiomesManager {
 
         player.sendMessage(
                 StringUtils.color(
-                        IridiumSkyblock.getInstance().getMessages().successfullyBought
+                        IridiumSkyblock.getInstance().getMessages().successfullyBoughtBiome
                                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                                 .replace("%item%", StringUtils.color(biomeItem.name))
                                 .replace("%vault_cost%", String.valueOf(vaultCost))
                                 .replace("%crystal_cost%", String.valueOf(crystalCost))
                 )
         );
+        player.closeInventory();
     }
 
     /**
