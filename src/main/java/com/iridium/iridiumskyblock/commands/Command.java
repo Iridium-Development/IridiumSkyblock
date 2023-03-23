@@ -78,6 +78,19 @@ public abstract class Command {
         return cooldownProvider;
     }
 
+    public void addChilds(Command... newChilds) {
+        childs.addAll(Arrays.asList(newChilds));
+    }
+
+    Optional<Command> getChildByName(String name) {
+        return childs.stream()
+                .filter(command -> command.aliases.stream()
+                        .map(String::toLowerCase)
+                        .anyMatch(commandName -> commandName.equalsIgnoreCase(name))
+                )
+                .findAny();
+    }
+
     /**
      * The default constructor.
      *
@@ -97,15 +110,6 @@ public abstract class Command {
         this.onlyForPlayers = onlyForPlayers;
         this.enabled = enabledByDefault;
         this.cooldownInSeconds = cooldown.getSeconds();
-    }
-
-    Optional<Command> getChildByName(String name) {
-        return childs.stream()
-            .filter(command -> command.aliases.stream()
-                    .map(String::toLowerCase)
-                    .anyMatch(commandName -> commandName.equalsIgnoreCase(name))
-            )
-            .findAny();
     }
 
     /**
