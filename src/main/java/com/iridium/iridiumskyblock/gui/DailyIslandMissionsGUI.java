@@ -43,9 +43,12 @@ public class DailyIslandMissionsGUI extends IslandGUI {
 
             if (IridiumSkyblock.getInstance().getMissions().dailySlots.size() > i) {
                 Integer slot = IridiumSkyblock.getInstance().getMissions().dailySlots.get(i);
-                inventory.setItem(slot, ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
+                if(entry.getValue().getItem().slot==null)
+                    inventory.setItem(slot, ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
+                i++;
             }
-            i++;
+            if(entry.getValue().getItem().slot!=null)
+                inventory.setItem(entry.getValue().getItem().slot.intValue(), ItemStackUtils.makeItem(entry.getValue().getItem(), placeholders));
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().backButtons && getPreviousInventory() != null) {
