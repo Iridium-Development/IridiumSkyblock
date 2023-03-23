@@ -74,7 +74,8 @@ public class ConfirmationGUI extends GUI {
         } else if (event.getSlot() == IridiumSkyblock.getInstance().getInventories().confirmationGUI.yes.slot) {
             runnable.run();
             player.closeInventory();
-            cooldownProvider.applyCooldown(player);
+            if (cooldownProvider != null)
+                cooldownProvider.applyCooldown(player);
         }
     }
 }
