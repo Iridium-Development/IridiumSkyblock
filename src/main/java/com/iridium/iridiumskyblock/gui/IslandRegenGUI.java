@@ -67,7 +67,7 @@ public class IslandRegenGUI extends SchematicGUI {
                                             IridiumSkyblock.getInstance().getMessages().cannotAfford.replace("%prefix%",
                                                     IridiumSkyblock.getInstance().getConfiguration().prefix)));
                                 }
-                            }, cooldownProvider).open(player);
+                            }, null).open(player);
                 }
             }.runTaskLater(IridiumSkyblock.getInstance(), 1);
         } else {
