@@ -78,8 +78,25 @@ public abstract class Command {
         return cooldownProvider;
     }
 
-    public void addChilds(Command... newChilds) {
-        childs.addAll(Arrays.asList(newChilds));
+    /**
+     * The default constructor.
+     *
+     * @param aliases        The list of aliases for this command, can be empty. Also contains the command name.
+     * @param description    The description of this command
+     * @param syntax         The specified syntax for this command
+     * @param permission     The permission required for this command. Empty string will mean no permission
+     * @param onlyForPlayers true if this command is only for Players
+     * @param cooldown       The cooldown for non-bypassing players
+     */
+    public Command(@NotNull List<String> aliases, @NotNull String description, @NotNull String syntax, @NotNull String permission, boolean onlyForPlayers, Duration cooldown, boolean enabledByDefault) {
+        this.aliases = aliases;
+        this.childs = new ArrayList<>();
+        this.description = description;
+        this.syntax = syntax;
+        this.permission = permission;
+        this.onlyForPlayers = onlyForPlayers;
+        this.enabled = enabledByDefault;
+        this.cooldownInSeconds = cooldown.getSeconds();
     }
 
     Optional<Command> getChildByName(String name) {
