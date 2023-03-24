@@ -20,7 +20,7 @@ public class Biomes {
 
     public Map<String, BiomeCategoryConfig> categories = ImmutableMap.<String, BiomeCategoryConfig>builder()
             .put("Overworld", new BiomeCategoryConfig(new Item(XMaterial.GRASS_BLOCK, 11, 1, "&9&lOverworld", Collections.emptyList()), 6))
-            .put("Nether", new BiomeCategoryConfig(new Item(XMaterial.CRIMSON_HYPHAE, 13, 1, "&9&lNether", Collections.emptyList()), 6))
+            .put("Nether", new BiomeCategoryConfig(new Item(XMaterial.NETHERRACK, 13, 1, "&9&lNether", Collections.emptyList()), 6))
             .put("End", new BiomeCategoryConfig(new Item(XMaterial.END_STONE, 15, 1, "&9&lEnd", Collections.emptyList()), 6))
             .build();
 
