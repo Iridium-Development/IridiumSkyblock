@@ -24,8 +24,32 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew build
     - name: Upload artifacts
-      uses: "actions/upload-artifact@v3.0.0"
+      uses: "actions/upload-artifact@v2.2.3"
       with:
         name: "IridiumSkyblock"
         path: "build/libs/IridiumSkyblock-*.jar"
-        retention-days: 90
+  upload:
+    needs: build
+    runs-on: ubuntu-latest
+    if: "contains(github.event.commits[0].message, 'Version Increment')"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: thecodemonkey/action-get-gradle-version@master
+        id: version
+        with:
+          file: "build.gradle.kts"
+      - uses: actions/download-artifact@v3.0.2
+        with:
+          name: "IridiumSkyblock"
+          path: "./"
+      - name: Publish to Nexus
+        uses: sonatype-nexus-community/nexus-repo-github-action@master
+        with:
+          serverUrl: "https://nexus.iridiumdevelopment.net/"
+          username: "${{ secrets.NEXUS_USERNAME }}"
+          password: "${{ secrets.NEXUS_PASSWORD }}"
+          format: "maven2"
+          repository: "maven-releases"
+          coordinates: "groupId=com.iridium artifactId=IridiumSkyblock version=${{steps.version.outputs.version}}"
+          assets: "extension=jar"
+          filename: "IridiumSkyblock-*.jar"
