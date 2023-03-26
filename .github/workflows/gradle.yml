@@ -50,6 +50,6 @@ jobs:
           password: "${{ secrets.NEXUS_PASSWORD }}"
           format: "maven2"
           repository: "maven-releases"
-          coordinates: "groupId=com.iridium artifactId=IridiumSkyblock version=${{steps.version.outputs.version}}"
+          coordinates: "groupId=com.iridium artifactId=IridiumSkyblock version=${{steps.version.outputs.version}} generate-pom=on"
           assets: "extension=jar"
           filename: "IridiumSkyblock-*.jar"

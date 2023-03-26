@@ -113,6 +113,9 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
 
         Bukkit.getServer().getOnlinePlayers().forEach(player -> getIslandManager().sendIslandBorder(player));
+
+        addBstats(5825);
+        startUpdateChecker(62480);
         super.onEnable();
     }
 
