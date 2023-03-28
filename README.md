@@ -43,8 +43,21 @@ Clone the repo, and run the [build.gradle.tks](https://github.com/Iridium-Develo
 
 If you need to take a look, here is the [Nexus](https://nexus.iridiumdevelopment.net/#browse/browse:maven-public:com%2Firidium%2FIridiumSkyblock) repo.
 
+## Development
+
+You may notice when compiling and developing against IridiumSkyblock that there is a significant portion of code that isn't located in this repo. That's because IridiumSkyblock is an extension of IridiumTeams, and also uses functions from IridiumCore.
+
+- [IridiumCore](https://github.com/Iridium-Development/IridiumCore)
+  - A sort of library for all of Iridium Development's plugins
+- [IridiumTeams](https://github.com/Iridium-Development/IridiumTeams)
+  - The generic plugin, which extends IridiumCore, and involves all of the code for team management, including leveling, missions, team members, the bank, etc.
+- [IridiumSkyblock](https://github.com/Iridium-Development/IridiumSkyblock)
+  - This plugin, which extends IridiumTeams, and houses its own code specific to Skyblock, such as the world generation.
+
+When developing with IridiumSkyblock, you may have to reference all three repos for your purposes.
+
 ## Support
 
-If you think you've found a bug, please make sure you isolate the issue down to IridiumSkyblock and its dependencies before posting an issue in our Issues tab. While you're there, please follow our issues guidelines.
+If you think you've found a bug, please make sure you isolate the issue down to IridiumSkyblock and its dependencies before posting an issue in our [Issues](https://github.com/Iridium-Development/IridiumSkyblock/issues) tab. While you're there, please follow our issues guidelines.
 
 If you encounter any issues while using the plugin, feel free to join our support [Discord](https://discord.gg/6HJ73mWE7P).
