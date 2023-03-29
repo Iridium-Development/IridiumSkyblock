@@ -89,7 +89,7 @@ tasks {
 java {
     toolchain {
         vendor.set(JvmVendorSpec.ADOPTIUM)
-        languageVersion.set(JavaLanguageVersion.of(19))
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
