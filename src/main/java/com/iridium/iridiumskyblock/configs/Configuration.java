@@ -48,7 +48,7 @@ public class Configuration {
     public boolean backButtons = true;
     public boolean createIslandOnHome = true;
     public boolean putBackOnIslandLeave = false;
-    public boolean forceNetherGeneratorInNether=true;
+    public boolean forceNetherGeneratorInNether = true;
 
     public IslandRegenSettings regenSettings = new IslandRegenSettings();
 
@@ -57,7 +57,7 @@ public class Configuration {
     public IslandDamageSettings pvpSettings = new IslandDamageSettings();
 
     public PerformanceSettings performance = new PerformanceSettings();
-    
+
     public ConfirmationSettings confirmation = new ConfirmationSettings();
 
     public int distance = 151;
@@ -71,9 +71,11 @@ public class Configuration {
     public int pasterLimitPerTick = 250000;
     public int pasterDelayInTick = 1;
 
-    public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***", Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
+    public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&b*** &b&lIsland Crystal &b***",
+            Arrays.asList("", "&b%amount% Island Crystals", "&b&l[!] &bRight-Click to Redeem"));
 
     public XSound islandLevelUpSound = XSound.ENTITY_PLAYER_LEVELUP;
+    public MissionSortBy sortMissionsBy = MissionSortBy.KEY;
 
     public NumberFormatter numberFormatter = new NumberFormatter();
 
@@ -102,33 +104,44 @@ public class Configuration {
 
     /**
      * The Rewards the island gets for leveling up
-     * The integer represents the reward they will get, if the island level is divisible by this number they will get that reward
+     * The integer represents the reward they will get, if the island level is
+     * divisible by this number they will get that reward
      * Higest number takes priority
      * <p>
-     * e.g. 1 will give the reward to every level since every number is divisible by 1
-     * 5 will give the reward to levels 5 10 15 20 25 ect since they are divisible by 5
+     * e.g. 1 will give the reward to every level since every number is divisible by
+     * 1
+     * 5 will give the reward to levels 5 10 15 20 25 ect since they are divisible
+     * by 5
      */
     public Map<Integer, Reward> islandLevelRewards = ImmutableMap.<Integer, Reward>builder()
-            .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
-                    "&7Island Level %island_level% Rewards:",
-                    "&b&l* &b5 Island Crystals",
-                    "&b&l* &b200 Island Money",
-                    "",
-                    "&b&l[!] &bLeft click to redeem"
-            )), Collections.emptyList(), 0, 5, 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
+            .put(1, new Reward(
+                    new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                            "&7Island Level %island_level% Rewards:",
+                            "&b&l* &b5 Island Crystals",
+                            "&b&l* &b200 Island Money",
+                            "",
+                            "&b&l[!] &bLeft click to redeem")),
+                    Collections.emptyList(), 0, 5, 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
 
-            .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
-                    "&7Island Level %island_level% Rewards:",
-                    "&b&l* &b15 Island Crystals",
-                    "&b&l* &b2000 Island Money",
-                    "",
-                    "&b&l[!] &bLeft click to redeem"
-            )), Collections.emptyList(), 0, 15, 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
+            .put(5, new Reward(
+                    new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                            "&7Island Level %island_level% Rewards:",
+                            "&b&l* &b15 Island Crystals",
+                            "&b&l* &b2000 Island Money",
+                            "",
+                            "&b&l[!] &bLeft click to redeem")),
+                    Collections.emptyList(), 0, 15, 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
             .build();
 
+    public enum MissionSortBy {
+        KEY, DISPLAYNAME, SLOT, FILE
+    }
+
     /**
-     * Settings for the {@link org.bukkit.generator.ChunkGenerator} of IridiumSkyblock.
-     * Allows fine-tuning of the {@link com.iridium.iridiumskyblock.generators.OceanGenerator}.
+     * Settings for the {@link org.bukkit.generator.ChunkGenerator} of
+     * IridiumSkyblock.
+     * Allows fine-tuning of the
+     * {@link com.iridium.iridiumskyblock.generators.OceanGenerator}.
      */
     @AllArgsConstructor
     @NoArgsConstructor
@@ -182,7 +195,6 @@ public class Configuration {
 
     }
 
-
     /**
      * The default settings for performance.
      */
@@ -203,7 +215,7 @@ public class Configuration {
         public boolean disableLeavesDecayCheck = false;
     }
 
-     /**
+    /**
      * The default settings for confirmation.
      */
     @AllArgsConstructor
@@ -212,8 +224,8 @@ public class Configuration {
         public boolean islandRegen = true;
         public boolean warpDeletion = true;
         public boolean clearData = true;
-        public boolean islandDelete=true;
-        public boolean islandLeave=true;
+        public boolean islandDelete = true;
+        public boolean islandLeave = true;
     }
 
     @AllArgsConstructor
@@ -226,8 +238,7 @@ public class Configuration {
 
         public List<EntityDamageEvent.DamageCause> membersPreventedDamages = Arrays.asList(
                 EntityDamageEvent.DamageCause.ENTITY_EXPLOSION,
-                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION
-        );
+                EntityDamageEvent.DamageCause.BLOCK_EXPLOSION);
 
         public List<EntityDamageEvent.DamageCause> visitorsPreventedDamages = Arrays.asList(
                 EntityDamageEvent.DamageCause.PROJECTILE,
@@ -243,8 +254,7 @@ public class Configuration {
                 EntityDamageEvent.DamageCause.HOT_FLOOR,
                 EntityDamageEvent.DamageCause.LAVA,
                 EntityDamageEvent.DamageCause.CONTACT,
-                EntityDamageEvent.DamageCause.FIRE_TICK
-        );
+                EntityDamageEvent.DamageCause.FIRE_TICK);
 
     }
 
