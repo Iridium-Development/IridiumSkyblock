@@ -1,11 +1,11 @@
 plugins {
     java
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "com.iridium"
-version = "4.0.0-b7"
+version = "4.0.0-b8"
 description = "IridiumSkyblock"
 
 repositories {
@@ -88,8 +88,7 @@ tasks {
 // Set the Java version and vendor
 java {
     toolchain {
-        vendor.set(JvmVendorSpec.ADOPTIUM)
-        languageVersion.set(JavaLanguageVersion.of(17))
+        vendor.set(JvmVendorSpec.ADOPTOPENJDK)
     }
 }
 
