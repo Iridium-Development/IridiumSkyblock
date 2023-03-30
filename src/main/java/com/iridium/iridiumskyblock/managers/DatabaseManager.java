@@ -33,6 +33,7 @@ public class DatabaseManager {
     private UserTableManager userTableManager;
     private IslandTableManager islandTableManager;
     private ForeignIslandTableManager<TeamInvite, Integer> invitesTableManager;
+    private ForeignIslandTableManager<TeamTrust, Integer> trustTableManager;
     private ForeignIslandTableManager<TeamPermission, Integer> permissionsTableManager;
     private ForeignIslandTableManager<TeamBank, Integer> bankTableManager;
     private ForeignIslandTableManager<TeamEnhancement, Integer> enhancementTableManager;
@@ -66,6 +67,7 @@ public class DatabaseManager {
         this.userTableManager = new UserTableManager(connectionSource);
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.invitesTableManager = new ForeignIslandTableManager<>(connectionSource, TeamInvite.class, Comparator.comparing(TeamInvite::getTeamID).thenComparing(TeamInvite::getUser));
+        this.trustTableManager = new ForeignIslandTableManager<>(connectionSource, TeamTrust.class, Comparator.comparing(TeamTrust::getTeamID).thenComparing(TeamTrust::getUser));
         this.permissionsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamPermission.class, Comparator.comparing(TeamPermission::getTeamID).thenComparing(TeamPermission::getPermission));
         this.bankTableManager = new ForeignIslandTableManager<>(connectionSource, TeamBank.class, Comparator.comparing(TeamBank::getTeamID).thenComparing(TeamBank::getBankItem));
         this.enhancementTableManager = new ForeignIslandTableManager<>(connectionSource, TeamEnhancement.class, Comparator.comparing(TeamEnhancement::getTeamID).thenComparing(TeamEnhancement::getEnhancementName));
