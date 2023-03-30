@@ -25,6 +25,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
 
     public boolean obsidianBucket = true;
     public int distance = 151;
+    public int netherUnlockLevel = 10;
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&9*** &9&lIsland Crystal &9***", Arrays.asList(
             "",
             "&9%amount% Island Crystals",

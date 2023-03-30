@@ -16,6 +16,12 @@ public class PlayerPortalListener implements Listener {
     public void onPlayerPortal(PlayerPortalEvent event) {
         IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getFrom()).ifPresent(island -> {
             if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+                if (island.getLevel() < IridiumSkyblock.getInstance().getConfiguration().netherUnlockLevel) {
+                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherLocked
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    ));
+                    return;
+                }
                 World nether = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.NETHER);
                 if (nether == null) {
                     event.setCancelled(true);
