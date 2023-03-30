@@ -99,13 +99,6 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public List<User> getTeamMembers(Island island) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries().stream()
-                .filter(user -> user.getTeamID() == island.getId())
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
         owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
@@ -237,6 +230,26 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public void deleteTeamInvite(TeamInvite teamInvite) {
         IridiumSkyblock.getInstance().getDatabaseManager().getInvitesTableManager().delete(teamInvite);
+    }
+
+    @Override
+    public Optional<TeamTrust> getTeamTrust(Island island, User user) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager().getEntry(new TeamTrust(island, user.getUuid(), user.getUuid()));
+    }
+
+    @Override
+    public List<TeamTrust> getTeamTrusts(Island island) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager().getEntries(island);
+    }
+
+    @Override
+    public void createTeamTrust(Island island, User user, User invitee) {
+        IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager().addEntry(new TeamTrust(island, user.getUuid(), invitee.getUuid()));
+    }
+
+    @Override
+    public void deleteTeamTrust(TeamTrust teamTrust) {
+        IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager().delete(teamTrust);
     }
 
     @Override

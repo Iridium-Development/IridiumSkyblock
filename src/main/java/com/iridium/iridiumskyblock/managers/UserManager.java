@@ -8,6 +8,7 @@ import com.iridium.iridiumteams.managers.IridiumUserManager;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,5 +29,10 @@ public class UserManager implements IridiumUserManager<Island, User> {
 
     public Optional<User> getUserByUUID(@NotNull UUID uuid) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getUser(uuid);
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getUserTableManager().getEntries();
     }
 }
