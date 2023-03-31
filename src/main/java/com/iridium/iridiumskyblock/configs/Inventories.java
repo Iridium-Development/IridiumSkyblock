@@ -62,7 +62,5 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
 
     public Inventories() {
         super("Island", "&9");
-        this.upgradesGUI.size = 45;
-        this.upgradesGUI.background = background1;
     }
 }
