@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
+import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
@@ -105,14 +106,12 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.supplyAsync(() -> {
             String schematic = schematicNameCompletableFuture.join();
             if (schematic == null) return null;
-            IridiumSkyblock.getInstance().getLogger().info(schematic);
+
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Island island = new Island(name);
 
 
             IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
-
-            island.setHome(island.getCenter(getWorld(World.Environment.NORMAL)).add(0, 100, 0));
 
             user.setTeam(island);
             user.setUserRank(Rank.OWNER.getId());
@@ -133,9 +132,16 @@ public class IslandManager extends TeamManager<Island, User> {
     public CompletableFuture<Void> generateIsland(Island island, String schematic) {
         return CompletableFuture.runAsync(() -> {
             Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
+            setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
         });
+    }
+
+    private void setHome(Island island, Schematics.SchematicConfig schematicConfig) {
+        Location location = island.getCenter(getWorld(World.Environment.NORMAL)).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
+        location.setYaw(schematicConfig.yawHome);
+        island.setHome(location);
     }
 
     public CompletableFuture<Void> deleteIslandBlocks(Island island) {
@@ -535,7 +541,7 @@ public class IslandManager extends TeamManager<Island, User> {
             return false;
         }
         player.setFallDistance(0.0F);
-        player.teleport(safeLocation);
+        PaperLib.teleportAsync(player, safeLocation);
         return true;
     }
 }
