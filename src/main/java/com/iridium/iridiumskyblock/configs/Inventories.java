@@ -62,5 +62,6 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
 
     public Inventories() {
         super("Island", "&9");
+        missionTypeSelectorGUI.weekly.enabled = false;
     }
 }
