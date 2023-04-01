@@ -4,15 +4,37 @@ import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XSound;
+import com.iridium.iridiumteams.Reward;
 import org.bukkit.World;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 public class Configuration extends com.iridium.iridiumteams.configs.Configuration {
     public Configuration() {
         super("&9", "Island", "IridiumSkyblock");
         this.createRequiresName = false;
+
+
+        this.levelRewards = ImmutableMap.<Integer, Reward>builder()
+                .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                        "&7Island Level %island_level% Rewards:",
+                        "&b&l* &b1000 Money",
+                        "&b&l* &b5 Island Crystals",
+                        "",
+                        "&b&l[!] &bLeft click to redeem"
+                )), Collections.emptyList(), 0, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(), 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
+
+                .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                        "&7Island Level %island_level% Rewards:",
+                        "&b&l* &b10000 Money",
+                        "&b&l* &b10 Island Crystals",
+                        "",
+                        "&b&l[!] &bLeft click to redeem"
+                )), Collections.emptyList(), 0, new ImmutableMap.Builder<String, Double>().put("Crystals", 10.00).build(), 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
+                .build();
     }
 
     public String islandCreateTitle = "&b&lIsland Created";
