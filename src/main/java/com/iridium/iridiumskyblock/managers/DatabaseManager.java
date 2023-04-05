@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumskyblock.DataConverter;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.Island;
@@ -20,7 +21,10 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,6 +34,7 @@ public class DatabaseManager {
     @Getter(AccessLevel.NONE)
     private ConnectionSource connectionSource;
 
+    private final int version = 5;
     private UserTableManager userTableManager;
     private IslandTableManager islandTableManager;
     private ForeignIslandTableManager<TeamInvite, Integer> invitesTableManager;
@@ -64,6 +69,10 @@ public class DatabaseManager {
                 DatabaseTypeUtils.createDatabaseType(databaseURL)
         );
 
+        if (connectionSource.getReadWriteConnection(null).isTableExists("island_booster")) {
+            convertDatabaseData(sqlConfig.driver);
+        }
+
         this.userTableManager = new UserTableManager(connectionSource);
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.invitesTableManager = new ForeignIslandTableManager<>(connectionSource, TeamInvite.class, Comparator.comparing(TeamInvite::getTeamID).thenComparing(TeamInvite::getUser));
@@ -93,6 +102,27 @@ public class DatabaseManager {
                 return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
             default:
                 throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
+        }
+    }
+
+    private void convertDatabaseData(SQL.Driver driver) {
+        Path versionFile = Paths.get("plugins", "IridiumSkyblock", "sql_version.txt");
+        try {
+            Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE_NEW);
+            DataConverter.updateDatabaseData(1, version, connectionSource, driver);
+        } catch (FileAlreadyExistsException exception) {
+            try {
+                int oldVersion = Integer.parseInt(Files.readAllLines(versionFile).get(0));
+                if (oldVersion != version) {
+                    DataConverter.updateDatabaseData(oldVersion, version, connectionSource, driver);
+                    Files.delete(versionFile);
+                    Files.write(versionFile, Collections.singleton(String.valueOf(version)), StandardOpenOption.CREATE);
+                }
+            } catch (IOException | IndexOutOfBoundsException | NumberFormatException updateException) {
+                updateException.printStackTrace();
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 

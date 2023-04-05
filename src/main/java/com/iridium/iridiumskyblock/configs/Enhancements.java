@@ -142,4 +142,7 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
                             .put(XMaterial.ANCIENT_DEBRIS, 1)
                             .build()))
             .build());
+
+    public void put(String enhancementName, Enhancement<?> enhancement) {
+    }
 }

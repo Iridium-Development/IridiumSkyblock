@@ -9,6 +9,8 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     public String voidTeleport = "%prefix% &7You have fallen off your island. Teleporting home...";
     public String netherIslandsDisabled = "%prefix% &7Nether islands have been disabled.";
     public String netherLocked = "%prefix% &7Reach Island level %level% to unlock the Nether.";
+    public String endIslandsDisabled = "%prefix% &7End islands have been disabled.";
+    public String endLocked = "%prefix% &7Reach Island level %level% to unlock the End.";
     public String islandBorderChanged = "%prefix% &7%player% has changed your Island border to %color%.";
     public String borderColorDisabled = "%prefix% &7That border color has been disabled.";
     public String notAColor = "%prefix% &7That is not a valid color.";
@@ -17,4 +19,5 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     public String cannotRegenIsland = "%prefix% &7You cannot regenerate your Island.";
     public String unknownSchematic = "%prefix% &7No schematic with that name exists.";
     public String noSafeLocation = "%prefix% &7Could not find a safe location to teleport to.";
+    public String noBiomeCategory = "%prefix% &7No biome category with that name.";
 }

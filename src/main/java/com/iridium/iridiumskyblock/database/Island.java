@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @NoArgsConstructor
 @Getter
@@ -139,4 +140,28 @@ public class Island extends Team {
                 .orElse("N/A");
         return ownerName + "'s Island";
     }
+
+    public boolean isVisitable() {
+        return visitable;
+    }
+
+    public boolean isPlayerBanned(UUID player) {
+        return playerBanned == player;
+    }
+
+    public void setVisitable(boolean visitable) {
+        this.visitable = visitable;
+        setChanged(true);
+    }
+
+    public void setPlayerBanned(UUID player) {
+        this.playerBanned = player;
+        setChanged(true);
+    }
+
+    @DatabaseField(columnName = "visitable")
+    private boolean visitable;
+
+    @DatabaseField(columnName = "banned")
+    private UUID playerBanned;
 }

@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
@@ -24,6 +25,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
@@ -49,6 +51,35 @@ public class IslandManager extends TeamManager<Island, User> {
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
         Bukkit.createWorld(worldCreator);
+    }
+
+    public void setIslandBiome(@NotNull Island island, @NotNull XBiome XBiome) {
+        World.Environment environment = XBiome.getEnvironment();
+        World world;
+        switch (environment) {
+            case NETHER:
+                world = getWorld(World.Environment.NETHER);
+                break;
+            case THE_END:
+                world = getWorld(World.Environment.THE_END);
+                break;
+            default:
+                world = getWorld(World.Environment.NORMAL);
+                break;
+        }
+
+        getIslandChunks(island).thenAccept(chunks -> {
+            Location pos1 = island.getPosition1(world);
+            Location pos2 = island.getPosition2(world);
+           XBiome.setBiome(pos1, pos2).thenRun(() -> {
+                for (Chunk chunk : chunks) {
+                    chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
+                }
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 
     @Override
@@ -321,6 +352,28 @@ public class IslandManager extends TeamManager<Island, User> {
         }
     }
 
+    public CompletableFuture<List<Entity>> getEntities(@NotNull Island island, @NotNull World... worlds) {
+        CompletableFuture<List<Entity>> completableFuture = new CompletableFuture<>();
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            List<Chunk> chunks = new ArrayList<>();
+            for (World world : worlds) {
+                chunks.addAll(getIslandChunks(island).join());
+            }
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                List<Entity> entities = new ArrayList<>();
+                for (Chunk chunk : chunks) {
+                    for (Entity entity : chunk.getEntities()) {
+                        if (island.isInIsland(entity.getLocation())) {
+                            entities.add(entity);
+                        }
+                    }
+                }
+                completableFuture.complete(entities);
+            });
+        });
+        return completableFuture;
+    }
+
     @Override
     public CompletableFuture<Void> recalculateTeam(Island island) {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
@@ -505,6 +558,18 @@ public class IslandManager extends TeamManager<Island, User> {
         });
     }
 
+    public World getOverworld() {
+        return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName);
+    }
+
+    public World getNetherWorld() {
+        return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether");
+    }
+
+    public World getEndWorld() {
+        return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
+    }
+
     public ItemStack getIslandCrystal(int amount) {
         ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
                 new Placeholder("amount", String.valueOf(amount))
@@ -544,4 +609,10 @@ public class IslandManager extends TeamManager<Island, User> {
         PaperLib.teleportAsync(player, safeLocation);
         return true;
     }
+
+    /**
+    public boolean isVisitable(Island island) {
+        String settingKey = "isVisitable";
+        return IridiumSkyblock.getInstance().getTeamManager().getTeamSetting(island, settingKey).getSetting();
+    }*/
 }
