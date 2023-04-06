@@ -71,15 +71,8 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
 
     public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic", background2);
 
-    public NoItemGUI biomeOverviewGUI = new NoItemGUI(
-            IridiumSkyblock.getInstance().getBiomes().overviewInventorySize,
-            IridiumSkyblock.getInstance().getMessages().biomeOverviewTitle,
-            IridiumSkyblock.getInstance().getBiomes().overviewBackground);
-
-    public NoItemGUI biomeCategoryGUI = new NoItemGUI(
-            IridiumSkyblock.getInstance().getBiomes().categoryInventorySize,
-            IridiumSkyblock.getInstance().getMessages().biomeCategoryTitle,
-            IridiumSkyblock.getInstance().getBiomes().categoryBackground);
+    public NoItemGUI biomeOverviewGUI = new NoItemGUI(54, "Biomes", background1);
+    public NoItemGUI biomeCategoryGUI = new NoItemGUI(54, "Biomes - %biome_category_name%", background2);
 
     public Inventories() {
         super("Island", "&9");

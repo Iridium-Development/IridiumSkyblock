@@ -53,8 +53,8 @@ public class IslandManager extends TeamManager<Island, User> {
         Bukkit.createWorld(worldCreator);
     }
 
-    public void setIslandBiome(@NotNull Island island, @NotNull XBiome XBiome) {
-        World.Environment environment = XBiome.getEnvironment();
+    public void setIslandBiome(Island island, XBiome biome) {
+        World.Environment environment = biome.getEnvironment();
         World world;
         switch (environment) {
             case NETHER:
@@ -69,8 +69,8 @@ public class IslandManager extends TeamManager<Island, User> {
         }
 
         getIslandChunks(island).thenAccept(chunks -> {
-            Location pos1 = island.getPosition1(world);
-            Location pos2 = island.getPosition2(world);
+           Location pos1 = island.getPosition1(world);
+           Location pos2 = island.getPosition2(world);
            XBiome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
@@ -153,6 +153,7 @@ public class IslandManager extends TeamManager<Island, User> {
                 IridiumSkyblock.getInstance().getNms().sendTitle(owner, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
             });
 
+
             return island;
         }).exceptionally(throwable -> {
             throwable.printStackTrace();
@@ -166,6 +167,9 @@ public class IslandManager extends TeamManager<Island, User> {
             setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
+            setIslandBiome(island, schematicConfig.overworld.biome);
+            setIslandBiome(island, schematicConfig.nether.biome);
+            setIslandBiome(island, schematicConfig.end.biome);
         });
     }
 

@@ -68,7 +68,7 @@ public class CrystalsBankItem extends BankItem {
                 remainingItemAmount = 0;
             }
 
-            return new BankResponse(0, false);
+            return new BankResponse(depositAmount, true);
         }
 
         if (depositAmount == 0) {
@@ -90,8 +90,6 @@ public class CrystalsBankItem extends BankItem {
 
         return new BankResponse(depositAmount, true);
     }
-
-
 
     private int removeCrystals(Inventory inventory) {
         int removedCrystals = 0;

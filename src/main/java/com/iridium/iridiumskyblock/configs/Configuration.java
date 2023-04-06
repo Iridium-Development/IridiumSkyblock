@@ -17,7 +17,6 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
         super("&9", "Island", "IridiumSkyblock");
         this.createRequiresName = false;
 
-
         this.levelRewards = ImmutableMap.<Integer, Reward>builder()
                 .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
                         "&7Island Level %island_level% Rewards:",
@@ -37,6 +36,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
                 .build();
     }
 
+    public boolean updateChecks = true;
     public String islandCreateTitle = "&b&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String defaultDescription = "Default island description :c";

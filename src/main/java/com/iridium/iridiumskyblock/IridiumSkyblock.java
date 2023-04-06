@@ -126,7 +126,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> getIslandManager().sendIslandBorder(player));
 
         addBstats(5825);
-        startUpdateChecker(62480);
+
+        if(getInstance().getConfiguration().updateChecks)
+            startUpdateChecker(62480);
+
         super.onEnable();
     }
 
@@ -157,6 +160,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.messages = getPersist().load(Messages.class);
         this.commands = getPersist().load(Commands.class);
         this.sql = getPersist().load(SQL.class);
+        this.shop = getPersist().load(Shop.class);
+        this.biomes = getPersist().load(Biomes.class);
         this.inventories = getPersist().load(Inventories.class);
         this.permissions = getPersist().load(Permissions.class);
         this.bankItems = getPersist().load(BankItems.class);
@@ -165,8 +170,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.top = getPersist().load(Top.class);
         this.missions = getPersist().load(Missions.class);
         this.schematics = getPersist().load(Schematics.class);
-        this.shop = getPersist().load(Shop.class);
-        this.biomes = getPersist().load(Biomes.class);
         this.settings = getPersist().load(Settings.class);
         super.loadConfigs();
 
@@ -185,6 +188,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(messages);
         getPersist().save(commands);
         getPersist().save(sql);
+        getPersist().save(shop);
+        getPersist().save(biomes);
         getPersist().save(inventories);
         getPersist().save(permissions);
         getPersist().save(bankItems);
@@ -193,8 +198,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(top);
         getPersist().save(missions);
         getPersist().save(schematics);
-        getPersist().save(shop);
-        getPersist().save(biomes);
         getPersist().save(settings);
         saveSchematics();
     }
