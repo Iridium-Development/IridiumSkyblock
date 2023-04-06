@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.ibm.icu.impl.locale.XLikelySubtags;
+
 public class Messages extends com.iridium.iridiumteams.configs.Messages {
 
     public Messages() {
@@ -20,4 +22,7 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     public String unknownSchematic = "%prefix% &7No schematic with that name exists.";
     public String noSafeLocation = "%prefix% &7Could not find a safe location to teleport to.";
     public String noBiomeCategory = "%prefix% &7No biome category with that name.";
+    public String changedBiome = "%prefix &7YSuccessfully changed Island biome to %biome%.";
+    public String biomeOverviewTitle = "Biome Categories";
+    public String biomeCategoryTitle = "Biomes - %biome_category_name%";
 }

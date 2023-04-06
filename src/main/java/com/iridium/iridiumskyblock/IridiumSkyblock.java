@@ -9,8 +9,10 @@ import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.IslandPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
+import com.iridium.iridiumskyblock.DataConverter;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.configs.Shop;
+import com.iridium.iridiumskyblock.configs.Biomes;
 import com.iridium.iridiumteams.managers.MissionManager;
 import com.iridium.iridiumteams.managers.ShopManager;
 import lombok.Getter;
@@ -64,6 +66,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private SchematicManager schematicManager;
     private ShopManager<Island, User> shopManager;
     private BiomeManager<Island, User> biomeManager;
+    private DataConverter dataConverter;
 
     private Economy economy;
 
@@ -88,7 +91,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     public void onEnable() {
         instance = this;
 
-        DataConverter.copyLegacyData();
+        //this.dataConverter = new DataConverter();
+        //if(dataConverter.startConversion()) { DataConverter.backupLegacyData(); }
 
         this.teamManager = new IslandManager();
 
@@ -268,10 +272,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
                 getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
             }
         }
-    }
-
-    public Biomes getBiomes() {
-        return biomes;
     }
 
     @Override

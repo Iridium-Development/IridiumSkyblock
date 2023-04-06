@@ -38,65 +38,60 @@ public class CrystalsBankItem extends BankItem {
     }
 
     @Override
-    public BankResponse deposit(Player player, Number amount, TeamBank teamBank, IridiumTeams<?, ?> iridiumTeams) {
+    public BankResponse deposit(Player player, Number number, TeamBank teamBank, IridiumTeams<?, ?> iridiumTeams) {
         Optional<Island> islandOptional = IridiumSkyblock.getInstance().getUserManager().getUser(player).getIsland();
-        int crystals = 0;
-        if (islandOptional.isPresent()) {
+        if (!islandOptional.isPresent()) {
+            return new BankResponse(0, false);
+        }
 
-            crystals = removeCrystals(player.getInventory());
+        int remainingItemAmount = number.intValue();
+        int depositAmount = 0;
 
-            if (crystals > 0) {
-                teamBank.setNumber(teamBank.getNumber() + crystals);
-                return new BankResponse(crystals, true);
-            }
-
-            int remainingItemAmount = amount.intValue();
-            int depositAmount = 0;
-
-            ItemStack[] contents = player.getInventory().getContents();
-            for (int i = 0; i < contents.length && remainingItemAmount > 0; i++) {
-                ItemStack itemStack = contents[i];
+        ItemStack[] contents = player.getInventory().getContents();
+        for (int i = 0; i < contents.length && remainingItemAmount > 0; i++) {
+            ItemStack itemStack = contents[i];
 
             int crystalsPerItem = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemStack);
             if (crystalsPerItem == 0) continue;
 
             int itemStackAmount = itemStack.getAmount();
             if (itemStackAmount <= remainingItemAmount) {
-                    player.getInventory().setItem(i, null);
+                player.getInventory().setItem(i, null);
 
-                    depositAmount += itemStackAmount * crystalsPerItem;
-                    remainingItemAmount -= itemStackAmount;
-                } else {
-                    itemStack.setAmount(itemStack.getAmount() - remainingItemAmount);
-                    player.getInventory().setItem(i, itemStack);
+                depositAmount += itemStackAmount * crystalsPerItem;
+                remainingItemAmount -= itemStackAmount;
+            } else {
+                itemStack.setAmount(itemStack.getAmount() - remainingItemAmount);
+                player.getInventory().setItem(i, itemStack);
 
-                    depositAmount += remainingItemAmount * crystalsPerItem;
-                    remainingItemAmount = 0;
-
-                    }
-                }
-
-                if (depositAmount == 0) {
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
-                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                            .replace("%type%", getName())
-                    );
-                    return new BankResponse(crystals, false);
-                }
-
-                TeamBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getTeamBank(islandOptional.get(), String.valueOf(this));
-                islandBank.setNumber(islandBank.getNumber() + depositAmount);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                        .replace("%amount%", String.valueOf(depositAmount))
-                        .replace("%type%", getName())
-                );
-                return new BankResponse(crystals, true);
+                depositAmount += remainingItemAmount * crystalsPerItem;
+                remainingItemAmount = 0;
             }
 
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveTeam.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return new BankResponse(crystals, false);
+            return new BankResponse(0, false);
         }
+
+        if (depositAmount == 0) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                    .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())
+            );
+
+            return new BankResponse(0.0, false);
+        }
+
+        TeamBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getTeamBank(islandOptional.get(), String.valueOf(this));
+        islandBank.setNumber(islandBank.getNumber() + depositAmount);
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
+                .replace("%amount%", String.valueOf(depositAmount))
+                .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())
+        );
+
+        return new BankResponse(depositAmount, true);
+    }
+
+
 
     private int removeCrystals(Inventory inventory) {
         int removedCrystals = 0;

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.0.1"
+version = "4.0.1-SNAPSHOT"
 description = "IridiumSkyblock"
 
 repositories {
@@ -57,7 +57,7 @@ tasks {
         relocate("de.jeff_media.updatechecker")
 
         // Remove unnecessary files from the jar
-        minimize()
+        //minimize()
     }
 
     // Set UTF-8 as the encoding

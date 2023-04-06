@@ -5,12 +5,16 @@ import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.inventories.BorderInventoryConfig;
+//import com.iridium.iridiumskyblock.gui.BiomeCategoryGUI;
+//import com.iridium.iridiumskyblock.gui.BiomeOverviewGUI;
 import com.iridium.iridiumskyblock.gui.BiomeCategoryGUI;
 import com.iridium.iridiumskyblock.gui.BiomeOverviewGUI;
 import com.iridium.iridiumteams.configs.inventories.InventoryConfig;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import com.iridium.iridiumteams.configs.inventories.SingleItemGUI;
+import org.bukkit.inventory.Inventory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,7 +43,7 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             new Item(XMaterial.WHITE_STAINED_GLASS_PANE, 16, 1, "&f&lOff", Collections.emptyList())
     );
 
-    public InventoryConfig islandMenu = new InventoryConfig(45, "&7Island Menu", background1, ImmutableMap.<String, Item>builder()
+    public InventoryConfig islandMenu = new InventoryConfig(54, "&7Island Menu", background1, ImmutableMap.<String, Item>builder()
             .put("is trusted", new Item(XMaterial.NAME_TAG, 10, 1, "&b&lTrusted Members", Collections.singletonList("&7View your island's trusted members")))
             .put("is members", new Item(XMaterial.PLAYER_HEAD, 11, 1, "&b&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island members")))
             .put("is permissions", new Item(XMaterial.WRITABLE_BOOK, 19, 1, "&b&lIsland Permissions", Collections.singletonList("&7View your island permissions")))
@@ -65,9 +69,17 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             "&9Owner: &7%island_owner%"
     )));
 
-    public NoItemGUI biomeCategoryGUI;
-    public NoItemGUI biomeOverviewGUI;
     public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic", background2);
+
+    public NoItemGUI biomeOverviewGUI = new NoItemGUI(
+            IridiumSkyblock.getInstance().getBiomes().overviewInventorySize,
+            IridiumSkyblock.getInstance().getMessages().biomeOverviewTitle,
+            IridiumSkyblock.getInstance().getBiomes().overviewBackground);
+
+    public NoItemGUI biomeCategoryGUI = new NoItemGUI(
+            IridiumSkyblock.getInstance().getBiomes().categoryInventorySize,
+            IridiumSkyblock.getInstance().getMessages().biomeCategoryTitle,
+            IridiumSkyblock.getInstance().getBiomes().categoryBackground);
 
     public Inventories() {
         super("Island", "&9");
