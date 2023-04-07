@@ -1,21 +1,22 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Background;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.inventories.BorderInventoryConfig;
-//import com.iridium.iridiumskyblock.gui.BiomeCategoryGUI;
-//import com.iridium.iridiumskyblock.gui.BiomeOverviewGUI;
 import com.iridium.iridiumskyblock.gui.BiomeCategoryGUI;
 import com.iridium.iridiumskyblock.gui.BiomeOverviewGUI;
+
 import com.iridium.iridiumteams.configs.inventories.InventoryConfig;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import com.iridium.iridiumteams.configs.inventories.SingleItemGUI;
+
 import org.bukkit.inventory.Inventory;
 
+import com.google.common.collect.ImmutableMap;
 import java.util.Arrays;
 import java.util.Collections;
 
