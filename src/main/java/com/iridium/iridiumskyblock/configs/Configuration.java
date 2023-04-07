@@ -36,7 +36,6 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
                 .build();
     }
 
-    public boolean updateChecks = true;
     public String islandCreateTitle = "&b&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String defaultDescription = "Default island description :c";
