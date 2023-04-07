@@ -125,8 +125,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
         addBstats(5825);
 
-        if(getInstance().getConfiguration().updateChecks)
-            startUpdateChecker(62480);
+        startUpdateChecker(62480);
 
         super.onEnable();
     }
