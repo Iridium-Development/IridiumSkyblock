@@ -9,12 +9,13 @@ import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.IslandPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
-import com.iridium.iridiumskyblock.DataConverter;
+
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.configs.Shop;
 import com.iridium.iridiumskyblock.configs.Biomes;
 import com.iridium.iridiumteams.managers.MissionManager;
 import com.iridium.iridiumteams.managers.ShopManager;
+
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -90,9 +91,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     @Override
     public void onEnable() {
         instance = this;
-
-        //this.dataConverter = new DataConverter();
-        //if(dataConverter.startConversion()) { DataConverter.backupLegacyData(); }
 
         this.teamManager = new IslandManager();
 
