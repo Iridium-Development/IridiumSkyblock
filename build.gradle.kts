@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.0.1-SNAPSHOT"
+version = "4.0.1"
 description = "IridiumSkyblock"
 
 repositories {
@@ -23,8 +23,7 @@ dependencies {
     implementation("org.jetbrains:annotations:24.0.1")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    //implementation("com.iridium:IridiumTeams:2.0.0")
-    implementation(files("libs/IridiumTeams-2.0.1.jar"))
+    implementation("com.iridium:IridiumTeams:2.0.2")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.26")
@@ -57,7 +56,7 @@ tasks {
         relocate("de.jeff_media.updatechecker")
 
         // Remove unnecessary files from the jar
-        //minimize()
+        minimize()
     }
 
     // Set UTF-8 as the encoding

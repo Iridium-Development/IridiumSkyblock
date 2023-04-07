@@ -33,6 +33,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nonnull;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -40,6 +41,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class IslandManager extends TeamManager<Island, User> {
+
+
 
     public IslandManager() {
         super(IridiumSkyblock.getInstance());
@@ -53,7 +56,7 @@ public class IslandManager extends TeamManager<Island, User> {
         Bukkit.createWorld(worldCreator);
     }
 
-    public void setIslandBiome(Island island, XBiome biome) {
+    public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
         World.Environment environment = biome.getEnvironment();
         World world;
         switch (environment) {
@@ -71,7 +74,7 @@ public class IslandManager extends TeamManager<Island, User> {
         getIslandChunks(island).thenAccept(chunks -> {
            Location pos1 = island.getPosition1(world);
            Location pos2 = island.getPosition2(world);
-           XBiome.setBiome(pos1, pos2).thenRun(() -> {
+           biome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
                 }

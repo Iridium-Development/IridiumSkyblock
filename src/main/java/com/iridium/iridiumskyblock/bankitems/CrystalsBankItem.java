@@ -10,6 +10,7 @@ import com.iridium.iridiumteams.bank.BankItem;
 import com.iridium.iridiumteams.bank.BankResponse;
 import com.iridium.iridiumteams.database.TeamBank;
 import lombok.NoArgsConstructor;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -55,11 +56,13 @@ public class CrystalsBankItem extends BankItem {
             if (crystalsPerItem == 0) continue;
 
             int itemStackAmount = itemStack.getAmount();
+
             if (itemStackAmount <= remainingItemAmount) {
                 player.getInventory().setItem(i, null);
 
                 depositAmount += itemStackAmount * crystalsPerItem;
                 remainingItemAmount -= itemStackAmount;
+
             } else {
                 itemStack.setAmount(itemStack.getAmount() - remainingItemAmount);
                 player.getInventory().setItem(i, itemStack);
@@ -67,26 +70,12 @@ public class CrystalsBankItem extends BankItem {
                 depositAmount += remainingItemAmount * crystalsPerItem;
                 remainingItemAmount = 0;
             }
-
-            return new BankResponse(depositAmount, true);
         }
 
-        if (depositAmount == 0) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().insufficientFundsToDeposit
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                    .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())
-            );
+        if (depositAmount == 0)
+            return new BankResponse(depositAmount, false);
 
-            return new BankResponse(0.0, false);
-        }
-
-        TeamBank islandBank = IridiumSkyblock.getInstance().getIslandManager().getTeamBank(islandOptional.get(), String.valueOf(this));
-        islandBank.setNumber(islandBank.getNumber() + depositAmount);
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().bankDeposited
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix))
-                .replace("%amount%", String.valueOf(depositAmount))
-                .replace("%type%", IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName())
-        );
+        teamBank.setNumber(teamBank.getNumber() + depositAmount);
 
         return new BankResponse(depositAmount, true);
     }
