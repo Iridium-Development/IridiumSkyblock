@@ -2,24 +2,23 @@ package com.iridium.iridiumskyblock.bankitems;
 
 
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.utils.StringUtils;
+
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
+
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.bank.BankItem;
 import com.iridium.iridiumteams.bank.BankResponse;
 import com.iridium.iridiumteams.database.TeamBank;
+
 import lombok.NoArgsConstructor;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import java.util.Optional;
 
 @NoArgsConstructor
 public class CrystalsBankItem extends BankItem {
-
 
     public CrystalsBankItem(double defaultAmount, Item item) {
         super("Crystals", item, defaultAmount, true);
