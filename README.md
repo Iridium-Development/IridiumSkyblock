@@ -39,7 +39,7 @@ After the plugin is set up and running, check out our [**wiki**](https://iridium
 
 ### Compiling
 
-Clone the repo, and run the [build.gradle.tks](https://github.com/Iridium-Development/IridiumSkyblock/blob/master/build.gradle.kts) script.
+Clone the repo, and run the [build.gradle.kts](https://github.com/Iridium-Development/IridiumSkyblock/blob/master/build.gradle.kts) script.
 
 If you need to take a look, here is the [Nexus](https://nexus.iridiumdevelopment.net/#browse/browse:maven-public:com%2Firidium%2FIridiumSkyblock) repo.
 
