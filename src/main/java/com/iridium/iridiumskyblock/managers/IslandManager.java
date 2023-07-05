@@ -150,8 +150,8 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.runAsync(() -> {
             List<CompletableFuture<Void>> completableFutures = Arrays.asList(
                     deleteIslandBlocks(island, getWorld(World.Environment.NORMAL)),
-                    deleteIslandBlocks(island, getWorld(World.Environment.NORMAL)),
-                    deleteIslandBlocks(island, getWorld(World.Environment.NORMAL))
+                    deleteIslandBlocks(island, getWorld(World.Environment.NETHER)),
+                    deleteIslandBlocks(island, getWorld(World.Environment.THE_END))
             );
             completableFutures.forEach(CompletableFuture::join);
         });
