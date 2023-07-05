@@ -6,7 +6,7 @@ plugins {
 
 group = "com.iridium"
 version = "4.0.2"
-description = "IridiumSkyblock"
+description = "PeachySkyblock"
 
 repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
