@@ -26,6 +26,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -544,4 +546,25 @@ public class IslandManager extends TeamManager<Island, User> {
         PaperLib.teleportAsync(player, safeLocation);
         return true;
     }
+
+    @Override
+    public void handleBlockBreakOutsideTerritory(BlockBreakEvent blockEvent) {
+        if(isInSkyblockWorld(blockEvent.getBlock().getWorld())){
+            blockEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            blockEvent.setCancelled(true);
+        }
+    }
+
+    @Override
+    public void handleBlockPlaceOutsideTerritory(BlockPlaceEvent blockEvent) {
+        if(isInSkyblockWorld(blockEvent.getBlock().getWorld())){
+            blockEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPlaceBlocks
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            blockEvent.setCancelled(true);
+        }
+    }
+
 }
