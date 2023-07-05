@@ -20,14 +20,15 @@ public class PlayerPortalListener implements Listener {
                     event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherLocked
                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                     ));
+                    event.setCancelled(true);
                     return;
                 }
                 World nether = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.NETHER);
                 if (nether == null) {
-                    event.setCancelled(true);
                     event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherIslandsDisabled
                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                     ));
+                    event.setCancelled(true);
                     return;
                 }
                 World world = Objects.equals(event.getFrom().getWorld(), nether) ? IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NORMAL) : nether;
