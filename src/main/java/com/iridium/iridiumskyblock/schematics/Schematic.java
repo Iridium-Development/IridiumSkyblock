@@ -1,12 +1,14 @@
 package com.iridium.iridiumskyblock.schematics;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.inventory.ItemStack;
 import org.jnbt.*;
+
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,7 +26,9 @@ public class Schematic implements SchematicPaster {
     public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
         SchematicData schematicData;
         try {
-            schematicData = schematicCache.getOrDefault(file, SchematicData.loadSchematic(file));
+            schematicData = schematicCache.getOrDefault(file, null);
+            if (schematicData==null)
+                schematicData = SchematicData.loadSchematic(file);
             schematicCache.put(file, schematicData);
         } catch (IOException e) {
             e.printStackTrace();
