@@ -51,7 +51,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public int distance = 151;
     public int netherUnlockLevel = 10;
     public int pasterDelayInTick = 1;
-    public int pasterLimitPerTick = 2500;
+    public int pasterLimitPerTick = 100;
 
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&9*** &9&lIsland Crystal &9***", Arrays.asList(
             "",

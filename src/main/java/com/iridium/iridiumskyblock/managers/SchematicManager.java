@@ -4,7 +4,6 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.schematics.FastAsyncWorldEdit;
-import com.iridium.iridiumskyblock.schematics.Schematic;
 import com.iridium.iridiumskyblock.schematics.SchematicAsync;
 import com.iridium.iridiumskyblock.schematics.SchematicPaster;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
@@ -32,7 +31,6 @@ public class SchematicManager {
     public SchematicManager() {
 
         availablePasters = new TreeMap<>();
-        availablePasters.put("internal", new Schematic());
         availablePasters.put("internalAsync", new SchematicAsync());
         if ((worldEdit) && WorldEdit.isWorking())
             availablePasters.put("worldedit", new WorldEdit());
