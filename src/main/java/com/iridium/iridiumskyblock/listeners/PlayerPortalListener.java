@@ -18,6 +18,7 @@ public class PlayerPortalListener implements Listener {
             if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
                 if (island.getLevel() < IridiumSkyblock.getInstance().getConfiguration().netherUnlockLevel) {
                     event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherLocked
+                            .replace("%level%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().netherUnlockLevel))
                             .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                     ));
                     event.setCancelled(true);
