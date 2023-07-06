@@ -43,11 +43,16 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
     public String islandTitleTop = "&9%island_name%";
-    public String islandTitleBottom = "&7%island_description%";
+    public String islandTitleBottom = "&7%island_description%";   
+    public String paster = "worldedit";
+
 
     public boolean obsidianBucket = true;
     public int distance = 151;
     public int netherUnlockLevel = 10;
+    public int pasterDelayInTick = 1;
+    public int pasterLimitPerTick = 2500;
+
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&9*** &9&lIsland Crystal &9***", Arrays.asList(
             "",
             "&9%amount% Island Crystals",
