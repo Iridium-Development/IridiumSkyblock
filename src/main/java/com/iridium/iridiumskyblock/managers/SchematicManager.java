@@ -13,9 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class SchematicManager {
@@ -80,23 +78,19 @@ public class SchematicManager {
     }
 
     public CompletableFuture<Void> pasteSchematic(Island island, Schematics.SchematicConfig schematic) {
-        return CompletableFuture.runAsync(() -> {
-            if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.NORMAL,
-                    true)) {
-                pasteSchematic(island, schematic.overworld,
-                        IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NORMAL)).join();
-            }
-            if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.NETHER,
-                    true)) {
-                pasteSchematic(island, schematic.nether,
-                        IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NETHER)).join();
-            }
-            if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.THE_END,
-                    true)) {
-                pasteSchematic(island, schematic.end,
-                        IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.THE_END)).join();
-            }
-        });
+        List<CompletableFuture<Void>> completableFutures = new ArrayList<>();
+
+        if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.NORMAL, true)) {
+            completableFutures.add(pasteSchematic(island, schematic.overworld, IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NORMAL)));
+        }
+        if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.NETHER, true)) {
+            completableFutures.add(pasteSchematic(island, schematic.nether, IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NETHER)));
+        }
+        if (IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(World.Environment.THE_END, true)) {
+            completableFutures.add(pasteSchematic(island, schematic.end, IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.THE_END)));
+        }
+
+        return CompletableFuture.runAsync(() -> completableFutures.forEach(CompletableFuture::join));
     }
 
     private CompletableFuture<Void> pasteSchematic(Island island, Schematics.SchematicWorld schematic, World world) {
