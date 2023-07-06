@@ -36,7 +36,7 @@ public class SchematicAsync implements SchematicPaster {
                 short width = schematicData.width;
                 short height = schematicData.height;
 
-                while (remaining > 0 && coordinates.hasNext()) {
+                while (remaining != 0 && coordinates.hasNext()) {
                     Coordinate coordinate = coordinates.next();
                     int x = coordinate.x;
                     int y = coordinate.y;
