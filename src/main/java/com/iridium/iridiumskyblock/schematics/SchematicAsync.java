@@ -27,14 +27,17 @@ public class SchematicAsync implements SchematicPaster {
         ListIterator<Coordinate> coordinates = getCoordinates(schematicData);
         int delay = IridiumSkyblock.getInstance().getConfiguration().pasterDelayInTick;
 
+        short length = schematicData.length;
+        short width = schematicData.width;
+        short height = schematicData.height;
+
+        location.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
+
         BukkitRunnable runnable = new BukkitRunnable() {
 
             @Override
             public void run() {
                 int remaining = IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick;
-                short length = schematicData.length;
-                short width = schematicData.width;
-                short height = schematicData.height;
 
                 while (remaining != 0 && coordinates.hasNext()) {
                     Coordinate coordinate = coordinates.next();
