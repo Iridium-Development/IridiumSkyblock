@@ -197,6 +197,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getDatabaseManager().getUserTableManager().save();
         getDatabaseManager().getIslandTableManager().save();
         getDatabaseManager().getInvitesTableManager().save();
+        getDatabaseManager().getTrustTableManager().save();
         getDatabaseManager().getPermissionsTableManager().save();
         getDatabaseManager().getBankTableManager().save();
         getDatabaseManager().getEnhancementTableManager().save();
