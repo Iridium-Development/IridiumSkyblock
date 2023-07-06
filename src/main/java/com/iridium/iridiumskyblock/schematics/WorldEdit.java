@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.schematics;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
@@ -27,10 +28,16 @@ public class WorldEdit implements SchematicPaster {
 
     public static boolean isWorking()
     {
-        final Platform platform = com.sk89q.worldedit.WorldEdit.getInstance().getPlatformManager().queryCapability(Capability.WORLD_EDITING);
-        int liveDataVersion = platform.getDataVersion();
-
-        return liveDataVersion != -1;
+        try{
+            final Platform platform = com.sk89q.worldedit.WorldEdit.getInstance().getPlatformManager().queryCapability(Capability.WORLD_EDITING);
+            int liveDataVersion = platform.getDataVersion();
+            return liveDataVersion != -1;
+        }
+        catch(Throwable t)
+        {
+            IridiumSkyblock.getInstance().getLogger().warning("WorldEdit threw an error during initializing, make sure it's updated and API compatible(FAWE isn't API compatible) ::"+t.getMessage());
+        }
+        return false;
     }
     
     @Override

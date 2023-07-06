@@ -120,7 +120,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     }
 
     private Economy setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
+                .getRegistration(Economy.class);
         if (economyProvider == null) {
             getLogger().warning("You do not have an economy plugin installed (like Essentials)");
             return null;
@@ -158,12 +159,18 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.settings = getPersist().load(Settings.class);
         super.loadConfigs();
 
-        int maxSize = enhancements.sizeEnhancement.levels.values().stream().max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size)).map(sizeEnhancementData -> sizeEnhancementData.size).orElse(150);
+        int maxSize = enhancements.sizeEnhancement.levels.values().stream()
+                .max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size))
+                .map(sizeEnhancementData -> sizeEnhancementData.size).orElse(150);
         if (configuration.distance <= maxSize) {
-            getLogger().warning("Distance: " + configuration.distance + " Is too low, must be higher than the maximum island size " + maxSize);
+            getLogger().warning("Distance: " + configuration.distance
+                    + " Is too low, must be higher than the maximum island size " + maxSize);
             configuration.distance = maxSize + 1;
             getLogger().warning("New Distance set to: " + configuration.distance);
         }
+
+        if (schematicManager != null)
+            schematicManager.reload();
     }
 
     @Override
@@ -253,7 +260,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
                 InputStream source = getResource(name);
                 Path target = file.toPath();
 
-                if (source == null) return;
+                if (source == null)
+                    return;
                 Files.copy(source, target, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException exception) {
                 getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
