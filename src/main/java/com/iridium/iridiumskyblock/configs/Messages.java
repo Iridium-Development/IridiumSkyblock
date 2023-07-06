@@ -17,4 +17,5 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     public String cannotRegenIsland = "%prefix% &7You cannot regenerate your Island.";
     public String unknownSchematic = "%prefix% &7No schematic with that name exists.";
     public String noSafeLocation = "%prefix% &7Could not find a safe location to teleport to.";
+    public String cannotHurtPlayers = "%prefix% &7You cannot hurt players on your Island.";
 }
