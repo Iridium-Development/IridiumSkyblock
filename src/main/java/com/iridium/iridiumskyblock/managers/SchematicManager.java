@@ -48,7 +48,6 @@ public class SchematicManager {
                     "FAWE version does not implement API correctly, did you miss an update? Disabling FAWE integration");
         }
 
-        schematicPaster = availablePasters.lastEntry().getValue();
         setPasterFromConfig();
 
         this.schematicFiles = new HashMap<>();
@@ -69,9 +68,8 @@ public class SchematicManager {
         if (availablePasters.containsKey(paster))
             this.schematicPaster = availablePasters.get(paster);
         else {
-            IridiumSkyblock.getInstance().getLogger().warning("Configuration error, selected paster [" + paster
-                    + "] is not available, available choices are " + availablePasters.keySet());
-            this.schematicPaster = availablePasters.lastEntry().getValue();
+            IridiumSkyblock.getInstance().getLogger().warning("Configuration error, selected paster [" + paster + "] is not available, available choices are " + availablePasters.keySet());
+            this.schematicPaster = new SchematicAsync();
         }
     }
 

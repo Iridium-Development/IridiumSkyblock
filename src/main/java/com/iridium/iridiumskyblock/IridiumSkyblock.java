@@ -120,8 +120,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     }
 
     private Economy setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
-                .getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
         if (economyProvider == null) {
             getLogger().warning("You do not have an economy plugin installed (like Essentials)");
             return null;
@@ -161,10 +160,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
         int maxSize = enhancements.sizeEnhancement.levels.values().stream()
                 .max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size))
-                .map(sizeEnhancementData -> sizeEnhancementData.size).orElse(150);
+                .map(sizeEnhancementData -> sizeEnhancementData.size)
+                .orElse(150);
         if (configuration.distance <= maxSize) {
-            getLogger().warning("Distance: " + configuration.distance
-                    + " Is too low, must be higher than the maximum island size " + maxSize);
+            getLogger().warning("Distance: " + configuration.distance + " Is too low, must be higher than the maximum island size " + maxSize);
             configuration.distance = maxSize + 1;
             getLogger().warning("New Distance set to: " + configuration.distance);
         }
