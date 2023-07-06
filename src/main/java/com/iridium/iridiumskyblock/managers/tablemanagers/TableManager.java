@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.SortedList;
 import com.iridium.iridiumteams.database.DatabaseObject;
 import com.j256.ormlite.dao.Dao;
@@ -34,9 +35,13 @@ public class TableManager<T extends DatabaseObject, S> {
         try {
             List<T> entryList = new ArrayList<>(entries);
             for (T t : entryList) {
-                if(!t.isChanged())continue;
-                dao.createOrUpdate(t);
-                t.setChanged(false);
+                if (!t.isChanged()) continue;
+                try {
+                    dao.createOrUpdate(t);
+                    t.setChanged(false);
+                } catch (Exception exception) {
+                    IridiumSkyblock.getInstance().getLogger().warning("Failed to save " + t.getClass().getSimpleName() + " to database: " + exception.getMessage());
+                }
             }
             dao.commit(getDatabaseConnection());
         } catch (SQLException throwables) {
