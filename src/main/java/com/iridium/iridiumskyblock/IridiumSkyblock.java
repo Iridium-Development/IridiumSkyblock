@@ -62,7 +62,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private MissionManager<Island, User> missionManager;
     private SchematicManager schematicManager;
     private ShopManager<Island, User> shopManager;
-    private BiomeManager<Island, User> biomeManager;
+    private BiomeManager biomeManager;
 
     private Economy economy;
 
@@ -99,7 +99,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.databaseManager = new DatabaseManager();
         this.missionManager = new MissionManager<>(this);
         this.shopManager = new ShopManager<>(this);
-        this.biomeManager = new BiomeManager<>(this);
+        this.biomeManager = new BiomeManager();
         try {
             databaseManager.init();
         } catch (SQLException exception) {
