@@ -15,23 +15,15 @@ import java.util.Map;
 
 public class BiomeOverviewGUI extends BackGUI {
 
-    private IridiumSkyblock iridiumSkyblock;
-
-    public BiomeOverviewGUI(Inventory previousInventory, IridiumSkyblock iridiumSkyblock) {
-        super(iridiumSkyblock.getInventories().biomeOverviewGUI.background,
-                previousInventory,
-                iridiumSkyblock.getInventories().backButton);
-        this.iridiumSkyblock = iridiumSkyblock;
+    public BiomeOverviewGUI(Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().biomeOverviewGUI.background, previousInventory, IridiumSkyblock.getInstance().getInventories().backButton);
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        NoItemGUI biomeOverviewGUI = iridiumSkyblock.getInventories().biomeOverviewGUI;
-        Inventory inventory = Bukkit.createInventory(
-                this,
-                biomeOverviewGUI.size,
-                StringUtils.color(biomeOverviewGUI.title));
+        NoItemGUI biomeOverviewGUI = IridiumSkyblock.getInstance().getInventories().biomeOverviewGUI;
+        Inventory inventory = Bukkit.createInventory(this, biomeOverviewGUI.size, StringUtils.color(biomeOverviewGUI.title));
         addContent(inventory);
         return inventory;
     }
@@ -40,17 +32,16 @@ public class BiomeOverviewGUI extends BackGUI {
     public void addContent(Inventory inventory) {
         super.addContent(inventory);
 
-        for (Biomes.BiomeCategory category : iridiumSkyblock.getBiomes().categories.values()) {
+        for (Biomes.BiomeCategory category : IridiumSkyblock.getInstance().getBiomes().categories.values()) {
             inventory.setItem(category.item.slot, ItemStackUtils.makeItem(category.item));
         }
     }
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
-        for(Map.Entry<String, Biomes.BiomeCategory> category : iridiumSkyblock.getBiomes().categories.entrySet()){
-            if(event.getSlot() != category.getValue().item.slot)continue;
-            event.getWhoClicked().openInventory(new BiomeCategoryGUI<>
-                    (category.getKey(), event.getWhoClicked().getOpenInventory().getTopInventory(), iridiumSkyblock).getInventory());
+        for (Map.Entry<String, Biomes.BiomeCategory> category : IridiumSkyblock.getInstance().getBiomes().categories.entrySet()) {
+            if (event.getSlot() != category.getValue().item.slot) continue;
+            event.getWhoClicked().openInventory(new BiomeCategoryGUI(category.getKey(), event.getWhoClicked().getOpenInventory().getTopInventory()).getInventory());
             return;
         }
         super.onInventoryClick(event);

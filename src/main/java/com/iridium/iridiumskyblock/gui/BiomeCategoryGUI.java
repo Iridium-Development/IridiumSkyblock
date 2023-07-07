@@ -6,8 +6,6 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Biomes;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.IridiumUser;
-import com.iridium.iridiumteams.database.Team;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,30 +17,23 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class BiomeCategoryGUI<T extends Team, U extends IridiumUser<T>> extends BackGUI {
-    private final IridiumSkyblock iridiumSkyblock;
+public class BiomeCategoryGUI extends BackGUI {
 
     @Getter
     private final String categoryName;
     private final Biomes.BiomeCategory biomeCategory;
 
-    public BiomeCategoryGUI(String categoryName, Inventory previousInventory, IridiumSkyblock iridiumSkyblock) {
-        super(iridiumSkyblock.getInventories().biomeCategoryGUI.background,
-                previousInventory,
-                iridiumSkyblock.getInventories().backButton);
-        this.iridiumSkyblock = iridiumSkyblock;
+    public BiomeCategoryGUI(String categoryName, Inventory previousInventory) {
+        super(IridiumSkyblock.getInstance().getInventories().biomeCategoryGUI.background, previousInventory, IridiumSkyblock.getInstance().getInventories().backButton);
         this.categoryName = categoryName;
-        this.biomeCategory = iridiumSkyblock.getBiomes().categories.get(categoryName);
+        this.biomeCategory = IridiumSkyblock.getInstance().getBiomes().categories.get(categoryName);
     }
 
     @NotNull
     @Override
     public Inventory getInventory() {
-        NoItemGUI biomeCategoryGUI = iridiumSkyblock.getInventories().biomeCategoryGUI;
-        Inventory inventory = Bukkit.createInventory(
-                this,
-                biomeCategoryGUI.size,
-                StringUtils.color(biomeCategoryGUI.title.replace("%biome_category_name%", categoryName)));
+        NoItemGUI biomeCategoryGUI = IridiumSkyblock.getInstance().getInventories().biomeCategoryGUI;
+        Inventory inventory = Bukkit.createInventory(this, biomeCategory.inventorySize, StringUtils.color(biomeCategoryGUI.title.replace("%biome_category_name%", categoryName)));
         addContent(inventory);
         return inventory;
     }
@@ -51,11 +42,11 @@ public class BiomeCategoryGUI<T extends Team, U extends IridiumUser<T>> extends 
     public void addContent(Inventory inventory) {
         super.addContent(inventory);
 
-        if (!iridiumSkyblock.getBiomes().items.containsKey(categoryName)) {
-            iridiumSkyblock.getLogger().warning("Biome Category " + categoryName + " Is not configured with any items!");
+        if (!IridiumSkyblock.getInstance().getBiomes().items.containsKey(categoryName)) {
+            IridiumSkyblock.getInstance().getLogger().warning("Biome Category " + categoryName + " Is not configured with any items!");
             return;
         }
-        for (Biomes.BiomeItem biomeItem : iridiumSkyblock.getBiomes().items.get(categoryName)) {
+        for (Biomes.BiomeItem biomeItem : IridiumSkyblock.getInstance().getBiomes().items.get(categoryName)) {
             ItemStack itemStack = biomeItem.type.parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
 
@@ -68,13 +59,13 @@ public class BiomeCategoryGUI<T extends Team, U extends IridiumUser<T>> extends 
         }
     }
 
-    private List<Placeholder> getBiomeLorePlaceholders(Biomes.BiomeItem item){
+    private List<Placeholder> getBiomeLorePlaceholders(Biomes.BiomeItem item) {
         List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
-                new Placeholder("amount", iridiumSkyblock.getBiomeManager().formatPrice(item.defaultAmount)),
-                new Placeholder("vault_cost", iridiumSkyblock.getBiomeManager().formatPrice(item.buyCost.money))
+                new Placeholder("amount", IridiumSkyblock.getInstance().getBiomeManager().formatPrice(item.defaultAmount)),
+                new Placeholder("vault_cost", IridiumSkyblock.getInstance().getBiomeManager().formatPrice(item.buyCost.money))
         ));
         for (Map.Entry<String, Double> bankItem : item.buyCost.bankItems.entrySet()) {
-            placeholders.add(new Placeholder(bankItem.getKey() + "_cost", iridiumSkyblock.getBiomeManager().formatPrice(bankItem.getValue())));
+            placeholders.add(new Placeholder(bankItem.getKey() + "_cost", IridiumSkyblock.getInstance().getBiomeManager().formatPrice(bankItem.getValue())));
         }
         return placeholders;
     }
@@ -84,12 +75,12 @@ public class BiomeCategoryGUI<T extends Team, U extends IridiumUser<T>> extends 
         List<Placeholder> placeholders = getBiomeLorePlaceholders(item);
 
         if (item.buyCost.canPurchase()) {
-            lore.add(iridiumSkyblock.getBiomes().buyPriceLore);
+            lore.add(IridiumSkyblock.getInstance().getBiomes().buyPriceLore);
         } else {
-            lore.add(iridiumSkyblock.getBiomes().notPurchasableLore);
+            lore.add(IridiumSkyblock.getInstance().getBiomes().notPurchasableLore);
         }
 
-        lore.addAll(iridiumSkyblock.getBiomes().biomeItemLore);
+        lore.addAll(IridiumSkyblock.getInstance().getBiomes().biomeItemLore);
 
         return StringUtils.color(StringUtils.processMultiplePlaceholders(lore, placeholders));
     }
@@ -97,7 +88,7 @@ public class BiomeCategoryGUI<T extends Team, U extends IridiumUser<T>> extends 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         super.onInventoryClick(event);
-        Optional<Biomes.BiomeItem> biomeItem = iridiumSkyblock.getBiomes().items.get(categoryName).stream()
+        Optional<Biomes.BiomeItem> biomeItem = IridiumSkyblock.getInstance().getBiomes().items.get(categoryName).stream()
                 .filter(item -> item.slot == event.getSlot())
                 .findAny();
 
@@ -107,9 +98,9 @@ public class BiomeCategoryGUI<T extends Team, U extends IridiumUser<T>> extends 
 
         Player player = (Player) event.getWhoClicked();
         if (event.isLeftClick() && biomeItem.get().buyCost.canPurchase()) {
-            iridiumSkyblock.getBiomeManager().buy(player, biomeItem.get());
+            IridiumSkyblock.getInstance().getBiomeManager().buy(player, biomeItem.get());
         } else {
-            iridiumSkyblock.getBiomes().failSound.play(player);
+            IridiumSkyblock.getInstance().getBiomes().failSound.play(player);
         }
     }
 }

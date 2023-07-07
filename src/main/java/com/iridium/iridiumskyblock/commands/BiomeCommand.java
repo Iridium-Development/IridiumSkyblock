@@ -22,9 +22,9 @@ public class BiomeCommand extends Command<Island, User> {
     @Override
     public void execute(User user, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
-        if(args.length == 0){
-            player.openInventory(new BiomeOverviewGUI(player.getOpenInventory().getTopInventory(), IridiumSkyblock.getInstance()).getInventory());
-        }else{
+        if (args.length == 0) {
+            player.openInventory(new BiomeOverviewGUI(player.getOpenInventory().getTopInventory()).getInventory());
+        } else {
             Optional<String> categoryName = getCategoryName(String.join(" ", args), IridiumSkyblock.getInstance());
 
             if (!categoryName.isPresent()) {
@@ -34,13 +34,13 @@ public class BiomeCommand extends Command<Island, User> {
                 return;
             }
 
-            player.openInventory(new BiomeCategoryGUI<>(categoryName.get(), player.getOpenInventory().getTopInventory(), IridiumSkyblock.getInstance()).getInventory());
+            player.openInventory(new BiomeCategoryGUI(categoryName.get(), player.getOpenInventory().getTopInventory()).getInventory());
         }
     }
 
-    private Optional<String> getCategoryName(String name, IridiumSkyblock iridiumSkyblock){
-        for(String category : iridiumSkyblock.getBiomes().categories.keySet()){
-            if(category.equalsIgnoreCase(name)){
+    private Optional<String> getCategoryName(String name, IridiumSkyblock iridiumSkyblock) {
+        for (String category : iridiumSkyblock.getBiomes().categories.keySet()) {
+            if (category.equalsIgnoreCase(name)) {
                 return Optional.of(category);
             }
         }
