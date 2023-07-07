@@ -10,7 +10,6 @@ import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.commands.Command;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -26,8 +25,7 @@ public class BiomeCommand extends Command<Island, User> {
         if(args.length == 0){
             player.openInventory(new BiomeOverviewGUI(player.getOpenInventory().getTopInventory(), IridiumSkyblock.getInstance()).getInventory());
         }else{
-            String[] commandArguments = Arrays.copyOfRange(args, 0, args.length);
-            Optional<String> categoryName = getCategoryName(String.join(" ", commandArguments), IridiumSkyblock.getInstance());
+            Optional<String> categoryName = getCategoryName(String.join(" ", args), IridiumSkyblock.getInstance());
 
             if (!categoryName.isPresent()) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiomeCategory
