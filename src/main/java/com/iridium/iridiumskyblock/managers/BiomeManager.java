@@ -21,6 +21,11 @@ import java.util.stream.Collectors;
 public class BiomeManager {
 
     public void buy(Player player, Biomes.BiomeItem biomeItem) {
+        XBiome biome = biomeItem.biome;
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(user.getPlayer());
+        Optional<XBiome> biomeOptional = XBiome.matchXBiome(biomeItem.biome.toString());
+
         if (!canPurchase(player, biomeItem)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
@@ -29,54 +34,53 @@ public class BiomeManager {
             return;
         }
 
+        if (!biomeOptional.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiome)
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            );
+            return;
+        }
+
+        if (!island.isPresent()) {
+            island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaNameOrPlayer(user.getName());
+            if (!island.isPresent()) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveTeam)
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                );
+            } else {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnIsland)
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                );
+            }
+            return;
+        }
+
         purchase(player, biomeItem);
 
-        XBiome biome = biomeItem.biome;
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(user.getPlayer());
-        Optional<XBiome> biomeOptional = XBiome.matchXBiome(biomeItem.biome.toString());
+        IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(island.get(), biomeOptional.get());
+        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
+                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                .replace("%biome%", WordUtils.capitalizeFully(biome.toString().toLowerCase().replace("_", " ")))
+        ));
 
-        if (!island.isPresent() || !biomeOptional.isPresent()) {
-            if (!island.isPresent()) {
-
-                island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaNameOrPlayer(user.getName());
-                if (!island.isPresent())
-                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveTeam)
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
-
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notOnIsland)
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
-            }
-
-            if (!biomeOptional.isPresent())
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiome)
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix));
-
-        } else {
-            IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(island.get(), biomeOptional.get());
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%biome%", WordUtils.capitalizeFully(biome.toString().toLowerCase().replace("_", " ")))));
-
-            // Run the command
-            if (!biomeItem.command.equals(""))
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), biomeItem.command.replace("%player%", player.getName()));
-
-            IridiumSkyblock.getInstance().getBiomes().successSound.play(player);
-
-            List<Placeholder> bankPlaceholders = IridiumSkyblock.getInstance().getBankItemList().stream()
-                    .map(BankItem::getName)
-                    .map(name -> new Placeholder(name + "_cost", formatPrice(getBankBalance(player, name))))
-                    .collect(Collectors.toList());
-            double moneyCost = biomeItem.buyCost.money;
-
-            player.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().boughtBiome
-                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                            .replace("%biome%", StringUtils.color(String.valueOf(biomeItem.biome)))
-                            .replace("%vault_cost%", formatPrice(moneyCost)),
-                    bankPlaceholders)
-            ));
+        // Run the command
+        if (!biomeItem.command.equals("")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), biomeItem.command.replace("%player%", player.getName()));
         }
+
+        IridiumSkyblock.getInstance().getBiomes().successSound.play(player);
+
+        List<Placeholder> bankPlaceholders = IridiumSkyblock.getInstance().getBankItemList().stream()
+                .map(BankItem::getName)
+                .map(name -> new Placeholder(name + "_cost", formatPrice(getBankBalance(player, name))))
+                .collect(Collectors.toList());
+
+        player.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().boughtBiome
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                        .replace("%biome%", StringUtils.color(String.valueOf(biomeItem.biome)))
+                        .replace("%vault_cost%", formatPrice(biomeItem.buyCost.money)),
+                bankPlaceholders)
+        ));
 
     }
 
