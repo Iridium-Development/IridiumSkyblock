@@ -18,4 +18,9 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     public String unknownSchematic = "%prefix% &7No schematic with that name exists.";
     public String noSafeLocation = "%prefix% &7Could not find a safe location to teleport to.";
     public String cannotHurtPlayers = "%prefix% &7You cannot hurt players on your Island.";
+    public String notOnIsland = "%prefix% &7You must be on your island to perform this operation.";
+    public String noBiomeCategory = "%prefix% &7No biome category with that name.";
+    public String noBiome = "%prefix% &7No biome with that name.";
+    public String changedBiome = "%prefix% &7Successfully changed Island biome to %biome%.";
+    public String boughtBiome = "%prefix% &7Successfully bought the %biome% biome for %vault_cost%.";
 }

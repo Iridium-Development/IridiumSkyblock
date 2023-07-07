@@ -6,6 +6,8 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.configs.inventories.BorderInventoryConfig;
+import com.iridium.iridiumskyblock.gui.BiomeCategoryGUI;
+import com.iridium.iridiumskyblock.gui.BiomeOverviewGUI;
 import com.iridium.iridiumteams.configs.inventories.InventoryConfig;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import com.iridium.iridiumteams.configs.inventories.SingleItemGUI;
@@ -42,6 +44,7 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             .put("is boosters", new Item(XMaterial.EXPERIENCE_BOTTLE, 23, 1, "&9&lIsland Boosters", Collections.singletonList("&7View your island boosters")))
             .put("is home", new Item(XMaterial.WHITE_BED, 13, 1, "&9&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
             .put("is members", new Item(XMaterial.PLAYER_HEAD, 14, 1, "&9&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island members")))
+            .put("is biomes", new Item(XMaterial.GRASS_BLOCK, 15, 1, "&9&lIsland Biomes", Collections.singletonList("&7Change your island biome")))
             .put("is warps", new Item(XMaterial.END_PORTAL_FRAME, 20, 1, "&9&lIsland Warps", Collections.singletonList("&7View your island warps")))
             .put("is upgrades", new Item(XMaterial.DIAMOND, 21, 1, "&9&lIsland Upgrades", Collections.singletonList("&7View your island upgrades")))
             .put("is missions", new Item(XMaterial.IRON_SWORD, 22, 1, "&9&lIsland Missions", Collections.singletonList("&7View your island missions")))
@@ -59,6 +62,8 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
     )));
 
     public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic", background2);
+    public NoItemGUI biomeOverviewGUI = new NoItemGUI(54, "Biomes", background1);
+    public NoItemGUI biomeCategoryGUI = new NoItemGUI(54, "Biomes - %biome_category_name%", background2);
 
     public Inventories() {
         super("Island", "&9");

@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.iridium.iridiumcore.dependencies.xseries.XBiome;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
@@ -51,6 +52,35 @@ public class IslandManager extends TeamManager<Island, User> {
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
         Bukkit.createWorld(worldCreator);
+    }
+
+    public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
+        World.Environment environment = biome.getEnvironment();
+        World world;
+        switch (environment) {
+            case NETHER:
+                world = getWorld(World.Environment.NETHER);
+                break;
+            case THE_END:
+                world = getWorld(World.Environment.THE_END);
+                break;
+            default:
+                world = getWorld(World.Environment.NORMAL);
+                break;
+        }
+
+        getIslandChunks(island).thenAccept(chunks -> {
+            Location pos1 = island.getPosition1(world);
+            Location pos2 = island.getPosition2(world);
+            biome.setBiome(pos1, pos2).thenRun(() -> {
+                for (Chunk chunk : chunks) {
+                    chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
+                }
+            });
+        }).exceptionally(throwable -> {
+            throwable.printStackTrace();
+            return null;
+        });
     }
 
     @Override
@@ -137,6 +167,9 @@ public class IslandManager extends TeamManager<Island, User> {
             setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
+            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
+            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
+            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
         });
     }
 

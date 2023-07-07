@@ -48,6 +48,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Missions missions;
     private Schematics schematics;
     private Shop shop;
+    private Biomes biomes;
     private Settings settings;
 
     private IslandPlaceholderBuilder teamsPlaceholderBuilder;
@@ -61,6 +62,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private MissionManager<Island, User> missionManager;
     private SchematicManager schematicManager;
     private ShopManager<Island, User> shopManager;
+    private BiomeManager<Island, User> biomeManager;
 
     private Economy economy;
 
@@ -97,6 +99,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.databaseManager = new DatabaseManager();
         this.missionManager = new MissionManager<>(this);
         this.shopManager = new ShopManager<>(this);
+        this.biomeManager = new BiomeManager<>(this);
         try {
             databaseManager.init();
         } catch (SQLException exception) {
@@ -156,6 +159,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.missions = getPersist().load(Missions.class);
         this.schematics = getPersist().load(Schematics.class);
         this.shop = getPersist().load(Shop.class);
+        this.biomes = getPersist().load(Biomes.class);
         this.settings = getPersist().load(Settings.class);
         super.loadConfigs();
 
@@ -189,6 +193,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(missions);
         getPersist().save(schematics);
         getPersist().save(shop);
+        getPersist().save(biomes);
         getPersist().save(settings);
         saveSchematics();
     }
