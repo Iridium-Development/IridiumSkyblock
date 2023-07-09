@@ -8,9 +8,12 @@ import com.iridium.iridiumskyblock.gui.BiomeCategoryGUI;
 import com.iridium.iridiumskyblock.gui.BiomeOverviewGUI;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.commands.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class BiomeCommand extends Command<Island, User> {
@@ -25,7 +28,7 @@ public class BiomeCommand extends Command<Island, User> {
         if (args.length == 0) {
             player.openInventory(new BiomeOverviewGUI(player.getOpenInventory().getTopInventory()).getInventory());
         } else {
-            Optional<String> categoryName = getCategoryName(String.join(" ", args), IridiumSkyblock.getInstance());
+            Optional<String> categoryName = getCategoryName(String.join(" ", args));
 
             if (!categoryName.isPresent()) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiomeCategory
@@ -38,12 +41,17 @@ public class BiomeCommand extends Command<Island, User> {
         }
     }
 
-    private Optional<String> getCategoryName(String name, IridiumSkyblock iridiumSkyblock) {
-        for (String category : iridiumSkyblock.getBiomes().categories.keySet()) {
+    private Optional<String> getCategoryName(String name) {
+        for (String category : IridiumSkyblock.getInstance().getBiomes().categories.keySet()) {
             if (category.equalsIgnoreCase(name)) {
                 return Optional.of(category);
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender commandSender, String[] args, IridiumTeams<Island, User> iridiumTeams) {
+        return new ArrayList<>(IridiumSkyblock.getInstance().getBiomes().categories.keySet());
     }
 }
