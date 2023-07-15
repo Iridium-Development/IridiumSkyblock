@@ -68,7 +68,7 @@ public class DatabaseManager {
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.invitesTableManager = new ForeignIslandTableManager<>(connectionSource, TeamInvite.class, Comparator.comparing(TeamInvite::getTeamID).thenComparing(TeamInvite::getUser));
         this.trustTableManager = new ForeignIslandTableManager<>(connectionSource, TeamTrust.class, Comparator.comparing(TeamTrust::getTeamID).thenComparing(TeamTrust::getUser));
-        this.permissionsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamPermission.class, Comparator.comparing(TeamPermission::getTeamID).thenComparing(TeamPermission::getPermission));
+        this.permissionsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamPermission.class, Comparator.comparing(TeamPermission::getTeamID).thenComparing(TeamPermission::getPermission).thenComparing(TeamPermission::getRank));
         this.bankTableManager = new ForeignIslandTableManager<>(connectionSource, TeamBank.class, Comparator.comparing(TeamBank::getTeamID).thenComparing(TeamBank::getBankItem));
         this.enhancementTableManager = new ForeignIslandTableManager<>(connectionSource, TeamEnhancement.class, Comparator.comparing(TeamEnhancement::getTeamID).thenComparing(TeamEnhancement::getEnhancementName));
         this.teamBlockTableManager = new ForeignIslandTableManager<>(connectionSource, TeamBlock.class, Comparator.comparing(TeamBlock::getTeamID).thenComparing(TeamBlock::getXMaterial));
