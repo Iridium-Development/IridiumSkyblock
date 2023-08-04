@@ -197,6 +197,9 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void deleteTeam(Island island, User user) {
+        if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
+            deleteIslandBlocks(island);
+        }
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
 
         getMembersOnIsland(island).forEach(member -> PlayerUtils.teleportSpawn(member.getPlayer()));
