@@ -436,6 +436,8 @@ public class IslandManager extends TeamManager<Island, User> {
         if (teamMission.isPresent()) {
             return teamMission.get();
         } else {
+            //TODO need to consider reworking this, it could generate some lag
+            IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().save(newTeamMission);
             IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().addEntry(newTeamMission);
             return newTeamMission;
         }
@@ -549,7 +551,7 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void handleBlockBreakOutsideTerritory(BlockBreakEvent blockEvent) {
-        if(isInSkyblockWorld(blockEvent.getBlock().getWorld())){
+        if (isInSkyblockWorld(blockEvent.getBlock().getWorld())) {
             blockEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
@@ -559,7 +561,7 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void handleBlockPlaceOutsideTerritory(BlockPlaceEvent blockEvent) {
-        if(isInSkyblockWorld(blockEvent.getBlock().getWorld())){
+        if (isInSkyblockWorld(blockEvent.getBlock().getWorld())) {
             blockEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPlaceBlocks
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
