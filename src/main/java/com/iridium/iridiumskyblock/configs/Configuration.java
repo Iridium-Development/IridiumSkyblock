@@ -48,6 +48,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
 
 
     public boolean obsidianBucket = true;
+    public boolean endPortalPick = true;
     public boolean removeIslandBlocksOnDelete = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;
