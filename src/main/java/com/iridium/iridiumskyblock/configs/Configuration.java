@@ -49,6 +49,8 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
 
     public boolean obsidianBucket = true;
     public boolean removeIslandBlocksOnDelete = false;
+    public boolean clearInventoryOnRegen = false;
+    public boolean clearEnderChestOnRegen = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;
     public int pasterDelayInTick = 1;
