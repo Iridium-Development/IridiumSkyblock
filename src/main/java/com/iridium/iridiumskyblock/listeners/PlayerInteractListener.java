@@ -53,8 +53,7 @@ public class PlayerInteractListener implements Listener {
                 && (event.getAction().equals(Action.LEFT_CLICK_BLOCK) && player.isSneaking())
                 && event.getClickedBlock().getType().equals(Material.END_PORTAL_FRAME)
                 && (itemInHand.getType().name().contains("PICKAXE"))) {
-
-            event.getClickedBlock().getDrops().add(new ItemStack(Material.END_PORTAL_FRAME));
+            
             event.getClickedBlock().breakNaturally();
 
             player.getInventory().addItem(new ItemStack(Material.END_PORTAL_FRAME)).values().forEach(itemStack ->
