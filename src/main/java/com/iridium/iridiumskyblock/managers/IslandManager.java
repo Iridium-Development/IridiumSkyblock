@@ -468,7 +468,8 @@ public class IslandManager extends TeamManager<Island, User> {
         List<TeamMissionData> teamMissionDataList = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().getEntries().stream()
                 .filter(teamMissionData -> teamMissionData.getMissionID() == teamMission.getId())
                 .collect(Collectors.toList());
-        IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().delete(teamMissionDataList);
+        //TODO need to consider reworking this, it could generate some lag
+        IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().delete(teamMissionDataList).join();
     }
 
     @Override
