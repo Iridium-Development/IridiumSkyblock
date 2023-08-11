@@ -17,19 +17,21 @@ import java.util.UUID;
 public class User extends IridiumUser<Island> {
 
     private Optional<Island> currentIsland = Optional.empty();
+
     public User(UUID uuid, String name) {
         setUuid(uuid);
         setName(name);
         setJoinTime(LocalDateTime.now());
     }
 
-    public Optional<Island> getIsland(){
+    public Optional<Island> getIsland() {
         return IridiumSkyblock.getInstance().getTeamManager().getTeamViaID(getTeamID());
     }
 
     public Optional<Island> getCurrentIsland() {
         Player player = getPlayer();
-        if(currentIsland.isPresent() && currentIsland.get().isInIsland(player.getLocation())){
+        if (player == null) return Optional.empty();
+        if (currentIsland.isPresent() && currentIsland.get().isInIsland(player.getLocation())) {
             return currentIsland;
         }
         setCurrentIsland(IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(player.getLocation()));
