@@ -19,6 +19,7 @@ import com.iridium.iridiumteams.Setting;
 import com.iridium.iridiumteams.database.*;
 import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
+import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -463,17 +464,19 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public void deleteTeamMission(TeamMission teamMission) {
-        IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().delete(teamMission);
+    public List<TeamMissionData> getTeamMissionData(TeamMission teamMission) {
+        MissionData missionData = IridiumSkyblock.getInstance().getMissions().missions.get(teamMission.getMissionName()).getMissionData().get(teamMission.getMissionLevel());
+
+        List<TeamMissionData> list = new ArrayList<>();
+        for (int i = 0; i < missionData.getMissions().size(); i++) {
+            list.add(getTeamMissionData(teamMission, i));
+        }
+        return list;
     }
 
     @Override
-    public void deleteTeamMissionData(TeamMission teamMission) {
-        List<TeamMissionData> teamMissionDataList = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().getEntries().stream()
-                .filter(teamMissionData -> teamMissionData.getMissionID() == teamMission.getId())
-                .collect(Collectors.toList());
-        //TODO need to consider reworking this, it could generate some lag
-        IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().delete(teamMissionDataList).join();
+    public void deleteTeamMission(TeamMission teamMission) {
+        IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().delete(teamMission);
     }
 
     @Override
