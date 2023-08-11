@@ -103,14 +103,15 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
-        owner.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-        ));
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
         owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
         return CompletableFuture.supplyAsync(() -> {
             String schematic = schematicNameCompletableFuture.join();
             if (schematic == null) return null;
+
+            owner.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Island island = new Island(name);
