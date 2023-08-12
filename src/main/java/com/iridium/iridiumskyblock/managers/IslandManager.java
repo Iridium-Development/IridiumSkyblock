@@ -211,7 +211,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public boolean getTeamPermission(Island island, int rank, String permission) {
+    public synchronized boolean getTeamPermission(Island island, int rank, String permission) {
         if (rank == Rank.OWNER.getId()) return true;
         return IridiumSkyblock.getInstance().getDatabaseManager().getPermissionsTableManager().getEntry(new TeamPermission(island, permission, rank, true))
                 .map(TeamPermission::isAllowed)
@@ -320,7 +320,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public TeamEnhancement getTeamEnhancement(Island island, String enhancementName) {
+    public synchronized TeamEnhancement getTeamEnhancement(Island island, String enhancementName) {
         Optional<TeamEnhancement> teamEnhancement = IridiumSkyblock.getInstance().getDatabaseManager().getEnhancementTableManager().getEntry(new TeamEnhancement(island, enhancementName, 0));
         if (teamEnhancement.isPresent()) {
             return teamEnhancement.get();
@@ -435,7 +435,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public TeamMission getTeamMission(Island island, String missionName) {
+    public synchronized TeamMission getTeamMission(Island island, String missionName) {
         Mission mission = IridiumSkyblock.getInstance().getMissions().missions.get(missionName);
         LocalDateTime localDateTime = IridiumSkyblock.getInstance().getMissionManager().getExpirationTime(mission == null ? MissionType.ONCE : mission.getMissionType(), LocalDateTime.now());
 
@@ -452,7 +452,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public TeamMissionData getTeamMissionData(TeamMission teamMission, int missionIndex) {
+    public synchronized TeamMissionData getTeamMissionData(TeamMission teamMission, int missionIndex) {
         Optional<TeamMissionData> teamMissionData = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().getEntry(new TeamMissionData(teamMission, missionIndex));
         if (teamMissionData.isPresent()) {
             return teamMissionData.get();
