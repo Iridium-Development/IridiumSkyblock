@@ -31,7 +31,9 @@ jobs:
   upload:
     needs: build
     runs-on: ubuntu-latest
-    if: "contains(github.event.commits[0].message, 'Version Increment')"
+    if: | 
+      "contains(github.event.commits[0].message, 'Version Increment')"
+      && "github.ref == 'refs/heads/master'"
     steps:
       - uses: actions/checkout@v2
       - uses: thecodemonkey/action-get-gradle-version@master
@@ -53,3 +55,25 @@ jobs:
           coordinates: "groupId=com.iridium artifactId=IridiumSkyblock version=${{steps.version.outputs.version}} generate-pom=on"
           assets: "extension=jar"
           filename: "IridiumSkyblock-*.jar"
+  upload-modrinth-github:
+    runs-on: ubuntu-latest
+    if: |
+      "contains(github.event.commits[0].message, 'Version Increment')"
+      && "github.ref == 'refs/heads/master'"
+    steps:
+    - uses: actions/download-artifact@v3.0.2
+      name: Download artifact
+      with:
+          name: "IridiumSkyblock"
+          path: "./"
+    - name: MC-Publish (Modrinth & Github)    
+    - uses: Kir-Antipov/mc-publish@v3.3
+      with:
+          modrinth-id: uVMG0MzO
+          modrinth-featured: true
+          modrinth-unfeature-mode: any
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          github-tag: Release
+          github-generate-changelog: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          files: "build/libs/IridiumSkyblock-*.jar"
