@@ -1,0 +1,20 @@
+name: MC-Publish
+on: release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: Kir-Antipov/mc-publish@v3.3
+        name: Publish to Modrinth
+        with:
+          modrinth-id: uVMG0MzO
+          modrinth-featured: true
+          modrinth-unfeature-mode: any
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          github-generate-changelog: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          files: "build/libs/IridiumSkyblock-*.jar"
