@@ -76,4 +76,4 @@ jobs:
           github-tag: Release
           github-generate-changelog: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          files: "build/libs/IridiumSkyblock-*.jar"
+          files: "IridiumSkyblock-*.jar"
