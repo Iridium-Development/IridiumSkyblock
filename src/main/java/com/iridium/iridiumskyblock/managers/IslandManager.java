@@ -8,6 +8,7 @@ import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.event.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -208,6 +209,8 @@ public class IslandManager extends TeamManager<Island, User> {
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
 
         getMembersOnIsland(island).forEach(member -> PlayerUtils.teleportSpawn(member.getPlayer()));
+
+        Bukkit.getPluginManager().callEvent(new IslandDeleteEvent(island, user));
     }
 
     @Override
