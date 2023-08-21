@@ -203,14 +203,19 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void deleteTeam(Island island, User user) {
+        final IslandDeleteEvent islandDeleteEvent = new IslandDeleteEvent(island, user);
+        Bukkit.getPluginManager().callEvent(islandDeleteEvent);
+
+        if (islandDeleteEvent.isCancelled()) {
+            return;
+        }
+
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);
         }
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
 
         getMembersOnIsland(island).forEach(member -> PlayerUtils.teleportSpawn(member.getPlayer()));
-
-        Bukkit.getPluginManager().callEvent(new IslandDeleteEvent(island, user));
     }
 
     @Override
