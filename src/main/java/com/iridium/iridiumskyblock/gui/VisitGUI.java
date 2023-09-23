@@ -63,6 +63,6 @@ public class VisitGUI extends PagedGUI<Island> {
         Island island = getItem(event.getSlot());
         if (island == null) return;
 
-        IridiumSkyblock.getInstance().getCommands().visitCommand.execute(event.getWhoClicked(), new String[]{island.getName()}, iridiumTeams);
+        IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getWhoClicked(), IridiumSkyblock.getInstance().getCommands().visitCommand, new String[]{island.getName()});
     }
 }

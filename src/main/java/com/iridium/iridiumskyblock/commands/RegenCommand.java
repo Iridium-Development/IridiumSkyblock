@@ -17,22 +17,22 @@ import java.util.*;
 public class RegenCommand extends Command<Island, User> {
 
     public RegenCommand() {
-        super(Collections.singletonList("regen"), "Regenerate your Island", "%prefix% &7/is regen <schematic>", "");
+        super(Collections.singletonList("regen"), "Regenerate your Island", "%prefix% &7/is regen <schematic>", "", 300);
     }
 
     @Override
-    public void execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
+    public boolean execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
         if (args.length == 0) {
             if (!IridiumSkyblock.getInstance().getIslandManager().getTeamPermission(island, IridiumSkyblock.getInstance().getUserManager().getUser(player), "regen")) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 ));
-                return;
+                return false;
             }
 
             player.openInventory(new RegenGUI(player.getOpenInventory().getTopInventory(), player).getInventory());
-            return;
+            return false;
         }
 
         Optional<String> schematic = IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
@@ -42,7 +42,7 @@ public class RegenCommand extends Command<Island, User> {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownSchematic
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
-            return;
+            return false;
         }
 
         Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
@@ -64,6 +64,8 @@ public class RegenCommand extends Command<Island, User> {
                 ));
             }
         }));
+
+        return true;
     }
 
     @Override

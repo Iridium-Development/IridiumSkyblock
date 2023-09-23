@@ -5,8 +5,6 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import java.util.concurrent.CompletableFuture;
-
 @Getter
 public class RegenGUI extends SchematicGUI {
     private final Player player;
@@ -18,7 +16,7 @@ public class RegenGUI extends SchematicGUI {
 
     @Override
     public void selectSchematic(String schematic) {
-        IridiumSkyblock.getInstance().getCommands().regenCommand.execute(player, new String[]{schematic}, IridiumSkyblock.getInstance());
+        IridiumSkyblock.getInstance().getCommandManager().executeCommand(player, IridiumSkyblock.getInstance().getCommands().regenCommand, new String[]{schematic});
     }
 
 }

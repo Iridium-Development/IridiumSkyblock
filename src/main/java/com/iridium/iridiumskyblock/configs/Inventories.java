@@ -59,6 +59,8 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
     )));
 
     public NoItemGUI islandSchematicGUI = new NoItemGUI(27, "&7Select a Schematic", background2);
+    public NoItemGUI biomeOverviewGUI = new NoItemGUI(27, "Biomes", background2);
+    public NoItemGUI biomeCategoryGUI = new NoItemGUI(54, "Biomes - %biome_category_name%", background1);
 
     public Inventories() {
         super("Island", "&9");
