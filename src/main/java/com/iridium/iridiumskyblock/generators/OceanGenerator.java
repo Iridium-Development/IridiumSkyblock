@@ -126,18 +126,16 @@ public class OceanGenerator extends ChunkGenerator {
         return null;
     }
 
-    Map<String, Generators.GeneratorConfig> generatorConfig = IridiumSkyblock.getInstance().getGenerators().generators;
-
     public XMaterial getFloor(Environment environment) {
         switch(environment) {
             case NETHER: {
-                return generatorConfig.get("floor").nether.floor;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether.floor;
             }
             case THE_END: {
-                return generatorConfig.get("floor").ocean.end.floor;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end.floor;
             }
             default: {
-                return generatorConfig.get("floor").ocean.overworld.floor;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld.floor;
             }
         }
     }
@@ -145,13 +143,13 @@ public class OceanGenerator extends ChunkGenerator {
     public XMaterial getUnderFloor(Environment environment) {
         switch(environment) {
             case NETHER: {
-                return generatorConfig.get("underFloor").ocean.nether.underFloor;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether.underFloor;
             }
             case THE_END: {
-                return generatorConfig.get("underFloor").ocean.end.underFloor;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end.underFloor;
             }
             default: {
-                return generatorConfig.get("underFloor").ocean.overworld.underFloor;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld.underFloor;
             }
         }
     }
@@ -159,13 +157,13 @@ public class OceanGenerator extends ChunkGenerator {
     public XMaterial getLiquidType(Environment environment) {
         switch(environment) {
             case NETHER: {
-                return generatorConfig.get("liquidType").ocean.nether.liquidType;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether.liquidType;
             }
             case THE_END: {
-                return generatorConfig.get("liquidType").ocean.end.liquidType;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end.liquidType;
             }
             default: {
-                return generatorConfig.get("liquidType").ocean.overworld.liquidType;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld.liquidType;
             }
         }
     }
@@ -173,13 +171,13 @@ public class OceanGenerator extends ChunkGenerator {
     public int getliquidHeight (Environment environment) {
         switch(environment) {
             case NETHER: {
-                return generatorConfig.get("liquidHeight").ocean.nether.liquidHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether.liquidHeight;
             }
             case THE_END: {
-                return generatorConfig.get("liquidHeight").ocean.end.liquidHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end.liquidHeight;
             }
             default: {
-                return generatorConfig.get("liquidHeight").ocean.overworld.liquidHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld.liquidHeight;
             }
         }
     }
@@ -187,13 +185,13 @@ public class OceanGenerator extends ChunkGenerator {
     public int getMinFloorHeight(Environment environment) {
         switch(environment) {
             case NETHER: {
-                return generatorConfig.get("minFloorHeight").ocean.nether.minFloorHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether.minFloorHeight;
             }
             case THE_END: {
-                return generatorConfig.get("minFloorHeight").ocean.end.minFloorHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end.minFloorHeight;
             }
             default: {
-                return generatorConfig.get("minFloorHeight").ocean.overworld.minFloorHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld.minFloorHeight;
             }
         }
     }
@@ -201,13 +199,13 @@ public class OceanGenerator extends ChunkGenerator {
     public int getMaxFloorHeight(Environment environment) {
         switch(environment) {
             case NETHER: {
-                return generatorConfig.get("maxFloorHeight").ocean.nether.maxFloorHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether.maxFloorHeight;
             }
             case THE_END: {
-                return generatorConfig.get("maxFloorHeight").ocean.end.maxFloorHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end.maxFloorHeight;
             }
             default: {
-                return generatorConfig.get("maxFloorHeight").ocean.overworld.maxFloorHeight;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld.maxFloorHeight;
             }
         }
     }
@@ -215,13 +213,13 @@ public class OceanGenerator extends ChunkGenerator {
     public boolean getCanSpawnEntities(Environment environment) {
         switch(environment) {
             case NETHER: {
-                return generatorConfig.get("canSpawnEntities").ocean.nether.canSpawnEntities;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether.canSpawnEntities;
             }
             case THE_END: {
-                return generatorConfig.get("canSpawnEntities").ocean.end.canSpawnEntities;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end.canSpawnEntities;
             }
             default: {
-                return generatorConfig.get("canSpawnEntities").ocean.overworld.canSpawnEntities;
+                return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld.canSpawnEntities;
             }
         }
     }
