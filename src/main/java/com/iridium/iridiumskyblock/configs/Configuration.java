@@ -43,7 +43,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
     public String islandTitleTop = "&9%island_name%";
-    public String islandTitleBottom = "&7%island_description%";   
+    public String islandTitleBottom = "&7%island_description%";
     public String paster = "worldedit";
 
 
@@ -51,6 +51,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public boolean removeIslandBlocksOnDelete = false;
     public boolean clearInventoryOnRegen = false;
     public boolean clearEnderChestOnRegen = false;
+    public boolean allowPvPOnIslands = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;
     public int pasterDelayInTick = 1;

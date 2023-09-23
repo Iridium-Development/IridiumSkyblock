@@ -8,6 +8,8 @@ import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.api.IslandCreateEvent;
+import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -110,20 +112,25 @@ public class IslandManager extends TeamManager<Island, User> {
             String schematic = schematicNameCompletableFuture.join();
             if (schematic == null) return null;
 
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
+            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
+
+            IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name, schematicConfig);
+            Bukkit.getPluginManager().callEvent(islandCreateEvent);
+            if (islandCreateEvent.isCancelled()) return null;
+
             owner.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
 
-            User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
-            Island island = new Island(name);
-
+            Island island = new Island(islandCreateEvent.getIslandName());
 
             IridiumSkyblock.getInstance().getDatabaseManager().registerIsland(island).join();
 
             user.setTeam(island);
             user.setUserRank(Rank.OWNER.getId());
 
-            generateIsland(island, schematic).join();
+            generateIsland(island, islandCreateEvent.getSchematicConfig()).join();
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 teleport(owner, island.getHome(), island);
                 IridiumSkyblock.getInstance().getNms().sendTitle(owner, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
@@ -136,9 +143,8 @@ public class IslandManager extends TeamManager<Island, User> {
         });
     }
 
-    public CompletableFuture<Void> generateIsland(Island island, String schematic) {
+    public CompletableFuture<Void> generateIsland(Island island, Schematics.SchematicConfig schematicConfig) {
         return CompletableFuture.runAsync(() -> {
-            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
             setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
@@ -201,7 +207,11 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public void deleteTeam(Island island, User user) {
+    public boolean deleteTeam(Island island, User user) {
+        IslandDeleteEvent islandDeleteEvent = new IslandDeleteEvent(island, user);
+        Bukkit.getPluginManager().callEvent(islandDeleteEvent);
+        if (islandDeleteEvent.isCancelled()) return false;
+
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);
         }
@@ -210,6 +220,8 @@ public class IslandManager extends TeamManager<Island, User> {
         IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
 
         getMembersOnIsland(island).forEach(member -> PlayerUtils.teleportSpawn(member.getPlayer()));
+
+        return true;
     }
 
     @Override

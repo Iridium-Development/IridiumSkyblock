@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.commands;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.RegenGUI;
@@ -34,15 +35,17 @@ public class RegenCommand extends Command<Island, User> {
             return;
         }
 
-        Optional<String> schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
+        Optional<String> schematic = IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
                 .filter(config -> config.equalsIgnoreCase(args[0]))
                 .findFirst();
-        if (!schematicConfig.isPresent()) {
+        if (!schematic.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownSchematic
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
             return;
         }
+
+        Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
 
         IridiumSkyblock.getInstance().getIslandManager().getTeamMembers(island).stream()
                 .map(User::getPlayer)
@@ -53,7 +56,8 @@ public class RegenCommand extends Command<Island, User> {
 
         IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
 
-        IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig.get()).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+        IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+          
             if (IridiumSkyblock.getInstance().getTeamManager().teleport(player, island.getHome(), island)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
