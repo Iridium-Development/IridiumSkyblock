@@ -52,19 +52,19 @@ public class BorderGUI extends BackGUI {
         super.onInventoryClick(event);
 
         if (IridiumSkyblock.getInstance().getConfiguration().enabledBorders.getOrDefault(Color.BLUE, true) && event.getSlot() == IridiumSkyblock.getInstance().getInventories().islandBorderGUI.blue.slot) {
-            IridiumSkyblock.getInstance().getCommands().borderCommand.execute(event.getWhoClicked(), new String[]{"blue"}, IridiumSkyblock.getInstance());
+            IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getWhoClicked(), IridiumSkyblock.getInstance().getCommands().borderCommand, new String[]{"blue"});
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().enabledBorders.getOrDefault(Color.RED, true) && event.getSlot() == IridiumSkyblock.getInstance().getInventories().islandBorderGUI.red.slot) {
-            IridiumSkyblock.getInstance().getCommands().borderCommand.execute(event.getWhoClicked(), new String[]{"red"}, IridiumSkyblock.getInstance());
+            IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getWhoClicked(), IridiumSkyblock.getInstance().getCommands().borderCommand, new String[]{"red"});
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().enabledBorders.getOrDefault(Color.GREEN, true) && event.getSlot() == IridiumSkyblock.getInstance().getInventories().islandBorderGUI.green.slot) {
-            IridiumSkyblock.getInstance().getCommands().borderCommand.execute(event.getWhoClicked(), new String[]{"green"}, IridiumSkyblock.getInstance());
+            IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getWhoClicked(), IridiumSkyblock.getInstance().getCommands().borderCommand, new String[]{"green"});
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().enabledBorders.getOrDefault(Color.OFF, true) && event.getSlot() == IridiumSkyblock.getInstance().getInventories().islandBorderGUI.off.slot) {
-            IridiumSkyblock.getInstance().getCommands().borderCommand.execute(event.getWhoClicked(), new String[]{"off"}, IridiumSkyblock.getInstance());
+            IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getWhoClicked(), IridiumSkyblock.getInstance().getCommands().borderCommand, new String[]{"off"});
         }
     }
 
