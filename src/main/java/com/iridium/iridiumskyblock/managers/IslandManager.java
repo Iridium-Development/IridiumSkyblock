@@ -115,8 +115,7 @@ public class IslandManager extends TeamManager<Island, User> {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
 
-            IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, name, schematicConfig);
-            Bukkit.getPluginManager().callEvent(islandCreateEvent);
+            IslandCreateEvent islandCreateEvent = getIslandCreateEvent(user, name, schematicConfig).join();
             if (islandCreateEvent.isCancelled()) return null;
 
             owner.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland
@@ -141,6 +140,17 @@ public class IslandManager extends TeamManager<Island, User> {
             throwable.printStackTrace();
             return null;
         });
+    }
+
+    private CompletableFuture<IslandCreateEvent> getIslandCreateEvent(@NotNull User user, @Nullable String islandName, Schematics.@NotNull SchematicConfig schematicConfig) {
+        CompletableFuture<IslandCreateEvent> completableFuture = new CompletableFuture<>();
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, islandName, schematicConfig);
+            Bukkit.getPluginManager().callEvent(islandCreateEvent);
+            completableFuture.complete(islandCreateEvent);
+
+        });
+        return completableFuture;
     }
 
     public CompletableFuture<Void> generateIsland(Island island, Schematics.SchematicConfig schematicConfig) {
@@ -596,12 +606,12 @@ public class IslandManager extends TeamManager<Island, User> {
 
     public void clearTeamInventory(Island island) {
 
-        if(IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) {
+        if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) {
             IridiumSkyblock.getInstance().getIslandManager().getMembersOnIsland(island).forEach(member ->
                     member.getPlayer().getInventory().clear());
         }
 
-        if(IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) {
+        if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) {
             IridiumSkyblock.getInstance().getIslandManager().getMembersOnIsland(island).forEach(member ->
                     member.getPlayer().getEnderChest().clear());
         }
