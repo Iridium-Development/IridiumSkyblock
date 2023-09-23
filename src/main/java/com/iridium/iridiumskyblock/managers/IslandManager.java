@@ -205,7 +205,9 @@ public class IslandManager extends TeamManager<Island, User> {
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);
         }
+
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
+        IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
 
         getMembersOnIsland(island).forEach(member -> PlayerUtils.teleportSpawn(member.getPlayer()));
     }
@@ -577,6 +579,19 @@ public class IslandManager extends TeamManager<Island, User> {
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
             blockEvent.setCancelled(true);
+        }
+    }
+
+    public void clearTeamInventory(Island island) {
+
+        if(IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) {
+            IridiumSkyblock.getInstance().getIslandManager().getMembersOnIsland(island).forEach(member ->
+                    member.getPlayer().getInventory().clear());
+        }
+
+        if(IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) {
+            IridiumSkyblock.getInstance().getIslandManager().getMembersOnIsland(island).forEach(member ->
+                    member.getPlayer().getEnderChest().clear());
         }
     }
 
