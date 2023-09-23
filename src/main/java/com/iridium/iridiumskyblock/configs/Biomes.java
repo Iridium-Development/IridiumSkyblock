@@ -14,9 +14,9 @@ import java.util.*;
 public class Biomes {
 
     public Map<String, BiomeCategory> categories = ImmutableMap.<String, BiomeCategory>builder()
-            .put("Overworld", new BiomeCategory(new Item(XMaterial.GRASS_BLOCK, 11, 1, "&9&lOverworld", Collections.emptyList()), 54))
-            .put("Nether", new BiomeCategory(new Item(XMaterial.CRIMSON_NYLIUM, 13, 1, "&9&lNether", Collections.emptyList()), 36))
-            .put("End", new BiomeCategory(new Item(XMaterial.END_STONE, 15, 1, "&9&lEnd", Collections.emptyList()), 36))
+            .put("Overworld", new BiomeCategory(new Item(XMaterial.GRASS_BLOCK, 11, 1, "&9&lOverworld", Collections.emptyList()), 27))
+            .put("Nether", new BiomeCategory(new Item(XMaterial.CRIMSON_NYLIUM, 13, 1, "&9&lNether", Collections.emptyList()), 27))
+            .put("End", new BiomeCategory(new Item(XMaterial.END_STONE, 15, 1, "&9&lEnd", Collections.emptyList()), 27))
             .build();
     public Map<String, List<BiomeItem>> items = ImmutableMap.<String, List<BiomeItem>>builder()
             .put("Overworld", Arrays.asList(
@@ -25,7 +25,7 @@ public class Biomes {
                             XMaterial.GRASS_BLOCK,
                             XBiome.PLAINS,
                             1,
-                            20,
+                            11,
                             new Cost(100, new HashMap<>())
                     ),
                     new BiomeItem(
@@ -33,7 +33,7 @@ public class Biomes {
                             XMaterial.SNOW_BLOCK,
                             XBiome.SNOWY_PLAINS,
                             1,
-                            22,
+                            13,
                             new Cost(50, new HashMap<>())
                     ),
                     new BiomeItem(
@@ -41,7 +41,7 @@ public class Biomes {
                             XMaterial.TALL_GRASS,
                             XBiome.SAVANNA,
                             1,
-                            24,
+                            15,
                             new Cost(100, new HashMap<>())
                     )
             ))
@@ -51,7 +51,7 @@ public class Biomes {
                                     XMaterial.NETHERRACK,
                                     XBiome.NETHER_WASTES,
                                     1,
-                                    20,
+                                    11,
                                     new Cost(50, new HashMap<>())
                             ),
                             new BiomeItem(
@@ -59,7 +59,7 @@ public class Biomes {
                                     XMaterial.CRIMSON_NYLIUM,
                                     XBiome.CRIMSON_FOREST,
                                     1,
-                                    22,
+                                    13,
                                     new Cost(1000, new HashMap<>())
                             ),
                             new BiomeItem(
@@ -67,7 +67,7 @@ public class Biomes {
                                     XMaterial.WARPED_NYLIUM,
                                     XBiome.WARPED_FOREST,
                                     1,
-                                    24,
+                                    15,
                                     new Cost(100, new HashMap<>())
                             )
                     )
@@ -78,7 +78,7 @@ public class Biomes {
                                     XMaterial.END_STONE,
                                     XBiome.THE_END,
                                     1,
-                                    20,
+                                    11,
                                     new Cost(100, new HashMap<>())
                             ),
                             new BiomeItem(
@@ -86,7 +86,7 @@ public class Biomes {
                                     XMaterial.PURPUR_BLOCK,
                                     XBiome.END_HIGHLANDS,
                                     1,
-                                    22,
+                                    13,
                                     new Cost(150, new HashMap<>())
                             ),
                             new BiomeItem(
@@ -94,7 +94,7 @@ public class Biomes {
                                     XMaterial.ENDER_EYE,
                                     XBiome.END_BARRENS,
                                     1,
-                                    24,
+                                    15,
                                     new Cost(150, new HashMap<>())
                             )
                     )
