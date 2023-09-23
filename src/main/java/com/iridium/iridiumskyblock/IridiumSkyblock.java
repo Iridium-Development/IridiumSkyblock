@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
@@ -49,6 +50,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Schematics schematics;
     private Shop shop;
     private Settings settings;
+    private Generators generators;
 
     private IslandPlaceholderBuilder teamsPlaceholderBuilder;
     private UserPlaceholderBuilder userPlaceholderBuilder;
@@ -78,7 +80,17 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     @Override
     public void onLoad() {
         super.onLoad();
-        this.chunkGenerator = new VoidGenerator();
+
+        switch(IridiumSkyblock.getInstance().getConfiguration().generatorType) {
+            case "ocean": {
+                this.chunkGenerator = new OceanGenerator();
+                break;
+            }
+            default: {
+                this.chunkGenerator = new VoidGenerator();
+                break;
+            }
+        }
     }
 
     @Override
@@ -157,6 +169,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.schematics = getPersist().load(Schematics.class);
         this.shop = getPersist().load(Shop.class);
         this.settings = getPersist().load(Settings.class);
+        this.generators = getPersist().load(Generators.class);
         super.loadConfigs();
 
         int maxSize = enhancements.sizeEnhancement.levels.values().stream()
@@ -190,6 +203,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(schematics);
         getPersist().save(shop);
         getPersist().save(settings);
+        getPersist().save(generators);
         saveSchematics();
     }
 

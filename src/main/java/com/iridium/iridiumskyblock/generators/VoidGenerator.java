@@ -1,5 +1,7 @@
 package com.iridium.iridiumskyblock.generators;
 
+import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.configs.Generators;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -7,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public class VoidGenerator extends ChunkGenerator {
@@ -27,7 +30,20 @@ public class VoidGenerator extends ChunkGenerator {
 
     @Override
     public boolean canSpawn(@NotNull World world, int x, int z) {
-        return true;
+
+        Map<String, Generators.GeneratorConfig> generatorConfig = IridiumSkyblock.getInstance().getGenerators().generators;
+
+        switch(world.getEnvironment()) {
+            case NETHER: {
+                return generatorConfig.get("canSpawnEntities").skyblock.nether.canSpawnEntities;
+            }
+            case THE_END: {
+                return generatorConfig.get("canSpawnEntities").skyblock.end.canSpawnEntities;
+            }
+            default: {
+                return generatorConfig.get("canSpawnEntities").skyblock.overworld.canSpawnEntities;
+            }
+        }
     }
 
     @Override

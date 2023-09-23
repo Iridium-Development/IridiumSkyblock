@@ -42,6 +42,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public String defaultDescription = "Default island description :c";
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
+    public String generatorType = "skyblock";
     public String islandTitleTop = "&9%island_name%";
     public String islandTitleBottom = "&7%island_description%";
     public String paster = "worldedit";
