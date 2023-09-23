@@ -19,14 +19,15 @@ import java.util.Optional;
 public class BiomeCommand extends Command<Island, User> {
 
     public BiomeCommand() {
-        super(Collections.singletonList("biomes"), "Refresh your Island Biome", "%prefix% &7/is biomes <biome>", "");
+        super(Collections.singletonList("biomes"), "Refresh your Island Biome", "%prefix% &7/is biomes <biome>", "", 10);
     }
 
     @Override
-    public void execute(User user, String[] args, IridiumTeams<Island, User> iridiumTeams) {
+    public boolean execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
         if (args.length == 0) {
             player.openInventory(new BiomeOverviewGUI(player.getOpenInventory().getTopInventory()).getInventory());
+            return false;
         } else {
             Optional<String> categoryName = getCategoryName(String.join(" ", args));
 
@@ -34,10 +35,11 @@ public class BiomeCommand extends Command<Island, User> {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiomeCategory
                         .replace("%prefix%", iridiumTeams.getConfiguration().prefix)
                 ));
-                return;
+                return false;
             }
 
             player.openInventory(new BiomeCategoryGUI(categoryName.get(), player.getOpenInventory().getTopInventory()).getInventory());
+            return false;
         }
     }
 

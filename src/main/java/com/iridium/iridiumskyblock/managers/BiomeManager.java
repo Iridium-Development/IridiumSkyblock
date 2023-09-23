@@ -31,20 +31,22 @@ public class BiomeManager {
         }
 
         if (!biomeOptional.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiome)
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiome
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            );
+            ));
             return;
         }
 
         if (!island.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveTeam)
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveTeam
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            );
+            ));
             return;
         }
 
         purchase(player, biomeItem);
+
+        IridiumSkyblock.getInstance().getCommands().biomeCommand.getCooldownProvider().applyCooldown(player);
 
         IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(island.get(), biomeOptional.get());
         IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(island.get()).stream().map(IridiumUser::getPlayer).forEach((teamMember) -> {

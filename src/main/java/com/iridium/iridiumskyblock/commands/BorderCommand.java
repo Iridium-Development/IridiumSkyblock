@@ -27,31 +27,31 @@ public class BorderCommand extends Command<Island, User> {
      * The default constructor.
      */
     public BorderCommand() {
-        super(Collections.singletonList("border"), "Change the Island Border", "%prefix% &7/is border <color>", "");
+        super(Collections.singletonList("border"), "Change the Island Border", "%prefix% &7/is border <color>", "", 0);
     }
 
     @Override
-    public void execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
+    public boolean execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
         if (!IridiumSkyblock.getInstance().getIslandManager().getTeamPermission(island, IridiumSkyblock.getInstance().getUserManager().getUser(player), "border")) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotManageBorder.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         if (args.length == 0) {
             player.openInventory(new BorderGUI(player.getOpenInventory().getTopInventory()).getInventory());
-            return;
+            return false;
         }
 
         Color color = Color.getColor(args[0]);
         if (color == null) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notAColor.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledBorders.getOrDefault(color, true)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().borderColorDisabled.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return;
+            return false;
         }
 
         island.setColor(color);
@@ -65,6 +65,8 @@ public class BorderCommand extends Command<Island, User> {
                                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                         ))
                 );
+
+        return true;
     }
 
     @Override

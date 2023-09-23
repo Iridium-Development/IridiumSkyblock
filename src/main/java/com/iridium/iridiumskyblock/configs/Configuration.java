@@ -19,39 +19,44 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
 
 
         this.levelRewards = ImmutableMap.<Integer, Reward>builder()
-                .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                .put(1, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&9&lLevel %island_level% Reward", Arrays.asList(
                         "&7Island Level %island_level% Rewards:",
-                        "&b&l* &b1000 Money",
-                        "&b&l* &b5 Island Crystals",
+                        "&9&l* &91000 Money",
+                        "&9&l* &95 Island Crystals",
                         "",
-                        "&b&l[!] &bLeft click to redeem"
+                        "&9&l[!] &9Left click to redeem"
                 )), Collections.emptyList(), 0, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(), 200, 0, XSound.ENTITY_PLAYER_LEVELUP))
 
-                .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&b&lLevel %island_level% Reward", Arrays.asList(
+                .put(5, new Reward(new Item(XMaterial.EXPERIENCE_BOTTLE, 1, "&9&lLevel %island_level% Reward", Arrays.asList(
                         "&7Island Level %island_level% Rewards:",
-                        "&b&l* &b10000 Money",
-                        "&b&l* &b10 Island Crystals",
+                        "&9&l* &910000 Money",
+                        "&9&l* &910 Island Crystals",
                         "",
-                        "&b&l[!] &bLeft click to redeem"
+                        "&9&l[!] &9Left click to redeem"
                 )), Collections.emptyList(), 0, new ImmutableMap.Builder<String, Double>().put("Crystals", 10.00).build(), 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
                 .build();
     }
 
-    public String islandCreateTitle = "&b&lIsland Created";
+    public String islandCreateTitle = "&9&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String defaultDescription = "Default island description :c";
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
     public String islandTitleTop = "&9%island_name%";
-    public String islandTitleBottom = "&7%island_description%";   
+    public String islandTitleBottom = "&7%island_description%";
     public String paster = "worldedit";
 
 
     public boolean obsidianBucket = true;
+    public boolean endPortalPick = true;
+    public boolean removeIslandBlocksOnDelete = false;
+    public boolean clearInventoryOnRegen = false;
+    public boolean clearEnderChestOnRegen = false;
+    public boolean allowPvPOnIslands = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;
     public int pasterDelayInTick = 1;
-    public int pasterLimitPerTick = 100;
+    public int pasterLimitPerTick = 10;
 
     public Item islandCrystal = new Item(XMaterial.NETHER_STAR, 1, "&9*** &9&lIsland Crystal &9***", Arrays.asList(
             "",

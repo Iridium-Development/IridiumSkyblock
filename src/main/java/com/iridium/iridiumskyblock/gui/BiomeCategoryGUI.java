@@ -99,6 +99,7 @@ public class BiomeCategoryGUI extends BackGUI {
         Player player = (Player) event.getWhoClicked();
         if (event.isLeftClick() && biomeItem.get().buyCost.canPurchase()) {
             IridiumSkyblock.getInstance().getBiomeManager().buy(player, biomeItem.get());
+            player.closeInventory();
         } else {
             IridiumSkyblock.getInstance().getBiomes().failSound.play(player);
         }

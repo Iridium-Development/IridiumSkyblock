@@ -4,6 +4,8 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
 
     public Messages() {
         super("Island", "is", "IridiumSkyblock", "&9");
+
+        teamCreated = "%prefix% &7Island Creation Completed!";
     }
 
     public String voidTeleport = "%prefix% &7You have fallen off your island. Teleporting home...";
@@ -18,6 +20,7 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     public String unknownSchematic = "%prefix% &7No schematic with that name exists.";
     public String noSafeLocation = "%prefix% &7Could not find a safe location to teleport to.";
     public String cannotHurtPlayers = "%prefix% &7You cannot hurt players on your Island.";
+    public String creatingIsland = "%prefix% &7Creating Island, please wait...";
     public String noBiomeCategory = "%prefix% &7No biome category with that name.";
     public String noBiome = "%prefix% &7No biome with that name.";
     public String changedBiome = "%prefix% &7%player% successfully changed your Island biome to %biome%.";

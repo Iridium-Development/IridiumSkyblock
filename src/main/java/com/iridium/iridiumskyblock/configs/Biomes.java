@@ -14,9 +14,9 @@ import java.util.*;
 public class Biomes {
 
     public Map<String, BiomeCategory> categories = ImmutableMap.<String, BiomeCategory>builder()
-            .put("Overworld", new BiomeCategory(new Item(XMaterial.GRASS_BLOCK, 20, 1, "&9&lOverworld", Collections.emptyList()), 54))
-            .put("Nether", new BiomeCategory(new Item(XMaterial.CRIMSON_NYLIUM, 22, 1, "&9&lNether", Collections.emptyList()), 36))
-            .put("End", new BiomeCategory(new Item(XMaterial.END_STONE, 24, 1, "&9&lEnd", Collections.emptyList()), 36))
+            .put("Overworld", new BiomeCategory(new Item(XMaterial.GRASS_BLOCK, 11, 1, "&9&lOverworld", Collections.emptyList()), 54))
+            .put("Nether", new BiomeCategory(new Item(XMaterial.CRIMSON_NYLIUM, 13, 1, "&9&lNether", Collections.emptyList()), 36))
+            .put("End", new BiomeCategory(new Item(XMaterial.END_STONE, 15, 1, "&9&lEnd", Collections.emptyList()), 36))
             .build();
     public Map<String, List<BiomeItem>> items = ImmutableMap.<String, List<BiomeItem>>builder()
             .put("Overworld", Arrays.asList(
