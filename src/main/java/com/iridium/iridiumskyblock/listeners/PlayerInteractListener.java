@@ -23,13 +23,6 @@ public class PlayerInteractListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        if (!(IridiumSkyblock.getInstance().getConfiguration().obsidianBucket
-                && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                && event.getClickedBlock().getType().equals(Material.OBSIDIAN)
-                && itemInHand.getType().equals(Material.BUCKET))) {
-            return;
-        }
-
         Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getClickedBlock().getLocation());
         if (!island.isPresent()) return;
         if (!IridiumSkyblock.getInstance().getTeamManager().getTeamPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
@@ -39,15 +32,32 @@ public class PlayerInteractListener implements Listener {
             return;
         }
 
-        event.getClickedBlock().setType(Material.AIR);
-        if (itemInHand.getAmount() > 1) {
-            itemInHand.setAmount(itemInHand.getAmount() - 1);
-            player.getInventory().addItem(new ItemStack(Material.LAVA_BUCKET)).values().forEach(itemStack ->
-                    player.getWorld().dropItem(player.getLocation(), itemStack)
-            );
-        } else {
-            itemInHand.setType(Material.LAVA_BUCKET);
+        if(IridiumSkyblock.getInstance().getConfiguration().obsidianBucket
+                && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+                && event.getClickedBlock().getType().equals(Material.OBSIDIAN)
+                && itemInHand.getType().equals(Material.BUCKET)) {
+
+            event.getClickedBlock().setType(Material.AIR);
+
+            if (itemInHand.getAmount() > 1) {
+                itemInHand.setAmount(itemInHand.getAmount() - 1);
+                player.getInventory().addItem(new ItemStack(Material.LAVA_BUCKET)).values().forEach(itemStack ->
+                        player.getWorld().dropItem(player.getLocation(), itemStack)
+                );
+            } else {
+                itemInHand.setType(Material.LAVA_BUCKET);
+            }
+        }
+
+        if(IridiumSkyblock.getInstance().getConfiguration().endPortalPick
+                && (event.getAction().equals(Action.LEFT_CLICK_BLOCK) && player.isSneaking())
+                && event.getClickedBlock().getType().equals(Material.END_PORTAL_FRAME)
+                && (itemInHand.getType().name().contains("PICKAXE"))) {
+            
+            event.getClickedBlock().breakNaturally();
+
+            player.getInventory().addItem(new ItemStack(Material.END_PORTAL_FRAME)).values().forEach(itemStack ->
+                    player.getWorld().dropItem(player.getLocation(), itemStack));
         }
     }
-
 }

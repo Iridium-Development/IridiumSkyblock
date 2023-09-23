@@ -48,6 +48,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
 
 
     public boolean obsidianBucket = true;
+    public boolean endPortalPick = true;
     public boolean removeIslandBlocksOnDelete = false;
     public boolean clearInventoryOnRegen = false;
     public boolean clearEnderChestOnRegen = false;
