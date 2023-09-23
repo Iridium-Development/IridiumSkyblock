@@ -18,30 +18,31 @@ import java.util.stream.Collectors;
 
 public class VisitCommand extends Command<Island, User> {
     public VisitCommand() {
-        super(Collections.singletonList("visit"), "Visit other islands", "%prefix% &7/is visit", "");
+        super(Collections.singletonList("visit"), "Visit other islands", "%prefix% &7/is visit", "", 0);
     }
 
     @Override
-    public void execute(User user, String[] args, IridiumTeams<Island, User> iridiumTeams) {
+    public boolean execute(User user, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
         if (args.length == 0) {
             player.openInventory(new VisitGUI(player.getOpenInventory().getTopInventory(), iridiumTeams).getInventory());
-            return;
+            return false;
         }
         Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaNameOrPlayer(args[0]);
         if (!island.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teamDoesntExistByName
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
-            return;
+            return false;
         }
         if (!IridiumSkyblock.getInstance().getIslandManager().canVisit(player, island.get())) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotVisit
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
-            return;
+            return false;
         }
         player.teleport(island.get().getHome());
+        return true;
     }
 
     @Override
