@@ -54,7 +54,10 @@ public class RegenCommand extends Command<Island, User> {
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 )));
 
+        IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
+
         IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+          
             if (IridiumSkyblock.getInstance().getTeamManager().teleport(player, island.getHome(), island)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
