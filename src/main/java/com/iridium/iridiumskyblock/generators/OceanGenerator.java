@@ -63,7 +63,7 @@ public class OceanGenerator extends ChunkGenerator {
         return chunkData;
     }
 
-    public void generateWater(World world, int x, int z) {
+    public void generateOcean(World world, int x, int z) {
         SimplexOctaveGenerator generator = new SimplexOctaveGenerator(new Random(world.getSeed()), 8);
         generator.setScale(0.005D);
 
@@ -107,14 +107,13 @@ public class OceanGenerator extends ChunkGenerator {
         }
 
         // Generate water or lava on top of the floor
-        XMaterial oceanMaterial = world.getEnvironment() == Environment.NETHER ? XMaterial.LAVA : XMaterial.WATER;
         for (int y = currentFloorHeight + 1; y <= getOceanGenerator(world.getEnvironment()).liquidHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
-            if (block.getType() != oceanMaterial.parseMaterial() && oceanMaterial.parseMaterial() != null) {
+            if (block.getType() != getOceanGenerator(world.getEnvironment()).liquidType.parseMaterial() && getOceanGenerator(world.getEnvironment()).liquidType.parseMaterial() != null) {
                 if (block.getState() instanceof InventoryHolder) {
                     ((InventoryHolder) block.getState()).getInventory().clear();
                 }
-                block.setType(oceanMaterial.parseMaterial(), false);
+                block.setType(getOceanGenerator(world.getEnvironment()).liquidType.parseMaterial(), false);
             }
         }
 
@@ -128,6 +127,9 @@ public class OceanGenerator extends ChunkGenerator {
                 block.setType(Material.AIR, false);
             }
         }
+
+        Random random = new Random((world.getSeed()));
+        shouldGenerateDecorations(world, random , x, z);
     }
 
     @Override
