@@ -5,6 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.RandomAccessList;
 import com.iridium.iridiumskyblock.enhancements.GeneratorEnhancementData;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFormEvent;
@@ -31,16 +32,18 @@ public class BlockFormListener implements Listener {
         if (!generatorMaterials.contains(newMaterial)) return;
         IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(event.getNewState().getLocation()).ifPresent(island -> {
             int upgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getTeamEnhancement(island, "generator").getLevel();
-            RandomAccessList<XMaterial> randomMaterialList = newMaterial == XMaterial.BASALT ? netherOreLevels.get(upgradeLevel) : normalOreLevels.get(upgradeLevel);
+            boolean isBasaltGenerator = newMaterial == XMaterial.BASALT;
+            RandomAccessList<XMaterial> randomMaterialList = isBasaltGenerator ? netherOreLevels.get(upgradeLevel) : normalOreLevels.get(upgradeLevel);
             if (randomMaterialList == null) return;
 
             Optional<XMaterial> xMaterialOptional = randomMaterialList.nextElement();
             if (!xMaterialOptional.isPresent()) return;
+
+            if( isBasaltGenerator && IridiumSkyblock.getInstance().getConfiguration().netherOnlyGenerator && event.getNewState().getWorld().getEnvironment() != World.Environment.NETHER) return;
 
             Material material = xMaterialOptional.get().parseMaterial();
             if (material == Material.COBBLESTONE && newMaterial == XMaterial.STONE) material = Material.STONE;
             if (material != null) event.getNewState().setType(material);
         });
     }
-
 }
