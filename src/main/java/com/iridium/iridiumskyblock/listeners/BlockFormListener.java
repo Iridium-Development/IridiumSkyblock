@@ -39,7 +39,7 @@ public class BlockFormListener implements Listener {
             Optional<XMaterial> xMaterialOptional = randomMaterialList.nextElement();
             if (!xMaterialOptional.isPresent()) return;
 
-            if((randomMaterialList == netherOreLevels.get(upgradeLevel)) && (IridiumSkyblock.getInstance().getConfiguration().netherOnlyGenerator) && (!(event.getNewState().getWorld().getEnvironment() == World.Environment.NETHER))) return;
+            if( isBasaltGenerator && IridiumSkyblock.getInstance().getConfiguration().netherOnlyGenerator && event.getNewState().getWorld().getEnvironment() != World.Environment.NETHER) return;
 
             Material material = xMaterialOptional.get().parseMaterial();
             if (material == Material.COBBLESTONE && newMaterial == XMaterial.STONE) material = Material.STONE;
