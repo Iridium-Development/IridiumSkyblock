@@ -32,8 +32,8 @@ public class BlockFormListener implements Listener {
         if (!generatorMaterials.contains(newMaterial)) return;
         IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(event.getNewState().getLocation()).ifPresent(island -> {
             int upgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getTeamEnhancement(island, "generator").getLevel();
-
-            RandomAccessList<XMaterial> randomMaterialList = newMaterial == XMaterial.BASALT ? netherOreLevels.get(upgradeLevel) : normalOreLevels.get(upgradeLevel);
+            boolean isBasaltGenerator = newMaterial == XMaterial.BASALT;
+            RandomAccessList<XMaterial> randomMaterialList = isBasaltGenerator ? netherOreLevels.get(upgradeLevel) : normalOreLevels.get(upgradeLevel);
             if (randomMaterialList == null) return;
 
             Optional<XMaterial> xMaterialOptional = randomMaterialList.nextElement();
