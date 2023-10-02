@@ -47,6 +47,13 @@ public class RegenCommand extends Command<Island, User> {
 
         Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
 
+        if(IridiumSkyblock.getInstance().getConfiguration().payPerRegen) {
+            boolean purchased = IridiumSkyblock.getInstance().getSchematicManager().buy(player, schematicConfig);
+            if(!purchased) {
+                return false;
+            }
+        }
+
         IridiumSkyblock.getInstance().getIslandManager().getTeamMembers(island).stream()
                 .map(User::getPlayer)
                 .filter(Objects::nonNull)
