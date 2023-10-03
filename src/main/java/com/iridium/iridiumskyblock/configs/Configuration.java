@@ -53,7 +53,6 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public boolean removeIslandBlocksOnDelete = false;
     public boolean clearInventoryOnRegen = false;
     public boolean clearEnderChestOnRegen = false;
-    public boolean payPerRegen = false;
     public boolean allowPvPOnIslands = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;

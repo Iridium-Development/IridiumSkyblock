@@ -30,7 +30,7 @@ public class Schematics {
     public Schematics(String color) {
         schematics = ImmutableMap.<String, SchematicConfig>builder()
                 .put("desert", new SchematicConfig(new Item(XMaterial.PLAYER_HEAD, 11, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGY0OTNkZDgwNjUzM2Q5ZDIwZTg0OTUzOTU0MzY1ZjRkMzY5NzA5Y2ViYzlkZGVmMDIyZDFmZDQwZDg2YTY4ZiJ9fX0=", 1, "&9&lDesert Island", Collections.singletonList("&7A starter desert island.")),
-                        new Schematics.Cost(100, new HashMap<>()), -0.5, 89, -0.5, 90, new SchematicWorld(Biome.DESERT,
+                        new Schematics.Cost(0, new HashMap<>()), -0.5, 89, -0.5, 90, new SchematicWorld(Biome.DESERT,
                         "desert.schem", 90.0, true
                 ), new SchematicWorld(Biome.NETHER_WASTES,
                         "desert_nether.schem", 90.0, true
@@ -38,7 +38,7 @@ public class Schematics {
                         "desert_end.schem", 90.0, true
                 )))
                 .put("jungle", new SchematicConfig(new Item(XMaterial.PLAYER_HEAD, 13, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjgzYWRmNDU2MGRlNDc0MTQwNDA5M2FjNjFjMzNmYjU1NmIzZDllZTUxNDBmNjIwMzYyNTg5ZmRkZWRlZmEyZCJ9fX0=", 1, "&9&lJungle Island", Collections.singletonList("&7A starter jungle island.")),
-                        new Schematics.Cost(100, new HashMap<>()), 1.5, 83, 1.5, 90, new SchematicWorld(Biome.JUNGLE,
+                        new Schematics.Cost(0, new HashMap<>()), 1.5, 83, 1.5, 90, new SchematicWorld(Biome.JUNGLE,
                         "jungle.schem", 90.0, true
                 ), new SchematicWorld(Biome.NETHER_WASTES,
                         "jungle_nether.schem", 90.0, true
@@ -46,7 +46,7 @@ public class Schematics {
                         "jungle_end.schem", 90.0, true
                 )))
                 .put("mushroom", new SchematicConfig(new Item(XMaterial.PLAYER_HEAD, 15, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE0NWQxYjQxN2NiZGRjMjE3NjdiMDYwNDRlODk5YjI2NmJmNzhhNjZlMjE4NzZiZTNjMDUxNWFiNTVkNzEifX19", 1, "&9&lMushroom Island", Collections.singletonList("&7A starter mushroom island.")),
-                        new Schematics.Cost(100, new HashMap<>()), 0.5, 89, -0.5, 90, new SchematicWorld(Biome.MUSHROOM_FIELDS,
+                        new Schematics.Cost(0, new HashMap<>()), 0.5, 89, -0.5, 90, new SchematicWorld(Biome.MUSHROOM_FIELDS,
                         "mushroom.schem", 90.0, true
                 ), new SchematicWorld(Biome.NETHER_WASTES,
                         "mushroom_nether.schem", 90.0, true
