@@ -137,13 +137,24 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
-        owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
+        String schematic = null;
+
+        if(IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() > 1) {
+            owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
+            schematic = schematicNameCompletableFuture.join();
+        } else {
+            for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+                schematic = (entry.getKey());
+            }
+        }
+
+        String finalSchematic = schematic;
         return CompletableFuture.supplyAsync(() -> {
-            String schematic = schematicNameCompletableFuture.join();
-            if (schematic == null) return null;
+
+            if (finalSchematic == null) return null;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
-            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
+            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(finalSchematic);
 
             IslandCreateEvent islandCreateEvent = getIslandCreateEvent(user, name, schematicConfig).join();
             if (islandCreateEvent.isCancelled()) return null;
