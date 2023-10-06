@@ -137,20 +137,24 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
-        String schematic = null;
 
         if(IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() > 1) {
             owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
-            schematic = schematicNameCompletableFuture.join();
-        } else {
-            for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
-                schematic = (entry.getKey());
-            }
         }
 
-        String finalSchematic = schematic;
         return CompletableFuture.supplyAsync(() -> {
 
+            String schematic = null;
+
+            if(IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
+                for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+                    schematic = (entry.getKey());
+                }
+            } else {
+                schematic = schematicNameCompletableFuture.join();
+            }
+
+            String finalSchematic = schematic;
             if (finalSchematic == null) return null;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
