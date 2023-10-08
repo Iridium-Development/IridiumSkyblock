@@ -125,66 +125,66 @@ public class SchematicManager {
         return completableFuture;
     }
 
-    public boolean buy(Player player, Schematics.SchematicConfig schematic) {
-        if (!canPurchase(player, schematic)) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            IridiumSkyblock.getInstance().getSchematics().failSound.play(player);
+    public boolean processTransaction(Player player, Schematics.SchematicConfig schematic) {
+
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaID(user.getTeamID());
+
+        if(!island.isPresent()){
+            //NO ISLAND
             return false;
         }
 
-        purchase(player, schematic);
+        TeamBank bank;
+
+        double bankBalance;
+        List<Placeholder> bankPlaceholders;
+        double moneyCost = schematic.regenCost.money;
+        Economy economy = IridiumSkyblock.getInstance().getEconomy();
+
+        if(moneyCost == 0 || economy != null && economy.getBalance(player) >= moneyCost) {
+            //INVALID TRANSACTION
+            return false;
+        }
+
+        for (String schematicBankItem : schematic.regenCost.bankItems.keySet()) {
+
+            bank = IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island.get(), schematicBankItem);
+            bankBalance = bank.getNumber();
+
+            double cost = round(schematic.regenCost.bankItems.get(schematicBankItem), 2);
+
+            if (bank.getNumber() < cost) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                IridiumSkyblock.getInstance().getSchematics().failSound.play(player);
+
+                return false;
+            }
+
+            double finalBankBalance = bankBalance;
+            bankPlaceholders = IridiumSkyblock.getInstance().getBankItemList().stream()
+                    .map(BankItem::getName)
+                    .map(name -> new Placeholder(name + "_cost", formatPrice(finalBankBalance)))
+                    .collect(Collectors.toList());
+
+            player.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().paidForRegen
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                            .replace("%player%", player.getName())
+                            .replace("%schematic%", StringUtils.color(schematic.item.displayName))
+                            .replace("%bank_cost%", formatPrice(cost))
+                            .replace ("%vault_cost%", formatPrice(moneyCost)),
+                    bankPlaceholders)
+            ));
+
+            bank.setNumber(bankBalance - cost);
+        }
+
+        economy.withdrawPlayer(player, moneyCost);
 
         IridiumSkyblock.getInstance().getSchematics().successSound.play(player);
 
-        List<Placeholder> bankPlaceholders = IridiumSkyblock.getInstance().getBankItemList().stream()
-                .map(BankItem::getName)
-                .map(name -> new Placeholder(name + "_cost", formatPrice(getBankBalance(player, name))))
-                .collect(Collectors.toList());
-
-        player.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().paidForRegen
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                        .replace("%player%", player.getName())
-                        .replace("%schematic%", StringUtils.color(schematic.item.displayName))
-                        .replace("%vault_cost%", formatPrice(schematic.regenCost.money)),
-                bankPlaceholders)
-        ));
-
         return true;
-    }
-
-    private double getBankBalance(Player player, String bankItem) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        return IridiumSkyblock.getInstance().getTeamManager().getTeamViaID(user.getTeamID())
-                .map(team -> IridiumSkyblock.getInstance().getTeamManager().getTeamBank(team, bankItem))
-                .map(TeamBank::getNumber)
-                .orElse(0.0);
-    }
-
-    private void setBankBalance(Player player, String bankItem, double amount) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaID(user.getTeamID());
-        if (!island.isPresent()) return;
-        IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island.get(), bankItem).setNumber(amount);
-    }
-
-    private boolean canPurchase(Player player, Schematics.SchematicConfig schematic) {
-        double moneyCost = schematic.regenCost.money;
-        Economy economy = IridiumSkyblock.getInstance().getEconomy();
-        for (String bankItem : schematic.regenCost.bankItems.keySet()) {
-            double cost = round(schematic.regenCost.bankItems.get(bankItem), 2);
-            if (getBankBalance(player, bankItem) < cost) return false;
-        }
-
-        return moneyCost == 0 || economy != null && economy.getBalance(player) >= schematic.regenCost.money;
-    }
-
-    private void purchase(Player player, Schematics.SchematicConfig schematic) {
-        IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, schematic.regenCost.money);
-
-        for (String bankItem : schematic.regenCost.bankItems.keySet()) {
-            setBankBalance(player, bankItem, getBankBalance(player, bankItem) - round(schematic.regenCost.bankItems.get(bankItem), 2));
-        }
     }
 
     private double round(double value, int places) {
