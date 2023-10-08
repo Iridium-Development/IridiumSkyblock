@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
+import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
@@ -37,6 +38,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -49,12 +52,44 @@ public class IslandManager extends TeamManager<Island, User> {
         super(IridiumSkyblock.getInstance());
     }
 
-    public void createWorld(World.Environment environment, String name) {
+    public void createWorld(World.Environment environment, String name) throws IOException {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
         Bukkit.createWorld(worldCreator);
+
+        if(Bukkit.getWorld(worldCreator.name()).getEnvironment() == World.Environment.THE_END) {
+
+            Bukkit.unloadWorld(worldCreator.name(), true);
+
+            File file = new File(worldCreator.name() + File.separator + "level.dat");
+            NBTFile worldFile = new NBTFile(file);
+
+            if(worldFile.getCompound("Data").getCompound("DragonFight") == null) {
+                IridiumSkyblock.getInstance().getLogger().warning("Cannot load \"DragonFight\" compound because \"DragonFight\" is null.");
+                return;
+            }
+
+            NBTCompound compound = worldFile.getCompound("Data").getCompound("DragonFight");
+            Byte PreviouslyKilled = compound.getByte("PreviouslyKilled");
+            Byte DragonKilled = compound.getByte("DragonKilled");
+            Byte NeedsStateScanning = compound.getByte("NeedsStateScanning");
+
+            if(PreviouslyKilled == (byte) 0) {
+                compound.setByte("PreviouslyKilled", (byte) 1);
+            }
+            if(DragonKilled == 0) {
+                compound.setByte("DragonKilled", (byte) 1);
+            }
+            if(NeedsStateScanning == 1) {
+                compound.setByte("NeedsStateScanning", (byte) 0);
+            }
+
+            worldFile.save();
+
+            Bukkit.createWorld(worldCreator);
+        }
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
