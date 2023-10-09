@@ -142,8 +142,8 @@ public class SchematicManager {
         double moneyCost = schematic.regenCost.money;
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
 
-        if(moneyCost == 0 || economy != null && economy.getBalance(player) >= moneyCost) {
-            //INVALID TRANSACTION
+        if(moneyCost != 0 && economy != null && economy.getBalance(player) < moneyCost) {
+            //Cannot Afford
             return false;
         }
 
