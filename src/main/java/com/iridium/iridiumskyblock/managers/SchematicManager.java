@@ -135,9 +135,6 @@ public class SchematicManager {
             return false;
         }
 
-        TeamBank bank;
-
-        double bankBalance;
         List<Placeholder> bankPlaceholders;
         double moneyCost = schematic.regenCost.money;
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
