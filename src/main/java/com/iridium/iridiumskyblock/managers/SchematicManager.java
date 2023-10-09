@@ -149,8 +149,8 @@ public class SchematicManager {
 
         for (String schematicBankItem : schematic.regenCost.bankItems.keySet()) {
 
-            bank = IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island.get(), schematicBankItem);
-            bankBalance = bank.getNumber();
+            TeamBank bank = IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island.get(), schematicBankItem);
+            double bankBalance = bank.getNumber();
 
             double cost = round(schematic.regenCost.bankItems.get(schematicBankItem), 2);
 
