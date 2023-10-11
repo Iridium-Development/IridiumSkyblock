@@ -144,7 +144,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     @Override
     public void loadConfigs() {
-        backupConfigs("backup");
+        super.backupConfigs("backup");
         this.configuration = getPersist().load(Configuration.class);
         this.messages = getPersist().load(Messages.class);
         this.commands = getPersist().load(Commands.class);
@@ -272,33 +272,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
                 getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
             }
         }
-    }
-
-    private void backupConfigs(String backupFolderName) {
-
-        getLogger().info("Attempting to create backup of configuration files...");
-
-        File pluginFolder = new File(getDataFolder().getPath());
-        File backupFolder = new File(pluginFolder.getPath() + File.separator + backupFolderName);
-        if (!backupFolder.exists()) backupFolder.mkdir();
-
-        File[] configFiles = pluginFolder.listFiles((dir, name) -> name.endsWith(".yml") || name.endsWith(".db"));
-
-        if(configFiles == null) {
-            getLogger().info("No files found.");
-            return;
-        }
-
-        for (File configFile : configFiles) {
-            File backupFile = new File(backupFolder, configFile.getName());
-
-            try {
-                Files.copy(configFile.toPath(), backupFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException exception) {
-                getLogger().warning("Could not copy " + configFile.getName() + " to " + backupFile.getAbsolutePath());
-            }
-        }
-        getLogger().info("Backup successful, check " + backupFolder.getPath() + ".");
     }
 
     @Override
