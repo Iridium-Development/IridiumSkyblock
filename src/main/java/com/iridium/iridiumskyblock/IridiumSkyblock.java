@@ -214,6 +214,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getDatabaseManager().getTeamMissionDataTableManager().save();
         getDatabaseManager().getTeamRewardsTableManager().save();
         getDatabaseManager().getTeamSettingsTableManager().save();
+        getDatabaseManager().getLostItemsTableManager().save();
     }
 
     @Override

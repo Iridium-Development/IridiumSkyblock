@@ -3,10 +3,8 @@ package com.iridium.iridiumskyblock.managers;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.managers.tablemanagers.ForeignIslandTableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.TableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
+import com.iridium.iridiumskyblock.database.LostItems;
+import com.iridium.iridiumskyblock.managers.tablemanagers.*;
 import com.iridium.iridiumteams.database.*;
 import com.iridium.iridiumteams.database.types.*;
 import com.j256.ormlite.field.DataPersisterManager;
@@ -32,6 +30,7 @@ public class DatabaseManager {
 
     private UserTableManager userTableManager;
     private IslandTableManager islandTableManager;
+    private LostItemsTableManager lostItemsTableManager;
     private ForeignIslandTableManager<TeamInvite, Integer> invitesTableManager;
     private ForeignIslandTableManager<TeamTrust, Integer> trustTableManager;
     private ForeignIslandTableManager<TeamPermission, Integer> permissionsTableManager;
@@ -78,6 +77,7 @@ public class DatabaseManager {
         this.teamMissionDataTableManager = new TableManager<>(connectionSource, TeamMissionData.class, Comparator.comparing(TeamMissionData::getMissionID).thenComparing(TeamMissionData::getMissionIndex));
         this.teamRewardsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamReward.class, Comparator.comparing(TeamReward::getTeamID));
         this.teamSettingsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamSetting.class, Comparator.comparing(TeamSetting::getTeamID).thenComparing(TeamSetting::getSetting));
+        this.lostItemsTableManager = new LostItemsTableManager(connectionSource, LostItems.class, Comparator.comparing(LostItems::getUuid));
     }
 
     /**
