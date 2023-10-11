@@ -56,7 +56,7 @@ public class PlayerMoveListener implements Listener {
                             continue;
                         }
 
-                        lostItemsMap.put(originalItem, lostItemsMap.getOrDefault(originalItem, 0) + 1);
+                        lostItemsMap.compute(originalItem, (key, value) -> value == null ? 1 : value + 1)));
                     }
 
                     item.setAmount(item.getAmount() - lostItemsMap.getOrDefault(originalItem, 0));
