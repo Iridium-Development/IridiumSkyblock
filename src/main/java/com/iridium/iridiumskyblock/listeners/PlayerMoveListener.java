@@ -81,10 +81,6 @@ public class PlayerMoveListener implements Listener {
                                         .replace("%type%", item.getType().name().trim().replace("_", " ")))
                                 .toArray(String[]::new)))
                 ));
-
-                System.out.println(String.join(", ", Arrays.stream(IridiumSkyblock.getInstance().getDatabaseManager().getLostItemsTableManager().getLostItems(event.getPlayer().getUniqueId()).get(0).getItems())
-                        .map(item -> item.getType().name().trim().replace("_", " "))
-                        .toArray(String[]::new)));
             }
         });
     }
