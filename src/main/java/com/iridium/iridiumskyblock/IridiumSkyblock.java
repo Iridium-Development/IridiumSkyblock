@@ -10,6 +10,7 @@ import com.iridium.iridiumskyblock.placeholders.IslandPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
 import com.iridium.iridiumteams.IridiumTeams;
+import com.iridium.iridiumteams.listeners.BlockPlaceListener;
 import com.iridium.iridiumteams.managers.MissionManager;
 import com.iridium.iridiumteams.managers.ShopManager;
 import lombok.Getter;
@@ -140,6 +141,9 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerCraftListener(), this);
+        Bukkit.getPluginManager().registerEvents(new com.iridium.iridiumskyblock.listeners.BlockPlaceListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryMoveItemListener(), this);
     }
 
     @Override
