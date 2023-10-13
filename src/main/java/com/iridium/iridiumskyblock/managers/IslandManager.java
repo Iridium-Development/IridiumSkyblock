@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
+import com.iridium.iridiumcore.dependencies.nbtapi.NBTType;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XBiome;
@@ -648,6 +649,10 @@ public class IslandManager extends TeamManager<Island, User> {
             IridiumSkyblock.getInstance().getIslandManager().getMembersOnIsland(island).forEach(member ->
                     member.getPlayer().getEnderChest().clear());
         }
+    }
+
+    public boolean isIslandCrystal(ItemStack item) {
+        return new NBTItem(item).hasTag("iridiumskyblock", NBTType.NBTTagCompound);
     }
 
 }
