@@ -12,8 +12,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class PlayerMoveListener implements Listener {
