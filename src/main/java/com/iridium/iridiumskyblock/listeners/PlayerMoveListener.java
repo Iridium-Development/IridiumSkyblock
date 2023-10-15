@@ -11,8 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class PlayerMoveListener implements Listener {
 
@@ -23,65 +25,56 @@ public class PlayerMoveListener implements Listener {
         IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(event.getPlayer());
 
         user.getCurrentIsland().ifPresent(island -> {
-            if (!(event.getPlayer().getLocation().getY() < LocationUtils.getMinHeight(event.getPlayer().getWorld()))) {
-                return;
-            }
+            if (event.getPlayer().getLocation().getY() >= LocationUtils.getMinHeight(event.getPlayer().getWorld())) return;
 
             VoidEnhancementData voidEnhancementData = IridiumSkyblock.getInstance()
                     .getEnhancements().voidEnhancement.levels
                     .get(IridiumSkyblock.getInstance().getTeamManager().getTeamEnhancement(island, "void").getLevel());
 
-            if (voidEnhancementData == null || !voidEnhancementData.enabled) {
-                return;
-            }
+            if (voidEnhancementData == null || !voidEnhancementData.enabled) return;
 
-            if (!IridiumSkyblock.getInstance().getTeamManager().teleport(event.getPlayer(), island.getHome(), island)) {
-                return;
-            }
+            if (!IridiumSkyblock.getInstance().getTeamManager().teleport(event.getPlayer(), island.getHome(), island)) return;
 
             event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().voidTeleport
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
-            HashMap<ItemStack, Integer> lostItemsMap = new HashMap<>();
-            if (voidEnhancementData.itemLossChance > 0) {
-                for (ItemStack item : event.getPlayer().getInventory().getContents()) {
-                    if (item == null) {
-                        continue;
+            if (voidEnhancementData.itemLossChance <= 0) return;
+
+            ArrayList<ItemStack> lostItems = new ArrayList<>();
+            for (ItemStack item : event.getPlayer().getInventory().getContents()) {
+                if (item == null) continue;
+
+                ItemStack originalItem = item.clone();
+
+                int lostAmount = 0;
+                for (int i = 0; i < item.getAmount(); i++) {
+                    if (Math.random() * 100 <= voidEnhancementData.itemLossChance) {
+                        lostAmount++;
                     }
-
-                    ItemStack originalItem = item.clone();
-
-                    for (int i = 0; i < item.getAmount(); i++) {
-                        if (Math.random() * 100 > voidEnhancementData.itemLossChance) {
-                            continue;
-                        }
-
-                        lostItemsMap.compute(originalItem, (key, value) -> value == null ? 1 : value + 1);
-                    }
-
-                    item.setAmount(item.getAmount() - lostItemsMap.getOrDefault(originalItem, 0));
                 }
 
-                if (lostItemsMap.isEmpty()) {
-                    return;
-                }
+                if (lostAmount == 0) continue;
 
-                IridiumSkyblock.getInstance().getDatabaseManager().getLostItemsTableManager().addEntry(new LostItems(
-                        event.getPlayer().getUniqueId(), lostItemsMap.keySet().toArray(new ItemStack[0])));
-                IridiumSkyblock.getInstance().getDatabaseManager().getLostItemsTableManager().save();
+                int newAmount = originalItem.getAmount() - lostAmount;
+                item.setAmount(newAmount);
 
-                event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance()
-                        .getMessages().voidLostItems
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                        .replace("%items%", String.join(", ", Arrays
-                                .stream(lostItemsMap.keySet().toArray(new ItemStack[0]))
-                                .map(item -> IridiumSkyblock.getInstance().getMessages().itemsString
-                                        .replace("%amount%", lostItemsMap.get(item).toString())
-                                        .replace("%item_name%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : "%type%")
-                                        .replace("%type%", item.getType().name().trim().replace("_", " ")))
-                                .toArray(String[]::new)))
-                ));
+                originalItem.setAmount(lostAmount);
+                lostItems.add(originalItem);
             }
+
+            IridiumSkyblock.getInstance().getDatabaseManager().getLostItemsTableManager().addEntry(new LostItems(
+                    event.getPlayer().getUniqueId(), lostItems.toArray(new ItemStack[0])));
+
+            event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance()
+                    .getMessages().voidLostItems
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%items%", lostItems.stream()
+                            .map(item -> IridiumSkyblock.getInstance().getMessages().itemsString
+                                    .replace("%amount%", String.valueOf(item.getAmount()))
+                                    .replace("%item_name%", item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : "%type%")
+                                    .replace("%type%", item.getType().name().trim().replace("_", " ")))
+                            .collect(Collectors.joining(", ")))
+            ));
         });
     }
 }
