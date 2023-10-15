@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -26,7 +27,7 @@ public class LostItems extends DatabaseObject {
     private @NotNull UUID uuid;
 
     @DatabaseField(columnName = "time")
-    private long time;
+    private LocalDateTime time;
 
     @DatabaseField(columnName = "items", dataType = DataType.SERIALIZABLE)
     private String[] items;
@@ -45,7 +46,7 @@ public class LostItems extends DatabaseObject {
 
     public LostItems(@NotNull UUID uuid, ItemStack[] items) {
         this.uuid = uuid;
-        this.time = System.currentTimeMillis();
+        this.time = LocalDateTime.now();
         setItems(items);
     }
 }
