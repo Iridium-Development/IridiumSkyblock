@@ -23,7 +23,7 @@ public class RegenCommand extends Command<Island, User> {
     @Override
     public boolean execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
-        if (args.length == 0) {
+        if (args.length == 0 && IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() > 1) {
             if (!IridiumSkyblock.getInstance().getIslandManager().getTeamPermission(island, IridiumSkyblock.getInstance().getUserManager().getUser(player), "regen")) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
@@ -36,7 +36,7 @@ public class RegenCommand extends Command<Island, User> {
         }
 
         Optional<String> schematic = IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
-                .filter(config -> config.equalsIgnoreCase(args[0]))
+                .filter(config -> IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1 || config.equalsIgnoreCase(args[0]))
                 .findFirst();
         if (!schematic.isPresent()) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownSchematic
