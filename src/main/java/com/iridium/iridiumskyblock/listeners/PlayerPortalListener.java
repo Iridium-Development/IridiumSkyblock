@@ -2,6 +2,8 @@ package com.iridium.iridiumskyblock.listeners;
 
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,7 +54,15 @@ public class PlayerPortalListener implements Listener {
                     return;
                 }
                 World world = Objects.equals(event.getFrom().getWorld(), end) ? IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NORMAL) : end;
-                event.setTo(island.getCenter(world));
+                Location location = LocationUtils.getSafeLocation(island.getCenter(world), island);
+                if (location == null) {
+                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSafeLocation
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    ));
+                    event.setCancelled(true);
+                    return;
+                }
+                event.setTo(location);
             }
         });
     }
