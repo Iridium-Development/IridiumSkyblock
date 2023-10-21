@@ -138,19 +138,6 @@ public class SchematicManager {
         }
 
         purchase(player, schematic);
-
-        List<Placeholder> bankPlaceholders = IridiumSkyblock.getInstance().getBankItemList().stream()
-                .map(BankItem::getName)
-                .map(name -> new Placeholder(name + "_cost", formatPrice(getBankBalance(player, name))))
-                .collect(Collectors.toList());
-
-        player.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().paidForRegen
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                        .replace("%player%", player.getName())
-                        .replace("%schematic%", StringUtils.color(schematic.item.displayName))
-                        .replace("%vault_cost%", formatPrice(schematic.regenCost.money)),
-                bankPlaceholders)
-        ));
         return true;
     }
 
@@ -189,19 +176,5 @@ public class SchematicManager {
             setBankBalance(player, bankItem, getBankBalance(player, bankItem) - cost);
         }
         IridiumSkyblock.getInstance().getSchematics().successSound.play(player);
-    }
-
-    private double round(double value, int places) {
-        BigDecimal bigDecimal = BigDecimal.valueOf(value);
-        bigDecimal = bigDecimal.setScale(places, RoundingMode.HALF_UP);
-        return bigDecimal.doubleValue();
-    }
-
-    public String formatPrice(double value) {
-        value = round(value, 2);
-        if (IridiumSkyblock.getInstance().getSchematics().abbreviatePrices) {
-            return IridiumSkyblock.getInstance().getConfiguration().numberFormatter.format(value);
-        }
-        return String.valueOf(value);
     }
 }
