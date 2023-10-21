@@ -144,13 +144,11 @@ public class SchematicManager {
                 .map(name -> new Placeholder(name + "_cost", formatPrice(getBankBalance(player, name))))
                 .collect(Collectors.toList());
 
-        double moneyCost = round(schematic.regenCost.money, 2);
-
         player.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().paidForRegen
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                         .replace("%player%", player.getName())
                         .replace("%schematic%", StringUtils.color(schematic.item.displayName))
-                        .replace ("%vault_cost%", formatPrice(moneyCost)),
+                        .replace("%vault_cost%", formatPrice(schematic.regenCost.money)),
                 bankPlaceholders)
         ));
         return true;
@@ -172,10 +170,10 @@ public class SchematicManager {
     }
 
     private boolean canPurchase(Player player, Schematics.SchematicConfig schematic) {
-        double moneyCost = round(schematic.regenCost.money, 2);
+        double moneyCost = schematic.regenCost.money;
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
         for (String bankItem : schematic.regenCost.bankItems.keySet()) {
-            double cost = round(schematic.regenCost.bankItems.get(bankItem), 2);
+            double cost = schematic.regenCost.bankItems.get(bankItem);
             if (getBankBalance(player, bankItem) < cost) return false;
         }
 
@@ -183,11 +181,11 @@ public class SchematicManager {
     }
 
     private void purchase(Player player, Schematics.SchematicConfig schematic) {
-        double moneyCost = round(schematic.regenCost.money, 2);
+        double moneyCost = schematic.regenCost.money;
         IridiumSkyblock.getInstance().getEconomy().withdrawPlayer(player, moneyCost);
 
         for (String bankItem : schematic.regenCost.bankItems.keySet()) {
-            double cost = round(schematic.regenCost.bankItems.get(bankItem), 2);
+            double cost = schematic.regenCost.bankItems.get(bankItem);
             setBankBalance(player, bankItem, getBankBalance(player, bankItem) - cost);
         }
         IridiumSkyblock.getInstance().getSchematics().successSound.play(player);
@@ -200,6 +198,7 @@ public class SchematicManager {
     }
 
     public String formatPrice(double value) {
+        value = round(value, 2);
         if (IridiumSkyblock.getInstance().getSchematics().abbreviatePrices) {
             return IridiumSkyblock.getInstance().getConfiguration().numberFormatter.format(value);
         }
