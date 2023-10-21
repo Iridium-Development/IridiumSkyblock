@@ -66,12 +66,7 @@ public class IslandManager extends TeamManager<Island, User> {
                 File file = new File(worldCreator.name() + File.separator + "level.dat");
                 NBTFile worldFile = new NBTFile(file);
 
-                if (worldFile.getCompound("Data").getCompound("DragonFight") == null) {
-                    IridiumSkyblock.getInstance().getLogger().warning("Cannot load \"DragonFight\" compound because \"DragonFight\" is null.");
-                    return;
-                }
-
-                NBTCompound compound = worldFile.getCompound("Data").getCompound("DragonFight");
+                NBTCompound compound = worldFile.getOrCreateCompound("Data").getOrCreateCompound("DragonFight");
 
                 compound.setBoolean("PreviouslyKilled", true);
                 compound.setBoolean("DragonKilled", true);
