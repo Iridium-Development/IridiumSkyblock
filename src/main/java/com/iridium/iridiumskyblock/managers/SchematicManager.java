@@ -139,8 +139,6 @@ public class SchematicManager {
 
         purchase(player, schematic);
 
-        IridiumSkyblock.getInstance().getShop().successSound.play(player);
-
         List<Placeholder> bankPlaceholders = IridiumSkyblock.getInstance().getBankItemList().stream()
                 .map(BankItem::getName)
                 .map(name -> new Placeholder(name + "_cost", formatPrice(getBankBalance(player, name))))
@@ -192,6 +190,7 @@ public class SchematicManager {
             double cost = round(schematic.regenCost.bankItems.get(bankItem), 2);
             setBankBalance(player, bankItem, getBankBalance(player, bankItem) - cost);
         }
+        IridiumSkyblock.getInstance().getSchematics().successSound.play(player);
     }
 
     private double round(double value, int places) {
