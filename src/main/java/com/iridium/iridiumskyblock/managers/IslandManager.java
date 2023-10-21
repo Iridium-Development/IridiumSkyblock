@@ -134,12 +134,23 @@ public class IslandManager extends TeamManager<Island, User> {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
+    private CompletableFuture<String> getSchematic(Player player) {
+        CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
+        if (IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
+            for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+                schematicNameCompletableFuture.complete(entry.getKey());
+                return schematicNameCompletableFuture;
+            }
+        }
+
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory()));
+        return schematicNameCompletableFuture;
+    }
+
     @Override
     public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
-        CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
-        owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
         return CompletableFuture.supplyAsync(() -> {
-            String schematic = schematicNameCompletableFuture.join();
+            String schematic = getSchematic(owner).join();
             if (schematic == null) return null;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
