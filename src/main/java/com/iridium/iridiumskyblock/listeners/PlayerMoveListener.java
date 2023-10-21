@@ -31,7 +31,7 @@ public class PlayerMoveListener implements Listener {
 
             if (voidEnhancementData == null || !voidEnhancementData.enabled) return;
 
-            if (!IridiumSkyblock.getInstance().getTeamManager().teleport(event.getPlayer(), island.getHome(), island)) return;
+            if (!IridiumSkyblock.getInstance().getTeamManager().teleport(event.getPlayer(), event.getPlayer().getLocation(), island)) return;
 
             event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().voidTeleport
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
