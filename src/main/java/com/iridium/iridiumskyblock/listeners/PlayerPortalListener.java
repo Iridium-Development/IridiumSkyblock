@@ -34,8 +34,26 @@ public class PlayerPortalListener implements Listener {
                 }
                 World world = Objects.equals(event.getFrom().getWorld(), nether) ? IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NORMAL) : nether;
                 event.setTo(island.getCenter(world));
+            } else if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+                if (island.getLevel() < IridiumSkyblock.getInstance().getConfiguration().endUnlockLevel) {
+                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().endLocked
+                            .replace("%level%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().endUnlockLevel))
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    ));
+                    event.setCancelled(true);
+                    return;
+                }
+                World end = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.THE_END);
+                if (end == null) {
+                    event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().endIslandsDisabled
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    ));
+                    event.setCancelled(true);
+                    return;
+                }
+                World world = Objects.equals(event.getFrom().getWorld(), end) ? IridiumSkyblock.getInstance().getTeamManager().getWorld(World.Environment.NORMAL) : end;
+                event.setTo(island.getCenter(world));
             }
         });
     }
-
 }
