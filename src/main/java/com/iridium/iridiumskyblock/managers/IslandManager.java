@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
+import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
@@ -37,6 +38,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -54,7 +57,35 @@ public class IslandManager extends TeamManager<Island, User> {
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
-        Bukkit.createWorld(worldCreator);
+        World world = Bukkit.createWorld(worldCreator);
+
+        if (world != null && world.getEnvironment() == World.Environment.THE_END) {
+            Bukkit.unloadWorld(world.getName(), true);
+
+            try {
+                File file = new File(worldCreator.name() + File.separator + "level.dat");
+                NBTFile worldFile = new NBTFile(file);
+
+                if (worldFile.getCompound("Data").getCompound("DragonFight") == null) {
+                    IridiumSkyblock.getInstance().getLogger().warning("Cannot load \"DragonFight\" compound because \"DragonFight\" is null.");
+                    return;
+                }
+
+                NBTCompound compound = worldFile.getCompound("Data").getCompound("DragonFight");
+
+                compound.setBoolean("PreviouslyKilled", true);
+                compound.setBoolean("DragonKilled", true);
+                compound.setBoolean("NeedsStateScanning", false);
+
+                worldFile.save();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                IridiumSkyblock.getInstance().getLogger().warning("Failed to delete dragon from world");
+            }
+
+            // Note this world is already created, we are just loading it here
+            Bukkit.createWorld(worldCreator);
+        }
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
