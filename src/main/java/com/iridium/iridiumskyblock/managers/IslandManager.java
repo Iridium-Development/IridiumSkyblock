@@ -134,31 +134,27 @@ public class IslandManager extends TeamManager<Island, User> {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
-    @Override
-    public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
+    private CompletableFuture<String> getSchematic(Player player) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
-
-        if(IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() > 1) {
-            owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
+        if (IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
+            for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+                schematicNameCompletableFuture.complete(entry.getKey());
+                return schematicNameCompletableFuture;
+            }
         }
 
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory()));
+        return schematicNameCompletableFuture;
+    }
+
+    @Override
+    public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
         return CompletableFuture.supplyAsync(() -> {
-
-            String schematic = null;
-
-            if(IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
-                for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
-                    schematic = (entry.getKey());
-                }
-            } else {
-                schematic = schematicNameCompletableFuture.join();
-            }
-
-            String finalSchematic = schematic;
-            if (finalSchematic == null) return null;
+            String schematic = getSchematic(owner).join();
+            if (schematic == null) return null;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
-            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(finalSchematic);
+            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
 
             IslandCreateEvent islandCreateEvent = getIslandCreateEvent(user, name, schematicConfig).join();
             if (islandCreateEvent.isCancelled()) return null;
