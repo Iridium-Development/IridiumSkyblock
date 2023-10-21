@@ -89,13 +89,9 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
         this.teamManager = new IslandManager();
 
-        try {
-            this.teamManager.createWorld(World.Environment.NORMAL, configuration.worldName);
-            this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
-            this.teamManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        this.teamManager.createWorld(World.Environment.NORMAL, configuration.worldName);
+        this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
+        this.teamManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
 
         this.schematicManager = new SchematicManager();
         this.userManager = new UserManager();

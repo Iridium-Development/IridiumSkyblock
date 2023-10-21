@@ -52,42 +52,38 @@ public class IslandManager extends TeamManager<Island, User> {
         super(IridiumSkyblock.getInstance());
     }
 
-    public void createWorld(World.Environment environment, String name) throws IOException {
+    public void createWorld(World.Environment environment, String name) {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
-        Bukkit.createWorld(worldCreator);
+        World world = Bukkit.createWorld(worldCreator);
 
-        if(Bukkit.getWorld(worldCreator.name()).getEnvironment() == World.Environment.THE_END) {
+        if (world != null && world.getEnvironment() == World.Environment.THE_END) {
+            Bukkit.unloadWorld(world.getName(), true);
 
-            Bukkit.unloadWorld(worldCreator.name(), true);
+            try {
+                File file = new File(worldCreator.name() + File.separator + "level.dat");
+                NBTFile worldFile = new NBTFile(file);
 
-            File file = new File(worldCreator.name() + File.separator + "level.dat");
-            NBTFile worldFile = new NBTFile(file);
+                if (worldFile.getCompound("Data").getCompound("DragonFight") == null) {
+                    IridiumSkyblock.getInstance().getLogger().warning("Cannot load \"DragonFight\" compound because \"DragonFight\" is null.");
+                    return;
+                }
 
-            if(worldFile.getCompound("Data").getCompound("DragonFight") == null) {
-                IridiumSkyblock.getInstance().getLogger().warning("Cannot load \"DragonFight\" compound because \"DragonFight\" is null.");
-                return;
+                NBTCompound compound = worldFile.getCompound("Data").getCompound("DragonFight");
+
+                compound.setBoolean("PreviouslyKilled", true);
+                compound.setBoolean("DragonKilled", true);
+                compound.setBoolean("NeedsStateScanning", false);
+
+                worldFile.save();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                IridiumSkyblock.getInstance().getLogger().warning("Failed to delete dragon from world");
             }
 
-            NBTCompound compound = worldFile.getCompound("Data").getCompound("DragonFight");
-            Byte PreviouslyKilled = compound.getByte("PreviouslyKilled");
-            Byte DragonKilled = compound.getByte("DragonKilled");
-            Byte NeedsStateScanning = compound.getByte("NeedsStateScanning");
-
-            if(PreviouslyKilled == (byte) 0) {
-                compound.setByte("PreviouslyKilled", (byte) 1);
-            }
-            if(DragonKilled == 0) {
-                compound.setByte("DragonKilled", (byte) 1);
-            }
-            if(NeedsStateScanning == 1) {
-                compound.setByte("NeedsStateScanning", (byte) 0);
-            }
-
-            worldFile.save();
-
+            // Note this world is already created, we are just loading it here
             Bukkit.createWorld(worldCreator);
         }
     }
