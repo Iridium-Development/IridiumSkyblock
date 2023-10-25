@@ -19,7 +19,7 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (!IridiumSkyblock.getInstance().getConfiguration().allowPvPOnIslands) return;
+        if (IridiumSkyblock.getInstance().getConfiguration().allowPvPOnIslands) return;
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(event.getEntity().getLocation());
         if (!island.isPresent()) return;
 
@@ -34,7 +34,7 @@ public class EntityDamageListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (!IridiumSkyblock.getInstance().getConfiguration().allowPvPOnIslands) return;
+        if (IridiumSkyblock.getInstance().getConfiguration().allowPvPOnIslands) return;
         if (event.getEntity().equals(event.getDamager())) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(event.getEntity().getLocation());
