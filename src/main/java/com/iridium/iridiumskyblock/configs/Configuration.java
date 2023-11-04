@@ -35,6 +35,13 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
                         "&9&l[!] &9Left click to redeem"
                 )), Collections.emptyList(), 0, new ImmutableMap.Builder<String, Double>().put("Crystals", 10.00).build(), 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
                 .build();
+
+        this.enabledListeners = ImmutableMap.<String, Boolean>builder()
+                .putAll(enabledListeners)
+                .put("enhancementUpdate", true)
+                .put("playerInteract", true)
+                .put("playerPortal", true)
+                .build();
     }
 
     public String islandCreateTitle = "&9&lIsland Created";
@@ -80,5 +87,4 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
             .put(Color.GREEN, true)
             .put(Color.OFF, true)
             .build();
-
 }

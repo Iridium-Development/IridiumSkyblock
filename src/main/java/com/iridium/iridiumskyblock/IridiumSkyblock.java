@@ -132,14 +132,22 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     @Override
     public void registerListeners() {
         super.registerListeners();
-        Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
-        Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EnhancementUpdateListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
-        Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
+        if(getConfiguration().enabledListeners.get("playerMove"))
+            Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
+        if(getConfiguration().enabledListeners.get("playerJoin"))
+            Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        if(getConfiguration().enabledListeners.get("blockForm"))
+            Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
+        if(getConfiguration().enabledListeners.get("enhancementUpdate"))
+            Bukkit.getPluginManager().registerEvents(new EnhancementUpdateListener(), this);
+        if(getConfiguration().enabledListeners.get("playerTeleport"))
+            Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
+        if(getConfiguration().enabledListeners.get("playerPortal"))
+            Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
+        if(getConfiguration().enabledListeners.get("playerInteract"))
+            Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
+        if(getConfiguration().enabledListeners.get("entityDamage"))
+            Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
     }
 
     @Override
