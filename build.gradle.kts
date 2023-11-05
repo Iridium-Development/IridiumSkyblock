@@ -85,13 +85,6 @@ tasks {
     }
 }
 
-// Set the Java version and vendor
-java {
-    toolchain {
-        vendor.set(JvmVendorSpec.ADOPTOPENJDK)
-    }
-}
-
 // Maven publishing
 publishing {
     publications.create<MavenPublication>("maven") {
