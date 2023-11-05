@@ -27,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -132,21 +133,24 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     @Override
     public void registerListeners() {
         super.registerListeners();
-        if(getConfiguration().enabledListeners.get("playerMove"))
+
+        List<String> disabledListeners = getConfiguration().disabledListeners;
+
+        if(!disabledListeners.contains("playerMove"))
             Bukkit.getPluginManager().registerEvents(new PlayerMoveListener(), this);
-        if(getConfiguration().enabledListeners.get("playerJoin"))
+        if(!disabledListeners.contains("playerJoin"))
             Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
-        if(getConfiguration().enabledListeners.get("blockForm"))
+        if(!disabledListeners.contains("blockForm"))
             Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
-        if(getConfiguration().enabledListeners.get("enhancementUpdate"))
+        if(!disabledListeners.contains("enhancementUpdate"))
             Bukkit.getPluginManager().registerEvents(new EnhancementUpdateListener(), this);
-        if(getConfiguration().enabledListeners.get("playerTeleport"))
+        if(!disabledListeners.contains("playerTeleport"))
             Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
-        if(getConfiguration().enabledListeners.get("playerPortal"))
+        if(!disabledListeners.contains("playerPortal"))
             Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
-        if(getConfiguration().enabledListeners.get("playerInteract"))
+        if(!disabledListeners.contains("playerInteract"))
             Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
-        if(getConfiguration().enabledListeners.get("entityDamage"))
+        if(!disabledListeners.contains("entityDamage"))
             Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
     }
 
