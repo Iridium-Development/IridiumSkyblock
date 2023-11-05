@@ -24,6 +24,17 @@ public class PlayerInteractListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getClickedBlock().getLocation());
+        if (!island.isPresent()) return;
+        if (!IridiumSkyblock.getInstance().getTeamManager().getTeamPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            return;
+        }
 
         boolean setCancelled = true;
         for(String world : IridiumSkyblock.getInstance().getConfiguration().whitelistedWorlds) {
@@ -34,18 +45,6 @@ public class PlayerInteractListener implements Listener {
         }
 
         if(setCancelled) {
-            return;
-        }
-
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-
-        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getClickedBlock().getLocation());
-        if (!island.isPresent()) return;
-        if (!IridiumSkyblock.getInstance().getTeamManager().getTeamPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
             return;
         }
 
