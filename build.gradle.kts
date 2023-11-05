@@ -85,14 +85,6 @@ tasks {
     }
 }
 
-// Set the Java version and vendor
-java {
-    toolchain {
-        vendor.set(JvmVendorSpec.ADOPTIUM)
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
-}
-
 // Maven publishing
 publishing {
     publications.create<MavenPublication>("maven") {
