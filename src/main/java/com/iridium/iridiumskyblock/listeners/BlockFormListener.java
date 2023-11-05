@@ -28,19 +28,6 @@ public class BlockFormListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onBlockForm(BlockFormEvent event) {
-
-        boolean setCancelled = true;
-        for(String world : IridiumSkyblock.getInstance().getConfiguration().whitelistedWorlds) {
-            if(event.getBlock().getWorld().getName().equalsIgnoreCase(world)) {
-                setCancelled = false;
-                break;
-            }
-        }
-
-        if(setCancelled) {
-            return;
-        }
-
         XMaterial newMaterial = XMaterial.matchXMaterial(event.getNewState().getType());
         if (!generatorMaterials.contains(newMaterial)) return;
         IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(event.getNewState().getLocation()).ifPresent(island -> {
