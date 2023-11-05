@@ -24,6 +24,19 @@ public class PlayerInteractListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+
+        boolean setCancelled = true;
+        for(String world : IridiumSkyblock.getInstance().getConfiguration().whitelistedWorlds) {
+            if(player.getWorld().getName().equalsIgnoreCase(world)) {
+                setCancelled = false;
+                break;
+            }
+        }
+
+        if(setCancelled) {
+            return;
+        }
+
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 

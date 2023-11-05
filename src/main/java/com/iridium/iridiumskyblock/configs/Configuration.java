@@ -8,6 +8,7 @@ import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumteams.Reward;
 import org.bukkit.World;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
@@ -35,6 +36,11 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
                         "&9&l[!] &9Left click to redeem"
                 )), Collections.emptyList(), 0, new ImmutableMap.Builder<String, Double>().put("Crystals", 10.00).build(), 2000, 0, XSound.ENTITY_PLAYER_LEVELUP))
                 .build();
+
+        this.whitelistedWorlds = new ArrayList<>();
+            whitelistedWorlds.add(worldName);
+            whitelistedWorlds.add(worldName + "_nether");
+            whitelistedWorlds.add(worldName + "_the_end");
     }
 
     public String islandCreateTitle = "&9&lIsland Created";

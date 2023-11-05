@@ -18,6 +18,19 @@ public class PlayerMoveListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
+
+        boolean setCancelled = true;
+        for(String world : IridiumSkyblock.getInstance().getConfiguration().whitelistedWorlds) {
+            if(event.getPlayer().getWorld().getName().equalsIgnoreCase(world)) {
+                setCancelled = false;
+                break;
+            }
+        }
+
+        if(setCancelled) {
+            return;
+        }
+
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(event.getPlayer());
 
         IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(event.getPlayer());
