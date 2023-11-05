@@ -88,7 +88,8 @@ tasks {
 // Set the Java version and vendor
 java {
     toolchain {
-        vendor.set(JvmVendorSpec.ADOPTOPENJDK)
+        vendor.set(JvmVendorSpec.ADOPTIUM)
+        languageVersion.set(JavaLanguageVersion.of(8))
     }
 }
 
