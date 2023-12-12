@@ -84,19 +84,15 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
-        World.Environment environment = biome.getEnvironment();
+
+        World.Environment dimension = biome.getEnvironment();
         World world;
-        switch (environment) {
-            case NETHER:
-                world = getWorld(World.Environment.NETHER);
-                break;
-            case THE_END:
-                world = getWorld(World.Environment.THE_END);
-                break;
-            default:
-                world = getWorld(World.Environment.NORMAL);
-                break;
+
+        if(!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.containsKey(dimension)) {
+            return;
         }
+
+        world = getWorld(dimension);
 
         getIslandChunks(island).thenAccept(chunks -> {
             Location pos1 = island.getPosition1(world);
@@ -231,9 +227,23 @@ public class IslandManager extends TeamManager<Island, User> {
             setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
+
+            for(Map.Entry<World.Environment, Boolean> enabledWorld : IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.entrySet()) {
+                if(!enabledWorld.getValue()) {
+                    continue;
+                }
+
+                switch (enabledWorld.getKey()) {
+                    case NETHER:
+                        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
+                        break;
+                    case THE_END:
+                        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
+                        break;
+                    default:
+                        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
+                    }
+            }
         });
     }
 
