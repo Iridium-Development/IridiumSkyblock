@@ -62,6 +62,7 @@ public class PlayerPortalListener implements Listener {
                     event.setCancelled(true);
                     return;
                 }
+                event.setCanCreatePortal(false);
                 event.setTo(location);
             }
         });
