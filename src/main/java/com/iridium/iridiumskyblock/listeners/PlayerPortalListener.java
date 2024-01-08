@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
@@ -63,7 +64,7 @@ public class PlayerPortalListener implements Listener {
                     return;
                 }
                 location.setY(location.getY() + 1);
-                event.setCanCreatePortal(false);
+                if(XMaterial.supports(16)) event.setCanCreatePortal(false);
                 event.setTo(location);
             }
         });
