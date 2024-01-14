@@ -98,9 +98,10 @@ public class DatabaseManager {
 
     public CompletableFuture<Void> registerIsland(Island island) {
         return CompletableFuture.runAsync(() -> {
-            islandTableManager.addEntry(island);
             // Saving the object will also assign the Island's ID
-            islandTableManager.save();
+            islandTableManager.save(island);
+
+            islandTableManager.addEntry(island);
         });
     }
 

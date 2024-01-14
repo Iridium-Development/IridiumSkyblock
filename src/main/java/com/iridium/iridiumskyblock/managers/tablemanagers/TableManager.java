@@ -1,6 +1,5 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
-import com.iridium.iridiumskyblock.SortedList;
 import com.iridium.iridiumskyblock.managers.DatabaseKey;
 import com.iridium.iridiumteams.database.DatabaseObject;
 import com.j256.ormlite.dao.Dao;
