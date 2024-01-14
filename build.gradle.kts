@@ -27,7 +27,7 @@ dependencies {
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.30")
-    compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
