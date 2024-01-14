@@ -84,15 +84,10 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
-
         World.Environment dimension = biome.getEnvironment();
-        World world;
+        World world = getWorld(dimension);
 
-        if(!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.containsKey(dimension)) {
-            return;
-        }
-
-        world = getWorld(dimension);
+        if(world == null) return;
 
         getIslandChunks(island).thenAccept(chunks -> {
             Location pos1 = island.getPosition1(world);
@@ -227,23 +222,9 @@ public class IslandManager extends TeamManager<Island, User> {
             setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
-
-            for(Map.Entry<World.Environment, Boolean> enabledWorld : IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.entrySet()) {
-                if(!enabledWorld.getValue()) {
-                    continue;
-                }
-
-                switch (enabledWorld.getKey()) {
-                    case NETHER:
-                        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
-                        break;
-                    case THE_END:
-                        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
-                        break;
-                    default:
-                        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
-                    }
-            }
+            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
+            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
+            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
         });
     }
 
