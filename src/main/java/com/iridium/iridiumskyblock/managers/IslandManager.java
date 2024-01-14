@@ -311,7 +311,7 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized void setTeamPermission(Island island, int rank, String permission, boolean allowed) {
-        TeamPermission islandPermission = new TeamPermission(island, permission, rank, true);
+        TeamPermission islandPermission = new TeamPermission(island, permission, rank, allowed);
         Optional<TeamPermission> teamPermission = IridiumSkyblock.getInstance().getDatabaseManager().getPermissionsTableManager().getEntry(islandPermission);
         if (teamPermission.isPresent()) {
             teamPermission.get().setAllowed(allowed);
