@@ -60,6 +60,7 @@ public class IslandManager extends TeamManager<Island, User> {
         World world = Bukkit.createWorld(worldCreator);
 
         if (world != null && world.getEnvironment() == World.Environment.THE_END) {
+            if(IridiumSkyblock.getInstance().isTesting())return;
             Bukkit.unloadWorld(world.getName(), true);
 
             try {

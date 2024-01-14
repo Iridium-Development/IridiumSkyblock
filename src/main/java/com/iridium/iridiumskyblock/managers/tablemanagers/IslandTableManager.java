@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
 import com.iridium.iridiumskyblock.database.Island;
+import com.iridium.iridiumskyblock.databaseadapter.DatabaseAdapter;
 import com.iridium.iridiumteams.database.Team;
 import com.j256.ormlite.support.ConnectionSource;
 
@@ -9,8 +10,8 @@ import java.util.Optional;
 
 public class IslandTableManager extends TableManager<Integer, Island, Integer> {
 
-    public IslandTableManager(ConnectionSource connectionSource) throws SQLException {
-        super(Team::getId, connectionSource, Island.class);
+    public IslandTableManager(DatabaseAdapter<Island, Integer> databaseAdapter) throws SQLException {
+        super(Team::getId, databaseAdapter);
     }
 
     public Optional<Island> getIsland(int id) {

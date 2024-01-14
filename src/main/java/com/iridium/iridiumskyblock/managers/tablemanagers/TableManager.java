@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers.tablemanagers;
 
+import com.iridium.iridiumskyblock.databaseadapter.DatabaseAdapter;
 import com.iridium.iridiumskyblock.managers.DatabaseKey;
 import com.iridium.iridiumteams.database.DatabaseObject;
 import com.j256.ormlite.dao.Dao;
@@ -17,45 +18,27 @@ import java.util.stream.Collectors;
 
 public class TableManager<Key, Value extends DatabaseObject, ID> {
     private final ConcurrentHashMap<Key, Value> entries = new ConcurrentHashMap<>();
-    private final Dao<Value, ID> dao;
     private final DatabaseKey<Key, Value> databaseKey;
+    private final DatabaseAdapter<Value, ID> databaseAdapter;
 
-    private final ConnectionSource connectionSource;
-
-    public TableManager(DatabaseKey<Key, Value> databaseKey, ConnectionSource connectionSource, Class<Value> clazz) throws SQLException {
-        this.connectionSource = connectionSource;
+    public TableManager(DatabaseKey<Key, Value> databaseKey, DatabaseAdapter<Value, ID> databaseAdapter) throws SQLException {
         this.databaseKey = databaseKey;
-        this.dao = DaoManager.createDao(connectionSource, clazz);
-        this.dao.setAutoCommit(getDatabaseConnection(), false);
+        this.databaseAdapter = databaseAdapter;
 
-        TableUtils.createTableIfNotExists(connectionSource, clazz);
-        dao.queryForAll().forEach(this::addEntry);
+        databaseAdapter.queryAll().forEach(this::addEntry);
         getEntries().forEach(value -> value.setChanged(false));
     }
 
     public void save() {
-        try {
-            List<Value> entryList = new ArrayList<>(entries.values());
-            for (Value t : entryList) {
-                if (!t.isChanged()) continue;
-                dao.createOrUpdate(t);
-                t.setChanged(false);
-            }
-            dao.commit(getDatabaseConnection());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        List<Value> values = entries.values().stream().filter(DatabaseObject::isChanged).collect(Collectors.toList());
+        values.forEach(value -> value.setChanged(false));
+        databaseAdapter.save(values);
     }
 
     public void save(Value value) {
-        try {
-            if (!value.isChanged()) return;
-            dao.createOrUpdate(value);
-            dao.commit(getDatabaseConnection());
-            value.setChanged(false);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        if (!value.isChanged()) return;
+        databaseAdapter.save(value);
+        value.setChanged(false);
     }
 
     public void addEntry(Value value) {
@@ -84,29 +67,11 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
 
     public CompletableFuture<Void> delete(Value value) {
         entries.remove(databaseKey.getKey(value));
-        return CompletableFuture.runAsync(() -> {
-            try {
-                dao.delete(value);
-                dao.commit(getDatabaseConnection());
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
+        return databaseAdapter.delete(value);
     }
 
     public CompletableFuture<Void> delete(Collection<Value> values) {
         values.forEach(value -> entries.remove(databaseKey.getKey(value)));
-        return CompletableFuture.runAsync(() -> {
-            try {
-                dao.delete(values);
-                dao.commit(getDatabaseConnection());
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
-    }
-
-    private DatabaseConnection getDatabaseConnection() throws SQLException {
-        return connectionSource.getReadWriteConnection(null);
+        return databaseAdapter.delete(values);
     }
 }

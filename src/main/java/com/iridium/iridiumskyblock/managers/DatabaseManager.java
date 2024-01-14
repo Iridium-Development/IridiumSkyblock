@@ -1,32 +1,18 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumskyblock.IridiumSkyblock;
-import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.LostItems;
+import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.databaseadapter.DatabaseAdapterFactory;
 import com.iridium.iridiumskyblock.managers.tablemanagers.*;
 import com.iridium.iridiumteams.database.*;
-import com.iridium.iridiumteams.database.types.*;
-import com.j256.ormlite.field.DataPersisterManager;
-import com.j256.ormlite.jdbc.JdbcConnectionSource;
-import com.j256.ormlite.jdbc.db.DatabaseTypeUtils;
-import com.j256.ormlite.logger.LoggerFactory;
-import com.j256.ormlite.logger.NullLogBackend;
-import com.j256.ormlite.support.ConnectionSource;
-import lombok.AccessLevel;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
 public class DatabaseManager {
-
-    @Getter(AccessLevel.NONE)
-    private ConnectionSource connectionSource;
 
     private UserTableManager userTableManager;
     private IslandTableManager islandTableManager;
@@ -44,56 +30,26 @@ public class DatabaseManager {
     private ForeignIslandTableManager<String, TeamReward> teamRewardsTableManager;
     private ForeignIslandTableManager<String, TeamSetting> teamSettingsTableManager;
 
+    private final DatabaseAdapterFactory databaseAdapterFactory = new DatabaseAdapterFactory();
+
     public void init() throws SQLException {
-        LoggerFactory.setLogBackendFactory(new NullLogBackend.NullLogBackendFactory());
+        databaseAdapterFactory.init();
 
-        SQL sqlConfig = IridiumSkyblock.getInstance().getSql();
-        String databaseURL = getDatabaseURL(sqlConfig);
-
-        DataPersisterManager.registerDataPersisters(XMaterialType.getSingleton());
-        DataPersisterManager.registerDataPersisters(LocationType.getSingleton());
-        DataPersisterManager.registerDataPersisters(InventoryType.getSingleton());
-        DataPersisterManager.registerDataPersisters(LocalDateTimeType.getSingleton());
-        DataPersisterManager.registerDataPersisters(RewardType.getSingleton(IridiumSkyblock.getInstance()));
-
-        this.connectionSource = new JdbcConnectionSource(
-                databaseURL,
-                sqlConfig.username,
-                sqlConfig.password,
-                DatabaseTypeUtils.createDatabaseType(databaseURL)
-        );
-
-        this.userTableManager = new UserTableManager(connectionSource);
-        this.islandTableManager = new IslandTableManager(connectionSource);
-        this.lostItemsTableManager = new LostItemsTableManager(connectionSource, LostItems.class);
-        this.teamMissionDataTableManager = new TableManager<>(teamMissionData -> teamMissionData.getMissionID()+"-"+teamMissionData.getMissionIndex() ,connectionSource, TeamMissionData.class);
-        this.invitesTableManager = new ForeignIslandTableManager<>(teamInvite -> teamInvite.getTeamID()+"-"+teamInvite.getUser().toString(), connectionSource, TeamInvite.class);
-        this.trustTableManager = new ForeignIslandTableManager<>(teamTrust -> teamTrust.getTeamID()+"-"+teamTrust.getUser().toString(), connectionSource, TeamTrust.class);
-        this.permissionsTableManager = new ForeignIslandTableManager<>(teamPermission -> teamPermission.getTeamID()+"-"+teamPermission.getPermission()+"-"+teamPermission.getRank(), connectionSource, TeamPermission.class);
-        this.bankTableManager = new ForeignIslandTableManager<>(teamBank -> teamBank.getTeamID()+"-"+teamBank.getBankItem(), connectionSource, TeamBank.class);
-        this.enhancementTableManager = new ForeignIslandTableManager<>(teamEnhancement -> teamEnhancement.getTeamID()+"-"+teamEnhancement.getEnhancementName(), connectionSource, TeamEnhancement.class);
-        this.teamBlockTableManager = new ForeignIslandTableManager<>(teamBlock -> teamBlock.getTeamID()+"-"+teamBlock.getXMaterial().name(), connectionSource, TeamBlock.class);
-        this.teamSpawnerTableManager = new ForeignIslandTableManager<>(teamSpawner -> teamSpawner.getTeamID()+"-"+teamSpawner.getEntityType().name(), connectionSource, TeamSpawners.class);
-        this.teamWarpTableManager = new ForeignIslandTableManager<>(teamWarp -> teamWarp.getTeamID()+"-"+teamWarp.getName(), connectionSource, TeamWarp.class);
-        this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> teamMission.getTeamID()+"-"+teamMission.getMissionName(), connectionSource, TeamMission.class);
-        this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> String.valueOf(teamRewards.getId()), connectionSource, TeamReward.class);
-        this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> teamSetting.getTeamID()+"-"+teamSetting.getSetting(), connectionSource, TeamSetting.class);
-    }
-
-    /**
-     * Database connection String used for establishing a connection.
-     *
-     * @return The database URL String
-     */
-    private @NotNull String getDatabaseURL(SQL sqlConfig) {
-        switch (sqlConfig.driver) {
-            case MYSQL:
-                return "jdbc:" + sqlConfig.driver.name().toLowerCase() + "://" + sqlConfig.host + ":" + sqlConfig.port + "/" + sqlConfig.database + "?useSSL=" + sqlConfig.useSSL;
-            case SQLITE:
-                return "jdbc:sqlite:" + new File(IridiumSkyblock.getInstance().getDataFolder(), sqlConfig.database + ".db");
-            default:
-                throw new UnsupportedOperationException("Unsupported driver (how did we get here?): " + sqlConfig.driver.name());
-        }
+        this.userTableManager = new UserTableManager(databaseAdapterFactory.CreateDatabaseAdapter(User.class));
+        this.islandTableManager = new IslandTableManager(databaseAdapterFactory.CreateDatabaseAdapter(Island.class));
+        this.lostItemsTableManager = new LostItemsTableManager(databaseAdapterFactory.CreateDatabaseAdapter(LostItems.class));
+        this.teamMissionDataTableManager = new TableManager<>(teamMissionData -> teamMissionData.getMissionID()+"-"+teamMissionData.getMissionIndex() ,databaseAdapterFactory.CreateDatabaseAdapter(TeamMissionData.class));
+        this.invitesTableManager = new ForeignIslandTableManager<>(teamInvite -> teamInvite.getTeamID()+"-"+teamInvite.getUser().toString(), databaseAdapterFactory.CreateDatabaseAdapter(TeamInvite.class));
+        this.trustTableManager = new ForeignIslandTableManager<>(teamTrust -> teamTrust.getTeamID()+"-"+teamTrust.getUser().toString(), databaseAdapterFactory.CreateDatabaseAdapter(TeamTrust.class));
+        this.permissionsTableManager = new ForeignIslandTableManager<>(teamPermission -> teamPermission.getTeamID()+"-"+teamPermission.getPermission()+"-"+teamPermission.getRank(), databaseAdapterFactory.CreateDatabaseAdapter(TeamPermission.class));
+        this.bankTableManager = new ForeignIslandTableManager<>(teamBank -> teamBank.getTeamID()+"-"+teamBank.getBankItem(), databaseAdapterFactory.CreateDatabaseAdapter(TeamBank.class));
+        this.enhancementTableManager = new ForeignIslandTableManager<>(teamEnhancement -> teamEnhancement.getTeamID()+"-"+teamEnhancement.getEnhancementName(), databaseAdapterFactory.CreateDatabaseAdapter(TeamEnhancement.class));
+        this.teamBlockTableManager = new ForeignIslandTableManager<>(teamBlock -> teamBlock.getTeamID()+"-"+teamBlock.getXMaterial().name(), databaseAdapterFactory.CreateDatabaseAdapter(TeamBlock.class));
+        this.teamSpawnerTableManager = new ForeignIslandTableManager<>(teamSpawner -> teamSpawner.getTeamID()+"-"+teamSpawner.getEntityType().name(), databaseAdapterFactory.CreateDatabaseAdapter(TeamSpawners.class));
+        this.teamWarpTableManager = new ForeignIslandTableManager<>(teamWarp -> teamWarp.getTeamID()+"-"+teamWarp.getName(), databaseAdapterFactory.CreateDatabaseAdapter(TeamWarp.class));
+        this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> teamMission.getTeamID()+"-"+teamMission.getMissionName(), databaseAdapterFactory.CreateDatabaseAdapter(TeamMission.class));
+        this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> String.valueOf(teamRewards.getId()), databaseAdapterFactory.CreateDatabaseAdapter(TeamReward.class));
+        this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> teamSetting.getTeamID()+"-"+teamSetting.getSetting(), databaseAdapterFactory.CreateDatabaseAdapter(TeamSetting.class));
     }
 
     public CompletableFuture<Void> registerIsland(Island island) {
