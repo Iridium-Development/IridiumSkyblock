@@ -49,13 +49,16 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
 
 
     public boolean obsidianBucket = true;
+    public boolean netherOnlyGenerator = false;
     public boolean endPortalPick = true;
     public boolean removeIslandBlocksOnDelete = false;
     public boolean clearInventoryOnRegen = false;
     public boolean clearEnderChestOnRegen = false;
     public boolean allowPvPOnIslands = false;
+    public boolean islandCreateOnJoin = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;
+    public int endUnlockLevel = 20;
     public int pasterDelayInTick = 1;
     public int pasterLimitPerTick = 10;
 

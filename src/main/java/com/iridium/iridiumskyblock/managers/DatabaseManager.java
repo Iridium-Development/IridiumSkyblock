@@ -3,10 +3,8 @@ package com.iridium.iridiumskyblock.managers;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.SQL;
 import com.iridium.iridiumskyblock.database.Island;
-import com.iridium.iridiumskyblock.managers.tablemanagers.ForeignIslandTableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.IslandTableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.TableManager;
-import com.iridium.iridiumskyblock.managers.tablemanagers.UserTableManager;
+import com.iridium.iridiumskyblock.database.LostItems;
+import com.iridium.iridiumskyblock.managers.tablemanagers.*;
 import com.iridium.iridiumteams.database.*;
 import com.iridium.iridiumteams.database.types.*;
 import com.j256.ormlite.field.DataPersisterManager;
@@ -32,18 +30,19 @@ public class DatabaseManager {
 
     private UserTableManager userTableManager;
     private IslandTableManager islandTableManager;
-    private ForeignIslandTableManager<TeamInvite, Integer> invitesTableManager;
-    private ForeignIslandTableManager<TeamTrust, Integer> trustTableManager;
-    private ForeignIslandTableManager<TeamPermission, Integer> permissionsTableManager;
-    private ForeignIslandTableManager<TeamBank, Integer> bankTableManager;
-    private ForeignIslandTableManager<TeamEnhancement, Integer> enhancementTableManager;
-    private ForeignIslandTableManager<TeamBlock, Integer> teamBlockTableManager;
-    private ForeignIslandTableManager<TeamSpawners, Integer> teamSpawnerTableManager;
-    private ForeignIslandTableManager<TeamWarp, Integer> teamWarpTableManager;
-    private ForeignIslandTableManager<TeamMission, Integer> teamMissionTableManager;
-    private TableManager<TeamMissionData, Integer> teamMissionDataTableManager;
-    private ForeignIslandTableManager<TeamReward, Integer> teamRewardsTableManager;
-    private ForeignIslandTableManager<TeamSetting, Integer> teamSettingsTableManager;
+    private LostItemsTableManager lostItemsTableManager;
+    private TableManager<String, TeamMissionData, Integer> teamMissionDataTableManager;
+    private ForeignIslandTableManager<String, TeamInvite> invitesTableManager;
+    private ForeignIslandTableManager<String, TeamTrust> trustTableManager;
+    private ForeignIslandTableManager<String, TeamPermission> permissionsTableManager;
+    private ForeignIslandTableManager<String, TeamBank> bankTableManager;
+    private ForeignIslandTableManager<String, TeamEnhancement> enhancementTableManager;
+    private ForeignIslandTableManager<String, TeamBlock> teamBlockTableManager;
+    private ForeignIslandTableManager<String, TeamSpawners> teamSpawnerTableManager;
+    private ForeignIslandTableManager<String, TeamWarp> teamWarpTableManager;
+    private ForeignIslandTableManager<String, TeamMission> teamMissionTableManager;
+    private ForeignIslandTableManager<String, TeamReward> teamRewardsTableManager;
+    private ForeignIslandTableManager<String, TeamSetting> teamSettingsTableManager;
 
     public void init() throws SQLException {
         LoggerFactory.setLogBackendFactory(new NullLogBackend.NullLogBackendFactory());
@@ -66,18 +65,19 @@ public class DatabaseManager {
 
         this.userTableManager = new UserTableManager(connectionSource);
         this.islandTableManager = new IslandTableManager(connectionSource);
-        this.invitesTableManager = new ForeignIslandTableManager<>(connectionSource, TeamInvite.class, Comparator.comparing(TeamInvite::getTeamID).thenComparing(TeamInvite::getUser));
-        this.trustTableManager = new ForeignIslandTableManager<>(connectionSource, TeamTrust.class, Comparator.comparing(TeamTrust::getTeamID).thenComparing(TeamTrust::getUser));
-        this.permissionsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamPermission.class, Comparator.comparing(TeamPermission::getTeamID).thenComparing(TeamPermission::getPermission).thenComparing(TeamPermission::getRank));
-        this.bankTableManager = new ForeignIslandTableManager<>(connectionSource, TeamBank.class, Comparator.comparing(TeamBank::getTeamID).thenComparing(TeamBank::getBankItem));
-        this.enhancementTableManager = new ForeignIslandTableManager<>(connectionSource, TeamEnhancement.class, Comparator.comparing(TeamEnhancement::getTeamID).thenComparing(TeamEnhancement::getEnhancementName));
-        this.teamBlockTableManager = new ForeignIslandTableManager<>(connectionSource, TeamBlock.class, Comparator.comparing(TeamBlock::getTeamID).thenComparing(TeamBlock::getXMaterial));
-        this.teamSpawnerTableManager = new ForeignIslandTableManager<>(connectionSource, TeamSpawners.class, Comparator.comparing(TeamSpawners::getTeamID).thenComparing(TeamSpawners::getEntityType));
-        this.teamWarpTableManager = new ForeignIslandTableManager<>(connectionSource, TeamWarp.class, Comparator.comparing(TeamWarp::getTeamID).thenComparing(TeamWarp::getName));
-        this.teamMissionTableManager = new ForeignIslandTableManager<>(connectionSource, TeamMission.class, Comparator.comparing(TeamMission::getTeamID).thenComparing(TeamMission::getMissionName));
-        this.teamMissionDataTableManager = new TableManager<>(connectionSource, TeamMissionData.class, Comparator.comparing(TeamMissionData::getMissionID).thenComparing(TeamMissionData::getMissionIndex));
-        this.teamRewardsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamReward.class, Comparator.comparing(TeamReward::getTeamID));
-        this.teamSettingsTableManager = new ForeignIslandTableManager<>(connectionSource, TeamSetting.class, Comparator.comparing(TeamSetting::getTeamID).thenComparing(TeamSetting::getSetting));
+        this.lostItemsTableManager = new LostItemsTableManager(connectionSource, LostItems.class);
+        this.teamMissionDataTableManager = new TableManager<>(teamMissionData -> teamMissionData.getMissionID()+"-"+teamMissionData.getMissionIndex() ,connectionSource, TeamMissionData.class);
+        this.invitesTableManager = new ForeignIslandTableManager<>(teamInvite -> teamInvite.getTeamID()+"-"+teamInvite.getUser().toString(), connectionSource, TeamInvite.class);
+        this.trustTableManager = new ForeignIslandTableManager<>(teamTrust -> teamTrust.getTeamID()+"-"+teamTrust.getUser().toString(), connectionSource, TeamTrust.class);
+        this.permissionsTableManager = new ForeignIslandTableManager<>(teamPermission -> teamPermission.getTeamID()+"-"+teamPermission.getPermission()+"-"+teamPermission.getRank(), connectionSource, TeamPermission.class);
+        this.bankTableManager = new ForeignIslandTableManager<>(teamBank -> teamBank.getTeamID()+"-"+teamBank.getBankItem(), connectionSource, TeamBank.class);
+        this.enhancementTableManager = new ForeignIslandTableManager<>(teamEnhancement -> teamEnhancement.getTeamID()+"-"+teamEnhancement.getEnhancementName(), connectionSource, TeamEnhancement.class);
+        this.teamBlockTableManager = new ForeignIslandTableManager<>(teamBlock -> teamBlock.getTeamID()+"-"+teamBlock.getXMaterial().name(), connectionSource, TeamBlock.class);
+        this.teamSpawnerTableManager = new ForeignIslandTableManager<>(teamSpawner -> teamSpawner.getTeamID()+"-"+teamSpawner.getEntityType().name(), connectionSource, TeamSpawners.class);
+        this.teamWarpTableManager = new ForeignIslandTableManager<>(teamWarp -> teamWarp.getTeamID()+"-"+teamWarp.getName(), connectionSource, TeamWarp.class);
+        this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> teamMission.getTeamID()+"-"+teamMission.getMissionName(), connectionSource, TeamMission.class);
+        this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> String.valueOf(teamRewards.getId()), connectionSource, TeamReward.class);
+        this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> teamSetting.getTeamID()+"-"+teamSetting.getSetting(), connectionSource, TeamSetting.class);
     }
 
     /**
@@ -98,11 +98,10 @@ public class DatabaseManager {
 
     public CompletableFuture<Void> registerIsland(Island island) {
         return CompletableFuture.runAsync(() -> {
+            // Saving the object will also assign the Island's ID
+            islandTableManager.save(island);
+
             islandTableManager.addEntry(island);
-            // Saving the object will also assign the Faction's ID
-            islandTableManager.save();
-            // Since the FactionID was null before we need to resort
-            islandTableManager.sort();
         });
     }
 

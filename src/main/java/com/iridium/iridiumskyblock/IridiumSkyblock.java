@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -22,9 +23,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -154,6 +153,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
+        if(!XMaterial.supports(15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
     }
 
     @Override
@@ -228,6 +228,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getDatabaseManager().getTeamMissionDataTableManager().save();
         getDatabaseManager().getTeamRewardsTableManager().save();
         getDatabaseManager().getTeamSettingsTableManager().save();
+        getDatabaseManager().getLostItemsTableManager().save();
     }
 
     @Override

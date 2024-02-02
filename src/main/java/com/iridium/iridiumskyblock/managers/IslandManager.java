@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
+import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
@@ -37,6 +38,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -54,23 +57,37 @@ public class IslandManager extends TeamManager<Island, User> {
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
-        Bukkit.createWorld(worldCreator);
+        World world = Bukkit.createWorld(worldCreator);
+
+        if (world != null && world.getEnvironment() == World.Environment.THE_END) {
+            Bukkit.unloadWorld(world.getName(), true);
+
+            try {
+                File file = new File(worldCreator.name() + File.separator + "level.dat");
+                NBTFile worldFile = new NBTFile(file);
+
+                NBTCompound compound = worldFile.getOrCreateCompound("Data").getOrCreateCompound("DragonFight");
+
+                compound.setBoolean("PreviouslyKilled", true);
+                compound.setBoolean("DragonKilled", true);
+                compound.setBoolean("NeedsStateScanning", false);
+
+                worldFile.save();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+                IridiumSkyblock.getInstance().getLogger().warning("Failed to delete dragon from world");
+            }
+
+            // Note this world is already created, we are just loading it here
+            Bukkit.createWorld(worldCreator);
+        }
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
-        World.Environment environment = biome.getEnvironment();
-        World world;
-        switch (environment) {
-            case NETHER:
-                world = getWorld(World.Environment.NETHER);
-                break;
-            case THE_END:
-                world = getWorld(World.Environment.THE_END);
-                break;
-            default:
-                world = getWorld(World.Environment.NORMAL);
-                break;
-        }
+        World.Environment dimension = biome.getEnvironment();
+        World world = getWorld(dimension);
+
+        if(world == null) return;
 
         getIslandChunks(island).thenAccept(chunks -> {
             Location pos1 = island.getPosition1(world);
@@ -134,16 +151,33 @@ public class IslandManager extends TeamManager<Island, User> {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
+    private CompletableFuture<String> getSchematic(Player player) {
+        CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
+        if (IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
+            for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+                schematicNameCompletableFuture.complete(entry.getKey());
+                return schematicNameCompletableFuture;
+            }
+        }
+
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory()));
+        return schematicNameCompletableFuture;
+    }
+
     @Override
     public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
-        CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
-        owner.openInventory(new CreateGUI(owner.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory());
         return CompletableFuture.supplyAsync(() -> {
-            String schematic = schematicNameCompletableFuture.join();
+            String schematic = getSchematic(owner).join();
             if (schematic == null) return null;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
+
+            if(schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
+                if(!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
+                    return null;
+                }
+            }
 
             IslandCreateEvent islandCreateEvent = getIslandCreateEvent(user, name, schematicConfig).join();
             if (islandCreateEvent.isCancelled()) return null;
@@ -277,7 +311,7 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized void setTeamPermission(Island island, int rank, String permission, boolean allowed) {
-        TeamPermission islandPermission = new TeamPermission(island, permission, rank, true);
+        TeamPermission islandPermission = new TeamPermission(island, permission, rank, allowed);
         Optional<TeamPermission> teamPermission = IridiumSkyblock.getInstance().getDatabaseManager().getPermissionsTableManager().getEntry(islandPermission);
         if (teamPermission.isPresent()) {
             teamPermission.get().setAllowed(allowed);
