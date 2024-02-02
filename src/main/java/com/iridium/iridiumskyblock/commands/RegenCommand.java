@@ -13,6 +13,7 @@ import com.iridium.iridiumteams.commands.Command;
 import com.iridium.iridiumteams.database.TeamBank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -80,6 +81,7 @@ public class RegenCommand extends Command<Island, User> {
         ));
 
         IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
+        IridiumSkyblock.getInstance().getIslandManager().clearEntities(island);
 
         IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
 
