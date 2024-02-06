@@ -231,6 +231,7 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.runAsync(() -> {
             setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
+            clearEntities(island);
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
             setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
