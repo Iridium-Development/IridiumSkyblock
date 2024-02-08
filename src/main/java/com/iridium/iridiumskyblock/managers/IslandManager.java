@@ -29,6 +29,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -221,6 +222,7 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.runAsync(() -> {
             setHome(island, schematicConfig);
             deleteIslandBlocks(island).join();
+            clearEntities(island);
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
             setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
@@ -232,6 +234,38 @@ public class IslandManager extends TeamManager<Island, User> {
         Location location = island.getCenter(getWorld(World.Environment.NORMAL)).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
         location.setYaw(schematicConfig.yawHome);
         island.setHome(location);
+    }
+
+    public CompletableFuture<Void> clearEntities(Island island) {
+        return CompletableFuture.runAsync(() -> {
+            List<CompletableFuture<Void>> completableFutures = Arrays.asList(
+                    clearEntities(island, getWorld(World.Environment.NORMAL)),
+                    clearEntities(island, getWorld(World.Environment.NETHER)),
+                    clearEntities(island, getWorld(World.Environment.THE_END))
+            );
+            completableFutures.forEach(CompletableFuture::join);
+        });
+    }
+
+    public CompletableFuture<Void> clearEntities(Island island, World world) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        if (world == null) {
+            completableFuture.complete(null);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> clearEntities(island, world, completableFuture));
+        }
+        return completableFuture;
+    }
+
+    private void clearEntities(Island island, World world, CompletableFuture<Void> completableFuture) {
+        if (world == null) return;
+
+        world.getEntities().stream()
+                .filter(entity -> island.isInIsland(entity.getLocation()))
+                .filter(entity -> entity.getType() != EntityType.PLAYER)
+                .forEach(Entity::remove);
+
+        completableFuture.complete(null);
     }
 
     public CompletableFuture<Void> deleteIslandBlocks(Island island) {
