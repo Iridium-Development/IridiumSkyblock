@@ -85,19 +85,10 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
-        World.Environment environment = biome.getEnvironment();
-        World world;
-        switch (environment) {
-            case NETHER:
-                world = getWorld(World.Environment.NETHER);
-                break;
-            case THE_END:
-                world = getWorld(World.Environment.THE_END);
-                break;
-            default:
-                world = getWorld(World.Environment.NORMAL);
-                break;
-        }
+        World.Environment dimension = biome.getEnvironment();
+        World world = getWorld(dimension);
+
+        if(world == null) return;
 
         getIslandChunks(island).thenAccept(chunks -> {
             Location pos1 = island.getPosition1(world);
@@ -354,7 +345,7 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized void setTeamPermission(Island island, int rank, String permission, boolean allowed) {
-        TeamPermission islandPermission = new TeamPermission(island, permission, rank, true);
+        TeamPermission islandPermission = new TeamPermission(island, permission, rank, allowed);
         Optional<TeamPermission> teamPermission = IridiumSkyblock.getInstance().getDatabaseManager().getPermissionsTableManager().getEntry(islandPermission);
         if (teamPermission.isPresent()) {
             teamPermission.get().setAllowed(allowed);
