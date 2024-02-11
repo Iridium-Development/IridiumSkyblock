@@ -423,6 +423,16 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public List<TeamLog> getTeamLogs(Island island) {
+        return null;
+    }
+
+    @Override
+    public void addTeamLog(TeamLog teamLog) {
+
+    }
+
+    @Override
     public CompletableFuture<Void> recalculateTeam(Island island) {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
         Map<EntityType, Integer> teamSpawners = new HashMap<>();
