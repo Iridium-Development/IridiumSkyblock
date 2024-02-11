@@ -37,6 +37,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
                 .build();
     }
 
+    public String defaultIslandName = "%owner%'s Island";
     public String islandCreateTitle = "&9&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String defaultDescription = "Default island description :c";
