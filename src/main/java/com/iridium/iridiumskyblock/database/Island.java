@@ -137,6 +137,6 @@ public class Island extends Team {
                 .findFirst()
                 .map(User::getName)
                 .orElse("N/A");
-        return IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%player%", ownerName);
+        return IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%owner%", ownerName);
     }
 }
