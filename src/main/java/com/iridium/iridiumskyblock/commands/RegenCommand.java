@@ -13,6 +13,7 @@ import com.iridium.iridiumteams.commands.Command;
 import com.iridium.iridiumteams.database.TeamBank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
