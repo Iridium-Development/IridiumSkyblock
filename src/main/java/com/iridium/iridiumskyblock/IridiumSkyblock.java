@@ -82,9 +82,14 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     public void onLoad() {
         super.onLoad();
 
+        // This switch statement is here so that if we end up adding another generator type, we can throw it in this.
         switch(IridiumSkyblock.getInstance().getConfiguration().generatorType) {
-            case "ocean": {
+            case OCEAN: {
                 this.chunkGenerator = new OceanGenerator();
+                break;
+            }
+            case VANILLA: {
+                this.chunkGenerator = null;
                 break;
             }
             default: {
