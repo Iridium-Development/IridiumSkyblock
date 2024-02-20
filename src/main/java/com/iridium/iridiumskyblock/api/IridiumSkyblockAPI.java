@@ -24,12 +24,8 @@ import java.util.Optional;
  */
 public class IridiumSkyblockAPI {
 
-    private static final IridiumSkyblockAPI instance;
+    private static IridiumSkyblockAPI instance;
     private final IridiumSkyblock iridiumSkyblock;
-
-    static {
-        instance = new IridiumSkyblockAPI(IridiumSkyblock.getInstance());
-    }
 
     /**
      * Constructor for api initialization.
@@ -48,6 +44,7 @@ public class IridiumSkyblockAPI {
      * @since 3.0.0
      */
     public static @NotNull IridiumSkyblockAPI getInstance() {
+        if(instance==null && IridiumSkyblock.getInstance()!=null) instance = new IridiumSkyblockAPI(IridiumSkyblock.getInstance());
         return instance;
     }
 
