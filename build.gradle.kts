@@ -88,6 +88,9 @@ tasks {
 // Maven publishing
 publishing {
     publications.create<MavenPublication>("maven") {
-        from(components["java"])
+        setGroupId("com.iridium")
+        setArtifactId("IridiumSkyblock")
+        setVersion(version)
+        artifact(tasks["shadowJar"])
     }
 }
