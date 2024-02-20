@@ -43,7 +43,7 @@ public class IridiumSkyblockAPI {
      * @return the instance of this api
      * @since 3.0.0
      */
-    public static @NotNull IridiumSkyblockAPI getInstance() {
+    public static IridiumSkyblockAPI getInstance() {
         if(instance==null && IridiumSkyblock.getInstance()!=null) instance = new IridiumSkyblockAPI(IridiumSkyblock.getInstance());
         return instance;
     }

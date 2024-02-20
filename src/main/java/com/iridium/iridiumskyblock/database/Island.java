@@ -134,9 +134,7 @@ public class Island extends Team {
     @Override
     public @NotNull String getName() {
         if (super.getName() != null) return super.getName();
-        String ownerName = getMembers().stream()
-                .filter(user -> user.getUserRank() == Rank.OWNER.getId())
-                .findFirst()
+        String ownerName = getOwner()
                 .map(User::getName)
                 .orElse("N/A");
         return IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%owner%", ownerName);
@@ -146,6 +144,7 @@ public class Island extends Team {
     {
         return IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(this);
     }
+
     public Optional<User> getOwner()
     {
         return getMembers().stream()
