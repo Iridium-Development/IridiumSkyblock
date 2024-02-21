@@ -140,13 +140,11 @@ public class Island extends Team {
         return IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%owner%", ownerName);
     }
 
-    public List<User> getMembers()
-    {
+    public List<User> getMembers() {
         return IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(this);
     }
 
-    public Optional<User> getOwner()
-    {
+    public Optional<User> getOwner() {
         return getMembers().stream()
                 .filter(user -> user.getUserRank() == Rank.OWNER.getId())
                 .findFirst();
