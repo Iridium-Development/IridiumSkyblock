@@ -44,7 +44,9 @@ public class IridiumSkyblockAPI {
      * @since 3.0.0
      */
     public static IridiumSkyblockAPI getInstance() {
-        if(instance==null && IridiumSkyblock.getInstance()!=null) instance = new IridiumSkyblockAPI(IridiumSkyblock.getInstance());
+        if(instance == null && IridiumSkyblock.getInstance() != null) {
+            instance = new IridiumSkyblockAPI(IridiumSkyblock.getInstance());
+        }
         return instance;
     }
 
