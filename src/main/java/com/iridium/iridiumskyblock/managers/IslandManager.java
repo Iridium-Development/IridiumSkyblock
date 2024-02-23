@@ -431,9 +431,12 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public synchronized TeamSetting getTeamSetting(Island island, String settingKey) {
+    public synchronized @Nullable TeamSetting getTeamSetting(Island island, String settingKey) {
         Setting settingConfig = IridiumSkyblock.getInstance().getSettingsList().get(settingKey);
-        String defaultValue = settingConfig == null ? "" : settingConfig.getDefaultValue();
+        if(settingConfig == null){
+            return null;
+        }
+        String defaultValue = settingConfig.getDefaultValue();
         Optional<TeamSetting> teamSetting = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSettingsTableManager().getEntry(new TeamSetting(island, settingKey, defaultValue));
         if (teamSetting.isPresent()) {
             return teamSetting.get();
