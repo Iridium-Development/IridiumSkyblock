@@ -643,6 +643,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public boolean isInSkyblockWorld(World world) {
+        if(world == null) return false;
         return world.getName().equals(getWorldName(World.Environment.NORMAL)) || world.getName().equals(getWorldName(World.Environment.NETHER)) || world.getName().equals(getWorldName(World.Environment.THE_END));
     }
 
