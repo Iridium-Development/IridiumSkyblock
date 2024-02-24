@@ -25,6 +25,8 @@ import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
+import com.iridium.iridiumteams.support.spawners.SpawnerSupport;
+import com.iridium.iridiumteams.support.stackers.StackerSupport;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -478,18 +480,25 @@ public class IslandManager extends TeamManager<Island, User> {
                         }
                     }
                 }
+
                 getSpawners(chunk, island).join().forEach(creatureSpawner ->
-                        teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + 1)
+                            teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + 1)
                 );
             }
         }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
             List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntries(island);
             for (TeamBlock teamBlock : blocks) {
-                teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0));
+                int stackedBlocks = IridiumSkyblock.getInstance().getSupportManager().getStackerSupport().stream().mapToInt(
+                        spawnerSupport -> spawnerSupport.getExtraBlocks(island, teamBlock.getXMaterial())
+                ).sum();
+                teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0) + stackedBlocks);
             }
             for (TeamSpawners teamSpawner : spawners) {
-                teamSpawner.setAmount(teamSpawners.getOrDefault(teamSpawner.getEntityType(), 0));
+                int spawnerBlocks = IridiumSkyblock.getInstance().getSupportManager().getSpawnerSupport().stream().mapToInt(
+                        spawnerSupport -> spawnerSupport.getExtraSpawners(island, teamSpawner.getEntityType())
+                ).sum();
+                teamSpawner.setAmount(teamSpawners.getOrDefault(teamSpawner.getEntityType(), 0) + spawnerBlocks);
             }
         }));
     }
@@ -640,6 +649,11 @@ public class IslandManager extends TeamManager<Island, User> {
                 return IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end";
         }
         return null;
+    }
+
+    @Override
+    public boolean isInTeam(Island island, Location location){
+        return island.isInIsland(location);
     }
 
     public boolean isInSkyblockWorld(World world) {
