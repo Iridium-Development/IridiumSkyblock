@@ -119,6 +119,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getServer().getOnlinePlayers().forEach(player -> getIslandManager().sendIslandBorder(player));
 
         this.supportManager = new SupportManager(this);
+        supportManager.registerSupport();
 
         addBstats(5825);
         startUpdateChecker(62480);
