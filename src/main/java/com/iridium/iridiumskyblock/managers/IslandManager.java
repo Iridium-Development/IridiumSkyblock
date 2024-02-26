@@ -414,7 +414,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public synchronized TeamSpawners getTeamSpawners(Island island, EntityType entityType) {
+    public synchronized Teams getTeamSpawners(Island island, EntityType entityType) {
         Optional<TeamSpawners> teamSpawner = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntry(new TeamSpawners(island, entityType, 0));
         if (teamSpawner.isPresent()) {
             return teamSpawner.get();
@@ -495,7 +495,7 @@ public class IslandManager extends TeamManager<Island, User> {
             List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntries(island);
             for (TeamBlock teamBlock : blocks) {
                 int stackedBlocks = IridiumSkyblock.getInstance().getSupportManager().getStackerSupport().stream().mapToInt(
-                        spawnerSupport -> spawnerSupport.getExtraBlocks(island, teamBlock.getXMaterial())
+                        stackerSupport -> stackerSupport.getExtraBlocks(island, teamBlock.getXMaterial())
                 ).sum();
                 teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0) + stackedBlocks);
             }
