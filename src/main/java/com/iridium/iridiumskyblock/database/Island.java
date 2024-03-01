@@ -38,6 +38,9 @@ public class Island extends Team {
 
     @Override
     public int getLevel() {
+
+        if(!IridiumSkyblock.getInstance().getConfiguration().enableLeveling) return 1;
+
         if (!IridiumSkyblock.getInstance().getConfiguration().isLevelExponential) {
             if (IridiumSkyblock.getInstance().getConfiguration().flatExpRequirement != 0)
                 return Math.abs(getExperience() / IridiumSkyblock.getInstance().getConfiguration().flatExpRequirement);
