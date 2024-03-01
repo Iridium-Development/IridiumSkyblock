@@ -40,18 +40,18 @@ public class Island extends Team {
     public int getLevel() {
         if (!IridiumSkyblock.getInstance().getConfiguration().isLevelExponential) {
             if (IridiumSkyblock.getInstance().getConfiguration().flatExpRequirement != 0)
-                return getExperience() / IridiumSkyblock.getInstance().getConfiguration().flatExpRequirement;
+                return Math.abs(getExperience() / IridiumSkyblock.getInstance().getConfiguration().flatExpRequirement);
 
             return getExperience();
         }
 
         if (IridiumSkyblock.getInstance().getConfiguration().flatExpRequirement != 0) {
-            return (int) Math.floor(Math.pow(
+            return Math.abs((int) Math.floor(Math.pow(
                     getExperience() / (double) IridiumSkyblock.getInstance().getConfiguration().flatExpRequirement,
-                    IridiumSkyblock.getInstance().getConfiguration().curvedExpModifier) + 1);
+                    IridiumSkyblock.getInstance().getConfiguration().curvedExpModifier) + 1));
         }
 
-        return (int) Math.floor(Math.pow(getExperience(), IridiumSkyblock.getInstance().getConfiguration().curvedExpModifier) + 1);
+        return Math.abs((int) Math.floor(Math.pow(getExperience(), IridiumSkyblock.getInstance().getConfiguration().curvedExpModifier) + 1));
     }
 
     @Override
