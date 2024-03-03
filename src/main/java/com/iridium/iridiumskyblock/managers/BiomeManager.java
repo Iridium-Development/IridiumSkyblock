@@ -78,6 +78,24 @@ public class BiomeManager {
     }
 
     private boolean canPurchase(Player player, Biomes.BiomeItem biomeItem) {
+
+        if(biomeItem.minLevel != 1) {
+            User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+            Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getTeamViaID(user.getTeamID());
+
+            if(!island.isPresent()) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveTeam
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return false;
+            }
+
+            if(biomeItem.minLevel < island.get().getLevel()) {
+                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                return false;
+            }
+        }
+        
         double moneyCost = biomeItem.buyCost.money;
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
         for (String bankItem : biomeItem.buyCost.bankItems.keySet()) {
