@@ -56,7 +56,8 @@ public class RegenCommand extends Command<Island, User> {
 
         if(island.getLevel() < schematicConfig.minLevel) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%level%", String.valueOf(schematicConfig.minLevel))));
             return false;
         }
 

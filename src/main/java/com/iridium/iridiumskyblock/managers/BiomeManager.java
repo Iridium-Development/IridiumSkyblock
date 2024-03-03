@@ -23,9 +23,6 @@ public class BiomeManager {
         Optional<XBiome> biomeOptional = XBiome.matchXBiome(biomeItem.biome.toString());
 
         if (!canPurchase(player, biomeItem)) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
             IridiumSkyblock.getInstance().getBiomes().failSound.play(player);
             return;
         }
@@ -89,13 +86,14 @@ public class BiomeManager {
                 return false;
             }
 
-            if(biomeItem.minLevel < island.get().getLevel()) {
+            if(island.get().getLevel() < biomeItem.minLevel) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                        .replace("%level%", String.valueOf(biomeItem.minLevel))));
                 return false;
             }
         }
-        
+
         double moneyCost = biomeItem.buyCost.money;
         Economy economy = IridiumSkyblock.getInstance().getEconomy();
         for (String bankItem : biomeItem.buyCost.bankItems.keySet()) {
@@ -103,7 +101,14 @@ public class BiomeManager {
             if (getBankBalance(player, bankItem) < cost) return false;
         }
 
-        return moneyCost == 0 || economy != null && economy.getBalance(player) >= moneyCost;
+        if(!(moneyCost == 0 || economy != null && economy.getBalance(player) >= moneyCost)) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            return false;
+        }
+
+        return true;
     }
 
     private void purchase(Player player, Biomes.BiomeItem biomeItem) {
