@@ -42,6 +42,9 @@ public class Schematics {
             )))
             .build();
     public boolean abbreviatePrices = true;
+    public String buyPriceLore = "&9Buy Price: &7%vault_cost%";
+    public String levelRequirementLore = "&9[!] &7Must be level %level% to purchase";
+    public String regenDisclaimer = "&9[!] &7Applies to regeneration only";
     public XSound failSound = XSound.BLOCK_ANVIL_LAND;
     public XSound successSound = XSound.ENTITY_PLAYER_LEVELUP;
 

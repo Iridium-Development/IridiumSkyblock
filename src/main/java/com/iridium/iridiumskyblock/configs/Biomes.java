@@ -111,6 +111,7 @@ public class Biomes {
             .build();
     public String buyPriceLore = "&aBuy Price: $%vault_cost%";
     public String notPurchasableLore = "&cThis item cannot be purchased!";
+    public String levelRequirementLore = "&9[!] &7Must be level %level% to purchase";
     public boolean abbreviatePrices = true;
     public XSound failSound = XSound.BLOCK_ANVIL_LAND;
     public XSound successSound = XSound.ENTITY_PLAYER_LEVELUP;
