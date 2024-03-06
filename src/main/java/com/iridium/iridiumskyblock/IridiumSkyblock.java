@@ -82,6 +82,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     public void onLoad() {
         super.onLoad();
 
+        getLogger().info("Loading world generator...");
         // This switch statement is here so that if we end up adding another generator type, we can throw it in this.
         switch(IridiumSkyblock.getInstance().getConfiguration().generatorType) {
             case OCEAN: {
@@ -179,6 +180,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.biomes = getPersist().load(Biomes.class);
         this.settings = getPersist().load(Settings.class);
         this.generators = getPersist().load(Generators.class);
+        getLogger().info("GENERATOR TYPE: " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
         super.loadConfigs();
 
         int maxSize = enhancements.sizeEnhancement.levels.values().stream()
