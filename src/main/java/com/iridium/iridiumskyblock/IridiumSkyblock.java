@@ -101,6 +101,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.missionManager = new MissionManager<>(this);
         this.shopManager = new ShopManager<>(this);
         this.biomeManager = new BiomeManager();
+        this.supportManager = new SupportManager<>(this);
+
+        supportManager.registerSupport();
+
         try {
             databaseManager.init();
         } catch (SQLException exception) {
@@ -117,9 +121,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
 
         Bukkit.getServer().getOnlinePlayers().forEach(player -> getIslandManager().sendIslandBorder(player));
-
-        this.supportManager = new SupportManager(this);
-        supportManager.registerSupport();
 
         addBstats(5825);
         startUpdateChecker(62480);

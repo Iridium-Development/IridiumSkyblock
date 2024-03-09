@@ -25,6 +25,8 @@ import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
+import com.iridium.iridiumteams.support.SpawnerSupport;
+import com.iridium.iridiumteams.support.StackerSupport;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -36,6 +38,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -414,7 +418,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public synchronized Teams getTeamSpawners(Island island, EntityType entityType) {
+    public synchronized TeamSpawners getTeamSpawners(Island island, EntityType entityType) {
         Optional<TeamSpawners> teamSpawner = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntry(new TeamSpawners(island, entityType, 0));
         if (teamSpawner.isPresent()) {
             return teamSpawner.get();
@@ -470,18 +474,43 @@ public class IslandManager extends TeamManager<Island, User> {
     public CompletableFuture<Void> recalculateTeam(Island island) {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
         Map<EntityType, Integer> teamSpawners = new HashMap<>();
+
+        List<StackerSupport> stackerSupportList = IridiumSkyblock.getInstance().getSupportManager().getStackerSupport();
+        List<SpawnerSupport> spawnerSupportList = IridiumSkyblock.getInstance().getSupportManager().getSpawnerSupport();
+
+        Map<String, List<Block>> stackedBlocksList = new HashMap<>();
+        Map<String, List<CreatureSpawner>> stackedSpawnersList = new HashMap<>();
+
         return CompletableFuture.runAsync(() -> {
             List<Chunk> chunks = getIslandChunks(island).join();
+
             for (Chunk chunk : chunks) {
                 ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
+                World currentWorld = Bukkit.getWorld(chunkSnapshot.getWorldName());
+                Block currentBlock = null;
+
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
                         final int maxy = chunkSnapshot.getHighestBlockYAt(x, z);
                         for (int y = 0; y <= maxy; y++) {
-                            if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
-                                XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
-                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
+                            if (!island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) continue;
+
+                            currentBlock = new Location(currentWorld, x, y, z).getBlock();
+
+                            for(StackerSupport stackerSupport : stackerSupportList) {
+                                if(!stackerSupport.isStackedBlock(currentBlock)) continue;
+                                stackedBlocksList.get(stackerSupport.supportProvider()).add(currentBlock);
                             }
+
+                            for(SpawnerSupport spawnerSupport : spawnerSupportList) {
+                                if(!spawnerSupport.isStackedSpawner(currentBlock)) continue;
+                                CreatureSpawner spawner = (CreatureSpawner) currentBlock;
+                                stackedSpawnersList.get(spawnerSupport.supportProvider()).add(spawner);
+                            }
+
+                            XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
+                            teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
+
                         }
                     }
                 }
@@ -493,17 +522,27 @@ public class IslandManager extends TeamManager<Island, User> {
         }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
             List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntries(island);
+
             for (TeamBlock teamBlock : blocks) {
-                int stackedBlocks = IridiumSkyblock.getInstance().getSupportManager().getStackerSupport().stream().mapToInt(
-                        stackerSupport -> stackerSupport.getExtraBlocks(island, teamBlock.getXMaterial())
+                int stackedBlocks = stackerSupportList.stream().mapToInt(
+                        stackerSupport -> stackerSupport.getExtraBlocks(island, teamBlock.getXMaterial(),
+                                stackedBlocksList.entrySet().stream()
+                                        .map(blockMap -> stackedBlocksList.get(stackerSupport.supportProvider()))
+                                        .filter(providedBlocks -> providedBlocks.stream().filter(block -> Objects.equals(teamBlock.getXMaterial().parseMaterial(), block.getType())).isParallel())
+                                        .collect(Collectors.toList()))
                 ).sum();
                 teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0) + stackedBlocks);
             }
+
             for (TeamSpawners teamSpawner : spawners) {
-                int spawnerBlocks = IridiumSkyblock.getInstance().getSupportManager().getSpawnerSupport().stream().mapToInt(
-                        spawnerSupport -> spawnerSupport.getExtraSpawners(island, teamSpawner.getEntityType())
+                int stackedSpawners = spawnerSupportList.stream().mapToInt(
+                        spawnerSupport -> spawnerSupport.getExtraSpawners(island, teamSpawner.getEntityType(),
+                                stackedSpawnersList.entrySet().stream()
+                                        .map(spawnerMap -> stackedSpawnersList.get(spawnerSupport.supportProvider()))
+                                        .filter(providedSpawners -> providedSpawners.stream().filter(spawner -> Objects.equals(teamSpawner.getEntityType(), spawner.getSpawnedType())).isParallel())
+                                        .collect(Collectors.toList()))
                 ).sum();
-                teamSpawner.setAmount(teamSpawners.getOrDefault(teamSpawner.getEntityType(), 0) + spawnerBlocks);
+                teamSpawner.setAmount(teamSpawners.getOrDefault(teamSpawner.getEntityType(), 0) + stackedSpawners);
             }
         }));
     }
