@@ -135,7 +135,7 @@ public class IslandManager extends TeamManager<Island, User> {
         World.Environment dimension = biome.getEnvironment();
         World world = getWorld(dimension);
 
-        if(world == null) return;
+        if (world == null) return;
 
         getIslandChunks(island).thenAccept(chunks -> {
             Location pos1 = island.getPosition1(world);
@@ -221,8 +221,8 @@ public class IslandManager extends TeamManager<Island, User> {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
 
-            if(schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
-                if(!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
+            if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
+                if (!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
                     return null;
                 }
             }
@@ -536,9 +536,12 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
-    public synchronized TeamSetting getTeamSetting(Island island, String settingKey) {
+    public synchronized @Nullable TeamSetting getTeamSetting(Island island, String settingKey) {
         Setting settingConfig = IridiumSkyblock.getInstance().getSettingsList().get(settingKey);
-        String defaultValue = settingConfig == null ? "" : settingConfig.getDefaultValue();
+        if (settingConfig == null) {
+            return null;
+        }
+        String defaultValue = settingConfig.getDefaultValue();
         Optional<TeamSetting> teamSetting = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSettingsTableManager().getEntry(new TeamSetting(island, settingKey, defaultValue));
         if (teamSetting.isPresent()) {
             return teamSetting.get();
@@ -725,21 +728,28 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public @Nullable World getWorld(World.Environment environment) {
+        String worldName = getWorldName(environment);
+        if (worldName == null) return null;
+        return Bukkit.getWorld(worldName);
+    }
+
+    public @Nullable String getWorldName(World.Environment environment) {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true))
             return null;
         switch (environment) {
             case NORMAL:
-                return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName);
+                return IridiumSkyblock.getInstance().getConfiguration().worldName;
             case NETHER:
-                return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether");
+                return IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether";
             case THE_END:
-                return Bukkit.getWorld(IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end");
+                return IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end";
         }
         return null;
     }
 
     public boolean isInSkyblockWorld(World world) {
-        return Objects.equals(world, getWorld(World.Environment.NORMAL)) || Objects.equals(world, getWorld(World.Environment.NETHER)) || Objects.equals(world, getWorld(World.Environment.THE_END));
+        if(world == null) return false;
+        return world.getName().equals(getWorldName(World.Environment.NORMAL)) || world.getName().equals(getWorldName(World.Environment.NETHER)) || world.getName().equals(getWorldName(World.Environment.THE_END));
     }
 
     public void sendIslandBorder(Player player) {

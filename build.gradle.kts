@@ -23,7 +23,7 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.3.7")
+    implementation("com.iridium:IridiumTeams:2.4.1")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.30")
@@ -88,6 +88,9 @@ tasks {
 // Maven publishing
 publishing {
     publications.create<MavenPublication>("maven") {
-        from(components["java"])
+        setGroupId("com.iridium")
+        setArtifactId("IridiumSkyblock")
+        setVersion(version)
+        artifact(tasks["shadowJar"])
     }
 }
