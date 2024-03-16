@@ -270,7 +270,8 @@ public class IslandManager extends TeamManager<Island, User> {
             setHome(island, schematicConfig);
             clearEntities(island);
             deleteIslandBlocks(island).join();
-            regenerateTerrain(island).join();
+            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+                regenerateTerrain(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, schematicConfig);
         });
@@ -394,8 +395,6 @@ public class IslandManager extends TeamManager<Island, User> {
 
         if(world == null) return;
 
-        if(!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) completableFuture.complete(null);
-
         Location pos1 = island.getPosition1(world);
         Location pos2 = island.getPosition2(world);
 
@@ -429,7 +428,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);
-            regenerateTerrain(island);
+            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+                regenerateTerrain(island).join();
         }
 
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
