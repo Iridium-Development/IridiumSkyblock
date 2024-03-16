@@ -538,14 +538,7 @@ public class IslandManager extends TeamManager<Island, User> {
             List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
             List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntries(island);
 
-            HashSet<XMaterial> blockFilter = new HashSet<>();
-            for(Map.Entry<String, List<Block>> blockList : stackedBlocksList.entrySet()) {
-                for(Block currentBlock : blockList.getValue()) {
-                    blockFilter.add(XMaterial.matchXMaterial(currentBlock.getType()));
-                }
-            }
-
-            for(TeamBlock teamBlock : blocks.stream().filter(teamBlock -> blockFilter.contains(teamBlock.getXMaterial())).collect(Collectors.toList())) {
+            for(TeamBlock teamBlock : blocks.stream().filter(teamBlock -> teamBlocks.containsKey(teamBlock.getXMaterial())).collect(Collectors.toList())) {
                 int stackedBlocks = 0;
                 for(StackerSupport stackerSupport : stackerSupportList) {
                     stackedBlocks += stackerSupport.getExtraBlocks(island, teamBlock.getXMaterial(), stackedBlocksList.get(stackerSupport.supportProvider()));
@@ -553,14 +546,7 @@ public class IslandManager extends TeamManager<Island, User> {
                 teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0) + stackedBlocks);
             }
 
-            HashSet<EntityType> spawnerFilter = new HashSet<>();
-            for(Map.Entry<String, List<CreatureSpawner>> spawnerList : stackedSpawnersList.entrySet()) {
-                for(CreatureSpawner spawner : spawnerList.getValue()) {
-                    spawnerFilter.add(spawner.getSpawnedType());
-                }
-            }
-
-            for(TeamSpawners teamSpawner : spawners.stream().filter(teamSpawner -> spawnerFilter.contains(teamSpawner.getEntityType())).collect(Collectors.toList())) {
+            for(TeamSpawners teamSpawner : spawners.stream().filter(teamSpawner -> teamSpawners.containsKey(teamSpawner.getEntityType())).collect(Collectors.toList())) {
                 int stackedSpawners = 0;
                 for(SpawnerSupport spawnerSupport : spawnerSupportList) {
                     stackedSpawners += spawnerSupport.getExtraSpawners(island, teamSpawner.getEntityType(), stackedSpawnersList.get(spawnerSupport.supportProvider()));
