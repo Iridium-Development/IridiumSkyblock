@@ -26,7 +26,8 @@ public class Biomes {
                             XBiome.PLAINS,
                             1,
                             11,
-                            new Cost(100, new HashMap<>())
+                            new Cost(100, new HashMap<>()),
+                            1
                     ),
                     new BiomeItem(
                             "&9&lSnowy Plains",
@@ -34,7 +35,8 @@ public class Biomes {
                             XBiome.SNOWY_PLAINS,
                             1,
                             13,
-                            new Cost(50, new HashMap<>())
+                            new Cost(50, new HashMap<>()),
+                            1
                     ),
                     new BiomeItem(
                             "&9&lSavanna",
@@ -42,7 +44,8 @@ public class Biomes {
                             XBiome.SAVANNA,
                             1,
                             15,
-                            new Cost(100, new HashMap<>())
+                            new Cost(100, new HashMap<>()),
+                            1
                     )
             ))
             .put("Nether", Arrays.asList(
@@ -52,7 +55,8 @@ public class Biomes {
                                     XBiome.NETHER_WASTES,
                                     1,
                                     11,
-                                    new Cost(50, new HashMap<>())
+                                    new Cost(50, new HashMap<>()),
+                                    1
                             ),
                             new BiomeItem(
                                     "&9&lCrimson Forest",
@@ -60,7 +64,8 @@ public class Biomes {
                                     XBiome.CRIMSON_FOREST,
                                     1,
                                     13,
-                                    new Cost(1000, new HashMap<>())
+                                    new Cost(1000, new HashMap<>()),
+                                    1
                             ),
                             new BiomeItem(
                                     "&9&lWarped Forest",
@@ -68,7 +73,8 @@ public class Biomes {
                                     XBiome.WARPED_FOREST,
                                     1,
                                     15,
-                                    new Cost(100, new HashMap<>())
+                                    new Cost(100, new HashMap<>()),
+                                    1
                             )
                     )
             )
@@ -79,7 +85,8 @@ public class Biomes {
                                     XBiome.THE_END,
                                     1,
                                     11,
-                                    new Cost(100, new HashMap<>())
+                                    new Cost(100, new HashMap<>()),
+                                    1
                             ),
                             new BiomeItem(
                                     "&9&lEnd Highlands",
@@ -87,7 +94,8 @@ public class Biomes {
                                     XBiome.END_HIGHLANDS,
                                     1,
                                     13,
-                                    new Cost(150, new HashMap<>())
+                                    new Cost(150, new HashMap<>()),
+                                    1
                             ),
                             new BiomeItem(
                                     "&9&lEnd Barrens",
@@ -95,13 +103,15 @@ public class Biomes {
                                     XBiome.END_BARRENS,
                                     1,
                                     15,
-                                    new Cost(150, new HashMap<>())
-                            )
+                                    new Cost(150, new HashMap<>()),
+                                    1
+                                    )
                     )
             )
             .build();
     public String buyPriceLore = "&aBuy Price: $%vault_cost%";
     public String notPurchasableLore = "&cThis item cannot be purchased!";
+    public String levelRequirementLore = "&9[!] &7Must be level %level% to purchase";
     public boolean abbreviatePrices = true;
     public XSound failSound = XSound.BLOCK_ANVIL_LAND;
     public XSound successSound = XSound.ENTITY_PLAYER_LEVELUP;
@@ -127,8 +137,9 @@ public class Biomes {
         public int slot;
         public int page;
         public Cost buyCost;
+        public int minLevel;
 
-        public BiomeItem(String name, XMaterial type, XBiome biome, int defaultAmount, int slot, Cost buyCost) {
+        public BiomeItem(String name, XMaterial type, XBiome biome, int defaultAmount, int slot, Cost buyCost, int minLevel) {
             this.name = name;
             this.type = type;
             this.biome = biome;
@@ -137,6 +148,7 @@ public class Biomes {
             this.slot = slot;
             this.page = 1;
             this.buyCost = buyCost;
+            this.minLevel = minLevel;
         }
     }
 

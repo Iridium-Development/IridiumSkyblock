@@ -54,6 +54,13 @@ public class RegenCommand extends Command<Island, User> {
 
         Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
 
+        if(island.getLevel() < schematicConfig.minLevel) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%level%", String.valueOf(schematicConfig.minLevel))));
+            return false;
+        }
+
         if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
             if (!IridiumSkyblock.getInstance().getSchematicManager().buy(player, schematicConfig)) {
                 return false;
