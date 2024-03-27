@@ -4,7 +4,7 @@
 # This worflow will also upload an artifact to Nexus, Hangar, Modrinth, and GitHub releases.
 
 name: Java CI with Gradle (& Publish)
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   build:
@@ -46,13 +46,6 @@ jobs:
         with:
           name: "IridiumSkyblock"
           path: "./"
-          
-      - uses: bhowell2/github-substring-action@1.0.2
-        id: pluginVersion
-        with:
-          value: steps.artifact.outputs.string
-          index_of_str: "IridiumSkyblock-"
-          length_from_start: 17
 
       - name: Publishing to Nexus
         uses: sonatype-nexus-community/nexus-repo-github-action@master
@@ -73,7 +66,7 @@ jobs:
           api-token: ${{ secrets.HANGAR_API_TOKEN }}
           slug: IridiumSkyblock
           channel: beta
-          version: steps.version.outputs.string
+          version: ${{steps.version.outputs.version}}
           files: "IridiumSkyblock-*.jar"
       
       - if: ${{ ! "contains(github.event.commits[0].message, 'Version Increment (Beta)')" }}
@@ -83,7 +76,7 @@ jobs:
           api-token: ${{ secrets.HANGAR_API_TOKEN }}
           slug: IridiumSkyblock
           channel: release
-          version: steps.version.outputs.string
+          version: ${{steps.version.outputs.version}}
           files: "IridiumSkyblock-*.jar"    
           
       - if: "contains(github.event.commits[0].message, 'Version Increment (Beta)')"
@@ -91,7 +84,7 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           files: "IridiumSkyblock-*.jar"
-          version: steps.pluginVersion.outputs.string
+          version: ${{steps.version.outputs.version}}
           version-type: beta
           modrinth-id: uVMG0MzO
           modrinth-featured: true
@@ -103,7 +96,7 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           files: "IridiumSkyblock-*.jar"
-          version: steps.pluginVersion.outputs.string
+          version: ${{steps.version.outputs.version}}
           version-type: release
           modrinth-id: uVMG0MzO
           modrinth-featured: true
@@ -115,7 +108,7 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           files: "IridiumSkyblock-*.jar"
-          version: steps.pluginVersion.outputs.string
+          version: ${{steps.version.outputs.version}}
           version-type: beta
           github-tag: steps.pluginVersion.outputs.string
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -125,7 +118,7 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           files: "IridiumSkyblock-*.jar"
-          version: steps.pluginVersion.outputs.string
+          version: ${{steps.version.outputs.version}}
           version-type: release
-          github-tag: steps.pluginVersion.outputs.string
+          github-tag: ${{steps.version.outputs.version}}
           github-token: ${{ secrets.GITHUB_TOKEN }}
