@@ -31,7 +31,6 @@ jobs:
   upload:
     needs: build
     runs-on: ubuntu-latest
-    if: "contains(github.event.commits[0].message, 'Version Increment')"
     steps:
       - uses: actions/checkout@v2
       - uses: thecodemonkey/action-get-gradle-version@master
