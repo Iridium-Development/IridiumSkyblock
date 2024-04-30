@@ -43,7 +43,7 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
                             .filter(user -> user.getUserRank() == Rank.OWNER.getId())
                             .findFirst()
                             .map(User::getName)
-                            .orElse("N/A")),
+                            .orElse(IridiumSkyblock.getInstance().getMessages().nullPlaceholder)),
                     new Placeholder("island_create", island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))),
                     new Placeholder("island_description", island.getDescription()),
                     new Placeholder("island_value", String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamValue(island))),
@@ -74,29 +74,29 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
 
     private List<Placeholder> initializeDefaultPlaceholders() {
         List<Placeholder> placeholderList = new ArrayList<>(Arrays.asList(
-                new Placeholder("island_name", "N/A"),
-                new Placeholder("island_owner", "N/A"),
-                new Placeholder("island_description", "N/A"),
-                new Placeholder("island_create", "N/A"),
-                new Placeholder("island_value", "N/A"),
-                new Placeholder("island_level", "N/A"),
-                new Placeholder("island_experience", "N/A"),
-                new Placeholder("island_value_rank", "N/A"),
-                new Placeholder("island_experience_rank", "N/A"),
-                new Placeholder("island_members_online", "N/A"),
-                new Placeholder("island_members_online_count", "N/A"),
-                new Placeholder("island_members_offline", "N/A"),
-                new Placeholder("island_members_offline_count", "N/A"),
-                new Placeholder("island_members_count", "N/A")
+                new Placeholder("island_name", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_owner", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_description", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_create", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_value", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_level", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_experience", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_value_rank", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_experience_rank", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_members_online", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_members_online_count", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_members_offline", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_members_offline_count", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_members_count", IridiumSkyblock.getInstance().getMessages().nullPlaceholder)
         ));
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
-            placeholderList.add(new Placeholder("island_bank_" + bankItem.getName().toLowerCase(), "N/A"));
+            placeholderList.add(new Placeholder("island_bank_" + bankItem.getName().toLowerCase(), IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
         }
         for (XMaterial xMaterial : XMaterial.values()) {
-            placeholderList.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", "N/A"));
+            placeholderList.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
         }
         for (EntityType entityType : EntityType.values()) {
-            placeholderList.add(new Placeholder("island_" + entityType.name().toLowerCase() + "_amount", "N/A"));
+            placeholderList.add(new Placeholder("island_" + entityType.name().toLowerCase() + "_amount", IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
         }
         return placeholderList;
     }
