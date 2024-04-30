@@ -24,17 +24,7 @@ public class PlayerInteractListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
-
-        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getClickedBlock().getLocation());
-        if (!island.isPresent()) return;
-        if (!IridiumSkyblock.getInstance().getTeamManager().getTeamPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
-            return;
-        }
 
         if (IridiumSkyblock.getInstance().getConfiguration().obsidianBucket
                 && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)

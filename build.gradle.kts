@@ -29,7 +29,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.32")
     compileOnly("org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
 
     // Enable lombok annotation processing
