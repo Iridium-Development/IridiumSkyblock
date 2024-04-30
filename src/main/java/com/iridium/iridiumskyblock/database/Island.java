@@ -37,6 +37,11 @@ public class Island extends Team {
     }
 
     @Override
+    public int getLevel() {
+        return IridiumSkyblock.getInstance().getIslandManager().getTeamLevel(this.getExperience());
+    }
+
+    @Override
     public double getValue() {
         return IridiumSkyblock.getInstance().getTeamManager().getTeamValue(this);
     }

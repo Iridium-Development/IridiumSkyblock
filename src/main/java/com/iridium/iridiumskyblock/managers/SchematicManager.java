@@ -177,4 +177,12 @@ public class SchematicManager {
         }
         IridiumSkyblock.getInstance().getSchematics().successSound.play(player);
     }
+
+    public String formatPrice(double value) {
+        if (IridiumSkyblock.getInstance().getSchematics().abbreviatePrices) {
+            return IridiumSkyblock.getInstance().getConfiguration().numberFormatter.format(value);
+        }
+        return String.valueOf(value);
+    }
+
 }
