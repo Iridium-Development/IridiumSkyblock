@@ -5,6 +5,7 @@ import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XSound;
+import com.iridium.iridiumskyblock.managers.GeneratorType;
 import com.iridium.iridiumteams.Reward;
 import org.bukkit.World;
 
@@ -43,6 +44,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public String defaultDescription = "Default island description :c";
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
+    public GeneratorType generatorType = GeneratorType.VOID;
     public String islandTitleTop = "&9%island_name%";
     public String islandTitleBottom = "&7%island_description%";
     public String paster = "worldedit";

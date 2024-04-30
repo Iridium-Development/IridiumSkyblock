@@ -61,12 +61,36 @@ public class IslandManager extends TeamManager<Island, User> {
         super(IridiumSkyblock.getInstance());
     }
 
+    public boolean deleteWorld(File path) {
+        if(path.exists()) {
+            File files[] = path.listFiles();
+            for(int i=0; i<files.length; i++) {
+                if(files[i].isDirectory()) {
+                    deleteWorld(files[i]);
+                } else {
+                    files[i].delete();
+                }
+            }
+        }
+        return(path.delete());
+    }
+
+    // When creating the cached world, we specify its name with a path to place it in the data folder.
+    // For some silly reason, using getDataFolder() results in an illegal character error.
+    // Same with using File.separator.
+    public String getCacheWorldName(World world) {
+        return "plugins/iridiumskyblock" + "/" + "regenWorlds" + "/" + world.getName() + "_regen";
+    }
+
     public void createWorld(World.Environment environment, String name) {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
+
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
         World world = Bukkit.createWorld(worldCreator);
+
+        createCacheWorld(world);
 
         if (world != null && world.getEnvironment() == World.Environment.THE_END) {
             Bukkit.unloadWorld(world.getName(), true);
@@ -89,6 +113,30 @@ public class IslandManager extends TeamManager<Island, User> {
 
             // Note this world is already created, we are just loading it here
             Bukkit.createWorld(worldCreator);
+        }
+    }
+
+    // For the regenerateTerrain() method to work correctly, we need to access the cached world, which we create here.
+    public void createCacheWorld(World world) {
+
+        if(!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) return;
+
+
+        if (Bukkit.getWorld(getCacheWorldName(world)) == null) {
+
+            WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world))
+                    .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(world.getName(), null))
+                    .environment(world.getEnvironment())
+                    .seed(world.getSeed());
+
+            worldCreator.createWorld();
+        }
+
+        if (Bukkit.getWorld(getCacheWorldName(world)).getSeed() != Bukkit.getWorld(world.getName()).getSeed()) {
+            File cacheWorld = Bukkit.getWorld(getCacheWorldName(world)).getWorldFolder();
+            Bukkit.unloadWorld(getCacheWorldName(world), false);
+            deleteWorld(cacheWorld);
+            createCacheWorld(world);
         }
     }
 
@@ -229,12 +277,12 @@ public class IslandManager extends TeamManager<Island, User> {
     public CompletableFuture<Void> generateIsland(Island island, Schematics.SchematicConfig schematicConfig) {
         return CompletableFuture.runAsync(() -> {
             setHome(island, schematicConfig);
-            deleteIslandBlocks(island).join();
             clearEntities(island);
+            deleteIslandBlocks(island).join();
+            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+                regenerateTerrain(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
+            setIslandBiome(island, schematicConfig);
         });
     }
 
@@ -242,6 +290,12 @@ public class IslandManager extends TeamManager<Island, User> {
         Location location = island.getCenter(getWorld(World.Environment.NORMAL)).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
         location.setYaw(schematicConfig.yawHome);
         island.setHome(location);
+    }
+
+    public void setIslandBiome(Island island, Schematics.SchematicConfig schematicConfig) {
+        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
+        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
+        setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
     }
 
     public CompletableFuture<Void> clearEntities(Island island) {
@@ -325,6 +379,56 @@ public class IslandManager extends TeamManager<Island, User> {
         }
     }
 
+    public CompletableFuture<Void> regenerateTerrain(Island island) {
+        return CompletableFuture.runAsync(() -> {
+            List<CompletableFuture<Void>> completableFutures = Arrays.asList(
+                    regenerateTerrain(island, getWorld(World.Environment.NORMAL)),
+                    regenerateTerrain(island, getWorld(World.Environment.NETHER)),
+                    regenerateTerrain(island, getWorld(World.Environment.THE_END))
+            );
+            completableFutures.forEach(CompletableFuture::join);
+        });
+    }
+
+    private CompletableFuture<Void> regenerateTerrain(Island island, World world) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        if (world == null) {
+            completableFuture.complete(null);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, world.getMaxHeight(), completableFuture, 0));
+        }
+        return completableFuture;
+    }
+
+    public void regenerateTerrain (Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+
+        if(world == null) return;
+
+        Location pos1 = island.getPosition1(world);
+        Location pos2 = island.getPosition2(world);
+
+        World regenWorld = Bukkit.getWorld(getCacheWorldName(world));
+
+        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
+            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
+                Block blockA = regenWorld.getBlockAt(x, y, z);
+                Block blockB = world.getBlockAt(x, y, z);
+
+                blockB.setType(blockA.getType(), false);
+            }
+        }
+
+        if (y <= LocationUtils.getMinHeight(world)) {
+            completableFuture.complete(null);
+        } else {
+            if (delay < 1) {
+                regenerateTerrain(island, world, y - 1, completableFuture, delay);
+            } else {
+                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, y - 1, completableFuture, delay), delay);
+            }
+        }
+    }
+
     @Override
     public boolean deleteTeam(Island island, User user) {
         IslandDeleteEvent islandDeleteEvent = new IslandDeleteEvent(island, user);
@@ -333,6 +437,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);
+            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+                regenerateTerrain(island).join();
         }
 
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);

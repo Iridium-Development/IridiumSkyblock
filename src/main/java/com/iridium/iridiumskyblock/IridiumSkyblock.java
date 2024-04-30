@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
@@ -50,6 +51,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Shop shop;
     private Biomes biomes;
     private Settings settings;
+    private Generators generators;
 
     private IslandPlaceholderBuilder teamsPlaceholderBuilder;
     private UserPlaceholderBuilder userPlaceholderBuilder;
@@ -81,7 +83,23 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     @Override
     public void onLoad() {
         super.onLoad();
-        this.chunkGenerator = new VoidGenerator();
+
+        getLogger().info("Loading world generator...");
+        // This switch statement is here so that if we end up adding another generator type, we can throw it in this.
+        switch(IridiumSkyblock.getInstance().getConfiguration().generatorType) {
+            case OCEAN: {
+                this.chunkGenerator = new OceanGenerator();
+                break;
+            }
+            case VANILLA: {
+                this.chunkGenerator = null;
+                break;
+            }
+            default: {
+                this.chunkGenerator = new VoidGenerator();
+                break;
+            }
+        }
     }
 
     @Override
@@ -168,6 +186,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.shop = getPersist().load(Shop.class);
         this.biomes = getPersist().load(Biomes.class);
         this.settings = getPersist().load(Settings.class);
+        this.generators = getPersist().load(Generators.class);
+        getLogger().info("GENERATOR TYPE: " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
         super.loadConfigs();
 
         int maxSize = enhancements.sizeEnhancement.levels.values().stream()
@@ -202,6 +222,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(shop);
         getPersist().save(biomes);
         getPersist().save(settings);
+        getPersist().save(generators);
         saveSchematics();
     }
 
