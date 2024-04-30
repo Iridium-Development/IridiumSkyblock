@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumcore.dependencies.xseries.XBiome;
+import com.iridium.iridiumcore.dependencies.commons.lang3.text.WordUtils;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Biomes;
@@ -9,7 +10,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumteams.database.IridiumUser;
 import com.iridium.iridiumteams.database.TeamBank;
 import net.milkbowl.vault.economy.Economy;
-import org.apache.commons.lang.WordUtils;
+
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -55,8 +56,8 @@ public class BiomeManager {
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                         .replace("%player%", player.getName())
                         .replace("%biome%", WordUtils.capitalizeFully(biome.toString().toLowerCase().replace("_", " ")))
-                ));
-            }
+                    ));
+                }
         });
         IridiumSkyblock.getInstance().getBiomes().successSound.play(player);
 

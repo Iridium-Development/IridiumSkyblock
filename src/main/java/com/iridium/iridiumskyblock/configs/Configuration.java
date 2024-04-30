@@ -56,6 +56,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public boolean clearEnderChestOnRegen = false;
     public boolean allowPvPOnIslands = false;
     public boolean islandCreateOnJoin = false;
+    public boolean spawnOnIsland = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;
     public int endUnlockLevel = 20;

@@ -38,8 +38,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -47,16 +45,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -493,28 +488,23 @@ public class IslandManager extends TeamManager<Island, User> {
 
         return CompletableFuture.runAsync(() -> {
             List<Chunk> chunks = getIslandChunks(island).join();
-            Material blockType;
-            XMaterial material;
-            World currentWorld;
-            int maxY;
-            int minY;
 
             for (Chunk chunk : chunks) {
-                ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(false, false, false);
-                currentWorld = Bukkit.getWorld(chunkSnapshot.getWorldName());
+                ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
+                World currentWorld = Bukkit.getWorld(chunkSnapshot.getWorldName());
 
-                maxY = currentWorld.getMaxHeight() - 1;
-                minY = currentWorld.getMinHeight();
+                int minY = currentWorld.getMinHeight();
 
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
+                        final int maxY = chunkSnapshot.getHighestBlockYAt(x, z);
                         for (int y = minY; y <= maxY; y++) {
                             if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
 
-                                blockType = chunkSnapshot.getBlockType(x, y, z);
+                                Material blockType = chunkSnapshot.getBlockType(x, y, z);
                                 if(ignoreAirBlocks.contains(blockType)) continue;
 
-                                material = XMaterial.matchXMaterial(blockType);
+                                XMaterial material = XMaterial.matchXMaterial(blockType);
                                 teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
                             }
                         }
@@ -522,7 +512,7 @@ public class IslandManager extends TeamManager<Island, User> {
                 }
 
                 getSpawners(chunk, island).join().forEach(creatureSpawner ->
-                            teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + 1)
+                    teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + 1)
                 );
 
                 for(StackerSupport stackerSupport : stackerSupportList) {
