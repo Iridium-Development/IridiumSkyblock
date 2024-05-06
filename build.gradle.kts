@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.0.8"
+version = "4.0.9.1"
 description = "IridiumSkyblock"
 
 repositories {
@@ -51,6 +51,7 @@ tasks {
         archiveClassifier.set("")
 
         // Relocate dependencies
+        relocate("com.iridium.iridiumcore")
         relocate("com.j256.ormlite")
         relocate("org.bstats")
         relocate("de.jeff_media.updatechecker")
