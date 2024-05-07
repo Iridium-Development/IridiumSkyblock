@@ -473,14 +473,24 @@ public class IslandManager extends TeamManager<Island, User> {
                         for (int y = 0; y <= maxy; y++) {
                             if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
                                 XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
-                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
+                                Block block = chunk.getBlock(x, y, z);
+                                int amount = IridiumSkyblock.getInstance().getSupportManager().getStackerSupport().stream()
+                                        .mapToInt(stackerSupport -> stackerSupport.getStackAmount(block))
+                                        .max()
+                                        .orElse(1);
+                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + amount);
                             }
                         }
                     }
                 }
-                getSpawners(chunk, island).join().forEach(creatureSpawner ->
-                        teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + 1)
-                );
+                getSpawners(chunk, island).join().forEach(creatureSpawner -> {
+                    int amount = IridiumSkyblock.getInstance().getSupportManager().getSpawnerSupport().stream()
+                            .mapToInt(stackerSupport -> stackerSupport.getStackAmount(creatureSpawner))
+                            .max()
+                            .orElse(1);
+
+                    teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
+                });
             }
         }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
@@ -643,7 +653,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public boolean isInSkyblockWorld(World world) {
-        if(world == null) return false;
+        if (world == null) return false;
         return world.getName().equals(getWorldName(World.Environment.NORMAL)) || world.getName().equals(getWorldName(World.Environment.NETHER)) || world.getName().equals(getWorldName(World.Environment.THE_END));
     }
 
