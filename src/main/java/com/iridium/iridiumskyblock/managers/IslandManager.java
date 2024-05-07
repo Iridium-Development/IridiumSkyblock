@@ -25,6 +25,7 @@ import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
+import com.iridium.iridiumteams.support.StackerSupport;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -40,7 +41,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -464,6 +464,27 @@ public class IslandManager extends TeamManager<Island, User> {
         }
     }
 
+    private HashMap<XMaterial, Integer> getBlockStacks(Chunk chunk, Island island) {
+        HashMap<XMaterial, Integer> hashMap = new HashMap<>();
+
+        for (StackerSupport<Island> stackerSupport : IridiumSkyblock.getInstance().getSupportManager().getStackerSupport()) {
+            stackerSupport.getBlocksStacked(chunk, island).forEach((key, value) -> hashMap.put(key, hashMap.getOrDefault(key, 0) + value));
+        }
+
+        return hashMap;
+    }
+
+    private CompletableFuture<Integer> getSpawnerStackAmount(CreatureSpawner creatureSpawner) {
+        CompletableFuture<Integer> completableFuture = new CompletableFuture<>();
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            completableFuture.complete(IridiumSkyblock.getInstance().getSupportManager().getSpawnerSupport().stream()
+                    .mapToInt(stackerSupport -> stackerSupport.getStackAmount(creatureSpawner))
+                    .max()
+                    .orElse(1));
+        });
+        return completableFuture;
+    }
+
     @Override
     public CompletableFuture<Void> recalculateTeam(Island island) {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
@@ -478,22 +499,17 @@ public class IslandManager extends TeamManager<Island, User> {
                         for (int y = 0; y <= maxy; y++) {
                             if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
                                 XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
-                                Block block = chunk.getBlock(x, y, z);
-                                int amount = IridiumSkyblock.getInstance().getSupportManager().getStackerSupport().stream()
-                                        .mapToInt(stackerSupport -> stackerSupport.getStackAmount(block))
-                                        .max()
-                                        .orElse(1);
-                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + amount);
+                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
                             }
                         }
                     }
                 }
-                getSpawners(chunk, island).join().forEach(creatureSpawner -> {
-                    int amount = IridiumSkyblock.getInstance().getSupportManager().getSpawnerSupport().stream()
-                            .mapToInt(stackerSupport -> stackerSupport.getStackAmount(creatureSpawner))
-                            .max()
-                            .orElse(1);
+                getBlockStacks(chunk, island).forEach((key, value) -> {
+                    teamBlocks.put(key, teamBlocks.getOrDefault(key, 0) + value);
+                });
 
+                getSpawners(chunk, island).join().forEach(creatureSpawner -> {
+                    int amount = getSpawnerStackAmount(creatureSpawner).join();
                     teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
                 });
             }
