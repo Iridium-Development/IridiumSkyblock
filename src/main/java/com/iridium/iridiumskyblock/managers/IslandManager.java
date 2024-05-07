@@ -152,6 +152,11 @@ public class IslandManager extends TeamManager<Island, User> {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
+    @Override
+    public boolean isInTeam(Island island, Location location) {
+        return island.isInIsland(location);
+    }
+
     private CompletableFuture<String> getSchematic(Player player) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
         if (IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
