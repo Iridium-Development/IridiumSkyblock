@@ -66,9 +66,8 @@ public class IslandManager extends TeamManager<Island, User> {
         return(path.delete());
     }
 
-    // When creating the cached world, we specify its name with a path to place it in the data folder.
-    // For some silly reason, using getDataFolder() results in an illegal character error.
-    // Same with using File.separator.
+    // Bukkit's createWorld method requires "/" no matter which platform we're on.
+    // Which is why we need to code it like this, File.separator and co. aren't enough.
     public String getCacheWorldName(World world) {
         return "plugins/iridiumskyblock" + "/" + "regenWorlds" + "/" + world.getName() + "_regen";
     }
