@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum GeneratorType {
     VOID(false), 
     OCEAN(true),
+    FLAT(true),
     VANILLA(true);
     
     private final boolean terrainGenerator;
