@@ -4,6 +4,7 @@ import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.generators.FlatGenerator;
 import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
 import com.iridium.iridiumskyblock.listeners.*;
@@ -83,10 +84,16 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         super.onLoad();
 
         getLogger().info("Loading world generator...");
+        getLogger().info("Generator Type = " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
+
         // This switch statement is here so that if we end up adding another generator type, we can throw it in this.
-        switch(IridiumSkyblock.getInstance().getConfiguration().generatorType) {
+        switch (IridiumSkyblock.getInstance().getConfiguration().generatorType) {
             case OCEAN: {
                 this.chunkGenerator = new OceanGenerator();
+                break;
+            }
+            case FLAT: {
+                this.chunkGenerator = new FlatGenerator();
                 break;
             }
             case VANILLA: {
@@ -94,6 +101,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
                 break;
             }
             default: {
+                getLogger().warning("Invalid generator type [" + IridiumSkyblock.getInstance().getConfiguration().generatorType + "], valid types are " + Arrays.toString(GeneratorType.values()));
+                getLogger().info("Generator Type = " + GeneratorType.VOID);
                 this.chunkGenerator = new VoidGenerator();
                 break;
             }
