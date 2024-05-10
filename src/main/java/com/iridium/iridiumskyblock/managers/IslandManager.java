@@ -53,17 +53,10 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public boolean deleteWorld(File path) {
-        if(path.exists()) {
-            File files[] = path.listFiles();
-            for(int i=0; i<files.length; i++) {
-                if(files[i].isDirectory()) {
-                    deleteWorld(files[i]);
-                } else {
-                    files[i].delete();
-                }
-            }
-        }
-        return(path.delete());
+        Files.walk(pathToBeDeleted)
+            .sorted(Comparator.reverseOrder())
+            .map(Path::toFile)
+            .forEach(File::delete);
     }
 
     // Bukkit's createWorld method requires "/" no matter which platform we're on.
