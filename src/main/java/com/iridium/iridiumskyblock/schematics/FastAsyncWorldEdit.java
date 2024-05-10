@@ -52,7 +52,13 @@ public class FastAsyncWorldEdit implements SchematicPaster {
             int width = clipboard.getDimensions().getBlockX();
             int height = clipboard.getDimensions().getBlockY();
             int length = clipboard.getDimensions().getBlockZ();
-            location.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
+
+            int newLength = (int) (length / 2.00);
+            int newWidth = (int) (width / 2.00);
+            int newHeight = (int) (height / 2.00);
+
+            location.subtract(newWidth, newHeight, newLength); //Center the schematic (for real this time)
+
             clipboard.setOrigin(clipboard.getRegion().getMinimumPoint()); // Change the //copy point to the minimum
                                                                           // corner
             {
