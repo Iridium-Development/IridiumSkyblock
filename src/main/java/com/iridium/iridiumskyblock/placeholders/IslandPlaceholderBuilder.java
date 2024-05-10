@@ -72,18 +72,16 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
             placeholderList.add(new Placeholder("island_visitors", () -> visitingPlayers.stream().map(Player::getName).collect(Collectors.joining(", "))));
             placeholderList.add(new Placeholder("island_visitors_amount", () -> String.valueOf(visitingPlayers.size())));
 
-            placeholderList.add(new Placeholder("island_visitors", () -> visitingPlayers.stream().map(Player::getName).collect(Collectors.joining(", "))));
-            placeholderList.add(new Placeholder("island_visitors_amount", () -> String.valueOf(visitingPlayers.size())));
-
             for(Map.Entry<String, Enhancement<?>> enhancement : IridiumSkyblock.getInstance().getEnhancementList().entrySet()) {
                 if(!enhancement.getValue().enabled) continue;
                 TeamEnhancement teamEnhancement = IridiumSkyblock.getInstance().getIslandManager().getTeamEnhancement(island, enhancement.getKey());
 
                 placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_active", () -> String.valueOf(teamEnhancement.isActive())));
                 placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_level", () -> String.valueOf(teamEnhancement.getLevel())));
-                placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_hours", () -> String.valueOf(Math.max((int) (teamEnhancement.getRemainingTime() % 60), 0))));
+
+                placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_hours", () -> String.valueOf(Math.max((int) (teamEnhancement.getRemainingTime() / 3600), 0))));
                 placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_minutes", () -> String.valueOf(Math.max((int) ((teamEnhancement.getRemainingTime() % 3600) / 60), 0))));
-                placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_seconds", () -> String.valueOf(Math.max((int) (teamEnhancement.getRemainingTime() / 3600), 0))));
+                placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_seconds", () -> String.valueOf(Math.max((int) (teamEnhancement.getRemainingTime() % 60), 0))));
             }
 
             for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
@@ -117,24 +115,6 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
             new Placeholder("island_members_offline_count", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
             new Placeholder("island_members_count", IridiumSkyblock.getInstance().getMessages().nullPlaceholder)
         ));
-
-        for(Map.Entry<String, Enhancement<?>> enhancement : IridiumSkyblock.getInstance().getEnhancementList().entrySet()) {
-            if(enhancement.getValue().type == EnhancementType.BOOSTER) {
-                placeholderList.add(new Placeholder("island_booster_" + enhancement.getKey() + "_active", "N/A"));
-                placeholderList.add(new Placeholder("island_booster_" + enhancement.getKey() + "_level", "N/A"));
-                placeholderList.add(new Placeholder("island_booster_" + enhancement.getKey() + "_time_hours", "N/A"));
-                placeholderList.add(new Placeholder("island_booster_" + enhancement.getKey() + "_time_minutes", "N/A"));
-                placeholderList.add(new Placeholder("island_booster_" + enhancement.getKey() + "_time_seconds", "N/A"));
-            }
-
-            if(enhancement.getValue().type == EnhancementType.UPGRADE) {
-                placeholderList.add(new Placeholder("island_upgrade_" + enhancement.getKey() + "_active", "N/A"));
-                placeholderList.add(new Placeholder("island_upgrade_" + enhancement.getKey() + "_level", "N/A"));
-                placeholderList.add(new Placeholder("island_upgrade_" + enhancement.getKey() + "_time_hours", "N/A"));
-                placeholderList.add(new Placeholder("island_upgrade_" + enhancement.getKey() + "_time_minutes", "N/A"));
-                placeholderList.add(new Placeholder("island_upgrade_" + enhancement.getKey() + "_time_seconds", "N/A"));
-            }
-        }
 
         for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
             placeholderList.add(new Placeholder("island_bank_" + bankItem.getName().toLowerCase(), IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
