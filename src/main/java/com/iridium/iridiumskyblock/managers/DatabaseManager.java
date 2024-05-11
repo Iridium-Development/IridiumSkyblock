@@ -66,19 +66,31 @@ public class DatabaseManager {
         this.userTableManager = new UserTableManager(connectionSource);
         this.islandTableManager = new IslandTableManager(connectionSource);
         this.lostItemsTableManager = new LostItemsTableManager(connectionSource, LostItems.class);
-        this.teamMissionDataTableManager = new TableManager<>(teamMissionData -> teamMissionData.getMissionID()+"-"+teamMissionData.getMissionIndex() ,connectionSource, TeamMissionData.class);
-        this.invitesTableManager = new ForeignIslandTableManager<>(teamInvite -> teamInvite.getTeamID()+"-"+teamInvite.getUser().toString(), connectionSource, TeamInvite.class);
-        this.trustTableManager = new ForeignIslandTableManager<>(teamTrust -> teamTrust.getTeamID()+"-"+teamTrust.getUser().toString(), connectionSource, TeamTrust.class);
-        this.permissionsTableManager = new ForeignIslandTableManager<>(teamPermission -> teamPermission.getTeamID()+"-"+teamPermission.getPermission()+"-"+teamPermission.getRank(), connectionSource, TeamPermission.class);
-        this.bankTableManager = new ForeignIslandTableManager<>(teamBank -> teamBank.getTeamID()+"-"+teamBank.getBankItem(), connectionSource, TeamBank.class);
-        this.enhancementTableManager = new ForeignIslandTableManager<>(teamEnhancement -> teamEnhancement.getTeamID()+"-"+teamEnhancement.getEnhancementName(), connectionSource, TeamEnhancement.class);
-        this.teamBlockTableManager = new ForeignIslandTableManager<>(teamBlock -> teamBlock.getTeamID()+"-"+teamBlock.getXMaterial().name(), connectionSource, TeamBlock.class);
-        this.teamSpawnerTableManager = new ForeignIslandTableManager<>(teamSpawner -> teamSpawner.getTeamID()+"-"+teamSpawner.getEntityType().name(), connectionSource, TeamSpawners.class);
-        this.teamWarpTableManager = new ForeignIslandTableManager<>(teamWarp -> teamWarp.getTeamID()+"-"+teamWarp.getName(), connectionSource, TeamWarp.class);
-        this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> teamMission.getTeamID()+"-"+teamMission.getMissionName(), connectionSource, TeamMission.class);
-        this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> String.valueOf(teamRewards.getId()), connectionSource, TeamReward.class);
-        this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> teamSetting.getTeamID()+"-"+teamSetting.getSetting(), connectionSource, TeamSetting.class);
+        this.teamMissionDataTableManager = new TableManager<>(teamMissionData -> getDatabaseKey(teamMissionData.getMissionID(), teamMissionData.getMissionIndex()), connectionSource, TeamMissionData.class);
+        this.invitesTableManager = new ForeignIslandTableManager<>(teamInvite -> getDatabaseKey(teamInvite.getTeamID(), teamInvite.getUser()), connectionSource, TeamInvite.class);
+        this.trustTableManager = new ForeignIslandTableManager<>(teamTrust -> getDatabaseKey(teamTrust.getTeamID(), teamTrust.getUser()), connectionSource, TeamTrust.class);
+        this.permissionsTableManager = new ForeignIslandTableManager<>(teamPermission -> getDatabaseKey(teamPermission.getTeamID(), teamPermission.getPermission(), teamPermission.getRank()), connectionSource, TeamPermission.class);
+        this.bankTableManager = new ForeignIslandTableManager<>(teamBank -> getDatabaseKey(teamBank.getTeamID(), teamBank.getBankItem()), connectionSource, TeamBank.class);
+        this.enhancementTableManager = new ForeignIslandTableManager<>(teamEnhancement -> getDatabaseKey(teamEnhancement.getTeamID(), teamEnhancement.getEnhancementName()), connectionSource, TeamEnhancement.class);
+        this.teamBlockTableManager = new ForeignIslandTableManager<>(teamBlock -> getDatabaseKey(teamBlock.getTeamID(), teamBlock.getXMaterial().name()), connectionSource, TeamBlock.class);
+        this.teamSpawnerTableManager = new ForeignIslandTableManager<>(teamSpawner -> getDatabaseKey(teamSpawner.getTeamID(), teamSpawner.getEntityType().name()), connectionSource, TeamSpawners.class);
+        this.teamWarpTableManager = new ForeignIslandTableManager<>(teamWarp -> getDatabaseKey(teamWarp.getTeamID(), teamWarp.getName()), connectionSource, TeamWarp.class);
+        this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> getDatabaseKey(teamMission.getTeamID(), teamMission.getMissionName()), connectionSource, TeamMission.class);
+        this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> getDatabaseKey(teamRewards.getId()), connectionSource, TeamReward.class);
+        this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> getDatabaseKey(teamSetting.getTeamID(), teamSetting.getSetting()), connectionSource, TeamSetting.class);
     }
+
+    private String getDatabaseKey(Object... params) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Object obj : params) {
+            stringBuilder.append(obj);
+            stringBuilder.append("-");
+        }
+
+        return stringBuilder.toString();
+    }
+
 
     /**
      * Database connection String used for establishing a connection.
