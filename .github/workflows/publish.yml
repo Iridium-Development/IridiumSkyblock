@@ -77,40 +77,40 @@ jobs:
           assets: "extension=jar"
           filename: "IridiumSkyblock-*.jar"
 
-  publish-hangar:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Downloading artifact
-        uses: actions/checkout@v2
-      - uses: thecodemonkey/action-get-gradle-version@master
-        id: version
-        with:
-          file: "build.gradle.kts"
-      - uses: actions/download-artifact@v3.0.2
-        with:
-          name: "IridiumSkyblock"
-          path: "./"
-
-      - if: github.event.release.prerelease == true
-        name: Publishing to Hangar (Beta)
-        uses: benwoo1110/hangar-upload-action@v1.0.1
-        with:
-          api-token: ${{ secrets.HANGAR_API_TOKEN }}
-          slug: IridiumSkyblock
-          channel: beta
-          version: ${{steps.version.outputs.version}}
-          files: "IridiumSkyblock-*.jar"
-
-      - if: github.event.release.prerelease == false
-        name: Publishing to Hangar (Release)
-        uses: benwoo1110/hangar-upload-action@v1.0.1
-        with:
-          api-token: ${{ secrets.HANGAR_API_TOKEN }}
-          slug: IridiumSkyblock
-          channel: release
-          version: ${{steps.version.outputs.version}}
-          files: "IridiumSkyblock-*.jar"
+#  publish-hangar:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Downloading artifact
+#        uses: actions/checkout@v2
+#      - uses: thecodemonkey/action-get-gradle-version@master
+#        id: version
+#        with:
+#          file: "build.gradle.kts"
+#      - uses: actions/download-artifact@v3.0.2
+#        with:
+#          name: "IridiumSkyblock"
+#          path: "./"
+#
+#      - if: github.event.release.prerelease == true
+#        name: Publishing to Hangar (Beta)
+#        uses: benwoo1110/hangar-upload-action@v1.0.1
+#        with:
+#          api-token: ${{ secrets.HANGAR_API_TOKEN }}
+#          slug: IridiumSkyblock
+#          channel: beta
+#          version: ${{steps.version.outputs.version}}
+#          files: "IridiumSkyblock-*.jar"
+#
+#      - if: github.event.release.prerelease == false
+#        name: Publishing to Hangar (Release)
+#        uses: benwoo1110/hangar-upload-action@v1.0.1
+#        with:
+#          api-token: ${{ secrets.HANGAR_API_TOKEN }}
+#          slug: IridiumSkyblock
+#          channel: release
+#          version: ${{steps.version.outputs.version}}
+#          files: "IridiumSkyblock-*.jar"
 
   publish-modrinth:
     needs: build
