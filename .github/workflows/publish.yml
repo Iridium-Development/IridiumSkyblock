@@ -37,6 +37,7 @@ jobs:
           asset_name: IridiumSkyblock.jar
           asset_content_type: application/java-archive
           token: ${{ secrets.GITHUB_TOKEN }}
+
   update-release:
     needs: build
     runs-on: ubuntu-latest
