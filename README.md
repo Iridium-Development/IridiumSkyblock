@@ -17,7 +17,7 @@ Every aspect of the plugin has been carefully crafted to suit the server's needs
 
 ## Getting Started
 
-Download the plugin from [Spigot](https://www.spigotmc.org/resources/iridium-skyblock-1-13-1-19.62480/), download builds from our [Github](https://github.com/Iridium-Development/IridiumSkyblock/releases), or compile it yourself.
+Download the plugin from [Spigot](https://www.spigotmc.org/resources/iridium-skyblock-1-13-1-19.62480/), [Modrinth](https://modrinth.com/plugin/iridiumskyblock), [Hangar](https://hangar.papermc.io/IridiumDevelopment/IridiumSkyblock), [Github Releases](https://github.com/Iridium-Development/IridiumSkyblock/releases), or compile it yourself.
 
 Once you have a copy of the plugin (it should be a ``.jar`` file), simply place it in the ``server/plugins`` folder.
 
