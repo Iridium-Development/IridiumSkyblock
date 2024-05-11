@@ -29,14 +29,6 @@ jobs:
         with:
           name: "IridiumSkyblock"
           path: "build/libs/IridiumSkyblock-*.jar"
-      - name: Upload release asset
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: build/libs/IridiumSkyblock-*.jar
-          asset_name: IridiumSkyblock.jar
-          asset_content_type: application/java-archive
-          token: ${{ secrets.GITHUB_TOKEN }}
 
   update-release:
     needs: build
