@@ -135,9 +135,14 @@ jobs:
           version: ${{steps.version.outputs.version}}
           version-type: beta
           modrinth-id: uVMG0MzO
-          modrinth-featured: true
+          modrinth-featured: false
           modrinth-unfeature-mode: any
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          loaders: |
+            paper
+            spigot
+          game-versions: |
+            >=1.13 <=1.20.4
 
       - if: github.event.release.prerelease == false
         name: Publish to Modrinth (Release)
@@ -150,3 +155,8 @@ jobs:
           modrinth-featured: true
           modrinth-unfeature-mode: any
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          loaders: |
+            paper
+            spigot
+          game-versions: |
+            >=1.13 <=1.20.4
