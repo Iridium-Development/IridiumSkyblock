@@ -78,6 +78,7 @@ public class IslandManager extends TeamManager<Island, User> {
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
                 .environment(environment);
+
         World world = Bukkit.createWorld(worldCreator);
 
         createCacheWorld(world);
@@ -111,14 +112,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
         if(!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) return;
 
-
         if (Bukkit.getWorld(getCacheWorldName(world)) == null) {
-
-            WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world))
-                    .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(world.getName(), null))
-                    .environment(world.getEnvironment())
-                    .seed(world.getSeed());
-
+            WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world)).copy(world);
             worldCreator.createWorld();
         }
 
@@ -403,8 +398,7 @@ public class IslandManager extends TeamManager<Island, User> {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
                 Block blockA = regenWorld.getBlockAt(x, y, z);
                 Block blockB = world.getBlockAt(x, y, z);
-
-                blockB.setType(blockA.getType(), false);
+                blockB.setBlockData(blockA.getBlockData(), false);
             }
         }
 
