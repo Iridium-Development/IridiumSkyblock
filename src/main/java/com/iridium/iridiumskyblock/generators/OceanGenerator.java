@@ -137,7 +137,8 @@ public class OceanGenerator extends ChunkGenerator {
         }
 
         // Generate kelp, ores, and mineral deposits
-        shouldGenerateDecorations(world, random , x, z);
+        // BREAKS BELOW 1.18
+        //shouldGenerateDecorations(world, random , x, z);
     }
 
     @Override
