@@ -762,7 +762,6 @@ public class IslandManager extends TeamManager<Island, User> {
                 user.getPlayer();
                 onlinePlayers.add(user);
             } catch (Exception e) {
-                IridiumSkyblock.getInstance().getLogger().warning(e.getMessage());
                 offlinePlayers.add(user);
             }
         }
