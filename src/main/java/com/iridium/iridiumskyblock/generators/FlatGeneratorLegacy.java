@@ -9,14 +9,14 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.util.noise.SimplexOctaveGenerator;
-import org.jetbrains.annotations.NotNull;
 import org.bukkit.generator.WorldInfo;
+import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Random;
 
-public class FlatGenerator extends ChunkGenerator {
+public class FlatGeneratorLegacy extends ChunkGenerator {
 
     @Override
     public @NotNull ChunkData generateChunkData(
@@ -36,7 +36,7 @@ public class FlatGenerator extends ChunkGenerator {
                 // Generate stone layer
                 for (int y = LocationUtils.getMinHeight(world) + 1; y < floorHeight - 5; y++) {
                     chunkData.setBlock(x, y, z,
-                            Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).mantle.parseMaterial())
+                            Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );
                 }
 
@@ -123,8 +123,21 @@ public class FlatGenerator extends ChunkGenerator {
             }
         }
 
+        shouldGenerateCaves(world, random, x, z);
+        shouldGenerateStructures(world, random, x, z);
+
         // Generate lakes, trees, grass, mineral deposits, etc.
         shouldGenerateDecorations(world, random, x, z);
+    }
+
+    @Override
+    public boolean shouldGenerateStructures(WorldInfo world, Random random, int x, int z) {
+        return getFlatGenerator(world.getEnvironment()).generateStructures;
+    }
+
+    @Override
+    public boolean shouldGenerateCaves(WorldInfo world, Random random, int x, int z) {
+        return getFlatGenerator(world.getEnvironment()).generateCaves;
     }
 
     @Override

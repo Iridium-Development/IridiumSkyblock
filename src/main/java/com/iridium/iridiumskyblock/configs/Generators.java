@@ -31,6 +31,7 @@ public class Generators {
             new com.iridium.iridiumskyblock.configs.Generators.OceanGeneratorWorld(
                     XBiome.OCEAN,
                     XMaterial.SAND,
+                    XMaterial.GRAVEL,
                     XMaterial.STONE,
                     XMaterial.WATER,
                     63, 48, 53,
@@ -39,7 +40,8 @@ public class Generators {
             ),
             new com.iridium.iridiumskyblock.configs.Generators.OceanGeneratorWorld(
                     XBiome.NETHER_WASTES,
-                    XMaterial.SOUL_SAND,
+                    XMaterial.NETHERRACK,
+                    XMaterial.NETHERRACK,
                     XMaterial.NETHERRACK,
                     XMaterial.LAVA,
                     63, 48, 53,
@@ -48,6 +50,7 @@ public class Generators {
             ),
             new com.iridium.iridiumskyblock.configs.Generators.OceanGeneratorWorld(
                     XBiome.END_BARRENS,
+                    XMaterial.END_STONE,
                     XMaterial.END_STONE,
                     XMaterial.END_STONE,
                     XMaterial.VOID_AIR,
@@ -61,6 +64,7 @@ public class Generators {
                     XBiome.PLAINS,
                     XMaterial.GRASS_BLOCK,
                     XMaterial.DIRT,
+                    XMaterial.STONE,
                     -59,
                     true,
                     true
@@ -69,12 +73,14 @@ public class Generators {
                     XBiome.NETHER_WASTES,
                     XMaterial.NETHERRACK,
                     XMaterial.NETHERRACK,
+                    XMaterial.NETHERRACK,
                     5,
                     true,
                     true
             ),
             new com.iridium.iridiumskyblock.configs.Generators.FlatGeneratorWorld(
                     XBiome.END_BARRENS,
+                    XMaterial.END_STONE,
                     XMaterial.END_STONE,
                     XMaterial.END_STONE,
                     5,
@@ -122,6 +128,7 @@ public class Generators {
         public XBiome biome;
         public XMaterial floor;
         public XMaterial underFloor;
+        public XMaterial mantle;
         public XMaterial liquidType;
         public int liquidHeight;
         public int minFloorHeight;
@@ -129,10 +136,11 @@ public class Generators {
         public boolean decorate;
         public boolean canSpawnEntities;
 
-        public OceanGeneratorWorld(XBiome biome, XMaterial floor, XMaterial underFloor, XMaterial liquidType, int liquidHeight, int minFloorHeight, int maxFloorHeight, boolean decorate, boolean canSpawnEntities) {
+        public OceanGeneratorWorld(XBiome biome, XMaterial floor, XMaterial underFloor, XMaterial mantle, XMaterial liquidType, int liquidHeight, int minFloorHeight, int maxFloorHeight, boolean decorate, boolean canSpawnEntities) {
             this.biome = biome;
             this.floor = floor;
             this.underFloor = underFloor;
+            this.mantle = mantle;
             this.liquidType = liquidType;
             this.liquidHeight = liquidHeight;
             this.minFloorHeight = minFloorHeight;
@@ -147,14 +155,16 @@ public class Generators {
         public XBiome biome;
         public XMaterial floor;
         public XMaterial underFloor;
+        public XMaterial mantle;
         public int floorHeight;
         public boolean decorate;
         public boolean canSpawnEntities;
 
-        public FlatGeneratorWorld(XBiome biome, XMaterial floor, XMaterial underFloor, int floorHeight, boolean decorate, boolean canSpawnEntities) {
+        public FlatGeneratorWorld(XBiome biome, XMaterial floor, XMaterial underFloor, XMaterial mantle, int floorHeight, boolean decorate, boolean canSpawnEntities) {
             this.biome = biome;
             this.floor = floor;
             this.underFloor = underFloor;
+            this.mantle = mantle;
             this.floorHeight = floorHeight;
             this.decorate = decorate;
             this.canSpawnEntities = canSpawnEntities;

@@ -45,6 +45,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public String worldName = "IridiumSkyblock";
     public String spawnWorldName = "world";
     public GeneratorType generatorType = GeneratorType.VOID;
+    public boolean fixHorizon = true;
     public String islandTitleTop = "&9%island_name%";
     public String islandTitleBottom = "&7%island_description%";
     public String paster = "worldedit";

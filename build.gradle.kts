@@ -15,6 +15,7 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://jitpack.io")
     maven("https://maven.enginehub.org/repo/")
+    maven("https://repo.dmulloy2.net/repository/public/")
     mavenCentral()
 }
 
@@ -31,6 +32,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
+    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.32")

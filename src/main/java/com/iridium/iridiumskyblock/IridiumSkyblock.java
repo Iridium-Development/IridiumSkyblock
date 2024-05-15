@@ -1,17 +1,22 @@
 package com.iridium.iridiumskyblock;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLib;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.PacketAdapter;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.generators.FlatGenerator;
-import com.iridium.iridiumskyblock.generators.OceanGenerator;
-import com.iridium.iridiumskyblock.generators.VoidGenerator;
+import com.iridium.iridiumskyblock.generators.*;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.IslandPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
+import com.iridium.iridiumskyblock.utils.ProtocolLibUtils.IridiumPacketAdapter;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.managers.MissionManager;
 import com.iridium.iridiumteams.managers.ShopManager;
@@ -20,6 +25,7 @@ import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.event.Listener;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -73,6 +79,9 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     private ChunkGenerator chunkGenerator;
 
+    @Getter
+    private int mcVersion;
+
     public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
         instance = this;
@@ -86,26 +95,33 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     public void onLoad() {
         super.onLoad();
 
+        setMcVersion();
+
         getLogger().info("Loading world generator...");
-        getLogger().info("Generator Type = " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
 
         // This switch statement is here so that if we end up adding another generator type, we can throw it in this.
         switch (IridiumSkyblock.getInstance().getConfiguration().generatorType) {
             case OCEAN: {
-                this.chunkGenerator = new OceanGenerator();
+                if(getMcVersion() >= 17) this.chunkGenerator = new OceanGenerator();
+                else this.chunkGenerator = new OceanGeneratorLegacy();
                 break;
             }
             case FLAT: {
-                this.chunkGenerator = new FlatGenerator();
+                if(getMcVersion() >= 17) this.chunkGenerator = new FlatGenerator();
+                else this.chunkGenerator = new FlatGeneratorLegacy();
                 break;
             }
             case VANILLA: {
                 this.chunkGenerator = null;
                 break;
             }
+            case VOID: {
+                this.chunkGenerator = new VoidGenerator();
+                break;
+            }
             default: {
                 getLogger().warning("Invalid generator type [" + IridiumSkyblock.getInstance().getConfiguration().generatorType + "], valid types are " + Arrays.toString(GeneratorType.values()));
-                getLogger().info("Generator Type = " + GeneratorType.VOID);
+                getLogger().info("GENERATOR TYPE: " + GeneratorType.VOID);
                 this.chunkGenerator = new VoidGenerator();
                 break;
             }
@@ -176,6 +192,16 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         if(!XMaterial.supports(15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
+
+        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            try {
+                ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
+                protocolManager.addPacketListener(new IridiumPacketAdapter(this, ListenerPriority.HIGH, PacketType.Play.Server.LOGIN));
+                protocolManager.addPacketListener(new IridiumPacketAdapter(this, ListenerPriority.HIGH, PacketType.Play.Server.RESPAWN));
+            } catch (NoClassDefFoundError ignored) {
+                if (configuration.fixHorizon) getLogger().info("ProtocolLib is not installed.");
+            }
+        }
     }
 
     @Override
@@ -311,6 +337,15 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
                 getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
             }
         }
+    }
+
+    private void setMcVersion() {
+        int version = 13;
+        try {
+            // version example: 1.20.4-R0.1-SNAPSHOT (we need 20)
+            version = Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4));
+        } catch (NumberFormatException ignored) {}
+        this.mcVersion = version;
     }
 
     @Override

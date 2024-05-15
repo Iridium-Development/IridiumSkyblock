@@ -9,14 +9,15 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
 import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
-import org.bukkit.generator.WorldInfo;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Random;
 
-public class OceanGenerator extends ChunkGenerator {
+public class OceanGeneratorLegacy extends ChunkGenerator {
 
     @Override
     public @NotNull ChunkData generateChunkData(
@@ -134,6 +135,8 @@ public class OceanGenerator extends ChunkGenerator {
 
         }
 
+        shouldGenerateCaves();
+
         // Generate water or lava on top of the floor
         for (int y = currentFloorHeight + 1; y <= getOceanGenerator(world.getEnvironment()).liquidHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
@@ -156,8 +159,21 @@ public class OceanGenerator extends ChunkGenerator {
             }
         }
 
+        // Generate structures
+        shouldGenerateStructures(world, random, x, z);
+
         // Generate kelp, ores, mineral deposits, etc.
         shouldGenerateDecorations(world, random , x, z);
+    }
+
+    @Override
+    public boolean shouldGenerateStructures(WorldInfo world, Random random, int x, int z) {
+        return getOceanGenerator(world.getEnvironment()).generateStructures;
+    }
+
+    @Override
+    public boolean shouldGenerateCaves(WorldInfo world, Random random, int x, int z) {
+        return getOceanGenerator(world.getEnvironment()).generateCaves;
     }
 
     @Override
