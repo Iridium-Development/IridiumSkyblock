@@ -15,6 +15,7 @@ import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.managers.MissionManager;
 import com.iridium.iridiumteams.managers.ShopManager;
+import com.iridium.iridiumteams.managers.SupportManager;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -66,6 +67,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private SchematicManager schematicManager;
     private ShopManager<Island, User> shopManager;
     private BiomeManager biomeManager;
+    private SupportManager<Island, User> supportManager;
 
     private Economy economy;
 
@@ -127,6 +129,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.missionManager = new MissionManager<>(this);
         this.shopManager = new ShopManager<>(this);
         this.biomeManager = new BiomeManager();
+        this.supportManager = new SupportManager<>(this);
+
+        supportManager.registerSupport();
+
         try {
             databaseManager.init();
         } catch (SQLException exception) {
