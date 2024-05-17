@@ -701,15 +701,11 @@ public class IslandManager extends TeamManager<Island, User> {
     public int getIslandCrystals(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
 
-        int amount = 0;
-
-        if (NBT.get(itemStack, readableItemNBT -> {
-            return readableItemNBT.getCompound("iridiumskyblock").hasTag("islandCrystals");
-        })) return NBT.get(itemStack, readableItemNBT -> {
-            return readableItemNBT.getCompound("iridiumskyblock").getInteger("islandCrystals");
+        return NBT.get(itemStack, readableItemNBT -> {
+            if(readableItemNBT.getCompound("iridiumskyblock").hasTag("islandCrystals"))
+                return readableItemNBT.getCompound("iridiumskyblock").getInteger("islandCrystals");
+            return 0;
         });
-
-        return amount;
     }
 
     public List<User> getMembersOnIsland(Island island) {
