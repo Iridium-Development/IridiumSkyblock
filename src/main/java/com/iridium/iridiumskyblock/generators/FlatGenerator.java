@@ -34,14 +34,14 @@ public class FlatGenerator extends ChunkGenerator {
                 );
 
                 // Generate stone layer
-                for (int y = LocationUtils.getMinHeight(world) + 1; y < floorHeight - 5; y++) {
+                for (int y = LocationUtils.getMinHeight(world) + 1; y < floorHeight - 4; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).mantle.parseMaterial())
                     );
                 }
 
                 // Generate dirt layer
-                for (int y = floorHeight - 5; y < floorHeight; y++) {
+                for (int y = floorHeight - 4; y < floorHeight; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );
@@ -75,7 +75,7 @@ public class FlatGenerator extends ChunkGenerator {
         }
 
         // Generate stone layer
-        for (int y = minFloorHeight + 1; y < floorHeight - 5; y++) {
+        for (int y = minFloorHeight + 1; y < floorHeight - 4; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getFlatGenerator(world.getEnvironment()).mantle.parseMaterial()
                     && getFlatGenerator(world.getEnvironment()).mantle.parseMaterial() != null) {
@@ -88,7 +88,7 @@ public class FlatGenerator extends ChunkGenerator {
         }
 
         // Generate dirt layer
-        for (int y = floorHeight - 5; y < floorHeight; y++) {
+        for (int y = floorHeight - 4; y < floorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial()
                     && getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial() != null) {

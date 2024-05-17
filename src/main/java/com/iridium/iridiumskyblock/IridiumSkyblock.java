@@ -42,6 +42,8 @@ import java.util.Objects;
 
 @Getter
 public class IridiumSkyblock extends IridiumTeams<Island, User> {
+
+    @Getter
     private static IridiumSkyblock instance;
 
     private Configuration configuration;
@@ -65,6 +67,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private UserPlaceholderBuilder userPlaceholderBuilder;
     private TeamChatPlaceholderBuilder teamChatPlaceholderBuilder;
 
+    @Getter
+    private ProtocolManager protocolManager;
     private IslandManager teamManager;
     private UserManager userManager;
     private CommandManager commandManager;
@@ -87,9 +91,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         instance = this;
     }
 
-    public IridiumSkyblock() {
-        instance = this;
-    }
+    public IridiumSkyblock() { instance = this; }
 
     @Override
     public void onLoad() {
@@ -138,6 +140,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
         this.teamManager.createWorld(World.Environment.THE_END, configuration.worldName + "_the_end");
 
+        setProtocolManager();
         this.schematicManager = new SchematicManager();
         this.userManager = new UserManager();
         this.commandManager = new CommandManager("iridiumskyblock");
@@ -192,16 +195,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         if(!XMaterial.supports(15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
-
-        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            try {
-                ProtocolManager protocolManager = ProtocolLibrary.getProtocolManager();
-                protocolManager.addPacketListener(new IridiumPacketAdapter(this, ListenerPriority.HIGH, PacketType.Play.Server.LOGIN));
-                protocolManager.addPacketListener(new IridiumPacketAdapter(this, ListenerPriority.HIGH, PacketType.Play.Server.RESPAWN));
-            } catch (NoClassDefFoundError ignored) {
-                if (configuration.fixHorizon) getLogger().info("ProtocolLib is not installed.");
-            }
-        }
     }
 
     @Override
@@ -348,6 +341,18 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.mcVersion = version;
     }
 
+    private void setProtocolManager() {
+        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            try {
+                this.protocolManager = ProtocolLibrary.getProtocolManager();
+                protocolManager.addPacketListener(new IridiumPacketAdapter(this, ListenerPriority.HIGH, PacketType.Play.Server.LOGIN));
+                protocolManager.addPacketListener(new IridiumPacketAdapter(this, ListenerPriority.HIGH, PacketType.Play.Server.RESPAWN));
+            } catch (NoClassDefFoundError ignored) {
+                if (configuration.fixHorizon) getLogger().warning("ProtocolLib is not installed - features will be limited.");
+            }
+        }
+    }
+
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         return this.chunkGenerator;
@@ -355,9 +360,5 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     public IslandManager getIslandManager() {
         return teamManager;
-    }
-
-    public static IridiumSkyblock getInstance() {
-        return instance;
     }
 }

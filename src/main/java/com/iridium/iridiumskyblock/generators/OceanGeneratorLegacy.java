@@ -135,8 +135,6 @@ public class OceanGeneratorLegacy extends ChunkGenerator {
 
         }
 
-        shouldGenerateCaves();
-
         // Generate water or lava on top of the floor
         for (int y = currentFloorHeight + 1; y <= getOceanGenerator(world.getEnvironment()).liquidHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
@@ -144,7 +142,7 @@ public class OceanGeneratorLegacy extends ChunkGenerator {
                 if (block.getState() instanceof InventoryHolder) {
                     ((InventoryHolder) block.getState()).getInventory().clear();
                 }
-                block.setType(getOceanGenerator(world.getEnvironment()).liquidType.parseMaterial(), true);
+                block.setType(getOceanGenerator(world.getEnvironment()).liquidType.parseMaterial(), false);
             }
         }
 
@@ -159,26 +157,8 @@ public class OceanGeneratorLegacy extends ChunkGenerator {
             }
         }
 
-        // Generate structures
-        shouldGenerateStructures(world, random, x, z);
-
         // Generate kelp, ores, mineral deposits, etc.
-        shouldGenerateDecorations(world, random , x, z);
-    }
-
-    @Override
-    public boolean shouldGenerateStructures(WorldInfo world, Random random, int x, int z) {
-        return getOceanGenerator(world.getEnvironment()).generateStructures;
-    }
-
-    @Override
-    public boolean shouldGenerateCaves(WorldInfo world, Random random, int x, int z) {
-        return getOceanGenerator(world.getEnvironment()).generateCaves;
-    }
-
-    @Override
-    public boolean shouldGenerateDecorations(WorldInfo world, Random random, int x, int y) {
-        return getOceanGenerator(world.getEnvironment()).decorate;
+        if(getOceanGenerator(world.getEnvironment()).decorate) shouldGenerateDecorations();
     }
 
     @Override

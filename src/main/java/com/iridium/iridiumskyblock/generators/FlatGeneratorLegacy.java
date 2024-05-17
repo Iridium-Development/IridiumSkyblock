@@ -4,15 +4,17 @@ import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Generators;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Block;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
@@ -34,14 +36,14 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
                 );
 
                 // Generate stone layer
-                for (int y = LocationUtils.getMinHeight(world) + 1; y < floorHeight - 5; y++) {
+                for (int y = LocationUtils.getMinHeight(world) + 1; y < floorHeight - 4; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );
                 }
 
                 // Generate dirt layer
-                for (int y = floorHeight - 5; y < floorHeight; y++) {
+                for (int y = floorHeight - 4; y < floorHeight; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );
@@ -75,7 +77,7 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
         }
 
         // Generate stone layer
-        for (int y = minFloorHeight + 1; y < floorHeight - 5; y++) {
+        for (int y = minFloorHeight + 1; y < floorHeight - 4; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getFlatGenerator(world.getEnvironment()).mantle.parseMaterial()
                     && getFlatGenerator(world.getEnvironment()).mantle.parseMaterial() != null) {
@@ -88,7 +90,7 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
         }
 
         // Generate dirt layer
-        for (int y = floorHeight - 5; y < floorHeight; y++) {
+        for (int y = floorHeight - 4; y < floorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial()
                     && getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial() != null) {
@@ -123,26 +125,8 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
             }
         }
 
-        shouldGenerateCaves(world, random, x, z);
-        shouldGenerateStructures(world, random, x, z);
-
         // Generate lakes, trees, grass, mineral deposits, etc.
-        shouldGenerateDecorations(world, random, x, z);
-    }
-
-    @Override
-    public boolean shouldGenerateStructures(WorldInfo world, Random random, int x, int z) {
-        return getFlatGenerator(world.getEnvironment()).generateStructures;
-    }
-
-    @Override
-    public boolean shouldGenerateCaves(WorldInfo world, Random random, int x, int z) {
-        return getFlatGenerator(world.getEnvironment()).generateCaves;
-    }
-
-    @Override
-    public boolean shouldGenerateDecorations(WorldInfo world, Random random, int x, int y) {
-        return getFlatGenerator(world.getEnvironment()).decorate;
+        if (getFlatGenerator(world.getEnvironment()).decorate) shouldGenerateDecorations();
     }
 
     @Override

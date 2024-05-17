@@ -39,14 +39,14 @@ public class OceanGenerator extends ChunkGenerator {
                 );
 
                 // Generate stone layer
-                for (int y = LocationUtils.getMinHeight(world) + 1; y < currentFloorHeight - 5; y++) {
+                for (int y = LocationUtils.getMinHeight(world) + 1; y < currentFloorHeight - 4; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getOceanGenerator(world.getEnvironment()).mantle.parseMaterial())
                     );
                 }
 
                 // Generate gravel layer
-                for (int y = currentFloorHeight - 5; y < currentFloorHeight; y++) {
+                for (int y = currentFloorHeight - 4; y < currentFloorHeight; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getOceanGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );
@@ -93,7 +93,7 @@ public class OceanGenerator extends ChunkGenerator {
         }
 
         // Generate stone layer
-        for (int y = minHeightWorld + 1; y < currentFloorHeight - 5; y++) {
+        for (int y = minHeightWorld + 1; y < currentFloorHeight - 4; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getOceanGenerator(world.getEnvironment()).mantle.parseMaterial()
                     && getOceanGenerator(world.getEnvironment()).mantle.parseMaterial() != null) {
@@ -106,7 +106,7 @@ public class OceanGenerator extends ChunkGenerator {
         }
 
         // Generate gravel on top of stone
-        for (int y = currentFloorHeight -5; y < currentFloorHeight; y++) {
+        for (int y = currentFloorHeight - 4; y < currentFloorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getOceanGenerator(world.getEnvironment()).underFloor.parseMaterial()
                     && getOceanGenerator(world.getEnvironment()).underFloor.parseMaterial() != null) {
@@ -126,12 +126,11 @@ public class OceanGenerator extends ChunkGenerator {
                 ((InventoryHolder) world.getBlockAt(x, currentFloorHeight, z).getState()).getInventory().clear();
             }
 
-            for(int y = currentFloorHeight; y < currentFloorHeight + 5; y++) {
+            for(int y = currentFloorHeight; y < currentFloorHeight + 4; y++) {
                 world.getBlockAt(x, currentFloorHeight, z)
                         .setType(Objects.requireNonNull(getOceanGenerator(world.getEnvironment()).floor.parseMaterial()), false);
                 currentFloorHeight++;
             }
-
         }
 
         // Generate water or lava on top of the floor

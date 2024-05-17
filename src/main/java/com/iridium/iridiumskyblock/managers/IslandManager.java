@@ -30,6 +30,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -115,12 +116,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
         if (Bukkit.getWorld(getCacheWorldName(world)) == null) {
 
-            WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world))
-                    .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(world.getName(), null))
-                    .environment(world.getEnvironment())
-                    .seed(world.getSeed());
-
-            worldCreator.createWorld();
+            WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world));
+            worldCreator.copy(world).createWorld();
         }
 
         if (Bukkit.getWorld(getCacheWorldName(world)).getSeed() != Bukkit.getWorld(world.getName()).getSeed()) {
@@ -407,10 +404,10 @@ public class IslandManager extends TeamManager<Island, User> {
 
         for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-                Block blockA = regenWorld.getBlockAt(x, y, z);
+                BlockData blockA = regenWorld.getBlockData(x, y, z);
                 Block blockB = world.getBlockAt(x, y, z);
 
-                blockB.setType(blockA.getType(), false);
+                blockB.setBlockData(blockA, false);
             }
         }
 
