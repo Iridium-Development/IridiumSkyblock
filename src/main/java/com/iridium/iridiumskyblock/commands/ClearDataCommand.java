@@ -14,6 +14,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -91,6 +95,8 @@ public class ClearDataCommand extends Command<Island, User> {
     }
 
     private boolean deleteData(CommandSender sender, Optional<Island> island, DataTable table) {
+
+        if (!backupDatabaseFile()) return false;
 
         List<Island> islands = new ArrayList<>();
         if (!island.isPresent()) { islands = IridiumSkyblock.getInstance().getIslandManager().getTeams(); }
@@ -230,6 +236,26 @@ public class ClearDataCommand extends Command<Island, User> {
         sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dataDeletion
                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
         return true;
+    }
+
+    private boolean backupDatabaseFile() {
+        IridiumSkyblock.getInstance().getLogger().info("Creating a backup for IridiumSkyblock.db in \"backups\" folder...");
+
+        File pluginFolder = new File(IridiumSkyblock.getInstance().getDataFolder().getPath());
+        File file = new File(pluginFolder + File.separator + "IridiumSkyblock.db");
+        File backupFolder = new File(pluginFolder.getPath() + File.separator + "backups");
+        File backupDatabaseFile = new File(backupFolder + File.separator + file.getName());
+
+        try {
+            if (!backupFolder.exists()) backupFolder.mkdir();
+            Files.copy(file.toPath(), backupDatabaseFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            IridiumSkyblock.getInstance().getLogger().info("Success! Backup \"IridiumSkyblock.db\" created, check \"" + backupFolder.getPath() + "\".");
+            return true;
+        } catch (IOException exception) {
+            IridiumSkyblock.getInstance().getLogger().severe("Failed to move \"IridiumSkyblock.db\" to " + backupFolder + ": "
+                    + exception.getMessage());
+            return false;
+        }
     }
 
     @Override
