@@ -31,7 +31,11 @@ public class SchematicAsync implements SchematicPaster {
         short width = schematicData.width;
         short height = schematicData.height;
 
-        location.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
+        int newLength = (int) (length / 2.00);
+        int newWidth = (int) (width / 2.00);
+        int newHeight = (int) (height / 2.00);
+
+        location.subtract(newWidth, newHeight, newLength); //Center the schematic (for real this time)
 
         BukkitRunnable runnable = new BukkitRunnable() {
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.0.8"
+version = "4.0.9.1"
 description = "IridiumSkyblock"
 
 repositories {
@@ -23,17 +23,17 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.4.0")
+    implementation("com.iridium:IridiumTeams:2.4.4")
 
     // Other dependencies that are not required or already available at runtime
-    compileOnly("org.projectlombok:lombok:1.18.30")
-    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    compileOnly("org.spigotmc:spigot-api:1.20.6-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
 
     // Enable lombok annotation processing
-    annotationProcessor("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
 }
 
 tasks {
@@ -51,6 +51,7 @@ tasks {
         archiveClassifier.set("")
 
         // Relocate dependencies
+        relocate("com.iridium.iridiumcore")
         relocate("com.j256.ormlite")
         relocate("org.bstats")
         relocate("de.jeff_media.updatechecker")

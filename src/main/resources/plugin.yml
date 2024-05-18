@@ -12,6 +12,7 @@ softdepend:
   - "EssentialsSpawn"
   - "RoseStacker"
   - "WorldEdit"
+  - "ObsidianStacker"
 loadbefore:
   - "Multiverse-Core"
 commands:
