@@ -76,7 +76,7 @@ public class BiomeManager {
 
     private boolean canPurchase(Player player, Biomes.BiomeItem biomeItem) {
 
-        if(biomeItem.minLevel != 1) {
+        if(biomeItem.minLevel > 1) {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getTeamViaID(user.getTeamID());
 
