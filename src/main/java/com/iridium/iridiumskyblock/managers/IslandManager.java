@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumcore.dependencies.nbtapi.NBT;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XBiome;
@@ -690,19 +690,23 @@ public class IslandManager extends TeamManager<Island, User> {
         ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
                 new Placeholder("amount", String.valueOf(amount))
         ));
-        NBTItem nbtItem = new NBTItem(itemStack);
-        NBTCompound nbtCompound = nbtItem.getOrCreateCompound("iridiumskyblock");
-        nbtCompound.setInteger("islandCrystals", amount);
-        return nbtItem.getItem();
+
+        NBT.modify(itemStack, readWriteItemNBT -> {
+            readWriteItemNBT.getOrCreateCompound("iridiumskyblock").setInteger("islandCrystals", amount);
+        });
+
+        return itemStack;
     }
 
     public int getIslandCrystals(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
-        NBTCompound nbtCompound = new NBTItem(itemStack).getOrCreateCompound("iridiumskyblock");
-        if (nbtCompound.hasKey("islandCrystals")) {
-            return nbtCompound.getInteger("islandCrystals");
-        }
-        return 0;
+
+        return NBT.get(itemStack, readableItemNBT -> {
+            if(readableItemNBT.getCompound("iridiumskyblock").hasTag("islandCrystals")) {
+                return readableItemNBT.getCompound("iridiumskyblock").getInteger("islandCrystals");
+            }
+            return 0;
+        });
     }
 
     public List<User> getMembersOnIsland(Island island) {
