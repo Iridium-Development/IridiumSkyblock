@@ -38,7 +38,7 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
-        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getClickedBlock().getLocation());
+        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(player, event.getClickedBlock().getLocation());
         if (!island.isPresent()) return;
         if (!IridiumSkyblock.getInstance().getTeamManager().getTeamPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks

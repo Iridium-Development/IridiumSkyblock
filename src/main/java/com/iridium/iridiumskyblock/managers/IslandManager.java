@@ -123,6 +123,22 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public Optional<Island> getTeamViaLocation(Location location, Island island) {
+        if(island.isInIsland(location)){
+            return Optional.of(island);
+        }
+        return getTeamViaLocation(location);
+    }
+
+    @Override
+    public Optional<Island> getTeamViaLocation(Location location, Optional<Island> island) {
+        if(island.isPresent()){
+            return getTeamViaLocation(location, island.get());
+        }
+        return getTeamViaLocation(location);
+    }
+
+    @Override
     public Optional<Island> getTeamViaNameOrPlayer(String name) {
         if (name == null || name.equals("")) return Optional.empty();
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(name);
