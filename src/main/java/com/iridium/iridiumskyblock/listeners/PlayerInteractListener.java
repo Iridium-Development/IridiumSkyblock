@@ -21,11 +21,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerInteractListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+        int crystalAmount = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemInHand);
+        if((event.getAction() == Action.RIGHT_CLICK_AIR
+                || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+                && crystalAmount > 0) {
+
+            if (IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getPlayer(), IridiumSkyblock.getInstance().getCommands().depositCommand, new String[] {IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName(), String.valueOf(crystalAmount)})) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 
         Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getClickedBlock().getLocation());
         if (!island.isPresent()) return;
