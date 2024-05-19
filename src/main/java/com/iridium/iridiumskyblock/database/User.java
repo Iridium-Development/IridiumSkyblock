@@ -5,6 +5,7 @@ import com.iridium.iridiumteams.database.IridiumUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
@@ -36,5 +37,22 @@ public class User extends IridiumUser<Island> {
         }
         setCurrentIsland(IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(player.getLocation()));
         return currentIsland;
+    }
+
+    public Optional<Island> getCurrentIsland(Location location) {
+        Player player = getPlayer();
+        if (player == null) return Optional.empty();
+        if (currentIsland.isPresent() && currentIsland.get().isInIsland(location)) {
+            return currentIsland;
+        }
+        Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(location);
+
+        islandOptional.ifPresent(island -> {
+            if(island.isInIsland(player.getLocation())){
+                setCurrentIsland(islandOptional);
+            }
+        });
+
+        return islandOptional;
     }
 }
