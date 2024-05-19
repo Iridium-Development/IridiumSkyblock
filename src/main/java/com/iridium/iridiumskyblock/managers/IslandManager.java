@@ -140,6 +140,12 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public Optional<Island> getTeamViaPlayerLocation(Player player, Location location) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        return user.getCurrentIsland(location);
+    }
+
+    @Override
     public void sendTeamTitle(Player player, Island island) {
         List<Placeholder> placeholders = IridiumSkyblock.getInstance().getTeamsPlaceholderBuilder().getPlaceholders(island);
         String top = StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getConfiguration().islandTitleTop, placeholders);
