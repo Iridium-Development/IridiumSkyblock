@@ -702,8 +702,9 @@ public class IslandManager extends TeamManager<Island, User> {
         if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
 
         return NBT.get(itemStack, readableItemNBT -> {
-            if(readableItemNBT.getCompound("iridiumskyblock").hasTag("islandCrystals"))
+            if(readableItemNBT.getCompound("iridiumskyblock").hasTag("islandCrystals")) {
                 return readableItemNBT.getCompound("iridiumskyblock").getInteger("islandCrystals");
+            }
             return 0;
         });
     }
