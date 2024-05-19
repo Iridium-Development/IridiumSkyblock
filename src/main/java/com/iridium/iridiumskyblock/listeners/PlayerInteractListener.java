@@ -27,13 +27,12 @@ public class PlayerInteractListener implements Listener {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
+        int crystalAmount = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemInHand);
         if((event.getAction() == Action.RIGHT_CLICK_AIR
                 || event.getAction() == Action.RIGHT_CLICK_BLOCK)
-                && IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemInHand) > 0) {
+                && crystalAmount > 0) {
 
-            int crystalAmount = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemInHand);
             if (IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getPlayer(), IridiumSkyblock.getInstance().getCommands().depositCommand, new String[] {IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName(), String.valueOf(crystalAmount)})) {
-                itemInHand.setAmount(0);
                 event.setCancelled(true);
                 return;
             }
