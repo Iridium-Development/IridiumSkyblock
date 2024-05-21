@@ -42,6 +42,7 @@ public class FlatGenerator extends ChunkGenerator {
 
                 // Generate dirt layer
                 for (int y = floorHeight - 4; y < floorHeight; y++) {
+                    if(chunkData.getType(x, y, z) == Material.BEDROCK) continue;
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );

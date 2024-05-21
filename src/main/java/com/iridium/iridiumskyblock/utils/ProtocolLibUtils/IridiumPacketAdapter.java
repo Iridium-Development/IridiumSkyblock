@@ -6,14 +6,13 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
-import com.comphenix.protocol.wrappers.PlayerInfoData;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import org.bukkit.World;
 import org.bukkit.WorldType;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class IridiumPacketAdapter extends PacketAdapter {
@@ -81,7 +80,7 @@ public class IridiumPacketAdapter extends PacketAdapter {
             if(packetType == PacketType.Play.Server.LOGIN) flatWorldIndex = 4;
             if(packetType == PacketType.Play.Server.RESPAWN) flatWorldIndex = 1;
 
-            StructureModifier<Object> commonPlayerSpawnInfo = packet.getModifier();
+            Field commonPlayerSpawnInfo = packet.getModifier().getField(9);
 
             int getCommonPlayerSpawnInfoIndex = 0;
             if(packetType == PacketType.Play.Server.LOGIN) getCommonPlayerSpawnInfoIndex = 9;
@@ -93,10 +92,7 @@ public class IridiumPacketAdapter extends PacketAdapter {
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PACKET FIELDS: " + packet.getStructures().getFields());
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] =+=+=+=+=+=+=+=+=+=+=+=+=");
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PACKET OBJECT: " + commonPlayerSpawnInfo);
-            for(int i = 0; i < commonPlayerSpawnInfo.size(); i++) {
-                IridiumSkyblock.getInstance().getLogger().info("[DEBUG] MAPPED TO: " + commonPlayerSpawnInfo.getField(i).getName());
-            }
-            IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PRE-MUTATION VALUES: " + commonPlayerSpawnInfo.getValues());
+            IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PRE-MUTATION VALUES: " + commonPlayerSpawnInfo.toString());
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] =+=+=+=+=+=+=+=+=+=+=+=+=");
 
             //booleans.write(flatWorldIndex, true);

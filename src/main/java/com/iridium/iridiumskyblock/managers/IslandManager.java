@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumcore.dependencies.nbtapi.NBT;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
@@ -404,10 +405,10 @@ public class IslandManager extends TeamManager<Island, User> {
 
         for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-                BlockData blockA = regenWorld.getBlockData(x, y, z);
+                Block blockA = regenWorld.getBlockAt(x, y ,z);
                 Block blockB = world.getBlockAt(x, y, z);
 
-                blockB.setBlockData(blockA, false);
+                blockB.setType(blockA.getType());
             }
         }
 

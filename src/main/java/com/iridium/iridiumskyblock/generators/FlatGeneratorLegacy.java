@@ -44,6 +44,7 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
 
                 // Generate dirt layer
                 for (int y = floorHeight - 4; y < floorHeight; y++) {
+                    if(chunkData.getType(x, y, z) == Material.BEDROCK) continue;
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );
@@ -126,7 +127,9 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
         }
 
         // Generate lakes, trees, grass, mineral deposits, etc.
-        if (getFlatGenerator(world.getEnvironment()).decorate) shouldGenerateDecorations();
+        if (getFlatGenerator(world.getEnvironment()).decorate) {
+
+        }
     }
 
     @Override
@@ -134,7 +137,7 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
         return getFlatGenerator(world.getEnvironment()).canSpawnEntities;
     }
 
-    private Generators.FlatGeneratorWorld getFlatGenerator(Environment environment) {
+    public Generators.FlatGeneratorWorld getFlatGenerator(Environment environment) {
         switch (environment) {
             case NETHER: {
                 return IridiumSkyblock.getInstance().getGenerators().flatGenerator.nether;
