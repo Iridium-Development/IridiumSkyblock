@@ -5,6 +5,7 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Biomes;
+import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -61,7 +62,7 @@ public class BiomeCategoryGUI extends BackGUI {
 
     private List<Placeholder> getBiomeLorePlaceholders(Biomes.BiomeItem item) {
         List<Placeholder> placeholders = new ArrayList<>(Arrays.asList(
-                new Placeholder("amount", IridiumSkyblock.getInstance().getBiomeManager().formatPrice(item.defaultAmount)),
+                new Placeholder("minLevel", String.valueOf(item.minLevel)),
                 new Placeholder("vault_cost", IridiumSkyblock.getInstance().getBiomeManager().formatPrice(item.buyCost.money))
         ));
         for (Map.Entry<String, Double> bankItem : item.buyCost.bankItems.entrySet()) {
@@ -78,6 +79,10 @@ public class BiomeCategoryGUI extends BackGUI {
             lore.add(IridiumSkyblock.getInstance().getBiomes().buyPriceLore);
         } else {
             lore.add(IridiumSkyblock.getInstance().getBiomes().notPurchasableLore);
+        }
+
+        if(item.minLevel > 1){
+            lore.add(IridiumSkyblock.getInstance().getBiomes().levelRequirementLore);
         }
 
         lore.addAll(IridiumSkyblock.getInstance().getBiomes().biomeItemLore);

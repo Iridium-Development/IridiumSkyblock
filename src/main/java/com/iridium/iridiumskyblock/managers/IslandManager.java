@@ -201,9 +201,11 @@ public class IslandManager extends TeamManager<Island, User> {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
 
-            if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
-                if (!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
-                    return null;
+            if(IridiumSkyblock.getInstance().getConfiguration().islandCreationCost) {
+                if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
+                    if (!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
+                        return null;
+                    }
                 }
             }
 
