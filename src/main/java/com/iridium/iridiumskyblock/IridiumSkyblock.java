@@ -373,12 +373,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         return teamManager;
     }
 
-    @Override
-    public boolean setItemStackSync() {
-        //TODO this will probabbly cause lag, but the async doesnt currently work in the way I want it to... im investigating this atm
-        return true;
-    }
-
     public static IridiumSkyblock getInstance() {
         return instance;
     }
