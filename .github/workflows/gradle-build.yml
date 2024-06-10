@@ -1,0 +1,32 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+#
+# This worflow will also upload an artifact to Nexus, Hangar, Modrinth, and GitHub releases.
+
+name: Java CI with Gradle
+on: [ push ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.commits[0].message, '[ci-skip]')"
+    steps:
+      - uses: actions/checkout@v3.0.0
+      - uses: gradle/wrapper-validation-action@v1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3.0.0
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Test with Gradle
+        run: ./gradlew test
+      - name: Build with Gradle
+        run: ./gradlew build
+      - name: Upload artifacts
+        uses: "actions/upload-artifact@v2.2.3"
+        with:
+          name: "IridiumSkyblock"
+          path: "build/libs/IridiumSkyblock-*.jar"

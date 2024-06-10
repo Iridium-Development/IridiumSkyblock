@@ -5,17 +5,18 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.0.9.1"
+version = "4.1.0"
 description = "IridiumSkyblock"
 
 repositories {
+    mavenCentral()
+    mavenLocal()
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://ci.ender.zone/plugin/repository/everything/")
     maven("https://nexus.iridiumdevelopment.net/repository/maven-releases/")
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://jitpack.io")
     maven("https://maven.enginehub.org/repo/")
-    mavenCentral()
 }
 
 dependencies {
@@ -23,7 +24,7 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.4.4")
+    implementation("com.iridium:IridiumTeams:2.5.1")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.32")

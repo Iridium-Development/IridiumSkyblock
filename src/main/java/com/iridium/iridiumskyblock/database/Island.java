@@ -38,7 +38,7 @@ public class Island extends Team {
 
     @Override
     public int getLevel() {
-        return IridiumSkyblock.getInstance().getIslandManager().getTeamLevel(this.getExperience());
+        return IridiumSkyblock.getInstance().getIslandManager().getTeamLevel(getExperience());
     }
 
     @Override
@@ -141,7 +141,7 @@ public class Island extends Team {
         if (super.getName() != null) return super.getName();
         String ownerName = getOwner()
                 .map(User::getName)
-                .orElse("N/A");
+                .orElse(IridiumSkyblock.getInstance().getMessages().nullPlaceholder);
         return IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%owner%", ownerName);
     }
 
