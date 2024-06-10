@@ -81,7 +81,7 @@ public class BiomeCategoryGUI extends BackGUI {
             lore.add(IridiumSkyblock.getInstance().getBiomes().notPurchasableLore);
         }
 
-        if(item.minLevel != 1){
+        if(item.minLevel > 1){
             lore.add(IridiumSkyblock.getInstance().getBiomes().levelRequirementLore);
         }
 

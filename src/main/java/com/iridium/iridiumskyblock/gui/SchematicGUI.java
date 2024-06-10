@@ -53,28 +53,30 @@ public abstract class SchematicGUI extends BackGUI {
             ItemStack itemStack = ItemStackUtils.makeItem(entry.getValue().item);
             ItemMeta itemMeta = itemStack.getItemMeta();
 
-            itemMeta.setLore(getSchematicLore(entry.getValue()));
+            if (itemMeta != null) {
+                itemMeta.setLore(getSchematicLore(entry.getValue()));
 
-            itemStack.setItemMeta(itemMeta);
+                itemStack.setItemMeta(itemMeta);
+            }
+
             inventory.setItem(entry.getValue().item.slot, itemStack);
         }
     }
 
     private List<String> getSchematicLore(Schematics.SchematicConfig item) {
-        List<String> lore = new ArrayList<>();
         List<Placeholder> placeholders = getSchematicLorePlaceholders(item);
 
-        lore.addAll(item.item.lore);
+        List<String> lore = new ArrayList<>(item.item.lore);
 
         if (item.regenCost.canPurchase()) {
             lore.add(String.valueOf(IridiumSkyblock.getInstance().getSchematics().buyPriceLore));
         }
 
-        if(item.minLevel != 1) {
+        if (item.minLevel > 1) {
             lore.add(IridiumSkyblock.getInstance().getSchematics().levelRequirementLore);
         }
 
-        if(!IridiumSkyblock.getInstance().getConfiguration().islandCreationCost) {
+        if (!IridiumSkyblock.getInstance().getConfiguration().islandCreationCost) {
             lore.add(IridiumSkyblock.getInstance().getSchematics().regenDisclaimer);
         }
 
