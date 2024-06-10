@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.managers;
 
+import com.iridium.iridiumcore.dependencies.nbtapi.NBT;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
 import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
 import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumcore.dependencies.xseries.XBiome;
@@ -123,6 +123,22 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public Optional<Island> getTeamViaLocation(Location location, Island island) {
+        if(island.isInIsland(location)){
+            return Optional.of(island);
+        }
+        return getTeamViaLocation(location);
+    }
+
+    @Override
+    public Optional<Island> getTeamViaLocation(Location location, Optional<Island> island) {
+        if(island.isPresent()){
+            return getTeamViaLocation(location, island.get());
+        }
+        return getTeamViaLocation(location);
+    }
+
+    @Override
     public Optional<Island> getTeamViaNameOrPlayer(String name) {
         if (name == null || name.equals("")) return Optional.empty();
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(name);
@@ -137,6 +153,12 @@ public class IslandManager extends TeamManager<Island, User> {
     public Optional<Island> getTeamViaPlayerLocation(Player player) {
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         return user.getCurrentIsland();
+    }
+
+    @Override
+    public Optional<Island> getTeamViaPlayerLocation(Player player, Location location) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        return user.getCurrentIsland(location);
     }
 
     @Override
@@ -692,19 +714,23 @@ public class IslandManager extends TeamManager<Island, User> {
         ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
                 new Placeholder("amount", String.valueOf(amount))
         ));
-        NBTItem nbtItem = new NBTItem(itemStack);
-        NBTCompound nbtCompound = nbtItem.getOrCreateCompound("iridiumskyblock");
-        nbtCompound.setInteger("islandCrystals", amount);
-        return nbtItem.getItem();
+
+        NBT.modify(itemStack, readWriteItemNBT -> {
+            readWriteItemNBT.getOrCreateCompound("iridiumskyblock").setInteger("islandCrystals", amount);
+        });
+
+        return itemStack;
     }
 
     public int getIslandCrystals(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
-        NBTCompound nbtCompound = new NBTItem(itemStack).getOrCreateCompound("iridiumskyblock");
-        if (nbtCompound.hasKey("islandCrystals")) {
-            return nbtCompound.getInteger("islandCrystals");
-        }
-        return 0;
+
+        return NBT.get(itemStack, readableItemNBT -> {
+            if(readableItemNBT.getCompound("iridiumskyblock").hasTag("islandCrystals")) {
+                return readableItemNBT.getCompound("iridiumskyblock").getInteger("islandCrystals");
+            }
+            return 0;
+        });
     }
 
     public List<User> getMembersOnIsland(Island island) {
