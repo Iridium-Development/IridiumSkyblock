@@ -716,7 +716,7 @@ public class IslandManager extends TeamManager<Island, User> {
         ));
 
         NBT.modify(itemStack, readWriteItemNBT -> {
-            readWriteItemNBT.getOrCreateCompound("iridiumskyblock").setInteger("islandCrystals", amount);
+            readWriteItemNBT.resolveOrCreateCompound("iridiumskyblock").setInteger("islandCrystals", amount);
         });
 
         return itemStack;
@@ -726,10 +726,7 @@ public class IslandManager extends TeamManager<Island, User> {
         if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
 
         return NBT.get(itemStack, readableItemNBT -> {
-            if(readableItemNBT.getCompound("iridiumskyblock").hasTag("islandCrystals")) {
-                return readableItemNBT.getCompound("iridiumskyblock").getInteger("islandCrystals");
-            }
-            return 0;
+            return readableItemNBT.resolveOrDefault("iridiumskyblock.islandCrystals", 0);
         });
     }
 
