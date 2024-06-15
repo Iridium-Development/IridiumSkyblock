@@ -33,6 +33,8 @@ public class CommandManager extends com.iridium.iridiumteams.managers.CommandMan
             Player player = (Player) commandSender;
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             if (IridiumSkyblock.getInstance().getTeamManager().getTeamViaID(user.getTeamID()).isPresent()) {
+
+                IridiumSkyblock.getInstance().getInventories().islandMenu.items.values().removeIf(item -> item.slot == -1);
                 player.openInventory(new InventoryConfigGUI(IridiumSkyblock.getInstance().getInventories().islandMenu).getInventory());
                 return;
             }
