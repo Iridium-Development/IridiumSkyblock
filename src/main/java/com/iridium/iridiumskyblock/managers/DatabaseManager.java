@@ -20,6 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -51,6 +52,11 @@ public class DatabaseManager {
         String databaseURL = getDatabaseURL(sqlConfig);
 
         DataPersisterManager.registerDataPersisters(XMaterialType.getSingleton());
+        DataPersisterManager.registerDataPersisters(XEntityTypeType.getSingleton());
+        DataPersisterManager.registerDataPersisters(XPotionType.getSingleton());
+        DataPersisterManager.registerDataPersisters(XEnchantType.getSingleton());
+        DataPersisterManager.registerDataPersisters(XBiomeType.getSingleton());
+
         DataPersisterManager.registerDataPersisters(LocationType.getSingleton());
         DataPersisterManager.registerDataPersisters(InventoryType.getSingleton());
         DataPersisterManager.registerDataPersisters(LocalDateTimeType.getSingleton());
@@ -78,6 +84,14 @@ public class DatabaseManager {
         this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> getDatabaseKey(teamMission.getTeamID(), teamMission.getMissionName()), connectionSource, TeamMission.class);
         this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> getDatabaseKey(teamRewards.getId()), connectionSource, TeamReward.class);
         this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> getDatabaseKey(teamSetting.getTeamID(), teamSetting.getSetting()), connectionSource, TeamSetting.class);
+
+        // We need to clear out null values
+        for(TeamBlock teamBlock : teamBlockTableManager.getEntries()) {
+            if(teamBlock.getXMaterial() == null) teamBlockTableManager.delete(teamBlock);
+        }
+        for(TeamSpawners teamSpawners : teamSpawnerTableManager.getEntries()) {
+            if(teamSpawners.getEntityType() == null) teamSpawnerTableManager.delete(teamSpawners);
+        }
     }
 
     private String getDatabaseKey(Object... params) {
