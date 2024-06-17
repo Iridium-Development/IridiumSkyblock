@@ -38,6 +38,10 @@ public class PlayerInteractListener implements Listener {
             }
         }
 
+        // If the item in hand is not a bank item, but the player did not click a block, this returns null.
+        // Normally, this isn't an issue, but we're not ignoring cancelled events to allow crystals to be deposited.
+        if(event.getClickedBlock() == null) return;
+
         Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(player, event.getClickedBlock().getLocation());
         if (!island.isPresent()) return;
         if (!IridiumSkyblock.getInstance().getTeamManager().getTeamPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
