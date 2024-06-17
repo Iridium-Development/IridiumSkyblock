@@ -54,7 +54,7 @@ public class DatabaseManager {
         DataPersisterManager.registerDataPersisters(XMaterialType.getSingleton());
         DataPersisterManager.registerDataPersisters(XEntityTypeType.getSingleton());
         DataPersisterManager.registerDataPersisters(XPotionType.getSingleton());
-        DataPersisterManager.registerDataPersisters(XEnchantType.getSingleton());
+        DataPersisterManager.registerDataPersisters(XEnchantmentType.getSingleton());
         DataPersisterManager.registerDataPersisters(XBiomeType.getSingleton());
 
         DataPersisterManager.registerDataPersisters(LocationType.getSingleton());
