@@ -15,6 +15,8 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @NoArgsConstructor
 @Getter
@@ -32,6 +34,11 @@ public class Island extends Team {
 
     public Island(int id) {
         setId(id);
+    }
+
+    @Override
+    public int getLevel() {
+        return IridiumSkyblock.getInstance().getIslandManager().getTeamLevel(getExperience());
     }
 
     @Override
@@ -132,11 +139,19 @@ public class Island extends Team {
     @Override
     public @NotNull String getName() {
         if (super.getName() != null) return super.getName();
-        String ownerName = IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(this).stream()
-                .filter(user -> user.getUserRank() == Rank.OWNER.getId())
-                .findFirst()
+        String ownerName = getOwner()
                 .map(User::getName)
-                .orElse("N/A");
-        return ownerName + "'s Island";
+                .orElse(IridiumSkyblock.getInstance().getMessages().nullPlaceholder);
+        return IridiumSkyblock.getInstance().getConfiguration().defaultIslandName.replace("%owner%", ownerName);
+    }
+
+    public List<User> getMembers() {
+        return IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(this);
+    }
+
+    public Optional<User> getOwner() {
+        return getMembers().stream()
+                .filter(user -> user.getUserRank() == Rank.OWNER.getId())
+                .findFirst();
     }
 }

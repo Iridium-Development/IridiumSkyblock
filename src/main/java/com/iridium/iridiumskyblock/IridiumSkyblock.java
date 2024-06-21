@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock;
 
+import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
@@ -13,6 +14,7 @@ import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.managers.MissionManager;
 import com.iridium.iridiumteams.managers.ShopManager;
+import com.iridium.iridiumteams.managers.SupportManager;
 import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -23,6 +25,9 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPluginLoader;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -62,6 +67,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private SchematicManager schematicManager;
     private ShopManager<Island, User> shopManager;
     private BiomeManager biomeManager;
+    private SupportManager<Island, User> supportManager;
 
     private Economy economy;
 
@@ -99,6 +105,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.missionManager = new MissionManager<>(this);
         this.shopManager = new ShopManager<>(this);
         this.biomeManager = new BiomeManager();
+        this.supportManager = new SupportManager<>(this);
+
+        supportManager.registerSupport();
+
         try {
             databaseManager.init();
         } catch (SQLException exception) {
@@ -173,8 +183,11 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
             getLogger().warning("New Distance set to: " + configuration.distance);
         }
 
-        if (schematicManager != null)
+        if (schematicManager != null) {
             schematicManager.reload();
+        }
+
+        migrateData();
     }
 
     @Override
@@ -273,6 +286,81 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
             } catch (IOException exception) {
                 getLogger().warning("Could not copy " + name + " to " + file.getAbsolutePath());
             }
+        }
+    }
+
+    public void migrateData(){
+        processFields(BankItems.class, getBankItems(), 0);
+        processFields(BlockValues.class, getBlockValues(), 0);
+        processFields(Commands.class, getCommands(), 0);
+        processFields(Configuration.class, getConfiguration(), 0);
+        processFields(Enhancements.class, getEnhancements(), 0);
+        processFields(Inventories.class, getInventories(), 0);
+        processFields(Messages.class, getMessages(), 0);
+        processFields(Missions.class, getMissions(), 0);
+        processFields(Permissions.class, getPermissions(), 0);
+        processFields(Settings.class, getSettings(), 0);
+        processFields(Shop.class, getShop(), 0);
+        processFields(Top.class, getTop(), 0);
+
+        getInventories().islandMenu.items.values().forEach(Item::migrateData);
+        getSchematics().schematics.values().forEach(schematicConfig -> schematicConfig.item.migrateData());
+    }
+
+    private void processFields(Class<?> clazz, Object instance, int depth) {
+        if(depth > 3){
+            return;
+        }
+        // Get all declared fields (including private fields)
+        Field[] fields = clazz.getDeclaredFields();
+
+        for (Field field : fields) {
+            if (!field.getType().getName().startsWith("com.iridium")) {
+                continue;
+            }
+
+            field.setAccessible(true); // Allow access to private fields
+
+            try {
+                Object fieldValue = field.get(instance);
+
+                if (fieldValue != null) {
+                    Class<?> fieldType = fieldValue.getClass();
+
+                    // Check if the field is an instance of Item
+                    if (isItemClass(fieldType)) {
+                        // Call the migrate method
+                        invokeMigrateMethod(fieldValue);
+                    } else {
+                        // If the field is not an Item, process its fields recursively
+                        processFields(fieldType, fieldValue, depth + 1);
+                    }
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean isItemClass(Class<?> clazz) {
+        // Check if the class or any of its enclosing classes is Item
+        if (clazz.getName().equals("com.iridium.iridiumcore.Item")) {
+            return true;
+        }
+
+        Class<?> enclosingClass = clazz.getEnclosingClass();
+        return enclosingClass != null && isItemClass(enclosingClass);
+    }
+
+    private void invokeMigrateMethod(Object itemInstance) {
+        try {
+            // Get the migrate method from the Item class
+            Method migrateMethod = itemInstance.getClass().getMethod("migrateData");
+
+            // Invoke the migrate method on the instance
+            migrateMethod.invoke(itemInstance);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 

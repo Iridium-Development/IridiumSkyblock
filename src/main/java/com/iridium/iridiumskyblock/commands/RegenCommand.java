@@ -13,6 +13,7 @@ import com.iridium.iridiumteams.commands.Command;
 import com.iridium.iridiumteams.database.TeamBank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -52,6 +53,13 @@ public class RegenCommand extends Command<Island, User> {
         }
 
         Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
+
+        if(island.getLevel() < schematicConfig.minLevel) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%level%", String.valueOf(schematicConfig.minLevel))));
+            return false;
+        }
 
         if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
             if (!IridiumSkyblock.getInstance().getSchematicManager().buy(player, schematicConfig)) {

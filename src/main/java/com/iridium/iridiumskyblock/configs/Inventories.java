@@ -41,7 +41,7 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             .put("is regen", new Item(XMaterial.GRASS_BLOCK, 12, 1, "&9&lIsland Regen", Collections.singletonList("&7Regenerate your island")))
             .put("is boosters", new Item(XMaterial.EXPERIENCE_BOTTLE, 23, 1, "&9&lIsland Boosters", Collections.singletonList("&7View your island boosters")))
             .put("is home", new Item(XMaterial.WHITE_BED, 13, 1, "&9&lIsland Home", Collections.singletonList("&7Teleport to your island home")))
-            .put("is members", new Item(XMaterial.PLAYER_HEAD, 14, 1, "&9&lIsland Members", "Peaches_MLG", Collections.singletonList("&7View your island members")))
+            .put("is members", new Item(XMaterial.PLAYER_HEAD, 14, "Peaches_MLG", 1, "&9&lIsland Members", Collections.singletonList("&7View your island members")))
             .put("is warps", new Item(XMaterial.END_PORTAL_FRAME, 20, 1, "&9&lIsland Warps", Collections.singletonList("&7View your island warps")))
             .put("is upgrades", new Item(XMaterial.DIAMOND, 21, 1, "&9&lIsland Upgrades", Collections.singletonList("&7View your island upgrades")))
             .put("is missions", new Item(XMaterial.IRON_SWORD, 22, 1, "&9&lIsland Missions", Collections.singletonList("&7View your island missions")))
@@ -53,7 +53,7 @@ public class Inventories extends com.iridium.iridiumteams.configs.Inventories {
             .build()
     );
 
-    public SingleItemGUI visitGUI = new SingleItemGUI(54, "&7Visit an Island", background1, new Item(XMaterial.PLAYER_HEAD, 1, "&9&l%island_name%", "%island_owner%", Arrays.asList(
+    public SingleItemGUI visitGUI = new SingleItemGUI(54, "&7Visit an Island", background1, new Item(XMaterial.PLAYER_HEAD, 0, "%island_owner%", 1, "&9&l%island_name%", Arrays.asList(
             "&9Created: &7%island_create%",
             "&9Owner: &7%island_owner%"
     )));

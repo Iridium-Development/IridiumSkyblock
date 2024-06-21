@@ -37,6 +37,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
                 .build();
     }
 
+    public String defaultIslandName = "%owner%'s Island";
     public String islandCreateTitle = "&9&lIsland Created";
     public String islandCreateSubTitle = "&7IridiumSkyblock by Peaches_MLG";
     public String defaultDescription = "Default island description :c";
@@ -55,6 +56,8 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public boolean clearEnderChestOnRegen = false;
     public boolean allowPvPOnIslands = false;
     public boolean islandCreateOnJoin = false;
+    public boolean islandCreationCost = false;
+    public boolean spawnOnIsland = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;
     public int endUnlockLevel = 20;

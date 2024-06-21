@@ -21,13 +21,28 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerInteractListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onClick(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getClickedBlock().getLocation());
+        int crystalAmount = IridiumSkyblock.getInstance().getIslandManager().getIslandCrystals(itemInHand);
+        if((event.getAction() == Action.RIGHT_CLICK_AIR
+                || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+                && crystalAmount > 0) {
+
+            if (IridiumSkyblock.getInstance().getCommandManager().executeCommand(event.getPlayer(), IridiumSkyblock.getInstance().getCommands().depositCommand, new String[] {IridiumSkyblock.getInstance().getBankItems().crystalsBankItem.getName(), String.valueOf(crystalAmount)})) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        // If the item in hand is not a bank item, but the player did not click a block, this returns null.
+        // Normally, this isn't an issue, but we're not ignoring cancelled events to allow crystals to be deposited.
+        if(event.getClickedBlock() == null) return;
+
+        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(player, event.getClickedBlock().getLocation());
         if (!island.isPresent()) return;
         if (!IridiumSkyblock.getInstance().getTeamManager().getTeamPermission(island.get(), user, PermissionType.BLOCK_BREAK)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks

@@ -17,7 +17,7 @@ public class PlayerPortalListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerPortal(PlayerPortalEvent event) {
-        IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getFrom()).ifPresent(island -> {
+        IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(event.getPlayer(), event.getFrom()).ifPresent(island -> {
             if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
                 if (island.getLevel() < IridiumSkyblock.getInstance().getConfiguration().netherUnlockLevel) {
                     event.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherLocked
