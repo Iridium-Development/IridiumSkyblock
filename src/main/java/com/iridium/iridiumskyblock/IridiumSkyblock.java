@@ -147,6 +147,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockFormListener(), this);
         Bukkit.getPluginManager().registerEvents(new EnhancementUpdateListener(), this);
+        Bukkit.getPluginManager().registerEvents(new SettingUpdateListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerTeleportListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerPortalListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
@@ -228,6 +229,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getDatabaseManager().getTeamRewardsTableManager().save();
         getDatabaseManager().getTeamSettingsTableManager().save();
         getDatabaseManager().getLostItemsTableManager().save();
+        getDatabaseManager().getTeamLogsTableManager().save();
     }
 
     @Override

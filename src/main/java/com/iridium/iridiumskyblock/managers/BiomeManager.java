@@ -8,10 +8,12 @@ import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumteams.database.IridiumUser;
 import com.iridium.iridiumteams.database.TeamBank;
+import com.iridium.iridiumteams.database.TeamLog;
 import net.milkbowl.vault.economy.Economy;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public class BiomeManager {
@@ -56,6 +58,16 @@ public class BiomeManager {
             }
         });
         IridiumSkyblock.getInstance().getBiomes().successSound.play(player);
+
+        IridiumSkyblock.getInstance().getTeamManager().addTeamLog(new TeamLog(
+                island.get(),
+                player.getUniqueId(),
+                "biome_change",
+                biomeItem.buyCost.money,
+                player.getLocation(),
+                LocalDateTime.now(),
+                biome.toString()
+        ));
 
     }
 

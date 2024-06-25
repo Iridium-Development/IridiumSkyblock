@@ -9,9 +9,11 @@ import com.iridium.iridiumskyblock.gui.BorderGUI;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.commands.Command;
 import com.iridium.iridiumteams.database.IridiumUser;
+import com.iridium.iridiumteams.database.TeamLog;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,6 +67,16 @@ public class BorderCommand extends Command<Island, User> {
                                 .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                         ))
                 );
+
+        IridiumSkyblock.getInstance().getTeamManager().addTeamLog(new TeamLog(
+                island,
+                player.getUniqueId(),
+                "change_border",
+                1,
+                player.getLocation(),
+                LocalDateTime.now(),
+                color.toString()
+        ));
 
         return true;
     }

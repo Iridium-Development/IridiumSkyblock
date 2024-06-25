@@ -511,12 +511,17 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public List<TeamLog> getTeamLogs(Island island) {
-        return null;
+        return IridiumSkyblock.getInstance().getDatabaseManager().getTeamLogsTableManager().getEntries()
+                .stream().filter(teamLog -> teamLog.getTeamID() == island.getId()).collect(Collectors.toList());
     }
 
     @Override
     public void addTeamLog(TeamLog teamLog) {
+        IridiumSkyblock.getInstance().getDatabaseManager().getTeamLogsTableManager().addEntry(teamLog);
 
+        Bukkit.getScheduler().runTaskAsynchronously(IridiumSkyblock.getInstance(), () -> {
+            IridiumSkyblock.getInstance().getDatabaseManager().getTeamLogsTableManager().save(teamLog);
+        });
     }
 
     @Override
