@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -32,6 +31,7 @@ public class DatabaseManager {
     private IslandTableManager islandTableManager;
     private LostItemsTableManager lostItemsTableManager;
     private TableManager<String, TeamMissionData, Integer> teamMissionDataTableManager;
+    private TableManager<Integer, TeamLog, Integer> teamLogsTableManager;
     private ForeignIslandTableManager<String, TeamInvite> invitesTableManager;
     private ForeignIslandTableManager<String, TeamTrust> trustTableManager;
     private ForeignIslandTableManager<String, TeamPermission> permissionsTableManager;
@@ -78,6 +78,7 @@ public class DatabaseManager {
         this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> getDatabaseKey(teamMission.getTeamID(), teamMission.getMissionName()), connectionSource, TeamMission.class);
         this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> getDatabaseKey(teamRewards.getId()), connectionSource, TeamReward.class);
         this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> getDatabaseKey(teamSetting.getTeamID(), teamSetting.getSetting()), connectionSource, TeamSetting.class);
+        this.teamLogsTableManager = new TableManager<>(TeamLog::getId, connectionSource, TeamLog.class);
     }
 
     private String getDatabaseKey(Object... params) {

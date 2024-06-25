@@ -11,6 +11,7 @@ import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.bank.BankItem;
 import com.iridium.iridiumteams.commands.Command;
 import com.iridium.iridiumteams.database.TeamBank;
+import com.iridium.iridiumteams.database.TeamLog;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -97,6 +99,16 @@ public class RegenCommand extends Command<Island, User> {
                 ));
             }
         }));
+
+        IridiumSkyblock.getInstance().getTeamManager().addTeamLog(new TeamLog(
+                island,
+                player.getUniqueId(),
+                "regen_island",
+                1,
+                player.getLocation(),
+                LocalDateTime.now(),
+                schematic.get()
+        ));
 
         return true;
     }
