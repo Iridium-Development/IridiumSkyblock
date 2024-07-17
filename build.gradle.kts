@@ -2,11 +2,12 @@ plugins {
     java
     `maven-publish`
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
 
 group = "com.iridium"
 version = "4.1.0"
-description = "IridiumSkyblock"
+description = "Skyblock Redefined"
 
 repositories {
     mavenCentral()
@@ -37,6 +38,31 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.34")
 }
 
+bukkit {
+    main = "com.iridium.iridiumskyblock.IridiumSkyblock"
+    apiVersion = "1.13"
+    author = "Peaches_MLG"
+
+    loadBefore = listOf("Multiverse-Core")
+    depend = listOf("Vault")
+    softDepend = listOf(
+        "MVdWPlaceholderAPI",
+        "PlaceholderAPI",
+        "Essentials",
+        "EssentialsSpawn",
+        "RoseStacker",
+        "WorldEdit",
+        "ObsidianStacker"
+    )
+
+    commands {
+        register("iridiumskyblock") {
+            description = "Main plugin command"
+            aliases = listOf("is", "island")
+        }
+    }
+}
+
 tasks {
     // "Replace" the build task with the shadowJar task (probably bad but who cares)
     jar {
@@ -64,16 +90,6 @@ tasks {
     // Set UTF-8 as the encoding
     compileJava {
         options.encoding = "UTF-8"
-    }
-
-    // Process Placeholders for the plugin.yml
-    processResources {
-        filesMatching("**/plugin.yml") {
-            expand(rootProject.project.properties)
-        }
-
-        // Always re-run this task
-        outputs.upToDateWhen { false }
     }
 
     compileJava {
