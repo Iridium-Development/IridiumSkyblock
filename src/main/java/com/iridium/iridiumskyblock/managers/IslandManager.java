@@ -516,26 +516,8 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.runAsync(() -> {
             List<Chunk> chunks = getIslandChunks(island).join();
             for (Chunk chunk : chunks) {
-                ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
-                for (int x = 0; x < 16; x++) {
-                    for (int z = 0; z < 16; z++) {
-                        final int maxy = chunkSnapshot.getHighestBlockYAt(x, z);
-                        for (int y = 0; y <= maxy; y++) {
-                            if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
-                                XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
-                                teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
-                            }
-                        }
-                    }
-                }
-                getBlockStacks(chunk, island).forEach((key, value) -> {
-                    teamBlocks.put(key, teamBlocks.getOrDefault(key, 0) + value);
-                });
-
-                getSpawners(chunk, island).join().forEach(creatureSpawner -> {
-                    int amount = getSpawnerStackAmount(creatureSpawner).join();
-                    teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
-                });
+                processChunkBlocks(chunk, island, teamBlocks);
+                processChunkSpawners(chunk, island, teamSpawners);
             }
         }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
@@ -547,6 +529,42 @@ public class IslandManager extends TeamManager<Island, User> {
                 teamSpawner.setAmount(teamSpawners.getOrDefault(teamSpawner.getEntityType(), 0));
             }
         }));
+    }
+
+    private void processChunkBlocks(@NotNull Chunk chunk, Island island, Map<XMaterial, Integer> teamBlocks) {
+        ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                final int maxY = chunkSnapshot.getHighestBlockYAt(x, z);
+                for (int y = 0; y <= maxY; y++) {
+                    if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
+                        processBlock(x, y, z, chunk, chunkSnapshot, teamBlocks);
+                    }
+                }
+            }
+        }
+    }
+
+    private void processBlock(int x, int y, int z, @NotNull Chunk chunk, @NotNull ChunkSnapshot chunkSnapshot, @NotNull Map<XMaterial, Integer> teamBlocks) {
+        Block block = chunk.getBlock(x, y, z);
+        XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
+        int amount = isBlockStacked(block) ? getStackAmount(block) : 1;
+        teamBlocks.merge(material, amount, Integer::sum);
+    }
+
+    public boolean isBlockStacked(Block block) {
+        return IridiumSkyblock.getInstance().getSupportManager().getStackerSupport().stream().anyMatch(stackerSupport -> stackerSupport.isStackedBlock(block));
+    }
+
+    public int getStackAmount(Block block) {
+        return IridiumSkyblock.getInstance().getSupportManager().getStackerSupport().stream().mapToInt(stackerSupport -> stackerSupport.getStackAmount(block)).max().orElse(1);
+    }
+
+    private void processChunkSpawners(Chunk chunk, Island island, Map<EntityType, Integer> teamSpawners) {
+        getSpawners(chunk, island).join().forEach(creatureSpawner -> {
+            int amount = getSpawnerStackAmount(creatureSpawner).join();
+            teamSpawners.merge(creatureSpawner.getSpawnedType(), amount, Integer::sum);
+        });
     }
 
     public CompletableFuture<List<CreatureSpawner>> getSpawners(Chunk chunk, Island island) {
