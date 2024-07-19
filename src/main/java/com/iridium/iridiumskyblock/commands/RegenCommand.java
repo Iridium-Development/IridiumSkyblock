@@ -11,6 +11,7 @@ import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.bank.BankItem;
 import com.iridium.iridiumteams.commands.Command;
 import com.iridium.iridiumteams.database.TeamBank;
+import com.iridium.iridiumteams.gui.ConfirmationGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
@@ -54,7 +55,7 @@ public class RegenCommand extends Command<Island, User> {
 
         Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
 
-        if(island.getLevel() < schematicConfig.minLevel) {
+        if (island.getLevel() < schematicConfig.minLevel) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                     .replace("%level%", String.valueOf(schematicConfig.minLevel))));
@@ -67,38 +68,45 @@ public class RegenCommand extends Command<Island, User> {
             }
         }
 
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
+            regenerateIsland(player, island, schematicConfig, iridiumTeams);
+        }, 1L);
+
+        return true;
+    }
+
+    private void regenerateIsland(Player player, Island island, Schematics.SchematicConfig schematicConfig, IridiumTeams<Island, User> iridiumTeams) {
         List<Placeholder> bankPlaceholders = IridiumSkyblock.getInstance().getBankItemList().stream()
                 .map(BankItem::getName)
                 .map(name -> new Placeholder(name + "_cost", formatPrice(getBankBalance(player, name))))
                 .collect(Collectors.toList());
 
-        IridiumSkyblock.getInstance().getIslandManager().getTeamMembers(island).stream()
-                .map(User::getPlayer)
-                .filter(Objects::nonNull)
-                .forEach(member -> member.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().paidForRegen
-                                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                                .replace("%player%", player.getName())
-                                .replace("%schematic%", StringUtils.color(schematicConfig.item.displayName))
-                                .replace("%vault_cost%", formatPrice(schematicConfig.regenCost.money)),
-                        bankPlaceholders)
-                )));
+        player.openInventory(new ConfirmationGUI<>(() -> {
+            IridiumSkyblock.getInstance().getIslandManager().getTeamMembers(island).stream()
+                    .map(User::getPlayer)
+                    .filter(Objects::nonNull)
+                    .forEach(member -> member.sendMessage(StringUtils.color(StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getMessages().paidForRegen
+                                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                                    .replace("%player%", player.getName())
+                                    .replace("%schematic%", StringUtils.color(schematicConfig.item.displayName))
+                                    .replace("%vault_cost%", formatPrice(schematicConfig.regenCost.money)),
+                            bankPlaceholders)
+                    )));
 
-        player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-        ));
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().regeneratingIsland
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
 
-        IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
+            IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
 
-        IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-
-            if (IridiumSkyblock.getInstance().getTeamManager().teleport(player, island.getHome(), island)) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                ));
-            }
-        }));
-
-        return true;
+            IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                if (IridiumSkyblock.getInstance().getTeamManager().teleport(player, island.getHome(), island)) {
+                    player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    ));
+                }
+            }));
+        }, iridiumTeams).getInventory());
     }
 
     private double getBankBalance(Player player, String bankItem) {
