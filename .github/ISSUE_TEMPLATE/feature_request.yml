@@ -1,0 +1,37 @@
+name: Feature Request
+description: Suggest a feature to help us improve IridiumSkyblock!
+title: "[Feature Request] "
+labels: ["enhancement"]
+assignees: ["PeachesMLG", "dlsf", "sh0inx"]
+body:
+  - type: markdown
+    attributes:
+      value: Before submitting a new feature request, ensure that it hasn't been suggested already. If it has, reply to the open issue instead.
+  - type: textarea
+    id: description
+    validations:
+      required: true
+    attributes:
+      label: What kind of feature would you like to see in the plugin?
+      description: Explain the feature in detail, and how you think it should work.
+  - type: textarea
+    id: reason
+    validations:
+      required: true
+    attributes:
+      label: Why do you want this feature?
+      description: Explain why this feature would benefit you.
+  - type: textarea
+    id: usage
+    validations:
+      required: true
+    attributes:
+      label: How would you use this feature?
+      description: Detail how this feature would work on your server.
+  - type: textarea
+    id: usage_others
+    validations:
+      required: true
+    attributes:
+      label: How do you think other server owners would use this feature?
+      description: Detail how this feature would work on other servers or in general, and how that would benefit them.
