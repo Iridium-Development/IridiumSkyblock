@@ -101,6 +101,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
                 this.chunkGenerator = null;
                 break;
             }
+            case VOID: {
+                this.chunkGenerator = new VoidGenerator();
+                break;
+            }
             default: {
                 getLogger().warning("Invalid generator type [" + IridiumSkyblock.getInstance().getConfiguration().generatorType + "], valid types are " + Arrays.toString(GeneratorType.values()));
                 getLogger().info("Generator Type = " + GeneratorType.VOID);
