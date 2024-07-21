@@ -2,7 +2,7 @@ name: Bug Report
 description: Create a report to help us improve IridiumSkyblock!
 title: "[Bug] "
 labels: ["bug", "unconfirmed"]
-assignees: ["PeachesMLG", "dlsf", "MertUnverdi"]
+assignees: ["PeachesMLG", "dlsf", "sh0inx"]
 body:
   - type: markdown
     attributes:
