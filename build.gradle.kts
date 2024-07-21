@@ -64,10 +64,9 @@ bukkit {
 }
 
 tasks {
-    // "Replace" the build task with the shadowJar task (probably bad but who cares)
-    jar {
-        dependsOn("shadowJar")
-        enabled = false
+    // Add the shadowJar task to the build task
+    build {
+        dependsOn(shadowJar)
     }
 
     shadowJar {
@@ -80,8 +79,11 @@ tasks {
         // Relocate dependencies
         relocate("com.iridium.iridiumcore")
         relocate("com.j256.ormlite")
-        relocate("org.bstats")
         relocate("de.jeff_media.updatechecker")
+        relocate("org.bstats")
+        relocate("org.intellij.lang.annotations")
+        relocate("org.jetbrains.annotations")
+        relocate("org.jnbt")
 
         // Remove unnecessary files from the jar
         minimize()
