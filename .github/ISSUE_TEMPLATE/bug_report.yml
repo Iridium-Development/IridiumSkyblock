@@ -22,14 +22,14 @@ body:
         1. Do this
         2. Click on this
         3. See error
-  - type: input
+  - type: textarea
     id: expected_behavior
     validations:
       required: true
     attributes:
       label: Expected Behavior
       description: Describe what you expected to happen
-  - type: input
+  - type: textarea
     id: actual_behavior
     validations:
       required: true
@@ -47,15 +47,15 @@ body:
       required: true
     attributes:
       label: Server Software & Minecraft Version
-      description: The server software and Minecraft version you are using ("latest" is not accurate enough)
+      description: Please copy and paste the output of `/version`, "latest" is not helpful
   - type: input
     id: skyblock_version
     validations:
       required: true
     attributes:
       label: IridiumSkyblock version
-      description: The IridiumSkyblock version you are using ("latest" is not accurate enough)
-  - type: textarea
+      description: Please copy and paste the output of `/is version`, "latest" is not helpful
+  - type: input
     id: logs
     attributes:
       label: Server logs
