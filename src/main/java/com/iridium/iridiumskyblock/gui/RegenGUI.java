@@ -16,6 +16,7 @@ public class RegenGUI extends SchematicGUI {
 
     @Override
     public void selectSchematic(String schematic) {
+        player.closeInventory();
         IridiumSkyblock.getInstance().getCommandManager().executeCommand(player, IridiumSkyblock.getInstance().getCommands().regenCommand, new String[]{schematic});
     }
 
