@@ -43,6 +43,7 @@ bukkit {
     apiVersion = "1.13"
     author = "Peaches_MLG"
     authors = listOf("das_", "sh0inx", "SlashRemix", "Faun471")
+    website = "https://www.spigotmc.org/resources/62480"
 
     loadBefore = listOf("Multiverse-Core")
     depend = listOf("Vault")
