@@ -87,6 +87,15 @@ tasks {
         relocate("org.jetbrains.annotations")
         relocate("org.jnbt")
 
+        // Relocate IridiumCore dependencies
+        relocate("de.tr7zw.changeme.nbtapi")
+        relocate("com.iridium.iridiumcolorapi")
+        relocate("org.yaml.snakeyaml")
+        relocate("io.papermc.lib")
+        relocate("com.cryptomorin.xseries")
+        relocate("com.fasterxml.jackson")
+        relocate("org.apache.commons")
+
         // Remove unnecessary files from the jar
         minimize()
     }
