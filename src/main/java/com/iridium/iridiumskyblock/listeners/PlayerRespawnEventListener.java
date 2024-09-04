@@ -20,7 +20,7 @@ public class PlayerRespawnEventListener implements Listener {
         if (!IridiumSkyblock.getInstance().getConfiguration().spawnOnIsland) return;
         if (!event.isBedSpawn() && !event.isAnchorSpawn()) event.setRespawnLocation(PlayerUtils.getSpawn(event.getPlayer()));
 
-        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(event.getRespawnLocation());
+        Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(event.getPlayer(), event.getRespawnLocation());
         if (!island.isPresent()) return;
 
         if (!IridiumSkyblock.getInstance().getIslandManager().canVisit(event.getPlayer(), island.get())) event.setRespawnLocation(PlayerUtils.getSpawn(event.getPlayer()));

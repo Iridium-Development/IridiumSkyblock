@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.utils;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -23,7 +23,7 @@ public class LocationUtils {
     ).map(XMaterial::parseMaterial).collect(Collectors.toList());
 
     public static boolean isSafe(Location location) {
-        if (IridiumSkyblock.getInstance().isTesting()) return true;
+        if (IridiumSkyblock.isTesting()) return true;
         Block block = location.getBlock();
         Block above = location.clone().add(0, 1, 0).getBlock();
         Block below = location.clone().subtract(0, 1, 0).getBlock();
