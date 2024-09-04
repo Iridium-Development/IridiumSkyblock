@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.RandomAccessList;
 import com.iridium.iridiumskyblock.enhancements.GeneratorEnhancementData;

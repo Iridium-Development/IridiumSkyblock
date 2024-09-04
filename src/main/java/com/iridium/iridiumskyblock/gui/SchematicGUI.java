@@ -1,17 +1,12 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.gui.BackGUI;
-import com.iridium.iridiumcore.utils.InventoryUtils;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
-import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumteams.bank.BankItem;
-import com.iridium.iridiumteams.configs.Shop;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
-import com.iridium.iridiumteams.database.TeamBank;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,17 +15,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Collections.addAll;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public abstract class SchematicGUI extends BackGUI {
 
-    public SchematicGUI(Inventory previousInventory) {
+    public SchematicGUI(Player player) {
         super(
                 IridiumSkyblock.getInstance().getInventories().islandSchematicGUI.background,
-                previousInventory,
+                player,
                 IridiumSkyblock.getInstance().getInventories().backButton
         );
     }

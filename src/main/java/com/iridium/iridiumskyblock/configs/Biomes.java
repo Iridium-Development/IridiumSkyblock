@@ -1,11 +1,11 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnore;
-import com.iridium.iridiumcore.dependencies.xseries.XBiome;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

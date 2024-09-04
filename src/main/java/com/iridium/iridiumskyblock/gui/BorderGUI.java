@@ -7,16 +7,17 @@ import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 public class BorderGUI extends BackGUI {
 
-    public BorderGUI(Inventory previousInventory) {
+    public BorderGUI(Player player) {
         super(
                 IridiumSkyblock.getInstance().getInventories().islandBorderGUI.background,
-                previousInventory,
+                player,
                 IridiumSkyblock.getInstance().getInventories().backButton
         );
     }

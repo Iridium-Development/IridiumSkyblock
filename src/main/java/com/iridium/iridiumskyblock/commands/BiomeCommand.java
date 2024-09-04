@@ -26,7 +26,7 @@ public class BiomeCommand extends Command<Island, User> {
     public boolean execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
         if (args.length == 0) {
-            player.openInventory(new BiomeOverviewGUI(player.getOpenInventory().getTopInventory()).getInventory());
+            player.openInventory(new BiomeOverviewGUI(player).getInventory());
             return false;
         } else {
             Optional<String> categoryName = getCategoryName(String.join(" ", args));
@@ -38,7 +38,7 @@ public class BiomeCommand extends Command<Island, User> {
                 return false;
             }
 
-            player.openInventory(new BiomeCategoryGUI(categoryName.get(), player.getOpenInventory().getTopInventory()).getInventory());
+            player.openInventory(new BiomeCategoryGUI(categoryName.get(), player).getInventory());
             return false;
         }
     }

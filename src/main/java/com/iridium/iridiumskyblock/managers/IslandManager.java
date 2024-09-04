@@ -1,11 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumcore.dependencies.nbtapi.NBT;
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
-import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.dependencies.xseries.XBiome;
+import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
@@ -26,6 +22,10 @@ import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
 import com.iridium.iridiumteams.support.StackerSupport;
+import de.tr7zw.changeme.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import de.tr7zw.changeme.nbtapi.NBTFile;
+import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -188,7 +188,7 @@ public class IslandManager extends TeamManager<Island, User> {
             }
         }
 
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory()));
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player, schematicNameCompletableFuture).getInventory()));
         return schematicNameCompletableFuture;
     }
 
