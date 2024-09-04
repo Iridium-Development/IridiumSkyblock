@@ -79,6 +79,7 @@ tasks {
         archiveClassifier.set("")
 
         // Relocate dependencies
+        relocate("com.iridium.iridiumteams")
         relocate("com.iridium.iridiumcore")
         relocate("com.j256.ormlite")
         relocate("de.jeff_media.updatechecker")
@@ -97,7 +98,9 @@ tasks {
         relocate("org.apache.commons")
 
         // Remove unnecessary files from the jar
-        minimize()
+        minimize {
+            exclude("org")
+        }
     }
 
     // Set UTF-8 as the encoding
