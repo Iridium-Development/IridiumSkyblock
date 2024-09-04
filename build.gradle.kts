@@ -25,7 +25,8 @@ dependencies {
     implementation("org.jetbrains:annotations:24.1.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.5.7")
+    implementation("com.iridium:IridiumTeams:2.5.8")
+    implementation("commons-lang:commons-lang:2.6")
 
     // Other dependencies that are not required or already available at runtime
     compileOnly("org.projectlombok:lombok:1.18.34")
@@ -79,6 +80,7 @@ tasks {
         archiveClassifier.set("")
 
         // Relocate dependencies
+        relocate("com.iridium.iridiumteams")
         relocate("com.iridium.iridiumcore")
         relocate("com.j256.ormlite")
         relocate("de.jeff_media.updatechecker")
@@ -86,6 +88,15 @@ tasks {
         relocate("org.intellij.lang.annotations")
         relocate("org.jetbrains.annotations")
         relocate("org.jnbt")
+
+        // Relocate IridiumCore dependencies
+        relocate("de.tr7zw.changeme.nbtapi")
+        relocate("com.iridium.iridiumcolorapi")
+        relocate("org.yaml.snakeyaml")
+        relocate("io.papermc.lib")
+        relocate("com.cryptomorin.xseries")
+        relocate("com.fasterxml.jackson")
+        relocate("org.apache.commons")
 
         // Remove unnecessary files from the jar
         minimize()

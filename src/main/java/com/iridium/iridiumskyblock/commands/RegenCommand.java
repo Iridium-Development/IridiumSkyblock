@@ -13,7 +13,6 @@ import com.iridium.iridiumteams.commands.Command;
 import com.iridium.iridiumteams.database.TeamBank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -38,7 +37,7 @@ public class RegenCommand extends Command<Island, User> {
                 return false;
             }
 
-            player.openInventory(new RegenGUI(player.getOpenInventory().getTopInventory(), player).getInventory());
+            player.openInventory(new RegenGUI(player).getInventory());
             return false;
         }
 

@@ -39,7 +39,7 @@ public class BorderCommand extends Command<Island, User> {
         }
 
         if (args.length == 0) {
-            player.openInventory(new BorderGUI(player.getOpenInventory().getTopInventory()).getInventory());
+            player.openInventory(new BorderGUI(player).getInventory());
             return false;
         }
 
