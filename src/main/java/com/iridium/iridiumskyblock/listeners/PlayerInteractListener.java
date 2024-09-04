@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -37,6 +37,10 @@ public class PlayerInteractListener implements Listener {
                 return;
             }
         }
+
+        // If the item in hand is not a bank item, but the player did not click a block, this returns null.
+        // Normally, this isn't an issue, but we're not ignoring cancelled events to allow crystals to be deposited.
+        if(event.getClickedBlock() == null) return;
 
         Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(player, event.getClickedBlock().getLocation());
         if (!island.isPresent()) return;

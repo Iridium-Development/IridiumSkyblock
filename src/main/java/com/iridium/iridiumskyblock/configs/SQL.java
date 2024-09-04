@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.configs;
 
-import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * The SQL database connection file used by IridiumFactions (sql.yml).
