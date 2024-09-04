@@ -25,7 +25,7 @@ public class VisitCommand extends Command<Island, User> {
     public boolean execute(User user, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
         if (args.length == 0) {
-            player.openInventory(new VisitGUI(player.getOpenInventory().getTopInventory(), iridiumTeams).getInventory());
+            player.openInventory(new VisitGUI(player, iridiumTeams).getInventory());
             return false;
         }
         Optional<Island> island = IridiumSkyblock.getInstance().getTeamManager().getTeamViaNameOrPlayer(args[0]);

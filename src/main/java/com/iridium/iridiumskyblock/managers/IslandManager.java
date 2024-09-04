@@ -1,11 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTCompound;
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTFile;
-import com.iridium.iridiumcore.dependencies.nbtapi.NBTItem;
-import com.iridium.iridiumcore.dependencies.paperlib.PaperLib;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.dependencies.xseries.XBiome;
+import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
@@ -25,6 +21,11 @@ import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
+import com.iridium.iridiumteams.support.StackerSupport;
+import de.tr7zw.changeme.nbtapi.NBT;
+import de.tr7zw.changeme.nbtapi.NBTCompound;
+import de.tr7zw.changeme.nbtapi.NBTFile;
+import io.papermc.lib.PaperLib;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -164,6 +165,22 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public Optional<Island> getTeamViaLocation(Location location, Island island) {
+        if(island.isInIsland(location)){
+            return Optional.of(island);
+        }
+        return getTeamViaLocation(location);
+    }
+
+    @Override
+    public Optional<Island> getTeamViaLocation(Location location, Optional<Island> island) {
+        if(island.isPresent()){
+            return getTeamViaLocation(location, island.get());
+        }
+        return getTeamViaLocation(location);
+    }
+
+    @Override
     public Optional<Island> getTeamViaNameOrPlayer(String name) {
         if (name == null || name.equals("")) return Optional.empty();
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(name);
@@ -181,6 +198,12 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public Optional<Island> getTeamViaPlayerLocation(Player player, Location location) {
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        return user.getCurrentIsland(location);
+    }
+
+    @Override
     public void sendTeamTitle(Player player, Island island) {
         List<Placeholder> placeholders = IridiumSkyblock.getInstance().getTeamsPlaceholderBuilder().getPlaceholders(island);
         String top = StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getConfiguration().islandTitleTop, placeholders);
@@ -193,6 +216,11 @@ public class IslandManager extends TeamManager<Island, User> {
         return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries();
     }
 
+    @Override
+    public boolean isInTeam(Island island, Location location) {
+        return island.isInIsland(location);
+    }
+
     private CompletableFuture<String> getSchematic(Player player) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
         if (IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
@@ -202,7 +230,7 @@ public class IslandManager extends TeamManager<Island, User> {
             }
         }
 
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player.getOpenInventory().getTopInventory(), schematicNameCompletableFuture).getInventory()));
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player, schematicNameCompletableFuture).getInventory()));
         return schematicNameCompletableFuture;
     }
 
@@ -215,9 +243,11 @@ public class IslandManager extends TeamManager<Island, User> {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
             Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
 
-            if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
-                if (!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
-                    return null;
+            if(IridiumSkyblock.getInstance().getConfiguration().islandCreationCost) {
+                if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
+                    if (!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
+                        return null;
+                    }
                 }
             }
 
@@ -557,6 +587,27 @@ public class IslandManager extends TeamManager<Island, User> {
         }
     }
 
+    private HashMap<XMaterial, Integer> getBlockStacks(Chunk chunk, Island island) {
+        HashMap<XMaterial, Integer> hashMap = new HashMap<>();
+
+        for (StackerSupport<Island> stackerSupport : IridiumSkyblock.getInstance().getSupportManager().getStackerSupport()) {
+            stackerSupport.getBlocksStacked(chunk, island).forEach((key, value) -> hashMap.put(key, hashMap.getOrDefault(key, 0) + value));
+        }
+
+        return hashMap;
+    }
+
+    private CompletableFuture<Integer> getSpawnerStackAmount(CreatureSpawner creatureSpawner) {
+        CompletableFuture<Integer> completableFuture = new CompletableFuture<>();
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            completableFuture.complete(IridiumSkyblock.getInstance().getSupportManager().getSpawnerSupport().stream()
+                    .mapToInt(stackerSupport -> stackerSupport.getStackAmount(creatureSpawner))
+                    .max()
+                    .orElse(1));
+        });
+        return completableFuture;
+    }
+
     @Override
     public CompletableFuture<Void> recalculateTeam(Island island) {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
@@ -576,9 +627,14 @@ public class IslandManager extends TeamManager<Island, User> {
                         }
                     }
                 }
-                getSpawners(chunk, island).join().forEach(creatureSpawner ->
-                        teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + 1)
-                );
+                getBlockStacks(chunk, island).forEach((key, value) -> {
+                    teamBlocks.put(key, teamBlocks.getOrDefault(key, 0) + value);
+                });
+
+                getSpawners(chunk, island).join().forEach(creatureSpawner -> {
+                    int amount = getSpawnerStackAmount(creatureSpawner).join();
+                    teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
+                });
             }
         }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
@@ -741,7 +797,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public boolean isInSkyblockWorld(World world) {
-        if(world == null) return false;
+        if (world == null) return false;
         return world.getName().equals(getWorldName(World.Environment.NORMAL)) || world.getName().equals(getWorldName(World.Environment.NETHER)) || world.getName().equals(getWorldName(World.Environment.THE_END));
     }
 
@@ -757,19 +813,20 @@ public class IslandManager extends TeamManager<Island, User> {
         ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
                 new Placeholder("amount", String.valueOf(amount))
         ));
-        NBTItem nbtItem = new NBTItem(itemStack);
-        NBTCompound nbtCompound = nbtItem.getOrCreateCompound("iridiumskyblock");
-        nbtCompound.setInteger("islandCrystals", amount);
-        return nbtItem.getItem();
+
+        NBT.modify(itemStack, readWriteItemNBT -> {
+            readWriteItemNBT.resolveOrCreateCompound("iridiumskyblock").setInteger("islandCrystals", amount);
+        });
+
+        return itemStack;
     }
 
     public int getIslandCrystals(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
-        NBTCompound nbtCompound = new NBTItem(itemStack).getOrCreateCompound("iridiumskyblock");
-        if (nbtCompound.hasKey("islandCrystals")) {
-            return nbtCompound.getInteger("islandCrystals");
-        }
-        return 0;
+
+        return NBT.get(itemStack, readableItemNBT -> {
+            return readableItemNBT.resolveOrDefault("iridiumskyblock.islandCrystals", 0);
+        });
     }
 
     public List<User> getMembersOnIsland(Island island) {

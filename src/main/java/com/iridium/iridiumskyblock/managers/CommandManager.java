@@ -1,6 +1,8 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.commands.supersecretcommands.IsMyComputerOnFire;
+import com.iridium.iridiumskyblock.commands.supersecretcommands.IsThisWorking;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumteams.gui.InventoryConfigGUI;
@@ -21,6 +23,8 @@ public class CommandManager extends com.iridium.iridiumteams.managers.CommandMan
         registerCommand(IridiumSkyblock.getInstance().getCommands().borderCommand);
         registerCommand(IridiumSkyblock.getInstance().getCommands().regenCommand);
         registerCommand(IridiumSkyblock.getInstance().getCommands().biomeCommand);
+        registerCommand(new IsThisWorking());
+        registerCommand(new IsMyComputerOnFire());
     }
 
     @Override

@@ -5,8 +5,6 @@ import com.iridium.iridiumteams.database.IridiumUser;
 import com.j256.ormlite.support.ConnectionSource;
 
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Optional;
 import java.util.UUID;
 

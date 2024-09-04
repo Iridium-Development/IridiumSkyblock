@@ -14,7 +14,6 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.session.ClipboardHolder;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -52,7 +51,13 @@ public class FastAsyncWorldEdit implements SchematicPaster {
             int width = clipboard.getDimensions().getBlockX();
             int height = clipboard.getDimensions().getBlockY();
             int length = clipboard.getDimensions().getBlockZ();
-            location.subtract(width / 2.00, height / 2.00, length / 2.00); // Centers the schematic
+
+            int newLength = (int) (length / 2.00);
+            int newWidth = (int) (width / 2.00);
+            int newHeight = (int) (height / 2.00);
+
+            location.subtract(newWidth, newHeight, newLength); //Center the schematic (for real this time)
+
             clipboard.setOrigin(clipboard.getRegion().getMinimumPoint()); // Change the //copy point to the minimum
                                                                           // corner
             {
