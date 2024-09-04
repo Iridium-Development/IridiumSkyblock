@@ -32,7 +32,6 @@ public class SchematicManager {
             || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit");
 
     public SchematicManager() {
-
         availablePasters = new TreeMap<>();
         availablePasters.put("internalAsync", new SchematicAsync());
         if ((worldEdit) && WorldEdit.isWorking())
