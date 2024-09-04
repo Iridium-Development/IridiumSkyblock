@@ -1,10 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumteams.Reward;
 import org.bukkit.World;
 

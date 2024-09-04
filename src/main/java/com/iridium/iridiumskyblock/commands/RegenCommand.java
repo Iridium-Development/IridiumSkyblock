@@ -15,7 +15,6 @@ import com.iridium.iridiumteams.database.TeamBank;
 import com.iridium.iridiumteams.gui.ConfirmationGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -40,7 +39,7 @@ public class RegenCommand extends ConfirmableCommand<Island, User> {
                 return false;
             }
 
-            player.openInventory(new RegenGUI(player.getOpenInventory().getTopInventory(), player).getInventory());
+            player.openInventory(new RegenGUI(player).getInventory());
             return false;
         }
 

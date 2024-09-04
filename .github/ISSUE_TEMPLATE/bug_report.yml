@@ -1,0 +1,66 @@
+name: Bug Report
+description: Create a report to help us improve IridiumSkyblock!
+labels: ["bug", "unconfirmed"]
+assignees: ["PeachesMLG", "dlsf", "sh0inx"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: markdown
+    attributes:
+      value: Before submitting a new issue, ensure your bug hasn't already been reported. If it has, reply to the open issue instead.
+  - type: textarea
+    id: reproduction
+    validations:
+      required: true
+    attributes:
+      label: Steps to Reproduce
+      description: Provide clear and unambiguous steps on how to reproduce the bug
+      placeholder: |
+        1. Do this
+        2. Click on this
+        3. See error
+  - type: textarea
+    id: expected_behavior
+    validations:
+      required: true
+    attributes:
+      label: Expected Behavior
+      description: Describe what you expected to happen
+  - type: textarea
+    id: actual_behavior
+    validations:
+      required: true
+    attributes:
+      label: Actual Behavior
+      description: Describe what actually happened
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Optionally, add some screenshots to show the issue
+  - type: input
+    id: minecraft_version
+    validations:
+      required: true
+    attributes:
+      label: Server Software & Minecraft Version
+      description: Please copy and paste the output of `/version`, "latest" is not helpful
+  - type: input
+    id: skyblock_version
+    validations:
+      required: true
+    attributes:
+      label: IridiumSkyblock version
+      description: Please copy and paste the output of `/is version`, "latest" is not helpful
+  - type: input
+    id: logs
+    attributes:
+      label: Server logs
+      description: "If there are error messages in your console, please send them via [this](https://mclo.gs)"
+  - type: textarea
+    id: additional_comments
+    attributes:
+      label: Additional Comments
+      description: Optionally, add further comments which may enhance the issue
