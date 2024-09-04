@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.enhancements;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumteams.enhancements.EnhancementData;
 import lombok.NoArgsConstructor;
 

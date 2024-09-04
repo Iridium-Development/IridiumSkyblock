@@ -9,6 +9,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -19,14 +20,14 @@ import java.util.Collection;
 public class VisitGUI extends PagedGUI<Island> {
     private final IridiumTeams<Island, User> iridiumTeams;
 
-    public VisitGUI(Inventory previousInventory, IridiumTeams<Island, User> iridiumTeams) {
+    public VisitGUI(Player player, IridiumTeams<Island, User> iridiumTeams) {
         super(
                 1,
                 IridiumSkyblock.getInstance().getInventories().visitGUI.size,
                 IridiumSkyblock.getInstance().getInventories().visitGUI.background,
                 iridiumTeams.getInventories().previousPage,
                 iridiumTeams.getInventories().nextPage,
-                previousInventory,
+                player,
                 iridiumTeams.getInventories().backButton
         );
         this.iridiumTeams = iridiumTeams;

@@ -1,7 +1,5 @@
 package com.iridium.iridiumskyblock.managers;
 
-import com.iridium.iridiumcore.utils.InventoryUtils;
-import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Schematics;
@@ -11,8 +9,6 @@ import com.iridium.iridiumskyblock.schematics.FastAsyncWorldEdit;
 import com.iridium.iridiumskyblock.schematics.SchematicAsync;
 import com.iridium.iridiumskyblock.schematics.SchematicPaster;
 import com.iridium.iridiumskyblock.schematics.WorldEdit;
-import com.iridium.iridiumteams.bank.BankItem;
-import com.iridium.iridiumteams.configs.Shop;
 import com.iridium.iridiumteams.database.TeamBank;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -20,15 +16,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import javax.xml.crypto.URIReference;
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 public class SchematicManager {
 
@@ -41,7 +32,6 @@ public class SchematicManager {
             || Bukkit.getPluginManager().isPluginEnabled("AsyncWorldEdit");
 
     public SchematicManager() {
-
         availablePasters = new TreeMap<>();
         availablePasters.put("internalAsync", new SchematicAsync());
         if ((worldEdit) && WorldEdit.isWorking())

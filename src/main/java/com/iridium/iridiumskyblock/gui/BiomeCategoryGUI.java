@@ -5,7 +5,6 @@ import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Biomes;
-import com.iridium.iridiumskyblock.configs.Schematics;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -24,8 +23,8 @@ public class BiomeCategoryGUI extends BackGUI {
     private final String categoryName;
     private final Biomes.BiomeCategory biomeCategory;
 
-    public BiomeCategoryGUI(String categoryName, Inventory previousInventory) {
-        super(IridiumSkyblock.getInstance().getInventories().biomeCategoryGUI.background, previousInventory, IridiumSkyblock.getInstance().getInventories().backButton);
+    public BiomeCategoryGUI(String categoryName, Player player) {
+        super(IridiumSkyblock.getInstance().getInventories().biomeCategoryGUI.background, player, IridiumSkyblock.getInstance().getInventories().backButton);
         this.categoryName = categoryName;
         this.biomeCategory = IridiumSkyblock.getInstance().getBiomes().categories.get(categoryName);
     }
