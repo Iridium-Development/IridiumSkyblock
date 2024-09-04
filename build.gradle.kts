@@ -99,9 +99,7 @@ tasks {
         relocate("org.apache.commons")
 
         // Remove unnecessary files from the jar
-        minimize {
-            exclude("org")
-        }
+        minimize()
     }
 
     // Set UTF-8 as the encoding
