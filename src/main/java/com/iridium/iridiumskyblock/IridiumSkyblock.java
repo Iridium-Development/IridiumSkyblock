@@ -5,6 +5,8 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.generators.FlatGenerator;
+import com.iridium.iridiumskyblock.generators.OceanGenerator;
 import com.iridium.iridiumskyblock.generators.VoidGenerator;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
@@ -34,6 +36,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -56,6 +59,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Shop shop;
     private Biomes biomes;
     private Settings settings;
+    private Generators generators;
 
     private IslandPlaceholderBuilder teamsPlaceholderBuilder;
     private UserPlaceholderBuilder userPlaceholderBuilder;
@@ -87,7 +91,35 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     @Override
     public void onLoad() {
         super.onLoad();
-        this.chunkGenerator = new VoidGenerator();
+
+        getLogger().info("Loading world generator...");
+        getLogger().info("Generator Type = " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
+
+        // This switch statement is here so that if we end up adding another generator type, we can throw it in this.
+        switch (IridiumSkyblock.getInstance().getConfiguration().generatorType) {
+            case OCEAN: {
+                this.chunkGenerator = new OceanGenerator();
+                break;
+            }
+            case FLAT: {
+                this.chunkGenerator = new FlatGenerator();
+                break;
+            }
+            case VANILLA: {
+                this.chunkGenerator = null;
+                break;
+            }
+            case VOID: {
+                this.chunkGenerator = new VoidGenerator();
+                break;
+            }
+            default: {
+                getLogger().warning("Invalid generator type [" + IridiumSkyblock.getInstance().getConfiguration().generatorType + "], valid types are " + Arrays.toString(GeneratorType.values()));
+                getLogger().info("Generator Type = " + GeneratorType.VOID);
+                this.chunkGenerator = new VoidGenerator();
+                break;
+            }
+        }
     }
 
     @Override
@@ -173,6 +205,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.shop = getPersist().load(Shop.class);
         this.biomes = getPersist().load(Biomes.class);
         this.settings = getPersist().load(Settings.class);
+        this.generators = getPersist().load(Generators.class);
+        getLogger().info("GENERATOR TYPE: " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
         super.loadConfigs();
 
         int maxSize = enhancements.sizeEnhancement.levels.values().stream()
@@ -210,6 +244,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(shop);
         getPersist().save(biomes);
         getPersist().save(settings);
+        getPersist().save(generators);
         saveSchematics();
     }
 
