@@ -50,7 +50,7 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
                             .orElse(IridiumSkyblock.getInstance().getMessages().nullPlaceholder)),
                     new Placeholder("island_create", () -> island.getCreateTime().format(DateTimeFormatter.ofPattern(IridiumSkyblock.getInstance().getConfiguration().dateTimeFormat))),
                     new Placeholder("island_description", island::getDescription),
-                    new Placeholder("island_value", () -> String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamValue(island))),
+                    new Placeholder("island_value", () -> formatDouble(IridiumSkyblock.getInstance().getTeamManager().getTeamValue(island))),
                     new Placeholder("island_level", () -> String.valueOf(island.getLevel())),
                     new Placeholder("island_experience", String.valueOf(island.getExperience())),
                     new Placeholder("island_experienceToLevelUp", String.valueOf(IridiumSkyblock.getInstance().getIslandManager().getTeamExperienceForNextLevel(island))),
@@ -87,7 +87,7 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
             }
 
             for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
-                placeholderList.add(new Placeholder("island_bank_" + bankItem.getName().toLowerCase(), () -> String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island, bankItem.getName()).getNumber())));
+                placeholderList.add(new Placeholder("island_bank_" + bankItem.getName().toLowerCase(), () -> formatDouble(IridiumSkyblock.getInstance().getTeamManager().getTeamBank(island, bankItem.getName()).getNumber())));
             }
             for (XMaterial xMaterial : XMaterial.values()) {
                 placeholderList.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", () -> String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamBlock(island, xMaterial).getAmount())));
@@ -99,8 +99,11 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
         });
     }
 
-    private List<Placeholder> initializeDefaultPlaceholders() {
+    private String formatDouble(double value) {
+        return IridiumSkyblock.getInstance().getConfiguration().numberFormatter.format(value);
+    }
 
+    private List<Placeholder> initializeDefaultPlaceholders() {
         List<Placeholder> placeholderList = new ArrayList<>(Arrays.asList(
                 new Placeholder("island_name", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_owner", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
