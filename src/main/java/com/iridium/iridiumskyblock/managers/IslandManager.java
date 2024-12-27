@@ -85,7 +85,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
-        World.Environment dimension = biome.getEnvironment();
+        World.Environment dimension = biome.getEnvironment().get();
         World world = getWorld(dimension);
 
         if (world == null) return;
@@ -253,9 +253,9 @@ public class IslandManager extends TeamManager<Island, User> {
             deleteIslandBlocks(island).join();
             clearEntities(island);
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
+            setIslandBiome(island, XBiome.of(schematicConfig.overworld.biome));
+            setIslandBiome(island, XBiome.of(schematicConfig.nether.biome));
+            setIslandBiome(island, XBiome.of(schematicConfig.end.biome));
         });
     }
 
