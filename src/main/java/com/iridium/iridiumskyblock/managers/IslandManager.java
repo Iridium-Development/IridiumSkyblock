@@ -253,9 +253,9 @@ public class IslandManager extends TeamManager<Island, User> {
             deleteIslandBlocks(island).join();
             clearEntities(island);
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
-            setIslandBiome(island, XBiome.of(schematicConfig.overworld.biome));
-            setIslandBiome(island, XBiome.of(schematicConfig.nether.biome));
-            setIslandBiome(island, XBiome.of(schematicConfig.end.biome));
+            setIslandBiome(island, schematicConfig.overworld.biome);
+            setIslandBiome(island, schematicConfig.nether.biome);
+            setIslandBiome(island, schematicConfig.end.biome);
         });
     }
 
