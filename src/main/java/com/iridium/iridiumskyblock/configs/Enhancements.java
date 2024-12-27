@@ -1,8 +1,8 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XMaterial;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import com.iridium.iridiumskyblock.enhancements.GeneratorEnhancementData;
 import com.iridium.iridiumskyblock.enhancements.SizeEnhancementData;
 import com.iridium.iridiumskyblock.enhancements.VoidEnhancementData;
@@ -10,7 +10,6 @@ import com.iridium.iridiumteams.enhancements.Enhancement;
 import com.iridium.iridiumteams.enhancements.EnhancementType;
 
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements {
 
@@ -40,7 +39,7 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             "&9&lInformation:",
             "&9&l * &7Current Level: &9%current_level%",
             "&9&l * &7Current Size: &9%size%x%size% Blocks",
-            "&9&l * &7Upgrade Cost: &9%cost%",
+            "&9&l * &7Upgrade Cost: &9%vault_cost%, %Crystals_cost% Island Crystals",
             "&9&lLevels:",
             "&9&l * &7Level 1: &950x50 Blocks",
             "&9&l * &7Level 2: &975x75 Blocks",
@@ -48,6 +47,7 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             "&9&l * &7Level 4: &9125x125 Blocks",
             "&9&l * &7Level 5: &9150x150 Blocks",
             "",
+            "&9[!] &7Must be level %minLevel% to purchase",
             "&9&l[!] " + "&9Left Click to Purchase Level %next_level%."
     )), new ImmutableMap.Builder<Integer, SizeEnhancementData>()
             .put(0, new SizeEnhancementData(5, 10000, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(), 50))
@@ -63,7 +63,7 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             "",
             "&9&lInformation:",
             "&9&l * &7Current Level: &9%current_level%",
-            "&9&l * &7Upgrade Cost: &9%cost%",
+            "&9&l * &7Upgrade Cost: &9%vault_cost%, %Crystals_cost% Island Crystals",
             "&9&lLevels:",
             "&9&l * &7Level 1: &9No Void Teleport",
             "&9&l * &7Level 2: &9100% Item Loss",
@@ -72,6 +72,7 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             "&9&l * &7Level 5: &925% Item Loss",
             "&9&l * &7Level 6: &90% Item Loss",
             "",
+            "&9[!] &7Must be level %minLevel% to purchase",
             "&9&l[!] " + "&9Left Click to Purchase Level %next_level%."
     )), new ImmutableMap.Builder<Integer, VoidEnhancementData>()
             .put(0, new VoidEnhancementData(5, 10000, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(), true, 0.00))
@@ -83,8 +84,9 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
             "",
             "&9&lInformation:",
             "&9&l * &7Current Level: &9%current_level%",
-            "&9&l * &7Upgrade Cost: &9%cost%",
+            "&9&l * &7Upgrade Cost: &9%vault_cost%, %Crystals_cost% Island Crystals",
             "",
+            "&9[!] &7Must be level %minLevel% to purchase",
             "&9&l[!] " + "&9Left Click to Purchase Level %next_level%."
     )), new ImmutableMap.Builder<Integer, GeneratorEnhancementData>()
             .put(0, new GeneratorEnhancementData(5, 10000, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(),

@@ -2,8 +2,8 @@ package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.gui.ClosableGUI;
 import lombok.Getter;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.inventory.Inventory;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -11,8 +11,8 @@ import java.util.concurrent.CompletableFuture;
 public class CreateGUI extends SchematicGUI implements ClosableGUI {
     private final CompletableFuture<String> completableFuture;
 
-    public CreateGUI(Inventory previousInventory, CompletableFuture<String> completableFuture) {
-        super(previousInventory);
+    public CreateGUI(Player player, CompletableFuture<String> completableFuture) {
+        super(player);
         this.completableFuture = completableFuture;
     }
 

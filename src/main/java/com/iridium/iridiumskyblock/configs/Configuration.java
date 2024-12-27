@@ -1,11 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.dependencies.xseries.XSound;
-import com.iridium.iridiumskyblock.managers.GeneratorType;
 import com.iridium.iridiumteams.Reward;
 import org.bukkit.World;
 
@@ -59,6 +58,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public boolean clearEnderChestOnRegen = false;
     public boolean allowPvPOnIslands = false;
     public boolean islandCreateOnJoin = false;
+    public boolean islandCreationCost = false;
     public boolean spawnOnIsland = false;
     public int distance = 151;
     public int netherUnlockLevel = 10;

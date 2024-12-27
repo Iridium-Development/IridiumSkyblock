@@ -7,6 +7,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Biomes;
 import com.iridium.iridiumteams.configs.inventories.NoItemGUI;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +16,8 @@ import java.util.Map;
 
 public class BiomeOverviewGUI extends BackGUI {
 
-    public BiomeOverviewGUI(Inventory previousInventory) {
-        super(IridiumSkyblock.getInstance().getInventories().biomeOverviewGUI.background, previousInventory, IridiumSkyblock.getInstance().getInventories().backButton);
+    public BiomeOverviewGUI(Player player) {
+        super(IridiumSkyblock.getInstance().getInventories().biomeOverviewGUI.background, player, IridiumSkyblock.getInstance().getInventories().backButton);
     }
 
     @NotNull
@@ -41,7 +42,7 @@ public class BiomeOverviewGUI extends BackGUI {
     public void onInventoryClick(InventoryClickEvent event) {
         for (Map.Entry<String, Biomes.BiomeCategory> category : IridiumSkyblock.getInstance().getBiomes().categories.entrySet()) {
             if (event.getSlot() != category.getValue().item.slot) continue;
-            event.getWhoClicked().openInventory(new BiomeCategoryGUI(category.getKey(), event.getWhoClicked().getOpenInventory().getTopInventory()).getInventory());
+            event.getWhoClicked().openInventory(new BiomeCategoryGUI(category.getKey(), (Player) event.getWhoClicked()).getInventory());
             return;
         }
         super.onInventoryClick(event);

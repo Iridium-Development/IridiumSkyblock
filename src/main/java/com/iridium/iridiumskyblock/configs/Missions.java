@@ -1,9 +1,10 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XSound;
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Item;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
-import com.iridium.iridiumcore.dependencies.xseries.XSound;
 import com.iridium.iridiumteams.Reward;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
@@ -34,7 +35,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
                                 )
-                        ), Arrays.asList("GROW:SUGAR_CANE:10", "GROW:WHEAT:10", "GROW:CARROTS:10"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lFarmer Reward",
+                        ), Arrays.asList("GROW:SUGAR_CANE:10", "GROW:WHEAT:10", "GROW:CARROTS:10"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lFarmer Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -64,7 +65,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
                                 )
-                        ), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lHunter Reward",
+                        ), Arrays.asList("KILL:ZOMBIE:10", "KILL:SKELETON:10", "KILL:CREEPER:10"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lHunter Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -92,7 +93,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
                                 )
-                        ), Collections.singletonList("CRAFT:BREAD:64"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lBaker Reward",
+                        ), Collections.singletonList("CRAFT:BREAD:64"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lBaker Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -122,7 +123,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
                                 )
-                        ), Arrays.asList("MINE:IRON_ORE:15", "MINE:COAL_ORE:30", "MINE:DIAMOND_ORE:1"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lMiner Reward",
+                        ), Arrays.asList("MINE:IRON_ORE:15", "MINE:COAL_ORE:30", "MINE:DIAMOND_ORE:1"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lMiner Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -150,7 +151,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
                                 )
-                        ), Collections.singletonList("FISH:ANY:10"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lFisherman Reward",
+                        ), Collections.singletonList("FISH:ANY:10"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lFisherman Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -178,7 +179,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &7$1000",
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
-                                )), Arrays.asList("SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (XMaterial.supports(17) ? XMaterial.RAW_GOLD.name() : XMaterial.GOLD_ORE.name()) + ":15"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lBlacksmith Reward",
+                                )), Arrays.asList("SMELT:" + (XReflection.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (XReflection.supports(17) ? XMaterial.RAW_GOLD.name() : XMaterial.GOLD_ORE.name()) + ":15"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lBlacksmith Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -207,7 +208,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
                                 )
-                        ), Arrays.asList("BREW:SPEED:2:3", "BREW:STRENGTH:2:3"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
+                        ), Arrays.asList("BREW:SPEED:2:3", "BREW:STRENGTH:2:3"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -233,7 +234,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &75 Island Crystals",
                                         "&9&l* &7$1000"
                                 )
-                        ), Collections.singletonList("MINE:LOGS:10"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
+                        ), Collections.singletonList("MINE:LOGS:10"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -257,7 +258,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &75 Island Crystals",
                                         "&9&l* &7$1000"
                                 )
-                        ), Collections.singletonList("MINE:LOGS:100"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
+                        ), Collections.singletonList("MINE:LOGS:100"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -281,7 +282,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &75 Island Crystals",
                                         "&9&l* &7$1000"
                                 )
-                        ), Collections.singletonList("MINE:LOGS:1000"), new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
+                        ), Collections.singletonList("MINE:LOGS:1000"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
