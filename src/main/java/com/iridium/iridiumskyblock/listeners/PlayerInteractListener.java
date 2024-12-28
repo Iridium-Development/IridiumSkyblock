@@ -48,6 +48,7 @@ public class PlayerInteractListener implements Listener {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));
+            event.setCancelled(true);
             return;
         }
 
