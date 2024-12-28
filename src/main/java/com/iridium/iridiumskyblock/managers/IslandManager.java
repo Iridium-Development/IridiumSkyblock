@@ -663,6 +663,16 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public void deleteTeamMissionData(TeamMission teamMission) {
+        MissionData missionData = IridiumSkyblock.getInstance().getMissions().missions.get(teamMission.getMissionName()).getMissionData().get(teamMission.getMissionLevel());
+
+        for (int i = 0; i < missionData.getMissions().size(); i++) {
+            Optional<TeamMissionData> data = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().getEntry(new TeamMissionData(teamMission, i));
+            data.ifPresent(teamMissionData -> IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().delete(teamMissionData));
+        }
+    }
+
+    @Override
     public List<TeamReward> getTeamRewards(Island island) {
         return IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().getEntries(island);
     }
