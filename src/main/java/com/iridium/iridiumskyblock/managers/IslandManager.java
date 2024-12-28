@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -783,14 +784,51 @@ public class IslandManager extends TeamManager<Island, User> {
 
     public void clearTeamInventory(Island island) {
 
-        if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) {
-            IridiumSkyblock.getInstance().getIslandManager().getMembersOnIsland(island).forEach(member ->
-                    member.getPlayer().getInventory().clear());
+        List<User> onlinePlayers = new ArrayList<>();
+        List<User> offlinePlayers = new ArrayList<>();
+
+        for(User user : island.getMembers()) {
+
+            if (user.getUserRank() == -1) continue;
+
+            try{
+                user.getPlayer();
+                onlinePlayers.add(user);
+            } catch (Exception e) {
+                offlinePlayers.add(user);
+            }
         }
 
-        if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) {
-            IridiumSkyblock.getInstance().getIslandManager().getMembersOnIsland(island).forEach(member ->
-                    member.getPlayer().getEnderChest().clear());
+        for (User user : onlinePlayers) {
+            if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) user.getPlayer().getInventory().clear();
+            if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) user.getPlayer().getEnderChest().clear();
+        }
+
+        for(User user : offlinePlayers) {
+
+            try {
+                File file = new File(Bukkit.getWorlds().get(0).getWorldFolder().getPath() + File.pathSeparator + "playerdata" + File.pathSeparator + user.getUuid() + ".dat");
+                NBTFile playerFile = new NBTFile(file);
+
+                if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) {
+                    NBTCompound compound = playerFile.getCompound("").getCompound("Inventory");
+                    compound.clearNBT();
+                    playerFile.save();
+                }
+
+                if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) {
+                    NBTCompound compound = playerFile.getCompound("").getCompound("EnderItems");
+                    compound.clearNBT();
+                    playerFile.save();
+                }
+
+            } catch (IOException e) {
+                IridiumSkyblock.getInstance().getLogger().warning("Cannot mutate user: " + user.getName() + ". See stacktrace for details.");
+                IridiumSkyblock.getInstance().getLogger().warning(e.getMessage());
+            } catch (NullPointerException e) {
+                IridiumSkyblock.getInstance().getLogger().warning("Cannot mutate user: " + user.getName() + ". Either player or compound doesn't exist (See stacktrace for details).");
+                IridiumSkyblock.getInstance().getLogger().warning(e.getMessage());
+            }
         }
     }
 
