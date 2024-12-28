@@ -85,7 +85,7 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public void setIslandBiome(@NotNull Island island, @NotNull XBiome biome) {
-        World.Environment dimension = biome.getEnvironment();
+        World.Environment dimension = biome.getEnvironment().get();
         World world = getWorld(dimension);
 
         if (world == null) return;
@@ -253,9 +253,9 @@ public class IslandManager extends TeamManager<Island, User> {
             deleteIslandBlocks(island).join();
             clearEntities(island);
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.overworld.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.nether.biome));
-            setIslandBiome(island, XBiome.matchXBiome(schematicConfig.end.biome));
+            setIslandBiome(island, schematicConfig.overworld.biome);
+            setIslandBiome(island, schematicConfig.nether.biome);
+            setIslandBiome(island, schematicConfig.end.biome);
         });
     }
 
@@ -660,6 +660,16 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public void deleteTeamMission(TeamMission teamMission) {
         IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().delete(teamMission);
+    }
+
+    @Override
+    public void deleteTeamMissionData(TeamMission teamMission) {
+        MissionData missionData = IridiumSkyblock.getInstance().getMissions().missions.get(teamMission.getMissionName()).getMissionData().get(teamMission.getMissionLevel());
+
+        for (int i = 0; i < missionData.getMissions().size(); i++) {
+            Optional<TeamMissionData> data = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().getEntry(new TeamMissionData(teamMission, i));
+            data.ifPresent(teamMissionData -> IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().delete(teamMissionData));
+        }
     }
 
     @Override
