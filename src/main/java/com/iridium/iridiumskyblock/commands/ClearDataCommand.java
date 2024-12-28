@@ -19,29 +19,20 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-public class ClearDataCommand extends Command<Island, User> {
-
-    public String adminPermission;
+public class ClearDataCommand extends Command < Island, User > {
 
     public ClearDataCommand() {
-        super(Collections.singletonList("cleardata"), "Deletes data from database", "%prefix% &7/is cleardata <table> <team> --skip-confirm", "", 10);
-        this.adminPermission = "iridiumSkyblock.clearData";
+        super(Collections.singletonList("cleardata"), "Deletes data from database", "%prefix% &7/is cleardata <table> <team> --skip-confirm", "iridiumSkyblock.clearData", 10);
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args, IridiumTeams<Island, User> iridiumTeams) {
-
-        if (!sender.hasPermission(adminPermission)) {
-            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noPermission
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-            return false;
-        }
-
+    public boolean execute(CommandSender sender, String[] args, IridiumTeams < Island, User > iridiumTeams) {
         DataTable table = DataTable.ALL;
         boolean skipConfirmation = false;
-        Optional<Island> island = Optional.empty();
+        Optional < Island > island = Optional.empty();
 
         if (args.length == 0 || Arrays.stream(DataTable.values()).noneMatch(dataTable -> dataTable.name().equalsIgnoreCase(args[0]))) {
             sender.sendMessage(StringUtils.color(syntax.replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
@@ -73,14 +64,16 @@ public class ClearDataCommand extends Command<Island, User> {
         if (Arrays.stream(args).anyMatch(argument -> argument.equalsIgnoreCase("--skip-confirm")))
             skipConfirmation = true;
 
-        if(sender instanceof Player && !skipConfirmation) {
+        if (sender instanceof Player && !skipConfirmation) {
             confirmDataDeletion((Player) sender, island, table);
             return true;
         }
-        return deleteData(sender, island, table);
+        deleteData(sender, island, table);
+
+        return true;
     }
 
-    private void confirmDataDeletion(Player player, Optional<Island> island, DataTable table) {
+    private void confirmDataDeletion(Player player, Optional < Island > island, DataTable table) {
         String islandName = "ALL";
         if (island.isPresent()) islandName = island.get().getName() + " (" + island.get().getOwner().get().getName() + ")";
         player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().confirmDataDeletion
@@ -88,154 +81,139 @@ public class ClearDataCommand extends Command<Island, User> {
                 .replace("%table%", table.name())
                 .replace("%island%", islandName)));
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(IridiumSkyblock.getInstance(), () ->
-                player.openInventory(new ConfirmationGUI<>(() -> {
-                    if (!deleteData(player, island, table)) return;
-                }, IridiumSkyblock.getInstance()).getInventory()), 100);
+        player.openInventory(new ConfirmationGUI < > (() -> deleteData(player, island, table), IridiumSkyblock.getInstance()).getInventory());
     }
 
-    private boolean deleteData(CommandSender sender, Optional<Island> island, DataTable table) {
+    private CompletableFuture < Void > deleteData(CommandSender sender, Optional < Island > island, DataTable table) {
+        return CompletableFuture.runAsync(() -> {
 
-        if (!backupDatabaseFile()) return false;
+            if (!backupDatabaseFile()) return;
 
-        List<Island> islands = new ArrayList<>();
-        if (!island.isPresent()) { islands = IridiumSkyblock.getInstance().getIslandManager().getTeams(); }
-        else islands.add(island.get());
+            List < Island > islands = new ArrayList < > ();
+            if (!island.isPresent()) {
+                islands = IridiumSkyblock.getInstance().getIslandManager().getTeams();
+            } else islands.add(island.get());
 
-        boolean all = table == DataTable.ALL;
+            boolean all = table == DataTable.ALL;
 
-        DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
+            DatabaseManager databaseManager = IridiumSkyblock.getInstance().getDatabaseManager();
 
-        try {
-            switch (table) {
-                case ALL: {
-                }
-                case ISLAND: {
-                    databaseManager.getIslandTableManager().delete(islands);
-                    if (!all) break;
-                }
-                case INVITE: {
-                    ForeignIslandTableManager<String, TeamInvite> inviteTableManager = databaseManager.getInvitesTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamInvite teamInvite : inviteTableManager.getEntries(islandEntry)) {
-                            inviteTableManager.delete(teamInvite);
-                            teamInvite.setChanged(true);
-                        }
+            try {
+                switch (table) {
+                    case ALL:
+                    case ISLAND: {
+                        databaseManager.getIslandTableManager().delete(islands).join();
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case TRUST: {
-                    ForeignIslandTableManager<String, TeamTrust> trustTableManager = databaseManager.getTrustTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamTrust teamTrust : trustTableManager.getEntries(islandEntry)) {
-                            trustTableManager.delete(teamTrust);
-                            teamTrust.setChanged(true);
+                    case INVITE: {
+                        ForeignIslandTableManager < String, TeamInvite > inviteTableManager = databaseManager.getInvitesTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamInvite teamInvite: inviteTableManager.getEntries(islandEntry)) {
+                                inviteTableManager.delete(teamInvite).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case PERMISSION: {
-                    ForeignIslandTableManager<String, TeamPermission> permissionTableManager = databaseManager.getPermissionsTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamPermission teamPermission : permissionTableManager.getEntries(islandEntry)) {
-                            permissionTableManager.delete(teamPermission);
-                            teamPermission.setChanged(true);
+                    case TRUST: {
+                        ForeignIslandTableManager < String, TeamTrust > trustTableManager = databaseManager.getTrustTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamTrust teamTrust: trustTableManager.getEntries(islandEntry)) {
+                                trustTableManager.delete(teamTrust).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case BANK: {
-                    ForeignIslandTableManager<String, TeamBank> bankTableManager = databaseManager.getBankTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamBank teamBank : bankTableManager.getEntries(islandEntry)) {
-                            bankTableManager.delete(teamBank);
-                            teamBank.setChanged(true);
+                    case PERMISSION: {
+                        ForeignIslandTableManager < String, TeamPermission > permissionTableManager = databaseManager.getPermissionsTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamPermission teamPermission: permissionTableManager.getEntries(islandEntry)) {
+                                permissionTableManager.delete(teamPermission).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case ENHANCEMENT: {
-                    ForeignIslandTableManager<String, TeamEnhancement> enhancementTableManager = databaseManager.getEnhancementTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamEnhancement teamEnhancement : enhancementTableManager.getEntries(islandEntry)) {
-                            enhancementTableManager.delete(teamEnhancement);
-                            teamEnhancement.setChanged(true);
+                    case BANK: {
+                        ForeignIslandTableManager < String, TeamBank > bankTableManager = databaseManager.getBankTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamBank teamBank: bankTableManager.getEntries(islandEntry)) {
+                                bankTableManager.delete(teamBank).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case TEAM_BLOCK: {
-                    ForeignIslandTableManager<String, TeamBlock> blockTableManager = databaseManager.getTeamBlockTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamBlock teamBlock : blockTableManager.getEntries(islandEntry)) {
-                            blockTableManager.delete(teamBlock);
-                            teamBlock.setChanged(true);
+                    case ENHANCEMENT: {
+                        ForeignIslandTableManager < String, TeamEnhancement > enhancementTableManager = databaseManager.getEnhancementTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamEnhancement teamEnhancement: enhancementTableManager.getEntries(islandEntry)) {
+                                enhancementTableManager.delete(teamEnhancement).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case TEAM_SPAWNER: {
-                    ForeignIslandTableManager<String, TeamSpawners> spawnerTableManager = databaseManager.getTeamSpawnerTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamSpawners teamSpawners : spawnerTableManager.getEntries(islandEntry)) {
-                            spawnerTableManager.delete(teamSpawners);
-                            teamSpawners.setChanged(true);
+                    case TEAM_BLOCK: {
+                        ForeignIslandTableManager < String, TeamBlock > blockTableManager = databaseManager.getTeamBlockTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamBlock teamBlock: blockTableManager.getEntries(islandEntry)) {
+                                blockTableManager.delete(teamBlock).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case TEAM_WARP: {
-                    ForeignIslandTableManager<String, TeamWarp> warpTableManager = databaseManager.getTeamWarpTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamWarp teamWarp : warpTableManager.getEntries(islandEntry)) {
-                            warpTableManager.delete(teamWarp);
-                            teamWarp.setChanged(true);
+                    case TEAM_SPAWNER: {
+                        ForeignIslandTableManager < String, TeamSpawners > spawnerTableManager = databaseManager.getTeamSpawnerTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamSpawners teamSpawners: spawnerTableManager.getEntries(islandEntry)) {
+                                spawnerTableManager.delete(teamSpawners).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case TEAM_MISSION: {
-                    ForeignIslandTableManager<String, TeamMission> missionTableManager = databaseManager.getTeamMissionTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamMission teamMission : missionTableManager.getEntries(islandEntry)) {
-                            missionTableManager.delete(teamMission);
-                            teamMission.setChanged(true);
+                    case TEAM_WARP: {
+                        ForeignIslandTableManager < String, TeamWarp > warpTableManager = databaseManager.getTeamWarpTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamWarp teamWarp: warpTableManager.getEntries(islandEntry)) {
+                                warpTableManager.delete(teamWarp).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    // there is not a break here, because if you're deleting missions, you want to also delete their data.
-                    if (!all) break;
-                }
+                    case TEAM_MISSION: {
+                        ForeignIslandTableManager < String, TeamMission > missionTableManager = databaseManager.getTeamMissionTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamMission teamMission: missionTableManager.getEntries(islandEntry)) {
+                                IridiumSkyblock.getInstance().getIslandManager().deleteTeamMission(teamMission);
+                                IridiumSkyblock.getInstance().getIslandManager().deleteTeamMissionData(teamMission);
+                            }
+                        }
+                        if (!all) break;
+                    }
 
-                // TODO: team mission data needs some coddling apparently
-
-                case TEAM_REWARDS: {
-                    ForeignIslandTableManager<String, TeamReward> rewardTableManager = databaseManager.getTeamRewardsTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamReward teamReward : rewardTableManager.getEntries(islandEntry)) {
-                            rewardTableManager.delete(teamReward);
-                            teamReward.setChanged(true);
+                    case TEAM_REWARDS: {
+                        ForeignIslandTableManager < String, TeamReward > rewardTableManager = databaseManager.getTeamRewardsTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamReward teamReward: rewardTableManager.getEntries(islandEntry)) {
+                                rewardTableManager.delete(teamReward).join();
+                            }
                         }
+                        if (!all) break;
                     }
-                    if (!all) break;
-                }
-                case TEAM_SETTINGS: {
-                    ForeignIslandTableManager<String, TeamSetting> settingTableManager = databaseManager.getTeamSettingsTableManager();
-                    for (Island islandEntry : islands) {
-                        for (TeamSetting teamSetting : settingTableManager.getEntries(islandEntry)) {
-                            settingTableManager.delete(teamSetting);
-                            teamSetting.setChanged(true);
+                    case TEAM_SETTINGS: {
+                        ForeignIslandTableManager < String, TeamSetting > settingTableManager = databaseManager.getTeamSettingsTableManager();
+                        for (Island islandEntry: islands) {
+                            for (TeamSetting teamSetting: settingTableManager.getEntries(islandEntry)) {
+                                settingTableManager.delete(teamSetting).join();
+                            }
                         }
                     }
                 }
+            } catch (Exception e) {
+                IridiumSkyblock.getInstance().getLogger().warning(e.getMessage());
+                return;
             }
-        } catch (Exception e) {
-            IridiumSkyblock.getInstance().getLogger().warning(e.getMessage());
-            return false;
-        }
 
-        sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dataDeletion
-                .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
-        return true;
+            sender.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dataDeletion
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
+        });
     }
 
     private boolean backupDatabaseFile() {
@@ -252,26 +230,24 @@ public class ClearDataCommand extends Command<Island, User> {
             IridiumSkyblock.getInstance().getLogger().info("Success! Backup \"IridiumSkyblock.db\" created, check \"" + backupFolder.getPath() + "\".");
             return true;
         } catch (IOException exception) {
-            IridiumSkyblock.getInstance().getLogger().severe("Failed to move \"IridiumSkyblock.db\" to " + backupFolder + ": "
-                    + exception.getMessage());
+            IridiumSkyblock.getInstance().getLogger().severe("Failed to move \"IridiumSkyblock.db\" to " + backupFolder + ": " +
+                    exception.getMessage());
             return false;
         }
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender commandSender, String[] args, IridiumTeams<Island, User> iridiumTeams) {
-        if (!commandSender.hasPermission(adminPermission)) return Collections.emptyList();
-
+    public List < String > onTabComplete(CommandSender commandSender, String[] args, IridiumTeams < Island, User > iridiumTeams) {
         switch (args.length) {
             case 1: {
-                List<String> tables = new ArrayList<>();
-                for(DataTable table : DataTable.values()) {
+                List < String > tables = new ArrayList < > ();
+                for (DataTable table: DataTable.values()) {
                     tables.add(table.name());
                 }
                 return tables;
             }
             case 2: {
-                List<String> fullTabComplete = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+                List < String > fullTabComplete = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
                 fullTabComplete.add("--skip-confirm");
                 return fullTabComplete;
             }
@@ -286,7 +262,6 @@ public class ClearDataCommand extends Command<Island, User> {
 enum DataTable {
     ALL,
     ISLAND,
-    // TEAM_MISSION_DATA,
     INVITE,
     TRUST,
     PERMISSION,
