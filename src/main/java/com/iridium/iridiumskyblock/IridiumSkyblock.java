@@ -5,7 +5,6 @@ import com.iridium.iridiumcore.Item;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.ListenerPriority;
-import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
@@ -195,7 +194,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerInteractListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         if(!XReflection.supports(15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
-        if(!XMaterial.supports(15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
 
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             new ProtocolLibPacketListener().registerListeners();

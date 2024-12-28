@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.configs;
 
+import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XMaterial;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.common.collect.ImmutableMap;
-import com.iridium.iridiumcore.dependencies.fasterxml.annotation.JsonIgnoreProperties;
-import com.iridium.iridiumcore.dependencies.xseries.XBiome;
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -40,7 +40,7 @@ public class Generators {
             ),
             new com.iridium.iridiumskyblock.configs.Generators.OceanGeneratorWorld(
                     XBiome.NETHER_WASTES,
-                    XMaterial.NETHERRACK,
+                    XMaterial.SOUL_SAND,
                     XMaterial.NETHERRACK,
                     XMaterial.NETHERRACK,
                     XMaterial.LAVA,

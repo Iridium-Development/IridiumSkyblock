@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.generators;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Generators;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
@@ -46,7 +46,7 @@ public class OceanGenerator extends ChunkGenerator {
                 }
 
                 // Generate gravel layer
-                for (int y = currentFloorHeight - 4; y < currentFloorHeight; y++) {
+                for (int y = LocationUtils.getMinHeight(world) + 1; y < currentFloorHeight; y++) {
                     chunkData.setBlock(x, y, z,
                             Objects.requireNonNull(getOceanGenerator(world.getEnvironment()).underFloor.parseMaterial())
                     );
@@ -105,8 +105,8 @@ public class OceanGenerator extends ChunkGenerator {
             }
         }
 
-        // Generate gravel on top of stone
-        for (int y = currentFloorHeight - 4; y < currentFloorHeight; y++) {
+        // Generate gravel layer
+        for (int y = minHeightWorld + 1; y < currentFloorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getOceanGenerator(world.getEnvironment()).underFloor.parseMaterial()
                     && getOceanGenerator(world.getEnvironment()).underFloor.parseMaterial() != null) {
@@ -156,12 +156,15 @@ public class OceanGenerator extends ChunkGenerator {
         }
 
         // Generate kelp, ores, mineral deposits, etc.
+        // BREAKS BELOW 1.18
+        //shouldGenerateDecorations(world, random , x, z);
         shouldGenerateDecorations(world, random , x, z);
+
     }
 
     @Override
-    public boolean shouldGenerateDecorations(WorldInfo world, Random random, int x, int y) {
-        return getOceanGenerator(world.getEnvironment()).decorate;
+    public boolean shouldGenerateDecorations(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z) {
+        return getOceanGenerator(worldInfo.getEnvironment()).decorate;
     }
 
     @Override

@@ -16,6 +16,17 @@ public class VoidGenerator extends ChunkGenerator {
 
     public byte[][] blockSections;
 
+    @Override
+    public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biomeGrid) {
+        final ChunkData chunkData = createChunkData(world);
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                biomeGrid.setBiome(x, z, Objects.requireNonNull(getSkyblockGenerator(world.getEnvironment()).biome.getBiome()));
+            }
+        }
+        return chunkData;
+    }
+
     public byte[][] generateBlockSections(World world, Random random, int x, int z, BiomeGrid biomeGrid) {
         if (blockSections == null) {
             blockSections = new byte[world.getMaxHeight() / 16][];

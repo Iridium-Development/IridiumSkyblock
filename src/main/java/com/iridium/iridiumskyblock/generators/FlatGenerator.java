@@ -1,6 +1,6 @@
 package com.iridium.iridiumskyblock.generators;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Generators;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
@@ -89,7 +89,7 @@ public class FlatGenerator extends ChunkGenerator {
         }
 
         // Generate dirt layer
-        for (int y = floorHeight - 4; y < floorHeight; y++) {
+        for (int y = minFloorHeight + 1; y < floorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
             if (block.getType() != getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial()
                     && getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial() != null) {
@@ -124,13 +124,14 @@ public class FlatGenerator extends ChunkGenerator {
             }
         }
 
-        // Generate lakes, trees, grass, mineral deposits, etc.
+        // Generate lakes, trees, grass, kelp, ores, mineral deposits, etc.
+        // BREAKS BELOW 1.18
         shouldGenerateDecorations(world, random, x, z);
     }
 
     @Override
-    public boolean shouldGenerateDecorations(WorldInfo world, Random random, int x, int y) {
-        return getFlatGenerator(world.getEnvironment()).decorate;
+    public boolean shouldGenerateDecorations(@NotNull WorldInfo worldInfo, @NotNull Random random, int x, int z) {
+        return getFlatGenerator(worldInfo.getEnvironment()).decorate;
     }
 
     @Override

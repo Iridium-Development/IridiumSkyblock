@@ -5,6 +5,7 @@ import com.cryptomorin.xseries.XSound;
 import com.google.common.collect.ImmutableMap;
 import com.iridium.iridiumcore.Color;
 import com.iridium.iridiumcore.Item;
+import com.iridium.iridiumskyblock.managers.GeneratorType;
 import com.iridium.iridiumteams.Reward;
 import org.bukkit.World;
 

@@ -10,7 +10,7 @@ public enum GeneratorType {
     OCEAN(true, false),
     FLAT(true, true),
     VANILLA(true, false);
-    
+
     private final boolean terrainGenerator;
     private final boolean lowerHorizon;
 }
