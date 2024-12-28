@@ -23,6 +23,7 @@ public class CommandManager extends com.iridium.iridiumteams.managers.CommandMan
         registerCommand(IridiumSkyblock.getInstance().getCommands().borderCommand);
         registerCommand(IridiumSkyblock.getInstance().getCommands().regenCommand);
         registerCommand(IridiumSkyblock.getInstance().getCommands().biomeCommand);
+        registerCommand(IridiumSkyblock.getInstance().getCommands().clearDataCommand);
         registerCommand(new IsThisWorking());
         registerCommand(new IsMyComputerOnFire());
     }
