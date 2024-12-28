@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.github.goooler.shadow") version "8.1.8"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
 
@@ -22,21 +22,21 @@ repositories {
 
 dependencies {
     // Dependencies that we want to shade in
-    implementation("org.jetbrains:annotations:25.0.0")
+    implementation("org.jetbrains:annotations:26.0.1")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.5.9")
+    implementation("com.iridium:IridiumTeams:2.5.9.8")
     implementation("commons-lang:commons-lang:2.6")
 
     // Other dependencies that are not required or already available at runtime
-    compileOnly("org.projectlombok:lombok:1.18.34")
-    compileOnly("org.spigotmc:spigot-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("org.projectlombok:lombok:1.18.36")
+    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
 
     // Enable lombok annotation processing
-    annotationProcessor("org.projectlombok:lombok:1.18.34")
+    annotationProcessor("org.projectlombok:lombok:1.18.36")
 }
 
 bukkit {
