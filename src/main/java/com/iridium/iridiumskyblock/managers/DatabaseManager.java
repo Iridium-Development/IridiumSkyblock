@@ -84,14 +84,6 @@ public class DatabaseManager {
         this.teamMissionTableManager = new ForeignIslandTableManager<>(teamMission -> getDatabaseKey(teamMission.getTeamID(), teamMission.getMissionName()), connectionSource, TeamMission.class);
         this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> getDatabaseKey(teamRewards.getId()), connectionSource, TeamReward.class);
         this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> getDatabaseKey(teamSetting.getTeamID(), teamSetting.getSetting()), connectionSource, TeamSetting.class);
-
-        // We need to clear out null values
-        for(TeamBlock teamBlock : teamBlockTableManager.getEntries()) {
-            if(teamBlock.getXMaterial() == null) teamBlockTableManager.delete(teamBlock);
-        }
-        for(TeamSpawners teamSpawners : teamSpawnerTableManager.getEntries()) {
-            if(teamSpawners.getEntityType() == null) teamSpawnerTableManager.delete(teamSpawners);
-        }
     }
 
     private String getDatabaseKey(Object... params) {
