@@ -84,7 +84,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private ChunkGenerator chunkGenerator;
     @Getter
     private int mcVersion;
-    private List<IridiumChunkGenerator> iridiumChunkGenerators;
+    private List<IridiumChunkGenerator> iridiumChunkGenerators = new ArrayList<>();
     private final HashMap<World.Environment, List<BlockPopulator>> blockPopulatorList = new HashMap<>();
 
     public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
