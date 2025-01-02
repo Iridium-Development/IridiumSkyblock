@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.jetbrains.annotations.NotNull;
@@ -24,6 +25,8 @@ public class OceanGeneratorLegacy extends IridiumChunkGenerator {
         super(name, generatesTerrain, lowerHorizon);
     }
 
+    SkyblockBiomeProvider biomeProvider = new SkyblockBiomeProvider();
+
     @Override
     public @NotNull ChunkData generateChunkData(
             @NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biomeGrid) {
@@ -33,12 +36,6 @@ public class OceanGeneratorLegacy extends IridiumChunkGenerator {
         generator.setScale(IridiumSkyblock.getInstance().getGenerators().simplexTerrainScale);
 
         final ChunkData chunkData = createChunkData(world);
-
-        SkyblockBiomeProvider biomeProvider = new SkyblockBiomeProvider();
-        List<Biome> biomeList = getOceanGenerator(world.getEnvironment()).biomeDataConfig.stream()
-                .filter(biomeDataConfig -> biomeDataConfig.biome.get() != null)
-                .map(biomeDataConfig -> biomeDataConfig.biome.get())
-                .collect(Collectors.toList());
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
@@ -78,7 +75,7 @@ public class OceanGeneratorLegacy extends IridiumChunkGenerator {
                 }
 
                 if(!IridiumSkyblock.getInstance().getGenerators().biomeGradient) {
-                    biomeGrid.setBiome(x, z, Objects.requireNonNull(biomeList.get(random.nextInt(biomeList.size()))));
+                    biomeGrid.setBiome(x, z, Objects.requireNonNull(biomeProvider.biomeList.get(random.nextInt(biomeProvider.biomeList.size()))));
                 } else {
                     biomeGrid.setBiome(x, z, Objects.requireNonNull(biomeProvider.getBiome(world, x, 0 ,z)));
                 }
@@ -188,6 +185,14 @@ public class OceanGeneratorLegacy extends IridiumChunkGenerator {
         if (getOceanGenerator(world.getEnvironment()).spawnEntities) {
 
         }
+    }
+
+    @Override
+    public @NotNull List<BlockPopulator> getDefaultPopulators(World world) {
+        if(IridiumSkyblock.getInstance().getBlockPopulatorList().get(world.getEnvironment()) == null) {
+            return super.getDefaultPopulators(world);
+        }
+        return IridiumSkyblock.getInstance().getBlockPopulatorList().get(world.getEnvironment());
     }
 
     private Generators.OceanGeneratorWorld getOceanGenerator(Environment environment) {

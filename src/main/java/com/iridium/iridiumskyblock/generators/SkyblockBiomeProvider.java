@@ -25,6 +25,11 @@ public class SkyblockBiomeProvider extends BiomeProvider {
         // Apparently this can happen.
         if(worldInfo == null) { return Biome.THE_VOID; }
 
+        // APPARENTLY THIS CAN HAPPEN???
+        if(biomeList.isEmpty()) {
+            getBiomes(worldInfo);
+        }
+
         if(biomeList.size() == 1) {
             return biomeList.get(0);
         }
@@ -37,7 +42,7 @@ public class SkyblockBiomeProvider extends BiomeProvider {
     @NotNull
     public List<Biome> getBiomes(@NotNull WorldInfo worldInfo) {
 
-        biomeList = sortBiomeData(validateList(getBiomeDataConfig(worldInfo.getEnvironment())));
+        this.biomeList = sortBiomeData(validateList(getBiomeDataConfig(worldInfo.getEnvironment())));
 
         IridiumSkyblock.getInstance().getLogger().info("Biomes for: " + worldInfo.getName());
         for(int i = 0; i < biomeList.size(); i++) {

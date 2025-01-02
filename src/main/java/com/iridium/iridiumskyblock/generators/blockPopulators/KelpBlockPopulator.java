@@ -1,10 +1,9 @@
 package com.iridium.iridiumskyblock.generators.blockPopulators;
 
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.util.noise.SimplexNoiseGenerator;
 
@@ -17,10 +16,15 @@ public class KelpBlockPopulator extends BlockPopulator {
     @Override
     public void populate(World world, Random random, Chunk chunk) {
         SimplexNoiseGenerator generator = new SimplexNoiseGenerator(random);
+        ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot();
 
-        // Range is from -1 to 1.
-        double noise = generator.getNoise(chunk.getX(), chunk.getZ());
         int minHeight = 0;
+
+        List<Material> air = Arrays.asList(
+                Material.AIR,
+                Material.CAVE_AIR,
+                Material.VOID_AIR
+        );
 
         List<Material> greenBlocks = Arrays.asList(
                 Material.GRAVEL,
@@ -41,30 +45,34 @@ public class KelpBlockPopulator extends BlockPopulator {
             minHeight = world.getMinHeight();
         } catch(NoSuchMethodError ignored) {}
 
-        for(int x=0; x<16; x++) {
+        for(int x=0; x < 16; x++) {
             for(int z = 0; z < 16; z++) {
+                // Range is from -1 to 1.
+                if (generator.getNoise(x, z) > 0.065) { continue; }
+
                 for(int y = minHeight; y < world.getMaxHeight(); y++) {
 
                     Block block = chunk.getBlock(x, y, z);
-                    Biome biome = block.getBiome();
-                    if(greenBiomes.stream().noneMatch(biomeType -> biomeType == biome)) { continue; }
+                    BlockData blockData = chunkSnapshot.getBlockData(x, y, z);
 
-                    if (block.getType() != Material.WATER) { continue; }
+                    if (air.stream().noneMatch(blockType -> blockType == blockData.getMaterial())) { continue; }
+                    if (blockData.getMaterial() != Material.WATER) { continue; }
 
-                    Material underBlock = chunk.getBlock(x, y - 1, z).getType();
+                    if(greenBiomes.stream().noneMatch(biomeType -> biomeType == block.getBiome())) { continue; }
+
+                    Material underBlock = chunkSnapshot.getBlockData(x, y - 1, z).getMaterial();
                     if (greenBlocks.stream().noneMatch(blockType -> blockType == underBlock)) { continue; }
 
-                    if (noise > 0.065) { continue; }
+                    block.setType(Material.KELP_PLANT, true);
 
-                    chunk.getBlock(x, y, z).setType(Material.KELP_PLANT, true);
-
-                    Material overBlock = chunk.getBlock(x, y + 1, z).getType();
+                    int count = 1;
                     for(int age = random.nextInt(2, 25); age < 25; age++) {
+                        Material overBlock = chunkSnapshot.getBlockData(x, y + count, z).getMaterial();
                         if(overBlock != Material.WATER) { break; }
-                        chunk.getBlock(x, y + 1, z).setType(Material.KELP_PLANT, true);
+                        chunk.getBlock(x, y + count, z).setType(Material.KELP_PLANT, true);
+                        count++;
                     }
                 }
-
             }
         }
     }

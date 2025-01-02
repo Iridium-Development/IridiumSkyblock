@@ -415,9 +415,9 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
             || IridiumSkyblock.getInstance().getConfiguration().generatorType.equalsIgnoreCase("ocean-legacy")) {
 
             IridiumSkyblock.getInstance().getBlockPopulatorList().put(World.Environment.NORMAL, Arrays.asList(
-                    new KelpBlockPopulator(),
-                    new MagmaBlockPopulator(),
-                    new SeagrassBlockPopulator()
+                    new KelpBlockPopulator()
+                    //new MagmaBlockPopulator()
+                    //new SeagrassBlockPopulator()
             ));
         }
     }

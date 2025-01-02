@@ -166,18 +166,15 @@ public class OceanGenerator extends IridiumChunkGenerator {
             }
         }
 
-        if(IridiumSkyblock.getInstance().getGenerators().useLegacyPopulators) {
-
-        } else {
+        if(!IridiumSkyblock.getInstance().getGenerators().useLegacyPopulators) {
             shouldGenerateCaves(world, random, x, z);
             shouldGenerateDecorations(world, random , x, z);
             shouldGenerateMobs(world, random, x, z);
         }
-
     }
 
     @Override
-    public List<BlockPopulator> getDefaultPopulators(World world) {
+    public @NotNull List<BlockPopulator> getDefaultPopulators(World world) {
         if(IridiumSkyblock.getInstance().getGenerators().useLegacyPopulators) {
             return IridiumSkyblock.getInstance().getBlockPopulatorList().get(world.getEnvironment());
         }

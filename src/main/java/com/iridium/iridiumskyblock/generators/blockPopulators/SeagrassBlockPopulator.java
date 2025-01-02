@@ -18,9 +18,13 @@ public class SeagrassBlockPopulator extends BlockPopulator {
     public void populate(World world, Random random, Chunk chunk) {
         SimplexNoiseGenerator generator = new SimplexNoiseGenerator(random);
 
-        // Range is from -1 to 1.
-        double noise = generator.getNoise(chunk.getX(), chunk.getZ());
         int minHeight = 0;
+
+        List<Material> air = Arrays.asList(
+                Material.AIR,
+                Material.CAVE_AIR,
+                Material.VOID_AIR
+        );
 
         List<Material> greenBlocks = Arrays.asList(
                 Material.GRAVEL,
@@ -47,6 +51,8 @@ public class SeagrassBlockPopulator extends BlockPopulator {
                 for(int y = minHeight; y < world.getMaxHeight(); y++) {
 
                     Block block = chunk.getBlock(x, y, z);
+                    if (air.stream().noneMatch(blockType -> blockType == block.getType())) { continue; }
+
                     Biome biome = block.getBiome();
 
                     if(greenBiomes.stream().noneMatch(biomeType -> biomeType == biome)) { continue; }
@@ -56,7 +62,8 @@ public class SeagrassBlockPopulator extends BlockPopulator {
                     Material underBlock = chunk.getBlock(x, y - 1, z).getType();
                     if (greenBlocks.stream().noneMatch(blockType -> blockType == underBlock)) { continue; }
 
-                    if (noise > 0.079) { continue; }
+                    // Range is from -1 to 1.
+                    if (generator.getNoise(x, z) > 0.079) { continue; }
 
                     if(random.nextBoolean()) {
                         chunk.getBlock(x, y, z).setType(Material.SEAGRASS, true);
