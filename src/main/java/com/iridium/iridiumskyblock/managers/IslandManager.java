@@ -143,7 +143,7 @@ public class IslandManager extends TeamManager<Island, User> {
     public void createCacheWorld(World world) {
 
         if(!(IridiumSkyblock.getInstance().getChunkGenerator() instanceof IridiumChunkGenerator)) return;
-        if(((IridiumChunkGenerator) IridiumSkyblock.getInstance().getChunkGenerator()).isGeneratesTerrain()) return;
+        if(!((IridiumChunkGenerator) IridiumSkyblock.getInstance().getChunkGenerator()).isGeneratesTerrain()) return;
 
         if (Bukkit.getWorld(getCacheWorldName(world)) == null) {
 
