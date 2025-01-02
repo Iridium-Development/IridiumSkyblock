@@ -4,15 +4,17 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Generators;
 import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
-public class VoidGenerator extends ChunkGenerator {
+public class VoidGenerator extends IridiumChunkGenerator {
+
+    public VoidGenerator(String name, boolean generatesTerrain, boolean lowerHorizon) {
+        super(name, generatesTerrain, lowerHorizon);
+    }
 
     public byte[][] blockSections;
 
@@ -21,7 +23,7 @@ public class VoidGenerator extends ChunkGenerator {
         final ChunkData chunkData = createChunkData(world);
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                biomeGrid.setBiome(x, z, Objects.requireNonNull(getSkyblockGenerator(world.getEnvironment()).biome.getBiome()));
+                //biomeGrid.setBiome(x, z, Objects.requireNonNull(getSkyblockGenerator(world.getEnvironment()).biome.getBiome()));
             }
         }
         return chunkData;
@@ -36,7 +38,7 @@ public class VoidGenerator extends ChunkGenerator {
 
     @Override
     public boolean canSpawn(@NotNull World world, int x, int z) {
-        return getSkyblockGenerator(world.getEnvironment()).canSpawnEntities;
+        return getSkyblockGenerator(world.getEnvironment()).spawnEntities;
     }
 
     @Override
