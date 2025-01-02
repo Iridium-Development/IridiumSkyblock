@@ -126,8 +126,8 @@ public class SkyblockBiomeProvider extends BiomeProvider {
 
     private List<Generators.BiomeDataConfig> getBiomeDataConfig(@NotNull World.Environment environment) {
         switch(IridiumSkyblock.getInstance().getConfiguration().generatorType.toLowerCase()) {
-            case "flat": {}
-            case "flat-legacy": { return getFlatGenerator(environment).biomeDataConfig; }
+            case "superflat": {}
+            case "superflat-legacy": { return getFlatGenerator(environment).biomeDataConfig; }
             case "ocean": {}
             case "ocean-legacy": { return getOceanGenerator(environment).biomeDataConfig; }
             default: { return getSkyblockGenerator(environment).biomeDataConfig; }

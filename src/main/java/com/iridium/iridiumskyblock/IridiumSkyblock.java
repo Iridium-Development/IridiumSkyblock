@@ -41,6 +41,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 public class IridiumSkyblock extends IridiumTeams<Island, User> {
@@ -114,13 +115,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         if(IridiumSkyblock.getInstance().getConfiguration().generatorType.equalsIgnoreCase("vanilla")) {
             this.chunkGenerator = null;
         } else {
-            for (IridiumChunkGenerator generator : IridiumSkyblock.getInstance().getIridiumChunkGenerators()) {
-                if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.equalsIgnoreCase(generator.getName())) {
-                    continue;
-                }
-
-                this.chunkGenerator = generator;
-            }
+            this.chunkGenerator = validateGenerator(IridiumSkyblock.getInstance().getConfiguration().generatorType);
         }
 
         this.teamManager.createWorld(World.Environment.NORMAL, configuration.worldName);
@@ -428,13 +423,30 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     }
 
     private void registerGenerators() {
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new VoidGenerator("skyblock", false, true));
         IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new OceanGenerator("ocean", true, false));
         IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new OceanGeneratorLegacy("ocean-legacy", true, false));
         IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new FlatGenerator("superflat", true, true));
         IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new FlatGeneratorLegacy("superflat-legacy", true, true));
-        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new VoidGenerator("skyblock", false, true));
-        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new VoidGenerator("skyblock", false, true));
         // Vanilla chunkGenerator = null
+    }
+
+    private IridiumChunkGenerator validateGenerator(String name) {
+
+        List<String> generatorNames = IridiumSkyblock.getInstance().getIridiumChunkGenerators().stream().map(IridiumChunkGenerator::getName).collect(Collectors.toList());
+        if(generatorNames.stream().noneMatch(generatorName -> generatorName.equalsIgnoreCase(name))) {
+            IridiumSkyblock.getInstance().getLogger().warning("Generator type \""
+                    + IridiumSkyblock.getInstance().getConfiguration().generatorType
+                    + "\" is not a valid type.");
+            IridiumSkyblock.getInstance().getLogger().info("Generator options available: " + generatorNames);
+            IridiumSkyblock.getInstance().getLogger().warning("Defaulting to \"skyblock\"...");
+            return IridiumSkyblock.getInstance().getIridiumChunkGenerators().get(0);
+        } else {
+            return IridiumSkyblock.getInstance().getIridiumChunkGenerators().stream()
+                    .filter(generator -> generator.getName().equalsIgnoreCase(name))
+                    .findAny()
+                    .get();
+        }
     }
 
     @Override
