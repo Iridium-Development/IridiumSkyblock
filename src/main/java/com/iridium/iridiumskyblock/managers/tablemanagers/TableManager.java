@@ -59,7 +59,7 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
             } finally {
                 lock.unlock();
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -77,7 +77,7 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
             } finally {
                 lock.unlock();
             }
-        } catch (InterruptedException | SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -95,7 +95,7 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
                 } finally {
                     lock.unlock();
                 }
-            } catch (InterruptedException | SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -114,14 +114,33 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
                 } finally {
                     lock.unlock();
                 }
-            } catch (InterruptedException | SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
 
     public void addEntry(Value value) {
-        entries.put(databaseKey.getKey(value), value);
+        try {
+            entries.put(databaseKey.getKey(value), value);
+        }catch (Exception e) {
+            IridiumSkyblock.getInstance().getLogger().warning("Warning: Deleting "+value.getClass().getName()+" record because "+e.getMessage());
+            CompletableFuture.runAsync(() -> {
+                try {
+                    if (!lock.tryLock(5, TimeUnit.SECONDS)) {
+                        IridiumSkyblock.getInstance().getLogger().warning("Warning: Lock acquisition took more than 5 second in delete(value) method.");
+                    }
+                    try {
+                        dao.delete(value);
+                        dao.commit(getDatabaseConnection());
+                    } finally {
+                        lock.unlock();
+                    }
+                } catch (Exception ex1) {
+                    ex1.printStackTrace();
+                }
+            });
+        }
     }
 
     public List<Value> getEntries(Function<? super Value, Boolean> searchFunction) {
