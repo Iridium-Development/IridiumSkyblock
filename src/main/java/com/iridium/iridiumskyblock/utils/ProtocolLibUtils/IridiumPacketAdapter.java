@@ -5,15 +5,14 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.reflect.StructureModifier;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
+import com.iridium.iridiumskyblock.generators.IridiumChunkGenerator;
 import org.bukkit.World;
 import org.bukkit.WorldType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
-import java.util.List;
 
 public class IridiumPacketAdapter extends PacketAdapter {
 
@@ -23,8 +22,13 @@ public class IridiumPacketAdapter extends PacketAdapter {
 
     @Override
     public void onPacketSending(PacketEvent packetEvent) {
-        if (IridiumSkyblock.getInstance().getConfiguration().fixHorizon
-            && IridiumSkyblock.getInstance().getConfiguration().generatorType.isLowerHorizon()) sendLowerHorizon(packetEvent);
+
+        if(IridiumSkyblock.getInstance().getConfiguration().fixHorizon
+                && (IridiumSkyblock.getInstance().getChunkGenerator() instanceof IridiumChunkGenerator)) {
+            if (((IridiumChunkGenerator) IridiumSkyblock.getInstance().getChunkGenerator()).isLowerHorizon()) {
+                sendLowerHorizon(packetEvent);
+            }
+        }
     }
 
     private void sendLowerHorizon(PacketEvent event) {
@@ -90,12 +94,14 @@ public class IridiumPacketAdapter extends PacketAdapter {
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PACKET TYPE: " + packetType);
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PACKET STRUCTURES: " + packet.getStructures());
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PACKET FIELDS: " + packet.getStructures().getFields());
+            IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PACKET WORLD TYPE: " + packet.getWorldTypeModifier().getField(WorldType.FLAT.ordinal()));
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] =+=+=+=+=+=+=+=+=+=+=+=+=");
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PACKET OBJECT: " + commonPlayerSpawnInfo);
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] PRE-MUTATION VALUES: " + commonPlayerSpawnInfo.toString());
             IridiumSkyblock.getInstance().getLogger().info("[DEBUG] =+=+=+=+=+=+=+=+=+=+=+=+=");
-
+            
             //booleans.write(flatWorldIndex, true);
+            packet.getWorldTypeModifier().getField(WorldType.FLAT.ordinal());
 
         } else {
 

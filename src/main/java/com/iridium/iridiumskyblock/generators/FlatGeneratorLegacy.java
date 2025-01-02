@@ -1,44 +1,53 @@
 package com.iridium.iridiumskyblock.generators;
 
-import com.iridium.iridiumcore.dependencies.xseries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.configs.Generators;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import org.bukkit.*;
 import org.bukkit.World.Environment;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.generator.WorldInfo;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class FlatGeneratorLegacy extends ChunkGenerator {
+public class FlatGeneratorLegacy extends IridiumChunkGenerator {
+
+    public FlatGeneratorLegacy(String name, boolean generatesTerrain, boolean lowerHorizon) {
+        super(name, generatesTerrain, lowerHorizon);
+    }
 
     @Override
     public @NotNull ChunkData generateChunkData(
             @NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biomeGrid) {
 
         final ChunkData chunkData = createChunkData(world);
+
         int floorHeight = getFlatGenerator(world.getEnvironment()).floorHeight;
+
+        SkyblockBiomeProvider biomeProvider = new SkyblockBiomeProvider();
+        List<Biome> biomeList = getFlatGenerator(world.getEnvironment()).biomeDataConfig.stream()
+                .filter(biomeDataConfig -> biomeDataConfig.biome.get() != null)
+                .map(biomeDataConfig -> biomeDataConfig.biome.get())
+                .collect(Collectors.toList());
 
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
 
                 // Generate layer of bedrock
                 chunkData.setBlock(x, LocationUtils.getMinHeight(world), z,
-                        Objects.requireNonNull(XMaterial.BEDROCK.parseMaterial())
+                        Objects.requireNonNull(XMaterial.BEDROCK.get())
                 );
 
                 // Generate stone layer
                 for (int y = LocationUtils.getMinHeight(world) + 1; y < floorHeight - 4; y++) {
                     chunkData.setBlock(x, y, z,
-                            Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
+                            Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.get())
                     );
                 }
 
@@ -46,16 +55,20 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
                 for (int y = floorHeight - 4; y < floorHeight; y++) {
                     if(chunkData.getType(x, y, z) == Material.BEDROCK) continue;
                     chunkData.setBlock(x, y, z,
-                            Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial())
+                            Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.get())
                     );
                 }
 
                 // Generate grass on top of dirt
                 chunkData.setBlock(x, floorHeight, z,
-                        Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).floor.parseMaterial())
+                        Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).floor.get())
                 );
 
-                biomeGrid.setBiome(x, z, Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).biome.getBiome()));
+                if(!IridiumSkyblock.getInstance().getGenerators().biomeGradient) {
+                    biomeGrid.setBiome(x, z, Objects.requireNonNull(biomeList.get(random.nextInt(biomeList.size()))));
+                } else {
+                    biomeGrid.setBiome(x, z, Objects.requireNonNull(biomeProvider.getBiome(world, x, 0 ,z)));
+                }
             }
         }
 
@@ -70,7 +83,7 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
         int minFloorHeight = world.getMinHeight();
 
         // Generate layer of bedrock
-        if (world.getBlockAt(x, minFloorHeight, z).getType() != XMaterial.BEDROCK.parseMaterial()) {
+        if (world.getBlockAt(x, minFloorHeight, z).getType() != XMaterial.BEDROCK.get()) {
             if (world.getBlockAt(x, minFloorHeight, z).getState() instanceof InventoryHolder) {
                 ((InventoryHolder) world.getBlockAt(x, minFloorHeight, z).getState()).getInventory().clear();
             }
@@ -80,39 +93,39 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
         // Generate stone layer
         for (int y = minFloorHeight + 1; y < floorHeight - 4; y++) {
             Block block = world.getBlockAt(x, y, z);
-            if (block.getType() != getFlatGenerator(world.getEnvironment()).mantle.parseMaterial()
-                    && getFlatGenerator(world.getEnvironment()).mantle.parseMaterial() != null) {
+            if (block.getType() != getFlatGenerator(world.getEnvironment()).mantle.get()
+                    && getFlatGenerator(world.getEnvironment()).mantle.get() != null) {
 
                 if (block.getState() instanceof InventoryHolder) {
                     ((InventoryHolder) block.getState()).getInventory().clear();
                 }
-                block.setType(Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).mantle.parseMaterial()), false);
+                block.setType(Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).mantle.get()), false);
             }
         }
 
         // Generate dirt layer
         for (int y = floorHeight - 4; y < floorHeight; y++) {
             Block block = world.getBlockAt(x, y, z);
-            if (block.getType() != getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial()
-                    && getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial() != null) {
+            if (block.getType() != getFlatGenerator(world.getEnvironment()).underFloor.get()
+                    && getFlatGenerator(world.getEnvironment()).underFloor.get() != null) {
 
                 if (block.getState() instanceof InventoryHolder) {
                     ((InventoryHolder) block.getState()).getInventory().clear();
                 }
-                block.setType(Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.parseMaterial()), false);
+                block.setType(Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).underFloor.get()), false);
             }
         }
 
         // Generate grass on top of dirt
-        if (world.getBlockAt(x, floorHeight, z).getType() != getFlatGenerator(world.getEnvironment()).floor.parseMaterial()
-                && getFlatGenerator(world.getEnvironment()).floor.parseMaterial() != null) {
+        if (world.getBlockAt(x, floorHeight, z).getType() != getFlatGenerator(world.getEnvironment()).floor.get()
+                && getFlatGenerator(world.getEnvironment()).floor.get() != null) {
 
             if (world.getBlockAt(x, floorHeight, z).getState() instanceof InventoryHolder) {
                 ((InventoryHolder) world.getBlockAt(x, floorHeight, z).getState()).getInventory().clear();
             }
 
             world.getBlockAt(x, floorHeight, z)
-                    .setType(Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).floor.parseMaterial()), false);
+                    .setType(Objects.requireNonNull(getFlatGenerator(world.getEnvironment()).floor.get()), false);
         }
 
         // Replace everything else with air
@@ -126,15 +139,25 @@ public class FlatGeneratorLegacy extends ChunkGenerator {
             }
         }
 
+        // Generate caves
+        if (getFlatGenerator(world.getEnvironment()).spawnCaves) {
+
+        }
+
         // Generate lakes, trees, grass, mineral deposits, etc.
         if (getFlatGenerator(world.getEnvironment()).decorate) {
+
+        }
+
+        // Spawn mobs
+        if (getFlatGenerator(world.getEnvironment()).spawnEntities) {
 
         }
     }
 
     @Override
     public boolean canSpawn(@NotNull World world, int x, int z) {
-        return getFlatGenerator(world.getEnvironment()).canSpawnEntities;
+        return getFlatGenerator(world.getEnvironment()).spawnEntities;
     }
 
     public Generators.FlatGeneratorWorld getFlatGenerator(Environment environment) {
