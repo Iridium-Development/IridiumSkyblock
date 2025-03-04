@@ -267,10 +267,16 @@ public class IslandManager extends TeamManager<Island, User> {
             user.setUserRank(Rank.OWNER.getId());
 
             generateIsland(island, islandCreateEvent.getSchematicConfig()).join();
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            if (IridiumSkyblock.getInstance().getConfiguration().teleportOnCreate) {
                 teleport(owner, island.getHome(), island);
-                IridiumSkyblock.getInstance().getNms().sendTitle(owner, IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle, IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
-            });
+
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                    teleport(owner, island.getHome(), island);
+                    IridiumSkyblock.getInstance().getNms().sendTitle(owner,
+                            IridiumSkyblock.getInstance().getConfiguration().islandCreateTitle,
+                            IridiumSkyblock.getInstance().getConfiguration().islandCreateSubTitle, 20, 40, 20);
+                });
+            }
 
             return island;
         }).exceptionally(throwable -> {
