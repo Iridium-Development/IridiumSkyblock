@@ -60,6 +60,7 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
     public boolean islandCreateOnJoin = false;
     public boolean islandCreationCost = false;
     public boolean spawnOnIsland = false;
+    public boolean teleportOnCreate = true;
     public int distance = 151;
     public int netherUnlockLevel = 10;
     public int endUnlockLevel = 20;
