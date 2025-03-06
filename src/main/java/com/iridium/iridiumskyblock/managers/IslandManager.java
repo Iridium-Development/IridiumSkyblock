@@ -55,27 +55,29 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public boolean deleteWorld(File path) {
-        if(path.exists()) {
+        if (path.exists()) {
             File files[] = path.listFiles();
-            for(int i=0; i<files.length; i++) {
-                if(files[i].isDirectory()) {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
                     deleteWorld(files[i]);
                 } else {
                     files[i].delete();
                 }
             }
         }
-        return(path.delete());
+        return (path.delete());
     }
 
     // Bukkit's createWorld method requires "/" no matter which platform we're on.
-    // Which is why we need to code it like this, File.separator and co. aren't enough.
+    // Which is why we need to code it like this, File.separator and co. aren't
+    // enough.
     public String getCacheWorldName(World world) {
         return "plugins/iridiumskyblock" + "/" + "regenWorlds" + "/" + world.getName() + "_regen";
     }
 
     public void createWorld(World.Environment environment, String name) {
-        if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
+        if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true))
+            return;
 
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
@@ -109,10 +111,12 @@ public class IslandManager extends TeamManager<Island, User> {
         }
     }
 
-    // For the regenerateTerrain() method to work correctly, we need to access the cached world, which we create here.
+    // For the regenerateTerrain() method to work correctly, we need to access the
+    // cached world, which we create here.
     public void createCacheWorld(World world) {
 
-        if(!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) return;
+        if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+            return;
 
         if (Bukkit.getWorld(getCacheWorldName(world)) == null) {
             WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world)).copy(world);
@@ -131,7 +135,8 @@ public class IslandManager extends TeamManager<Island, User> {
         World.Environment dimension = biome.getEnvironment().get();
         World world = getWorld(dimension);
 
-        if (world == null) return;
+        if (world == null)
+            return;
 
         getIslandChunks(island).thenAccept(chunks -> {
             Location pos1 = island.getPosition1(world);
@@ -159,15 +164,15 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public Optional<Island> getTeamViaLocation(Location location) {
-        if (!isInSkyblockWorld(location.getWorld())) return Optional.empty();
-        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream().filter(island ->
-                island.isInIsland(location)
-        ).findFirst();
+        if (!isInSkyblockWorld(location.getWorld()))
+            return Optional.empty();
+        return IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().getEntries().stream()
+                .filter(island -> island.isInIsland(location)).findFirst();
     }
 
     @Override
     public Optional<Island> getTeamViaLocation(Location location, Island island) {
-        if(island.isInIsland(location)){
+        if (island.isInIsland(location)) {
             return Optional.of(island);
         }
         return getTeamViaLocation(location);
@@ -175,7 +180,7 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public Optional<Island> getTeamViaLocation(Location location, Optional<Island> island) {
-        if(island.isPresent()){
+        if (island.isPresent()) {
             return getTeamViaLocation(location, island.get());
         }
         return getTeamViaLocation(location);
@@ -183,7 +188,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public Optional<Island> getTeamViaNameOrPlayer(String name) {
-        if (name == null || name.equals("")) return Optional.empty();
+        if (name == null || name.equals(""))
+            return Optional.empty();
         OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(name);
         Optional<Island> team = IridiumSkyblock.getInstance().getUserManager().getUser(targetPlayer).getIsland();
         if (!team.isPresent()) {
@@ -206,10 +212,14 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void sendTeamTitle(Player player, Island island) {
-        List<Placeholder> placeholders = IridiumSkyblock.getInstance().getTeamsPlaceholderBuilder().getPlaceholders(island);
-        String top = StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getConfiguration().islandTitleTop, placeholders);
-        String bottom = StringUtils.processMultiplePlaceholders(IridiumSkyblock.getInstance().getConfiguration().islandTitleBottom, placeholders);
-        IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(top), StringUtils.color(bottom), 20, 40, 20);
+        List<Placeholder> placeholders = IridiumSkyblock.getInstance().getTeamsPlaceholderBuilder()
+                .getPlaceholders(island);
+        String top = StringUtils.processMultiplePlaceholders(
+                IridiumSkyblock.getInstance().getConfiguration().islandTitleTop, placeholders);
+        String bottom = StringUtils.processMultiplePlaceholders(
+                IridiumSkyblock.getInstance().getConfiguration().islandTitleBottom, placeholders);
+        IridiumSkyblock.getInstance().getNms().sendTitle(player, StringUtils.color(top), StringUtils.color(bottom), 20,
+                40, 20);
     }
 
     @Override
@@ -225,13 +235,15 @@ public class IslandManager extends TeamManager<Island, User> {
     private CompletableFuture<String> getSchematic(Player player) {
         CompletableFuture<String> schematicNameCompletableFuture = new CompletableFuture<>();
         if (IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1) {
-            for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance().getSchematics().schematics.entrySet()) {
+            for (Map.Entry<String, Schematics.SchematicConfig> entry : IridiumSkyblock.getInstance()
+                    .getSchematics().schematics.entrySet()) {
                 schematicNameCompletableFuture.complete(entry.getKey());
                 return schematicNameCompletableFuture;
             }
         }
 
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> player.openInventory(new CreateGUI(player, schematicNameCompletableFuture).getInventory()));
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(),
+                () -> player.openInventory(new CreateGUI(player, schematicNameCompletableFuture).getInventory()));
         return schematicNameCompletableFuture;
     }
 
@@ -239,12 +251,14 @@ public class IslandManager extends TeamManager<Island, User> {
     public CompletableFuture<Island> createTeam(@NotNull Player owner, String name) {
         return CompletableFuture.supplyAsync(() -> {
             String schematic = getSchematic(owner).join();
-            if (schematic == null) return null;
+            if (schematic == null)
+                return null;
 
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(owner);
-            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic);
+            Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics
+                    .get(schematic);
 
-            if(IridiumSkyblock.getInstance().getConfiguration().islandCreationCost) {
+            if (IridiumSkyblock.getInstance().getConfiguration().islandCreationCost) {
                 if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
                     if (!IridiumSkyblock.getInstance().getSchematicManager().buy(owner, schematicConfig)) {
                         return null;
@@ -253,11 +267,11 @@ public class IslandManager extends TeamManager<Island, User> {
             }
 
             IslandCreateEvent islandCreateEvent = getIslandCreateEvent(user, name, schematicConfig).join();
-            if (islandCreateEvent.isCancelled()) return null;
+            if (islandCreateEvent.isCancelled())
+                return null;
 
             owner.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().creatingIsland
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
 
             Island island = new Island(islandCreateEvent.getIslandName());
 
@@ -268,8 +282,6 @@ public class IslandManager extends TeamManager<Island, User> {
 
             generateIsland(island, islandCreateEvent.getSchematicConfig()).join();
             if (IridiumSkyblock.getInstance().getConfiguration().teleportOnCreate) {
-                teleport(owner, island.getHome(), island);
-
                 Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                     teleport(owner, island.getHome(), island);
                     IridiumSkyblock.getInstance().getNms().sendTitle(owner,
@@ -285,7 +297,8 @@ public class IslandManager extends TeamManager<Island, User> {
         });
     }
 
-    private CompletableFuture<IslandCreateEvent> getIslandCreateEvent(@NotNull User user, @Nullable String islandName, Schematics.@NotNull SchematicConfig schematicConfig) {
+    private CompletableFuture<IslandCreateEvent> getIslandCreateEvent(@NotNull User user, @Nullable String islandName,
+            Schematics.@NotNull SchematicConfig schematicConfig) {
         CompletableFuture<IslandCreateEvent> completableFuture = new CompletableFuture<>();
         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             IslandCreateEvent islandCreateEvent = new IslandCreateEvent(user, islandName, schematicConfig);
@@ -301,7 +314,7 @@ public class IslandManager extends TeamManager<Island, User> {
             setHome(island, schematicConfig);
             clearEntities(island);
             deleteIslandBlocks(island).join();
-            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
                 regenerateTerrain(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, schematicConfig);
@@ -309,7 +322,8 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     private void setHome(Island island, Schematics.SchematicConfig schematicConfig) {
-        Location location = island.getCenter(getWorld(World.Environment.NORMAL)).add(schematicConfig.xHome, schematicConfig.yHome, schematicConfig.zHome);
+        Location location = island.getCenter(getWorld(World.Environment.NORMAL)).add(schematicConfig.xHome,
+                schematicConfig.yHome, schematicConfig.zHome);
         location.setYaw(schematicConfig.yawHome);
         island.setHome(location);
     }
@@ -325,8 +339,7 @@ public class IslandManager extends TeamManager<Island, User> {
             List<CompletableFuture<Void>> completableFutures = Arrays.asList(
                     clearEntities(island, getWorld(World.Environment.NORMAL)),
                     clearEntities(island, getWorld(World.Environment.NETHER)),
-                    clearEntities(island, getWorld(World.Environment.THE_END))
-            );
+                    clearEntities(island, getWorld(World.Environment.THE_END)));
             completableFutures.forEach(CompletableFuture::join);
         });
     }
@@ -336,13 +349,15 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) {
             completableFuture.complete(null);
         } else {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> clearEntities(island, world, completableFuture));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(),
+                    () -> clearEntities(island, world, completableFuture));
         }
         return completableFuture;
     }
 
     private void clearEntities(Island island, World world, CompletableFuture<Void> completableFuture) {
-        if (world == null) return;
+        if (world == null)
+            return;
 
         world.getEntities().stream()
                 .filter(entity -> island.isInIsland(entity.getLocation()))
@@ -357,8 +372,7 @@ public class IslandManager extends TeamManager<Island, User> {
             List<CompletableFuture<Void>> completableFutures = Arrays.asList(
                     deleteIslandBlocks(island, getWorld(World.Environment.NORMAL)),
                     deleteIslandBlocks(island, getWorld(World.Environment.NETHER)),
-                    deleteIslandBlocks(island, getWorld(World.Environment.THE_END))
-            );
+                    deleteIslandBlocks(island, getWorld(World.Environment.THE_END)));
             completableFutures.forEach(CompletableFuture::join);
         });
     }
@@ -368,13 +382,16 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) {
             completableFuture.complete(null);
         } else {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, world.getMaxHeight(), completableFuture, 0));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(),
+                    () -> deleteIslandBlocks(island, world, world.getMaxHeight(), completableFuture, 0));
         }
         return completableFuture;
     }
 
-    private void deleteIslandBlocks(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
-        if (world == null) return;
+    private void deleteIslandBlocks(Island island, World world, int y, CompletableFuture<Void> completableFuture,
+            int delay) {
+        if (world == null)
+            return;
         Location pos1 = island.getPosition1(world);
         Location pos2 = island.getPosition2(world);
 
@@ -396,7 +413,8 @@ public class IslandManager extends TeamManager<Island, User> {
             if (delay < 1) {
                 deleteIslandBlocks(island, world, y - 1, completableFuture, delay);
             } else {
-                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, y - 1, completableFuture, delay), delay);
+                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(),
+                        () -> deleteIslandBlocks(island, world, y - 1, completableFuture, delay), delay);
             }
         }
     }
@@ -406,8 +424,7 @@ public class IslandManager extends TeamManager<Island, User> {
             List<CompletableFuture<Void>> completableFutures = Arrays.asList(
                     regenerateTerrain(island, getWorld(World.Environment.NORMAL)),
                     regenerateTerrain(island, getWorld(World.Environment.NETHER)),
-                    regenerateTerrain(island, getWorld(World.Environment.THE_END))
-            );
+                    regenerateTerrain(island, getWorld(World.Environment.THE_END)));
             completableFutures.forEach(CompletableFuture::join);
         });
     }
@@ -417,14 +434,17 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) {
             completableFuture.complete(null);
         } else {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, world.getMaxHeight(), completableFuture, 0));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(),
+                    () -> regenerateTerrain(island, world, world.getMaxHeight(), completableFuture, 0));
         }
         return completableFuture;
     }
 
-    public void regenerateTerrain (Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    public void regenerateTerrain(Island island, World world, int y, CompletableFuture<Void> completableFuture,
+            int delay) {
 
-        if(world == null) return;
+        if (world == null)
+            return;
 
         Location pos1 = island.getPosition1(world);
         Location pos2 = island.getPosition2(world);
@@ -445,7 +465,8 @@ public class IslandManager extends TeamManager<Island, User> {
             if (delay < 1) {
                 regenerateTerrain(island, world, y - 1, completableFuture, delay);
             } else {
-                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, y - 1, completableFuture, delay), delay);
+                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(),
+                        () -> regenerateTerrain(island, world, y - 1, completableFuture, delay), delay);
             }
         }
     }
@@ -454,11 +475,12 @@ public class IslandManager extends TeamManager<Island, User> {
     public boolean deleteTeam(Island island, User user) {
         IslandDeleteEvent islandDeleteEvent = new IslandDeleteEvent(island, user);
         Bukkit.getPluginManager().callEvent(islandDeleteEvent);
-        if (islandDeleteEvent.isCancelled()) return false;
+        if (islandDeleteEvent.isCancelled())
+            return false;
 
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);
-            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
                 regenerateTerrain(island).join();
         }
 
@@ -472,8 +494,10 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized boolean getTeamPermission(Island island, int rank, String permission) {
-        if (rank == Rank.OWNER.getId()) return true;
-        return IridiumSkyblock.getInstance().getDatabaseManager().getPermissionsTableManager().getEntry(new TeamPermission(island, permission, rank, true))
+        if (rank == Rank.OWNER.getId())
+            return true;
+        return IridiumSkyblock.getInstance().getDatabaseManager().getPermissionsTableManager()
+                .getEntry(new TeamPermission(island, permission, rank, true))
                 .map(TeamPermission::isAllowed)
                 .orElse(IridiumSkyblock.getInstance().getPermissionList().get(permission).getDefaultRank() <= rank);
     }
@@ -481,7 +505,8 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public synchronized void setTeamPermission(Island island, int rank, String permission, boolean allowed) {
         TeamPermission islandPermission = new TeamPermission(island, permission, rank, allowed);
-        Optional<TeamPermission> teamPermission = IridiumSkyblock.getInstance().getDatabaseManager().getPermissionsTableManager().getEntry(islandPermission);
+        Optional<TeamPermission> teamPermission = IridiumSkyblock.getInstance().getDatabaseManager()
+                .getPermissionsTableManager().getEntry(islandPermission);
         if (teamPermission.isPresent()) {
             teamPermission.get().setAllowed(allowed);
         } else {
@@ -491,7 +516,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public Optional<TeamInvite> getTeamInvite(Island team, User user) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getInvitesTableManager().getEntry(new TeamInvite(team, user.getUuid(), user.getUuid()));
+        return IridiumSkyblock.getInstance().getDatabaseManager().getInvitesTableManager()
+                .getEntry(new TeamInvite(team, user.getUuid(), user.getUuid()));
     }
 
     @Override
@@ -501,7 +527,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void createTeamInvite(Island team, User user, User invitee) {
-        IridiumSkyblock.getInstance().getDatabaseManager().getInvitesTableManager().addEntry(new TeamInvite(team, user.getUuid(), invitee.getUuid()));
+        IridiumSkyblock.getInstance().getDatabaseManager().getInvitesTableManager()
+                .addEntry(new TeamInvite(team, user.getUuid(), invitee.getUuid()));
     }
 
     @Override
@@ -511,7 +538,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public Optional<TeamTrust> getTeamTrust(Island island, User user) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager().getEntry(new TeamTrust(island, user.getUuid(), user.getUuid()));
+        return IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager()
+                .getEntry(new TeamTrust(island, user.getUuid(), user.getUuid()));
     }
 
     @Override
@@ -521,7 +549,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void createTeamTrust(Island island, User user, User invitee) {
-        IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager().addEntry(new TeamTrust(island, user.getUuid(), invitee.getUuid()));
+        IridiumSkyblock.getInstance().getDatabaseManager().getTrustTableManager()
+                .addEntry(new TeamTrust(island, user.getUuid(), invitee.getUuid()));
     }
 
     @Override
@@ -531,7 +560,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized TeamBank getTeamBank(Island island, String bankItem) {
-        Optional<TeamBank> teamBank = IridiumSkyblock.getInstance().getDatabaseManager().getBankTableManager().getEntry(new TeamBank(island, bankItem, 0));
+        Optional<TeamBank> teamBank = IridiumSkyblock.getInstance().getDatabaseManager().getBankTableManager()
+                .getEntry(new TeamBank(island, bankItem, 0));
         if (teamBank.isPresent()) {
             return teamBank.get();
         } else {
@@ -543,7 +573,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized TeamSpawners getTeamSpawners(Island island, EntityType entityType) {
-        Optional<TeamSpawners> teamSpawner = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntry(new TeamSpawners(island, entityType, 0));
+        Optional<TeamSpawners> teamSpawner = IridiumSkyblock.getInstance().getDatabaseManager()
+                .getTeamSpawnerTableManager().getEntry(new TeamSpawners(island, entityType, 0));
         if (teamSpawner.isPresent()) {
             return teamSpawner.get();
         } else {
@@ -555,7 +586,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized TeamBlock getTeamBlock(Island island, XMaterial xMaterial) {
-        Optional<TeamBlock> teamBlock = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntry(new TeamBlock(island, xMaterial, 0));
+        Optional<TeamBlock> teamBlock = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager()
+                .getEntry(new TeamBlock(island, xMaterial, 0));
         if (teamBlock.isPresent()) {
             return teamBlock.get();
         } else {
@@ -572,7 +604,8 @@ public class IslandManager extends TeamManager<Island, User> {
             return null;
         }
         String defaultValue = settingConfig.getDefaultValue();
-        Optional<TeamSetting> teamSetting = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSettingsTableManager().getEntry(new TeamSetting(island, settingKey, defaultValue));
+        Optional<TeamSetting> teamSetting = IridiumSkyblock.getInstance().getDatabaseManager()
+                .getTeamSettingsTableManager().getEntry(new TeamSetting(island, settingKey, defaultValue));
         if (teamSetting.isPresent()) {
             return teamSetting.get();
         } else {
@@ -584,7 +617,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized TeamEnhancement getTeamEnhancement(Island island, String enhancementName) {
-        Optional<TeamEnhancement> teamEnhancement = IridiumSkyblock.getInstance().getDatabaseManager().getEnhancementTableManager().getEntry(new TeamEnhancement(island, enhancementName, 0));
+        Optional<TeamEnhancement> teamEnhancement = IridiumSkyblock.getInstance().getDatabaseManager()
+                .getEnhancementTableManager().getEntry(new TeamEnhancement(island, enhancementName, 0));
         if (teamEnhancement.isPresent()) {
             return teamEnhancement.get();
         } else {
@@ -597,8 +631,10 @@ public class IslandManager extends TeamManager<Island, User> {
     private HashMap<XMaterial, Integer> getBlockStacks(Chunk chunk, Island island) {
         HashMap<XMaterial, Integer> hashMap = new HashMap<>();
 
-        for (StackerSupport<Island> stackerSupport : IridiumSkyblock.getInstance().getSupportManager().getStackerSupport()) {
-            stackerSupport.getBlocksStacked(chunk, island).forEach((key, value) -> hashMap.put(key, hashMap.getOrDefault(key, 0) + value));
+        for (StackerSupport<Island> stackerSupport : IridiumSkyblock.getInstance().getSupportManager()
+                .getStackerSupport()) {
+            stackerSupport.getBlocksStacked(chunk, island)
+                    .forEach((key, value) -> hashMap.put(key, hashMap.getOrDefault(key, 0) + value));
         }
 
         return hashMap;
@@ -640,12 +676,15 @@ public class IslandManager extends TeamManager<Island, User> {
 
                 getSpawners(chunk, island).join().forEach(creatureSpawner -> {
                     int amount = getSpawnerStackAmount(creatureSpawner).join();
-                    teamSpawners.put(creatureSpawner.getSpawnedType(), teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
+                    teamSpawners.put(creatureSpawner.getSpawnedType(),
+                            teamSpawners.getOrDefault(creatureSpawner.getSpawnedType(), 0) + amount);
                 });
             }
         }).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-            List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager().getEntries(island);
-            List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntries(island);
+            List<TeamBlock> blocks = IridiumSkyblock.getInstance().getDatabaseManager().getTeamBlockTableManager()
+                    .getEntries(island);
+            List<TeamSpawners> spawners = IridiumSkyblock.getInstance().getDatabaseManager()
+                    .getTeamSpawnerTableManager().getEntries(island);
             for (TeamBlock teamBlock : blocks) {
                 teamBlock.setAmount(teamBlocks.getOrDefault(teamBlock.getXMaterial(), 0));
             }
@@ -660,8 +699,10 @@ public class IslandManager extends TeamManager<Island, User> {
         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             List<CreatureSpawner> creatureSpawners = new ArrayList<>();
             for (BlockState blockState : chunk.getTileEntities()) {
-                if (!island.isInIsland(blockState.getLocation())) continue;
-                if (!(blockState instanceof CreatureSpawner)) continue;
+                if (!island.isInIsland(blockState.getLocation()))
+                    continue;
+                if (!(blockState instanceof CreatureSpawner))
+                    continue;
                 creatureSpawners.add((CreatureSpawner) blockState);
             }
             completableFuture.complete(creatureSpawners);
@@ -670,7 +711,9 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public CompletableFuture<List<Chunk>> getIslandChunks(Island island) {
-        List<World> worlds = Stream.of(getWorld(World.Environment.NORMAL), getWorld(World.Environment.NETHER), getWorld(World.Environment.THE_END))
+        List<World> worlds = Stream
+                .of(getWorld(World.Environment.NORMAL), getWorld(World.Environment.NETHER),
+                        getWorld(World.Environment.THE_END))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         return CompletableFuture.supplyAsync(() -> {
@@ -700,7 +743,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void createWarp(Island island, UUID creator, Location location, String name, String password) {
-        IridiumSkyblock.getInstance().getDatabaseManager().getTeamWarpTableManager().addEntry(new TeamWarp(island, creator, location, name, password));
+        IridiumSkyblock.getInstance().getDatabaseManager().getTeamWarpTableManager()
+                .addEntry(new TeamWarp(island, creator, location, name, password));
     }
 
     @Override
@@ -715,7 +759,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public Optional<TeamWarp> getTeamWarp(Island island, String name) {
-        return IridiumSkyblock.getInstance().getDatabaseManager().getTeamWarpTableManager().getEntry(new TeamWarp(island, UUID.randomUUID(), null, name));
+        return IridiumSkyblock.getInstance().getDatabaseManager().getTeamWarpTableManager()
+                .getEntry(new TeamWarp(island, UUID.randomUUID(), null, name));
     }
 
     @Override
@@ -726,14 +771,16 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public synchronized TeamMission getTeamMission(Island island, String missionName) {
         Mission mission = IridiumSkyblock.getInstance().getMissions().missions.get(missionName);
-        LocalDateTime localDateTime = IridiumSkyblock.getInstance().getMissionManager().getExpirationTime(mission == null ? MissionType.ONCE : mission.getMissionType(), LocalDateTime.now());
+        LocalDateTime localDateTime = IridiumSkyblock.getInstance().getMissionManager()
+                .getExpirationTime(mission == null ? MissionType.ONCE : mission.getMissionType(), LocalDateTime.now());
 
         TeamMission newTeamMission = new TeamMission(island, missionName, localDateTime);
-        Optional<TeamMission> teamMission = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().getEntry(newTeamMission);
+        Optional<TeamMission> teamMission = IridiumSkyblock.getInstance().getDatabaseManager()
+                .getTeamMissionTableManager().getEntry(newTeamMission);
         if (teamMission.isPresent()) {
             return teamMission.get();
         } else {
-            //TODO need to consider reworking this, it could generate some lag
+            // TODO need to consider reworking this, it could generate some lag
             IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().save(newTeamMission);
             IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionTableManager().addEntry(newTeamMission);
             return newTeamMission;
@@ -742,7 +789,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public synchronized TeamMissionData getTeamMissionData(TeamMission teamMission, int missionIndex) {
-        Optional<TeamMissionData> teamMissionData = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().getEntry(new TeamMissionData(teamMission, missionIndex));
+        Optional<TeamMissionData> teamMissionData = IridiumSkyblock.getInstance().getDatabaseManager()
+                .getTeamMissionDataTableManager().getEntry(new TeamMissionData(teamMission, missionIndex));
         if (teamMissionData.isPresent()) {
             return teamMissionData.get();
         } else {
@@ -754,7 +802,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public List<TeamMissionData> getTeamMissionData(TeamMission teamMission) {
-        MissionData missionData = IridiumSkyblock.getInstance().getMissions().missions.get(teamMission.getMissionName()).getMissionData().get(teamMission.getMissionLevel());
+        MissionData missionData = IridiumSkyblock.getInstance().getMissions().missions.get(teamMission.getMissionName())
+                .getMissionData().get(teamMission.getMissionLevel());
 
         List<TeamMissionData> list = new ArrayList<>();
         for (int i = 0; i < missionData.getMissions().size(); i++) {
@@ -770,11 +819,14 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void deleteTeamMissionData(TeamMission teamMission) {
-        MissionData missionData = IridiumSkyblock.getInstance().getMissions().missions.get(teamMission.getMissionName()).getMissionData().get(teamMission.getMissionLevel());
+        MissionData missionData = IridiumSkyblock.getInstance().getMissions().missions.get(teamMission.getMissionName())
+                .getMissionData().get(teamMission.getMissionLevel());
 
         for (int i = 0; i < missionData.getMissions().size(); i++) {
-            Optional<TeamMissionData> data = IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().getEntry(new TeamMissionData(teamMission, i));
-            data.ifPresent(teamMissionData -> IridiumSkyblock.getInstance().getDatabaseManager().getTeamMissionDataTableManager().delete(teamMissionData));
+            Optional<TeamMissionData> data = IridiumSkyblock.getInstance().getDatabaseManager()
+                    .getTeamMissionDataTableManager().getEntry(new TeamMissionData(teamMission, i));
+            data.ifPresent(teamMissionData -> IridiumSkyblock.getInstance().getDatabaseManager()
+                    .getTeamMissionDataTableManager().delete(teamMissionData));
         }
     }
 
@@ -785,9 +837,10 @@ public class IslandManager extends TeamManager<Island, User> {
 
     @Override
     public void addTeamReward(TeamReward teamReward) {
-        CompletableFuture.runAsync(() -> IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().save(teamReward)).thenRun(() ->
-                IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().addEntry(teamReward)
-        );
+        CompletableFuture.runAsync(
+                () -> IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().save(teamReward))
+                .thenRun(() -> IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager()
+                        .addEntry(teamReward));
     }
 
     @Override
@@ -797,7 +850,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     public @Nullable World getWorld(World.Environment environment) {
         String worldName = getWorldName(environment);
-        if (worldName == null) return null;
+        if (worldName == null)
+            return null;
         return Bukkit.getWorld(worldName);
     }
 
@@ -816,22 +870,27 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public boolean isInSkyblockWorld(World world) {
-        if (world == null) return false;
-        return world.getName().equals(getWorldName(World.Environment.NORMAL)) || world.getName().equals(getWorldName(World.Environment.NETHER)) || world.getName().equals(getWorldName(World.Environment.THE_END));
+        if (world == null)
+            return false;
+        return world.getName().equals(getWorldName(World.Environment.NORMAL))
+                || world.getName().equals(getWorldName(World.Environment.NETHER))
+                || world.getName().equals(getWorldName(World.Environment.THE_END));
     }
 
     public void sendIslandBorder(Player player) {
         getTeamViaPlayerLocation(player).ifPresent(island -> {
             final Location centre = island.getCenter(player.getWorld()).clone();
 
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(),
+                    () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(),
+                            island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
         });
     }
 
     public ItemStack getIslandCrystal(int amount) {
-        ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
-                new Placeholder("amount", String.valueOf(amount))
-        ));
+        ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal,
+                Collections.singletonList(
+                        new Placeholder("amount", String.valueOf(amount))));
 
         NBT.modify(itemStack, readWriteItemNBT -> {
             readWriteItemNBT.resolveOrCreateCompound("iridiumskyblock").setInteger("islandCrystals", amount);
@@ -841,7 +900,8 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public int getIslandCrystals(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getType() == Material.AIR) return 0;
+        if (itemStack == null || itemStack.getType() == Material.AIR)
+            return 0;
 
         return NBT.get(itemStack, readableItemNBT -> {
             return readableItemNBT.resolveOrDefault("iridiumskyblock.islandCrystals", 0);
@@ -860,8 +920,7 @@ public class IslandManager extends TeamManager<Island, User> {
         Location safeLocation = LocationUtils.getSafeLocation(location, team);
         if (safeLocation == null) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSafeLocation
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             return false;
         }
         player.setFallDistance(0.0F);
@@ -872,9 +931,9 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public void handleBlockBreakOutsideTerritory(BlockBreakEvent blockEvent) {
         if (isInSkyblockWorld(blockEvent.getBlock().getWorld())) {
-            blockEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
+            blockEvent.getPlayer()
+                    .sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotBreakBlocks
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             blockEvent.setCancelled(true);
         }
     }
@@ -882,9 +941,9 @@ public class IslandManager extends TeamManager<Island, User> {
     @Override
     public void handleBlockPlaceOutsideTerritory(BlockPlaceEvent blockEvent) {
         if (isInSkyblockWorld(blockEvent.getBlock().getWorld())) {
-            blockEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPlaceBlocks
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
+            blockEvent.getPlayer()
+                    .sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotPlaceBlocks
+                            .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
             blockEvent.setCancelled(true);
         }
     }
@@ -894,11 +953,12 @@ public class IslandManager extends TeamManager<Island, User> {
         List<User> onlinePlayers = new ArrayList<>();
         List<User> offlinePlayers = new ArrayList<>();
 
-        for(User user : island.getMembers()) {
+        for (User user : island.getMembers()) {
 
-            if (user.getUserRank() == -1) continue;
+            if (user.getUserRank() == -1)
+                continue;
 
-            try{
+            try {
                 user.getPlayer();
                 onlinePlayers.add(user);
             } catch (Exception e) {
@@ -907,14 +967,17 @@ public class IslandManager extends TeamManager<Island, User> {
         }
 
         for (User user : onlinePlayers) {
-            if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) user.getPlayer().getInventory().clear();
-            if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen) user.getPlayer().getEnderChest().clear();
+            if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen)
+                user.getPlayer().getInventory().clear();
+            if (IridiumSkyblock.getInstance().getConfiguration().clearEnderChestOnRegen)
+                user.getPlayer().getEnderChest().clear();
         }
 
-        for(User user : offlinePlayers) {
+        for (User user : offlinePlayers) {
 
             try {
-                File file = new File(Bukkit.getWorlds().get(0).getWorldFolder().getPath() + File.pathSeparator + "playerdata" + File.pathSeparator + user.getUuid() + ".dat");
+                File file = new File(Bukkit.getWorlds().get(0).getWorldFolder().getPath() + File.pathSeparator
+                        + "playerdata" + File.pathSeparator + user.getUuid() + ".dat");
                 NBTFile playerFile = new NBTFile(file);
 
                 if (IridiumSkyblock.getInstance().getConfiguration().clearInventoryOnRegen) {
@@ -930,10 +993,12 @@ public class IslandManager extends TeamManager<Island, User> {
                 }
 
             } catch (IOException e) {
-                IridiumSkyblock.getInstance().getLogger().warning("Cannot mutate user: " + user.getName() + ". See stacktrace for details.");
+                IridiumSkyblock.getInstance().getLogger()
+                        .warning("Cannot mutate user: " + user.getName() + ". See stacktrace for details.");
                 IridiumSkyblock.getInstance().getLogger().warning(e.getMessage());
             } catch (NullPointerException e) {
-                IridiumSkyblock.getInstance().getLogger().warning("Cannot mutate user: " + user.getName() + ". Either player or compound doesn't exist (See stacktrace for details).");
+                IridiumSkyblock.getInstance().getLogger().warning("Cannot mutate user: " + user.getName()
+                        + ". Either player or compound doesn't exist (See stacktrace for details).");
                 IridiumSkyblock.getInstance().getLogger().warning(e.getMessage());
             }
         }
