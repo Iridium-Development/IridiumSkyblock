@@ -54,28 +54,36 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Downloading artifact
+      - name: Checkout code
         uses: actions/checkout@v4
+
       - uses: thecodemonkey/action-get-gradle-version@master
         id: version
         with:
           file: "build.gradle.kts"
-      - uses: actions/download-artifact@v4.2.1
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4.2.1
         with:
           name: "IridiumSkyblock"
           path: "./"
 
-      - name: Publishing to Nexus
-        uses: sonatype-nexus-community/nexus-repo-github-action@master
-        with:
-          serverUrl: "https://nexus.iridiumdevelopment.net/"
-          username: "${{ secrets.NEXUS_USERNAME }}"
-          password: "${{ secrets.NEXUS_PASSWORD }}"
-          format: "maven2"
-          repository: "maven-releases"
-          coordinates: "groupId=com.iridium artifactId=IridiumSkyblock version=${{steps.version.outputs.version}} generate-pom=on"
-          assets: "extension=jar"
-          filename: "IridiumSkyblock-*.jar"
+      - name: Find IridiumSkyblock jar
+        id: find_jar
+        run: |
+          FILE=$(find . -type f -name "IridiumSkyblock-*.jar" | head -n 1)
+          echo "file=$FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Upload to Nexus with curl
+        run: |
+          curl --location 'https://nexus.iridiumdevelopment.net/service/rest/v1/components?repository=maven-releases' \
+          --header 'Authorization: Basic ${{ secrets.NEXUS_AUTH }}' \
+          -F "maven2.groupId=com.iridium" \
+          -F "maven2.artifactId=IridiumSkyblock" \
+          -F "maven2.version=${{ steps.version.outputs.version }}" \
+          -F "maven2.generate-pom=true" \
+          -F "maven2.asset1=@${{ steps.find_jar.outputs.file }}" \
+          -F "maven2.asset1.extension=jar"
 
 #  publish-hangar:
 #    needs: build
@@ -122,7 +130,7 @@ jobs:
         id: version
         with:
           file: "build.gradle.kts"
-      - uses: actions/download-artifact@v4.2.1
+      - uses: actions/download-artifact@v4.1.8
         with:
           name: "IridiumSkyblock"
           path: "./"
