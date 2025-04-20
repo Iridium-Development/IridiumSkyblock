@@ -149,8 +149,9 @@ jobs:
           loaders: |
             paper
             spigot
+            purpur
           game-versions: |
-            >=1.13 <=1.20.4
+            >=1.13 <=1.21.5
 
       - if: github.event.release.prerelease == false
         name: Publish to Modrinth (Release)
