@@ -40,7 +40,7 @@ jobs:
         id: version
         with:
           file: "build.gradle.kts"
-      - uses: actions/download-artifact@v4.2.1
+      - uses: actions/download-artifact@v4.3.0
         with:
           name: "IridiumSkyblock"
           path: "./"
@@ -63,7 +63,7 @@ jobs:
           file: "build.gradle.kts"
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4.2.1
+        uses: actions/download-artifact@v4.3.0
         with:
           name: "IridiumSkyblock"
           path: "./"
@@ -130,7 +130,7 @@ jobs:
         id: version
         with:
           file: "build.gradle.kts"
-      - uses: actions/download-artifact@v4.2.1
+      - uses: actions/download-artifact@v4.3.0
         with:
           name: "IridiumSkyblock"
           path: "./"
