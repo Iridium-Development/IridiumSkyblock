@@ -23,6 +23,57 @@ import java.util.stream.Collectors;
 public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
 
     private final TemporaryCache<Island, List<Placeholder>> cache = new TemporaryCache<>();
+    
+    // Static list for ALL placeholders except bank items
+    private static final List<Placeholder> STATIC_DEFAULT_PLACEHOLDERS;
+    
+    static {
+        List<Placeholder> placeholders = new ArrayList<>();
+        
+        // Basic island placeholders
+        placeholders.add(new Placeholder("island_name", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_owner", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_description", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_create", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_value", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_level", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_experience", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_experienceToLevelUp", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_experienceForNextLevel", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_value_rank", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_experience_rank", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_members_online", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_members_online_count", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_members_offline", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_members_offline_count", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_members_count", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_visitors", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        placeholders.add(new Placeholder("island_visitors_amount", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        
+        // Enhancement placeholders (these are static since enhancements are defined in config)
+        for (Map.Entry<String, Enhancement<?>> enhancement : IridiumSkyblock.getInstance().getEnhancementList().entrySet()) {
+            placeholders.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_active", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+            placeholders.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_level", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+            placeholders.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_hours", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+            placeholders.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_minutes", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+            placeholders.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_seconds", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        }
+        
+        // Material placeholders (XMaterial values are static)
+        for (XMaterial xMaterial : XMaterial.values()) {
+            placeholders.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        }
+        
+        // Entity type placeholders (EntityType values are static)
+        for (EntityType entityType : EntityType.values()) {
+            placeholders.add(new Placeholder("island_" + entityType.name().toLowerCase() + "_amount", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+        }
+        
+        STATIC_DEFAULT_PLACEHOLDERS = Collections.unmodifiableList(placeholders);
+    }
+
+    // Cache for ONLY bank item placeholders (the problematic ones)
+    private final TemporaryCache<String, List<Placeholder>> bankItemPlaceholdersCache = new TemporaryCache<>();
 
     @Override
     public List<Placeholder> getPlaceholders(Island island) {
@@ -102,55 +153,22 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
         return IridiumSkyblock.getInstance().getConfiguration().numberFormatter.format(value);
     }
 
-    private List<Placeholder> getDefaultPlaceholders() {
-        List<Placeholder> placeholderList = new ArrayList<>();
-        
-        // Add all basic placeholders with null placeholder values
-        placeholderList.add(new Placeholder("island_name", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_owner", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_description", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_create", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_value", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_level", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_experience", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_experienceToLevelUp", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_experienceForNextLevel", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_value_rank", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_experience_rank", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_members_online", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_members_online_count", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_members_offline", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_members_offline_count", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_members_count", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_visitors", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        placeholderList.add(new Placeholder("island_visitors_amount", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-
-        // Add enhancement placeholders with null values
-        for (Map.Entry<String, Enhancement<?>> enhancement : IridiumSkyblock.getInstance().getEnhancementList().entrySet()) {
-            placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_active", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-            placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_level", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-            placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_hours", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-            placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_minutes", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-            placeholderList.add(new Placeholder("island_enhancement_" + enhancement.getKey() + "_time_seconds", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        }
-
-        // Add bank item placeholders dynamically (when called, not during initialization)
-        for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
-            final String bankItemName = bankItem.getName().toLowerCase();
-            placeholderList.add(new Placeholder("island_bank_" + bankItemName, () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        }
-        
-        // Add material placeholders with null values
-        for (XMaterial xMaterial : XMaterial.values()) {
-            placeholderList.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        }
-        
-        // Add entity type placeholders with null values
-        for (EntityType entityType : EntityType.values()) {
-            placeholderList.add(new Placeholder("island_" + entityType.name().toLowerCase() + "_amount", () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
-        }
-        
-        return placeholderList;
+    /**
+     * Gets bank item placeholders dynamically (only these are cached)
+     * These are cached for 30 seconds to balance performance
+     */
+    private List<Placeholder> getBankItemPlaceholders() {
+        return bankItemPlaceholdersCache.get("bank_items", Duration.ofSeconds(30), () -> {
+            List<Placeholder> bankPlaceholders = new ArrayList<>();
+            
+            // Add ONLY bank item placeholders - this was the missing piece!
+            for (BankItem bankItem : IridiumSkyblock.getInstance().getBankItemList()) {
+                final String bankItemName = bankItem.getName().toLowerCase();
+                bankPlaceholders.add(new Placeholder("island_bank_" + bankItemName, () -> IridiumSkyblock.getInstance().getMessages().nullPlaceholder));
+            }
+            
+            return bankPlaceholders;
+        });
     }
 
     @Override
@@ -158,8 +176,10 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
         if (optional.isPresent()) {
             return getPlaceholders(optional.get());
         } else {
-            // Generate placeholders dynamically instead of using cached ones
-            return getDefaultPlaceholders();
+            // Combine static placeholders with ONLY the dynamic bank item placeholders
+            List<Placeholder> allPlaceholders = new ArrayList<>(STATIC_DEFAULT_PLACEHOLDERS);
+            allPlaceholders.addAll(getBankItemPlaceholders());
+            return allPlaceholders;
         }
     }
 }
