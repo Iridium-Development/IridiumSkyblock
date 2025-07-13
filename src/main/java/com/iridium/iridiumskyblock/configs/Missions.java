@@ -234,7 +234,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &75 Island Crystals",
                                         "&9&l* &7$1000"
                                 )
-                        ), Collections.singletonList("MINE:LOGS:10"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
+                        ), Collections.singletonList("MINE:LOGS:10"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lMine Logs Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -258,7 +258,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &75 Island Crystals",
                                         "&9&l* &7$1000"
                                 )
-                        ), Collections.singletonList("MINE:LOGS:100"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
+                        ), Collections.singletonList("MINE:LOGS:100"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lMine Logs Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
@@ -282,7 +282,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &75 Island Crystals",
                                         "&9&l* &7$1000"
                                 )
-                        ), Collections.singletonList("MINE:LOGS:1000"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lPotionBrewer Reward",
+                        ), Collections.singletonList("MINE:LOGS:1000"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lMine Logs Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
