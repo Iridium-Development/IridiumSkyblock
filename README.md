@@ -21,7 +21,7 @@ Download the plugin from [Spigot](https://www.spigotmc.org/resources/iridium-sky
 
 Once you have a copy of the plugin (it should be a ``.jar`` file), simply place it in the ``server/plugins`` folder.
 
-After the plugin is set up and running, check out our [**wiki**](https://iridium-development.gitbook.io/iridiumskyblock/) for documentation.
+After the plugin is set up and running, check out our [**wiki**](https://docs.iridiumdevelopment.net) for documentation.
 
 ### Requirements
 - [Vault](https://www.spigotmc.org/resources/vault.34315/) - Required Dependency
