@@ -9,7 +9,7 @@ import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.gui.RegenGUI;
 import com.iridium.iridiumteams.IridiumTeams;
 import com.iridium.iridiumteams.bank.BankItem;
-import com.iridium.iridiumteams.commands.Command;
+import com.iridium.iridiumteams.commands.ConfirmableCommand;
 import com.iridium.iridiumteams.database.TeamBank;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -20,49 +20,33 @@ import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RegenCommand extends Command<Island, User> {
+public class RegenCommand extends ConfirmableCommand<Island, User> {
 
     public RegenCommand() {
-        super(Collections.singletonList("regen"), "Regenerate your Island", "%prefix% &7/is regen <schematic>", "", 300);
+        super();
     }
 
     @Override
-    public boolean execute(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
+    protected void executeAfterConfirmation(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         Player player = user.getPlayer();
-        if (args.length == 0 && IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() > 1) {
-            if (!IridiumSkyblock.getInstance().getIslandManager().getTeamPermission(island, IridiumSkyblock.getInstance().getUserManager().getUser(player), "regen")) {
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                ));
-                return false;
-            }
 
-            player.openInventory(new RegenGUI(player).getInventory());
-            return false;
+        if (args.length == 0 && IridiumSkyblock.getInstance().getSchematics().schematics.size() > 1) {
+            return;
         }
 
         Optional<String> schematic = IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
-                .filter(config -> IridiumSkyblock.getInstance().getSchematics().schematics.entrySet().size() == 1 || config.equalsIgnoreCase(args[0]))
+                .filter(config -> IridiumSkyblock.getInstance().getSchematics().schematics.size() == 1 || config.equalsIgnoreCase(args[0]))
                 .findFirst();
+
         if (!schematic.isPresent()) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownSchematic
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
-            return false;
+            return;
         }
 
         Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
 
-        if(island.getLevel() < schematicConfig.minLevel) {
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                    .replace("%level%", String.valueOf(schematicConfig.minLevel))));
-            return false;
-        }
-
         if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
             if (!IridiumSkyblock.getInstance().getSchematicManager().buy(player, schematicConfig)) {
-                return false;
+                return;
             }
         }
 
@@ -89,15 +73,12 @@ public class RegenCommand extends Command<Island, User> {
         IridiumSkyblock.getInstance().getIslandManager().clearTeamInventory(island);
 
         IridiumSkyblock.getInstance().getIslandManager().generateIsland(island, schematicConfig).thenRun(() -> Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-
             if (IridiumSkyblock.getInstance().getTeamManager().teleport(player, island.getHome(), island)) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().teleportingHome
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                 ));
             }
         }));
-
-        return true;
     }
 
     private double getBankBalance(Player player, String bankItem) {
@@ -125,5 +106,47 @@ public class RegenCommand extends Command<Island, User> {
     @Override
     public List<String> onTabComplete(CommandSender commandSender, String[] args, IridiumTeams<Island, User> iridiumTeams) {
         return new ArrayList<>(IridiumSkyblock.getInstance().getSchematics().schematics.keySet());
+    }
+
+    @Override
+    protected boolean isCommandValid(User user, Island island, String[] args, IridiumTeams<Island, User> iridiumTeams) {
+        Player player = user.getPlayer();
+
+        if (!IridiumSkyblock.getInstance().getIslandManager().getTeamPermission(island, IridiumSkyblock.getInstance().getUserManager().getUser(player), "regen")) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotRegenIsland
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            return false;
+        }
+
+        if (args.length == 0 && IridiumSkyblock.getInstance().getSchematics().schematics.size() > 1) {
+            player.openInventory(new RegenGUI(player).getInventory());
+            return false;
+        }
+
+        Optional<String> schematic = IridiumSkyblock.getInstance().getSchematics().schematics.keySet().stream()
+                .filter(config -> IridiumSkyblock.getInstance().getSchematics().schematics.size() == 1 || config.equalsIgnoreCase(args[0]))
+                .findFirst();
+        if (!schematic.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().unknownSchematic
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            return false;
+        }
+
+        Schematics.SchematicConfig schematicConfig = IridiumSkyblock.getInstance().getSchematics().schematics.get(schematic.get());
+
+        if (island.getLevel() < schematicConfig.minLevel) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+                    .replace("%level%", String.valueOf(schematicConfig.minLevel))));
+            return false;
+        }
+
+        if (schematicConfig.regenCost.money != 0 || !schematicConfig.regenCost.bankItems.isEmpty()) {
+            return IridiumSkyblock.getInstance().getSchematicManager().buy(player, schematicConfig);
+        }
+
+        return true;
     }
 }
