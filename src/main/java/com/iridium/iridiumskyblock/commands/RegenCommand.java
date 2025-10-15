@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class RegenCommand extends ConfirmableCommand<Island, User> {
 
     public RegenCommand() {
-        super();
+        super(Collections.singletonList("regen"), "Regenerate your Island", "%prefix% &7/is regen <schematic>", "", 300, true);
     }
 
     @Override
