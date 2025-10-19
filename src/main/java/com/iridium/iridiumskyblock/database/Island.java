@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,6 +105,26 @@ public class Island extends Team {
         return getCenter(world).add(new Location(world, size, 0, size));
     }
 
+    public Location getMaximumPosition1(World world) {
+        if (world == null) {
+            double size = getMaximumSize() / 2.00;
+            return getCenter(null).subtract(new Location(null, size, 0, size));
+        }
+
+        double size = getMaximumSize() / 2.00;
+        return getCenter(world).subtract(new Location(world, size, 0, size));
+    }
+
+    public Location getMaximumPosition2(World world) {
+        if (world == null) {
+            double size = getMaximumSize() / 2.00;
+            return getCenter(null).add(new Location(null, size, 0, size));
+        }
+
+        double size = getMaximumSize() / 2.00;
+        return getCenter(world).add(new Location(world, size, 0, size));
+    }
+
     public int getSize() {
         int sizeLevel = IridiumSkyblock.getInstance().getTeamManager().getTeamEnhancement(this, "size").getLevel();
         SizeEnhancementData sizeEnhancementData = IridiumSkyblock.getInstance().getEnhancements().sizeEnhancement.levels.get(sizeLevel);
@@ -112,6 +133,13 @@ public class Island extends Team {
             return 50;
         }
         return sizeEnhancementData.size;
+    }
+
+    public int getMaximumSize() {
+        return IridiumSkyblock.getInstance().getEnhancements().sizeEnhancement.levels.values().stream()
+                .max(Comparator.comparing(sizeUpgrade -> sizeUpgrade.size))
+                .map(sizeEnhancementData -> sizeEnhancementData.size)
+                .orElse(getSize());
     }
 
     public boolean isInIsland(Location location) {

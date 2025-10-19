@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XEntityType;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
@@ -35,6 +36,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -369,8 +371,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     private void deleteIslandBlocks(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
         if (world == null) return;
-        Location pos1 = island.getPosition1(world);
-        Location pos2 = island.getPosition2(world);
+        Location pos1 = island.getMaximumPosition1(world);
+        Location pos2 = island.getMaximumPosition2(world);
 
         for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
@@ -542,6 +544,18 @@ public class IslandManager extends TeamManager<Island, User> {
             return teamSpawner.get();
         } else {
             TeamSpawners spawner = new TeamSpawners(island, entityType, 0);
+            IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().addEntry(spawner);
+            return spawner;
+        }
+    }
+
+    @Override
+    public TeamSpawners getTeamSpawners(Island island, XEntityType xEntityType) {
+        Optional<TeamSpawners> teamSpawner = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntry(new TeamSpawners(island, xEntityType, 0));
+        if (teamSpawner.isPresent()) {
+            return teamSpawner.get();
+        } else {
+            TeamSpawners spawner = new TeamSpawners(island, xEntityType, 0);
             IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().addEntry(spawner);
             return spawner;
         }
@@ -882,6 +896,20 @@ public class IslandManager extends TeamManager<Island, User> {
             blockEvent.setCancelled(true);
         }
     }
+
+    @Override
+    public void handlePlayerInteractOutsideTerritory(PlayerInteractEvent interactEvent) {
+        if(interactEvent.getClickedBlock() == null){
+            return;
+        }
+        if (isInSkyblockWorld(interactEvent.getClickedBlock().getWorld())) {
+            interactEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteract
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            interactEvent.setCancelled(true);
+        }
+    }
+
 
     public void clearTeamInventory(Island island) {
 

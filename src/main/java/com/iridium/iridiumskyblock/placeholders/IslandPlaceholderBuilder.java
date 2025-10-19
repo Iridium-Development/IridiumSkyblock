@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.placeholders;
 
+import com.cryptomorin.xseries.XEntityType;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -92,8 +93,8 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
             for (XMaterial xMaterial : XMaterial.values()) {
                 placeholderList.add(new Placeholder("island_" + xMaterial.name().toLowerCase() + "_amount", () -> String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamBlock(island, xMaterial).getAmount())));
             }
-            for (EntityType entityType : EntityType.values()) {
-                placeholderList.add(new Placeholder("island_" + entityType.name().toLowerCase() + "_amount", () -> String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamSpawners(island, entityType).getAmount())));
+            for (XEntityType xEntityType : XEntityType.values()) {
+                placeholderList.add(new Placeholder("island_" + xEntityType.name().toLowerCase() + "_amount", () -> String.valueOf(IridiumSkyblock.getInstance().getTeamManager().getTeamSpawners(island, xEntityType).getAmount())));
             }
             return placeholderList;
         });
@@ -107,11 +108,13 @@ public class IslandPlaceholderBuilder implements PlaceholderBuilder<Island> {
         List<Placeholder> placeholderList = new ArrayList<>(Arrays.asList(
                 new Placeholder("island_name", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_owner", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
-                new Placeholder("island_description", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_create", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_description", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_value", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_level", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_experience", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_experienceToLevelUp", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
+                new Placeholder("island_experienceForNextLevel", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_value_rank", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_experience_rank", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
                 new Placeholder("island_members_online", IridiumSkyblock.getInstance().getMessages().nullPlaceholder),
