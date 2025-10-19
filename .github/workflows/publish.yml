@@ -167,5 +167,6 @@ jobs:
           loaders: |
             paper
             spigot
+            purpur
           game-versions: |
             >=1.13 <=1.21.10
