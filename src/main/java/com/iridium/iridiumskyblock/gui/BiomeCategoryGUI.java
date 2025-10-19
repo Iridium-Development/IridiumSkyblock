@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.gui;
 
 import com.iridium.iridiumcore.gui.BackGUI;
+import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
@@ -16,17 +17,20 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class BiomeCategoryGUI extends BackGUI {
 
     @Getter
     private final String categoryName;
     private final Biomes.BiomeCategory biomeCategory;
+    private int page;
 
     public BiomeCategoryGUI(String categoryName, Player player) {
         super(IridiumSkyblock.getInstance().getInventories().biomeCategoryGUI.background, player, IridiumSkyblock.getInstance().getInventories().backButton);
         this.categoryName = categoryName;
         this.biomeCategory = IridiumSkyblock.getInstance().getBiomes().categories.get(categoryName);
+        this.page = 1;
     }
 
     @NotNull
@@ -46,7 +50,9 @@ public class BiomeCategoryGUI extends BackGUI {
             IridiumSkyblock.getInstance().getLogger().warning("Biome Category " + categoryName + " Is not configured with any items!");
             return;
         }
+
         for (Biomes.BiomeItem biomeItem : IridiumSkyblock.getInstance().getBiomes().items.get(categoryName)) {
+            if (biomeItem.page != this.page) continue;
             ItemStack itemStack = biomeItem.type.parseItem();
             ItemMeta itemMeta = itemStack.getItemMeta();
 
@@ -57,6 +63,30 @@ public class BiomeCategoryGUI extends BackGUI {
             itemStack.setItemMeta(itemMeta);
             inventory.setItem(biomeItem.slot, itemStack);
         }
+
+        if (this.isPaged()) {
+            inventory.setItem(inventory.getSize() - 3, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().nextPage));
+            inventory.setItem(inventory.getSize() - 7, ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getInventories().previousPage));
+        }
+    }
+
+    public List<Integer> getPages() {
+        return IridiumSkyblock.getInstance().getBiomes().items.get(categoryName).stream()
+                .map(value -> value.page)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    public boolean isPaged() {
+        return getPages().size() > 1;
+    }
+
+    public boolean canNextPage() {
+        return getPages().contains(this.page + 1);
+    }
+
+    public boolean canPreviousPage() {
+        return this.page > 1;
     }
 
     private List<Placeholder> getBiomeLorePlaceholders(Biomes.BiomeItem item) {
@@ -80,7 +110,7 @@ public class BiomeCategoryGUI extends BackGUI {
             lore.add(IridiumSkyblock.getInstance().getBiomes().notPurchasableLore);
         }
 
-        if(item.minLevel > 1){
+        if (item.minLevel > 1) {
             lore.add(IridiumSkyblock.getInstance().getBiomes().levelRequirementLore);
         }
 
@@ -92,6 +122,17 @@ public class BiomeCategoryGUI extends BackGUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         super.onInventoryClick(event);
+
+        if (this.isPaged()) {
+            if (event.getSlot() == this.getInventory().getSize() - 7 && this.canPreviousPage()) {
+                --this.page;
+                event.getWhoClicked().openInventory(this.getInventory());
+            } else if (event.getSlot() == this.getInventory().getSize() - 3 && this.canNextPage()) {
+                ++this.page;
+                event.getWhoClicked().openInventory(this.getInventory());
+            }
+        }
+
         Optional<Biomes.BiomeItem> biomeItem = IridiumSkyblock.getInstance().getBiomes().items.get(categoryName).stream()
                 .filter(item -> item.slot == event.getSlot())
                 .findAny();
