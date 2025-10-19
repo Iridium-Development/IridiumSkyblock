@@ -370,8 +370,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
     private void deleteIslandBlocks(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
         if (world == null) return;
-        Location pos1 = island.getPosition1(world);
-        Location pos2 = island.getPosition2(world);
+        Location pos1 = island.getMaximumPosition1(world);
+        Location pos2 = island.getMaximumPosition2(world);
 
         for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
             for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
