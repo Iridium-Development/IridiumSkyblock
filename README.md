@@ -11,7 +11,7 @@ Skyblock: **Redefined**
 
 IridiumSkyblock is a Skyblock plugin designed from the ground up for speed, performance, and excellence. It features an advanced missions system, a shop, island upgrades and boosters, teamwork and cooperation features, and so much more.
 
-This plugin, as with all of Iridium Development's software, aims to deliver a premium image, streamlining the setup process and eliminating the headache of having to figure out the details, while also proving to be extremely configurable to create an unparalleled experience. 
+This plugin, as with all of Iridium Development's software, aims to deliver a premium image, streamlining the setup process and eliminating the headache of having to figure out the details, while also proving to be extremely configurable to create an unparalleled experience.
 
 Every aspect of the plugin has been carefully crafted to suit the server's needs, and between the extensive GUI customization and plethora of extra options, server owners can rest easy knowing that there's a Skyblock plugin out there that fits their needs. It's this one, if you were wondering.
 
@@ -31,7 +31,7 @@ After the plugin is set up and running, check out our [**wiki**](https://docs.ir
 - [Multiverse](https://dev.bukkit.org/projects/multiverse-core)
 - [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/)
 - [DecentHolograms](https://www.spigotmc.org/resources/decentholograms-1-8-1-19-4-papi-support-no-dependencies.96927/)
-- A spawn plugin 
+- A spawn plugin
 - An economy plugin (features will be limited without one)
 - [EssentialsX](https://essentialsx.net/)
 - [RoseStacker](https://www.spigotmc.org/resources/rosestacker.82729/)
