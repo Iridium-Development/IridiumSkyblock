@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("io.github.goooler.shadow") version "8.1.8"
+    id("com.gradleup.shadow") version "9.2.2"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
 
