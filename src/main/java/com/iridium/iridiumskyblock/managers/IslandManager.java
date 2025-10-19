@@ -36,6 +36,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -895,6 +896,20 @@ public class IslandManager extends TeamManager<Island, User> {
             blockEvent.setCancelled(true);
         }
     }
+
+    @Override
+    public void handlePlayerInteractOutsideTerritory(PlayerInteractEvent interactEvent) {
+        if(interactEvent.getClickedBlock() == null){
+            return;
+        }
+        if (isInSkyblockWorld(interactEvent.getClickedBlock().getWorld())) {
+            interactEvent.getPlayer().sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotInteract
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
+            interactEvent.setCancelled(true);
+        }
+    }
+
 
     public void clearTeamInventory(Island island) {
 
