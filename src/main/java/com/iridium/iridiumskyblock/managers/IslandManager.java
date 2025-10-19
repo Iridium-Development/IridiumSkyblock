@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.managers;
 
 import com.cryptomorin.xseries.XBiome;
+import com.cryptomorin.xseries.XEntityType;
 import com.cryptomorin.xseries.XMaterial;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
@@ -542,6 +543,18 @@ public class IslandManager extends TeamManager<Island, User> {
             return teamSpawner.get();
         } else {
             TeamSpawners spawner = new TeamSpawners(island, entityType, 0);
+            IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().addEntry(spawner);
+            return spawner;
+        }
+    }
+
+    @Override
+    public TeamSpawners getTeamSpawners(Island island, XEntityType xEntityType) {
+        Optional<TeamSpawners> teamSpawner = IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().getEntry(new TeamSpawners(island, xEntityType, 0));
+        if (teamSpawner.isPresent()) {
+            return teamSpawner.get();
+        } else {
+            TeamSpawners spawner = new TeamSpawners(island, xEntityType, 0);
             IridiumSkyblock.getInstance().getDatabaseManager().getTeamSpawnerTableManager().addEntry(spawner);
             return spawner;
         }
