@@ -151,7 +151,7 @@ jobs:
             spigot
             purpur
           game-versions: |
-            >=1.13 <=1.21.5
+            >=1.13 <=1.21.10
 
       - if: github.event.release.prerelease == false
         name: Publish to Modrinth (Release)
