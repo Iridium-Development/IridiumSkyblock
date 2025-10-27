@@ -792,6 +792,11 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     @Override
+    public Optional<TeamReward> getTeamReward(int id) {
+        return IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().getEntry(new TeamReward(id));
+    }
+
+    @Override
     public void addTeamReward(TeamReward teamReward) {
         CompletableFuture.runAsync(() -> IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().save(teamReward)).thenRun(() ->
                 IridiumSkyblock.getInstance().getDatabaseManager().getTeamRewardsTableManager().addEntry(teamReward)
