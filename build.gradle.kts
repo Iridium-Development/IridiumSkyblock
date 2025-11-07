@@ -1,7 +1,7 @@
 plugins {
     java
     `maven-publish`
-    id("io.github.goooler.shadow") version "8.1.8"
+    id("com.gradleup.shadow") version "9.2.2"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
 
@@ -100,14 +100,14 @@ tasks {
 
         // Remove unnecessary files from the jar
         minimize()
+
+        // Remove Shadow annotation metadata as it breaks Paper's remapping
+        exclude("META-INF/annotations.shadow.kotlin_module")
     }
 
-    // Set UTF-8 as the encoding
     compileJava {
         options.encoding = "UTF-8"
-    }
 
-    compileJava {
         sourceCompatibility = JavaVersion.VERSION_1_8.toString()
         targetCompatibility = JavaVersion.VERSION_1_8.toString()
     }
