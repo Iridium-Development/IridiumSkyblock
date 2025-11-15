@@ -61,6 +61,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Biomes biomes;
     private Settings settings;
     private Generators generators;
+    private TeamLogs teamLogs;
 
     private IslandPlaceholderBuilder teamsPlaceholderBuilder;
     private UserPlaceholderBuilder userPlaceholderBuilder;
@@ -144,7 +145,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.supportManager = new SupportManager<>(this);
         this.teleportManager = new TeleportManager<>(this);
 
-        supportManager.registerSupport();
+        supportManager.registerDefaults();
 
         try {
             databaseManager.init();
@@ -209,6 +210,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.biomes = getPersist().load(Biomes.class);
         this.settings = getPersist().load(Settings.class);
         this.generators = getPersist().load(Generators.class);
+        this.teamLogs = getPersist().load(TeamLogs.class);
         getLogger().info("GENERATOR TYPE: " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
         super.loadConfigs();
 
@@ -248,6 +250,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         getPersist().save(biomes);
         getPersist().save(settings);
         getPersist().save(generators);
+        getPersist().save(teamLogs);
         saveSchematics();
     }
 

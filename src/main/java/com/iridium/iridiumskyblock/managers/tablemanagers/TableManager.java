@@ -152,6 +152,7 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
     }
 
     public Optional<Value> getEntry(Key key) {
+        if(key == null) return Optional.empty();
         return Optional.ofNullable(entries.get(key));
     }
 
