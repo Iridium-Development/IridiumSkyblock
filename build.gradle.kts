@@ -6,37 +6,38 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.1.3-b1"
+version = "4.1.3-b1_KEPLAR"
 description = "Skyblock Redefined"
 
 repositories {
     mavenCentral()
     mavenLocal()
-    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
-    maven("https://ci.ender.zone/plugin/repository/everything/")
-    maven("https://nexus.iridiumdevelopment.net/repository/maven-releases/")
-    maven("https://papermc.io/repo/repository/maven-public/")
-    maven("https://jitpack.io")
-    maven("https://maven.enginehub.org/repo/")
+    maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")  // spigotmc
+    maven("https://ci.ender.zone/plugin/repository/everything/")             // enderzone
+    maven("https://nexus.iridiumdevelopment.net/repository/maven-releases/") // our super cool repo
+    maven("https://papermc.io/repo/repository/maven-public/")                // papermc
+    maven("https://jitpack.io")                                              // jitpack
+    maven("https://maven.enginehub.org/repo/")                               // maven
 }
 
 dependencies {
     // Dependencies that we want to shade in
-    implementation("org.jetbrains:annotations:26.0.2-1")
-    implementation("com.j256.ormlite:ormlite-core:6.1")
-    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.6.10")
-    implementation("commons-lang:commons-lang:2.6")
+    implementation("org.jetbrains:annotations:26.0.2-1")                          // annotations
+    implementation("com.j256.ormlite:ormlite-core:6.1")                           // SQL OrmLite
+    implementation("com.j256.ormlite:ormlite-jdbc:6.1")                           // SQL OrmLite java bridge
+    implementation("com.iridium:IridiumTeams:2.6.10")                             // teams
+    // implementation("commons-lang:commons-lang:2.6")                            // lang (needed for generator config)
 
     // Other dependencies that are not required or already available at runtime
-    compileOnly("org.projectlombok:lombok:1.18.42")
-    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
-    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
+    compileOnly("org.projectlombok:lombok:1.18.42")                               // annotations
+    compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")                   // spigot
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")                             // vault
+    compileOnly("net.ess3:EssentialsXSpawn:2.16.1")                               // essentialsx spawn
+    compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")           // WE, AWE, & FAWE
+    compileOnly("net.dmulloy2:ProtocolLib:5.3.0")                                 // protocol lib (5.4.0+ is java 17+)
 
     // Enable lombok annotation processing
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.42")                       // annotations
 }
 
 bukkit {
@@ -55,7 +56,8 @@ bukkit {
         "EssentialsSpawn",
         "RoseStacker",
         "WorldEdit",
-        "ObsidianStacker"
+        "ObsidianStacker",
+        "ProtocolLib"
     )
 
     commands {

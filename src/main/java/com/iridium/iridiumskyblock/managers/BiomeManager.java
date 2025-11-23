@@ -20,9 +20,17 @@ public class BiomeManager {
         XBiome biome = biomeItem.biome;
         User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
         Optional<Island> island = user.getIsland();
+        Optional<XBiome> biomeOptional = XBiome.of(biomeItem.biome.toString());
 
         if (!canPurchase(player, biomeItem)) {
             IridiumSkyblock.getInstance().getBiomes().failSound.play(player);
+            return;
+        }
+
+        if (!biomeOptional.isPresent()) {
+            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noBiome
+                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
+            ));
             return;
         }
 
@@ -37,13 +45,13 @@ public class BiomeManager {
 
         IridiumSkyblock.getInstance().getCommands().biomeCommand.getCooldownProvider().applyCooldown(player);
 
-        IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(island.get(), biome);
+        IridiumSkyblock.getInstance().getIslandManager().setIslandBiome(island.get(), biomeOptional.get());
         IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(island.get()).stream().map(IridiumUser::getPlayer).forEach((teamMember) -> {
             if (teamMember != null) {
                 teamMember.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().changedBiome
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                         .replace("%player%", player.getName())
-                        .replace("%biome%", WordUtils.capitalizeFully(biome.friendlyName()))
+                        .replace("%biome%", WordUtils.capitalizeFully(biome.toString().toLowerCase().replace("_", " ")))
                 ));
             }
         });
@@ -68,17 +76,17 @@ public class BiomeManager {
 
     private boolean canPurchase(Player player, Biomes.BiomeItem biomeItem) {
 
-        if (biomeItem.minLevel > 1) {
+        if(biomeItem.minLevel > 1) {
             User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
             Optional<Island> island = IridiumSkyblock.getInstance().getIslandManager().getTeamViaID(user.getTeamID());
 
-            if (!island.isPresent()) {
+            if(!island.isPresent()) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().dontHaveTeam
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)));
                 return false;
             }
 
-            if (island.get().getLevel() < biomeItem.minLevel) {
+            if(island.get().getLevel() < biomeItem.minLevel) {
                 player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().notHighEnoughLevel
                         .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
                         .replace("%level%", String.valueOf(biomeItem.minLevel))));
@@ -93,7 +101,7 @@ public class BiomeManager {
             if (getBankBalance(player, bankItem) < cost) return false;
         }
 
-        if (!(moneyCost == 0 || economy != null && economy.getBalance(player) >= moneyCost)) {
+        if(!(moneyCost == 0 || economy != null && economy.getBalance(player) >= moneyCost)) {
             player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().cannotAfford
                     .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
             ));

@@ -19,6 +19,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -84,6 +86,14 @@ public class DatabaseManager {
         this.teamRewardsTableManager = new ForeignIslandTableManager<>(teamRewards -> getDatabaseKey(teamRewards.getId()), connectionSource, TeamReward.class);
         this.teamSettingsTableManager = new ForeignIslandTableManager<>(teamSetting -> getDatabaseKey(teamSetting.getTeamID(), teamSetting.getSetting()), connectionSource, TeamSetting.class);
         this.teamLogsTableManager = new SqlTableManager<>(connectionSource, TeamLog.class);
+
+        // We need to clear out null values
+        for(TeamBlock teamBlock : teamBlockTableManager.getEntries()) {
+            if(teamBlock.getXMaterial() == null) teamBlockTableManager.delete(teamBlock);
+        }
+        for(TeamSpawners teamSpawners : teamSpawnerTableManager.getEntries()) {
+            if(teamSpawners.getEntityType() == null) teamSpawnerTableManager.delete(teamSpawners);
+        }
     }
 
     private String getDatabaseKey(Object... params) {

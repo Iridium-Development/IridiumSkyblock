@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.api;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
+import com.iridium.iridiumskyblock.generators.IridiumChunkGenerator;
 import com.iridium.iridiumskyblock.managers.IslandManager;
 import com.iridium.iridiumteams.Permission;
 import com.iridium.iridiumteams.PermissionType;
@@ -12,6 +13,8 @@ import com.iridium.iridiumteams.enhancements.Enhancement;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -282,4 +285,32 @@ public class IridiumSkyblockAPI {
         return iridiumSkyblock.getIslandManager().canVisit(user.getPlayer(), island);
     }
 
+    /**
+     * Adds a block populator to te plugin.<p>
+     *
+     * @param environment the world type to apply to
+     * @param blockPopulator the blockPopulator to add
+     * @since 4.1.4
+     */
+    public void addBlockPopulator(@NotNull World.Environment environment, @NotNull BlockPopulator blockPopulator) {
+        iridiumSkyblock.getBlockPopulatorList().get(environment).add(blockPopulator);
+    }
+
+    /**
+     * Adds a ChunkGenerator to the plugin.<p>
+     *
+     * @param generator the ChunkGenerator object
+     * @param name the name of the generator for use in the config
+     * @param generatesTerrain determines if the generator will create regenWorlds
+     * @param lowerHorizon whether the horizon should be lowered in the overworld
+     *
+     * @since 4.1.4
+     */
+    public void addChunkGenerator(ChunkGenerator generator, String name, boolean generatesTerrain, boolean lowerHorizon) {
+        IridiumChunkGenerator iridiumChunkGenerator = (IridiumChunkGenerator) generator;
+        iridiumChunkGenerator.setName(name);
+        iridiumChunkGenerator.setGeneratesTerrain(generatesTerrain);
+        iridiumChunkGenerator.setLowerHorizon(lowerHorizon);
+        iridiumSkyblock.getIridiumChunkGenerators().add(iridiumChunkGenerator);
+    }
 }

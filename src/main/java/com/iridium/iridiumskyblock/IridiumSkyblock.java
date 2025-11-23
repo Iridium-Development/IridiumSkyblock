@@ -5,15 +5,15 @@ import com.iridium.iridiumcore.Item;
 import com.iridium.iridiumskyblock.configs.*;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.database.User;
-import com.iridium.iridiumskyblock.generators.FlatGenerator;
-import com.iridium.iridiumskyblock.generators.OceanGenerator;
-import com.iridium.iridiumskyblock.generators.VoidGenerator;
+import com.iridium.iridiumskyblock.generators.*;
+import com.iridium.iridiumskyblock.generators.blockPopulators.*;
 import com.iridium.iridiumskyblock.listeners.*;
 import com.iridium.iridiumskyblock.managers.*;
 import com.iridium.iridiumskyblock.placeholders.IslandPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.TeamChatPlaceholderBuilder;
 import com.iridium.iridiumskyblock.placeholders.UserPlaceholderBuilder;
 import com.iridium.iridiumteams.IridiumTeams;
+
 import com.iridium.iridiumteams.managers.MissionManager;
 import com.iridium.iridiumteams.managers.ShopManager;
 import com.iridium.iridiumteams.managers.SupportManager;
@@ -22,6 +22,8 @@ import lombok.Getter;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -40,9 +42,15 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 @Getter
 public class IridiumSkyblock extends IridiumTeams<Island, User> {
+
+    @Getter
     private static IridiumSkyblock instance;
 
     private Configuration configuration;
@@ -81,48 +89,22 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Economy economy;
 
     private ChunkGenerator chunkGenerator;
+    @Getter
+    private int mcVersion;
+    private List<IridiumChunkGenerator> iridiumChunkGenerators = new ArrayList<>();
+    private final HashMap<World.Environment, List<BlockPopulator>> blockPopulatorList = new HashMap<>();
 
     public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
         instance = this;
     }
 
-    public IridiumSkyblock() {
-        instance = this;
-    }
+    public IridiumSkyblock() { instance = this; }
 
     @Override
     public void onLoad() {
         super.onLoad();
-
-        getLogger().info("Loading world generator...");
-        getLogger().info("Generator Type = " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
-
-        // This switch statement is here so that if we end up adding another generator type, we can throw it in this.
-        switch (IridiumSkyblock.getInstance().getConfiguration().generatorType) {
-            case OCEAN: {
-                this.chunkGenerator = new OceanGenerator();
-                break;
-            }
-            case FLAT: {
-                this.chunkGenerator = new FlatGenerator();
-                break;
-            }
-            case VANILLA: {
-                this.chunkGenerator = null;
-                break;
-            }
-            case VOID: {
-                this.chunkGenerator = new VoidGenerator();
-                break;
-            }
-            default: {
-                getLogger().warning("Invalid generator type [" + IridiumSkyblock.getInstance().getConfiguration().generatorType + "], valid types are " + Arrays.toString(GeneratorType.values()));
-                getLogger().info("Generator Type = " + GeneratorType.VOID);
-                this.chunkGenerator = new VoidGenerator();
-                break;
-            }
-        }
+        setMcVersion();
     }
 
     @Override
@@ -130,6 +112,17 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         instance = this;
 
         this.teamManager = new IslandManager();
+
+        getLogger().info("Loading world generator...");
+
+        registerGenerators();
+        setBlockPopulators();
+
+        if(IridiumSkyblock.getInstance().getConfiguration().generatorType.equalsIgnoreCase("vanilla")) {
+            this.chunkGenerator = null;
+        } else {
+            this.chunkGenerator = validateGenerator(IridiumSkyblock.getInstance().getConfiguration().generatorType);
+        }
 
         this.teamManager.createWorld(World.Environment.NORMAL, configuration.worldName);
         this.teamManager.createWorld(World.Environment.NETHER, configuration.worldName + "_nether");
@@ -156,6 +149,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
             return;
         }
 
+        this.teamsPlaceholderBuilder = new IslandPlaceholderBuilder();
+        this.userPlaceholderBuilder = new UserPlaceholderBuilder();
+        this.teamChatPlaceholderBuilder = new TeamChatPlaceholderBuilder();
+
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
 
         Bukkit.getServer().getOnlinePlayers().forEach(player -> getIslandManager().sendIslandBorder(player));
@@ -163,9 +160,6 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         addBstats(5825);
         startUpdateChecker(62480);
         super.onEnable();
-        this.teamsPlaceholderBuilder = new IslandPlaceholderBuilder();
-        this.userPlaceholderBuilder = new UserPlaceholderBuilder();
-        this.teamChatPlaceholderBuilder = new TeamChatPlaceholderBuilder();
     }
 
     private Economy setupEconomy() {
@@ -190,6 +184,11 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerRespawnEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         if(!XReflection.supports(15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
+
+        if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            IridiumSkyblock.getInstance().getLogger().warning("ProtocolLib is installed - extended features enabled.");
+            new ProtocolLibPacketListener().registerListeners();
+        } else if (IridiumSkyblock.getInstance().getConfiguration().fixHorizon) IridiumSkyblock.getInstance().getLogger().warning("ProtocolLib is not installed - features will be limited.");
     }
 
     @Override
@@ -211,6 +210,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         this.settings = getPersist().load(Settings.class);
         this.generators = getPersist().load(Generators.class);
         this.teamLogs = getPersist().load(TeamLogs.class);
+        // We want to log this data specifically because changing
+        // the generator type during a server's lifetime can cause issues.
         getLogger().info("GENERATOR TYPE: " + IridiumSkyblock.getInstance().getConfiguration().generatorType);
         super.loadConfigs();
 
@@ -407,6 +408,57 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         }
     }
 
+    private void setMcVersion() {
+        int version = 13;
+        try {
+            // version example: 1.20.4-R0.1-SNAPSHOT (we need 20)
+            version = Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4));
+        } catch (NumberFormatException ignored) {
+        }
+        this.mcVersion = version;
+    }
+
+    private void setBlockPopulators() {
+
+        // Overworld
+        if(IridiumSkyblock.getInstance().getConfiguration().generatorType.equalsIgnoreCase("ocean")
+            || IridiumSkyblock.getInstance().getConfiguration().generatorType.equalsIgnoreCase("ocean-legacy")) {
+
+            IridiumSkyblock.getInstance().getBlockPopulatorList().put(World.Environment.NORMAL, Arrays.asList(
+                    new KelpBlockPopulator()
+                    //new MagmaBlockPopulator()
+                    //new SeagrassBlockPopulator()
+            ));
+        }
+    }
+
+    private void registerGenerators() {
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new VoidGenerator("skyblock", false, true));
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new OceanGenerator("ocean", true, false));
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new OceanGeneratorLegacy("ocean-legacy", true, false));
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new FlatGenerator("superflat", true, true));
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new FlatGeneratorLegacy("superflat-legacy", true, true));
+        // Vanilla chunkGenerator = null
+    }
+
+    private IridiumChunkGenerator validateGenerator(String name) {
+
+        List<String> generatorNames = IridiumSkyblock.getInstance().getIridiumChunkGenerators().stream().map(IridiumChunkGenerator::getName).collect(Collectors.toList());
+        if(generatorNames.stream().noneMatch(generatorName -> generatorName.equalsIgnoreCase(name))) {
+            IridiumSkyblock.getInstance().getLogger().warning("Generator type \""
+                    + IridiumSkyblock.getInstance().getConfiguration().generatorType
+                    + "\" is not a valid type.");
+            IridiumSkyblock.getInstance().getLogger().info("Generator options available: " + generatorNames);
+            IridiumSkyblock.getInstance().getLogger().warning("Defaulting to \"skyblock\"...");
+            return IridiumSkyblock.getInstance().getIridiumChunkGenerators().get(0);
+        } else {
+            return IridiumSkyblock.getInstance().getIridiumChunkGenerators().stream()
+                    .filter(generator -> generator.getName().equalsIgnoreCase(name))
+                    .findAny()
+                    .get();
+        }
+    }
+
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         return this.chunkGenerator;
@@ -414,9 +466,5 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     public IslandManager getIslandManager() {
         return teamManager;
-    }
-
-    public static IridiumSkyblock getInstance() {
-        return instance;
     }
 }
