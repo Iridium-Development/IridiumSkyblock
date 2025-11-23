@@ -59,8 +59,11 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
             } finally {
                 lock.unlock();
             }
-        } catch (Exception e) {
+        } catch (InterruptedException | SQLException e) {
+            IridiumSkyblock.getInstance().getLogger().severe("FAILED TO SAVE DATA.");
             e.printStackTrace();
+        } catch (Exception er) {
+            er.printStackTrace();
         }
     }
 
@@ -77,8 +80,11 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
             } finally {
                 lock.unlock();
             }
-        } catch (Exception e) {
+        } catch (InterruptedException | SQLException e) {
+            IridiumSkyblock.getInstance().getLogger().severe("FAILED TO SAVE DATA.");
             e.printStackTrace();
+        } catch (Exception er) {
+            er.printStackTrace();
         }
     }
 
@@ -95,8 +101,11 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
                 } finally {
                     lock.unlock();
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException | SQLException e) {
+                IridiumSkyblock.getInstance().getLogger().severe("FAILED TO SAVE DATA.");
                 e.printStackTrace();
+            } catch (Exception er) {
+                er.printStackTrace();
             }
         });
     }
@@ -114,8 +123,11 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
                 } finally {
                     lock.unlock();
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException | SQLException e) {
+                IridiumSkyblock.getInstance().getLogger().severe("FAILED TO SAVE DATA.");
                 e.printStackTrace();
+            } catch (Exception er) {
+                er.printStackTrace();
             }
         });
     }
@@ -152,7 +164,6 @@ public class TableManager<Key, Value extends DatabaseObject, ID> {
     }
 
     public Optional<Value> getEntry(Key key) {
-        if(key == null) return Optional.empty();
         return Optional.ofNullable(entries.get(key));
     }
 

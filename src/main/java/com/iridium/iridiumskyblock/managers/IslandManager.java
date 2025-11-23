@@ -25,6 +25,8 @@ import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
 import com.iridium.iridiumteams.support.StackerSupport;
+import com.iridium.iridiumskyblock.generators.IridiumChunkGenerator;
+import com.iridium.iridiumskyblock.generators.SkyblockBiomeProvider;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
 import de.tr7zw.changeme.nbtapi.NBT;
@@ -83,9 +85,37 @@ public class IslandManager extends TeamManager<Island, User> {
     public void createWorld(World.Environment environment, String name) {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
 
-        WorldCreator worldCreator = new WorldCreator(name)
-                .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
-                .environment(environment);
+        WorldCreator worldCreator;
+
+        long seed = IridiumSkyblock.getInstance().getGenerators().seed;
+
+        if(seed != 0) {
+            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.contains("legacy")
+                    || !IridiumSkyblock.getInstance().getGenerators().biomeGradient) {
+                worldCreator = new WorldCreator(name)
+                        .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
+                        .seed(seed)
+                        .environment(environment);
+            } else {
+                worldCreator = new WorldCreator(name)
+                        .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
+                        .seed(seed)
+                        .environment(environment)
+                        .biomeProvider(new SkyblockBiomeProvider());
+            }
+        } else {
+            if(IridiumSkyblock.getInstance().getConfiguration().generatorType.contains("legacy")
+                    || !IridiumSkyblock.getInstance().getGenerators().biomeGradient) {
+                worldCreator = new WorldCreator(name)
+                        .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
+                        .environment(environment);
+            } else {
+                worldCreator = new WorldCreator(name)
+                        .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
+                        .environment(environment)
+                        .biomeProvider(new SkyblockBiomeProvider());
+            }
+        };
 
         World world = Bukkit.createWorld(worldCreator);
 
@@ -118,11 +148,12 @@ public class IslandManager extends TeamManager<Island, User> {
     // For the regenerateTerrain() method to work correctly, we need to access the cached world, which we create here.
     public void createCacheWorld(World world) {
 
-        if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) return;
+        if(!(IridiumSkyblock.getInstance().getChunkGenerator() instanceof IridiumChunkGenerator)) return;
+        if(!((IridiumChunkGenerator) IridiumSkyblock.getInstance().getChunkGenerator()).isGeneratesTerrain()) return;
 
         if (Bukkit.getWorld(getCacheWorldName(world)) == null) {
-            WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world)).copy(world);
-            worldCreator.createWorld();
+            WorldCreator worldCreator = new WorldCreator(getCacheWorldName(world));
+            worldCreator.copy(world).createWorld();
         }
 
         if (Bukkit.getWorld(getCacheWorldName(world)).getSeed() != Bukkit.getWorld(world.getName()).getSeed()) {
@@ -301,8 +332,11 @@ public class IslandManager extends TeamManager<Island, User> {
             setHome(island, schematicConfig);
             clearEntities(island);
             deleteIslandBlocks(island).join();
-            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+
+            if((IridiumSkyblock.getInstance().getChunkGenerator() instanceof IridiumChunkGenerator)) {
                 regenerateTerrain(island).join();
+            }
+
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, schematicConfig);
         });
@@ -370,6 +404,13 @@ public class IslandManager extends TeamManager<Island, User> {
         } else {
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, world.getMaxHeight(), completableFuture, 0));
         }
+
+        if(IridiumSkyblock.getInstance().getChunkGenerator() instanceof IridiumChunkGenerator) {
+            if (((IridiumChunkGenerator) IridiumSkyblock.getInstance().getChunkGenerator()).isGeneratesTerrain()) {
+                regenerateTerrain(island).join();
+            }
+        }
+
         return completableFuture;
     }
 
@@ -458,8 +499,11 @@ public class IslandManager extends TeamManager<Island, User> {
 
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);
-            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
-                regenerateTerrain(island).join();
+            if(IridiumSkyblock.getInstance().getChunkGenerator() instanceof IridiumChunkGenerator) {
+                if (((IridiumChunkGenerator) IridiumSkyblock.getInstance().getChunkGenerator()).isGeneratesTerrain()) {
+                    regenerateTerrain(island).join();
+                }
+            }
         }
 
         IridiumSkyblock.getInstance().getDatabaseManager().getIslandTableManager().delete(island);
