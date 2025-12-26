@@ -426,8 +426,8 @@ public class IslandManager extends TeamManager<Island, User> {
 
         if (world == null) return;
 
-        Location pos1 = island.getPosition1(world);
-        Location pos2 = island.getPosition2(world);
+        Location pos1 = island.getMaximumPosition1(world);
+        Location pos2 = island.getMaximumPosition2(world);
 
         World regenWorld = Bukkit.getWorld(getCacheWorldName(world));
 
