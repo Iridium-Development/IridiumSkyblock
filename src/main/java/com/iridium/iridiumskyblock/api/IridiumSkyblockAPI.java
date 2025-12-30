@@ -286,7 +286,7 @@ public class IridiumSkyblockAPI {
     }
 
     /**
-     * Adds a block populator to te plugin.<p>
+     * Adds a block populator to the plugin.<p>
      *
      * @param environment the world type to apply to
      * @param blockPopulator the blockPopulator to add

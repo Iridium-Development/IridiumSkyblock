@@ -165,7 +165,7 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
     private Economy setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(Economy.class);
         if (economyProvider == null) {
-            getLogger().warning("You do not have an economy plugin installed (like Essentials)");
+            getLogger().warning("You do not have an economy plugin installed (like Essentials).");
             return null;
         }
         return economyProvider.getProvider();
@@ -186,9 +186,9 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         if(!XReflection.supports(15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
 
         if (Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            IridiumSkyblock.getInstance().getLogger().warning("ProtocolLib is installed - extended features enabled.");
+            IridiumSkyblock.getInstance().getLogger().warning("ProtocolLib is installed. Extended features enabled.");
             new ProtocolLibPacketListener().registerListeners();
-        } else if (IridiumSkyblock.getInstance().getConfiguration().fixHorizon) IridiumSkyblock.getInstance().getLogger().warning("ProtocolLib is not installed - features will be limited.");
+        } else if (IridiumSkyblock.getInstance().getConfiguration().fixHorizon) IridiumSkyblock.getInstance().getLogger().warning("ProtocolLib is not installed. Features will be limited.");
     }
 
     @Override
@@ -438,6 +438,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new OceanGeneratorLegacy("ocean-legacy", true, false));
         IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new FlatGenerator("superflat", true, true));
         IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new FlatGeneratorLegacy("superflat-legacy", true, true));
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new SkylandsGenerator("skylands", true, true));
+        IridiumSkyblock.getInstance().getIridiumChunkGenerators().add(new SkylandsGeneratorLegacy("skylands-legacy", true, true));
         // Vanilla chunkGenerator = null
     }
 

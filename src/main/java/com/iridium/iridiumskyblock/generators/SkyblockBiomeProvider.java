@@ -37,7 +37,7 @@ public class SkyblockBiomeProvider extends BiomeProvider {
         return getBiomeFromNoise(worldInfo, x, z);
     }
 
-    // This is a required override to tell the generator what biomes it's allowed to use.
+    // This is a required override to tell the generator what biomes its allowed to use.
     @Override
     @NotNull
     public List<Biome> getBiomes(@NotNull WorldInfo worldInfo) {
