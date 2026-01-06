@@ -1,32 +1,31 @@
 package com.iridium.iridiumskyblock.listeners;
 
-import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.entity.EntityPortalEvent;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class PlayerPortalListener implements Listener {
+public class EntityPortalListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerPortal(PlayerPortalEvent event) {
+    public void onEntityPortal(EntityPortalEvent event) {
 
-        Player player = event.getPlayer();
+        Entity entity = event.getEntity();
 
-        Optional<Island> islandCheck = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(player.getLocation());
+        Optional<Island> islandCheck = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(entity.getLocation());
 
         // We want to allow teleportation from a non-skyblock world into a skyblock world, or from no island to an island.
-        // We don't care if the player is not within an island.
+        // We don't care if the entity is not within an island.
         if(!islandCheck.isPresent()) {
             return;
         }
@@ -38,37 +37,30 @@ public class PlayerPortalListener implements Listener {
         World nether = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.NETHER);
         World end = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.THE_END);
 
-        // We don't care if the player travels within the same world or dimension.
+        // We don't care if the entity travels within the same world or dimension.
         if((worldTo != null) && (worldFrom == worldTo || worldFrom.getEnvironment() == worldTo.getEnvironment())) {
             return;
         }
 
         Island island = islandCheck.get();
         int level = island.getLevel();
-        Location playerLocation = player.getLocation();
-        World destination = worldFrom;
+        Location entityLocation = entity.getLocation();
+        World destination;
 
         // ==================
         // |  NETHER CHECK  |
         // ==================
 
-        if(event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+        if (entityLocation.getBlock().getType() != Material.END_PORTAL) {
             // We don't teleport if the Nether is disabled.
             if(worldTo == null && nether == null) {
                 event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherIslandsDisabled
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                ));
                 return;
             }
 
             // We only teleport if the island's level allows it.
             if(level < IridiumSkyblock.getInstance().getConfiguration().netherUnlockLevel) {
                 event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().netherLocked
-                        .replace("%level%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().netherUnlockLevel))
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                ));
                 return;
             }
 
@@ -80,23 +72,16 @@ public class PlayerPortalListener implements Listener {
         // |  END CHECK  |
         // ===============
 
-        if(event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+        else {
             // We don't teleport if the End is disabled.
             if(worldTo == null && end == null) {
                 event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().endIslandsDisabled
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                ));
                 return;
             }
 
             // We only teleport if the island's level allows it.
             if(level < IridiumSkyblock.getInstance().getConfiguration().endUnlockLevel) {
                 event.setCancelled(true);
-                player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().endLocked
-                        .replace("%level%", String.valueOf(IridiumSkyblock.getInstance().getConfiguration().endUnlockLevel))
-                        .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-                ));
                 return;
             }
 
@@ -111,9 +96,6 @@ public class PlayerPortalListener implements Listener {
 
         if (location == null) {
             event.setCancelled(true);
-            player.sendMessage(StringUtils.color(IridiumSkyblock.getInstance().getMessages().noSafeLocation
-                    .replace("%prefix%", IridiumSkyblock.getInstance().getConfiguration().prefix)
-            ));
             return;
         }
 
