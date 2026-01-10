@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.managers;
 import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XEntityType;
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
@@ -24,9 +25,26 @@ import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
+import com.iridium.iridiumteams.support.SpawnSupport;
 import com.iridium.iridiumteams.support.StackerSupport;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
+import com.sk89q.worldedit.*;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.MaskingExtent;
+import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
+import com.sk89q.worldedit.function.mask.ExistingBlockMask;
+import com.sk89q.worldedit.function.mask.Mask;
+import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.function.pattern.Pattern;
+import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.util.SideEffectSet;
+import com.sk89q.worldedit.world.block.BlockTypes;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTFile;
@@ -43,6 +61,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -140,8 +159,8 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) return;
 
         getIslandChunks(island).thenAccept(chunks -> {
-            Location pos1 = island.getPosition1(world);
-            Location pos2 = island.getPosition2(world);
+            Location pos1 = island.getMaximumPosition1(world);
+            Location pos2 = island.getMaximumPosition2(world);
             biome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
@@ -300,9 +319,11 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.runAsync(() -> {
             setHome(island, schematicConfig);
             clearEntities(island);
+            removePlayers(island).join();
             deleteIslandBlocks(island).join();
-            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
                 regenerateTerrain(island).join();
+            }
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, schematicConfig);
         });
@@ -352,6 +373,55 @@ public class IslandManager extends TeamManager<Island, User> {
         completableFuture.complete(null);
     }
 
+    public CompletableFuture<Void> removePlayers(Island island) {
+
+        return CompletableFuture.runAsync(() -> {
+            List<CompletableFuture<Void>> completableFutures = Arrays.asList(
+                    removePlayers(island, getWorld(World.Environment.NORMAL)),
+                    removePlayers(island, getWorld(World.Environment.NETHER)),
+                    removePlayers(island, getWorld(World.Environment.THE_END))
+            );
+            completableFutures.forEach(CompletableFuture::join);
+        });
+    }
+
+    private CompletableFuture<Void> removePlayers(Island island, World world) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        if (world == null) {
+            completableFuture.complete(null);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> removePlayers(island, world, completableFuture));
+        }
+        return completableFuture;
+    }
+
+    private void removePlayers(Island island, World world, CompletableFuture<Void> completableFuture) {
+
+        if (world == null) return;
+
+        Optional<SpawnSupport<Island>> spawnSupport = IridiumSkyblock.getInstance().getSupportManager().getSpawnSupport().stream().findFirst();
+
+        world.getPlayers().forEach(player -> {
+
+            if (island.isInIsland(player.getLocation())) {
+
+                boolean bypasser = IridiumSkyblock.getInstance().getUserManager().getUser(player).isBypassing();
+
+                // If a player is bypassing island restrictions, they're likely an admin.
+                // We don't want to kick admins from an island if they're watching it.
+                if (!bypasser || (bypasser && IridiumSkyblock.getInstance().getConfiguration().tpBypassersWithRegen)) { // if not bypassing OR bypassing and should be teleported
+                    if (spawnSupport.isPresent()) {
+                        player.teleport(spawnSupport.get().getSpawn(player));
+                    } else {
+                        player.teleport(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+                    }
+                }
+            }
+        });
+
+        completableFuture.complete(null);
+    }
+
     public CompletableFuture<Void> deleteIslandBlocks(Island island) {
         return CompletableFuture.runAsync(() -> {
             List<CompletableFuture<Void>> completableFutures = Arrays.asList(
@@ -368,35 +438,42 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) {
             completableFuture.complete(null);
         } else {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, world.getMaxHeight(), completableFuture, 0));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                    deleteIslandBlocks(island, world, completableFuture, IridiumSkyblock.getInstance().getConfiguration().pasterDelayInTick));
         }
         return completableFuture;
     }
 
-    private void deleteIslandBlocks(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    private void deleteIslandBlocks(Island island, World world, CompletableFuture<Void> completableFuture, int delay) {
+
         if (world == null) return;
+
         Location pos1 = island.getMaximumPosition1(world);
         Location pos2 = island.getMaximumPosition2(world);
 
-        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
-            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-                Block block = world.getBlockAt(x, y, z);
-                if (block.getType() != Material.AIR) {
-                    if (block.getState() instanceof InventoryHolder) {
-                        ((InventoryHolder) block.getState()).getInventory().clear();
-                    }
-                    block.setType(Material.AIR, false);
-                }
-            }
-        }
+        int minHeight = 0;
+        if (XReflection.supports(18)) minHeight = world.getMinHeight();
+        final int finalMinHeight = minHeight;
+        int maxHeight = world.getMaxHeight();
 
-        if (y <= LocationUtils.getMinHeight(world)) {
-            completableFuture.complete(null);
-        } else {
-            if (delay < 1) {
-                deleteIslandBlocks(island, world, y - 1, completableFuture, delay);
-            } else {
-                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, y - 1, completableFuture, delay), delay);
+        String paster = IridiumSkyblock.getInstance().getConfiguration().paster.toLowerCase();
+
+        switch(paster) {
+
+            case "fawe": {
+                deleteFAWE(world, pos1, pos2, finalMinHeight, maxHeight, completableFuture, delay);
+                break;
+            }
+
+            case "worldedit": {
+                deleteWE(world, pos1, pos2, finalMinHeight, maxHeight, completableFuture, delay);
+                break;
+            }
+
+            case "internalasync": {}
+            default: {
+                deleteIA(world, pos1, pos2, finalMinHeight, maxHeight, completableFuture, delay);
+                 break;
             }
         }
     }
@@ -417,35 +494,47 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) {
             completableFuture.complete(null);
         } else {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, world.getMaxHeight(), completableFuture, 0));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                    regenerateTerrain(island, world, completableFuture, IridiumSkyblock.getInstance().getConfiguration().pasterDelayInTick));
         }
         return completableFuture;
     }
 
-    public void regenerateTerrain(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    public void regenerateTerrain(Island island, World world, CompletableFuture<Void> completableFuture, int delay) {
 
         if (world == null) return;
 
-        Location pos1 = island.getMaximumPosition1(world);
-        Location pos2 = island.getMaximumPosition2(world);
-
         World regenWorld = Bukkit.getWorld(getCacheWorldName(world));
 
-        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
-            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-                Block blockA = regenWorld.getBlockAt(x, y, z);
-                Block blockB = world.getBlockAt(x, y, z);
-                blockB.setBlockData(blockA.getBlockData(), false);
-            }
-        }
+        Location pos1 = island.getMaximumPosition1(regenWorld);
+        Location pos2 = island.getMaximumPosition2(regenWorld);
+        Location pos3 = island.getMaximumPosition1(world);
+        Location pos4 = island.getMaximumPosition2(world);
 
-        if (y <= LocationUtils.getMinHeight(world)) {
-            completableFuture.complete(null);
-        } else {
-            if (delay < 1) {
-                regenerateTerrain(island, world, y - 1, completableFuture, delay);
-            } else {
-                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, y - 1, completableFuture, delay), delay);
+        int minHeight = 0;
+        if (XReflection.supports(18)) minHeight = world.getMinHeight();
+        final int finalMinHeight = minHeight;
+        int maxHeight = world.getMaxHeight();
+
+        // TODO: update this to use an enum
+        String paster = IridiumSkyblock.getInstance().getConfiguration().paster.toLowerCase();
+
+        switch(paster) {
+
+            case "fawe": {
+                regenFAWE(world, regenWorld, pos1, pos2, pos3, pos4, finalMinHeight, maxHeight, completableFuture, delay);
+                break;
+            }
+
+            case "worldedit": {
+                regenWE(world, regenWorld, pos1, pos2, pos3, pos4, finalMinHeight, maxHeight, completableFuture, delay);
+                break;
+            }
+
+            case "internalasync": {}
+            default: {
+                regenIA(world, regenWorld, pos3, pos4, finalMinHeight, maxHeight, completableFuture, delay);
+                break;
             }
         }
     }
@@ -1060,4 +1149,446 @@ public class IslandManager extends TeamManager<Island, User> {
         }
     }
 
+    // TODO: should consider chunk-batching like w/ WE
+    public void deleteIA(World world, Location pos1, Location pos2, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        Set<Long> modifiedChunks = new HashSet<>();
+
+        int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
+        int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
+        int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
+        int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+
+        new BukkitRunnable() {
+
+            int y = maxHeight;
+            int x = minX;
+            int z = minZ;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick; i++) {
+
+                    Block block = world.getBlockAt(x, y, z);
+
+                    while (block.isEmpty()) {
+                        if(increment()) return;
+                        block = world.getBlockAt(x, y, z);
+                    }
+
+                    if (block.getState() instanceof InventoryHolder) {
+                        ((InventoryHolder) block.getState()).getInventory().clear();
+                    }
+                    block.setType(Material.AIR, false);
+                    modifiedChunks.add(((long) (x >> 4) << 32) | ((z >> 4) & 0xFFFFFFFFL));
+
+                    increment();
+                }
+            }
+
+            public boolean increment() {
+                if (++z > maxZ) {
+                    z = minZ;
+                    if (++x > maxX) {
+                        x = minX;
+                        if (--y < minHeight) {
+                            finish();
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            private void finish() {
+                this.cancel();
+
+                completableFuture.complete(null);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
+                            modifiedChunks.forEach(key -> {world.refreshChunk((int) (key >> 32), key.intValue());});
+                        }
+                    }
+                }.runTaskAsynchronously(IridiumSkyblock.getInstance());
+            }
+        }.runTaskTimer(IridiumSkyblock.getInstance(), delay, 1L);
+    }
+
+    public void deleteWE(World world, Location pos1, Location pos2, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
+
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld)) {
+            BlockVector3 min = BlockVector3.at(pos1.getBlockX(), minHeight, pos1.getBlockZ());
+            BlockVector3 max = BlockVector3.at(pos2.getBlockX(), maxHeight, pos2.getBlockZ());
+            CuboidRegion selection = new CuboidRegion(min, max);
+
+            editSession.getChangeSet().setRecordChanges(false);
+            editSession.setReorderMode(EditSession.ReorderMode.FAST);
+            editSession.setSideEffectApplier(SideEffectSet.none());
+            ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
+            editSession.setMask(nonAirMask);
+
+            // grab all points and remove air blocks from the selection
+            List<BlockVector3> points = new ArrayList<>();
+            for (BlockVector3 point : selection) {
+                if (nonAirMask.test(point)) {
+                    points.add(point);
+                }
+            }
+
+            points = points.reversed(); // style points
+
+            // group points into chunks
+            Map<BlockVector2, List<BlockVector3>> chunkBatches = new LinkedHashMap<>();
+            for (BlockVector3 pt : points) {
+                BlockVector2 chunkPos = BlockVector2.at(pt.getX() >> 4, pt.getZ() >> 4);
+                chunkBatches.computeIfAbsent(chunkPos, k -> new ArrayList<>()).add(pt);
+            }
+
+            // chunk list
+            List<Map.Entry<BlockVector2, List<BlockVector3>>> batches = new ArrayList<>(chunkBatches.entrySet());
+
+            new BukkitRunnable() {
+                int chunkIndex = 0;
+                int blockInsideChunkIndex = 0;
+                final int blocksPerTick = IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick;
+                private final com.sk89q.worldedit.world.block.BlockState air =
+                        com.sk89q.worldedit.world.block.BlockTypes.AIR.getDefaultState();
+
+                @Override
+                public void run() {
+                    int processedThisTick = 0;
+
+                    while (processedThisTick < blocksPerTick) {
+
+                        if (chunkIndex >= batches.size()) {
+                            finish();
+                            return;
+                        }
+
+                        List<BlockVector3> currentChunkBlocks = batches.get(chunkIndex).getValue();
+
+                        while (blockInsideChunkIndex < currentChunkBlocks.size() && processedThisTick < blocksPerTick) {
+                            BlockVector3 point = currentChunkBlocks.get(blockInsideChunkIndex);
+
+                            try {
+                                editSession.setBlock(point, air);
+                            } catch (MaxChangedBlocksException e) {
+                                finish();
+                                return;
+                            }
+
+                            blockInsideChunkIndex++;
+                            processedThisTick++;
+                        }
+
+                        if (blockInsideChunkIndex >= currentChunkBlocks.size()) {
+                            chunkIndex++;
+                            blockInsideChunkIndex = 0;
+                            editSession.flushSession(); // deprecated, but this pushes changes to the server, so it's critical for performance
+                        }
+                    }
+                }
+
+                private void finish() {
+                    this.cancel();
+
+                    completableFuture.complete(null);
+
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
+                                weWorld.fixLighting(selection.getChunks());
+                            }
+                        }
+                    }.runTask(IridiumSkyblock.getInstance());
+                }
+            }.runTaskTimer(IridiumSkyblock.getInstance(), delay, 1L);
+        }
+    }
+
+    public void deleteFAWE(World world, Location pos1, Location pos2, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
+
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld)) {
+            BlockVector3 min = BlockVector3.at(pos1.getBlockX(), minHeight, pos1.getBlockZ());
+            BlockVector3 max = BlockVector3.at(pos2.getBlockX(), maxHeight, pos2.getBlockZ());
+            CuboidRegion selection = new CuboidRegion(min, max);
+
+            com.sk89q.worldedit.world.block.BlockState air = BlockTypes.AIR.getDefaultState();
+            ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
+
+            editSession.getChangeSet().setRecordChanges(false);
+            editSession.setReorderMode(EditSession.ReorderMode.FAST);
+            editSession.setSideEffectApplier(SideEffectSet.none());
+
+            editSession.replaceBlocks(selection, nonAirMask, (Pattern) air); // no style points :(
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
+                        weWorld.fixLighting(selection.getChunks());
+                    }
+                }
+            }.runTask(IridiumSkyblock.getInstance());
+
+        } catch (WorldEditException e) {
+            throw new RuntimeException(e);
+        }
+
+        completableFuture.complete(null);
+    }
+
+    // TODO: should consider chunk-batching like w/ WE
+    public void regenIA(World world, World regenWorld, Location pos1, Location pos2, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        Set<Long> modifiedChunks = new HashSet<>();
+
+        int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
+        int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
+        int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
+        int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+
+        new BukkitRunnable() {
+
+            int y = minHeight;
+            int x = minX;
+            int z = minZ;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick; i++) {
+
+                    Block blockA = regenWorld.getBlockAt(x, y, z);
+                    Block blockB = world.getBlockAt(x, y, z);
+
+                    while (blockA.isEmpty() || blockA.getBlockData().equals(blockB.getBlockData())) {
+                        if (increment()) return;
+                        blockA = regenWorld.getBlockAt(x, y, z);
+                        blockB = world.getBlockAt(x, y, z);
+                    }
+
+                    blockB.setBlockData(blockA.getBlockData(), false);
+                    modifiedChunks.add(((long) (x >> 4) << 32) | ((z >> 4) & 0xFFFFFFFFL));
+
+                    increment();
+                }
+            }
+
+            public boolean increment() {
+                if (++z > maxZ) {
+                    z = minZ;
+                    if (++x > maxX) {
+                        x = minX;
+                        if (++y > maxHeight) {
+                            finish();
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            private void finish() {
+                this.cancel();
+
+                completableFuture.complete(null);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        modifiedChunks.forEach(key -> {world.refreshChunk((int) (key >> 32), key.intValue());});
+                    }
+                }.runTaskAsynchronously(IridiumSkyblock.getInstance());
+            }
+        }.runTaskTimer(IridiumSkyblock.getInstance(), delay, 1L);
+    }
+
+    public void regenWE(World world, World regenWorld, Location pos1, Location pos2, Location pos3, Location pos4, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
+        com.sk89q.worldedit.world.World weRegenWorld = BukkitAdapter.adapt(regenWorld);
+
+        // there's gotta be a more succinct method to do this
+        BlockVector3 min = BlockVector3.at(pos1.getBlockX(), minHeight, pos1.getBlockZ());
+        BlockVector3 max = BlockVector3.at(pos2.getBlockX(), maxHeight, pos2.getBlockZ());
+        CuboidRegion selection = new CuboidRegion(min, max);
+
+        BlockVector3 min2 = BlockVector3.at(pos3.getBlockX(), minHeight, pos3.getBlockZ());
+        BlockVector3 max2 = BlockVector3.at(pos4.getBlockX(), maxHeight, pos4.getBlockZ());
+        CuboidRegion selection2 = new CuboidRegion(min2, max2);
+
+        BlockArrayClipboard clipboard = new BlockArrayClipboard(selection);
+
+        // copy
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(weRegenWorld)) {
+            editSession.getChangeSet().setRecordChanges(false);
+            editSession.setReorderMode(EditSession.ReorderMode.FAST);
+            editSession.setSideEffectApplier(SideEffectSet.none());
+            ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
+            editSession.setMask(nonAirMask);
+
+            ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
+                    weRegenWorld,
+                    selection,
+                    clipboard,
+                    selection.getMinimumPoint()
+            );
+
+            Operations.complete(forwardExtentCopy);
+
+        } catch (WorldEditException e) {
+            throw new RuntimeException(e);
+        }
+
+        // paste
+        EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld);
+        editSession.getChangeSet().setRecordChanges(false);
+        editSession.setReorderMode(EditSession.ReorderMode.FAST);
+        editSession.setSideEffectApplier(SideEffectSet.none());
+
+        BlockVector3 offset = selection2.getMinimumPoint().subtract(clipboard.getMinimumPoint());
+
+        Mask clipboardMask = new ExistingBlockMask(clipboard);
+        MaskingExtent maskedClipboard = new MaskingExtent(clipboard, clipboardMask);
+
+        // grab all points and remove air blocks from the selection
+        List<BlockVector3> points = new ArrayList<>();
+        for (BlockVector3 point : clipboard.getRegion()) {
+            if (maskedClipboard.getMask().test(point)) {
+                points.add(point);
+            }
+        }
+
+        // group points into chunks
+        Map<BlockVector2, List<BlockVector3>> chunkBatches = new LinkedHashMap<>();
+        for (BlockVector3 pt : points) {
+            BlockVector2 chunkPos = BlockVector2.at(pt.getX() >> 4, pt.getZ() >> 4);
+            chunkBatches.computeIfAbsent(chunkPos, k -> new ArrayList<>()).add(pt);
+        }
+
+        // chunk list
+        List<Map.Entry<BlockVector2, List<BlockVector3>>> batches = new ArrayList<>(chunkBatches.entrySet());
+
+        new BukkitRunnable() {
+            int chunkIndex = 0;
+            int blockInsideChunkIndex = 0;
+            final int blocksPerTick = IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick;
+            private final com.sk89q.worldedit.world.block.BlockState air =
+                    com.sk89q.worldedit.world.block.BlockTypes.AIR.getDefaultState();
+
+            @Override
+            public void run() {
+                int processedThisTick = 0;
+
+                while (processedThisTick < blocksPerTick) {
+
+                    if (chunkIndex >= batches.size()) {
+                        finish();
+                        return;
+                    }
+
+                    List<BlockVector3> currentChunkBlocks = batches.get(chunkIndex).getValue();
+
+                    while (blockInsideChunkIndex < currentChunkBlocks.size() && processedThisTick < blocksPerTick) {
+
+                        BlockVector3 point = currentChunkBlocks.get(blockInsideChunkIndex);
+                        com.sk89q.worldedit.world.block.BlockState block = clipboard.getBlock(point);
+
+                        try {
+                            editSession.setBlock(point.add(offset), block);
+                        } catch (MaxChangedBlocksException e) {
+                            finish();
+                            return;
+                        }
+
+                        blockInsideChunkIndex++;
+                        processedThisTick++;
+                    }
+
+                    if (blockInsideChunkIndex >= currentChunkBlocks.size()) {
+                        chunkIndex++;
+                        blockInsideChunkIndex = 0;
+                        editSession.flushSession(); // style points
+                    }
+                }
+            }
+
+            private void finish() {
+                this.cancel();
+
+                completableFuture.complete(null);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
+                            weWorld.fixLighting(selection.getChunks());
+                        }
+                    }
+                }.runTask(IridiumSkyblock.getInstance());
+            }
+        }.runTaskTimer(IridiumSkyblock.getInstance(), delay, 1L);
+    }
+
+    public void regenFAWE(World world, World regenWorld, Location pos1, Location pos2, Location pos3, Location pos4, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
+        com.sk89q.worldedit.world.World weRegenWorld = BukkitAdapter.adapt(regenWorld);
+
+        BlockVector3 min = BlockVector3.at(pos1.getBlockX(), minHeight, pos1.getBlockZ());
+        BlockVector3 max = BlockVector3.at(pos2.getBlockX(), maxHeight, pos2.getBlockZ());
+        CuboidRegion selection = new CuboidRegion(min, max);
+
+        BlockVector3 min2 = BlockVector3.at(pos3.getBlockX(), minHeight, pos3.getBlockZ());
+        BlockVector3 max2 = BlockVector3.at(pos4.getBlockX(), maxHeight, pos4.getBlockZ());
+        CuboidRegion selection2 = new CuboidRegion(min2, max2);
+
+        BlockArrayClipboard clipboard = new BlockArrayClipboard(selection);
+
+        // copy
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(weRegenWorld)) {
+            editSession.getChangeSet().setRecordChanges(false);
+            ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
+            editSession.setMask(nonAirMask);
+
+            ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
+                    weRegenWorld,
+                    selection,
+                    clipboard,
+                    selection.getMinimumPoint()
+            );
+
+            Operations.complete(forwardExtentCopy);
+
+        } catch (WorldEditException e) {
+            throw new RuntimeException(e);
+        }
+
+        // paste
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld)) {
+            editSession.getChangeSet().setRecordChanges(false);
+
+            Operation operation = new ClipboardHolder(clipboard)
+                    .createPaste(editSession)
+                    .to(selection2.getMinimumPoint())
+                    .copyBiomes(true)
+                    .copyEntities(false)
+                    .build();
+
+            Operations.complete(operation);
+        } catch (WorldEditException e) {
+            throw new RuntimeException(e);
+        }
+
+        completableFuture.complete(null);
+        weWorld.fixLighting(selection.getChunks());
+    }
 }
