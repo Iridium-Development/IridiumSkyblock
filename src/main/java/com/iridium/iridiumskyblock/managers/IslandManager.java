@@ -963,31 +963,44 @@ public class IslandManager extends TeamManager<Island, User> {
         return worldName.equals(normalWorld) || worldName.equals(netherWorld) || worldName.equals(endWorld);
     }
 
+    // Replace the sendIslandBorder method in IslandManager.java with this fixed version:
+
+    // Replace the sendIslandBorder method in IslandManager.java with this fixed version:
+
+    // REPLACE the sendIslandBorder method in IslandManager.java (around line 1081)
+// This is the COMPLETE FIX for world borders not showing for islands away from 0,0
+
     public void sendIslandBorder(Player player) {
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> islandOptional = user.getCurrentIsland(player.getLocation());
+        if (player == null || !player.isOnline()) return;
+
+        Location loc = player.getLocation();
+
+        Optional<Island> islandOptional =
+                IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(loc);
 
         if (!islandOptional.isPresent()) {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-                IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, com.iridium.iridiumcore.Color.OFF, 0, player.getLocation());
-            });
+            IridiumSkyblock.getInstance().getNms().sendWorldBorder(
+                    player,
+                    com.iridium.iridiumcore.Color.OFF,
+                    0,
+                    loc
+            );
             return;
         }
 
         Island island = islandOptional.get();
-        World playerWorld = player.getWorld();
-        Location centre = island.getCenter(playerWorld).clone();
-        int size = island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0);
-        final com.iridium.iridiumcore.Color color = island.getColor();
+        Location center = island.getCenter(player.getWorld()).clone();
 
-        // All dimensions now use 1:1 coordinates (no scaling needed)
-        final Location finalCentre = centre;
+        int size = island.getSize();
+        if (size % 2 == 0) size++;
 
-        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
-            IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, color, size, finalCentre);
-        });
+        IridiumSkyblock.getInstance().getNms().sendWorldBorder(
+                player,
+                island.getColor(),
+                size,
+                center
+        );
     }
-
     public ItemStack getIslandCrystal(int amount) {
         ItemStack itemStack = ItemStackUtils.makeItem(IridiumSkyblock.getInstance().getConfiguration().islandCrystal, Collections.singletonList(
                 new Placeholder("amount", String.valueOf(amount))

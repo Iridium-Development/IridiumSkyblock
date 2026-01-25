@@ -22,17 +22,17 @@ public class PlayerPortalListener implements Listener {
         Player player = event.getPlayer();
         Location from = event.getFrom();
 
-        // Only handle portals in skyblock worlds
         if (!IridiumSkyblock.getInstance().getIslandManager().isInSkyblockWorld(from.getWorld())) {
             return;
         }
 
-        // Get the player's current island
-        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-        Optional<Island> islandOptional = user.getCurrentIsland(from);
+        // ALWAYS resolve island from LOCATION (never cache)
+        Optional<Island> islandOptional =
+                IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(from);
 
         if (!islandOptional.isPresent()) {
             event.setCancelled(true);
+            player.sendMessage("no");
             return;
         }
 
@@ -41,101 +41,141 @@ public class PlayerPortalListener implements Listener {
         Location destination = null;
 
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
-            World fromWorld = from.getWorld();
-            String normalWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName;
-            String netherWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether";
-
-            // Detect which world we're in by name since both are NORMAL environment
-            if (fromWorld.getName().equals(normalWorldName)) {
-                // Going from overworld to "nether" (second overworld)
-                targetWorld = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.NETHER);
-                if (targetWorld != null) {
-                    destination = calculateDestination(from, island, targetWorld);
-                }
-            } else if (fromWorld.getName().equals(netherWorldName)) {
-                // Going from "nether" back to overworld
-                targetWorld = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.NORMAL);
-                if (targetWorld != null) {
-                    destination = calculateDestination(from, island, targetWorld);
-                }
-            }
+            destination = handleNetherPortal(event, island);
         } else if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
-            World fromWorld = from.getWorld();
-
-            if (fromWorld.getEnvironment() == World.Environment.THE_END) {
-                // Going from end to overworld
-                targetWorld = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.NORMAL);
-                if (targetWorld != null) {
-                    destination = island.getHome();
-                }
-            } else {
-                // Going to the end
-                targetWorld = IridiumSkyblock.getInstance().getIslandManager().getWorld(World.Environment.THE_END);
-                if (targetWorld != null) {
-                    destination = island.getCenter(targetWorld).clone();
-                    destination.setY(64);
-                }
-            }
+            destination = handleEndPortal(event, island);
         }
 
-        if (destination != null && targetWorld != null) {
+        if (destination == null) {
             event.setCancelled(true);
+            return;
+        }
 
-            final Location finalDestination = destination;
+        event.setCancelled(true);
 
+        Location finalDestination = destination;
+        Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
+            if (!player.isOnline()) return;
+
+            player.teleport(finalDestination);
+
+            // Border update AFTER teleport
             Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
                 if (player.isOnline()) {
-                    player.teleport(finalDestination);
-
-                    User updatedUser = IridiumSkyblock.getInstance().getUserManager().getUser(player);
-                    updatedUser.setCurrentIsland(Optional.of(island));
-
-                    Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
-                        if (player.isOnline()) {
-                            IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(player);
-                        }
-                    }, 5L);
+                    IridiumSkyblock.getInstance().getIslandManager().sendIslandBorder(player);
                 }
-            }, 1L);
-        } else {
-            event.setCancelled(true);
-            player.sendMessage(com.iridium.iridiumcore.utils.StringUtils.color("This world is disabled!"));
+            }, 5L);
+        }, 1L);
+    }
+
+    /* ==================== NETHER ==================== */
+
+    private Location handleNetherPortal(PlayerPortalEvent event, Island island) {
+        Location from = event.getFrom();
+        World fromWorld = from.getWorld();
+
+        String overworld = IridiumSkyblock.getInstance().getConfiguration().worldName;
+        String nether = overworld + "_nether";
+
+        if (!IridiumSkyblock.getInstance().getConfiguration()
+                .enabledWorlds.getOrDefault(World.Environment.NETHER, true)) {
+            event.getPlayer().sendMessage(
+                    IridiumSkyblock.getInstance().getMessages().netherIslandsDisabled);
+            return null;
         }
+
+        if (island.getLevel() <
+                IridiumSkyblock.getInstance().getConfiguration().netherUnlockLevel) {
+            event.getPlayer().sendMessage(
+                    IridiumSkyblock.getInstance().getMessages().netherLocked
+                            .replace("%level%",
+                                    String.valueOf(IridiumSkyblock.getInstance()
+                                            .getConfiguration().netherUnlockLevel)));
+            return null;
+        }
+
+        if (fromWorld.getName().equals(overworld)) {
+            World target = Bukkit.getWorld(nether);
+            return target == null ? null : calculateDestination(from, island, target);
+        }
+
+        if (fromWorld.getName().equals(nether)) {
+            World target = Bukkit.getWorld(overworld);
+            return target == null ? null : calculateDestination(from, island, target);
+        }
+
+        return null;
     }
 
-    /**
-     * Calculate destination with 1:1 coordinate mapping
-     * Works for all overworld-type dimensions
-     */
-    private Location calculateDestination(Location fromLocation, Island island, World targetWorld) {
-        Location fromCenter = island.getCenter(fromLocation.getWorld());
-        Location targetCenter = island.getCenter(targetWorld);
+    /* ==================== END ==================== */
 
-        double offsetX = fromLocation.getX() - fromCenter.getX();
-        double offsetZ = fromLocation.getZ() - fromCenter.getZ();
+    private Location handleEndPortal(PlayerPortalEvent event, Island island) {
+        Location from = event.getFrom();
+        World fromWorld = from.getWorld();
 
-        double targetX = targetCenter.getX() + offsetX;
-        double targetZ = targetCenter.getZ() + offsetZ;
+        String overworld = IridiumSkyblock.getInstance().getConfiguration().worldName;
+        String end = overworld + "_the_end";
 
-        Location destination = new Location(targetWorld, targetX, 64, targetZ);
-        return findSafeLocation(destination, island);
+        if (!IridiumSkyblock.getInstance().getConfiguration()
+                .enabledWorlds.getOrDefault(World.Environment.THE_END, true)) {
+            event.getPlayer().sendMessage(
+                    IridiumSkyblock.getInstance().getMessages().endIslandsDisabled);
+            return null;
+        }
+
+        if (island.getLevel() <
+                IridiumSkyblock.getInstance().getConfiguration().endUnlockLevel) {
+            event.getPlayer().sendMessage(
+                    IridiumSkyblock.getInstance().getMessages().endLocked
+                            .replace("%level%",
+                                    String.valueOf(IridiumSkyblock.getInstance()
+                                            .getConfiguration().endUnlockLevel)));
+            return null;
+        }
+
+        if (fromWorld.getName().equals(end)) {
+            return island.getHome();
+        }
+
+        World target = Bukkit.getWorld(end);
+        if (target == null) return null;
+
+        Location loc = island.getCenter(target).clone();
+        loc.setY(64);
+        return loc;
     }
 
-    /**
-     * Find a safe location in any overworld-type dimension
-     */
-    private Location findSafeLocation(Location location, Island island) {
-        World world = location.getWorld();
-        int x = location.getBlockX();
-        int z = location.getBlockZ();
+    /* ==================== DESTINATION ==================== */
 
-        for (int y = world.getMaxHeight() - 1; y > world.getMinHeight(); y--) {
-            Location checkLoc = new Location(world, x, y, z);
-            if (island.isInIsland(checkLoc) &&
-                    world.getBlockAt(x, y, z).getType().isSolid() &&
-                    !world.getBlockAt(x, y + 1, z).getType().isSolid() &&
-                    !world.getBlockAt(x, y + 2, z).getType().isSolid()) {
-                return new Location(world, x + 0.5, y + 1, z + 0.5);
+    private Location calculateDestination(Location from, Island island, World targetWorld) {
+        Location fromCenter = island.getCenter(from.getWorld());
+        Location toCenter = island.getCenter(targetWorld);
+
+        double dx = from.getX() - fromCenter.getX();
+        double dz = from.getZ() - fromCenter.getZ();
+
+        Location dest = new Location(
+                targetWorld,
+                toCenter.getX() + dx,
+                64,
+                toCenter.getZ() + dz
+        );
+
+        return findSafeLocation(dest, island);
+    }
+
+    private Location findSafeLocation(Location loc, Island island) {
+        World w = loc.getWorld();
+        int x = loc.getBlockX();
+        int z = loc.getBlockZ();
+
+        for (int y = w.getMaxHeight() - 1; y > w.getMinHeight(); y--) {
+            if (!island.isInIsland(new Location(w, x, y, z))) continue;
+
+            if (w.getBlockAt(x, y, z).getType().isSolid()
+                    && !w.getBlockAt(x, y + 1, z).getType().isSolid()
+                    && !w.getBlockAt(x, y + 2, z).getType().isSolid()) {
+                return new Location(w, x + 0.5, y + 1, z + 0.5);
             }
         }
 
