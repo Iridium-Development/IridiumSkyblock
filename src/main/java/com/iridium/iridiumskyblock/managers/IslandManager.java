@@ -83,9 +83,15 @@ public class IslandManager extends TeamManager<Island, User> {
     public void createWorld(World.Environment environment, String name) {
         if (!IridiumSkyblock.getInstance().getConfiguration().enabledWorlds.getOrDefault(environment, true)) return;
 
+        // For the "nether" dimension, we're actually creating an OVERWORLD environment
+        // but we'll configure it with nether biomes through the generator
+        World.Environment actualEnvironment = environment == World.Environment.NETHER
+                ? World.Environment.NORMAL
+                : environment;
+
         WorldCreator worldCreator = new WorldCreator(name)
                 .generator(IridiumSkyblock.getInstance().getDefaultWorldGenerator(name, null))
-                .environment(environment);
+                .environment(actualEnvironment);
 
         World world = Bukkit.createWorld(worldCreator);
 
@@ -93,47 +99,51 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world != null) {
             WorldBorder worldBorder = world.getWorldBorder();
             worldBorder.setCenter(0, 0);
-            worldBorder.setSize(29999984); // Maximum size
-            worldBorder.setDamageAmount(0); // Disable border damage
-            worldBorder.setDamageBuffer(0); // Disable damage buffer
-            worldBorder.setWarningDistance(0); // Disable warning
-            worldBorder.setWarningTime(0); // Disable warning time
+            worldBorder.setSize(29999984);
+            worldBorder.setDamageAmount(0);
+            worldBorder.setDamageBuffer(0);
+            worldBorder.setWarningDistance(0);
+            worldBorder.setWarningTime(0);
         }
 
-        createCacheWorld(world);
+        // Only create cache world and handle dragon for non-nether dimensions
+        if (environment != World.Environment.NETHER) {
+            createCacheWorld(world);
 
-        if (world != null && world.getEnvironment() == World.Environment.THE_END) {
-            Bukkit.unloadWorld(world.getName(), true);
+            if (world != null && world.getEnvironment() == World.Environment.THE_END) {
+                Bukkit.unloadWorld(world.getName(), true);
 
-            try {
-                File file = new File(worldCreator.name() + File.separator + "level.dat");
-                NBTFile worldFile = new NBTFile(file);
+                try {
+                    File file = new File(worldCreator.name() + File.separator + "level.dat");
+                    NBTFile worldFile = new NBTFile(file);
 
-                NBTCompound compound = worldFile.getOrCreateCompound("Data").getOrCreateCompound("DragonFight");
+                    NBTCompound compound = worldFile.getOrCreateCompound("Data").getOrCreateCompound("DragonFight");
 
-                compound.setBoolean("PreviouslyKilled", true);
-                compound.setBoolean("DragonKilled", true);
-                compound.setBoolean("NeedsStateScanning", false);
+                    compound.setBoolean("PreviouslyKilled", true);
+                    compound.setBoolean("DragonKilled", true);
+                    compound.setBoolean("NeedsStateScanning", false);
 
-                worldFile.save();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                IridiumSkyblock.getInstance().getLogger().warning("Failed to delete dragon from world");
+                    worldFile.save();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    IridiumSkyblock.getInstance().getLogger().warning("Failed to delete dragon from world");
+                }
+
+                World endWorld = Bukkit.createWorld(worldCreator);
+
+                if (endWorld != null) {
+                    WorldBorder endBorder = endWorld.getWorldBorder();
+                    endBorder.setCenter(0, 0);
+                    endBorder.setSize(29999984);
+                    endBorder.setDamageAmount(0);
+                    endBorder.setDamageBuffer(0);
+                    endBorder.setWarningDistance(0);
+                    endBorder.setWarningTime(0);
+                }
             }
-
-            // Note this world is already created, we are just loading it here
-            World endWorld = Bukkit.createWorld(worldCreator);
-
-            // Also configure end world border
-            if (endWorld != null) {
-                WorldBorder endBorder = endWorld.getWorldBorder();
-                endBorder.setCenter(0, 0);
-                endBorder.setSize(29999984);
-                endBorder.setDamageAmount(0);
-                endBorder.setDamageBuffer(0);
-                endBorder.setWarningDistance(0);
-                endBorder.setWarningTime(0);
-            }
+        } else {
+            // For nether (which is actually NORMAL environment), create cache world
+            createCacheWorld(world);
         }
     }
 
@@ -935,6 +945,7 @@ public class IslandManager extends TeamManager<Island, User> {
             case NORMAL:
                 return IridiumSkyblock.getInstance().getConfiguration().worldName;
             case NETHER:
+                // Return the second overworld world name for "nether"
                 return IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether";
             case THE_END:
                 return IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end";
@@ -944,7 +955,12 @@ public class IslandManager extends TeamManager<Island, User> {
 
     public boolean isInSkyblockWorld(World world) {
         if (world == null) return false;
-        return world.getName().equals(getWorldName(World.Environment.NORMAL)) || world.getName().equals(getWorldName(World.Environment.NETHER)) || world.getName().equals(getWorldName(World.Environment.THE_END));
+        String worldName = world.getName();
+        String normalWorld = getWorldName(World.Environment.NORMAL);
+        String netherWorld = getWorldName(World.Environment.NETHER);
+        String endWorld = getWorldName(World.Environment.THE_END);
+
+        return worldName.equals(normalWorld) || worldName.equals(netherWorld) || worldName.equals(endWorld);
     }
 
     public void sendIslandBorder(Player player) {
@@ -952,7 +968,6 @@ public class IslandManager extends TeamManager<Island, User> {
         Optional<Island> islandOptional = user.getCurrentIsland(player.getLocation());
 
         if (!islandOptional.isPresent()) {
-            // Player is not on any island, remove their border
             Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
                 IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, com.iridium.iridiumcore.Color.OFF, 0, player.getLocation());
             });
@@ -965,8 +980,7 @@ public class IslandManager extends TeamManager<Island, User> {
         int size = island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0);
         final com.iridium.iridiumcore.Color color = island.getColor();
 
-        // The border center should always use the island's center in the current dimension
-        // Minecraft automatically handles the coordinate system differences between dimensions
+        // All dimensions now use 1:1 coordinates (no scaling needed)
         final Location finalCentre = centre;
 
         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {

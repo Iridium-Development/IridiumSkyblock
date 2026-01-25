@@ -15,7 +15,7 @@ public class Generators {
                     true
             ),
             new com.iridium.iridiumskyblock.configs.Generators.SkyblockGeneratorWorld(
-                    XBiome.NETHER_WASTES,
+                    XBiome.NETHER_WASTES,  // Keep nether biome
                     true
             ),
             new com.iridium.iridiumskyblock.configs.Generators.SkyblockGeneratorWorld(
@@ -35,10 +35,10 @@ public class Generators {
                     true
             ),
             new com.iridium.iridiumskyblock.configs.Generators.OceanGeneratorWorld(
-                    XBiome.NETHER_WASTES,
-                    XMaterial.SOUL_SAND,
-                    XMaterial.NETHERRACK,
-                    XMaterial.LAVA,
+                    XBiome.NETHER_WASTES,  // Keep nether biome
+                    XMaterial.SAND,
+                    XMaterial.STONE,
+                    XMaterial.WATER,
                     63, 48, 53,
                     true,
                     true
@@ -63,10 +63,10 @@ public class Generators {
                     true
             ),
             new com.iridium.iridiumskyblock.configs.Generators.FlatGeneratorWorld(
-                    XBiome.NETHER_WASTES,
-                    XMaterial.NETHERRACK,
-                    XMaterial.NETHERRACK,
-                    5,
+                    XBiome.NETHER_WASTES,  // Keep nether biome
+                    XMaterial.GRASS_BLOCK,
+                    XMaterial.DIRT,
+                    -59,
                     true,
                     true
             ),
@@ -78,7 +78,6 @@ public class Generators {
                     true,
                     true
             ));
-
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SkyblockGeneratorConfig {

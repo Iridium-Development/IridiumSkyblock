@@ -131,4 +131,18 @@ public class FlatGenerator extends ChunkGenerator {
             }
         }
     }
+    private Generators.FlatGeneratorWorld getFlatGenerator(World world) {
+        // Detect which dimension this is by world name
+        String worldName = world.getName();
+        String netherWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether";
+        String endWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end";
+
+        if (worldName.equals(netherWorldName)) {
+            return IridiumSkyblock.getInstance().getGenerators().flatGenerator.nether;
+        } else if (worldName.equals(endWorldName)) {
+            return IridiumSkyblock.getInstance().getGenerators().flatGenerator.end;
+        } else {
+            return IridiumSkyblock.getInstance().getGenerators().flatGenerator.overworld;
+        }
+    }
 }
