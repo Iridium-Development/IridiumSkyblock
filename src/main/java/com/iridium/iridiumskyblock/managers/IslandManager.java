@@ -965,35 +965,9 @@ public class IslandManager extends TeamManager<Island, User> {
         int size = island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0);
         final com.iridium.iridiumcore.Color color = island.getColor();
 
-        // CRITICAL FIX: Handle nether coordinate scaling for world border
-        // The Minecraft client expects nether borders to use overworld coordinates
-        // So we need to scale up the coordinates by 8x for nether worlds
-        if (playerWorld.getEnvironment() == World.Environment.NETHER) {
-            // Get overworld center and scale it
-            World overworldWorld = getWorld(World.Environment.NORMAL);
-            if (overworldWorld != null) {
-                Location overworldCenter = island.getCenter(overworldWorld);
-                // Use overworld coordinates for the border center
-                centre = new Location(playerWorld, overworldCenter.getX(), centre.getY(), overworldCenter.getZ());
-            }
-            // Note: We DON'T scale the size, only the center coordinates
-        }
-
+        // The border center should always use the island's center in the current dimension
+        // Minecraft automatically handles the coordinate system differences between dimensions
         final Location finalCentre = centre;
-
-        // Debug logging
-        IridiumSkyblock.getInstance().getLogger().info(
-                String.format("Sending border to %s in %s (Environment: %s) - Center: %.1f, %.1f, %.1f - Size: %d - Color: %s",
-                        player.getName(),
-                        playerWorld.getName(),
-                        playerWorld.getEnvironment().name(),
-                        finalCentre.getX(),
-                        finalCentre.getY(),
-                        finalCentre.getZ(),
-                        size,
-                        color.name()
-                )
-        );
 
         Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
             IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, color, size, finalCentre);
