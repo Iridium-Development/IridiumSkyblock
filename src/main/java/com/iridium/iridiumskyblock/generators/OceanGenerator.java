@@ -164,4 +164,18 @@ public class OceanGenerator extends ChunkGenerator {
             }
         }
     }
+    private Generators.OceanGeneratorWorld getOceanGenerator(World world) {
+        // Detect which dimension this is by world name
+        String worldName = world.getName();
+        String netherWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether";
+        String endWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end";
+
+        if (worldName.equals(netherWorldName)) {
+            return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.nether;
+        } else if (worldName.equals(endWorldName)) {
+            return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.end;
+        } else {
+            return IridiumSkyblock.getInstance().getGenerators().oceanGenerator.overworld;
+        }
+    }
 }

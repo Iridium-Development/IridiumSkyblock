@@ -19,9 +19,11 @@ public class VoidGenerator extends ChunkGenerator {
     @Override
     public @NotNull ChunkData generateChunkData(@NotNull World world, @NotNull Random random, int chunkX, int chunkZ, @NotNull BiomeGrid biomeGrid) {
         final ChunkData chunkData = createChunkData(world);
+        Generators.SkyblockGeneratorWorld config = getSkyblockGenerator(world);
+
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                biomeGrid.setBiome(x, z, Objects.requireNonNull(getSkyblockGenerator(world.getEnvironment()).biome.getBiome()));
+                biomeGrid.setBiome(x, z, Objects.requireNonNull(config.biome.getBiome()));
             }
         }
         return chunkData;
@@ -36,7 +38,7 @@ public class VoidGenerator extends ChunkGenerator {
 
     @Override
     public boolean canSpawn(@NotNull World world, int x, int z) {
-        return getSkyblockGenerator(world.getEnvironment()).canSpawnEntities;
+        return getSkyblockGenerator(world).canSpawnEntities;
     }
 
     @Override
@@ -44,17 +46,18 @@ public class VoidGenerator extends ChunkGenerator {
         return Collections.emptyList();
     }
 
-    private Generators.SkyblockGeneratorWorld getSkyblockGenerator(World.Environment environment) {
-        switch (environment) {
-            case NETHER: {
-                return IridiumSkyblock.getInstance().getGenerators().skyblockGenerator.nether;
-            }
-            case THE_END: {
-                return IridiumSkyblock.getInstance().getGenerators().skyblockGenerator.end;
-            }
-            default: {
-                return IridiumSkyblock.getInstance().getGenerators().skyblockGenerator.overworld;
-            }
+    private Generators.SkyblockGeneratorWorld getSkyblockGenerator(World world) {
+        // Detect which dimension this is by world name
+        String worldName = world.getName();
+        String netherWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName + "_nether";
+        String endWorldName = IridiumSkyblock.getInstance().getConfiguration().worldName + "_the_end";
+
+        if (worldName.equals(netherWorldName)) {
+            return IridiumSkyblock.getInstance().getGenerators().skyblockGenerator.nether;
+        } else if (worldName.equals(endWorldName)) {
+            return IridiumSkyblock.getInstance().getGenerators().skyblockGenerator.end;
+        } else {
+            return IridiumSkyblock.getInstance().getGenerators().skyblockGenerator.overworld;
         }
     }
 }
