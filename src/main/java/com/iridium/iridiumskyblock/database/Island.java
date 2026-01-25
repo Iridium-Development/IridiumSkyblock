@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
@@ -161,7 +162,13 @@ public class Island extends Team {
 
     public void setColor(Color color) {
         this.color = color;
-        IridiumSkyblock.getInstance().getTeamManager().getMembersOnIsland(this).forEach(user -> IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(user.getPlayer()));
+        // Update border for all team members regardless of location
+        IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(this).forEach(user -> {
+            Player player = user.getPlayer();
+            if (player != null && player.isOnline()) {
+                IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(player);
+            }
+        });
     }
 
     @Override

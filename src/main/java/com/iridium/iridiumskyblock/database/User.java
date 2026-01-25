@@ -42,16 +42,24 @@ public class User extends IridiumUser<Island> {
     public Optional<Island> getCurrentIsland(Location location) {
         Player player = getPlayer();
         if (player == null) return Optional.empty();
+
+        // Check if location is in a skyblock world first
+        if (!IridiumSkyblock.getInstance().getIslandManager().isInSkyblockWorld(location.getWorld())) {
+            return Optional.empty();
+        }
+
+        // Check cached island first, but verify it's valid for this location AND same world type
         if (currentIsland.isPresent() && currentIsland.get().isInIsland(location)) {
             return currentIsland;
         }
+
+        // Get island at this location
         Optional<Island> islandOptional = IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(location);
 
-        islandOptional.ifPresent(island -> {
-            if(island.isInIsland(player.getLocation())){
-                setCurrentIsland(islandOptional);
-            }
-        });
+        // Update cache if the island contains the player's current location
+        if (islandOptional.isPresent() && islandOptional.get().isInIsland(player.getLocation())) {
+            setCurrentIsland(islandOptional);
+        }
 
         return islandOptional;
     }

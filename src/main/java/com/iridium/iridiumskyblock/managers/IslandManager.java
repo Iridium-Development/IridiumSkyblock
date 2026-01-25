@@ -89,6 +89,17 @@ public class IslandManager extends TeamManager<Island, User> {
 
         World world = Bukkit.createWorld(worldCreator);
 
+        // Configure server-side world border to prevent damage
+        if (world != null) {
+            WorldBorder worldBorder = world.getWorldBorder();
+            worldBorder.setCenter(0, 0);
+            worldBorder.setSize(29999984); // Maximum size
+            worldBorder.setDamageAmount(0); // Disable border damage
+            worldBorder.setDamageBuffer(0); // Disable damage buffer
+            worldBorder.setWarningDistance(0); // Disable warning
+            worldBorder.setWarningTime(0); // Disable warning time
+        }
+
         createCacheWorld(world);
 
         if (world != null && world.getEnvironment() == World.Environment.THE_END) {
@@ -111,7 +122,18 @@ public class IslandManager extends TeamManager<Island, User> {
             }
 
             // Note this world is already created, we are just loading it here
-            Bukkit.createWorld(worldCreator);
+            World endWorld = Bukkit.createWorld(worldCreator);
+
+            // Also configure end world border
+            if (endWorld != null) {
+                WorldBorder endBorder = endWorld.getWorldBorder();
+                endBorder.setCenter(0, 0);
+                endBorder.setSize(29999984);
+                endBorder.setDamageAmount(0);
+                endBorder.setDamageBuffer(0);
+                endBorder.setWarningDistance(0);
+                endBorder.setWarningTime(0);
+            }
         }
     }
 
@@ -926,10 +948,55 @@ public class IslandManager extends TeamManager<Island, User> {
     }
 
     public void sendIslandBorder(Player player) {
-        getTeamViaPlayerLocation(player).ifPresent(island -> {
-            final Location centre = island.getCenter(player.getWorld()).clone();
+        User user = IridiumSkyblock.getInstance().getUserManager().getUser(player);
+        Optional<Island> islandOptional = user.getCurrentIsland(player.getLocation());
 
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, island.getColor(), island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0), centre));
+        if (!islandOptional.isPresent()) {
+            // Player is not on any island, remove their border
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, com.iridium.iridiumcore.Color.OFF, 0, player.getLocation());
+            });
+            return;
+        }
+
+        Island island = islandOptional.get();
+        World playerWorld = player.getWorld();
+        Location centre = island.getCenter(playerWorld).clone();
+        int size = island.getSize() + (island.getSize() % 2 == 0 ? 1 : 0);
+        final com.iridium.iridiumcore.Color color = island.getColor();
+
+        // CRITICAL FIX: Handle nether coordinate scaling for world border
+        // The Minecraft client expects nether borders to use overworld coordinates
+        // So we need to scale up the coordinates by 8x for nether worlds
+        if (playerWorld.getEnvironment() == World.Environment.NETHER) {
+            // Get overworld center and scale it
+            World overworldWorld = getWorld(World.Environment.NORMAL);
+            if (overworldWorld != null) {
+                Location overworldCenter = island.getCenter(overworldWorld);
+                // Use overworld coordinates for the border center
+                centre = new Location(playerWorld, overworldCenter.getX(), centre.getY(), overworldCenter.getZ());
+            }
+            // Note: We DON'T scale the size, only the center coordinates
+        }
+
+        final Location finalCentre = centre;
+
+        // Debug logging
+        IridiumSkyblock.getInstance().getLogger().info(
+                String.format("Sending border to %s in %s (Environment: %s) - Center: %.1f, %.1f, %.1f - Size: %d - Color: %s",
+                        player.getName(),
+                        playerWorld.getName(),
+                        playerWorld.getEnvironment().name(),
+                        finalCentre.getX(),
+                        finalCentre.getY(),
+                        finalCentre.getZ(),
+                        size,
+                        color.name()
+                )
+        );
+
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+            IridiumSkyblock.getInstance().getNms().sendWorldBorder(player, color, size, finalCentre);
         });
     }
 

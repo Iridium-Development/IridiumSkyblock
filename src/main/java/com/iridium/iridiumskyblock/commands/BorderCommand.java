@@ -54,7 +54,10 @@ public class BorderCommand extends Command<Island, User> {
             return false;
         }
 
+        // This will trigger the border update for all team members via Island.setColor()
         island.setColor(color);
+
+        // Send message to all team members
         IridiumSkyblock.getInstance().getTeamManager().getTeamMembers(island).stream()
                 .map(IridiumUser::getPlayer)
                 .filter(Objects::nonNull)
