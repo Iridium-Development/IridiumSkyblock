@@ -23,12 +23,12 @@ public class PlayerTeleportListener implements Listener {
                 IridiumSkyblock.getInstance().getIslandManager().isInSkyblockWorld(from.getWorld());
         boolean toSkyblock = IridiumSkyblock.getInstance().getIslandManager().isInSkyblockWorld(to.getWorld());
 
-        // If teleporting to a skyblock world or changing dimensions within skyblock
-        boolean dimensionChange = from.getWorld() != null && !from.getWorld().equals(to.getWorld());
-
-        if (toSkyblock && (dimensionChange || !fromSkyblock)) {
-            // Update border after teleport completes with appropriate delay
-            int delay = dimensionChange ? 5 : 3; // Longer delay for dimension changes
+        // If teleporting to a skyblock world, always update border
+        // This handles: dimension changes, entering skyblock, AND moving between islands
+        if (toSkyblock) {
+            boolean dimensionChange = from.getWorld() != null && !from.getWorld().equals(to.getWorld());
+            // Longer delay for dimension changes to ensure world is fully loaded
+            int delay = dimensionChange ? 5 : 3;
 
             Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> {
                 if (player.isOnline()) {

@@ -13,9 +13,16 @@ public class EnhancementUpdateListener implements Listener {
     @EventHandler
     public void onEnhancementUpdateEvent(EnhancementUpdateEvent<Island, User> event) {
         if (event.getEnhancement().equals("size")) {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
-                    IridiumSkyblock.getInstance().getTeamManager().getMembersOnIsland(event.getTeam()).forEach(user -> IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(user.getPlayer()))
-            );
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> {
+                // Update visual borders for all members on the island
+                IridiumSkyblock.getInstance().getTeamManager().getMembersOnIsland(event.getTeam())
+                        .forEach(user -> IridiumSkyblock.getInstance().getTeamManager().sendIslandBorder(user.getPlayer()));
+
+                // Update WorldGuard regions if enabled
+                if (IridiumSkyblock.getInstance().getIslandRegionManager() != null) {
+                    IridiumSkyblock.getInstance().getIslandRegionManager().updateIslandRegions(event.getTeam());
+                }
+            });
         }
     }
 

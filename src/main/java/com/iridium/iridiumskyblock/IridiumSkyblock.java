@@ -82,6 +82,8 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     private ChunkGenerator chunkGenerator;
 
+    private IslandRegionManager islandRegionManager;
+
     public IridiumSkyblock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
         instance = this;
@@ -154,6 +156,16 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
             exception.printStackTrace();
             Bukkit.getPluginManager().disablePlugin(this);
             return;
+        }
+
+        // Initialize WorldGuard region manager if WorldGuard is present and enabled
+        if (getServer().getPluginManager().getPlugin("WorldGuard") != null && configuration.useWorldGuardRegions) {
+            this.islandRegionManager = new IslandRegionManager();
+            getLogger().info("WorldGuard detected - island regions enabled for boundary protection.");
+        } else {
+            if (configuration.useWorldGuardRegions) {
+                getLogger().warning("WorldGuard not found but useWorldGuardRegions is enabled. Install WorldGuard for region-based island boundaries.");
+            }
         }
 
         Bukkit.getScheduler().runTask(this, () -> this.economy = setupEconomy());
@@ -415,6 +427,10 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
 
     public IslandManager getIslandManager() {
         return teamManager;
+    }
+
+    public IslandRegionManager getIslandRegionManager() {
+        return islandRegionManager;
     }
 
     public static IridiumSkyblock getInstance() {

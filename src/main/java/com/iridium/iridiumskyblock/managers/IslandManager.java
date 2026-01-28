@@ -337,6 +337,13 @@ public class IslandManager extends TeamManager<Island, User> {
                 regenerateTerrain(island).join();
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, schematicConfig);
+
+            // Create WorldGuard regions for the island if enabled
+            if (IridiumSkyblock.getInstance().getIslandRegionManager() != null) {
+                Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                        IridiumSkyblock.getInstance().getIslandRegionManager().createIslandRegions(island)
+                );
+            }
         });
     }
 
@@ -487,6 +494,11 @@ public class IslandManager extends TeamManager<Island, User> {
         IslandDeleteEvent islandDeleteEvent = new IslandDeleteEvent(island, user);
         Bukkit.getPluginManager().callEvent(islandDeleteEvent);
         if (islandDeleteEvent.isCancelled()) return false;
+
+        // Delete WorldGuard regions first before removing island data
+        if (IridiumSkyblock.getInstance().getIslandRegionManager() != null) {
+            IridiumSkyblock.getInstance().getIslandRegionManager().deleteIslandRegions(island);
+        }
 
         if (IridiumSkyblock.getInstance().getConfiguration().removeIslandBlocksOnDelete) {
             deleteIslandBlocks(island);

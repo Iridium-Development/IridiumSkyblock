@@ -3,6 +3,7 @@ plugins {
     `maven-publish`
     id("com.gradleup.shadow") version "9.3.1"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
+    id("xyz.jpenilla.run-paper") version "3.0.2"
 }
 
 group = "com.iridium"
@@ -18,6 +19,7 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://jitpack.io")
     maven("https://maven.enginehub.org/repo/")
+
 }
 
 dependencies {
@@ -34,6 +36,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.15")
 
     // Enable lombok annotation processing
     annotationProcessor("org.projectlombok:lombok:1.18.42")
@@ -55,6 +58,7 @@ bukkit {
         "EssentialsSpawn",
         "RoseStacker",
         "WorldEdit",
+        "WorldGuard",
         "ObsidianStacker"
     )
 
@@ -108,13 +112,20 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
 
-        sourceCompatibility = JavaVersion.VERSION_1_8.toString()
-        targetCompatibility = JavaVersion.VERSION_1_8.toString()
+        sourceCompatibility = JavaVersion.VERSION_21.toString()
+        targetCompatibility = JavaVersion.VERSION_21.toString()
     }
 
     compileTestJava {
-        sourceCompatibility = JavaVersion.VERSION_17.toString()
-        targetCompatibility = JavaVersion.VERSION_17.toString()
+        sourceCompatibility = JavaVersion.VERSION_21.toString()
+        targetCompatibility = JavaVersion.VERSION_21.toString()
+    }
+
+    runServer {
+        // Configure the Minecraft version for our task.
+        // This is the only required configuration besides applying the plugin.
+        // Your plugin's jar (or shadowJar if present) will be used automatically.
+        minecraftVersion("1.21.11")
     }
 }
 

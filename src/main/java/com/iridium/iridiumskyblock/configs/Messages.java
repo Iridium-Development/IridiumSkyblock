@@ -32,4 +32,5 @@ public class Messages extends com.iridium.iridiumteams.configs.Messages {
     public String specifyData = "%prefix% &7Due to the nature of this destructive command, you must specify the data to be deleted (or specify \"all\").";
     public String confirmDataDeletion = "%prefix% &7You are about to delete the following data: %table% | [for: %island%] in 5 seconds. &cAre you sure you want to do this? (DATA IS &4&lUNRECOVERABLE&r&c)";
     public String dataDeletion = "%prefix% &cData has been deleted successfully. &7You may need to restart your server for it to take effect.";
+    public String regionExitDenied = "%prefix% &7You cannot leave your island without using a teleport command!";
 }
