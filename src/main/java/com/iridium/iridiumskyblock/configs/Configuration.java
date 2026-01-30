@@ -87,4 +87,5 @@ public class Configuration extends com.iridium.iridiumteams.configs.Configuratio
             .put(Color.OFF, true)
             .build();
 
+    public boolean tpBypassersWithRegen = true;
 }
