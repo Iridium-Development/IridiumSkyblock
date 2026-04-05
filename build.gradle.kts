@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.1.3-b5"
+version = "4.1.5-b1"
 description = "Skyblock Redefined"
 
 repositories {
@@ -113,8 +113,8 @@ tasks {
     }
 
     compileTestJava {
-        sourceCompatibility = JavaVersion.VERSION_17.toString()
-        targetCompatibility = JavaVersion.VERSION_17.toString()
+        sourceCompatibility = JavaVersion.VERSION_25.toString()
+        targetCompatibility = JavaVersion.VERSION_25.toString()
     }
 }
 
