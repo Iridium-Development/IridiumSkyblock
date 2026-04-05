@@ -3,6 +3,7 @@ package com.iridium.iridiumskyblock.managers;
 import com.cryptomorin.xseries.XBiome;
 import com.cryptomorin.xseries.XEntityType;
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.iridium.iridiumcore.utils.ItemStackUtils;
 import com.iridium.iridiumcore.utils.Placeholder;
 import com.iridium.iridiumcore.utils.StringUtils;
@@ -726,7 +727,9 @@ public class IslandManager extends TeamManager<Island, User> {
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
                         final int maxy = chunkSnapshot.getHighestBlockYAt(x, z);
-                        for (int y = 0; y <= maxy; y++) {
+                        // TODO: maybe dont reflect every time we recalculate a team.
+                        final int miny = XReflection.supports(18) ? chunk.getWorld().getMinHeight() : 0;
+                        for (int y = miny; y <= maxy; y++) {
                             if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
                                 XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
                                 teamBlocks.put(material, teamBlocks.getOrDefault(material, 0) + 1);
