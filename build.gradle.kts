@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.iridium"
-version = "4.1.4"
+version = "4.1.5-b1"
 description = "Skyblock Redefined"
 
 repositories {
