@@ -1,5 +1,6 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.iridium.iridiumcore.utils.StringUtils;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -23,7 +24,7 @@ public class PlayerPortalListener implements Listener {
 
         Player player = event.getPlayer();
 
-        Optional<Island> islandCheck = IridiumSkyblock.getInstance().getTeamManager().getTeamViaLocation(player.getLocation());
+        Optional<Island> islandCheck = IridiumSkyblock.getInstance().getTeamManager().getTeamViaPlayerLocation(player);
 
         // We want to allow teleportation from a non-skyblock world into a skyblock world, or from no island to an island.
         // We don't care if the player is not within an island.
@@ -118,9 +119,7 @@ public class PlayerPortalListener implements Listener {
         }
 
         location.setY(location.getY() + 1);
-        // version example: 1.20.4-R0.1-SNAPSHOT (we need 20)
-        // will need to be updated for 26.x
-        if (Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4)) >= 15) event.setCanCreatePortal(false);
+        if (XReflection.supports(15)) event.setCanCreatePortal(false);
         event.setTo(location);
     }
 }
