@@ -1110,4 +1110,3 @@ public class IslandManager extends TeamManager<Island, User> {
         }
     }
 }
-}
