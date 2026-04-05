@@ -1,12 +1,12 @@
 plugins {
     java
     `maven-publish`
-    id("com.gradleup.shadow") version "9.3.1"
+    id("com.gradleup.shadow") version "9.4.1"
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
 
 group = "com.iridium"
-version = "4.1.3-b3"
+version = "4.1.3-b5"
 description = "Skyblock Redefined"
 
 repositories {
@@ -22,21 +22,21 @@ repositories {
 
 dependencies {
     // Dependencies that we want to shade in
-    implementation("org.jetbrains:annotations:26.0.2-1")
+    implementation("org.jetbrains:annotations:26.1.0")
     implementation("com.j256.ormlite:ormlite-core:6.1")
     implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.iridium:IridiumTeams:2.6.12")
+    implementation("com.iridium:IridiumTeams:2.6.14")
     implementation("commons-lang:commons-lang:2.6")
 
     // Other dependencies that are not required or already available at runtime
-    compileOnly("org.projectlombok:lombok:1.18.42")
+    compileOnly("org.projectlombok:lombok:1.18.44")
     compileOnly("org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("net.ess3:EssentialsXSpawn:2.16.1")
     compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.2.13-SNAPSHOT")
 
     // Enable lombok annotation processing
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    annotationProcessor("org.projectlombok:lombok:1.18.44")
 }
 
 bukkit {
