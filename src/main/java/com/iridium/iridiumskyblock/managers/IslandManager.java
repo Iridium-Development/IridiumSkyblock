@@ -720,15 +720,18 @@ public class IslandManager extends TeamManager<Island, User> {
     public CompletableFuture<Void> recalculateTeam(Island island) {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
         Map<EntityType, Integer> teamSpawners = new HashMap<>();
+
+        // TODO: maybe dont reflect every time we recalculate a team.
+        final boolean supportsMinHeight = XReflection.supports(18);
+
         return CompletableFuture.runAsync(() -> {
             List<Chunk> chunks = getIslandChunks(island).join();
             for (Chunk chunk : chunks) {
+                final int miny = supportsMinHeight ? chunk.getWorld().getMinHeight() : 0;
                 ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
                         final int maxy = chunkSnapshot.getHighestBlockYAt(x, z);
-                        // TODO: maybe dont reflect every time we recalculate a team.
-                        final int miny = XReflection.supports(18) ? chunk.getWorld().getMinHeight() : 0;
                         for (int y = miny; y <= maxy; y++) {
                             if (island.isInIsland(x + (chunkSnapshot.getX() * 16), z + (chunkSnapshot.getZ() * 16))) {
                                 XMaterial material = XMaterial.matchXMaterial(chunkSnapshot.getBlockType(x, y, z));
