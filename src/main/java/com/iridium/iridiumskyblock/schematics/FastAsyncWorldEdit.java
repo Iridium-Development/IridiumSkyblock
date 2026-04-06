@@ -2,6 +2,7 @@ package com.iridium.iridiumskyblock.schematics;
 
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
@@ -21,6 +22,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.util.SideEffectSet;
+import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -39,6 +41,7 @@ public class FastAsyncWorldEdit implements SchematicPaster {
     private static Object mutex = new Object();
 
     public static boolean isWorking() {
+
         try {
             final Platform platform = com.sk89q.worldedit.WorldEdit.getInstance().getPlatformManager()
                     .queryCapability(Capability.WORLD_EDITING);
@@ -49,13 +52,12 @@ public class FastAsyncWorldEdit implements SchematicPaster {
                     "WorldEdit threw an error during initializing, make sure it's updated and API compatible(FAWE isn't API compatible) ::"
                             + t.getMessage());
         }
+
         return false;
     }
 
     @Override
     public void paste(File file, Location location, Boolean ignoreAirBlock, CompletableFuture<Void> completableFuture) {
-
-        
 
         try {
             ClipboardFormat format = cachedClipboardFormat.getOrDefault(file, ClipboardFormats.findByFile(file));
@@ -74,33 +76,31 @@ public class FastAsyncWorldEdit implements SchematicPaster {
             clipboard.setOrigin(clipboard.getRegion().getMinimumPoint()); // Change the //copy point to the minimum
                                                                           // corner
             {
-                Thread t = new Thread() {
-                    public void run() {
-                        synchronized (mutex) {
-                            EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance()
-                                    .newEditSession(new BukkitWorld(location.getWorld()));
-                            Operation operation = new ClipboardHolder(clipboard)
-                                    .createPaste(editSession)
-                                    .to(BlockVector3.at(location.getX(), location.getY(), location.getZ()))
-                                    .copyEntities(true)
-                                    .ignoreAirBlocks(ignoreAirBlock)
-                                    .build();
-                            try {
-                                Operations.complete(operation);
-                                Operations.complete(editSession.commit());
-                            } catch (WorldEditException e) {
-                                e.printStackTrace();
-                            }
-                            cachedClipboardFormat.putIfAbsent(file, format);
-                            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), new Runnable() {
-                                @Override
-                                public void run() {
-                                    completableFuture.complete(null);
-                                }
-                            });
+                Thread t = new Thread(() -> {
+                    synchronized (mutex) {
+                        EditSession editSession = WorldEdit.getInstance()
+                                .newEditSession(new BukkitWorld(location.getWorld()));
+
+                        Operation operation = new ClipboardHolder(clipboard)
+                                .createPaste(editSession)
+                                .to(BlockVector3.at(location.getX(), location.getY(), location.getZ()))
+                                .copyEntities(true)
+                                .ignoreAirBlocks(ignoreAirBlock)
+                                .build();
+
+                        try {
+                            Operations.complete(operation);
+                            Operations.complete(editSession.commit());
+                        } catch (WorldEditException e) {
+                            e.printStackTrace();
                         }
-                    };
-                };
+
+                        cachedClipboardFormat.putIfAbsent(file, format);
+
+                        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                                completableFuture.complete(null));
+                    }
+                });
                 t.start();
             }
         } catch (IOException e) {
@@ -117,34 +117,42 @@ public class FastAsyncWorldEdit implements SchematicPaster {
 
         com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(world);
 
-        try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().newEditSession(weWorld)) {
-            BlockVector3 min = BlockVector3.at(pos1.getBlockX(), minHeight, pos1.getBlockZ());
-            BlockVector3 max = BlockVector3.at(pos2.getBlockX(), maxHeight, pos2.getBlockZ());
-            CuboidRegion selection = new CuboidRegion(min, max);
+        {
+            Thread t = new Thread(() -> {
+                synchronized (mutex) {
+                    try (EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld)) {
+                        BlockVector3 min = BlockVector3.at(pos1.getBlockX(), minHeight, pos1.getBlockZ());
+                        BlockVector3 max = BlockVector3.at(pos2.getBlockX(), maxHeight, pos2.getBlockZ());
+                        CuboidRegion selection = new CuboidRegion(min, max);
 
-            com.sk89q.worldedit.world.block.BlockState air = BlockTypes.AIR.getDefaultState();
-            ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
+                        BlockState air = BlockTypes.AIR.getDefaultState();
+                        ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
 
-            editSession.getChangeSet().setRecordChanges(false);
-            editSession.setReorderMode(EditSession.ReorderMode.FAST);
-            editSession.setSideEffectApplier(SideEffectSet.none());
+                        editSession.getChangeSet().setRecordChanges(false);
+                        editSession.setReorderMode(EditSession.ReorderMode.FAST);
+                        editSession.setSideEffectApplier(SideEffectSet.none());
 
-            editSession.replaceBlocks(selection, nonAirMask, (Pattern) air); // no style points :(
+                        editSession.replaceBlocks(selection, nonAirMask, (Pattern) air); // no style points :(
 
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
-                        weWorld.fixLighting(selection.getChunks());
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
+                                    weWorld.fixLighting(selection.getChunks());
+                                }
+                            }
+                        }.runTask(IridiumSkyblock.getInstance());
+
+                    } catch (WorldEditException e) {
+                        throw new RuntimeException(e);
                     }
+
+                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                            completableFuture.complete(null));
                 }
-            }.runTask(IridiumSkyblock.getInstance());
-
-        } catch (WorldEditException e) {
-            throw new RuntimeException(e);
+            });
+            t.start();
         }
-
-        completableFuture.complete(null);
     }
 
     public void regenIsland(World world, World regenWorld, Location pos1, Location pos2, Location pos3, Location pos4, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
@@ -162,42 +170,57 @@ public class FastAsyncWorldEdit implements SchematicPaster {
 
         BlockArrayClipboard clipboard = new BlockArrayClipboard(selection);
 
-        // copy
-        try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().newEditSession(weRegenWorld)) {
-            editSession.getChangeSet().setRecordChanges(false);
-            ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
-            editSession.setMask(nonAirMask);
+        {
+            Thread t = new Thread(() -> {
+                synchronized (mutex) {
 
-            ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
-                    weRegenWorld,
-                    selection,
-                    clipboard,
-                    selection.getMinimumPoint()
-            );
+                    // copy
+                    try (EditSession editSession = WorldEdit.getInstance().newEditSession(weRegenWorld)) {
+                        editSession.getChangeSet().setRecordChanges(false);
+                        ExistingBlockMask nonAirMask = new ExistingBlockMask(editSession);
+                        editSession.setMask(nonAirMask);
 
-            Operations.complete(forwardExtentCopy);
+                        ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
+                                weRegenWorld,
+                                selection,
+                                clipboard,
+                                selection.getMinimumPoint()
+                        );
 
-        } catch (WorldEditException e) {
-            throw new RuntimeException(e);
+                        Operations.complete(forwardExtentCopy);
+
+                    } catch (WorldEditException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    // paste
+                    try (EditSession editSession = WorldEdit.getInstance().newEditSession(weWorld)) {
+                        editSession.getChangeSet().setRecordChanges(false);
+
+                        Operation operation = new ClipboardHolder(clipboard)
+                                .createPaste(editSession)
+                                .to(selection2.getMinimumPoint())
+                                .copyBiomes(true)
+                                .copyEntities(false)
+                                .build();
+
+                        Operations.complete(operation);
+                    } catch (WorldEditException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            weWorld.fixLighting(selection.getChunks());
+                        }
+                    }.runTask(IridiumSkyblock.getInstance());
+
+                    Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                            completableFuture.complete(null));
+                }
+            });
+            t.start();
         }
-
-        // paste
-        try (EditSession editSession = com.sk89q.worldedit.WorldEdit.getInstance().newEditSession(weWorld)) {
-            editSession.getChangeSet().setRecordChanges(false);
-
-            Operation operation = new ClipboardHolder(clipboard)
-                    .createPaste(editSession)
-                    .to(selection2.getMinimumPoint())
-                    .copyBiomes(true)
-                    .copyEntities(false)
-                    .build();
-
-            Operations.complete(operation);
-        } catch (WorldEditException e) {
-            throw new RuntimeException(e);
-        }
-
-        completableFuture.complete(null);
-        weWorld.fixLighting(selection.getChunks());
     }
 }

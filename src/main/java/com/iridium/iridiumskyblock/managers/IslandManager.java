@@ -29,28 +29,11 @@ import com.iridium.iridiumteams.support.SpawnSupport;
 import com.iridium.iridiumteams.support.StackerSupport;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
-import com.sk89q.worldedit.*;
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.extent.MaskingExtent;
-import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
-import com.sk89q.worldedit.function.mask.ExistingBlockMask;
-import com.sk89q.worldedit.function.mask.Mask;
-import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.function.pattern.Pattern;
-import com.sk89q.worldedit.math.BlockVector2;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.util.SideEffectSet;
-import com.sk89q.worldedit.world.block.BlockTypes;
 import de.tr7zw.changeme.nbtapi.NBT;
 import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTFile;
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
@@ -59,9 +42,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -456,7 +437,10 @@ public class IslandManager extends TeamManager<Island, User> {
         final int finalMinHeight = minHeight;
         int maxHeight = world.getMaxHeight();
 
-        IridiumSkyblock.getInstance().getSchematicManager().deleteIsland(world, pos1, pos2, finalMinHeight, maxHeight, completableFuture, delay);
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                IridiumSkyblock.getInstance().getSchematicManager().deleteIsland(world, pos1, pos2, finalMinHeight, maxHeight, completableFuture, delay));
+
+        completableFuture.complete(null);
     }
 
     public CompletableFuture<Void> regenerateTerrain(Island island) {
@@ -497,7 +481,10 @@ public class IslandManager extends TeamManager<Island, User> {
         final int finalMinHeight = minHeight;
         int maxHeight = world.getMaxHeight();
 
-        IridiumSkyblock.getInstance().getSchematicManager().regenIsland(world, regenWorld, pos1, pos2, pos3, pos4, finalMinHeight, maxHeight, completableFuture, delay);
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                IridiumSkyblock.getInstance().getSchematicManager().regenIsland(world, regenWorld, pos1, pos2, pos3, pos4, finalMinHeight, maxHeight, completableFuture, delay));
+
+        completableFuture.complete(null);
     }
 
     @Override
