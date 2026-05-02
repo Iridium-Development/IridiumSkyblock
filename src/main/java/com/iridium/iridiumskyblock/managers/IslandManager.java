@@ -25,6 +25,7 @@ import com.iridium.iridiumteams.managers.TeamManager;
 import com.iridium.iridiumteams.missions.Mission;
 import com.iridium.iridiumteams.missions.MissionData;
 import com.iridium.iridiumteams.missions.MissionType;
+import com.iridium.iridiumteams.support.SpawnSupport;
 import com.iridium.iridiumteams.support.StackerSupport;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.Where;
@@ -33,7 +34,6 @@ import de.tr7zw.changeme.nbtapi.NBTCompound;
 import de.tr7zw.changeme.nbtapi.NBTFile;
 import io.papermc.lib.PaperLib;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.Entity;
@@ -42,7 +42,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -141,8 +140,8 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) return;
 
         getIslandChunks(island).thenAccept(chunks -> {
-            Location pos1 = island.getPosition1(world);
-            Location pos2 = island.getPosition2(world);
+            Location pos1 = island.getMaximumPosition1(world);
+            Location pos2 = island.getMaximumPosition2(world);
             biome.setBiome(pos1, pos2).thenRun(() -> {
                 for (Chunk chunk : chunks) {
                     chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
@@ -301,9 +300,11 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.runAsync(() -> {
             setHome(island, schematicConfig);
             clearEntities(island);
+            removePlayers(island).join();
             deleteIslandBlocks(island).join();
-            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator())
+            if (IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
                 regenerateTerrain(island).join();
+            }
             IridiumSkyblock.getInstance().getSchematicManager().pasteSchematic(island, schematicConfig).join();
             setIslandBiome(island, schematicConfig);
         });
@@ -353,6 +354,55 @@ public class IslandManager extends TeamManager<Island, User> {
         completableFuture.complete(null);
     }
 
+    public CompletableFuture<Void> removePlayers(Island island) {
+
+        return CompletableFuture.runAsync(() -> {
+            List<CompletableFuture<Void>> completableFutures = Arrays.asList(
+                    removePlayers(island, getWorld(World.Environment.NORMAL)),
+                    removePlayers(island, getWorld(World.Environment.NETHER)),
+                    removePlayers(island, getWorld(World.Environment.THE_END))
+            );
+            completableFutures.forEach(CompletableFuture::join);
+        });
+    }
+
+    private CompletableFuture<Void> removePlayers(Island island, World world) {
+        CompletableFuture<Void> completableFuture = new CompletableFuture<>();
+        if (world == null) {
+            completableFuture.complete(null);
+        } else {
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> removePlayers(island, world, completableFuture));
+        }
+        return completableFuture;
+    }
+
+    private void removePlayers(Island island, World world, CompletableFuture<Void> completableFuture) {
+
+        if (world == null) return;
+
+        Optional<SpawnSupport<Island>> spawnSupport = IridiumSkyblock.getInstance().getSupportManager().getSpawnSupport().stream().findFirst();
+
+        world.getPlayers().forEach(player -> {
+
+            if (island.isInIsland(player.getLocation())) {
+
+                boolean bypasser = IridiumSkyblock.getInstance().getUserManager().getUser(player).isBypassing();
+
+                // If a player is bypassing island restrictions, they're likely an admin.
+                // We don't want to kick admins from an island if they're watching it.
+                if (!bypasser || (bypasser && IridiumSkyblock.getInstance().getConfiguration().tpBypassersWithRegen)) { // if not bypassing OR bypassing and should be teleported
+                    if (spawnSupport.isPresent()) {
+                        player.teleport(spawnSupport.get().getSpawn(player));
+                    } else {
+                        player.teleport(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
+                    }
+                }
+            }
+        });
+
+        completableFuture.complete(null);
+    }
+
     public CompletableFuture<Void> deleteIslandBlocks(Island island) {
         return CompletableFuture.runAsync(() -> {
             List<CompletableFuture<Void>> completableFutures = Arrays.asList(
@@ -369,37 +419,28 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) {
             completableFuture.complete(null);
         } else {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, world.getMaxHeight(), completableFuture, 0));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                    deleteIslandBlocks(island, world, completableFuture, IridiumSkyblock.getInstance().getConfiguration().pasterDelayInTick));
         }
         return completableFuture;
     }
 
-    private void deleteIslandBlocks(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    private void deleteIslandBlocks(Island island, World world, CompletableFuture<Void> completableFuture, int delay) {
+
         if (world == null) return;
+
         Location pos1 = island.getMaximumPosition1(world);
         Location pos2 = island.getMaximumPosition2(world);
 
-        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
-            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-                Block block = world.getBlockAt(x, y, z);
-                if (block.getType() != Material.AIR) {
-                    if (block.getState() instanceof InventoryHolder) {
-                        ((InventoryHolder) block.getState()).getInventory().clear();
-                    }
-                    block.setType(Material.AIR, false);
-                }
-            }
-        }
+        int minHeight = 0;
+        if (XReflection.supports(18)) minHeight = world.getMinHeight();
+        final int finalMinHeight = minHeight;
+        int maxHeight = world.getMaxHeight();
 
-        if (y <= LocationUtils.getMinHeight(world)) {
-            completableFuture.complete(null);
-        } else {
-            if (delay < 1) {
-                deleteIslandBlocks(island, world, y - 1, completableFuture, delay);
-            } else {
-                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> deleteIslandBlocks(island, world, y - 1, completableFuture, delay), delay);
-            }
-        }
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                IridiumSkyblock.getInstance().getSchematicManager().deleteIsland(world, pos1, pos2, finalMinHeight, maxHeight, completableFuture, delay));
+
+        completableFuture.complete(null);
     }
 
     public CompletableFuture<Void> regenerateTerrain(Island island) {
@@ -418,37 +459,32 @@ public class IslandManager extends TeamManager<Island, User> {
         if (world == null) {
             completableFuture.complete(null);
         } else {
-            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, world.getMaxHeight(), completableFuture, 0));
+            Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                    regenerateTerrain(island, world, completableFuture, IridiumSkyblock.getInstance().getConfiguration().pasterDelayInTick));
         }
         return completableFuture;
     }
 
-    public void regenerateTerrain(Island island, World world, int y, CompletableFuture<Void> completableFuture, int delay) {
+    public void regenerateTerrain(Island island, World world, CompletableFuture<Void> completableFuture, int delay) {
 
         if (world == null) return;
 
-        Location pos1 = island.getMaximumPosition1(world);
-        Location pos2 = island.getMaximumPosition2(world);
-
         World regenWorld = Bukkit.getWorld(getCacheWorldName(world));
 
-        for (int x = pos1.getBlockX(); x <= pos2.getBlockX(); x++) {
-            for (int z = pos1.getBlockZ(); z <= pos2.getBlockZ(); z++) {
-                Block blockA = regenWorld.getBlockAt(x, y, z);
-                Block blockB = world.getBlockAt(x, y, z);
-                blockB.setBlockData(blockA.getBlockData(), false);
-            }
-        }
+        Location pos1 = island.getMaximumPosition1(regenWorld);
+        Location pos2 = island.getMaximumPosition2(regenWorld);
+        Location pos3 = island.getMaximumPosition1(world);
+        Location pos4 = island.getMaximumPosition2(world);
 
-        if (y <= LocationUtils.getMinHeight(world)) {
-            completableFuture.complete(null);
-        } else {
-            if (delay < 1) {
-                regenerateTerrain(island, world, y - 1, completableFuture, delay);
-            } else {
-                Bukkit.getScheduler().runTaskLater(IridiumSkyblock.getInstance(), () -> regenerateTerrain(island, world, y - 1, completableFuture, delay), delay);
-            }
-        }
+        int minHeight = 0;
+        if (XReflection.supports(18)) minHeight = world.getMinHeight();
+        final int finalMinHeight = minHeight;
+        int maxHeight = world.getMaxHeight();
+
+        Bukkit.getScheduler().runTask(IridiumSkyblock.getInstance(), () ->
+                IridiumSkyblock.getInstance().getSchematicManager().regenIsland(world, regenWorld, pos1, pos2, pos3, pos4, finalMinHeight, maxHeight, completableFuture, delay));
+
+        completableFuture.complete(null);
     }
 
     @Override
@@ -1065,5 +1101,4 @@ public class IslandManager extends TeamManager<Island, User> {
             }
         }
     }
-
 }
