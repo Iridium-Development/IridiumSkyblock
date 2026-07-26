@@ -36,6 +36,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.boss.DragonBattle;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -58,7 +59,7 @@ import java.util.stream.Stream;
 public class IslandManager extends TeamManager<Island, User> {
 
 
-    private final boolean supportsMinHeight = XReflection.supports(1,18);
+    private final boolean supportsMinHeight = XReflection.supports(1, 18);
 
     public IslandManager() {
         super(IridiumSkyblock.getInstance());
@@ -96,26 +97,33 @@ public class IslandManager extends TeamManager<Island, User> {
         createCacheWorld(world);
 
         if (world != null && world.getEnvironment() == World.Environment.THE_END) {
-            Bukkit.unloadWorld(world.getName(), true);
+            if (XReflection.supports(1, 21)) {
+                DragonBattle dragonBattle = world.getEnderDragonBattle();
+                if (dragonBattle != null) {
+                    dragonBattle.setPreviouslyKilled(true);
+                    world.save();
+                }
+            } else {
+                Bukkit.unloadWorld(world.getName(), true);
+                try {
+                    File file = new File(worldCreator.name() + File.separator + "level.dat");
+                    NBTFile worldFile = new NBTFile(file);
 
-            try {
-                File file = new File(worldCreator.name() + File.separator + "level.dat");
-                NBTFile worldFile = new NBTFile(file);
+                    NBTCompound compound = worldFile.getOrCreateCompound("Data").getOrCreateCompound("DragonFight");
 
-                NBTCompound compound = worldFile.getOrCreateCompound("Data").getOrCreateCompound("DragonFight");
+                    compound.setBoolean("PreviouslyKilled", true);
+                    compound.setBoolean("DragonKilled", true);
+                    compound.setBoolean("NeedsStateScanning", false);
 
-                compound.setBoolean("PreviouslyKilled", true);
-                compound.setBoolean("DragonKilled", true);
-                compound.setBoolean("NeedsStateScanning", false);
+                    worldFile.save();
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                    IridiumSkyblock.getInstance().getLogger().warning("Failed to delete dragon from world");
+                }
 
-                worldFile.save();
-            } catch (Exception exception) {
-                exception.printStackTrace();
-                IridiumSkyblock.getInstance().getLogger().warning("Failed to delete dragon from world");
+                // Note this world is already created, we are just loading it here
+                Bukkit.createWorld(worldCreator);
             }
-
-            // Note this world is already created, we are just loading it here
-            Bukkit.createWorld(worldCreator);
         }
     }
 
