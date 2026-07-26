@@ -57,6 +57,9 @@ import java.util.stream.Stream;
 
 public class IslandManager extends TeamManager<Island, User> {
 
+
+    private final boolean supportsMinHeight = XReflection.supports(1,18);
+
     public IslandManager() {
         super(IridiumSkyblock.getInstance());
     }
@@ -720,9 +723,6 @@ public class IslandManager extends TeamManager<Island, User> {
     public CompletableFuture<Void> recalculateTeam(Island island) {
         Map<XMaterial, Integer> teamBlocks = new HashMap<>();
         Map<EntityType, Integer> teamSpawners = new HashMap<>();
-
-        // TODO: maybe dont reflect every time we recalculate a team.
-        final boolean supportsMinHeight = XReflection.supports(18);
 
         return CompletableFuture.runAsync(() -> {
             List<Chunk> chunks = getIslandChunks(island).join();

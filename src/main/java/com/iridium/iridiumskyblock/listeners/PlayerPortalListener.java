@@ -119,7 +119,7 @@ public class PlayerPortalListener implements Listener {
         }
 
         location.setY(location.getY() + 1);
-        if (XReflection.supports(15)) event.setCanCreatePortal(false);
+        if (XReflection.supports(1,15)) event.setCanCreatePortal(false);
         event.setTo(location);
     }
 }

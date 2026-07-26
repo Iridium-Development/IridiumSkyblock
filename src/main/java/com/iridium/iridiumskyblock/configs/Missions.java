@@ -179,7 +179,7 @@ public class Missions extends com.iridium.iridiumteams.configs.Missions {
                                         "&9&l* &7$1000",
                                         "",
                                         "&9&l * &7Time Remaining: " + "&9%timeremaining_hours% hours %timeremaining_minutes% minutes and %timeremaining_seconds% seconds"
-                                )), Arrays.asList("SMELT:" + (XReflection.supports(17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (XReflection.supports(17) ? XMaterial.RAW_GOLD.name() : XMaterial.GOLD_ORE.name()) + ":15"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lBlacksmith Reward",
+                                )), Arrays.asList("SMELT:" + (XReflection.supports(1,17) ? XMaterial.RAW_IRON.name() : XMaterial.IRON_ORE.name()) + ":30", "SMELT:" + (XReflection.supports(1,17) ? XMaterial.RAW_GOLD.name() : XMaterial.GOLD_ORE.name()) + ":15"), 1, new Reward(new Item(XMaterial.DIAMOND, 1, "&9&lBlacksmith Reward",
                                 Arrays.asList(
                                         "&9&l Rewards",
                                         "&9&l* &75 Island Crystals",
