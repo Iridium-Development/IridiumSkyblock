@@ -16,6 +16,7 @@ public class BlockFormListener implements Listener {
 
     private final Map<Integer, RandomAccessList<XMaterial>> normalOreLevels = new HashMap<>();
     private final Map<Integer, RandomAccessList<XMaterial>> netherOreLevels = new HashMap<>();
+    private final Map<Integer, RandomAccessList<XMaterial>> deepslateOreLevels = new HashMap<>();
 
     private final List<XMaterial> generatorMaterials = Arrays.asList(XMaterial.STONE, XMaterial.COBBLESTONE, XMaterial.BASALT);
 
@@ -23,6 +24,9 @@ public class BlockFormListener implements Listener {
         for (Map.Entry<Integer, GeneratorEnhancementData> oreUpgrade : IridiumSkyblock.getInstance().getEnhancements().generatorEnhancement.levels.entrySet()) {
             normalOreLevels.put(oreUpgrade.getKey(), new RandomAccessList<>(oreUpgrade.getValue().ores));
             netherOreLevels.put(oreUpgrade.getKey(), new RandomAccessList<>(oreUpgrade.getValue().netherOres));
+            if (oreUpgrade.getValue().deepslateOres != null) {
+                deepslateOreLevels.put(oreUpgrade.getKey(), new RandomAccessList<>(oreUpgrade.getValue().deepslateOres));
+            }
         }
     }
 
@@ -33,7 +37,10 @@ public class BlockFormListener implements Listener {
         IridiumSkyblock.getInstance().getIslandManager().getTeamViaLocation(event.getNewState().getLocation()).ifPresent(island -> {
             int upgradeLevel = IridiumSkyblock.getInstance().getIslandManager().getTeamEnhancement(island, "generator").getLevel();
             boolean isBasaltGenerator = newMaterial == XMaterial.BASALT;
-            RandomAccessList<XMaterial> randomMaterialList = isBasaltGenerator ? netherOreLevels.get(upgradeLevel) : normalOreLevels.get(upgradeLevel);
+            boolean isDeepslate = !isBasaltGenerator && event.getNewState().getY() < 0;
+            RandomAccessList<XMaterial> randomMaterialList = isBasaltGenerator ? netherOreLevels.get(upgradeLevel)
+                    : isDeepslate ? deepslateOreLevels.getOrDefault(upgradeLevel, normalOreLevels.get(upgradeLevel))
+                    : normalOreLevels.get(upgradeLevel);
             if (randomMaterialList == null) return;
 
             Optional<XMaterial> xMaterialOptional = randomMaterialList.nextElement();
