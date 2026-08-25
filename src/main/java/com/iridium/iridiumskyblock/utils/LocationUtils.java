@@ -84,6 +84,9 @@ public class LocationUtils {
      * @return The lowest AIR location.
      */
     public static int getMinHeight(World world) {
-        return XMaterial.getVersion() >= 17 ? world.getMinHeight() : 0;  // World#getMinHeight() -> Available only in 1.17 Spigot and 1.16.5 PaperMC
+        int major = XMaterial.getVersionMajor();
+        // This because the old version starts all with 1.x and the new version start with 26.x
+        int version = major == 1 ? XMaterial.getVersionMinor() : major;
+        return version >= 17 ? world.getMinHeight() : 0; // World#getMinHeight() -> Available only in 1.17 Spigot and 1.16.5 PaperMC
     }
 }

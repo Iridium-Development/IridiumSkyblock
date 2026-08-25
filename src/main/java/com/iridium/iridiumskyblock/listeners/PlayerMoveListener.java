@@ -5,7 +5,7 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.LostItems;
 import com.iridium.iridiumskyblock.database.User;
 import com.iridium.iridiumskyblock.enhancements.VoidEnhancementData;
-import com.iridium.iridiumteams.utils.LocationUtils;
+import com.iridium.iridiumskyblock.utils.LocationUtils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
