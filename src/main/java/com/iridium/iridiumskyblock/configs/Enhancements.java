@@ -96,6 +96,10 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
                             .build(),
                     ImmutableMap.<XMaterial, Integer>builder()
                             .put(XMaterial.BASALT, 1)
+                            .build(),
+                    ImmutableMap.<XMaterial, Integer>builder()
+                            .put(XMaterial.DEEPSLATE, 3)
+                            .put(XMaterial.DEEPSLATE_COAL_ORE, 1)
                             .build()))
             .put(1, new GeneratorEnhancementData(5, 10000, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(),
                     ImmutableMap.<XMaterial, Integer>builder()
@@ -108,6 +112,12 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
                             .put(XMaterial.BASALT, 20)
                             .put(XMaterial.GLOWSTONE, 20)
                             .put(XMaterial.NETHERRACK, 20)
+                            .build(),
+                    ImmutableMap.<XMaterial, Integer>builder()
+                            .put(XMaterial.DEEPSLATE_REDSTONE_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_LAPIS_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_COAL_ORE, 20)
+                            .put(XMaterial.DEEPSLATE, 40)
                             .build()))
             .put(2, new GeneratorEnhancementData(5, 10000, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(),
                     ImmutableMap.<XMaterial, Integer>builder()
@@ -124,6 +134,14 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
                             .put(XMaterial.NETHER_QUARTZ_ORE, 10)
                             .put(XMaterial.NETHER_GOLD_ORE, 10)
                             .put(XMaterial.NETHERRACK, 10)
+                            .build(),
+                    ImmutableMap.<XMaterial, Integer>builder()
+                            .put(XMaterial.DEEPSLATE_IRON_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_REDSTONE_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_GOLD_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_LAPIS_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_COAL_ORE, 20)
+                            .put(XMaterial.DEEPSLATE, 40)
                             .build()))
             .put(3, new GeneratorEnhancementData(5, 10000, new ImmutableMap.Builder<String, Double>().put("Crystals", 5.00).build(),
                     ImmutableMap.<XMaterial, Integer>builder()
@@ -142,6 +160,15 @@ public class Enhancements extends com.iridium.iridiumteams.configs.Enhancements 
                             .put(XMaterial.NETHER_GOLD_ORE, 10)
                             .put(XMaterial.NETHERRACK, 10)
                             .put(XMaterial.ANCIENT_DEBRIS, 1)
+                            .build(),
+                    ImmutableMap.<XMaterial, Integer>builder()
+                            .put(XMaterial.DEEPSLATE_DIAMOND_ORE, 3)
+                            .put(XMaterial.DEEPSLATE_IRON_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_REDSTONE_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_GOLD_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_LAPIS_ORE, 10)
+                            .put(XMaterial.DEEPSLATE_COAL_ORE, 20)
+                            .put(XMaterial.DEEPSLATE, 40)
                             .build()))
             .build());
 }

@@ -10,10 +10,12 @@ import java.util.Map;
 public class GeneratorEnhancementData extends EnhancementData {
     public Map<XMaterial, Integer> ores;
     public Map<XMaterial, Integer> netherOres;
+    public Map<XMaterial, Integer> deepslateOres;
 
-    public GeneratorEnhancementData(int minLevel, int money, Map<String, Double> bankCosts, Map<XMaterial, Integer> ores, Map<XMaterial, Integer> netherOres) {
+    public GeneratorEnhancementData(int minLevel, int money, Map<String, Double> bankCosts, Map<XMaterial, Integer> ores, Map<XMaterial, Integer> netherOres, Map<XMaterial, Integer> deepslateOres) {
         super(minLevel, money, bankCosts);
         this.ores = ores;
         this.netherOres = netherOres;
+        this.deepslateOres = deepslateOres;
     }
 }
