@@ -1,6 +1,7 @@
 package com.iridium.iridiumskyblock.utils;
 
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.iridium.iridiumcore.multiversion.MultiVersion;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
@@ -84,9 +85,6 @@ public class LocationUtils {
      * @return The lowest AIR location.
      */
     public static int getMinHeight(World world) {
-        int major = XMaterial.getVersionMajor();
-        // This because the old version starts all with 1.x and the new version start with 26.x
-        int version = major == 1 ? XMaterial.getVersionMinor() : major;
-        return version >= 17 ? world.getMinHeight() : 0; // World#getMinHeight() -> Available only in 1.17 Spigot and 1.16.5 PaperMC
+        return XReflection.supports(1,17) ? world.getMinHeight() : 0; // World#getMinHeight() -> Available only in 1.17 Spigot and 1.16.5 PaperMC
     }
 }
