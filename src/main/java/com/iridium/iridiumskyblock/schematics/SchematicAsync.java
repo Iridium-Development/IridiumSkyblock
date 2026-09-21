@@ -5,9 +5,11 @@ import com.iridium.iridiumskyblock.IridiumSkyblock;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jnbt.*;
@@ -146,4 +148,139 @@ public class SchematicAsync implements SchematicPaster {
         schematicCache.clear();
     }
 
+    // TODO: should consider chunk-batching like w/ WE
+    public void deleteIsland(World world, Location pos1, Location pos2, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        Set<Long> modifiedChunks = new HashSet<>();
+
+        int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
+        int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
+        int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
+        int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+
+        new BukkitRunnable() {
+
+            int y = maxHeight;
+            int x = minX;
+            int z = minZ;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick; i++) {
+
+                    Block block = world.getBlockAt(x, y, z);
+
+                    while (block.isEmpty()) {
+                        if(increment()) return;
+                        block = world.getBlockAt(x, y, z);
+                    }
+
+                    if (block.getState() instanceof InventoryHolder) {
+                        ((InventoryHolder) block.getState()).getInventory().clear();
+                    }
+                    block.setType(Material.AIR, false);
+                    modifiedChunks.add(((long) (x >> 4) << 32) | ((z >> 4) & 0xFFFFFFFFL));
+
+                    increment();
+                }
+            }
+
+            public boolean increment() {
+                if (++z > maxZ) {
+                    z = minZ;
+                    if (++x > maxX) {
+                        x = minX;
+                        if (--y < minHeight) {
+                            finish();
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            private void finish() {
+                this.cancel();
+
+                completableFuture.complete(null);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (!IridiumSkyblock.getInstance().getConfiguration().generatorType.isTerrainGenerator()) {
+                            modifiedChunks.forEach(key -> {world.refreshChunk((int) (key >> 32), key.intValue());});
+                        }
+                    }
+                }.runTaskAsynchronously(IridiumSkyblock.getInstance());
+            }
+        }.runTaskTimer(IridiumSkyblock.getInstance(), delay, 1L);
+    }
+
+    // TODO: should consider chunk-batching like w/ WE
+    public void regenIsland(World world, World regenWorld, Location pos1, Location pos2, Location pos3, Location pos4, int minHeight, int maxHeight, CompletableFuture<Void> completableFuture, int delay) {
+
+        // pos3 and pos4 are unused here because worldedit requires a full location for position coordinates.
+        // here, we just find the same location as pos1 and pos2 in the regen world.
+
+        Set<Long> modifiedChunks = new HashSet<>();
+
+        int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
+        int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
+        int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
+        int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+
+        new BukkitRunnable() {
+
+            int y = minHeight;
+            int x = minX;
+            int z = minZ;
+
+            @Override
+            public void run() {
+                for (int i = 0; i < IridiumSkyblock.getInstance().getConfiguration().pasterLimitPerTick; i++) {
+
+                    Block blockA = regenWorld.getBlockAt(x, y, z);
+                    Block blockB = world.getBlockAt(x, y, z);
+
+                    while (blockA.isEmpty() || blockA.getBlockData().equals(blockB.getBlockData())) {
+                        if (increment()) return;
+                        blockA = regenWorld.getBlockAt(x, y, z);
+                        blockB = world.getBlockAt(x, y, z);
+                    }
+
+                    blockB.setBlockData(blockA.getBlockData(), false);
+                    modifiedChunks.add(((long) (x >> 4) << 32) | ((z >> 4) & 0xFFFFFFFFL));
+
+                    increment();
+                }
+            }
+
+            public boolean increment() {
+                if (++z > maxZ) {
+                    z = minZ;
+                    if (++x > maxX) {
+                        x = minX;
+                        if (++y > maxHeight) {
+                            finish();
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            private void finish() {
+                this.cancel();
+
+                completableFuture.complete(null);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        modifiedChunks.forEach(key -> {world.refreshChunk((int) (key >> 32), key.intValue());});
+                    }
+                }.runTaskAsynchronously(IridiumSkyblock.getInstance());
+            }
+        }.runTaskTimer(IridiumSkyblock.getInstance(), delay, 1L);
+    }
 }
