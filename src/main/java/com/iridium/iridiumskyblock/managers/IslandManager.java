@@ -56,10 +56,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.iridium.iridiumskyblock.utils.LocationUtils.getMinHeight;
+
 public class IslandManager extends TeamManager<Island, User> {
-
-
-    private final boolean supportsMinHeight = XReflection.supports(1, 18);
 
     public IslandManager() {
         super(IridiumSkyblock.getInstance());
@@ -402,7 +401,7 @@ public class IslandManager extends TeamManager<Island, User> {
             }
         }
 
-        if (y <= LocationUtils.getMinHeight(world)) {
+        if (y <= getMinHeight(world)) {
             completableFuture.complete(null);
         } else {
             if (delay < 1) {
@@ -451,7 +450,7 @@ public class IslandManager extends TeamManager<Island, User> {
             }
         }
 
-        if (y <= LocationUtils.getMinHeight(world)) {
+        if (y <= getMinHeight(world)) {
             completableFuture.complete(null);
         } else {
             if (delay < 1) {
@@ -735,7 +734,7 @@ public class IslandManager extends TeamManager<Island, User> {
         return CompletableFuture.runAsync(() -> {
             List<Chunk> chunks = getIslandChunks(island).join();
             for (Chunk chunk : chunks) {
-                final int miny = supportsMinHeight ? chunk.getWorld().getMinHeight() : 0;
+                final int miny = getMinHeight(chunk.getWorld());
                 ChunkSnapshot chunkSnapshot = chunk.getChunkSnapshot(true, false, false);
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {

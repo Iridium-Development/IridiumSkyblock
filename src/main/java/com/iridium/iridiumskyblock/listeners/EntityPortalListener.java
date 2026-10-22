@@ -1,9 +1,9 @@
 package com.iridium.iridiumskyblock.listeners;
 
+import com.cryptomorin.xseries.reflection.XReflection;
 import com.iridium.iridiumskyblock.IridiumSkyblock;
 import com.iridium.iridiumskyblock.database.Island;
 import com.iridium.iridiumskyblock.utils.LocationUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -100,9 +100,10 @@ public class EntityPortalListener implements Listener {
         }
 
         location.setY(location.getY() + 1);
-        // version example: 1.20.4-R0.1-SNAPSHOT (we need 20)
-        // will need to be updated for 26.x
-        if (Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4)) >= 15) event.setCanCreatePortal(false);
+
+        if (XReflection.supports(1,15)) {
+            event.setCanCreatePortal(false);
+        }
         event.setTo(location);
     }
 }
