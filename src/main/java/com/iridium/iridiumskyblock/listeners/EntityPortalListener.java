@@ -14,6 +14,8 @@ import org.bukkit.event.entity.EntityPortalEvent;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EntityPortalListener implements Listener {
 
@@ -100,9 +102,20 @@ public class EntityPortalListener implements Listener {
         }
 
         location.setY(location.getY() + 1);
-        // version example: 1.20.4-R0.1-SNAPSHOT (we need 20)
-        // will need to be updated for 26.x
-        if (Integer.parseInt(Bukkit.getBukkitVersion().substring(2, 4)) >= 15) event.setCanCreatePortal(false);
+        if (isVersionAtLeast(1, 15)) event.setCanCreatePortal(false);
         event.setTo(location);
+    }
+
+    private static boolean isVersionAtLeast(int major, int minor) {
+        Pattern versionPattern = Pattern.compile("^(\\d+)(?:\\.(\\d+))?");
+
+        Matcher matcher = versionPattern.matcher(Bukkit.getBukkitVersion());
+        if (!matcher.find()) return false;
+
+        int versionMajor = Integer.parseInt(matcher.group(1));
+        int versionMinor = matcher.group(2) == null ? 0 : Integer.parseInt(matcher.group(2));
+
+        if (versionMajor != major) return versionMajor > major;
+        return versionMinor >= minor;
     }
 }
