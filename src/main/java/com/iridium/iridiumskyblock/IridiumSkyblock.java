@@ -190,7 +190,9 @@ public class IridiumSkyblock extends IridiumTeams<Island, User> {
         Bukkit.getPluginManager().registerEvents(new PlayerRespawnEventListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityDamageListener(), this);
         Bukkit.getPluginManager().registerEvents(new EntityPortalListener(), this);
-        if(!XReflection.supports(1,15)) Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
+        if(!XReflection.supports(1,15)) {
+            Bukkit.getPluginManager().registerEvents(new PortalCreateListener(), this);
+        }
     }
 
     @Override
